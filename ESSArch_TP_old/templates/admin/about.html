@@ -8,12 +8,45 @@
 
 {% block content %} 
 
-About.....
+<b>Installed python packages</b>
+<br>
+<br>
+<table id="packagestable" class="table table-condensed" style="width:auto">
+<tr><th>Package</th><th>Version</th></tr>
+</table>
 
 {% endblock %} 
 
 {% block app-extra-script %}
+ <!--- JQuery 2.0.3-->
+ <script src="/static/jquery-2.0.3.min.js"></script>
+<!--Bootstrap-->
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
+<script src="/static/bootstrap/js/bootstrap.js"></script>
  <script>
+
+$(document).ready(
+
+function(){
+    
+    var installedpackages = {};
+    
+    $.getJSON('/installedpackages/', function(installedpackages){
+        
+        var packageshtml = ''
+        
+        for(i=0; i< installedpackages.length; i++){
+
+            packageshtml = packageshtml  + "<tr><td>" + installedpackages[i][0] +"</td><td>" + installedpackages[i][1] + "</td><//tr>";
+            
+        }
+        
+        $("#packagestable tbody").append(packageshtml);
+    });
+    
+}
+
+);
 
   </script>
   

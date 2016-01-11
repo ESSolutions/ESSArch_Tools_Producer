@@ -33,7 +33,7 @@ admin.autodiscover()
 #from create.views import CreateTmpWorkareaUploadView, CreateTmpWorkareaUploadCompleteView, ETPChunkedUploadView, ETPChunkedUploadCompleteView
 #from create.views import ETPChunkedUploadView, ETPChunkedUploadCompleteView
 from create.views import IPcontentasJSON, ETPUploadView, ETPUploadCompleteView
-from configuration.views import about
+from configuration.views import about, installedpackages
 urlpatterns = patterns('',
     # Configuration URLS:
     url(r'^$', 'configuration.views.index', name='home'),
@@ -51,6 +51,7 @@ urlpatterns = patterns('',
     url(r'^configuration/logevents/install_defaultparameters$', 'configuration.views.installdefaultparameters'),
     url(r'^configuration/logevents/install_defaultusers$', 'configuration.views.createdefaultusers'),
     url(r'^about$', 'configuration.views.about'),
+    url(r'^installedpackages/(?P<ipid>[^&]*)$', installedpackages.as_view(), name='installedpackages'), 
     #url(r'^configuration/logevents/install_defaultadditionalmetadata$', 'configuration.views.installAdditionalMetadata'),
     #url(r'^configuration/logevents/add$', 'configuration.views.newlogevent'),
     #url(r'^configuration/logevents/(?P<eventId>\d+)$', 'configuration.views.editlogevent' ),
