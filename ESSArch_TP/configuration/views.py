@@ -34,7 +34,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout
 from django.contrib.auth.views import password_change as admin_password_change
+from django.views.generic import View
+from django.core.serializers.json import DjangoJSONEncoder
 import sys, logging
+import pip
+import jsonpickle
 
 # own models etc
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
@@ -590,4 +594,31 @@ def about(request):
     t = loader.get_template('admin/about.html')
     c = RequestContext(request)
     return HttpResponse(t.render(c))
+    
+class installedpackages(View):
+
+    
+    def dispatch(self, *args, **kwargs):
+    
+        return super(installedpackages, self).dispatch( *args, **kwargs)
+        
+    def getInstalledPackages(self, *args, **kwargs):
+
+        installed_packages = pip.get_installed_distributions()
+        installed_packages_list = []
+        for i in installed_packages:
+            installedpackage = [i.key,i.version]
+            installed_packages_list.append(installedpackage)
+            installed_packages_list.sort()
+        return installed_packages_list
+
+    def json_response(self, request):
+        
+        data = self.getInstalledPackages()
+        return HttpResponse(
+            jsonpickle.encode(data) #cls=DjangoJSONEncoder
+        )
+    def get(self, request, *args, **kwargs):
+        
+        return self.json_response(request)
 
