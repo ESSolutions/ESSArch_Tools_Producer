@@ -1,0 +1,804 @@
+[Wed Nov 25 22:09:34.659864 2015] [ssl:warn] [pid 1060:tid 140369088698176] AH01909: RSA certificate configured for ESSArch3_etp:443 does NOT include an ID which matches the server name
+[Wed Nov 25 22:09:34.687525 2015] [ssl:warn] [pid 1061:tid 140369088698176] AH01909: RSA certificate configured for ESSArch3_etp:443 does NOT include an ID which matches the server name
+[Sun Nov 29 14:42:17.741318 2015] [ssl:warn] [pid 20774:tid 140516100036416] AH01909: RSA certificate configured for ESSArch3_etp:443 does NOT include an ID which matches the server name
+[Sun Nov 29 14:42:17.814940 2015] [ssl:warn] [pid 20775:tid 140516100036416] AH01909: RSA certificate configured for ESSArch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 16:42:05.591267 2015] [ssl:warn] [pid 13932:tid 140032262989632] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 16:42:05.679101 2015] [ssl:warn] [pid 13933:tid 140032262989632] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 16:58:25.517658 2015] [ssl:warn] [pid 14580:tid 139839226554176] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 16:58:25.637037 2015] [ssl:warn] [pid 14581:tid 139839226554176] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:00:46.531559 2015] [ssl:warn] [pid 14881:tid 140534712497984] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:00:46.595557 2015] [ssl:warn] [pid 14882:tid 140534712497984] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:05:39.162383 2015] [ssl:warn] [pid 15320:tid 139920839374656] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:05:39.224952 2015] [ssl:warn] [pid 15321:tid 139920839374656] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:23:44.474846 2015] [ssl:warn] [pid 15960:tid 139742546990912] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:23:44.516920 2015] [ssl:warn] [pid 15961:tid 139742546990912] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:47:12.110582 2015] [ssl:warn] [pid 16719:tid 140225214113600] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Nov 30 17:47:12.182235 2015] [ssl:warn] [pid 16720:tid 140225214113600] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:00:26.109500 2015] [ssl:warn] [pid 23692:tid 139627313784640] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:00:26.201893 2015] [ssl:warn] [pid 23693:tid 139627313784640] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:24:23.140960 2015] [ssl:warn] [pid 24452:tid 140202186647360] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:24:23.186945 2015] [ssl:warn] [pid 24453:tid 140202186647360] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:26:51.817157 2015] [ssl:warn] [pid 24744:tid 140468299179840] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:26:51.862397 2015] [ssl:warn] [pid 24745:tid 140468299179840] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:28:16.590162 2015] [ssl:warn] [pid 25024:tid 139863015847744] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 01 00:28:16.680774 2015] [ssl:warn] [pid 25025:tid 139863015847744] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 02 13:44:08.786729 2015] [ssl:warn] [pid 29120:tid 140464334096192] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 02 13:44:08.954614 2015] [ssl:warn] [pid 29121:tid 140464334096192] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 02 14:18:26.828928 2015] [ssl:warn] [pid 29998:tid 140466528479040] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 02 14:18:26.871046 2015] [ssl:warn] [pid 29999:tid 140466528479040] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Dec 03 19:55:48.429088 2015] [ssl:warn] [pid 31822:tid 140570034677568] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Dec 03 19:55:48.488715 2015] [ssl:warn] [pid 31823:tid 140570034677568] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Dec 03 23:17:31.543844 2015] [:error] [pid 32293:tid 140569813944064] f_name /ESSArch/data/etp/reception/ip2/info.xml
+[Thu Dec 03 23:17:31.543882 2015] [:error] [pid 32293:tid 140569813944064] ip_fname /ESSArch/data/etp/reception/ip2/9222cbca-9a0b-11e5-956e-0018f3d01293.tar
+[Thu Dec 03 23:39:31.436420 2015] [:error] [pid 32293:tid 140569738409728] f_name /ESSArch/data/etp/reception/ip2/info.xml
+[Thu Dec 03 23:39:31.436452 2015] [:error] [pid 32293:tid 140569738409728] ip_fname /ESSArch/data/etp/reception/ip2/b31cabea-9a0e-11e5-956e-0018f3d01293.tar
+[Thu Dec 03 23:59:22.878311 2015] [:error] [pid 32293:tid 140569813944064] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Thu Dec 03 23:59:22.878342 2015] [:error] [pid 32293:tid 140569813944064] ip_fname /ESSArch/data/etp/reception/ip1/52c5a50a-9a11-11e5-956e-0018f3d01293.tar
+[Fri Dec 04 00:00:42.659057 2015] [:error] [pid 32333:tid 140569738409728] f_name /ESSArch/data/etp/reception/ip2/info.xml
+[Fri Dec 04 00:00:42.659095 2015] [:error] [pid 32333:tid 140569738409728] ip_fname /ESSArch/data/etp/reception/ip2/557c8228-9a11-11e5-beb3-0018f3d01293.tar
+[Fri Dec 04 00:37:58.269299 2015] [ssl:warn] [pid 4895:tid 140314122704704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 04 00:37:58.313819 2015] [ssl:warn] [pid 4896:tid 140314122704704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 04 00:38:16.954471 2015] [:error] [pid 5098:tid 140313901971200] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Fri Dec 04 00:38:16.954501 2015] [:error] [pid 5098:tid 140313901971200] ip_fname /ESSArch/data/etp/reception/ip1/58b2f47c-9a11-11e5-956e-0018f3d01293.tar
+[Fri Dec 04 00:52:39.582150 2015] [:error] [pid 5098:tid 140313901971200] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Fri Dec 04 00:52:39.582180 2015] [:error] [pid 5098:tid 140313901971200] ip_fname /ESSArch/data/etp/reception/ip1/b34c301a-9a11-11e5-a7e0-0018f3d01293.tar
+[Fri Dec 04 00:54:35.749353 2015] [:error] [pid 5115:tid 140313826436864] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Fri Dec 04 00:54:35.749397 2015] [:error] [pid 5115:tid 140313826436864] ip_fname /ESSArch/data/etp/reception/ip1/b6d1ff4e-9a11-11e5-beb3-0018f3d01293.tar
+[Fri Dec 04 01:00:39.148770 2015] [:error] [pid 5098:tid 140313826436864] f_name /ESSArch/data/etp/reception/ip2/info.xml
+[Fri Dec 04 01:00:39.148803 2015] [:error] [pid 5098:tid 140313826436864] ip_fname /ESSArch/data/etp/reception/ip2/1e8d4344-9a19-11e5-8138-0018f3d01293.tar
+[Fri Dec 04 01:13:16.316285 2015] [:error] [pid 5098:tid 140313826436864] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Fri Dec 04 01:13:16.316316 2015] [:error] [pid 5098:tid 140313826436864] ip_fname /ESSArch/data/etp/reception/ip1/23ddc0e4-9a19-11e5-ba4c-0018f3d01293.tar
+[Fri Dec 04 01:20:09.510849 2015] [:error] [pid 5098:tid 140313826436864] f_name /ESSArch/data/etp/reception/ip1/info.xml
+[Fri Dec 04 01:20:09.510881 2015] [:error] [pid 5098:tid 140313826436864] ip_fname /ESSArch/data/etp/reception/ip1/2860d05c-9a19-11e5-8138-0018f3d01293.tar
+[Sat Dec 05 17:39:22.548258 2015] [ssl:warn] [pid 13198:tid 140239397840704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 05 17:39:22.599123 2015] [ssl:warn] [pid 13199:tid 140239397840704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:35:00.441997 2015] [ssl:warn] [pid 10753:tid 140683906295616] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:35:00.500320 2015] [ssl:warn] [pid 10754:tid 140683906295616] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:42:45.935830 2015] [ssl:warn] [pid 11287:tid 140397998569280] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:42:46.028939 2015] [ssl:warn] [pid 11288:tid 140397998569280] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:54:05.340740 2015] [ssl:warn] [pid 11758:tid 139959737399104] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 21:54:05.408953 2015] [ssl:warn] [pid 11759:tid 139959737399104] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 22:39:29.337807 2015] [ssl:warn] [pid 12924:tid 140073065072448] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 22:39:29.466908 2015] [ssl:warn] [pid 12925:tid 140073065072448] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 22:56:13.390437 2015] [ssl:warn] [pid 14002:tid 140523465357120] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 09 22:56:13.470915 2015] [ssl:warn] [pid 14003:tid 140523465357120] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 15:59:38.291913 2015] [ssl:warn] [pid 21168:tid 140326155315008] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 15:59:38.348482 2015] [ssl:warn] [pid 21169:tid 140326155315008] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 16:09:09.846251 2015] [ssl:warn] [pid 21740:tid 140674176259904] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 16:09:09.935753 2015] [ssl:warn] [pid 21741:tid 140674176259904] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 16:40:17.613761 2015] [ssl:warn] [pid 22655:tid 140383634487104] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 16:40:17.664080 2015] [ssl:warn] [pid 22656:tid 140383634487104] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 18:01:16.166052 2015] [ssl:warn] [pid 24553:tid 140581190608704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 18:01:16.254886 2015] [ssl:warn] [pid 24554:tid 140581190608704] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 19:46:16.318655 2015] [ssl:warn] [pid 26574:tid 140328615118656] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 19:46:16.424941 2015] [ssl:warn] [pid 26575:tid 140328615118656] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:08:34.917353 2015] [ssl:warn] [pid 27270:tid 140190632154944] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:08:34.976171 2015] [ssl:warn] [pid 27271:tid 140190632154944] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:29:16.277853 2015] [ssl:warn] [pid 27955:tid 140595830298432] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:29:16.345018 2015] [ssl:warn] [pid 27956:tid 140595830298432] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:32:53.403227 2015] [ssl:warn] [pid 28244:tid 140231737714496] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:32:53.483123 2015] [ssl:warn] [pid 28245:tid 140231737714496] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:33:54.513661 2015] [ssl:warn] [pid 28441:tid 139739991889728] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:33:54.624209 2015] [ssl:warn] [pid 28442:tid 139739991889728] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:35:19.277750 2015] [ssl:warn] [pid 28645:tid 140095672313664] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 11 20:35:19.342943 2015] [ssl:warn] [pid 28646:tid 140095672313664] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 08:58:00.615078 2015] [ssl:warn] [pid 8407:tid 140226593310528] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 08:58:00.734192 2015] [ssl:warn] [pid 8408:tid 140226593310528] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 11:06:21.611699 2015] [ssl:warn] [pid 10816:tid 140719197083456] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 11:06:21.693389 2015] [ssl:warn] [pid 10817:tid 140719197083456] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 11:21:18.008761 2015] [ssl:warn] [pid 11337:tid 140518277257024] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 11:21:18.058464 2015] [ssl:warn] [pid 11338:tid 140518277257024] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 16:49:02.904624 2015] [ssl:warn] [pid 16960:tid 140571962537792] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sat Dec 12 16:49:02.956543 2015] [ssl:warn] [pid 16961:tid 140571962537792] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sun Dec 13 01:44:54.452528 2015] [ssl:warn] [pid 26071:tid 139652119070528] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Sun Dec 13 01:44:54.545652 2015] [ssl:warn] [pid 26072:tid 139652119070528] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 00:36:59.005121 2015] [:error] [pid 16020:tid 139651898337024] append_chunk called
+[Mon Dec 14 00:36:59.292655 2015] [:error] [pid 16020:tid 139651898337024] get_uploaded_file called
+[Mon Dec 14 00:36:59.294079 2015] [:error] [pid 16020:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 00:36:59.294213 2015] [:error] [pid 16020:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293 e5e4243c-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 00:36:59.294273 2015] [:error] [pid 16020:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 00:36:59.294330 2015] [:error] [pid 16020:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 00:36:59.294393 2015] [:error] [pid 16020:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 00:36:59.294412 2015] [:error] [pid 16020:tid 139651898337024] kalle Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 00:37:07.306945 2015] [:error] [pid 16007:tid 139651822802688] append_chunk called
+[Mon Dec 14 00:37:07.597777 2015] [:error] [pid 16007:tid 139651898337024] get_uploaded_file called
+[Mon Dec 14 00:37:07.599186 2015] [:error] [pid 16007:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 00:37:07.599319 2015] [:error] [pid 16007:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293 e5e4243c-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 00:37:07.599384 2015] [:error] [pid 16007:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 00:37:07.599448 2015] [:error] [pid 16007:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 00:37:07.599532 2015] [:error] [pid 16007:tid 139651898337024] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 00:37:07.599547 2015] [:error] [pid 16007:tid 139651898337024] kalle Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 00:37:12.007801 2015] [:error] [pid 16020:tid 139651822802688] append_chunk called
+[Mon Dec 14 00:37:15.600636 2015] [:error] [pid 16020:tid 139651831195392] append_chunk called
+[Mon Dec 14 00:37:15.938297 2015] [:error] [pid 16007:tid 139651822802688] get_uploaded_file called
+[Mon Dec 14 00:37:15.939959 2015] [:error] [pid 16007:tid 139651822802688] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 00:37:15.940093 2015] [:error] [pid 16007:tid 139651822802688] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293 e5e4243c-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 00:37:15.940151 2015] [:error] [pid 16007:tid 139651822802688] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 00:37:15.940209 2015] [:error] [pid 16007:tid 139651822802688] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 00:37:15.940307 2015] [:error] [pid 16007:tid 139651822802688] Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 00:37:15.940322 2015] [:error] [pid 16007:tid 139651822802688] kalle Directory= /ESSArch/data/etp/prepare/ip1/e5e4243c-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 00:59:49.018190 2015] [ssl:warn] [pid 17343:tid 140297821792064] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 00:59:49.083550 2015] [ssl:warn] [pid 17344:tid 140297821792064] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 01:40:18.645582 2015] [:error] [pid 18474:tid 140297601058560] append_chunk called
+[Mon Dec 14 01:40:18.910901 2015] [:error] [pid 18415:tid 140297533916928] get_uploaded_file called
+[Mon Dec 14 01:40:18.912440 2015] [:error] [pid 18415:tid 140297533916928] Directory= /ESSArch/data/etp/prepare/ip2 ip2
+[Mon Dec 14 01:40:18.912573 2015] [:error] [pid 18415:tid 140297533916928] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293 e9e56d34-a1f1-11e5-a26a-0018f3d01293
+[Mon Dec 14 01:40:18.912631 2015] [:error] [pid 18415:tid 140297533916928] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 01:40:18.912689 2015] [:error] [pid 18415:tid 140297533916928] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 01:40:18.912745 2015] [:error] [pid 18415:tid 140297533916928] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content content
+[Mon Dec 14 01:40:18.912760 2015] [:error] [pid 18415:tid 140297533916928] kalle Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content
+[Mon Dec 14 01:40:25.558900 2015] [:error] [pid 18415:tid 140297601058560] append_chunk called
+[Mon Dec 14 01:40:25.849781 2015] [:error] [pid 18474:tid 140297525524224] get_uploaded_file called
+[Mon Dec 14 01:40:25.851501 2015] [:error] [pid 18474:tid 140297525524224] Directory= /ESSArch/data/etp/prepare/ip2 ip2
+[Mon Dec 14 01:40:25.851636 2015] [:error] [pid 18474:tid 140297525524224] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293 e9e56d34-a1f1-11e5-a26a-0018f3d01293
+[Mon Dec 14 01:40:25.851698 2015] [:error] [pid 18474:tid 140297525524224] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 01:40:25.851756 2015] [:error] [pid 18474:tid 140297525524224] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 01:40:25.851837 2015] [:error] [pid 18474:tid 140297525524224] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content content
+[Mon Dec 14 01:40:25.851852 2015] [:error] [pid 18474:tid 140297525524224] kalle Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content
+[Mon Dec 14 01:40:31.152357 2015] [:error] [pid 18415:tid 140297525524224] append_chunk called
+[Mon Dec 14 01:40:34.641967 2015] [:error] [pid 18415:tid 140297542309632] append_chunk called
+[Mon Dec 14 01:40:34.921130 2015] [:error] [pid 18474:tid 140297601058560] get_uploaded_file called
+[Mon Dec 14 01:40:34.922547 2015] [:error] [pid 18474:tid 140297601058560] Directory= /ESSArch/data/etp/prepare/ip2 ip2
+[Mon Dec 14 01:40:34.922682 2015] [:error] [pid 18474:tid 140297601058560] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293 e9e56d34-a1f1-11e5-a26a-0018f3d01293
+[Mon Dec 14 01:40:34.922741 2015] [:error] [pid 18474:tid 140297601058560] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 01:40:34.922800 2015] [:error] [pid 18474:tid 140297601058560] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 01:40:34.922900 2015] [:error] [pid 18474:tid 140297601058560] Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content content
+[Mon Dec 14 01:40:34.922915 2015] [:error] [pid 18474:tid 140297601058560] kalle Directory= /ESSArch/data/etp/prepare/ip2/e9e56d34-a1f1-11e5-a26a-0018f3d01293/content
+[Mon Dec 14 01:47:55.734689 2015] [ssl:warn] [pid 18794:tid 139748036233024] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 01:47:55.816270 2015] [ssl:warn] [pid 18795:tid 139748036233024] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 02:07:28.703802 2015] [ssl:warn] [pid 19751:tid 139764462978880] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 02:07:28.751208 2015] [ssl:warn] [pid 19752:tid 139764462978880] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 02:51:42.188198 2015] [ssl:warn] [pid 21049:tid 140694904768320] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 02:51:42.249868 2015] [ssl:warn] [pid 21050:tid 140694904768320] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Mon Dec 14 03:47:11.794716 2015] [:error] [pid 22810:tid 140694608500480] append_chunk called
+[Mon Dec 14 03:47:12.102987 2015] [:error] [pid 22783:tid 140694608500480] get_uploaded_file called
+[Mon Dec 14 03:47:12.104465 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3 ip3
+[Mon Dec 14 03:47:12.104597 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293 ed47ca3a-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 03:47:12.104654 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 03:47:12.104713 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 03:47:12.104768 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 03:47:12.104783 2015] [:error] [pid 22783:tid 140694608500480] kalle Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 03:47:20.559957 2015] [:error] [pid 22783:tid 140694684034816] append_chunk called
+[Mon Dec 14 03:47:20.857256 2015] [:error] [pid 22810:tid 140694608500480] get_uploaded_file called
+[Mon Dec 14 03:47:20.858804 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3 ip3
+[Mon Dec 14 03:47:20.858937 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293 ed47ca3a-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 03:47:20.858995 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 03:47:20.859052 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 03:47:20.859133 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 03:47:20.859148 2015] [:error] [pid 22810:tid 140694608500480] kalle Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 03:47:24.419588 2015] [:error] [pid 22810:tid 140694684034816] append_chunk called
+[Mon Dec 14 03:47:28.598557 2015] [:error] [pid 22783:tid 140694616893184] append_chunk called
+[Mon Dec 14 03:47:28.903704 2015] [:error] [pid 22810:tid 140694616893184] get_uploaded_file called
+[Mon Dec 14 03:47:28.905120 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip3 ip3
+[Mon Dec 14 03:47:28.905251 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293 ed47ca3a-a1f1-11e5-9895-0018f3d01293
+[Mon Dec 14 03:47:28.905344 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 03:47:28.905409 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 03:47:28.905512 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content content
+[Mon Dec 14 03:47:28.905527 2015] [:error] [pid 22810:tid 140694616893184] kalle Directory= /ESSArch/data/etp/prepare/ip3/ed47ca3a-a1f1-11e5-9895-0018f3d01293/content
+[Mon Dec 14 10:32:51.087186 2015] [:error] [pid 22810:tid 140694684034816] append_chunk called
+[Mon Dec 14 10:32:51.382341 2015] [:error] [pid 22783:tid 140694684034816] get_uploaded_file called
+[Mon Dec 14 10:32:51.383783 2015] [:error] [pid 22783:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 10:32:51.383922 2015] [:error] [pid 22783:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293 9b006bd4-a245-11e5-8d2f-0018f3d01293
+[Mon Dec 14 10:32:51.383984 2015] [:error] [pid 22783:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 10:32:51.384046 2015] [:error] [pid 22783:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 10:32:51.384107 2015] [:error] [pid 22783:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content content
+[Mon Dec 14 10:32:51.384122 2015] [:error] [pid 22783:tid 140694684034816] kalle Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content
+[Mon Dec 14 10:32:52.033797 2015] [:error] [pid 22783:tid 140694616893184] append_chunk called
+[Mon Dec 14 10:32:52.409405 2015] [:error] [pid 22810:tid 140694616893184] append_chunk called
+[Mon Dec 14 10:32:52.681946 2015] [:error] [pid 22783:tid 140694608500480] get_uploaded_file called
+[Mon Dec 14 10:32:52.683364 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 10:32:52.683544 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293 9b006bd4-a245-11e5-8d2f-0018f3d01293
+[Mon Dec 14 10:32:52.683607 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 10:32:52.683665 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 10:32:52.683747 2015] [:error] [pid 22783:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content content
+[Mon Dec 14 10:32:52.683763 2015] [:error] [pid 22783:tid 140694608500480] kalle Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content
+[Mon Dec 14 10:32:52.709442 2015] [:error] [pid 22810:tid 140694684034816] append_chunk called
+[Mon Dec 14 10:32:52.982049 2015] [:error] [pid 22810:tid 140694608500480] get_uploaded_file called
+[Mon Dec 14 10:32:52.983636 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 10:32:52.983770 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293 9b006bd4-a245-11e5-8d2f-0018f3d01293
+[Mon Dec 14 10:32:52.983829 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 10:32:52.983899 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 10:32:52.983998 2015] [:error] [pid 22810:tid 140694608500480] Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content content
+[Mon Dec 14 10:32:52.984013 2015] [:error] [pid 22810:tid 140694608500480] kalle Directory= /ESSArch/data/etp/prepare/ip1/9b006bd4-a245-11e5-8d2f-0018f3d01293/content
+[Mon Dec 14 11:24:13.677729 2015] [:error] [pid 22783:tid 140694608500480] append_chunk called
+[Mon Dec 14 11:24:13.978496 2015] [:error] [pid 22810:tid 140694684034816] get_uploaded_file called
+[Mon Dec 14 11:24:13.980062 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 11:24:13.980198 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293 8bc4c014-a24c-11e5-b16f-0018f3d01293
+[Mon Dec 14 11:24:13.980259 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 11:24:13.980320 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 11:24:13.980388 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content content
+[Mon Dec 14 11:24:13.980407 2015] [:error] [pid 22810:tid 140694684034816] kalle Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content
+[Mon Dec 14 11:24:14.532430 2015] [:error] [pid 22783:tid 140694616893184] append_chunk called
+[Mon Dec 14 11:24:14.712622 2015] [:error] [pid 22810:tid 140694608500480] append_chunk called
+[Mon Dec 14 11:24:14.919650 2015] [:error] [pid 22810:tid 140694616893184] get_uploaded_file called
+[Mon Dec 14 11:24:14.921161 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 11:24:14.921295 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293 8bc4c014-a24c-11e5-b16f-0018f3d01293
+[Mon Dec 14 11:24:14.921379 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 11:24:14.921442 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 11:24:14.921557 2015] [:error] [pid 22810:tid 140694616893184] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content content
+[Mon Dec 14 11:24:14.921573 2015] [:error] [pid 22810:tid 140694616893184] kalle Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content
+[Mon Dec 14 11:24:15.253569 2015] [:error] [pid 22783:tid 140694608500480] append_chunk called
+[Mon Dec 14 11:24:15.552934 2015] [:error] [pid 22810:tid 140694684034816] get_uploaded_file called
+[Mon Dec 14 11:24:15.554604 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1 ip1
+[Mon Dec 14 11:24:15.554740 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293 8bc4c014-a24c-11e5-b16f-0018f3d01293
+[Mon Dec 14 11:24:15.554797 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/descriptive_metadata descriptive_metadata
+[Mon Dec 14 11:24:15.554855 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/administrative_metadata administrative_metadata
+[Mon Dec 14 11:24:15.554952 2015] [:error] [pid 22810:tid 140694684034816] Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content content
+[Mon Dec 14 11:24:15.554981 2015] [:error] [pid 22810:tid 140694684034816] kalle Directory= /ESSArch/data/etp/prepare/ip1/8bc4c014-a24c-11e5-b16f-0018f3d01293/content
+[Wed Dec 16 01:02:53.025678 2015] [ssl:warn] [pid 1671:tid 140001095280448] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 16 01:02:53.084827 2015] [ssl:warn] [pid 1673:tid 140001095280448] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 18 15:01:56.859107 2015] [ssl:warn] [pid 27875:tid 140399198631744] AH01909: RSA certificate configured for essarch3:443 does NOT include an ID which matches the server name
+[Fri Dec 18 15:01:56.946259 2015] [ssl:warn] [pid 27876:tid 140399198631744] AH01909: RSA certificate configured for essarch3:443 does NOT include an ID which matches the server name
+[Fri Dec 18 16:29:56.703440 2015] [ssl:warn] [pid 31106:tid 140262436300608] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Fri Dec 18 16:29:56.756149 2015] [ssl:warn] [pid 31107:tid 140262436300608] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 29 13:18:27.203584 2015] [ssl:warn] [pid 15084:tid 140588614534976] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 29 13:18:27.258087 2015] [ssl:warn] [pid 15085:tid 140588614534976] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 29 13:20:18.559366 2015] [:error] [pid 15288:tid 140588393801472] listofcontent
+[Tue Dec 29 13:20:18.559424 2015] [:error] [pid 15288:tid 140588393801472] [u'8451f23a-ae26-11e5-9fee-0018f3d01293']
+[Tue Dec 29 13:21:57.327905 2015] [:error] [pid 15288:tid 140588246599424] listofcontent
+[Tue Dec 29 13:21:57.327941 2015] [:error] [pid 15288:tid 140588246599424] [u'8451f23a-ae26-11e5-9fee-0018f3d01293']
+[Tue Dec 29 14:28:14.084345 2015] [ssl:warn] [pid 16495:tid 139972367431488] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 29 14:28:14.162068 2015] [ssl:warn] [pid 16496:tid 139972367431488] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Tue Dec 29 14:28:30.777069 2015] [:error] [pid 16712:tid 139972146697984] thisip directory
+[Tue Dec 29 14:28:30.777118 2015] [:error] [pid 16712:tid 139972146697984] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 14:28:30.777161 2015] [:error] [pid 16712:tid 139972146697984] listofcontent
+[Tue Dec 29 14:28:30.777173 2015] [:error] [pid 16712:tid 139972146697984] []
+[Tue Dec 29 14:29:18.575049 2015] [:error] [pid 16666:tid 139972071163648] content_range
+[Tue Dec 29 14:29:18.575085 2015] [:error] [pid 16666:tid 139972071163648] bytes 0-1048575/1527505
+[Tue Dec 29 14:29:18.576877 2015] [:error] [pid 16666:tid 139972071163648] offset
+[Tue Dec 29 14:29:18.576891 2015] [:error] [pid 16666:tid 139972071163648] 1048576
+[Tue Dec 29 14:29:18.768405 2015] [:error] [pid 16712:tid 139972071163648] content_range
+[Tue Dec 29 14:29:18.768435 2015] [:error] [pid 16712:tid 139972071163648] bytes 1048576-1527504/1527505
+[Tue Dec 29 14:29:18.769497 2015] [:error] [pid 16712:tid 139972071163648] offset
+[Tue Dec 29 14:29:18.769513 2015] [:error] [pid 16712:tid 139972071163648] 1527505
+[Tue Dec 29 14:29:18.982530 2015] [:error] [pid 16666:tid 139972146697984] /ESSArch/data/etp/prepare/ip1/8451f23a-ae26-11e5-9fee-0018f3d01293/content/
+[Tue Dec 29 14:29:18.993736 2015] [:error] [pid 16712:tid 139972146697984] content_range
+[Tue Dec 29 14:29:18.993756 2015] [:error] [pid 16712:tid 139972146697984] 
+[Tue Dec 29 14:29:18.994905 2015] [:error] [pid 16712:tid 139972146697984] offset
+[Tue Dec 29 14:29:18.994921 2015] [:error] [pid 16712:tid 139972146697984] 698694
+[Tue Dec 29 14:29:19.100260 2015] [:error] [pid 16666:tid 139972071163648] thisip directory
+[Tue Dec 29 14:29:19.100288 2015] [:error] [pid 16666:tid 139972071163648] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 14:29:19.100344 2015] [:error] [pid 16666:tid 139972071163648] listofcontent
+[Tue Dec 29 14:29:19.100359 2015] [:error] [pid 16666:tid 139972071163648] [u'ESSArch_Description_en.pdf']
+[Tue Dec 29 14:29:19.216106 2015] [:error] [pid 16712:tid 139972071163648] /ESSArch/data/etp/prepare/ip1/8451f23a-ae26-11e5-9fee-0018f3d01293/content/
+[Tue Dec 29 14:29:19.228950 2015] [:error] [pid 16666:tid 139972146697984] content_range
+[Tue Dec 29 14:29:19.229065 2015] [:error] [pid 16666:tid 139972146697984] 
+[Tue Dec 29 14:29:19.229415 2015] [:error] [pid 16666:tid 139972071163648] thisip directory
+[Tue Dec 29 14:29:19.229520 2015] [:error] [pid 16666:tid 139972071163648] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 14:29:19.229621 2015] [:error] [pid 16666:tid 139972146697984] offset
+[Tue Dec 29 14:29:19.229638 2015] [:error] [pid 16666:tid 139972071163648]  listofcontent
+[Tue Dec 29 14:29:19.229652 2015] [:error] [pid 16666:tid 139972146697984] 123
+[Tue Dec 29 14:29:19.229671 2015] [:error] [pid 16666:tid 139972071163648] [u'ESSArch_Description_en.pdf', u'ESSArch_PreIngest.tif']
+[Tue Dec 29 14:29:19.432539 2015] [:error] [pid 16712:tid 139972146697984] /ESSArch/data/etp/prepare/ip1/8451f23a-ae26-11e5-9fee-0018f3d01293/content/
+[Tue Dec 29 14:29:19.444623 2015] [:error] [pid 16666:tid 139972079556352] thisip directory
+[Tue Dec 29 14:29:19.444652 2015] [:error] [pid 16666:tid 139972079556352] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 14:29:19.444713 2015] [:error] [pid 16666:tid 139972079556352] listofcontent
+[Tue Dec 29 14:29:19.444731 2015] [:error] [pid 16666:tid 139972079556352] [u'ESSArch_Description_en.pdf', u'ESSArch_PreIngest.tif', u'Interesting Archive File.txt']
+[Tue Dec 29 16:49:33.253534 2015] [:error] [pid 16712:tid 139972071163648] thisip directory
+[Tue Dec 29 16:49:33.253567 2015] [:error] [pid 16712:tid 139972071163648] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 16:49:33.253609 2015] [:error] [pid 16712:tid 139972071163648] listofcontent
+[Tue Dec 29 16:49:33.253621 2015] [:error] [pid 16712:tid 139972071163648] []
+[Tue Dec 29 16:49:39.566292 2015] [:error] [pid 16666:tid 139972146697984] content_range
+[Tue Dec 29 16:49:39.566320 2015] [:error] [pid 16666:tid 139972146697984] bytes 0-1048575/1527505
+[Tue Dec 29 16:49:39.567827 2015] [:error] [pid 16666:tid 139972146697984] offset
+[Tue Dec 29 16:49:39.567845 2015] [:error] [pid 16666:tid 139972146697984] 1048576
+[Tue Dec 29 16:49:39.758501 2015] [:error] [pid 16712:tid 139972146697984] content_range
+[Tue Dec 29 16:49:39.758531 2015] [:error] [pid 16712:tid 139972146697984] bytes 1048576-1527504/1527505
+[Tue Dec 29 16:49:39.759378 2015] [:error] [pid 16712:tid 139972146697984] offset
+[Tue Dec 29 16:49:39.759394 2015] [:error] [pid 16712:tid 139972146697984] 1527505
+[Tue Dec 29 16:49:40.011376 2015] [:error] [pid 16666:tid 139972079556352] /ESSArch/data/etp/prepare/ip1/bfeecdaa-ae43-11e5-bad0-0018f3d01293/content/
+[Tue Dec 29 16:49:40.025729 2015] [:error] [pid 16666:tid 139972146697984] thisip directory
+[Tue Dec 29 16:49:40.025748 2015] [:error] [pid 16666:tid 139972146697984] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 16:49:40.025794 2015] [:error] [pid 16666:tid 139972146697984] listofcontent
+[Tue Dec 29 16:49:40.025810 2015] [:error] [pid 16666:tid 139972146697984] [u'ESSArch_Description_en.pdf']
+[Tue Dec 29 16:49:40.028927 2015] [:error] [pid 16712:tid 139972071163648] content_range
+[Tue Dec 29 16:49:40.028948 2015] [:error] [pid 16712:tid 139972071163648] 
+[Tue Dec 29 16:49:40.030017 2015] [:error] [pid 16712:tid 139972071163648] offset
+[Tue Dec 29 16:49:40.030029 2015] [:error] [pid 16712:tid 139972071163648] 698694
+[Tue Dec 29 16:49:40.327792 2015] [:error] [pid 16712:tid 139972146697984] /ESSArch/data/etp/prepare/ip1/bfeecdaa-ae43-11e5-bad0-0018f3d01293/content/
+[Tue Dec 29 16:49:40.349810 2015] [:error] [pid 16712:tid 139972071163648] content_range
+[Tue Dec 29 16:49:40.349823 2015] [:error] [pid 16712:tid 139972071163648] 
+[Tue Dec 29 16:49:40.350006 2015] [:error] [pid 16712:tid 139972071163648] offset
+[Tue Dec 29 16:49:40.350015 2015] [:error] [pid 16712:tid 139972071163648] 123
+[Tue Dec 29 16:49:40.471800 2015] [:error] [pid 16666:tid 139972079556352] thisip directory
+[Tue Dec 29 16:49:40.471826 2015] [:error] [pid 16666:tid 139972079556352] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 16:49:40.471883 2015] [:error] [pid 16666:tid 139972079556352] listofcontent
+[Tue Dec 29 16:49:40.471899 2015] [:error] [pid 16666:tid 139972079556352] [u'ESSArch_Description_en.pdf', u'ESSArch_PreIngest.tif']
+[Tue Dec 29 16:49:40.586519 2015] [:error] [pid 16712:tid 139972079556352] /ESSArch/data/etp/prepare/ip1/bfeecdaa-ae43-11e5-bad0-0018f3d01293/content/
+[Tue Dec 29 16:49:40.619560 2015] [:error] [pid 16666:tid 139972146697984] thisip directory
+[Tue Dec 29 16:49:40.619582 2015] [:error] [pid 16666:tid 139972146697984] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 16:49:40.619634 2015] [:error] [pid 16666:tid 139972146697984] listofcontent
+[Tue Dec 29 16:49:40.619651 2015] [:error] [pid 16666:tid 139972146697984] [u'ESSArch_Description_en.pdf', u'ESSArch_PreIngest.tif', u'Interesting Archive File.txt']
+[Tue Dec 29 16:50:35.087201 2015] [:error] [pid 16666:tid 139972079556352] content_range
+[Tue Dec 29 16:50:35.087228 2015] [:error] [pid 16666:tid 139972079556352] 
+[Tue Dec 29 16:50:35.087547 2015] [:error] [pid 16666:tid 139972079556352] offset
+[Tue Dec 29 16:50:35.087563 2015] [:error] [pid 16666:tid 139972079556352] 36627
+[Tue Dec 29 16:50:35.305844 2015] [:error] [pid 16712:tid 139972071163648] /ESSArch/data/etp/prepare/ip1/bfeecdaa-ae43-11e5-bad0-0018f3d01293/content/
+[Tue Dec 29 16:50:35.322355 2015] [:error] [pid 16666:tid 139972146697984] thisip directory
+[Tue Dec 29 16:50:35.322394 2015] [:error] [pid 16666:tid 139972146697984] /ESSArch/data/etp/prepare/ip1
+[Tue Dec 29 16:50:35.322458 2015] [:error] [pid 16666:tid 139972146697984] listofcontent
+[Tue Dec 29 16:50:35.322475 2015] [:error] [pid 16666:tid 139972146697984] [u'ESSArch_Description_en.pdf', u'ESSArch_PreIngest.tif', u'Interesting Archive File.txt', u'SKL_Logo.jpg']
+[Wed Dec 30 08:41:30.663419 2015] [ssl:warn] [pid 1749:tid 139989199337280] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Wed Dec 30 08:41:30.754928 2015] [ssl:warn] [pid 1750:tid 139989199337280] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Jan 07 20:29:47.969270 2016] [ssl:warn] [pid 30794:tid 140602299684672] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Jan 07 20:29:48.029819 2016] [ssl:warn] [pid 30795:tid 140602299684672] AH01909: RSA certificate configured for essarch3_etp:443 does NOT include an ID which matches the server name
+[Thu Jan 07 20:30:42.662224 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 20:30:42.662272 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip4
+[Thu Jan 07 20:30:42.662328 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 20:30:42.662343 2016] [:error] [pid 31011:tid 140602003416832] [u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 20:31:15.003963 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 20:31:15.003999 2016] [:error] [pid 31030:tid 140602003416832] bytes 0-1048575/1527505
+[Thu Jan 07 20:31:15.005911 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 20:31:15.005929 2016] [:error] [pid 31030:tid 140602003416832] 1048576
+[Thu Jan 07 20:31:15.187032 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 20:31:15.187062 2016] [:error] [pid 31011:tid 140602078951168] bytes 1048576-1527504/1527505
+[Thu Jan 07 20:31:15.188123 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 20:31:15.188139 2016] [:error] [pid 31011:tid 140602078951168] 1527505
+[Thu Jan 07 20:31:15.438999 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip4/f0dd5b88-a1f1-11e5-a26a-0018f3d01293/content/
+[Thu Jan 07 20:31:15.464824 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 20:31:15.464858 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip4
+[Thu Jan 07 20:31:15.464923 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 20:31:15.464939 2016] [:error] [pid 31011:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 20:32:33.965907 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 20:32:33.965934 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 20:32:33.965990 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 20:32:33.966005 2016] [:error] [pid 31011:tid 140602003416832] [u'Order.xsd']
+[Thu Jan 07 20:32:44.266417 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 20:32:44.266447 2016] [:error] [pid 31030:tid 140602078951168] bytes 0-1048575/1527505
+[Thu Jan 07 20:32:44.267976 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 20:32:44.267994 2016] [:error] [pid 31030:tid 140602078951168] 1048576
+[Thu Jan 07 20:32:44.483869 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 20:32:44.483899 2016] [:error] [pid 31011:tid 140602078951168] bytes 1048576-1527504/1527505
+[Thu Jan 07 20:32:44.484929 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 20:32:44.484945 2016] [:error] [pid 31011:tid 140602078951168] 1527505
+[Thu Jan 07 20:32:44.749330 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/f4963e66-a1f1-11e5-9895-0018f3d01293/content/
+[Thu Jan 07 20:32:44.767201 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 20:32:44.767228 2016] [:error] [pid 31011:tid 140602003416832] 
+[Thu Jan 07 20:32:44.767491 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 20:32:44.767506 2016] [:error] [pid 31011:tid 140602003416832] 21
+[Thu Jan 07 20:32:45.015844 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/f4963e66-a1f1-11e5-9895-0018f3d01293/content/
+[Thu Jan 07 20:38:26.160690 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 20:38:26.160721 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 20:38:26.160776 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 20:38:26.160793 2016] [:error] [pid 31030:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'Order.xsd', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 20:40:16.519652 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 20:40:16.519691 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip2
+[Thu Jan 07 20:40:16.519734 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 20:40:16.519746 2016] [:error] [pid 31030:tid 140602003416832] []
+[Thu Jan 07 20:44:59.196931 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 20:44:59.196959 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip2
+[Thu Jan 07 20:44:59.196999 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 20:44:59.197011 2016] [:error] [pid 31030:tid 140602078951168] []
+[Thu Jan 07 20:45:09.461128 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 20:45:09.461156 2016] [:error] [pid 31011:tid 140602078951168] bytes 0-1048575/1527505
+[Thu Jan 07 20:45:09.462683 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 20:45:09.462701 2016] [:error] [pid 31011:tid 140602078951168] 1048576
+[Thu Jan 07 20:45:11.235971 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 20:45:11.236001 2016] [:error] [pid 31030:tid 140602003416832] bytes 1048576-1527504/1527505
+[Thu Jan 07 20:45:11.237048 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 20:45:11.237071 2016] [:error] [pid 31030:tid 140602003416832] 1527505
+[Thu Jan 07 20:45:12.157340 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip2/6d0a47d8-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 20:45:12.177835 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 20:45:12.177862 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 20:45:12.178115 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 20:45:12.178127 2016] [:error] [pid 31030:tid 140602078951168] 21
+[Thu Jan 07 20:45:12.294984 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 20:45:12.295010 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip2
+[Thu Jan 07 20:45:12.295064 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 20:45:12.295080 2016] [:error] [pid 31011:tid 140602078951168] [u'ESSArch_Description_en.pdf']
+[Thu Jan 07 20:45:12.432568 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip2/6d0a47d8-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 20:45:12.471716 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 20:45:12.471739 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip2
+[Thu Jan 07 20:45:12.471792 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 20:45:12.471809 2016] [:error] [pid 31030:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 20:46:01.731207 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 20:46:01.731242 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip3
+[Thu Jan 07 20:46:01.731280 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 20:46:01.731292 2016] [:error] [pid 31011:tid 140602003416832] []
+[Thu Jan 07 20:46:26.246252 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 20:46:26.246282 2016] [:error] [pid 31030:tid 140602003416832] bytes 0-1048575/1527505
+[Thu Jan 07 20:46:26.248214 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 20:46:26.248233 2016] [:error] [pid 31030:tid 140602003416832] 1048576
+[Thu Jan 07 20:46:26.458645 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 20:46:26.458676 2016] [:error] [pid 31011:tid 140602078951168] bytes 1048576-1527504/1527505
+[Thu Jan 07 20:46:26.459541 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 20:46:26.459557 2016] [:error] [pid 31011:tid 140602078951168] 1527505
+[Thu Jan 07 20:46:26.708536 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip3/70b82da0-b576-11e5-98d4-0018f3d01293/content/
+[Thu Jan 07 20:46:26.717513 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 20:46:26.717540 2016] [:error] [pid 31011:tid 140602003416832] 
+[Thu Jan 07 20:46:26.717800 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 20:46:26.717812 2016] [:error] [pid 31011:tid 140602003416832] 21
+[Thu Jan 07 20:46:26.826334 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 20:46:26.826356 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip3
+[Thu Jan 07 20:46:26.826420 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 20:46:26.826438 2016] [:error] [pid 31030:tid 140602003416832] [u'ESSArch_Description_en.pdf']
+[Thu Jan 07 20:46:27.025238 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip3/70b82da0-b576-11e5-98d4-0018f3d01293/content/
+[Thu Jan 07 20:46:27.038437 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 20:46:27.038470 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip3
+[Thu Jan 07 20:46:27.038525 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 20:46:27.038541 2016] [:error] [pid 31030:tid 140602078951168] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 20:48:04.992521 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 20:48:04.992572 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip3
+[Thu Jan 07 20:48:04.992612 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 20:48:04.992624 2016] [:error] [pid 31030:tid 140602078951168] []
+[Thu Jan 07 20:48:28.325613 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 20:48:28.325643 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/1527505
+[Thu Jan 07 20:48:28.327454 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 20:48:28.327473 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 20:48:28.537483 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 20:48:28.537508 2016] [:error] [pid 31030:tid 140602003416832] bytes 1048576-1527504/1527505
+[Thu Jan 07 20:48:28.538296 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 20:48:28.538305 2016] [:error] [pid 31030:tid 140602003416832] 1527505
+[Thu Jan 07 20:48:28.823453 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip3/70b82da0-b576-11e5-98d4-0018f3d01293/content/
+[Thu Jan 07 20:48:28.874041 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 20:48:28.874063 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 20:48:28.874313 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 20:48:28.874325 2016] [:error] [pid 31030:tid 140602078951168] 21
+[Thu Jan 07 20:48:29.123291 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip3/70b82da0-b576-11e5-98d4-0018f3d01293/content/
+[Thu Jan 07 21:03:50.652705 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 21:03:50.652732 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip3
+[Thu Jan 07 21:03:50.652788 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 21:03:50.652831 2016] [:error] [pid 31011:tid 140602078951168] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Thu Jan 07 22:13:29.965231 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 22:13:29.965270 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 22:13:29.965309 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 22:13:29.965321 2016] [:error] [pid 31030:tid 140602078951168] []
+[Thu Jan 07 22:13:35.806089 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 22:13:35.806118 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 22:13:35.806157 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 22:13:35.806168 2016] [:error] [pid 31030:tid 140602003416832] []
+[Thu Jan 07 22:13:46.603231 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 22:13:46.603263 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/1527505
+[Thu Jan 07 22:13:46.605255 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 22:13:46.605274 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 22:13:46.804012 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 22:13:46.804045 2016] [:error] [pid 31030:tid 140602078951168] bytes 1048576-1527504/1527505
+[Thu Jan 07 22:13:46.804919 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 22:13:46.804935 2016] [:error] [pid 31030:tid 140602078951168] 1527505
+[Thu Jan 07 22:13:47.045076 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 22:13:47.055785 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 22:13:47.055811 2016] [:error] [pid 31030:tid 140602003416832] 
+[Thu Jan 07 22:13:47.056063 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 22:13:47.056075 2016] [:error] [pid 31030:tid 140602003416832] 21
+[Thu Jan 07 22:13:47.261758 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:06:29.168875 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:06:29.168913 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:06:29.168956 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:06:29.168968 2016] [:error] [pid 31030:tid 140602078951168] []
+[Thu Jan 07 23:06:50.607261 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:06:50.607289 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:06:50.607328 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:06:50.607340 2016] [:error] [pid 31011:tid 140602078951168] []
+[Thu Jan 07 23:08:47.302807 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:08:47.302837 2016] [:error] [pid 31030:tid 140602003416832] bytes 0-1048575/2558695
+[Thu Jan 07 23:08:47.304804 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:08:47.304823 2016] [:error] [pid 31030:tid 140602003416832] 1048576
+[Thu Jan 07 23:08:48.232433 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:08:48.232466 2016] [:error] [pid 31011:tid 140602003416832] bytes 1048576-2097151/2558695
+[Thu Jan 07 23:08:48.234516 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:08:48.234536 2016] [:error] [pid 31011:tid 140602003416832] 2097152
+[Thu Jan 07 23:08:48.744758 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:08:48.744789 2016] [:error] [pid 31030:tid 140602078951168] bytes 2097152-2558694/2558695
+[Thu Jan 07 23:08:48.745658 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:08:48.745673 2016] [:error] [pid 31030:tid 140602078951168] 2558695
+[Thu Jan 07 23:08:49.012386 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:09:10.078402 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:09:10.078433 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/2292625
+[Thu Jan 07 23:09:10.080415 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:09:10.080434 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 23:09:11.175472 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:09:11.175503 2016] [:error] [pid 31030:tid 140602003416832] bytes 1048576-2097151/2292625
+[Thu Jan 07 23:09:11.177103 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:09:11.177118 2016] [:error] [pid 31030:tid 140602003416832] 2097152
+[Thu Jan 07 23:09:11.474388 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:09:11.474413 2016] [:error] [pid 31011:tid 140602078951168] bytes 2097152-2292624/2292625
+[Thu Jan 07 23:09:11.474817 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:09:11.474826 2016] [:error] [pid 31011:tid 140602078951168] 2292625
+[Thu Jan 07 23:09:11.746002 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:09:11.765915 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 23:09:11.765941 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:09:11.765993 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 23:09:11.766009 2016] [:error] [pid 31011:tid 140602003416832] [u'006.jpg', u'007.jpg']
+[Thu Jan 07 23:09:28.097176 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:09:28.097204 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:09:28.097254 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:09:28.097269 2016] [:error] [pid 31011:tid 140602078951168] [u'006.jpg', u'007.jpg']
+[Thu Jan 07 23:09:36.775253 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:09:36.775304 2016] [:error] [pid 31030:tid 140602078951168] bytes 0-1048575/2315543
+[Thu Jan 07 23:09:36.776732 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:09:36.776750 2016] [:error] [pid 31030:tid 140602078951168] 1048576
+[Thu Jan 07 23:09:37.788729 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:09:37.788760 2016] [:error] [pid 31011:tid 140602003416832] bytes 1048576-2097151/2315543
+[Thu Jan 07 23:09:37.790740 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:09:37.790761 2016] [:error] [pid 31011:tid 140602003416832] 2097152
+[Thu Jan 07 23:09:38.082092 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:09:38.082123 2016] [:error] [pid 31030:tid 140602003416832] bytes 2097152-2315542/2315543
+[Thu Jan 07 23:09:38.082723 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:09:38.082739 2016] [:error] [pid 31030:tid 140602003416832] 2315543
+[Thu Jan 07 23:09:38.367630 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:21:50.065067 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 23:21:50.065097 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:21:50.065136 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 23:21:50.065148 2016] [:error] [pid 31011:tid 140602003416832] []
+[Thu Jan 07 23:22:01.254486 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:22:01.254514 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:22:01.254553 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:22:01.254565 2016] [:error] [pid 31011:tid 140602078951168] []
+[Thu Jan 07 23:22:09.292279 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:22:09.292309 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 23:22:09.293584 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:22:09.293601 2016] [:error] [pid 31030:tid 140602078951168] 845941
+[Thu Jan 07 23:22:09.521323 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:22:24.371428 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:22:24.371458 2016] [:error] [pid 31030:tid 140602003416832] bytes 0-1048575/2558695
+[Thu Jan 07 23:22:24.373486 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:22:24.373506 2016] [:error] [pid 31030:tid 140602003416832] 1048576
+[Thu Jan 07 23:22:25.534309 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:22:25.534343 2016] [:error] [pid 31030:tid 140602078951168] bytes 1048576-2097151/2558695
+[Thu Jan 07 23:22:25.535756 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:22:25.535775 2016] [:error] [pid 31030:tid 140602078951168] 2097152
+[Thu Jan 07 23:22:26.142125 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:22:26.142156 2016] [:error] [pid 31011:tid 140602078951168] bytes 2097152-2558694/2558695
+[Thu Jan 07 23:22:26.142996 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:22:26.143012 2016] [:error] [pid 31011:tid 140602078951168] 2558695
+[Thu Jan 07 23:22:26.389213 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:22:53.230764 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:22:53.230791 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:22:53.230842 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:22:53.230857 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg', u'Desert.jpg']
+[Thu Jan 07 23:23:03.322453 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:23:03.322484 2016] [:error] [pid 31011:tid 140602078951168] bytes 0-1048575/2558695
+[Thu Jan 07 23:23:03.324045 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:23:03.324063 2016] [:error] [pid 31011:tid 140602078951168] 1048576
+[Thu Jan 07 23:23:04.320186 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:23:04.320217 2016] [:error] [pid 31030:tid 140602003416832] bytes 1048576-2097151/2558695
+[Thu Jan 07 23:23:04.322181 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:23:04.322200 2016] [:error] [pid 31030:tid 140602003416832] 2097152
+[Thu Jan 07 23:23:04.838044 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:23:04.838075 2016] [:error] [pid 31011:tid 140602003416832] bytes 2097152-2558694/2558695
+[Thu Jan 07 23:23:04.839089 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:23:04.839105 2016] [:error] [pid 31011:tid 140602003416832] 2558695
+[Thu Jan 07 23:23:05.072889 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:23:12.506364 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 23:23:12.506397 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:23:12.506454 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 23:23:12.506470 2016] [:error] [pid 31030:tid 140602003416832] [u'006.jpg', u'Desert.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:26:20.891050 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:26:20.891078 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:26:20.891132 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:26:20.891148 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg', u'Desert.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:26:24.093490 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:26:24.093518 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:26:24.093571 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:26:24.093587 2016] [:error] [pid 31011:tid 140602078951168] [u'006.jpg', u'Desert.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:26:40.584758 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:26:40.584787 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 23:26:40.586098 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:26:40.586114 2016] [:error] [pid 31030:tid 140602078951168] 879394
+[Thu Jan 07 23:26:40.861495 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:26:51.764810 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:26:51.764847 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:26:51.764909 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:26:51.764925 2016] [:error] [pid 31011:tid 140602078951168] [u'006.jpg', u'Chrysanthemum.jpg', u'Desert.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:38:58.341026 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 23:38:58.341054 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:38:58.341111 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 23:38:58.341127 2016] [:error] [pid 31011:tid 140602003416832] [u'006.jpg', u'Chrysanthemum.jpg', u'Desert.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:39:05.908778 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:39:05.908807 2016] [:error] [pid 31030:tid 140602003416832] 
+[Thu Jan 07 23:39:05.909724 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:39:05.909739 2016] [:error] [pid 31030:tid 140602003416832] 561276
+[Thu Jan 07 23:39:06.185085 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:39:06.204595 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:39:06.204620 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:39:06.204680 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:39:06.204698 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg', u'Chrysanthemum.jpg', u'Desert.jpg', u'Lighthouse.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:39:20.679218 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:39:20.679250 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/2796117
+[Thu Jan 07 23:39:20.681261 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:39:20.681280 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 23:39:21.600627 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:39:21.600658 2016] [:error] [pid 31011:tid 140602078951168] bytes 1048576-2097151/2796117
+[Thu Jan 07 23:39:21.602215 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:39:21.602234 2016] [:error] [pid 31011:tid 140602078951168] 2097152
+[Thu Jan 07 23:39:22.239397 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:39:22.239428 2016] [:error] [pid 31011:tid 140602003416832] bytes 2097152-2796116/2796117
+[Thu Jan 07 23:39:22.240490 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:39:22.240506 2016] [:error] [pid 31011:tid 140602003416832] 2796117
+[Thu Jan 07 23:39:22.503012 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:39:22.527310 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:39:22.527331 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:39:22.527400 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:39:22.527421 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg', u'009.jpg', u'Chrysanthemum.jpg', u'Desert.jpg', u'Lighthouse.jpg', u'\\xc5\\xc4\\xd6.jpg']
+[Thu Jan 07 23:40:27.192174 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 23:40:27.192205 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:40:27.192243 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 23:40:27.192255 2016] [:error] [pid 31030:tid 140602003416832] []
+[Thu Jan 07 23:40:40.079258 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:40:40.079287 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/2558695
+[Thu Jan 07 23:40:40.081276 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:40:40.081294 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 23:40:40.989777 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:40:40.989809 2016] [:error] [pid 31030:tid 140602078951168] bytes 1048576-2097151/2558695
+[Thu Jan 07 23:40:40.991243 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:40:40.991262 2016] [:error] [pid 31030:tid 140602078951168] 2097152
+[Thu Jan 07 23:40:41.534694 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:40:41.534726 2016] [:error] [pid 31011:tid 140602078951168] bytes 2097152-2558694/2558695
+[Thu Jan 07 23:40:41.535587 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:40:41.535602 2016] [:error] [pid 31011:tid 140602078951168] 2558695
+[Thu Jan 07 23:40:41.778925 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:40:41.812811 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:40:41.812843 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:40:41.812894 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:40:41.812932 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg']
+[Thu Jan 07 23:40:43.072873 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Thu Jan 07 23:40:43.072903 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/2796117
+[Thu Jan 07 23:40:43.074864 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Thu Jan 07 23:40:43.074883 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Thu Jan 07 23:40:44.222270 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Thu Jan 07 23:40:44.222300 2016] [:error] [pid 31011:tid 140602078951168] bytes 1048576-2097151/2796117
+[Thu Jan 07 23:40:44.223853 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Thu Jan 07 23:40:44.223872 2016] [:error] [pid 31011:tid 140602078951168] 2097152
+[Thu Jan 07 23:40:44.834767 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Thu Jan 07 23:40:44.834798 2016] [:error] [pid 31030:tid 140602003416832] bytes 2097152-2796116/2796117
+[Thu Jan 07 23:40:44.835890 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Thu Jan 07 23:40:44.835906 2016] [:error] [pid 31030:tid 140602003416832] 2796117
+[Thu Jan 07 23:40:45.077731 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:40:45.156203 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Thu Jan 07 23:40:45.156228 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:40:45.156280 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Thu Jan 07 23:40:45.156295 2016] [:error] [pid 31011:tid 140602078951168] [u'006.jpg', u'009.jpg']
+[Thu Jan 07 23:40:45.697379 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:40:45.697409 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 23:40:45.698668 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:40:45.698685 2016] [:error] [pid 31030:tid 140602078951168] 845941
+[Thu Jan 07 23:40:45.927266 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:40:45.945761 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Thu Jan 07 23:40:45.945792 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:40:45.945849 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Thu Jan 07 23:40:45.945866 2016] [:error] [pid 31011:tid 140602003416832] [u'006.jpg', u'009.jpg', u'Desert.jpg']
+[Thu Jan 07 23:42:27.943839 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Thu Jan 07 23:42:27.943870 2016] [:error] [pid 31030:tid 140602078951168] 
+[Thu Jan 07 23:42:27.944876 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Thu Jan 07 23:42:27.944892 2016] [:error] [pid 31030:tid 140602078951168] 595284
+[Thu Jan 07 23:42:28.165805 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip5/746f2e80-b576-11e5-9302-0018f3d01293/content/
+[Thu Jan 07 23:42:28.185461 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Thu Jan 07 23:42:28.185487 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:42:28.185543 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Thu Jan 07 23:42:28.185559 2016] [:error] [pid 31030:tid 140602003416832] [u'006.jpg', u'009.jpg', u'Desert.jpg', u'Hydrangeas.jpg']
+[Thu Jan 07 23:45:37.328071 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Thu Jan 07 23:45:37.328100 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Thu Jan 07 23:45:37.328156 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Thu Jan 07 23:45:37.328172 2016] [:error] [pid 31030:tid 140602078951168] [u'006.jpg', u'009.jpg', u'Desert.jpg', u'Hydrangeas.jpg']
+[Fri Jan 08 07:37:13.760323 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Fri Jan 08 07:37:13.760364 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 07:37:13.760438 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Fri Jan 08 07:37:13.760454 2016] [:error] [pid 31011:tid 140602078951168] []
+[Fri Jan 08 07:37:22.043442 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 07:37:22.043470 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 07:37:22.043509 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 07:37:22.043521 2016] [:error] [pid 31011:tid 140602003416832] []
+[Fri Jan 08 07:37:33.634753 2016] [:error] [pid 31011:tid 140602078951168] thisip directory
+[Fri Jan 08 07:37:33.634790 2016] [:error] [pid 31011:tid 140602078951168] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 07:37:33.634829 2016] [:error] [pid 31011:tid 140602078951168] listofcontent
+[Fri Jan 08 07:37:33.634841 2016] [:error] [pid 31011:tid 140602078951168] []
+[Fri Jan 08 07:37:45.712266 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Fri Jan 08 07:37:45.712296 2016] [:error] [pid 31030:tid 140602003416832] bytes 0-1048575/1527505
+[Fri Jan 08 07:37:45.714305 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Fri Jan 08 07:37:45.714324 2016] [:error] [pid 31030:tid 140602003416832] 1048576
+[Fri Jan 08 07:37:47.499229 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Fri Jan 08 07:37:47.499260 2016] [:error] [pid 31011:tid 140602003416832] bytes 1048576-1527504/1527505
+[Fri Jan 08 07:37:47.500305 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Fri Jan 08 07:37:47.500321 2016] [:error] [pid 31011:tid 140602003416832] 1527505
+[Fri Jan 08 07:37:48.394741 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip4/35346ea4-b5d2-11e5-9b9e-0018f3d01293/content/
+[Fri Jan 08 07:37:48.410380 2016] [:error] [pid 31011:tid 140602078951168] content_range
+[Fri Jan 08 07:37:48.410413 2016] [:error] [pid 31011:tid 140602078951168] 
+[Fri Jan 08 07:37:48.410673 2016] [:error] [pid 31011:tid 140602078951168] offset
+[Fri Jan 08 07:37:48.410685 2016] [:error] [pid 31011:tid 140602078951168] 21
+[Fri Jan 08 07:37:48.538434 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 07:37:48.538457 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 07:37:48.538509 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 07:37:48.538523 2016] [:error] [pid 31011:tid 140602003416832] [u'ESSArch_Description_en.pdf']
+[Fri Jan 08 07:37:48.677690 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip4/35346ea4-b5d2-11e5-9b9e-0018f3d01293/content/
+[Fri Jan 08 07:37:48.694497 2016] [:error] [pid 31011:tid 140602011809536] thisip directory
+[Fri Jan 08 07:37:48.694527 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 07:37:48.694587 2016] [:error] [pid 31011:tid 140602011809536] listofcontent
+[Fri Jan 08 07:37:48.694603 2016] [:error] [pid 31011:tid 140602011809536] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Fri Jan 08 07:38:03.254377 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Fri Jan 08 07:38:03.254417 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip6
+[Fri Jan 08 07:38:03.254461 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Fri Jan 08 07:38:03.254473 2016] [:error] [pid 31030:tid 140602003416832] []
+[Fri Jan 08 07:38:08.339579 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Fri Jan 08 07:38:08.339618 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip6
+[Fri Jan 08 07:38:08.339657 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Fri Jan 08 07:38:08.339669 2016] [:error] [pid 31030:tid 140602078951168] []
+[Fri Jan 08 07:38:15.863213 2016] [:error] [pid 31011:tid 140602003416832] content_range
+[Fri Jan 08 07:38:15.863243 2016] [:error] [pid 31011:tid 140602003416832] bytes 0-1048575/1527505
+[Fri Jan 08 07:38:15.865243 2016] [:error] [pid 31011:tid 140602003416832] offset
+[Fri Jan 08 07:38:15.865263 2016] [:error] [pid 31011:tid 140602003416832] 1048576
+[Fri Jan 08 07:38:16.067687 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Fri Jan 08 07:38:16.067718 2016] [:error] [pid 31030:tid 140602003416832] bytes 1048576-1527504/1527505
+[Fri Jan 08 07:38:16.068771 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Fri Jan 08 07:38:16.068786 2016] [:error] [pid 31030:tid 140602003416832] 1527505
+[Fri Jan 08 07:38:16.326087 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip6/3a1c0f44-b5d2-11e5-9b9e-0018f3d01293/content/
+[Fri Jan 08 07:38:16.338904 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 07:38:16.338924 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip6
+[Fri Jan 08 07:38:16.338970 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 07:38:16.338985 2016] [:error] [pid 31011:tid 140602003416832] [u'ESSArch_Description_en.pdf']
+[Fri Jan 08 07:38:16.341645 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Fri Jan 08 07:38:16.341664 2016] [:error] [pid 31030:tid 140602078951168] 
+[Fri Jan 08 07:38:16.341921 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Fri Jan 08 07:38:16.341933 2016] [:error] [pid 31030:tid 140602078951168] 21
+[Fri Jan 08 07:38:16.584258 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip6/3a1c0f44-b5d2-11e5-9b9e-0018f3d01293/content/
+[Fri Jan 08 07:38:16.596461 2016] [:error] [pid 31011:tid 140602011809536] thisip directory
+[Fri Jan 08 07:38:16.596492 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip6
+[Fri Jan 08 07:38:16.596547 2016] [:error] [pid 31011:tid 140602011809536] listofcontent
+[Fri Jan 08 07:38:16.596563 2016] [:error] [pid 31011:tid 140602011809536] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Fri Jan 08 07:38:32.232088 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Fri Jan 08 07:38:32.232128 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip6
+[Fri Jan 08 07:38:32.232181 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Fri Jan 08 07:38:32.232197 2016] [:error] [pid 31030:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Fri Jan 08 07:40:53.687410 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 07:40:53.687445 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip7
+[Fri Jan 08 07:40:53.687499 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 07:40:53.687512 2016] [:error] [pid 31011:tid 140602003416832] []
+[Fri Jan 08 07:57:03.429437 2016] [:error] [pid 31011:tid 140602011809536] thisip directory
+[Fri Jan 08 07:57:03.429461 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip5
+[Fri Jan 08 07:57:03.429490 2016] [:error] [pid 31011:tid 140602011809536] listofcontent
+[Fri Jan 08 07:57:03.429498 2016] [:error] [pid 31011:tid 140602011809536] []
+[Fri Jan 08 08:07:26.788477 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 08:07:26.788508 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip5
+[Fri Jan 08 08:07:26.788547 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 08:07:26.788559 2016] [:error] [pid 31011:tid 140602003416832] []
+[Fri Jan 08 08:12:56.626305 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Fri Jan 08 08:12:56.626341 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip5
+[Fri Jan 08 08:12:56.626386 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Fri Jan 08 08:12:56.626401 2016] [:error] [pid 31030:tid 140602078951168] []
+[Fri Jan 08 08:40:08.124806 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 08:40:08.124837 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 08:40:08.124888 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 08:40:08.124904 2016] [:error] [pid 31011:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Fri Jan 08 08:40:17.787430 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Fri Jan 08 08:40:17.787457 2016] [:error] [pid 31030:tid 140602003416832] 
+[Fri Jan 08 08:40:17.787711 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Fri Jan 08 08:40:17.787723 2016] [:error] [pid 31030:tid 140602003416832] 123
+[Fri Jan 08 08:40:18.051368 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip4/35346ea4-b5d2-11e5-9b9e-0018f3d01293/content/
+[Fri Jan 08 08:40:18.084262 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Fri Jan 08 08:40:18.084286 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip4
+[Fri Jan 08 08:40:18.084343 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Fri Jan 08 08:40:18.084360 2016] [:error] [pid 31030:tid 140602078951168] [u'ESSArch_Description_en.pdf', u'Interesting Archive File.txt', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
+[Fri Jan 08 08:40:24.751186 2016] [:error] [pid 31030:tid 140602003416832] thisip directory
+[Fri Jan 08 08:40:24.751223 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip7
+[Fri Jan 08 08:40:24.751263 2016] [:error] [pid 31030:tid 140602003416832] listofcontent
+[Fri Jan 08 08:40:24.751274 2016] [:error] [pid 31030:tid 140602003416832] []
+[Fri Jan 08 08:40:33.802594 2016] [:error] [pid 31011:tid 140602011809536] content_range
+[Fri Jan 08 08:40:33.802622 2016] [:error] [pid 31011:tid 140602011809536] bytes 0-1048575/1527505
+[Fri Jan 08 08:40:33.804574 2016] [:error] [pid 31011:tid 140602011809536] offset
+[Fri Jan 08 08:40:33.804593 2016] [:error] [pid 31011:tid 140602011809536] 1048576
+[Fri Jan 08 08:40:33.990939 2016] [:error] [pid 31030:tid 140602078951168] content_range
+[Fri Jan 08 08:40:33.990969 2016] [:error] [pid 31030:tid 140602078951168] bytes 1048576-1527504/1527505
+[Fri Jan 08 08:40:33.991825 2016] [:error] [pid 31030:tid 140602078951168] offset
+[Fri Jan 08 08:40:33.991841 2016] [:error] [pid 31030:tid 140602078951168] 1527505
+[Fri Jan 08 08:40:34.277738 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip7/3f0e7866-b5d2-11e5-8c7e-0018f3d01293/content/
+[Fri Jan 08 08:40:34.283479 2016] [:error] [pid 31030:tid 140602003416832] content_range
+[Fri Jan 08 08:40:34.283506 2016] [:error] [pid 31030:tid 140602003416832] 
+[Fri Jan 08 08:40:34.283759 2016] [:error] [pid 31030:tid 140602003416832] offset
+[Fri Jan 08 08:40:34.283771 2016] [:error] [pid 31030:tid 140602003416832] 123
+[Fri Jan 08 08:40:34.579690 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip7/3f0e7866-b5d2-11e5-8c7e-0018f3d01293/content/
+[Fri Jan 08 08:40:34.589687 2016] [:error] [pid 31011:tid 140602003416832] thisip directory
+[Fri Jan 08 08:40:34.589718 2016] [:error] [pid 31011:tid 140602003416832] /ESSArch/data/etp/prepare/ip7
+[Fri Jan 08 08:40:34.589773 2016] [:error] [pid 31011:tid 140602003416832] listofcontent
+[Fri Jan 08 08:40:34.589790 2016] [:error] [pid 31011:tid 140602003416832] [u'ESSArch_Description_en.pdf', u'Interesting Archive File.txt']
+[Fri Jan 08 08:40:34.596099 2016] [:error] [pid 31030:tid 140602011809536] content_range
+[Fri Jan 08 08:40:34.596120 2016] [:error] [pid 31030:tid 140602011809536] 
+[Fri Jan 08 08:40:34.596367 2016] [:error] [pid 31030:tid 140602011809536] offset
+[Fri Jan 08 08:40:34.596387 2016] [:error] [pid 31030:tid 140602011809536] 21
+[Fri Jan 08 08:40:34.717948 2016] [:error] [pid 31030:tid 140602078951168] thisip directory
+[Fri Jan 08 08:40:34.717969 2016] [:error] [pid 31030:tid 140602078951168] /ESSArch/data/etp/prepare/ip7
+[Fri Jan 08 08:40:34.718017 2016] [:error] [pid 31030:tid 140602078951168] listofcontent
+[Fri Jan 08 08:40:34.718033 2016] [:error] [pid 31030:tid 140602078951168] [u'ESSArch_Description_en.pdf', u'Interesting Archive File.txt']
+[Fri Jan 08 08:40:34.845926 2016] [:error] [pid 31030:tid 140602003416832] /ESSArch/data/etp/prepare/ip7/3f0e7866-b5d2-11e5-8c7e-0018f3d01293/content/
+[Fri Jan 08 08:40:34.852696 2016] [:error] [pid 31011:tid 140602011809536] thisip directory
+[Fri Jan 08 08:40:34.852718 2016] [:error] [pid 31011:tid 140602011809536] /ESSArch/data/etp/prepare/ip7
+[Fri Jan 08 08:40:34.852772 2016] [:error] [pid 31011:tid 140602011809536] listofcontent
+[Fri Jan 08 08:40:34.852790 2016] [:error] [pid 31011:tid 140602011809536] [u'ESSArch_Description_en.pdf', u'Interesting Archive File.txt', u'test_\\xe5\\xe4\\xf6\\xc5\\xc4\\xd6 \\xa7.txt']
