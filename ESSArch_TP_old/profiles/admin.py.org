@@ -1,0 +1,72 @@
+#!/usr/bin/env /ESSArch/python27/bin/python
+# -*- coding: UTF-8 -*-
+'''
+    ESSArch Tools - ESSArch is an Electronic Preservation Platform
+    Copyright (C) 2005-2013  ES Solutions AB
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Contact information:
+    Web - http://www.essolutions.se
+    Email - essarch@essolutions.se
+'''
+
+from profiles.models import AgentProfile, TransferProjectProfile, ImportProfile, DataSelectionProfile, ClassificationProfile
+from django.contrib import admin
+
+# Agent Profiles
+class AgentProfileAdmin( admin.ModelAdmin ):
+    list_display = ( 'entity', 'value' )
+    search_fields = ( 'entity', )
+    readonly_fields = ('entity',)
+    fields = ('entity', 'value')
+
+admin.site.register(AgentProfile, AgentProfileAdmin)
+
+# Transfer Project Profiles
+class TransferProjectProfileAdmin( admin.ModelAdmin ):
+    list_display = ( 'entity', 'value' )
+    search_fields = ( 'entity', )
+    readonly_fields = ('entity',)
+    fields = ('entity', 'value')
+
+admin.site.register(TransferProjectProfile, TransferProjectProfileAdmin)
+
+# Import Profiles
+class ImportProfileAdmin( admin.ModelAdmin ):
+    list_display = ( 'entity', 'value' )
+    search_fields = ( 'entity', )
+    readonly_fields = ('entity',)
+    fields = ('entity', 'value')
+
+admin.site.register(ImportProfile, ImportProfileAdmin)
+
+# Data Selection Profiles
+class DataSelectionProfileAdmin( admin.ModelAdmin ):
+    list_display = ( 'entity', 'value' )
+    search_fields = ( 'entity', )
+    readonly_fields = ('entity',)
+    fields = ('entity', 'value')
+
+admin.site.register(DataSelectionProfile, DataSelectionProfileAdmin)
+
+# Classification Profiles
+class ClassificationProfileAdmin( admin.ModelAdmin ):
+    list_display = ( 'entity', 'value' )
+    search_fields = ( 'entity', )
+    readonly_fields = ('entity',)
+    fields = ('entity', 'value')
+
+admin.site.register(ClassificationProfile, ClassificationProfileAdmin)
+

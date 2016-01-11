@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block breadcrumbs %} 
+
+{% endblock %} 
+ 
+{% block content %} 
+
+  <div style="margin:20px;">
+
+  <H1>View log and add logevents</H1>
+  <br/>
+    
+    <div class="results">
+      <table id="result_list" >
+	    <thead>
+	  		<tr>
+	    		<th scope="col" >Archivist organization</th>
+	    		<th scope="col" >Label</th>
+	    		<th scope="col" >Create date</th>
+	    		{#<th scope="col" >Start date</th>#}
+	    		{#<th scope="col" >End date</th>#}
+	    		<th scope="col" >IP type</th>
+	    		<th scope="col" >IP location</th>
+	    		<th scope="col" >IP (UUID)</th>
+	    		<th scope="col" >IP state</th>
+	    	</tr>
+		</thead>
+		<tbody>
+	  
+	  	{% if log_list %}
+  	    	{% for log in log_list %}
+	      		<tr class="row{% cycle '1' '2' %}">
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.archivist_organization }}</a></td>
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.label }}</a></td>
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.createdate }}</a></td>
+					{#<td><a href="/logevents/view/{{ log.link }}">{{ log.startdate }}</a></td>#}
+					{#<td><a href="/logevents/view/{{ log.link }}">{{ log.enddate }}</a></td>#}
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.iptype }}</a></td>
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.iplocation }}</a></td>
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.uuid    }}</a></td>
+					<td><a href="/logevents/view/{{ log.link }}">{{ log.state }}</a></td>
+	      		</tr>
+	    	{% endfor %}
+	  	{% endif %}
+
+	</tbody>
+   </table>
+  </div>
+ </div>
+  
+<div id="msg">
+<span style="color: red;" >{{ message }}</span>
+</div>
+
+{% endblock %} 
