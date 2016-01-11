@@ -582,5 +582,12 @@ def installIPParameter(request):  # default metadata for IP
     #IPMetadata.objects.filter(id=1).update(**dct1)  # update from dictionary
 
     return HttpResponseRedirect( '/admin/configuration' )
-
+    
+  
+@login_required
+def about(request):
+    # Get current site_profile and zone
+    t = loader.get_template('admin/about.html')
+    c = RequestContext(request)
+    return HttpResponse(t.render(c))
 
