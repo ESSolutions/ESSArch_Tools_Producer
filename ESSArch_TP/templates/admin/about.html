@@ -7,14 +7,15 @@
 {% endblock %} 
 
 {% block content %} 
+<div class="col-md-6">
+<h2>ESSArch Tools Producer - Version Information</h2>
 
-<b>Installed python packages</b>
+<strong>Installed python packages</strong>
 <br>
 <br>
-<table id="packagestable" class="table table-condensed" style="width:auto">
-<tr><th>Package</th><th>Version</th></tr>
-</table>
-
+<div id="packagesdiv" >
+</div>
+</div>
 {% endblock %} 
 
 {% block app-extra-script %}
@@ -37,11 +38,11 @@ function(){
         
         for(i=0; i< installedpackages.length; i++){
 
-            packageshtml = packageshtml  + "<tr><td>" + installedpackages[i][0] +"</td><td>" + installedpackages[i][1] + "</td><//tr>";
+            packageshtml = packageshtml  + installedpackages[i][0] + "==" + installedpackages[i][1] + " ";
             
         }
         
-        $("#packagestable tbody").append(packageshtml);
+        $("#packagesdiv").html(packageshtml);
     });
     
 }
