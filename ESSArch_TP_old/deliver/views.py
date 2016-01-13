@@ -42,6 +42,7 @@ from configuration.models import Path, Parameter, SchemaProfile
 from ip.models import InformationPackage
 import lib.utils as lu
 import lib.app_tools as lat
+from esscore.rest import uploadchunkedrestclient
 
 
 @login_required
