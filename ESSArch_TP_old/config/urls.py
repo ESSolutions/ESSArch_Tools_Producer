@@ -80,8 +80,8 @@ urlpatterns = patterns('',
     #url(r'^create_upload_complete/?$', CreateTmpWorkareaUploadCompleteView.as_view(), name='chunked_upload_complete'),
     url(r'^directoryinfo/(?P<ipid>[^&]*)$', IPcontentasJSON.as_view(), name='directoryinfo'), 
     url(r'^etp_upload/?$', ETPUploadView.as_view(), name='etp_chunked_upload'),
-    url(r'^etp_upload_complete/?$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'), 
-    url(r'^etp_upload_complete/(?P<ipid>[^&]*)$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'), 
+    #url(r'^etp_upload_complete/?$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'), 
+    url(r'^etp_upload_complete/(?P<ipid>[^&]*)$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'),
     #url(r'^create/view/(?P<uuid>[^//]+)/(?P<creator>[^//]+)/(?P<label>[^//]+)/(?P<startdate>[^//]+)/(?P<enddate>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)/(?P<state>[^//]+)$', 'create.views.viewIPs'),
         
     # Deliver IP URLS:
