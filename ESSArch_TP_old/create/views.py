@@ -38,7 +38,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 #file upload
 from chunked_upload.views import ChunkedUploadView, ChunkedUploadCompleteView
-#from models import TmpWorkarea_storage, TmpWorkareaUpload, ETPChunkedUpload
 # import the logging library and get an instance of a logger
 import logging
 logger = logging.getLogger('code.exceptions')
@@ -55,14 +54,14 @@ from django.core.files.storage import FileSystemStorage
 
 from chunked_upload.settings import MAX_BYTES
 #from chunked_upload.views import ChunkedUploadBaseView
-from chunked_upload.models import ChunkedUpload
+#from chunked_upload.models import ChunkedUpload
 from chunked_upload.response import Response
 from chunked_upload.constants import http_status, COMPLETE
 from chunked_upload.exceptions import ChunkedUploadError
 
 
 from config.settings import MEDIA_ROOT
-from models import ETPupload
+from models import ETAupload
 
 # from ESSArch Tools
 from ip.models import InformationPackage
