@@ -61,7 +61,7 @@ from chunked_upload.exceptions import ChunkedUploadError
 
 
 from config.settings import MEDIA_ROOT
-from models import ETAupload
+#from models import ETPupload
 
 # from ESSArch Tools
 from ip.models import InformationPackage
