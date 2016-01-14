@@ -141,7 +141,9 @@ def deliverip(request, id):
             dir_src = ip.directory
             #dir_dst = delivery_root+'/'
             uploadlink = '192.168.0.72:5503/eta_upload/'
-            uploadclient = UploadChunkedRestClient(self.requests_session,uploadlink,self._custom_progress_reporter)
+            requests_session = requests.Session()
+            
+            uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
             
             for file in os.listdir(dir_src):
                 
