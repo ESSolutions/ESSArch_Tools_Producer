@@ -137,6 +137,7 @@ def deliverip(request, id):
             # move ip from source to destination
             dir_src = ip.directory
             dir_dst = delivery_root+'/'
+            fileUploader = uploadchunkedrestclient()
             for file in os.listdir(dir_src):
                 src_file = os.path.join(dir_src, file)
                 dst_file = os.path.join(dir_dst, file)
