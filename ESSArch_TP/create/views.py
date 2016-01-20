@@ -38,7 +38,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 #file upload
 from chunked_upload.views import ChunkedUploadView, ChunkedUploadCompleteView
-#from models import TmpWorkarea_storage, TmpWorkareaUpload, ETPChunkedUpload
 # import the logging library and get an instance of a logger
 import logging
 logger = logging.getLogger('code.exceptions')

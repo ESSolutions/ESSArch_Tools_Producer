@@ -42,7 +42,10 @@ from configuration.models import Path, Parameter, SchemaProfile
 from ip.models import InformationPackage
 import lib.utils as lu
 import lib.app_tools as lat
-
+from esscore.rest.uploadchunkedrestclient import UploadChunkedRestClient, UploadChunkedRestException
+import requests
+from urlparse import urljoin
+import jsonpickle
 
 @login_required
 def index(request):
@@ -125,22 +128,30 @@ def deliverip(request, id):
             
             
             
-            
+            '''
             # Create a new information package folder ready for deliver
             i = 1
             while os.path.exists( os.path.join( destination, "ip%d"%i ) ):
                 i+=1
             delivery_root = os.path.join( destination, "ip%d"%i )
             os.makedirs( delivery_root )
+            '''
                         
             # move ip from source to destination
             dir_src = ip.directory
-            dir_dst = delivery_root+'/'
+            #dir_dst = delivery_root+'/'
+            uploadlink = 'http://192.168.0.72:5503/eta_upload/'
+            requests_session = requests.Session()
+            
+            uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
+            
             for file in os.listdir(dir_src):
+                
                 src_file = os.path.join(dir_src, file)
-                dst_file = os.path.join(dir_dst, file)
+                uploadclient.upload(src_file)
+                #dst_file = os.path.join(dir_dst, file)
                 #shutil.move(src_file, dst_file)
-                shutil.copy(src_file, dst_file)
+                #shutil.copy(src_file, dst_file)
             logger.info('Successfully delivered package IP %s to destination %s', ip.label, delivery_root)
             
             # remove source directory
