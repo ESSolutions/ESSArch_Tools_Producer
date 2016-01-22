@@ -46,6 +46,7 @@ from esscore.rest.uploadchunkedrestclient import UploadChunkedRestClient, Upload
 import requests
 from urlparse import urljoin
 import jsonpickle
+from requests.auth import HTTPBasicAuth
 
 @login_required
 def index(request):
@@ -140,8 +141,13 @@ def deliverip(request, id):
             # move ip from source to destination
             dir_src = ip.directory
             #dir_dst = delivery_root+'/'
-            uploadlink = 'http://192.168.0.72:5503/eta_upload/'
+            uploadlink = 'https://77.110.60.208:50445//eta_upload/'
+            ruser ='usr2'
+            rpass = 'usr2'
             requests_session = requests.Session()
+            requests_session.verify = False
+            #requests_session.auth = (ruser, rpass)
+            #requests_session.post(uploadlink,headers={'Content-Type': 'application/json'},data='{"somefile":"somefile''}')
             
             uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
             
