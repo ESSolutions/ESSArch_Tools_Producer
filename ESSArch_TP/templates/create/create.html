@@ -127,7 +127,7 @@ function refreshjstree(ipidinfo){
         form_data = [{"name": "csrfmiddlewaretoken", "value": csrf}];
     
     $("#chunked_upload").fileupload({
-      url: "{% url 'etp_chunked_upload' %}",
+      url: '/etp_upload/',
       dataType: "json",
       //maxChunkSize: 100000, // Chunks of 100 kB
       maxChunkSize: 1048576, // Chunks of 1 MB
@@ -158,7 +158,7 @@ function refreshjstree(ipidinfo){
             
                    $.ajax({
           type: "POST",
-          url: "{% url 'etp_chunked_upload_complete' %}" + '/' + {{ip.id}},
+          url: '/etp_upload_complete/' + {{ip.id}},
           data: {
             csrfmiddlewaretoken: csrf,
             upload_id: data.result.upload_id,
@@ -195,7 +195,7 @@ function refreshjstree(ipidinfo){
          
         $.ajax({
           type: "POST",
-          url: "{% url 'etp_chunked_upload_complete' %}" + '/' + {{ip.id}},
+          url:  '/etp_upload_complete/' + {{ip.id}},
           data: {
             csrfmiddlewaretoken: csrf,
             upload_id: data.result.upload_id,

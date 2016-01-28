@@ -44,6 +44,7 @@ import lib.utils as lu
 import lib.app_tools as lat
 from esscore.rest.uploadchunkedrestclient import UploadChunkedRestClient, UploadChunkedRestException
 import requests
+import  requests.packages
 from urlparse import urljoin
 import jsonpickle
 from requests.auth import HTTPBasicAuth
@@ -92,6 +93,51 @@ def deliverip(request, id):
             contextdata = form.cleaned_data
             #destination = contextdata['destination']
 
+            '''
+            # Create a new information package folder ready for deliver
+            i = 1
+            while os.path.exists( os.path.join( destination, "ip%d"%i ) ):
+                i+=1
+            delivery_root = os.path.join( destination, "ip%d"%i )
+            os.makedirs( delivery_root )
+            '''
+                        
+            # move ip from source to destination
+            dir_src = ip.directory
+            #dir_dst = delivery_root+'/'
+            uploadlink = 'https://77.110.60.208:50445/eta_upload'
+            #uploadlink = 'https://77.110.60.208:50443/api/create_tmpworkarea_upload'
+            ruser ='usr2'
+            rpass = 'usr2'
+            #ruser ='user'
+            #rpass = 'user'
+            progresspercent = 0                     
+            requests_session =  _initialize_requests_session(ruser, rpass, cert_verify=False, disable_warnings=True)
+            reporter = _custom_progress_reporter(progresspercent)
+
+            #requests_session.post(uploadlink,headers={'Content-Type': 'application/json'},data='{"somefile":"somefile''}')
+            
+            uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
+            
+            for file in os.listdir(dir_src):
+                
+                src_file = os.path.join(dir_src, file)
+                uploadclient.upload(src_file)
+
+                #dst_file = os.path.join(dir_dst, file)
+                #shutil.move(src_file, dst_file)
+                #shutil.copy(src_file, dst_file)
+            logger.info('Successfully delivered package IP %s to destination', ip.label )
+            
+            # remove source directory
+            #shutil.rmtree(ip.directory)
+
+            # mark IP as delivered
+            ip.state = "Delivered"
+            #ip.directory = delivery_root 
+            ip.progress = 100
+            ip.save()
+
             # email parameters
             email_subject = contextdata['email_subject']
             email_body = contextdata['email_body']
@@ -126,49 +172,7 @@ def deliverip(request, id):
             #        break
             #    conn.send(chunk)
             #resp = conn.getresponse()
-            
-            
-            
-            '''
-            # Create a new information package folder ready for deliver
-            i = 1
-            while os.path.exists( os.path.join( destination, "ip%d"%i ) ):
-                i+=1
-            delivery_root = os.path.join( destination, "ip%d"%i )
-            os.makedirs( delivery_root )
-            '''
-                        
-            # move ip from source to destination
-            dir_src = ip.directory
-            #dir_dst = delivery_root+'/'
-            uploadlink = 'https://77.110.60.208:50445//eta_upload/'
-            ruser ='usr2'
-            rpass = 'usr2'
-            requests_session = requests.Session()
-            requests_session.verify = False
-            #requests_session.auth = (ruser, rpass)
-            #requests_session.post(uploadlink,headers={'Content-Type': 'application/json'},data='{"somefile":"somefile''}')
-            
-            uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
-            
-            for file in os.listdir(dir_src):
-                
-                src_file = os.path.join(dir_src, file)
-                uploadclient.upload(src_file)
-                #dst_file = os.path.join(dir_dst, file)
-                #shutil.move(src_file, dst_file)
-                #shutil.copy(src_file, dst_file)
-            logger.info('Successfully delivered package IP %s to destination %s', ip.label, delivery_root)
-            
-            # remove source directory
-            #shutil.rmtree(ip.directory)
-
-            # mark IP as delivered
-            ip.state = "Delivered"
-            ip.directory = delivery_root 
-            ip.progress = 100
-            ip.save()
-        
+                    
             return HttpResponseRedirect( '/deliver' )
         else:
             logger.error('Form DeliverForm is not valid.')
@@ -199,6 +203,19 @@ def deliverip(request, id):
     return render_to_response('deliver/deliver.html', c, context_instance=RequestContext(request) )
 
 
+def _initialize_requests_session(ruser, rpass, cert_verify=True, disable_warnings=False):
+    if disable_warnings == True:
+        from requests.packages.urllib3.exceptions import InsecureRequestWarning, InsecurePlatformWarning
+        requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    requests_session = requests.Session()
+    requests_session.verify = cert_verify
+    requests_session.auth = (ruser, rpass)
+    return requests_session
+
+
+def _custom_progress_reporter(percent):
+    logger.info('\rUpload file: progress:%s percent' % (percent))
 
 @login_required
 def sendfile(request, filename):
