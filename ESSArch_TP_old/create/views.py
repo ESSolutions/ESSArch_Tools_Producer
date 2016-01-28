@@ -235,6 +235,7 @@ class IPcontentasJSON(View):
         listofcontent.sort()
         print 'listofcontent'
         print listofcontent
+        print listofcontent[0]
 
         return listofcontent
 

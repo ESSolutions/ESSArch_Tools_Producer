@@ -130,7 +130,7 @@ def createdefaultusers(): # default users, groups and permissions
     try:
         myuser = User.objects.get(username='admin')
     except User.DoesNotExist:
-        myuser = User.objects.create_user('admin', '', 'admin')
+        myuser = User.objects.create_user('admin', 'admin@essolutions.se', 'admin')
         myuser.is_staff = 1
         myuser.is_superuser = 1
         myuser.save()
@@ -139,7 +139,7 @@ def createdefaultusers(): # default users, groups and permissions
     try:
         myuser = User.objects.get(username='usr1')
     except User.DoesNotExist:
-        myuser = User.objects.create_user('usr1', 'usr1@ETP', 'usr1')
+        myuser = User.objects.create_user('usr1', 'usr1@essolutions.se', 'usr1')
     mygroup, created = Group.objects.get_or_create(name='Zone1')
     myuser.groups.add(mygroup)
     mygroup.permissions.clear()
