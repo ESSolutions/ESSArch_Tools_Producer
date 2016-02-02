@@ -39,11 +39,25 @@ from django.core.serializers.json import DjangoJSONEncoder
 import sys, logging
 import pip
 import jsonpickle
-
+from config import settings
 # own models etc
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
 import lib.utils as lu
 import lib.app_tools as lat
+
+try:
+    import ESSArch_TP as etp
+except ImportError:
+    __version__ = '0.92'
+    __shortname__ = 'ETP'
+    __description__ = 'ESSArch Tools Producer'
+else:
+    __version__ = etp.__version__ 
+    __shortname__ = etp.__shortname__
+    __description__ = etp.__description__
+
+
+
 
 @login_required
 def index(request):
@@ -622,3 +636,74 @@ class installedpackages(View):
         
         return self.json_response(request)
 
+def sysinfo(request):
+    """
+    Build page providing information about the state of the system.
+    """
+    
+    from subprocess import Popen, PIPE
+
+    # Shell commands: Name and command
+    SHELL_COMMANDS = [
+        ('hostname', 'hostname'),
+        #('gitversion', 'git log -n 1'),
+        ('sqlite_version', 'sqlite3 -version'),
+        ('python_packages', 'pip freeze'),
+    ]
+
+    # Flags in settings: Their expected  and actual values.
+    SETTINGS_FLAGS = [
+        ('DEBUG', False),
+        ('LANGUAGE_CODE', None),
+        ('TIME_ZONE', None),
+    ]
+
+    def run_shell_command(command, cwd):
+        """
+        Run command in shell and return results.
+        """
+        p = Popen(command, shell=True, cwd=cwd, stdout=PIPE)
+        stdout = p.communicate()[0]
+        if stdout:
+            stdout = stdout.strip()
+        return stdout
+
+    context = {}
+
+    # Versions
+    cwd = settings.SITE_ROOT
+    for name, shell_command in SHELL_COMMANDS:
+        context[name] = run_shell_command(shell_command, cwd)
+    
+    context['essarch_info'] = '%s (%s) %s' % (__shortname__, __description__, __version__)
+    print 'essarch info'
+    print context['essarch_info']
+    # Settings Flags
+    context['settings_flags'] = []
+    for name, expected in SETTINGS_FLAGS:
+        actual_setting = getattr(settings, name, None)
+        if not expected is None: 
+            unexpected = expected != actual_setting
+        else:
+            unexpected = False
+        context['settings_flags'].append({
+            'name': name, 
+            'unexpected': unexpected,
+            'actual': actual_setting
+        })
+
+    #context['error_msgs'] = Log.objects.filter(level='ERROR')[:2]
+    #context['warning_msgs'] = Log.objects.filter(level='WARNING')[:2]
+    #context['info_msgs'] = Log.objects.filter(level='INFO')[:2]
+    #context['process'] = ESSProc.objects.all()
+    #context['proc_alarm'] = MonitoringObject.objects.filter(alarm=1) 
+    #context['time_checked'] = timezone.now()
+    return render_to_response('admin/sysinfo.html',
+                              context,
+                              RequestContext(request))
+    '''
+        # Get current site_profile and zone
+    t = loader.get_template('admin/sysinfo.html')
+    c = RequestContext(request)
+    return HttpResponse(t.render(c))
+    '''

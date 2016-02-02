@@ -195,7 +195,9 @@ function refreshjstree(ipidinfo){
          
         $.ajax({
           type: "POST",
+
           url:  '/etp_upload_complete/' + {{ip.id}},
+
           data: {
             csrfmiddlewaretoken: csrf,
             upload_id: data.result.upload_id,
