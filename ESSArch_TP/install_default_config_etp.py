@@ -63,7 +63,8 @@ def installdefaultparameters(): # default config parameters
              'preservation_descriptionfile':'premis.xml',
              'ip_logfile':'log.xml',
              'mimetypes_definition':'mime.types',
-             'preservation_organization_url':'www.essolutions.se',
+             'preservation_organization_url':'archive.xxx',
+             'preservation_organization_receiver':'reta',
              'preservation_email_receiver':'receiver@archive.xxx',
              }
 
@@ -77,7 +78,8 @@ def installdefaultparameters(): # default config parameters
               'preservation_descriptionfile':'premis.xml',
               'ip_logfile':'log.xml',
               'mimetypes_definition':'mime.types',
-              'preservation_organization_url':'www.essolutions.se',
+              'preservation_organization_url':'archive.xxx',
+              'preservation_organization_receiver':'reta',
               'preservation_email_receiver':'receiver@archive.xxx',
               }
 
