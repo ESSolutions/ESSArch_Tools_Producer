@@ -105,15 +105,18 @@ def deliverip(request, id):
             # move ip from source to destination
             dir_src = ip.directory
             #dir_dst = delivery_root+'/'
-            uploadlink = 'https://77.110.60.208:50445/eta_upload'
+            #uploadlink = 'https://77.110.60.208:50445/eta_upload'
+            uploadlink = Parameter.objects.get(entity='preservation_organization_url').value
             #uploadlink = 'https://77.110.60.208:50443/api/create_tmpworkarea_upload'
-            ruser ='usr2'
-            rpass = 'usr2'
+            #ruser ='usr2'
+            ruser = Parameter.objects.get(entity='preservation_organization_receiver').value
+            rpass = ruser
+            
             #ruser ='user'
             #rpass = 'user'
-            progresspercent = 0                     
+            #progresspercent = 0                     
             requests_session =  _initialize_requests_session(ruser, rpass, cert_verify=False, disable_warnings=True)
-            reporter = _custom_progress_reporter(progresspercent)
+            #reporter = _custom_progress_reporter(progresspercent)
 
             #requests_session.post(uploadlink,headers={'Content-Type': 'application/json'},data='{"somefile":"somefile''}')
             
@@ -213,9 +216,10 @@ def _initialize_requests_session(ruser, rpass, cert_verify=True, disable_warning
     requests_session.auth = (ruser, rpass)
     return requests_session
 
-
+'''
 def _custom_progress_reporter(percent):
     logger.info('\rUpload file: progress:%s percent' % (percent))
+'''
 
 @login_required
 def sendfile(request, filename):

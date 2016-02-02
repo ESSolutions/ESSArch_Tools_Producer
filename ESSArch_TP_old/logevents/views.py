@@ -43,6 +43,13 @@ from newlogeventform import NewLogEventForm, NewLogFileForm
 import lib.utils as lu
 import lib.app_tools as lat
 
+from esscore.rest.uploadchunkedrestclient import UploadChunkedRestClient, UploadChunkedRestException
+import requests
+import  requests.packages
+from urlparse import urljoin
+import jsonpickle
+
+
 
 @login_required
 def index(request):
@@ -307,3 +314,12 @@ def createlog(request):
         return render_to_response('logevents/create.html', c, context_instance=RequestContext(request) )
 
             
+def _initialize_requests_session(ruser, rpass, cert_verify=True, disable_warnings=False):
+    if disable_warnings == True:
+        from requests.packages.urllib3.exceptions import InsecureRequestWarning, InsecurePlatformWarning
+        requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    requests_session = requests.Session()
+    requests_session.verify = cert_verify
+    requests_session.auth = (ruser, rpass)
+    return requests_session
