@@ -125,7 +125,7 @@ def deliverip(request, id):
             for file in os.listdir(dir_src):
                 
                 src_file = os.path.join(dir_src, file)
-                uploadclient.upload(src_file)
+                uploadclient.upload(src_file, ip.uuid)
 
                 #dst_file = os.path.join(dir_dst, file)
                 #shutil.move(src_file, dst_file)
