@@ -56,7 +56,7 @@
 	          {#<li><a href="/prepare/new">Prepare IP</a></li>#}
 	          {#<li><a href="/create">Create IP</a></li>#}
 	          <li><a href="/create/view">Create IP</a></li>
-	      	  <li><a href="/deliver">Submit IP</a></li>
+	      	  <li><a href="/deliver">Deliver IP</a></li>
 		</ul>
     </li>
 	{% endif %}

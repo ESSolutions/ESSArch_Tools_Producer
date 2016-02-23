@@ -136,7 +136,7 @@ def deliverip(request, id):
             #shutil.rmtree(ip.directory)
 
             # mark IP as delivered
-            ip.state = "Delivered"
+            ip.state = "Submitted"
             #ip.directory = delivery_root 
             ip.progress = 100
             ip.save()

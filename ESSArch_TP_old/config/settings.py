@@ -47,7 +47,7 @@ if DEV:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', 	# Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': SITE_ROOT+'/tools_dev.db',  	# development path to database file if using sqlite3.
+            'NAME': '/ESSArch/etp/tools_dev.db',  	# development path to database file if using sqlite3.
             'USER': '',                      		# Not used with sqlite3.
             'PASSWORD': '',                  		# Not used with sqlite3.
             'HOST': '',                      		# Set to empty string for localhost. Not used with sqlite3.
@@ -58,7 +58,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', 	# Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': SITE_ROOT+'/tools.db',      	# production path to database file if using sqlite3.
+            'NAME': '/ESSArch/etp/tools.db',      	# production path to database file if using sqlite3.
             'USER': '',                             	# Not used with sqlite3.
             'PASSWORD': '',                         	# Not used with sqlite3.
             'HOST': '',                             	# Set to empty string for localhost. Not used with sqlite3.
@@ -71,9 +71,9 @@ DATABASE_ROUTERS = ['server.router.serverRouter',]
 # Email configuration
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_HOST = '192.168.0.51' # smtp server ESS
-EMAIL_HOST = 'relay.riksnet.se' # smtp server Riksnet for net 77
+#EMAIL_HOST = 'relay.riksnet.se' # smtp server Riksnet for net 77
 #EMAIL_HOST = 'exsmtp-u.uadm.bgo' # smtp server Bergen
-#EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'localhost'
 #EMAIL_HOST_USER = ''
 #EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
@@ -156,7 +156,7 @@ if DEV:
     STATICFILES_DIRS = "/ESSArch_Tools_Producer/static", 	# development
 else:
     STATICFILES_DIRS = os.path.join(SITE_ROOT, 'static'), 	# production
-    
+        
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -308,7 +308,7 @@ LOGGING = {
             'class' : 'logging.handlers.RotatingFileHandler',
             #'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': SITE_ROOT+'/log/etp.log',
+            'filename': '/ESSArch/etp/log/etp.log',
             'maxBytes': 1024*1024*5, # 5MB
             'backupCount': 5,
         },
@@ -318,7 +318,7 @@ LOGGING = {
             'class' : 'logging.handlers.RotatingFileHandler',
             #'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': SITE_ROOT+'/log/debug/etp_debug.log',
+            'filename': '/ESSArch/etp/log/debug/etp_debug.log',
             'maxBytes': 1024*1024*5, # 5MB
             'backupCount': 5,
         },
@@ -372,6 +372,6 @@ LOGGING = {
 }
 
 try:
-    from local_settings import *
+    from local_etp_settings import *
 except ImportError, exp:
     pass

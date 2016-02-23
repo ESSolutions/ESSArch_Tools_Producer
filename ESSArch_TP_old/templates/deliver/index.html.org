@@ -9,7 +9,7 @@
 {% block content %} 
 
 <div style="margin:20px">
-<H1>Select which information package to submit</H1>
+<H1>Select which information package to deliver</H1>
   <br/>
     
 <div class="results">
