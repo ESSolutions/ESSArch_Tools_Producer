@@ -1,5 +1,3 @@
-#!/usr/bin/env /ESSArch/python27/bin/python
-# -*- coding: UTF-8 -*-
 '''
     ESSArch Tools - ESSArch is an Electronic Preservation Platform
     Copyright (C) 2005-2013  ES Solutions AB
@@ -21,21 +19,8 @@
     Web - http://www.essolutions.se
     Email - essarch@essolutions.se
 '''
-
 """
-WSGI config for ESSArch Tools project.
-
-This module contains the WSGI application used by Django's development server
-and any production WSGI deployments. It should expose a module-level variable
-named ``application``. Django's ``runserver`` and ``runfcgi`` commands discover
-this application via the ``WSGI_APPLICATION`` setting.
-
-Usually you will have the standard Django WSGI application here, but it also
-might make sense to replace the whole Django WSGI application with a custom one
-that later delegates to the Django one. For example, you could introduce WSGI
-middleware here, or combine a Django application with an application of another
-framework.
-
+WSGI config for ESSArch TP.
 """
 import os, sys, platform
 
@@ -45,10 +30,11 @@ if platform.system() != 'Linux' :
     execfile(activate_this, dict(__file__=activate_this))
     sys.path.append('/ESSArch/etp')
 else:
-    sys.path.append('/ESSArch/etp') # append path
+    sys.path.append('/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP')
+    sys.path.append('/ESSArch/config')
+    #sys.path.append('/ESSArch/etp') # append path
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings"
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-

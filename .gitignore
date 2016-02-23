@@ -2,8 +2,8 @@
 *.pyo
 *~
 dist/
-ESSArch_EPP.egg-info/
+ESSArch_TP.egg-info/
 MANIFEST
 .settings/
-ESSArch_TP/tools.db
+tools.db
 

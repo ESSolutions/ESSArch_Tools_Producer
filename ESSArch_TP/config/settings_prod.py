@@ -210,7 +210,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'configuration',
-    'ip'
+    'ip',
     'chunked_upload',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
