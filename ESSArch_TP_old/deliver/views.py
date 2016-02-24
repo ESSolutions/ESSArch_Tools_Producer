@@ -106,7 +106,7 @@ def deliverip(request, id):
             if remote_flag:
                 # init uploadclient
                 base_url, ruser, rpass = remote_server
-                upload_rest_endpoint = urljoin(base_url, '/eta_upload')        
+                upload_rest_endpoint = urljoin(base_url, '/api/create_reception_upload')        
                 requests_session =  _initialize_requests_session(ruser, rpass, cert_verify=False, disable_warnings=True)           
                 uploadclient = UploadChunkedRestClient(requests_session, upload_rest_endpoint)
             else:
@@ -165,11 +165,25 @@ def deliverip(request, id):
             c.update(csrf(request))
             return render_to_response('deliver/deliver.html', c, context_instance=RequestContext(request) )
     else:
+        remote_server_string = Parameter.objects.get(entity='preservation_organization_receiver').value
+        remote_server = remote_server_string.split(',')
+        if len(remote_server) == 3:
+            remote_flag = True
+        else:
+            remote_flag = False
+
+        if remote_flag:
+            # init uploadclient
+            base_url, ruser, rpass = remote_server
+            preservation_organization_receiver = '- Remote server: %s' % base_url
+        else:
+            preservation_organization_receiver = '- Local filesystem: %s' % destination
+
         initialvalues = {}
         #initialvalues = IPParameter.objects.all().values()[0]
         #initialvalues['username'] = str(request.user)
         #initialvalues['password'] = request.user.password
-        initialvalues['preservation_organization_receiver'] = Parameter.objects.get(entity='preservation_organization_receiver').value
+        initialvalues['preservation_organization_receiver'] = preservation_organization_receiver
         initialvalues['email_from'] = str(request.user.email) # logged in user
         initialvalues['email_to'] = Parameter.objects.get(entity='preservation_email_receiver').value # default email receiver
         initialvalues['destination'] = destination
