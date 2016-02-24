@@ -31,7 +31,7 @@ from configuration.models import PlainText
 class DeliverForm(forms.Form):
     #destination = forms.CharField( max_length = 200, widget=PlainText(attrs={'size':'52'}) )
     #destination = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}) )
-    preservation_organization_url  = forms.URLField( max_length = 400, widget=PlainText(attrs={'size':'52'}), label='Receiver', required=False )
+    preservation_organization_receiver  = forms.URLField( max_length = 400, widget=PlainText(attrs={'size':'52'}), label='Receiver', required=False )
     #username    = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}))
     #password    = forms.CharField( max_length = 200, label="Destination Root", widget=forms.TextInput(attrs={'size':'52'}))
 
