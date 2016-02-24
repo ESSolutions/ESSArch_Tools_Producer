@@ -92,44 +92,41 @@ def deliverip(request, id):
             # get clean context data from form
             contextdata = form.cleaned_data
             #destination = contextdata['destination']
-
-            '''
-            # Create a new information package folder ready for deliver
-            i = 1
-            while os.path.exists( os.path.join( destination, "ip%d"%i ) ):
-                i+=1
-            delivery_root = os.path.join( destination, "ip%d"%i )
-            os.makedirs( delivery_root )
-            '''
                         
             # move ip from source to destination
             dir_src = ip.directory
-            #dir_dst = delivery_root+'/'
-            #uploadlink = 'https://77.110.60.208:50445/eta_upload'
-            uploadlink = Parameter.objects.get(entity='preservation_organization_url').value
-            #uploadlink = 'https://77.110.60.208:50443/api/create_tmpworkarea_upload'
-            #ruser ='usr2'
-            ruser = Parameter.objects.get(entity='preservation_organization_receiver').value
-            rpass = ruser
-            
-            #ruser ='user'
-            #rpass = 'user'
-            #progresspercent = 0                     
-            requests_session =  _initialize_requests_session(ruser, rpass, cert_verify=False, disable_warnings=True)
-            #reporter = _custom_progress_reporter(progresspercent)
 
-            #requests_session.post(uploadlink,headers={'Content-Type': 'application/json'},data='{"somefile":"somefile''}')
+            remote_server_string = Parameter.objects.get(entity='preservation_organization_receiver').value
+            remote_server = remote_server_string.split(',')
+            if len(remote_server) == 3:
+                remote_flag = True
+            else:
+                remote_flag = False
+
+            if remote_flag:
+                # init uploadclient
+                base_url, ruser, rpass = remote_server
+                upload_rest_endpoint = urljoin(base_url, '/eta_upload')        
+                requests_session =  _initialize_requests_session(ruser, rpass, cert_verify=False, disable_warnings=True)           
+                uploadclient = UploadChunkedRestClient(requests_session, upload_rest_endpoint)
+            else:
+                # Create a new information package folder ready for deliver
+                i = 1
+                while os.path.exists( os.path.join( destination, "ip%d"%i ) ):
+                    i+=1
+                delivery_root = os.path.join( destination, "ip%d"%i )
+                os.makedirs( delivery_root )          
+                dir_dst = delivery_root+'/'      
             
-            uploadclient = UploadChunkedRestClient(requests_session,uploadlink)
-            
-            for file in os.listdir(dir_src):
+            for filename in os.listdir(dir_src):
                 
-                src_file = os.path.join(dir_src, file)
-                uploadclient.upload(src_file, ip.uuid)
-
-                #dst_file = os.path.join(dir_dst, file)
-                #shutil.move(src_file, dst_file)
-                #shutil.copy(src_file, dst_file)
+                src_file = os.path.join(dir_src, filename)
+                if remote_flag:
+                    uploadclient.upload(src_file, ip.uuid)
+                else:
+                    dst_file = os.path.join(dir_dst, filename)
+                    shutil.move(src_file, dst_file)
+                    shutil.copy(src_file, dst_file)
             logger.info('Successfully delivered package IP %s to destination', ip.label )
             
             # remove source directory
@@ -137,7 +134,8 @@ def deliverip(request, id):
 
             # mark IP as delivered
             ip.state = "Submitted"
-            #ip.directory = delivery_root 
+            if not remote_flag:
+                ip.directory = delivery_root 
             ip.progress = 100
             ip.save()
 
@@ -155,27 +153,7 @@ def deliverip(request, id):
             msg.send(fail_silently=False)
             
             logger.info('send_mail of package description %s ends' % f_name)
-            
-            
-            
-            # send IP to remote host via http
-            #remote_host = '192.168.0.50'
-            #remote_host_upload = '/ESSArch/expedition'
-            #total_size = os.path.getsize(ip_fname)
-            #infile = open(ip_fname)
-            #conn = httplib.HTTPConnection(remote_host)
-            #conn.connect()
-            #conn.putrequest('POST', remote_host_upload)
-            #conn.putheader('Content-Type', 'application/octet-stream')
-            #conn.putheader('Content-Length', str(total_size))
-            #conn.endheaders()
-            #while True:
-            #    chunk = infile.read(1024)
-            #    if not chunk:
-            #        break
-            #    conn.send(chunk)
-            #resp = conn.getresponse()
-                    
+        
             return HttpResponseRedirect( '/deliver' )
         else:
             logger.error('Form DeliverForm is not valid.')
@@ -191,7 +169,7 @@ def deliverip(request, id):
         #initialvalues = IPParameter.objects.all().values()[0]
         #initialvalues['username'] = str(request.user)
         #initialvalues['password'] = request.user.password
-        initialvalues['preservation_organization_url'] = Parameter.objects.get(entity='preservation_organization_url').value
+        initialvalues['preservation_organization_receiver'] = Parameter.objects.get(entity='preservation_organization_receiver').value
         initialvalues['email_from'] = str(request.user.email) # logged in user
         initialvalues['email_to'] = Parameter.objects.get(entity='preservation_email_receiver').value # default email receiver
         initialvalues['destination'] = destination

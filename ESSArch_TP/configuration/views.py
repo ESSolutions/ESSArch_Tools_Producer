@@ -125,7 +125,7 @@ def installdefaultparameters(request): # default config parameters
         # create dictionaries for zone
         dct = {}
         dct1 = {
-                'preservation_organization_url':'www.essolutions.se',
+                'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
                 'preservation_email_receiver':'receiver@archive.xxx',
                 }
         dct2 = {}
@@ -145,7 +145,7 @@ def installdefaultparameters(request): # default config parameters
         # create dictionaries for zone
         dct = {}
         dct1 = {
-                'preservation_organization_url':'www.essolutions.se',
+                'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
                 'preservation_email_receiver':'receiver@archive.xxx',
                 }
         dct2 = {}

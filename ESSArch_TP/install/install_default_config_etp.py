@@ -55,7 +55,7 @@ def installdefaultparameters(): # default config parameters
 
     # set default parameters according to site_profile SE
     if site_profile == "SE" :
-       dct = {
+        dct = {
              'site_profile':site_profile,
              'zone': zone ,
              'package_descriptionfile':'info.xml',
@@ -63,8 +63,7 @@ def installdefaultparameters(): # default config parameters
              'preservation_descriptionfile':'premis.xml',
              'ip_logfile':'log.xml',
              'mimetypes_definition':'mime.types',
-             'preservation_organization_url':'archive.xxx',
-             'preservation_organization_receiver':'reta',
+             'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
              'preservation_email_receiver':'receiver@archive.xxx',
              }
 
@@ -78,8 +77,7 @@ def installdefaultparameters(): # default config parameters
               'preservation_descriptionfile':'premis.xml',
               'ip_logfile':'log.xml',
               'mimetypes_definition':'mime.types',
-              'preservation_organization_url':'archive.xxx',
-              'preservation_organization_receiver':'reta',
+              'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
               'preservation_email_receiver':'receiver@archive.xxx',
               }
 
