@@ -1,5 +1,3 @@
-#!/usr/bin/env /ESSArch/python27/bin/python
-# -*- coding: UTF-8 -*-
 '''
     ESSArch Tools - ESSArch is an Electronic Preservation Platform
     Copyright (C) 2005-2013  ES Solutions AB
@@ -29,9 +27,10 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django import forms
 from django.core.context_processors import csrf
 from django.contrib.auth import logout
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.utils.http import urlquote
 import os, os.path, uuid, datetime, forms, pytz, shutil, time, operator, pdb
 from django.core.serializers.json import DjangoJSONEncoder
@@ -47,7 +46,6 @@ import shutil
 import json
 
 from django.views.generic import View
-from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
 from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
@@ -59,18 +57,17 @@ from chunked_upload.response import Response
 from chunked_upload.constants import http_status, COMPLETE
 from chunked_upload.exceptions import ChunkedUploadError
 
-
 from config.settings import MEDIA_ROOT
 from models import ETPupload
 
 # from ESSArch Tools
 from ip.models import InformationPackage
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
-from forms import PrepareFormSE, PrepareFormNO, CreateFormSE, CreateFormNO
+from .forms import PrepareFormSE, PrepareFormNO, CreateFormSE, CreateFormNO
 import lib.utils as lu
 import lib.app_tools as lat
 
-
+'''
 @login_required
 def index(request):
     # Get current site_profile and zone
@@ -79,8 +76,172 @@ def index(request):
     c = RequestContext(request)
     c['zone'] = zone
     return HttpResponse(t.render(c))
+'''
 
+class PrepareIPCreate(View):
+    template_name = 'create/prepare_create.html'
 
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context['label'] = 'Prepare new information packages'
+
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()   
+
+        # Present only prepared IPs 
+        ip = InformationPackage.objects.filter(state='Prepared')
+
+        initialvalues = {}
+        initialvalues['destinationroot'] = lat.getLogFilePath()
+        if site_profile == "SE":
+            form = PrepareFormSE(initial=initialvalues) # Form with defaults
+        if site_profile == "NO":
+            form = PrepareFormNO(initial=initialvalues) # Form with defaults
+        
+        context['form'] = form
+        context['zone'] = zone
+        context['informationpackages'] = ip
+        return render(request, self.template_name, context)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        context = {}
+        context['label'] = 'Submit information packages'
+        
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()
+
+        if site_profile == "SE":
+            form = PrepareFormSE(request.POST) # A form bound to the POST data
+        if site_profile == "NO":
+            form = PrepareFormNO(request.POST) # A form bound to the POST data
+
+        if form.is_valid(): # All validation rules pass
+            
+            # get clean context data
+            contextdata = form.cleaned_data
+            
+            # agent e.q user
+            agent = str(request.user)
+
+            # prepare IP
+            ip,errno,why = lat.prepareIP(agent, contextdata)
+            if errno: 
+                logger.error(why)
+                c = { 'message': why }
+                c.update(csrf(request))
+                return render_to_response('status.html', c, context_instance=RequestContext(request) )
+            else:
+                logger.info('Successfully prepared package IP %s and created log file', ip.label)
+
+            # exit form
+            return HttpResponseRedirect( '/create/createiplist' )
+            
+        else:
+            logger.error('Form PrepareFormSE/NO is not valid.')
+            #print form.data, form.errors
+            context['form'] = form
+            context['zone'] = zone
+            return render(request, self.template_name, context)
+
+class CreateIPList(View):
+    template_name = 'create/list.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context['label'] = 'Select which information package to create'
+
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()   
+
+        # Present only prepared IPs 
+        ip = InformationPackage.objects.filter(state='Prepared')
+
+        context['zone'] = zone
+        context['informationpackages'] = ip
+        return render(request, self.template_name, context)
+
+class CreateIP(View):
+    template_name = 'create/create.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context['label'] = 'Create information package'
+
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()    
+    
+        id = self.kwargs['id']
+    
+        # get IP from db
+        ip = get_object_or_404(InformationPackage, pk=id)
+    
+        destination_path = Path.objects.get(entity="path_ingest_reception").value
+
+        initialvalues = IPParameter.objects.all().values()[0]
+        initialvalues['destinationroot'] = destination_path
+        initialvalues['archivist_organization'] = ip.archivist_organization
+        initialvalues['label'] = ip.label
+        initialvalues['type'] = ip.iptype
+        if site_profile == "SE":
+            form = CreateFormSE( initial=initialvalues )
+        if site_profile == "NO":
+            form = CreateFormNO( initial=initialvalues )
+        
+        context['form'] = form
+        context['zone'] = zone
+        context['ip'] = ip
+        context['destinationroot'] = destination_path
+        return render(request, self.template_name, context)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        context = {}
+        context['label'] = 'Submit information packages'
+        
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()    
+        
+        id = self.kwargs['id']
+        
+        # get IP from db
+        ip = get_object_or_404(InformationPackage, pk=id)
+
+        if site_profile == "SE":
+            form = CreateFormSE(request.POST) # A form bound to the POST data
+        if site_profile == "NO":
+            form = CreateFormNO(request.POST) # A form bound to the POST data
+
+        if form.is_valid(): # All validation rules pass
+            
+            # get clean context data from form
+            contextdata = form.cleaned_data
+
+            # create IP, if unsuccessful show status
+            ip, errno, why = lat.createIP(ip, contextdata)
+            if errno: 
+                logger.error('Could not create IP: %s', why)
+                c = { 'message': why }
+                c.update(csrf(request))
+                return render_to_response('status.html', c, context_instance=RequestContext(request) )
+            else:
+                logger.info('Successfully created package IP %s', ip.label)
+
+            # exit form
+            return HttpResponseRedirect('/create/createiplist')
+
+        else:
+            logger.error('Form CreateFormSE/NO is not valid.')
+            #print form.data, form.errors
+            context['form'] = form
+            context['zone'] = zone
+            context['ip'] = ip
+            return render(request, self.template_name, context)
+
+'''
 "View IPs and prepare new IPs"
 ###############################################
 @login_required
@@ -145,7 +306,6 @@ def viewIPs(request):
          }
     c.update(csrf(request))
     return render_to_response( 'create/view.html', c, context_instance=RequestContext(request) )
-
 
 "Create IPs"
 ###############################################
@@ -216,10 +376,10 @@ def createip(request, id):
          }
     c.update(csrf(request))
     return render_to_response('create/create.html', c, context_instance=RequestContext(request) )
+'''
 
 class IPcontentasJSON(View):
 
-    
     def dispatch(self, *args, **kwargs):
     
         return super(IPcontentasJSON, self).dispatch( *args, **kwargs)

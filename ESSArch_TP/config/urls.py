@@ -35,7 +35,7 @@ admin.autodiscover()
 from create.views import IPcontentasJSON, ETPUploadView, ETPUploadCompleteView
 from configuration.views import about, installedpackages
 urlpatterns = patterns('',
-    # Configuration URLS:
+    # Standard URLS:
     url(r'^$', 'configuration.views.index', name='home'),
     #url(r'^logout$', 'configuration.views.logout_view'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
@@ -44,14 +44,19 @@ urlpatterns = patterns('',
     url(r'^admin/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
     url(r'^changepassword$', 'configuration.views.change_password'),
     
+    # URLS to include:
+    #url(r'^receive/', include('receive.urls')),
+    url(r'^submit/', include('submit.urls')),
+    url(r'^create/', include('create.urls')),
+    #url(r'^api/', include('api.urls')),
 
+    # Configuration URLS:    
+    url(r'^about$', 'configuration.views.sysinfo'),
     #url(r'^configuration/logevents$', 'configuration.views.logevents'),
     url(r'^configuration/logevents/install_defaults$', 'configuration.views.installogdefaults'),
     url(r'^configuration/logevents/install_defaultschemas$', 'configuration.views.installdefaultschemaprofiles'),
     url(r'^configuration/logevents/install_defaultparameters$', 'configuration.views.installdefaultparameters'),
     url(r'^configuration/logevents/install_defaultusers$', 'configuration.views.createdefaultusers'),
-    #url(r'^about$', 'configuration.views.about'),
-    url(r'^about$', 'configuration.views.sysinfo'),
     url(r'^installedpackages/(?P<ipid>[^&]*)$', installedpackages.as_view(), name='installedpackages'),
     #url(r'^configuration/logevents/install_defaultadditionalmetadata$', 'configuration.views.installAdditionalMetadata'),
     #url(r'^configuration/logevents/add$', 'configuration.views.newlogevent'),
@@ -65,7 +70,7 @@ urlpatterns = patterns('',
     #url(r'^prepare/new$', 'prepare.views.new'),
 
     # Create IP URLS:
-    url(r'^create$', 'create.views.index'), ##
+    #url(r'^create$', 'create.views.index'), ##
     #url(r'^create/(?P<id>\d+)$', 'create.views.manageip'),
     #url(r'^create/(?P<id>\d+)/create$', 'create.views.createip'),
     #url(r'^create/(?P<id>\d+)/status$', 'create.views.ipstatus'),
@@ -75,8 +80,8 @@ urlpatterns = patterns('',
     #url(r'^create/status$', 'create.views.createip'),
     #url(r'^status$', 'create.views.createip'), ##
     #url(r'^create/list$', 'create.views.listIPs'),
-    url(r'^create/(?P<id>\d+)$', 'create.views.createip'), ##
-    url(r'^create/view$', 'create.views.viewIPs'), ##
+    #url(r'^create/(?P<id>\d+)$', 'create.views.createip'), ##
+    #url(r'^create/view$', 'create.views.viewIPs'), ##
     #url(r'^create_upload/?$', CreateTmpWorkareaUploadView.as_view(), name='chunked_upload'),
     #url(r'^create_upload_complete/?$', CreateTmpWorkareaUploadCompleteView.as_view(), name='chunked_upload_complete'),
     url(r'^directoryinfo/(?P<ipid>[^&]*)$', IPcontentasJSON.as_view(), name='directoryinfo'), 

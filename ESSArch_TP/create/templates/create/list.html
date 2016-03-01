@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block breadcrumbs %} 
+
+{% endblock %} 
+
+{% block content %} 
+
+  <div style="margin:20px;">
+  	
+	<H1>{{label}}</H1>
+	<p>
+
+	<div class="results">
+	  <table id="result_list">
+	    <thead>
+	      <tr>
+			<th>Archivist organization</th>
+			<th>Label</th>
+			<th>Create date</th>
+			{#<th>Start date</th>#}
+			{#<th>End date</th>#}
+			<th>IP type</th>
+			<th>IP location</th>
+			<th>IP (UUID)</th>
+			<th>IP state</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      {% for ip in informationpackages %}
+	      <tr class="row{% cycle '1' '2' %}">
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.archivist_organization }}</a></td>
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.label }}</a></td>
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.createdate }}</a></td>
+				{#<td><a href="/create/createip/{{ip.id}}">{{ ip.startdate }}</a></td>#}
+				{#<td><a href="/create/createip/{{ip.id}}">{{ ip.enddate }}</a></td>#}
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.iptype }}</a></td>
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.directory }}</a></td>
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.uuid }}</a></td>
+				<td><a href="/create/createip/{{ip.id}}">{{ ip.state }}</a></td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+   </div>
+
+
+<div id="msg">
+<span style="color: red;" >{{ message }}</span>
+</div>
+
+{% endblock %} 
+
+
+
+
