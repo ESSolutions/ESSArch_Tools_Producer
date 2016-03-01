@@ -229,6 +229,7 @@ INSTALLED_APPS = (
     'profiles',
     'create',
     'chunked_upload',
+    'submit',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
