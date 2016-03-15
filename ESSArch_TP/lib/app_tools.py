@@ -2115,7 +2115,15 @@ def GetFiletree2(root,checksumtype=None):
     version = 'ET091'
     logger.debug('%s Entered GetFiletree2' % version) # debug info
     
-    mimefilepath = Path.objects.get(entity='path_definitions').value + '/'+ Parameter.objects.get(entity='mimetypes_definition').value  # ESSArch Tools
+    try:
+        mimefilepath = Path.objects.get(entity='path_mimetypes_definitionfile').value
+    except Parameter.DoesNotExist as e:
+        if os.path.exists('/ESSArch/config/mime.types'):
+            mimefilepath = '/ESSArch/config/mime.types'
+        else:
+            mimefilepath = '/ESSArch/config/data/mime.types'
+
+    #mimefilepath = Path.objects.get(entity='path_definitions').value + '/'+ Parameter.objects.get(entity='mimetypes_definition').value  # ESSArch Tools
     if os.path.exists(mimefilepath):
         mimetypes.suffix_map={}
         mimetypes.encodings_map={}

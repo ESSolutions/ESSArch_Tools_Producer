@@ -62,7 +62,7 @@ def installdefaultparameters(): # default config parameters
              'content_descriptionfile':'sip.xml',
              'preservation_descriptionfile':'premis.xml',
              'ip_logfile':'log.xml',
-             'mimetypes_definition':'mime.types',
+             #'mimetypes_definition':'mime.types',
              'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
              'preservation_email_receiver':'receiver@archive.xxx',
              }
@@ -76,7 +76,7 @@ def installdefaultparameters(): # default config parameters
               'content_descriptionfile':'mets.xml',
               'preservation_descriptionfile':'premis.xml',
               'ip_logfile':'log.xml',
-              'mimetypes_definition':'mime.types',
+              #'mimetypes_definition':'mime.types',
               'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
               'preservation_email_receiver':'receiver@archive.xxx',
               }
@@ -155,7 +155,7 @@ def installdefaultpaths(): # default paths
 
     # create dictionaries 
     dct = {
-          #'path_mimetypesdefinition':'/ESSArch/Tools/env',
+          'path_mimetypes_definitionfile':'/ESSArch/config/mime.types',
           'path_definitions':'/ESSArch/etp/env',
           'path_preingest_prepare':'/ESSArch/data/etp/prepare',
           'path_preingest_reception':'/ESSArch/data/etp/reception',
