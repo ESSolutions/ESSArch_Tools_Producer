@@ -388,14 +388,13 @@ class IPcontentasJSON(View):
 
         ipid = self.kwargs['ipid']
         thisip = get_object_or_404(InformationPackage, pk=ipid)
-        print 'thisip directory'
-        print thisip.directory
+        #print 'thisip directory'
+        #print thisip.directory
         contentpath = thisip.directory + '/' + thisip.uuid + '/content/'
         listofcontent = os.listdir(contentpath)
         listofcontent.sort()
-        print 'listofcontent'
-        print listofcontent
-        print listofcontent[0]
+        #print 'listofcontent'
+        #print listofcontent
 
         return listofcontent
 
