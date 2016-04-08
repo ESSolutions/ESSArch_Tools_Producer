@@ -11,7 +11,10 @@ from configuration.models import (
                                   Parameter,
                                   )
 
-from .forms import SubmitForm
+from .forms import (
+                    SubmitForm,
+                    SubmitFormWithoutEmail,
+                    )
 
 from esscore.rest.uploadchunkedrestclient import UploadChunkedRestClient, UploadChunkedRestException
 
@@ -73,18 +76,25 @@ class SubmitIPCreate(View):
             preservation_organization_receiver = '- Remote server: %s' % base_url
         else:
             preservation_organization_receiver = '- Local filesystem: %s' % destination
+        
+        email_to = Parameter.objects.get(entity='preservation_email_receiver').value
+        sendemail_flag = email_to.__contains__('@')
 
         initialvalues = {}
         initialvalues['preservation_organization_receiver'] = preservation_organization_receiver
         initialvalues['email_from'] = str(request.user.email) # logged in user
-        initialvalues['email_to'] = Parameter.objects.get(entity='preservation_email_receiver').value # default email receiver
+        initialvalues['email_to'] = email_to # default email receiver
         initialvalues['destination'] = destination
-        form = SubmitForm( initial=initialvalues )
+        if sendemail_flag:
+            form = SubmitForm( initial=initialvalues )
+        else:
+            form = SubmitFormWithoutEmail( initial=initialvalues )
         
         context['form'] = form
         context['zone'] = zone
         context['ip'] = ip
         context['sourceroot'] = ip.directory
+        context['sendemail'] = sendemail_flag
         return render(request, self.template_name, context)
 
     @method_decorator(login_required)
@@ -102,7 +112,15 @@ class SubmitIPCreate(View):
         ip = get_object_or_404(InformationPackage, pk=id)
         
         destination = Path.objects.get(entity="path_ingest_reception").value
-        form = SubmitForm(request.POST) # A form bound to the POST data
+
+        email_to = Parameter.objects.get(entity='preservation_email_receiver').value
+        sendemail_flag = email_to.__contains__('@')
+        
+        if sendemail_flag:
+            form = SubmitForm(request.POST) # A form bound to the POST data
+        else:
+            form = SubmitFormWithoutEmail(request.POST)
+            
         if form.is_valid(): # All validation rules pass
             
             # which package description file and compressed IP file
@@ -144,7 +162,7 @@ class SubmitIPCreate(View):
                     uploadclient.upload(src_file, ip.uuid)
                 else:
                     dst_file = os.path.join(dir_dst, filename)
-                    shutil.move(src_file, dst_file)
+                    #shutil.move(src_file, dst_file)
                     shutil.copy(src_file, dst_file)
             logger.info('Successfully delivered package IP %s to destination', ip.label )
             
@@ -153,34 +171,38 @@ class SubmitIPCreate(View):
 
             # mark IP as delivered
             ip.state = "Submitted"
-            if not remote_flag:
-                ip.directory = delivery_root 
+            #if not remote_flag:
+            #    ip.directory = delivery_root 
             ip.progress = 100
             ip.save()
 
-            # email parameters
-            email_subject = contextdata['email_subject']
-            email_body = contextdata['email_body']
-            email_to = contextdata['email_to'] 
-            email_from = str(request.user.email) # logged in user
-
-            logger.info('send_mail of package description %s starts' % f_name)
-            
-            # create and send email with attached package description file            
-            msg = EmailMessage(email_subject, email_body, email_from, [email_to])
-            msg.attach_file(f_name, 'application/xml')
-            msg.send(fail_silently=False)
-            
-            logger.info('send_mail of package description %s ends' % f_name)
+            if sendemail_flag:
+                # email parameters
+                email_subject = contextdata['email_subject']
+                email_body = contextdata['email_body']
+                email_to = contextdata['email_to'] 
+                email_from = str(request.user.email) # logged in user
+    
+                logger.info('send_mail of package description %s starts' % f_name)
+                
+                # create and send email with attached package description file            
+                msg = EmailMessage(email_subject, email_body, email_from, [email_to])
+                msg.attach_file(f_name, 'application/xml')
+                msg.send(fail_silently=False)
+                
+                logger.info('send_mail of package description %s ends' % f_name)
         
-            return HttpResponseRedirect( '/deliver' )
+            return HttpResponseRedirect( '/submit/submitiplist/' )
         else:
             logger.error('Form DeliverForm is not valid.')
             #print form.data, form.errors
+            email_to = Parameter.objects.get(entity='preservation_email_receiver').value
+            sendemail_flag = email_to.__contains__('@')
             context['form'] = form
             context['zone'] = zone
             context['ip'] = ip
             context['sourceroot'] = ip.directory
+            context['sendemail'] = sendemail_flag
             return render(request, self.template_name, context)
 
 def _initialize_requests_session(ruser, rpass, cert_verify=True, disable_warnings=False):

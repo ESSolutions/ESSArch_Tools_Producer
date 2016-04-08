@@ -182,8 +182,8 @@ def viewlog(request, uuid, archivist_organization, label, iptype, createdate):
                 logger.error('Form NewLogEventForm is not valid.')
                 #print form.data, form.errors
 
-        else:
-            form = NewLogEventForm()
+        #else:
+        form = NewLogEventForm()
 
         # we have the log file, need to generate the report.
         content = lat.getLogEvents( logfile )
