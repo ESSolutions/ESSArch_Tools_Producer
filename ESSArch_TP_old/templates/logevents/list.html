@@ -35,13 +35,13 @@
 	      		<tr class="row{% cycle '1' '2' %}">
 					<td><a href="/logevents/view/{{ log.link }}">{{ log.archivist_organization }}</a></td>
 					<td><a href="/logevents/view/{{ log.link }}">{{ log.label }}</a></td>
-					<td><a href="/logevents/view/{{ log.link }}">{{ log.createdate }}</a></td>
-					{#<td><a href="/logevents/view/{{ log.link }}">{{ log.startdate }}</a></td>#}
-					{#<td><a href="/logevents/view/{{ log.link }}">{{ log.enddate }}</a></td>#}
-					<td><a href="/logevents/view/{{ log.link }}">{{ log.iptype }}</a></td>
-					<td><a href="/logevents/view/{{ log.link }}">{{ log.iplocation }}</a></td>
-					<td><a href="/logevents/view/{{ log.link }}">{{ log.uuid    }}</a></td>
-					<td><a href="/logevents/view/{{ log.link }}">{{ log.state }}</a></td>
+					<td>{{ log.createdate }}</td>
+					{#<td>{{ log.startdate }}</td>#}
+					{#<td>{{ log.enddate }}</td>#}
+					<td>{{ log.iptype }}</td>
+					<td>{{ log.iplocation }}</td>
+					<td>{{ log.uuid    }}</td>
+					<td>{{ log.state }}</td>
 	      		</tr>
 	    	{% endfor %}
 	  	{% endif %}

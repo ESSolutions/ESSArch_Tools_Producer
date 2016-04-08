@@ -27,14 +27,16 @@ from django.core.validators import validate_email
 from configuration.models import PlainText
 
 class SubmitForm(forms.Form):
-    #destination = forms.CharField( max_length = 200, widget=PlainText(attrs={'size':'52'}) )
-    #destination = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}) )
     preservation_organization_receiver  = forms.CharField( max_length = 400, widget=PlainText(attrs={'size':'52'}), label='Receiver', required=False )
-    #username    = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}))
-    #password    = forms.CharField( max_length = 200, label="Destination Root", widget=forms.TextInput(attrs={'size':'52'}))
-
     email_from = forms.CharField( max_length = 200, widget=PlainText(attrs={'size':'52'}), label='From:', required=False ) 
     email_to = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}), label='To: *'  ) 
     email_subject = forms.CharField(widget=forms.TextInput(attrs={'size':'52'}), label='Subject *' )
     email_body = forms.CharField( widget=forms.Textarea(attrs={'width':"100%", 'cols' : "50", 'rows': "5", }), label='Body *' )
+    
+class SubmitFormWithoutEmail(forms.Form):
+    preservation_organization_receiver  = forms.CharField( max_length = 400, widget=PlainText(attrs={'size':'52'}), label='Receiver', required=False )
+    email_from = forms.CharField( max_length = 200, widget=PlainText(attrs={'size':'52'}), label='From:', required=False ) 
+    email_to = forms.CharField( max_length = 200, widget=forms.TextInput(attrs={'size':'52'}), label='To:', required=False  ) 
+    email_subject = forms.CharField(widget=forms.TextInput(attrs={'size':'52'}), label='Subject', required=False )
+    email_body = forms.CharField( widget=forms.Textarea(attrs={'width':"100%", 'cols' : "50", 'rows': "5", }), label='Body', required=False )    
     

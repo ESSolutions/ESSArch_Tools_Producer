@@ -125,7 +125,7 @@ def deliverip(request, id):
                     uploadclient.upload(src_file, ip.uuid)
                 else:
                     dst_file = os.path.join(dir_dst, filename)
-                    shutil.move(src_file, dst_file)
+                    #shutil.move(src_file, dst_file)
                     shutil.copy(src_file, dst_file)
             logger.info('Successfully delivered package IP %s to destination', ip.label )
             

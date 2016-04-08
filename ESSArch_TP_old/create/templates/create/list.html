@@ -26,6 +26,7 @@
 			<th>IP location</th>
 			<th>IP (UUID)</th>
 			<th>IP state</th>
+			<th>Events</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -33,13 +34,14 @@
 	      <tr class="row{% cycle '1' '2' %}">
 				<td><a href="/create/createip/{{ip.id}}">{{ ip.archivist_organization }}</a></td>
 				<td><a href="/create/createip/{{ip.id}}">{{ ip.label }}</a></td>
-				<td><a href="/create/createip/{{ip.id}}">{{ ip.createdate }}</a></td>
-				{#<td><a href="/create/createip/{{ip.id}}">{{ ip.startdate }}</a></td>#}
-				{#<td><a href="/create/createip/{{ip.id}}">{{ ip.enddate }}</a></td>#}
-				<td><a href="/create/createip/{{ip.id}}">{{ ip.iptype }}</a></td>
-				<td><a href="/create/createip/{{ip.id}}">{{ ip.directory }}</a></td>
-				<td><a href="/create/createip/{{ip.id}}">{{ ip.uuid }}</a></td>
-				<td><a href="/create/createip/{{ip.id}}">{{ ip.state }}</a></td>
+				<td>{{ ip.createdate }}</td>
+				{#<td>{{ ip.startdate }}</td>#}
+				{#<td>{{ ip.enddate }}</td>#}
+				<td>{{ ip.iptype }}</td>
+				<td>{{ ip.directory }}</td>
+				<td>{{ ip.uuid }}</td>
+				<td>{{ ip.state }}</td>
+				<td><a href="/logevents/view/{{ip.uuid}}/{{ ip.archivist_organization }}/{{ ip.label }}/{{ ip.iptype }}/{{ ip.createdate }}">***</a></td>
 	      </tr>
 	      {% endfor %}
 	    </tbody>
