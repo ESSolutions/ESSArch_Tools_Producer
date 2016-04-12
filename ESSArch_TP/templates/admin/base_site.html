@@ -33,7 +33,7 @@
 {% if user.is_active and not user.is_staff %}
 <div id="user-tools">
   {% trans 'Welcome,' %} 
-  <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %} @ {{ zone }}</strong>.
+  <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
   <a href="/changepassword">{% trans 'Change password' %}</a> /
   <a href="/logout">{% trans 'Log out' %}</a>
 </div>
@@ -46,7 +46,7 @@
 		<a href="#vertical" class="sf-with-ul" title="Manage information packages etc .." >{% trans 'INFORMATION PACKAGE' %}</a>
 		<ul>
 	          <li><a href="/create/prepareipcreate">Prepare IP</a></li>
-	          <li><a href="/create/createiplist/">Create IP</a></li>
+	          <li><a href="/create/createiplist/">Create SIP</a></li>
 		</ul>
     </li>
 	{#<li>#}

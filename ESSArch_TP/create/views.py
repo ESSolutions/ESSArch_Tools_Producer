@@ -63,7 +63,7 @@ from models import ETPupload
 # from ESSArch Tools
 from ip.models import InformationPackage
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
-from .forms import PrepareFormSE, PrepareFormNO, CreateFormSE, CreateFormNO
+from .forms import PrepareFormSE, PrepareFormNO, PrepareFormEC, CreateFormSE, CreateFormNO, CreateFormEC
 import lib.utils as lu
 import lib.app_tools as lat
 
@@ -79,7 +79,8 @@ def index(request):
 '''
 
 class PrepareIPCreate(View):
-    template_name = 'create/prepare_create.html'
+    #template_name = 'create/prepare_create.html'
+    template_name = 'create/prepare_create_new.html'
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -97,7 +98,8 @@ class PrepareIPCreate(View):
         if site_profile == "SE":
             form = PrepareFormSE(initial=initialvalues) # Form with defaults
         if site_profile == "NO":
-            form = PrepareFormNO(initial=initialvalues) # Form with defaults
+            #form = PrepareFormNO(initial=initialvalues) # Form with defaults
+            form = PrepareFormEC(initial=initialvalues) # Form with defaults
         
         context['form'] = form
         context['zone'] = zone
@@ -115,7 +117,8 @@ class PrepareIPCreate(View):
         if site_profile == "SE":
             form = PrepareFormSE(request.POST) # A form bound to the POST data
         if site_profile == "NO":
-            form = PrepareFormNO(request.POST) # A form bound to the POST data
+            #form = PrepareFormNO(request.POST) # A form bound to the POST data
+            form = PrepareFormEC(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
             
@@ -189,8 +192,10 @@ class CreateIP(View):
         if site_profile == "SE":
             form = CreateFormSE( initial=initialvalues )
         if site_profile == "NO":
-            form = CreateFormNO( initial=initialvalues )
-        
+            #form = CreateFormNO( initial=initialvalues )
+            form = CreateFormEC( initial=initialvalues )
+
+        #context['label'] = 'Create information package ' + ip.label ' from ' + ip.archivist_organization 
         context['form'] = form
         context['zone'] = zone
         context['ip'] = ip
@@ -213,7 +218,8 @@ class CreateIP(View):
         if site_profile == "SE":
             form = CreateFormSE(request.POST) # A form bound to the POST data
         if site_profile == "NO":
-            form = CreateFormNO(request.POST) # A form bound to the POST data
+            #form = CreateFormNO(request.POST) # A form bound to the POST data
+            form = CreateFormEC(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
             
@@ -395,6 +401,7 @@ class IPcontentasJSON(View):
         listofcontent.sort()
         #print 'listofcontent'
         #print listofcontent
+        #print listofcontent[0]
 
         return listofcontent
 

@@ -10,8 +10,9 @@
 <div style="margin:20px">
 
 <H1>Submit information package <i>({{ ip.label }})</i> from <i>({{ ip.archivist_organization }})</i></H1><p>
-<p><i>Please fill in the fields or use prefilled data   (* indicates mandatory field)</i></p><br/>
- 
+<p><i>Please fill in the fields or use prefilled data   (* indicates mandatory field)</i></p>
+<p><i>Provides functionality for submitting the submission information package (SIP) and if required to send the submit description to intended receiver at the archivist organization.</i></p>
+<br/>
 <form action="{% url 'submit_submitipcreate' ip.id %}" method="post">
 	{% csrf_token %}
 	
