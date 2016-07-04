@@ -1,0 +1,40 @@
+<mets min="1" max="1" allowEmpty="0">
+    <namespace>mets</namespace> <!-- Only needed when changed -->
+    <attr name="xmlns:mets" req="1">xmlns:mets</attr>
+    <attr name="xmlns:ext" req="1">xmlns:ext</attr>
+    <attr name="xmlns:xlink" req="1">xmlns:xlink</attr>
+    <attr name="xmlns:xsi" req="1">xmlns:xsi</attr>
+    <attr name="xsi:schemaLocation" req="1">xsi:schemaLocation</attr>
+    <attr name="PROFILE" req="1">PROFILE</attr>
+    <attr name="LABEL" req="0">LABEL</attr>
+    <attr name="TYPE" req="1">TYPE</attr>
+    <attr name="OBJID" req="1">OBJID</attr>
+    <attr name="ext:CONTENTTYPESPECIFICATION" req="0">ext:CONTENTTYPESPECIFICATION</attr>
+    <attr name="ext:SYSTEMTYPE" req="0">ext:SYSTEMTYPE</attr>
+    <attr name="ext:DATASUBMISSIONSESSION" req="0">ext:DATASUBMISSIONSESSION</attr>
+    <attr name="ext:PACKAGENUMBER" req="0">ext:PACKAGENUMBER</attr>
+    <attr name="ext:ARCHIVALNAME" req="0">ext:ARCHIVALNAME</attr>
+    <attr name="ext:APPRAISAL" req="0">ext:APPRAISAL</attr>
+    <attr name="ext:ACCESSRESTRICT" req="0">ext:ACCESSRESTRICT</attr>
+    <attr name="ext:STARTDATE" req="0">ext:STARTDATE</attr>
+    <attr name="ext:ENDDATE" req="0">ext:ENDDATE</attr>
+    <attr name="ext:INFORMATIONCLASS" req="0">ext:INFORMATIONCLASS</attr>
+    <metsHdr min="0" max="1">
+        <attr name="CREATEDATE" req="1">CREATEDATE</attr>
+        <attr name="RECORDSTATUS" req="1">RECORDSTATUS</attr>
+        <attr name="ext:OAISTYPE" req="1">ext:OAISTYPE</attr>
+        <agent min="1" max="1">
+            <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name>agentName</name>
+            <note>agentNote</note>
+        </agent>
+        <agent>
+            <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
+            <attr name="TYPE" req="1" value="1">OTHER</attr>
+            <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
+            <name>agentName</name>
+            <note>agentNote</note>
+        </agent>
+    </metsHdr>
+</mets>
