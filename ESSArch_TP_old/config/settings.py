@@ -65,7 +65,7 @@ else:
             'PORT': '',                             	# Set to empty string for default. Not used with sqlite3.
         }
     }
-    
+
 DATABASE_ROUTERS = ['server.router.serverRouter',]
 
 # Email configuration
@@ -78,7 +78,7 @@ EMAIL_HOST = 'localhost'
 #EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 #EMAIL_USE_TLS = False
-SERVER_EMAIL = 'ETP@localhost' # from 
+SERVER_EMAIL = 'ETP@localhost' # from
 DEFAULT_FROM_EMAIL = 'ETP_Default@localhost'
 
 
@@ -114,7 +114,7 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
-#USE_L10N = False 
+#USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
@@ -156,7 +156,7 @@ if DEV:
     STATICFILES_DIRS = "/ESSArch_Tools_Producer/static", 	# development
 else:
     STATICFILES_DIRS = os.path.join(SITE_ROOT, 'static'), 	# production
-        
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -298,7 +298,7 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'], # change if in production and not in debug mode 
+            'filters': ['require_debug_false'], # change if in production and not in debug mode
             #'filters': ['require_debug_true'], # only in dev mode
             'class': 'django.utils.log.AdminEmailHandler',
             'include_html': True,
