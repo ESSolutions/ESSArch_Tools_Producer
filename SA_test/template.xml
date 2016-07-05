@@ -1,5 +1,5 @@
 <mets min="1" max="1" allowEmpty="0">
-    <namespace>mets</namespace> <!-- Only needed when changed -->
+    <namespace>mets</namespace>
     <attr name="xmlns:mets" req="1">xmlns:mets</attr>
     <attr name="xmlns:ext" req="1">xmlns:ext</attr>
     <attr name="xmlns:xlink" req="1">xmlns:xlink</attr>
@@ -26,15 +26,94 @@
         <agent min="1" max="1">
             <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
             <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
-            <name>agentName</name>
-            <note>agentNote</note>
+            <name min="1" max="1">agentName</name>
+            <note min="1" max="1">agentNote</note>
         </agent>
-        <agent>
+        <agent min="1" max="1">
             <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
             <attr name="TYPE" req="1" value="1">OTHER</attr>
             <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
-            <name>agentName</name>
-            <note>agentNote</note>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
         </agent>
+        <agent min="1" max="1">
+            <attr name="ROLE" req="1" value="1">CREATOR</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1">OTHER</attr>
+            <attr name="OTHERROLE" req="1" value="1">PRODUCER</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1">OTHER</attr>
+            <attr name="OTHERROLE" req="1" value="1">SUBMITTER</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1">IPOWNER</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0">
+            <attr name="ROLE" req="1" value="1">EDITOR</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1">CREATOR</attr>
+            <attr name="TYPE" req="1" value="1">OTHER</attr>
+            <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0">
+            <attr name="ROLE" req="1" value="1">CREATOR</attr>
+            <attr name="TYPE" req="1" value="1">INDIVIDUAL</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1">PRESERVATION</attr>
+            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <altRecordID min="1" max="1">SUBMISSIONAGREEMENT<attr name="TYPE" req="1" value="1">SUBMISSIONAGREEMENT</attr></altRecordID>
+        <altRecordID min="0">PREVIOUSSUBMISSIONAGREEMENT<attr name="TYPE" req="1" value="1">PREVIOUSSUBMISSIONAGREEMENT</attr></altRecordID>
+        <altRecordID min="0" max="1">REFERENCECODE<attr name="TYPE" req="1" value="1">REFERENCECODE</attr></altRecordID>
+        <altRecordID min="0">PREVIOUSREFERENCECODE<attr name="TYPE" req="1" value="1">PREVIOUSREFERENCECODE</attr></altRecordID>
+        <metsDocumentID>MetsIdentifier</metsDocumentID>
+        <amdSec>
+            <attr name="ID" req="1">amdLink</attr>
+            <digiprovMD>
+                <attr name="ID" req="1">digiprovLink</attr>
+                <mdRef allowEmpty="1">
+                    <attr name="LOCTYPE" req="1">LOCTYPE</attr>
+                    <attr name="MDTYPE" req="1">MDTYPE</attr>
+                    <attr name="xlink:href" req="1">xlink:href</attr>
+                    <attr name="xlink:type" req="1">xlink:type</attr>
+                    <attr name="ID" req="1">ID</attr>
+                </mdRef>
+            </digiprovMD>
+        </amdSec>
     </metsHdr>
+    <fileSec>
+        <fileGrp containsFiles="1">
+            <file min="1">
+                <FLocat allowEmpty="1">
+                    <attr name="xlink:href" req="1">FName</attr>
+                    <attr name="CHECKSUM" req="1">FChecksum</attr>
+                </FLocat>
+            </file>
+        </fileGrp>
+    </fileSec>
 </mets>
