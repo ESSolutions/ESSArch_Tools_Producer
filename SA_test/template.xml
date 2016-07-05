@@ -112,8 +112,51 @@
                 <FLocat allowEmpty="1">
                     <attr name="xlink:href" req="1">FName</attr>
                     <attr name="CHECKSUM" req="1">FChecksum</attr>
+                    <attr name="ID" req="1">FID</attr>
                 </FLocat>
             </file>
         </fileGrp>
     </fileSec>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+    <structMap min="1" max="1">
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1">FID</attr>
+            </fptr>
+        </div>
+    </structMap>
 </mets>

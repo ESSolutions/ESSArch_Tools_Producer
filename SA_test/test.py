@@ -1,9 +1,11 @@
 """sdf."""
 # import os
-import sys
+# import sys
 from lxml import etree
 import os
 import hashlib
+import time
+import uuid
 
 
 # METS_NS = 'http://www.loc.gov/METS/'
@@ -40,6 +42,8 @@ import hashlib
 
 # value must NOT contaion space
 
+# test med 50,000,000 file entries, (inte lasta ifran systemet) pa 447s.
+
 ############## ((  TODO  )) ##############
 
 # 1. sanitize all attributes and values
@@ -49,12 +53,12 @@ import hashlib
 # 3. namespace
 
 
-# info = {"UUID": "aslfd24lkn2l34nl2", "AgentType": "ORGANIZATION"}
 info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "xmlns:ext": "ExtensionMETS",
         "xmlns:xlink": "http://www.w3.org/1999/xlink",
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+        "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd"
+        "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
         "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
         "LABEL": "Test of SIP 1",
         "TYPE": "Personnel",
@@ -69,38 +73,16 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "REFERENCECODE": "SE/RA/123456/24/F",
         "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
         "MetsIdentifier": "sip.xml",
+        "filename":"sip.txt",
         }
-
-# xmlFile = """
-# <mets min="1" max="1">
-#     <attr name="xmlns:mets" req="1">xmlns:mets</attr>
-#     <attr name="xmlns:ext" req="1">xmlns:ext</attr>
-#     <attr name="xmlns:xlink" req="1">xmlns:xlink</attr>
-#     <attr name="xmlns:xsi" req="1">xmlns:xsi</attr>
-#     <attr name="xsi:schemaLocation" req="1">xsi:schemaLocation</attr>
-#     <attr name="PROFILE" req="1">mets:PROFILE</attr>
-#     <attr name="LABEL" req="0" allowed="1">mets:LABEL</attr>
-#     <attr name="TYPE" req="1">mets:TYPE</attr>
-#     <attr name="OBJID" req="1">mets:OBJID</attr>
-#     <attr name="ext:CONTENTTYPESPECIFICATION" req="0" allowed="1">ext:CONTENTTYPESPECIFICATION</attr>
-#     <attr name="ext:SYSTEMTYPE" req="0" allowed="1">ext:SYSTEMTYPE</attr>
-#     <attr name="ext:DATASUBMISSIONSESSION" req="0" allowed="1">ext:DATASUBMISSIONSESSION</attr>
-#     <attr name="ext:PACKAGENUMBER" req="0" allowed="1">ext:PACKAGENUMBER</attr>
-#     <attr name="ext:ARCHIVALNAME" req="0" allowed="1">ext:ARCHIVALNAME</attr>
-#     <attr name="ext:APPRAISAL" req="0" allowed="1">ext:APPRAISAL</attr>
-#     <attr name="ext:ACCESSRESTRICT" req="0" allowed="1">ext:ACCESSRESTRICT</attr>
-#     <attr name="ext::STARTDATE" req="0" allowed="1">ext:STARTDATE</attr>
-#     <attr name="ext:ENDDATE" req="0" allowed="1">ext:ENDDATE</attr>
-#     <attr name="ext::INFORMATIONCLASS" req="0" allowed="1">ext:INFORMATIONCLASS</attr>
-#     <metsHdr min="0" max="1">UUID</metsHdr>
-# </mets>
-# """
 
 eol_ = '\n'
 
 debug = False
 pretty = True
 fileElements = []
+files = []
+filenames = []
 
 
 def dlog(string):
@@ -108,10 +90,10 @@ def dlog(string):
         print string
 
 
-def pretty_print(level, pretty):
+def pretty_print(fd, level, pretty):
     if pretty:
         for idx in range(level):
-            sys.stdout.write('    ')
+            os.write(fd, '    ')
 
 
 class xmlAttribute(object):
@@ -126,9 +108,9 @@ class xmlAttribute(object):
         self.attrName = attrName
         self.value = value
 
-    def printXML(self):
+    def printXML(self, fd):
         if self.value is not '':
-            sys.stdout.write(' ' + self.attrName + '="' + self.value + '"')
+            os.write(fd, ' ' + self.attrName + '="' + self.value + '"')
 
 
 class xmlElement(object):
@@ -158,37 +140,37 @@ class xmlElement(object):
             self.completeTagName += self.namespace + ':'
         self.completeTagName += self.tagName
 
-    def printXML(self, level=0):
+    def printXML(self, fd, level=0):
         # if self.containsFiles:
             # print "contaions iles: " + self.tagName
         if self.printed == 2:
             return False
         if self.printed == 0:
-            pretty_print(level, pretty)
-            sys.stdout.write('<' + self.completeTagName)
+            pretty_print(fd, level, pretty)
+            os.write(fd, '<' + self.completeTagName)
             for a in self.attributes:
-                a.printXML()
+                a.printXML(fd)
         if self.children or self.value is not '' or self.containsFiles:
             if self.printed == 0:
-                sys.stdout.write('>' + eol_)
+                os.write(fd, '>' + eol_)
             if not self.containsFiles or self.printed == 1:
                 for child in self.children:
-                    if child.printXML(level + 1):
+                    if child.printXML(fd, level + 1):
                         self.printed = 1
                         # print "return True 1"
                         return True
                 if self.value is not '':
-                    pretty_print(level + 1, pretty)
-                    sys.stdout.write(self.value + eol_)
-                pretty_print(level, pretty)
-                sys.stdout.write('</' + self.completeTagName + '>' + eol_)
+                    pretty_print(fd, level + 1, pretty)
+                    os.write(fd, self.value + eol_)
+                pretty_print(fd, level, pretty)
+                os.write(fd, '</' + self.completeTagName + '>' + eol_)
                 self.printed = 2
             else:
                 self.printed = 1
                 # print "return True 2: " + self.completeTagName
                 return True
         else:
-            sys.stdout.write('/>' + eol_)
+            os.write(fd, '/>' + eol_)
             self.printed = 2
 
     def printDebug(self):
@@ -220,6 +202,11 @@ def create2(tree, namespace=''):
         t.containsFiles = True
         empty = False
         fileElements.append(tree)
+        if len(files) > 0:
+            filenames.append("tmp" + str(len(files))+".txt")
+            files.append(os.open("tmp" + str(len(files))+".txt",os.O_RDWR|os.O_CREAT))
+        else:
+            files.append(os.open(info['filename'],os.O_RDWR|os.O_CREAT))
         # print "found files"
     else:
         for child in tree:
@@ -256,9 +243,20 @@ def create2(tree, namespace=''):
     else:
         return t
 
-def parseFiles(filename='/SIP/arc/content'):
+def parseFiles(filename='/SIP/sip test 1/content'):
     #'/SIP/sip test 1/metadata'
-    fileInfo = {"FName":""}
+    fileInfo = {}
+    #
+    # for i in range(0, 10000000):
+    #     fileInfo['FName'] = 'asdfsdf'
+    #     fileInfo['FChecksum'] = hashlib.md5('/SIP/arc 2.tar').hexdigest() #get_sha256_hash(file_name)
+    #     fileInfo['FID'] = '12'
+    #     # write to file
+    #     for e in fileElements:
+    #         t = create3(e, fileInfo)
+    #         t.printXML(3)
+
+        #original
     for dirname, dirnames, filenames in os.walk(filename):
         # print dirname, dirnames, filenames
         for file in filenames:
@@ -266,11 +264,12 @@ def parseFiles(filename='/SIP/arc/content'):
             #populate dictionary
 
             fileInfo['FName'] = file
-            fileInfo['FChecksum'] = hashlib.md5(filename+'/'+file).hexdigest() #get_sha256_hash(file_name)
+            fileInfo['FChecksum'] = hashlib.sha256(filename+'/'+file).hexdigest() #get_sha256_hash(file_name)
+            fileInfo['FID'] = "ID" + uuid.uuid4().__str__()
             # write to file
-            for e in fileElements:
-                t = create3(e, fileInfo)
-                t.printXML(3)
+            for idx, e in enumerate(fileElements):
+                t = create3(e[0], fileInfo)
+                t.printXML(files[idx],3) # TODO change 3 to passed variable
 
 def create3(el, fileInfo, namespace='mets'):
     empty = True
@@ -374,11 +373,34 @@ def create3(el, fileInfo, namespace='mets'):
 # parser = etree.XMLParser(remove_blank_text=True)
 # pars = etree.XML(xmlFile, parser)
 
-pars = etree.parse("template.xml")
+start = time.time()
+# print str(start)
 
+pars = etree.parse("template.xml")
+# fd = os.open("f3.txt",os.O_RDWR|os.O_CREAT)
 rootEl = create2(pars.getroot())
-while rootEl.printXML():
+# rootEl.printXML(fd)
+if len(files) < 1:
+    files.append(os.open(info['filename'],os.O_RDWR|os.O_CREAT))
+if rootEl.printXML(files[0]):
     parseFiles()
+    rootEl.printXML(files[0])
+    #add file to bottom of sip
+    f = files[0]
+    for filename in filenames:
+        fd = os.open(filename, os.O_RDWR)
+        while True:
+            data = os.read(fd, 65536)
+            if data:
+                os.write(f, data)
+            else:
+                break
+        # print more XML
+        rootEl.printXML(files[0])
+end = time.time()
+# print str(end)
+print "Ended in: " + str(end - start) + "s."
+
     # print "files goes here \n\n\n" + str(rootEl.printed)
 
 # print etree.tostring(root)
