@@ -109,50 +109,24 @@
     <fileSec>
         <fileGrp containsFiles="1">
             <file min="1">
+                <attr name="CHECKSUM" req="1">FChecksum</attr>
+                <attr name="ID" req="1">FID</attr>
+                <attr name="MIMETYPE" req="1">FMimetype</attr>
+                <attr name="CREATED" req="1">FCreated</attr>
+                <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                <attr name="SIZE" req="1">FSize</attr>
+                <attr name="USE" req="1">FUse</attr>
+                <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
                 <FLocat allowEmpty="1">
                     <attr name="xlink:href" req="1">FName</attr>
-                    <attr name="CHECKSUM" req="1">FChecksum</attr>
-                    <attr name="ID" req="1">FID</attr>
+                    <attr name="LOCTYPE" req="1">FLoctype</attr>
+                    <attr name="xlink:type" req="1">FLinkType</attr>
                 </FLocat>
             </file>
         </fileGrp>
     </fileSec>
     <structMap min="1" max="1">
-        <div containsFiles="1">
-            <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
-            </fptr>
-        </div>
-    </structMap>
-    <structMap min="1" max="1">
-        <div containsFiles="1">
-            <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
-            </fptr>
-        </div>
-    </structMap>
-    <structMap min="1" max="1">
-        <div containsFiles="1">
-            <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
-            </fptr>
-        </div>
-    </structMap>
-    <structMap min="1" max="1">
-        <div containsFiles="1">
-            <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
-            </fptr>
-        </div>
-    </structMap>
-    <structMap min="1" max="1">
-        <div containsFiles="1">
-            <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
-            </fptr>
-        </div>
-    </structMap>
-    <structMap min="1" max="1">
+        <attr name="LABEL">SMLabel</attr>
         <div containsFiles="1">
             <fptr allowEmpty="1">
                 <attr name="FILEID" req="1">FID</attr>
