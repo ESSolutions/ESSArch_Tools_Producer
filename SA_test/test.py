@@ -74,6 +74,7 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
         "MetsIdentifier": "sip.xml",
         "filename":"sip.txt",
+        "SMLabel":"Profilestructmap",
         }
 
 eol_ = '\n'
@@ -243,7 +244,19 @@ def create2(tree, namespace=''):
     else:
         return t
 
-def parseFiles(filename='/SIP/sip test 1/content'):
+def checksum(filename):
+    fd = os.open(filename, os.O_RDONLY)
+    hashSHA = hashlib.sha256()
+    while True:
+        data = os.read(fd, 65536)
+        if data:
+            hashSHA.update(data)
+        else:
+            break
+    os.close(fd)
+    return hashSHA.hexdigest()
+
+def parseFiles(filename='/SIP/huge'):
     #'/SIP/sip test 1/metadata'
     fileInfo = {}
     #
@@ -258,14 +271,23 @@ def parseFiles(filename='/SIP/sip test 1/content'):
 
         #original
     for dirname, dirnames, filenames in os.walk(filename):
-        # print dirname, dirnames, filenames
+        print dirname
         for file in filenames:
 
             #populate dictionary
 
-            fileInfo['FName'] = file
-            fileInfo['FChecksum'] = hashlib.sha256(filename+'/'+file).hexdigest() #get_sha256_hash(file_name)
+            fileInfo['FName'] = dirname+'/'+file
+            # fileInfo['FChecksum'] = hashlib.sha256(dirname+'/'+file).hexdigest() #get_sha256_hash(file_name)
+            fileInfo['FChecksum'] = checksum(dirname+'/'+file)
             fileInfo['FID'] = "ID" + uuid.uuid4().__str__()
+            fileInfo['FMimetype'] = 'application/msword'
+            fileInfo['FCreated'] = '2016-02-21T11:18:44+01:00'
+            fileInfo['FFormatName'] = 'MS word'
+            fileInfo['FSize'] = str(os.path.getsize(dirname+'/'+file))
+            fileInfo['FUse'] = 'DataFile'
+            fileInfo['FChecksumType'] = 'SHA256'
+            fileInfo['FLoctype'] = 'URL'
+            fileInfo['FLinkType'] = 'simple'
             # write to file
             for idx, e in enumerate(fileElements):
                 t = create3(e[0], fileInfo)
