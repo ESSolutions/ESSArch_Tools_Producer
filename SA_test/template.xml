@@ -19,22 +19,22 @@
     <attr name="ext:STARTDATE" req="0">ext:STARTDATE</attr>
     <attr name="ext:ENDDATE" req="0">ext:ENDDATE</attr>
     <attr name="ext:INFORMATIONCLASS" req="0">ext:INFORMATIONCLASS</attr>
-    <metsHdr min="0" max="1">
+    <metsHdr min="1" max="1">
         <attr name="CREATEDATE" req="1">CREATEDATE</attr>
         <attr name="RECORDSTATUS" req="1">RECORDSTATUS</attr>
         <attr name="ext:OAISTYPE" req="1">ext:OAISTYPE</attr>
-        <agent min="1" max="1">
+        <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=ORGANIZATION">
             <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
             <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
-            <name min="1" max="1">agentName</name>
-            <note min="1" max="1">agentNote</note>
+            <name min="1" max="1">name</name>
+            <note min="1" max="1">note</note>
         </agent>
-        <agent min="1" max="1">
+        <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=OTHER,OTHERTYPE=SOFTWARE">
             <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
             <attr name="TYPE" req="1" value="1">OTHER</attr>
             <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
-            <name min="1" max="1">agentName</name>
-            <note min="0" max="1">agentNote</note>
+            <name min="1" max="1">name</name>
+            <note min="0" max="1">note</note>
         </agent>
         <agent min="1" max="1">
             <attr name="ROLE" req="1" value="1">CREATOR</attr>

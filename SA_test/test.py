@@ -75,6 +75,18 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "MetsIdentifier": "sip.xml",
         "filename":"sip.txt",
         "SMLabel":"Profilestructmap",
+        "agents":[{
+                "ROLE":"ARCHIVIST",
+                "TYPE":"ORGANIZATION",
+                "name":"Arkivbildar namn",
+                "note":"VAT:SE201345098701",
+            },{
+                "ROLE":"ARCHIVIST",
+                "TYPE":"OTHER",
+                "OTHERTYPE":"SOFTWARE",
+                "name":"Arkivbildar namn",
+                "note":"VAT:SE201345098701",
+            }],
         }
 
 eol_ = '\n'
@@ -190,7 +202,6 @@ class xmlElement(object):
 
 def create2(tree, namespace=''):
     empty = True
-    hasAttrib = False
     t = xmlElement(tree.tag, namespace)
     if tree.text is not None:
         text = tree.text.replace('\n', '').replace(' ', '')
@@ -214,11 +225,9 @@ def create2(tree, namespace=''):
             if child.tag == 'attr':
                 # value = info[child.text]
                 if child.get('value') is '1':
-                    hasAttrib = True
                     t.addAttribute(xmlAttribute(child.get('name'), child.text))
                 else:
                     if child.text in info:
-                        hasAttrib = True
                         value = info[child.text]
                         name = child.get('name')
                         t.addAttribute(xmlAttribute(name, value))
@@ -398,7 +407,7 @@ def create3(el, fileInfo, namespace='mets'):
 start = time.time()
 # print str(start)
 
-pars = etree.parse("template.xml")
+pars = etree.parse("template2.xml")
 # fd = os.open("f3.txt",os.O_RDWR|os.O_CREAT)
 rootEl = create2(pars.getroot())
 # rootEl.printXML(fd)
