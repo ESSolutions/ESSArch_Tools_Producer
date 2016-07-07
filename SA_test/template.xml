@@ -107,7 +107,41 @@
         </amdSec>
     </metsHdr>
     <fileSec>
-        <fileGrp containsFiles="1">
+        <fileGrp containsFiles="1" sortBy=".*(.csv)">
+            <file min="1">
+                <attr name="CHECKSUM" req="1">FChecksum</attr>
+                <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
+                <attr name="MIMETYPE" req="1">FMimetype</attr>
+                <attr name="CREATED" req="1">FCreated</attr>
+                <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                <attr name="SIZE" req="1">FSize</attr>
+                <attr name="USE" req="1">FUse</attr>
+                <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
+                <FLocat allowEmpty="1">
+                    <attr name="xlink:href" req="1">FName</attr>
+                    <attr name="LOCTYPE" req="1">FLoctype</attr>
+                    <attr name="xlink:type" req="1">FLinkType</attr>
+                </FLocat>
+            </file>
+            <fileGrp containsFiles="1" sortBy="[4][\.](?!\p\h\p)+[A-z]+">
+                <file min="1">
+                    <attr name="CHECKSUM" req="1">FChecksum</attr>
+                    <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
+                    <attr name="MIMETYPE" req="1">FMimetype</attr>
+                    <attr name="CREATED" req="1">FCreated</attr>
+                    <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                    <attr name="SIZE" req="1">FSize</attr>
+                    <attr name="USE" req="1">FUse</attr>
+                    <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
+                    <FLocat allowEmpty="1">
+                        <attr name="xlink:href" req="1">FName</attr>
+                        <attr name="LOCTYPE" req="1">FLoctype</attr>
+                        <attr name="xlink:type" req="1">FLinkType</attr>
+                    </FLocat>
+                </file>
+            </fileGrp>
+        </fileGrp>
+        <fileGrp containsFiles="1" sortBy="[\.](?!\p\h\p)+[A-z]+">
             <file min="1">
                 <attr name="CHECKSUM" req="1">FChecksum</attr>
                 <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>

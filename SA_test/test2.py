@@ -9,6 +9,12 @@ eol_ = '\n'
 fileElements = []
 files = []
 filenames = []
+normalElements = []
+normalFiles = []
+sortedElements = []
+sortedFiles = []
+foundFiles = 0
+xmlFile = ''
 
 def dlog(string):
     if debug:
@@ -35,10 +41,30 @@ def calculateChecksum(filename):
 def sanitizeString(s):
     return s.rstrip()
 
+# class fileGrp():
+#
+#     el = None
+#     fid = None
+#     children = []
+#
+#     def __init__(self, el=None, fid=None, children=[]):
+#         pass
+#
+#     def addChild(self, el=None, fid=None, children=[]):
+#         self.children.append(fileGrp(el, fid, children))
+
+
 def parseFiles(filename='/SIP/huge/corp', level=3):
     fileInfo = {}
+
+    # for e in fileElements:
+    #     if e.attr('sortBy'):
+    #         sortedElements.append(e)
+    #     else:
+    #         normalElements.append(e)
+
     for dirname, dirnames, filenames in os.walk(filename):
-        print dirname
+        # print dirname
         for file in filenames:
 
             #populate dictionary
@@ -55,9 +81,13 @@ def parseFiles(filename='/SIP/huge/corp', level=3):
             fileInfo['FLoctype'] = 'URL'
             fileInfo['FLinkType'] = 'simple'
             # write to file
-            for idx, e in enumerate(fileElements):
+            for idx, e in enumerate(normalElements):
                 t = createXMLStructureForFiles(e[0], fileInfo)
-                t.printXML(files[idx],level)
+                t.printXML(normalFiles[idx],level)
+
+            for idx, e in enumerate(sortedElements):
+                t = createXMLStructureForFiles(e[0], fileInfo)
+                t.printXML(sortedFiles[idx],level)
 
 def getValue(key, info):
     if key is not None:
@@ -68,7 +98,34 @@ def getValue(key, info):
                 return info[text]
     return None
 
+def analyzeFileStructure(tree, namespace):
+    global foundFiles
+    empty = True
+    t = xmlElement(tree.tag, namespace)
+    if tree.get('containsFiles') == '1':
+        t.containsFiles = True
+        empty = False
+        if tree.get('sortby'):
+            sortedElements.append(tree)
+            filenames.append("tmp" + str(foundFiles)+".txt")
+            sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+        else:
+            normalElements.append(tree)
+            filenames.append("tmp" + str(foundFiles)+".txt")
+            normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+        foundFiles += 1
+
+    for child in tree:
+        ch = analyzeFileStructure(child, namespace)
+        if ch is not None:
+            t.addChild(ch)
+            empty = False
+    if not empty:
+        return t
+
+
 def createXMLStructure(tree, info, namespace=''):
+    global foundFiles
     empty = True
     t = xmlElement(tree.tag, namespace)
     text = getValue(tree.text, info)
@@ -76,14 +133,33 @@ def createXMLStructure(tree, info, namespace=''):
         t.value = text
         empty = False
     if tree.get('containsFiles') == '1':
+
+        if tree.get('sortby'):
+            sortedElements.append(tree)
+            filenames.append("tmp" + str(foundFiles)+".txt")
+            sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+        else:
+            normalElements.append(tree)
+            filenames.append("tmp" + str(foundFiles)+".txt")
+            normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+        foundFiles += 1
+
+        for child in tree:
+            ch = analyzeFileStructure(child, namespace)
+            if ch is not None:
+                t.addChild(ch)
+        # if tree.get('sortby'):
+        #     sortedElements.append(tree)
+        # else:
+        #     normalElements.append(tree)
         t.containsFiles = True
         empty = False
-        fileElements.append(tree)
-        if len(files) > 0:
-            filenames.append("tmp" + str(len(files))+".txt")
-            files.append(os.open("tmp" + str(len(files))+".txt",os.O_RDWR|os.O_CREAT))
-        else:
-            files.append(os.open(info['filename'],os.O_RDWR|os.O_CREAT))
+        # fileElements.append(tree)
+        # if len(files) > 0:
+        #     filenames.append("tmp" + str(len(files))+".txt")
+        #     files.append(os.open("tmp" + str(len(files))+".txt",os.O_RDWR|os.O_CREAT))
+        # else:
+        #     files.append(os.open(info['filename'],os.O_RDWR|os.O_CREAT))
         # print "found files"
     else:
         for child in tree:
@@ -99,7 +175,7 @@ def createXMLStructure(tree, info, namespace=''):
                         dlog("INFO: missing optional value for: " + child.text)
                 else:
                     t.addAttribute(attribute)
-                    
+
             elif child.tag == 'namespace':
                 t.setNamespace(child.text)
                 namespace = child.text
@@ -158,14 +234,8 @@ def findMatchingSubDict(dictionaries, testValue):
         # compare agent dicts
         found = True
         for key, value in testValue.iteritems():
-            f = False
-            for k, v in dic.iteritems():
-                if key == k and value == v:
-                    f = True
-                    break
-            if not f:
+            if dic[key] != value:
                 found = False
-                break
         if found:
             return dic
     return None
@@ -373,25 +443,27 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
 #     print child.tail
 
 #REAL
-
+os.remove('sip.txt')
+os.remove('tmp1.txt')
+os.remove('tmp2.txt')
+os.remove('tmp3.txt')
 templatename = 'template.xml'
 pars = etree.parse(templatename)
 rootEl = createXMLStructure(pars.getroot(), info)
-if len(files) < 1:
-    files.append(os.open(info['filename'],os.O_RDWR|os.O_CREAT))
-if rootEl.printXML(files[0]):
-    parseFiles('/SIP/huge/corp')
-    rootEl.printXML(files[0])
+xmlFile = os.open(info['filename'],os.O_RDWR|os.O_CREAT)
+parseFiles('/SIP/huge/csv/006')
+if rootEl.printXML(xmlFile):
+    # rootEl.printXML(xmlFile)
     #add file to bottom of xml
-    f = files[0]
     for filename in filenames:
         # add tmp file to end of xml
         fd = os.open(filename, os.O_RDONLY)
         while True:
             data = os.read(fd, 65536)
             if data:
-                os.write(f, data)
+                os.write(xmlFile, data)
             else:
                 break
         # print more XML
-        rootEl.printXML(files[0])
+        rootEl.printXML(xmlFile)
+    pass
