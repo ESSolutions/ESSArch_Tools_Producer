@@ -24,73 +24,73 @@
         <attr name="RECORDSTATUS" req="1">RECORDSTATUS</attr>
         <attr name="ext:OAISTYPE" req="1">ext:OAISTYPE</attr>
         <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=ORGANIZATION">
-            <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1"><metsGenText name="ARCHIVIST"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">name</name>
             <note min="1" max="1">note</note>
         </agent>
         <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=OTHER,OTHERTYPE=SOFTWARE">
-            <attr name="ROLE" req="1" value="1">ARCHIVIST</attr>
-            <attr name="TYPE" req="1" value="1">OTHER</attr>
-            <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="ARCHIVIST"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERTYPE" req="1" value="1"><metsGenText name="SOFTWARE"/></attr>
             <name min="1" max="1">name</name>
             <note min="0" max="1">note</note>
         </agent>
         <agent min="1" max="1">
-            <attr name="ROLE" req="1" value="1">CREATOR</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0" max="1">
-            <attr name="ROLE" req="1" value="1">OTHER</attr>
-            <attr name="OTHERROLE" req="1" value="1">PRODUCER</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERROLE" req="1" value="1"><metsGenText name="PRODUCER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0" max="1">
-            <attr name="ROLE" req="1" value="1">OTHER</attr>
-            <attr name="OTHERROLE" req="1" value="1">SUBMITTER</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERROLE" req="1" value="1"><metsGenText name="SUBMITTER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0" max="1">
-            <attr name="ROLE" req="1" value="1">IPOWNER</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="IPOWNER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0">
-            <attr name="ROLE" req="1" value="1">EDITOR</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="EDITOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0" max="1">
-            <attr name="ROLE" req="1" value="1">CREATOR</attr>
-            <attr name="TYPE" req="1" value="1">OTHER</attr>
-            <attr name="OTHERTYPE" req="1" value="1">SOFTWARE</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERTYPE" req="1" value="1"><metsGenText name="SOFTWARE"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0">
-            <attr name="ROLE" req="1" value="1">CREATOR</attr>
-            <attr name="TYPE" req="1" value="1">INDIVIDUAL</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="INDIVIDUAL"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
         <agent min="0" max="1">
-            <attr name="ROLE" req="1" value="1">PRESERVATION</attr>
-            <attr name="TYPE" req="1" value="1">ORGANIZATION</attr>
+            <attr name="ROLE" req="1" value="1"><metsGenText name="PRESERVATION"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
             <name min="1" max="1">agentName</name>
             <note min="0" max="1">agentNote</note>
         </agent>
-        <altRecordID min="1" max="1">SUBMISSIONAGREEMENT<attr name="TYPE" req="1" value="1">SUBMISSIONAGREEMENT</attr></altRecordID>
-        <altRecordID min="0">PREVIOUSSUBMISSIONAGREEMENT<attr name="TYPE" req="1" value="1">PREVIOUSSUBMISSIONAGREEMENT</attr></altRecordID>
-        <altRecordID min="0" max="1">REFERENCECODE<attr name="TYPE" req="1" value="1">REFERENCECODE</attr></altRecordID>
-        <altRecordID min="0">PREVIOUSREFERENCECODE<attr name="TYPE" req="1" value="1">PREVIOUSREFERENCECODE</attr></altRecordID>
+        <altRecordID min="1" max="1">SUBMISSIONAGREEMENT<attr name="TYPE" req="1"><metsGenText name="SUBMISSIONAGREEMENT"/></attr></altRecordID>
+        <altRecordID min="0">PREVIOUSSUBMISSIONAGREEMENT<attr name="TYPE" req="1"><metsGenText name="PREVIOUSSUBMISSIONAGREEMENT"/></attr></altRecordID>
+        <altRecordID min="0" max="1">REFERENCECODE<attr name="TYPE" req="1"><metsGenText name="REFERENCECODE"/></attr></altRecordID>
+        <altRecordID min="0">PREVIOUSREFERENCECODE<attr name="TYPE" req="1"><metsGenText name="PREVIOUSREFERENCECODE"/></attr></altRecordID>
         <metsDocumentID>MetsIdentifier</metsDocumentID>
         <amdSec>
             <attr name="ID" req="1">amdLink</attr>
@@ -110,7 +110,7 @@
         <fileGrp containsFiles="1">
             <file min="1">
                 <attr name="CHECKSUM" req="1">FChecksum</attr>
-                <attr name="ID" req="1">FID</attr>
+                <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
                 <attr name="MIMETYPE" req="1">FMimetype</attr>
                 <attr name="CREATED" req="1">FCreated</attr>
                 <attr name="ext:FILEFORMATNAME">FFormatName</attr>

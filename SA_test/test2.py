@@ -32,6 +32,9 @@ def calculateChecksum(filename):
     os.close(fd)
     return hashSHA.hexdigest()
 
+def sanitizeString(s):
+    return s.rstrip()
+
 def parseFiles(filename='/SIP/huge/corp', level=3):
     fileInfo = {}
     for dirname, dirnames, filenames in os.walk(filename):
@@ -56,16 +59,22 @@ def parseFiles(filename='/SIP/huge/corp', level=3):
                 t = createXMLStructureForFiles(e[0], fileInfo)
                 t.printXML(files[idx],level)
 
-def createXMLStructure(tree, info, namespace=''):
-    empty = True
-    t = xmlElement(tree.tag, namespace)
-    if tree.text is not None:
-        text = tree.text.replace('\n', '').replace(' ', '')
+def getValue(key, info):
+    if key is not None:
+        text = sanitizeString(key)
         if text != '':
             # print tree.text.replace('\n', '').replace(' ','')
             if text in info:
-                empty = False
-                t.value = info[tree.text]
+                return info[text]
+    return None
+
+def createXMLStructure(tree, info, namespace=''):
+    empty = True
+    t = xmlElement(tree.tag, namespace)
+    text = getValue(tree.text, info)
+    if text is not None:
+        t.value = text
+        empty = False
     if tree.get('containsFiles') == '1':
         t.containsFiles = True
         empty = False
@@ -79,23 +88,24 @@ def createXMLStructure(tree, info, namespace=''):
     else:
         for child in tree:
             if child.tag == 'attr':
-                # value = info[child.text]
-                if child.get('value') is '1':
-                    t.addAttribute(xmlAttribute(child.get('name'), child.text))
-                else:
-                    if child.text in info:
-                        value = info[child.text]
-                        name = child.get('name')
-                        t.addAttribute(xmlAttribute(name, value))
+
+                #parse attrib children
+                attribute = parseAttribute(child, info)
+                if attribute is None:
+                    if child.get('req') == '1':
+                        print "ERROR: missing required value for: " + child.text
                     else:
-                        if child.get('req') == '1':
-                            print "ERROR: missing required value for: " + child.text
-                        else:
-                            # debug
-                            dlog("INFO: missing optional value for: " + child.text)
+                        # debug
+                        dlog("INFO: missing optional value for: " + child.text)
+                else:
+                    t.addAttribute(attribute)
+                    
             elif child.tag == 'namespace':
                 t.setNamespace(child.text)
                 namespace = child.text
+            elif child.tag == 'metsGenText':
+                if child.get('name'):
+                    t.value += child.get('name')
             else:
                 if child.get('arr') is None:
                     c = createXMLStructure(child, info, namespace)
@@ -118,9 +128,7 @@ def createXMLStructure(tree, info, namespace=''):
                         testArgs[r[0]] = r[1]
                     dictionaries = info[attr[0]]
                     for used in xrange(0, 100000000):
-                        print "test1"
                         dic = findMatchingSubDict(dictionaries, testArgs)
-                        print "test2"
                         if dic is not None:
                             #done, found matching entries
                             c = createXMLStructure(child, dic, namespace)
@@ -129,12 +137,13 @@ def createXMLStructure(tree, info, namespace=''):
                                 t.addChild(c)
                                 dictionaries.remove(dic)
                             else:
-                                print 'break'
                                 break
                         else:
-                            print 'break'
                             break
-
+            text = getValue(child.tail, info)
+            if text is not None:
+                t.value += text
+                empty = False
 
     if empty:
         if tree.get('allowEmpty') == '1':
@@ -164,30 +173,30 @@ def findMatchingSubDict(dictionaries, testValue):
 def createXMLStructureForFiles(el, fileInfo, namespace='mets'):
     empty = True
     t = xmlElement(el.tag, namespace)
-    if el.text is not None:
-        text = el.text.replace('\n', '').replace(' ', '')
-        if text != '':
-            if text in fileInfo:
-                empty = False
-                t.value = fileInfo[el.text]
+    text = getValue(el.text, info)
+    if text is not None:
+        t.value = text
+        empty = False
     for child in el:
         if child.tag == 'attr':
-            if child.get('value') is '1':
-                t.addAttribute(xmlAttribute(child.get('name'), child.text))
-            else:
-                if child.text in fileInfo:
-                    value = fileInfo[child.text]
-                    name = child.get('name')
-                    t.addAttribute(xmlAttribute(name, value))
+
+            #parse attrib children
+            attribute = parseAttribute(child, fileInfo)
+            if attribute is None:
+                if child.get('req') == '1':
+                    print "ERROR: missing required value for: " + child.text
                 else:
-                    if child.get('req') == '1':
-                        print "ERROR: missing required value for: " + child.text
-                    else:
-                        # debug
-                        dlog("INFO: missing optional value for: " + child.text)
+                    # debug
+                    dlog("INFO: missing optional value for: " + child.text)
+            else:
+                t.addAttribute(attribute)
+
         elif child.tag == 'namespace':
             t.setNamespace(child.text)
             namespace = child.text
+        elif child.tag == 'metsGenText':
+            if child.get('name'):
+                t.value += child.get('name')
         else:
             c = createXMLStructureForFiles(child, fileInfo, namespace)
             if c is not None:
@@ -200,6 +209,22 @@ def createXMLStructureForFiles(el, fileInfo, namespace='mets'):
             return None
     else:
         return t
+
+def parseAttribute(node, info):
+    text = ''
+    t = getValue(node.text, info)
+    if t is not None:
+        text += t
+    for child in node:
+        if child.tag == 'metsGenText':
+            text += child.get('name')
+        t = getValue(child.tail, info)
+        if t is not None:
+            text += t
+    if text is not '':
+        return xmlAttribute(node.get('name'), text)
+    else:
+        return None
 
 class xmlAttribute(object):
     '''
@@ -330,6 +355,24 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
                 "note":"1.2.0",
             }],
         }
+
+#testing
+
+# from itertools import chain
+#
+# pars = etree.parse('tt.xml')
+# node = pars.getroot()
+# def strin(node):
+#     parts = ([node.text] +
+#                 list(chain(*([c.text, strin(c), c.tail] for c in node.getchildren()))) +
+#                 [node.tail])
+#     return parts
+# print strin(node)
+#
+# for child in node.getchildren():
+#     print child.tail
+
+#REAL
 
 templatename = 'template.xml'
 pars = etree.parse(templatename)
