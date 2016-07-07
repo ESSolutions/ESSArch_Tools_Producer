@@ -224,15 +224,62 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    #celery
+    'djcelery',
     'configuration',
     'ip',
     'profiles',
     'create',
     'chunked_upload',
     'submit',
+    'workers',
+    'jobtastic'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER='djcelery.schedulers.DatabaseScheduler'
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_TASK_RESULT_EXPIRES = 864000 # clean older than 10 days in celery_taskmeta
+
+# from celery.schedules import crontab
+# from datetime import timedelta
+
+process_list=["metsGenerator.py"]
+WORKERS_ROOT = '/Users/Axenu/Developer/ETp/ESSArch_Tool_Producer/ESSArch_TP/workers'
+for i,p in enumerate(process_list):
+    process_list[i]=os.path.join(WORKERS_ROOT,p)
+PROCESS_LIST = process_list
+CELERY_IMPORTS = ('workers.metsGenerator')
+
+# CELERYBEAT_SCHEDULE = {
+    # "CheckProcesses-every-120-seconds": {
+    #     "task": "monitoring.tasks.CheckProcessTask",
+    #     "schedule": timedelta(seconds=120),
+    #     "kwargs": {
+    #             'process_list':process_list,
+    #     }
+    # },
+    # "CheckProcFiles-every-300-seconds": {
+    #     "task": "monitoring.tasks.CheckProcFilesTask",
+    #     "schedule": timedelta(seconds=300),
+    #     "kwargs": {
+    #             'proc_log_path':"/ESSArch/log/proc",
+    #     }
+    # },
+    # "CheckStorageMediums-everyday-07:00": {
+    #     "task": "monitoring.tasks.CheckStorageMediumsTask",
+    #     "schedule": crontab(hour=7,minute=0),
+    #     "kwargs": {
+    #             'email':"admin",
+    #     }
+    # },
+# }
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

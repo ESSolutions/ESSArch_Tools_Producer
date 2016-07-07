@@ -21,7 +21,7 @@
 '''
 
 # Create your views here.
-from django.template import Context, loader, RequestContext 
+from django.template import Context, loader, RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django import forms
@@ -66,17 +66,57 @@ from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter
 from .forms import PrepareFormSE, PrepareFormNO, CreateFormSE, CreateFormNO
 import lib.utils as lu
 import lib.app_tools as lat
-
+from tasks import add
+import workers.metsGenerator
+from workers.metsGenerator import LotsOfDivisionTask
+from random import randint
 '''
 @login_required
 def index(request):
     # Get current site_profile and zone
-    site_profile, zone = lat.getSiteZone()    
+    site_profile, zone = lat.getSiteZone()
     t = loader.get_template('create/index.html')
     c = RequestContext(request)
     c['zone'] = zone
     return HttpResponse(t.render(c))
 '''
+
+def index(request):
+    # v=add.delay(4,4)
+    iterations = randint(1,10)  # That's a lot. Right?
+    step = 10
+    result = LotsOfDivisionTask.delay_or_fail(
+        numerators=range(0, step * iterations * 2, step * 2),
+        denominators=range(1, step * iterations, step),)
+    return HttpResponse("Hello, world. You're at the polls index." + str(result.get()))
+
+class test(View):
+    template_name = 'create/prepare_create.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        # v = add.delay(4,4)
+        # logger.log(v.get())
+        context = {}
+        context['label'] = 'Prepare new information packages'
+
+        # Get current site_profile and zone
+        site_profile, zone = lat.getSiteZone()
+
+        # Present only prepared IPs
+        ip = InformationPackage.objects.filter(state='Prepared')
+
+        initialvalues = {}
+        initialvalues['destinationroot'] = lat.getLogFilePath()
+        if site_profile == "SE":
+            form = PrepareFormSE(initial=initialvalues) # Form with defaults
+        if site_profile == "NO":
+            form = PrepareFormNO(initial=initialvalues) # Form with defaults
+
+        context['form'] = form
+        context['zone'] = zone
+        context['informationpackages'] = ip
+        return render(request, self.template_name, context)
 
 class PrepareIPCreate(View):
     template_name = 'create/prepare_create.html'
@@ -87,9 +127,9 @@ class PrepareIPCreate(View):
         context['label'] = 'Prepare new information packages'
 
         # Get current site_profile and zone
-        site_profile, zone = lat.getSiteZone()   
+        site_profile, zone = lat.getSiteZone()
 
-        # Present only prepared IPs 
+        # Present only prepared IPs
         ip = InformationPackage.objects.filter(state='Prepared')
 
         initialvalues = {}
@@ -98,7 +138,7 @@ class PrepareIPCreate(View):
             form = PrepareFormSE(initial=initialvalues) # Form with defaults
         if site_profile == "NO":
             form = PrepareFormNO(initial=initialvalues) # Form with defaults
-        
+
         context['form'] = form
         context['zone'] = zone
         context['informationpackages'] = ip
@@ -108,7 +148,7 @@ class PrepareIPCreate(View):
     def post(self, request, *args, **kwargs):
         context = {}
         context['label'] = 'Submit information packages'
-        
+
         # Get current site_profile and zone
         site_profile, zone = lat.getSiteZone()
 
@@ -118,16 +158,16 @@ class PrepareIPCreate(View):
             form = PrepareFormNO(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
-            
+
             # get clean context data
             contextdata = form.cleaned_data
-            
+
             # agent e.q user
             agent = str(request.user)
 
             # prepare IP
             ip,errno,why = lat.prepareIP(agent, contextdata)
-            if errno: 
+            if errno:
                 logger.error(why)
                 c = { 'message': why }
                 c.update(csrf(request))
@@ -137,7 +177,7 @@ class PrepareIPCreate(View):
 
             # exit form
             return HttpResponseRedirect( '/create/createiplist' )
-            
+
         else:
             logger.error('Form PrepareFormSE/NO is not valid.')
             #print form.data, form.errors
@@ -154,9 +194,9 @@ class CreateIPList(View):
         context['label'] = 'Select which information package to create'
 
         # Get current site_profile and zone
-        site_profile, zone = lat.getSiteZone()   
+        site_profile, zone = lat.getSiteZone()
 
-        # Present only prepared IPs 
+        # Present only prepared IPs
         ip = InformationPackage.objects.filter(state='Prepared')
 
         context['zone'] = zone
@@ -172,13 +212,13 @@ class CreateIP(View):
         context['label'] = 'Create information package'
 
         # Get current site_profile and zone
-        site_profile, zone = lat.getSiteZone()    
-    
+        site_profile, zone = lat.getSiteZone()
+
         id = self.kwargs['id']
-    
+
         # get IP from db
         ip = get_object_or_404(InformationPackage, pk=id)
-    
+
         destination_path = Path.objects.get(entity="path_ingest_reception").value
 
         initialvalues = IPParameter.objects.all().values()[0]
@@ -190,7 +230,7 @@ class CreateIP(View):
             form = CreateFormSE( initial=initialvalues )
         if site_profile == "NO":
             form = CreateFormNO( initial=initialvalues )
-        
+
         context['form'] = form
         context['zone'] = zone
         context['ip'] = ip
@@ -201,12 +241,12 @@ class CreateIP(View):
     def post(self, request, *args, **kwargs):
         context = {}
         context['label'] = 'Submit information packages'
-        
+
         # Get current site_profile and zone
-        site_profile, zone = lat.getSiteZone()    
-        
+        site_profile, zone = lat.getSiteZone()
+
         id = self.kwargs['id']
-        
+
         # get IP from db
         ip = get_object_or_404(InformationPackage, pk=id)
 
@@ -216,13 +256,13 @@ class CreateIP(View):
             form = CreateFormNO(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
-            
+
             # get clean context data from form
             contextdata = form.cleaned_data
 
             # create IP, if unsuccessful show status
             ip, errno, why = lat.createIP(ip, contextdata)
-            if errno: 
+            if errno:
                 logger.error('Could not create IP: %s', why)
                 c = { 'message': why }
                 c.update(csrf(request))
@@ -246,11 +286,11 @@ class CreateIP(View):
 ###############################################
 @login_required
 #def viewIPs(request, uuid, creator, label, iptype, createdate):
-def viewIPs(request):    
-    
+def viewIPs(request):
+
     # Get current site_profile and zone
     site_profile, zone = lat.getSiteZone()
-        
+
     # Prepare IPs
     if request.method == 'POST': # If the form has been submitted...
         if site_profile == "SE":
@@ -259,16 +299,16 @@ def viewIPs(request):
             form = PrepareFormNO(request.POST) # A form bound to the POST data
         #form = PrepareForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            
+
             # get clean context data
             contextdata = form.cleaned_data
-            
+
             # agent e.q user
             agent = str(request.user)
 
             # prepare IP
             ip,errno,why = lat.prepareIP(agent, contextdata)
-            if errno: 
+            if errno:
                 logger.error(why)
                 c = { 'message': why }
                 c.update(csrf(request))
@@ -278,7 +318,7 @@ def viewIPs(request):
 
             # exit form
             return HttpResponseRedirect( '/create/view' )
-            
+
         else:
             logger.error('Form PrepareFormSE/NO is not valid.')
             #print form.data, form.errors
@@ -287,7 +327,7 @@ def viewIPs(request):
                  }
             c.update(csrf(request))
             return render_to_response( 'create/view.html', c, context_instance=RequestContext(request) )
-    
+
     else:
         initialvalues = {'destinationroot':lat.getLogFilePath()}
         if site_profile == "SE":
@@ -296,11 +336,11 @@ def viewIPs(request):
             form = PrepareFormNO(initial=initialvalues) # Form with defaults
         #form = PrepareForm(initial=initialvalues) # Form with defaults
 
-    # Present only prepared IPs 
+    # Present only prepared IPs
     ip = InformationPackage.objects.filter(state='Prepared')
 
     c = {'form': form,
-         'zone':zone, 
+         'zone':zone,
          'informationpackages': ip,
         #'link': link,
          }
@@ -320,7 +360,7 @@ def createip(request, id):
 
     # need to find out path for destination
     destination_path = Path.objects.get(entity="path_preingest_reception").value
-    
+
     if request.method == 'POST': # If the form has been submitted...
         if site_profile == "SE":
             form = forms.CreateFormSE(request.POST) # A form bound to the POST data
@@ -329,13 +369,13 @@ def createip(request, id):
         #form = forms.CreateForm(request.POST) # A form bound to the POST data
         #pdb.set_trace()
         if form.is_valid(): # All validation rules pass
-            
+
             # get clean context data from form
             contextdata = form.cleaned_data
 
             # create IP, if unsuccessful show status
             ip, errno, why = lat.createIP(ip, contextdata)
-            if errno: 
+            if errno:
                 logger.error('Could not create IP: %s', why)
                 c = { 'message': why }
                 c.update(csrf(request))
@@ -368,7 +408,7 @@ def createip(request, id):
         if site_profile == "NO":
             form = forms.CreateFormNO( initial=initialvalues )
         #form = forms.CreateForm( initial=initialvalues )
-        
+
     c = {'form':form,
          'zone':zone,
          'ip':ip,
@@ -381,9 +421,9 @@ def createip(request, id):
 class IPcontentasJSON(View):
 
     def dispatch(self, *args, **kwargs):
-    
+
         return super(IPcontentasJSON, self).dispatch( *args, **kwargs)
-        
+
     def getDirectoryInfo(self, *args, **kwargs):
 
         ipid = self.kwargs['ipid']
@@ -399,14 +439,14 @@ class IPcontentasJSON(View):
         return listofcontent
 
     def json_response(self, request):
-        
+
         data = self.getDirectoryInfo()
         return HttpResponse(
             #data
             json.dumps(data, cls=DjangoJSONEncoder)
         )
     def get(self, request, *args, **kwargs):
-        
+
         return self.json_response(request)
 
 
@@ -605,7 +645,7 @@ class ChunkedUploadView(ChunkedUploadBaseView):
                 detail='Size of file exceeds the limit (%s bytes)' % max_bytes
             )
         if chunked_upload.offset != start:
-            print 'offset check; ' 
+            print 'offset check; '
             print chunked_upload.offset
             raise ChunkedUploadError(status=http_status.HTTP_400_BAD_REQUEST,
                                      detail='Offsets do not match',
@@ -698,12 +738,12 @@ class ETPUploadView(ChunkedUploadView):
     def check_permissions(self, request):
         # Allow non authenticated users to make uploads
         pass
-        
+
     #def is_valid_chunked_upload(self, chunked_upload):
-        
+
         #pass
 
-'''  
+'''
     def save(self, chunked_upload, request, new=False):
         """
         Method that calls save(). Overriding may be useful is save() needs
@@ -728,13 +768,10 @@ class ETPUploadCompleteView(ChunkedUploadCompleteView):
         # function_that_process_file(uploaded_file)
         #print uploaded_file.file
         #print 'filename: %s, type(file): %s' % (uploaded_file.name, type(uploaded_file.file))
-        
+
         ipidfromkwargs = self.kwargs['ipid']
         ourip = get_object_or_404(InformationPackage, pk=ipidfromkwargs)
         ipcontentpath = ourip.directory + '/' + ourip.uuid + '/content/'
         print ipcontentpath
         shutil.move(uploaded_file.file.path,ipcontentpath)
         #pass
-
-
-
