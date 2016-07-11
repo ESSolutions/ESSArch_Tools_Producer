@@ -188,6 +188,7 @@
         {
           "-min": "1",
           "-max": "1",
+          "-arr": "agents:ROLE=CREATOR,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
@@ -216,6 +217,7 @@
         {
           "-min": "0",
           "-max": "1",
+          "-arr": "agents:ROLE=OTHER,OTHERROLE=PRODUCER,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
@@ -250,6 +252,7 @@
         {
           "-min": "0",
           "-max": "1",
+          "-arr": "agents:ROLE=OTHER,OTHERROLE=SUBMITTER,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
@@ -284,6 +287,7 @@
         {
           "-min": "0",
           "-max": "1",
+          "-arr": "agents:ROLE=IPOWNER,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
@@ -311,6 +315,7 @@
         },
         {
           "-min": "0",
+          "-arr": "agents:ROLE=EDITOR,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
@@ -339,6 +344,7 @@
         {
           "-min": "0",
           "-max": "1",
+          "-arr": "agents:ROLE=CREATOR,OTHERTYPE=SOFTWARE,TYPE=OTHER",
           "attr": [
             {
               "-name": "ROLE",
@@ -372,6 +378,7 @@
         },
         {
           "-min": "0",
+          "-arr": "agents:ROLE=CREATOR,TYPE=INDIVIDUAL",
           "attr": [
             {
               "-name": "ROLE",
@@ -400,6 +407,7 @@
         {
           "-min": "0",
           "-max": "1",
+          "-arr": "agents:ROLE=PRESERVATION,TYPE=ORGANIZATION",
           "attr": [
             {
               "-name": "ROLE",
