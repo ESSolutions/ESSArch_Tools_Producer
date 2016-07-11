@@ -3,8 +3,8 @@
     "-min": "1",
     "-max": "1",
     "-allowEmpty": "0",
-    "namespace": "mets",
-    "attr": [
+    "-namespace": "mets",
+    "-attr": [
       {
         "-name": "xmlns:mets",
         "-req": "1",
@@ -104,7 +104,7 @@
     "metsHdr": {
       "-min": "1",
       "-max": "1",
-      "attr": [
+      "-attr": [
         {
           "-name": "CREATEDATE",
           "-req": "1",
@@ -126,7 +126,7 @@
           "-min": "1",
           "-max": "1",
           "-arr": "agents:ROLE=ARCHIVIST,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -154,7 +154,7 @@
           "-min": "1",
           "-max": "1",
           "-arr": "agents:ROLE=ARCHIVIST,TYPE=OTHER,OTHERTYPE=SOFTWARE",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -189,7 +189,7 @@
           "-min": "1",
           "-max": "1",
           "-arr": "agents:ROLE=CREATOR,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -218,7 +218,7 @@
           "-min": "0",
           "-max": "1",
           "-arr": "agents:ROLE=OTHER,OTHERROLE=PRODUCER,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -253,7 +253,7 @@
           "-min": "0",
           "-max": "1",
           "-arr": "agents:ROLE=OTHER,OTHERROLE=SUBMITTER,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -288,7 +288,7 @@
           "-min": "0",
           "-max": "1",
           "-arr": "agents:ROLE=IPOWNER,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -316,7 +316,7 @@
         {
           "-min": "0",
           "-arr": "agents:ROLE=EDITOR,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -345,7 +345,7 @@
           "-min": "0",
           "-max": "1",
           "-arr": "agents:ROLE=CREATOR,OTHERTYPE=SOFTWARE,TYPE=OTHER",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -379,7 +379,7 @@
         {
           "-min": "0",
           "-arr": "agents:ROLE=CREATOR,TYPE=INDIVIDUAL",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -408,7 +408,7 @@
           "-min": "0",
           "-max": "1",
           "-arr": "agents:ROLE=PRESERVATION,TYPE=ORGANIZATION",
-          "attr": [
+          "-attr": [
             {
               "-name": "ROLE",
               "-req": "1",
@@ -439,7 +439,7 @@
           "-min": "1",
           "-max": "1",
           "#content": [{"var": "SUBMISSIONAGREEMENT"}],
-          "attr": [{
+          "-attr": [{
             "-name": "TYPE",
             "-req": "1",
             "#content": [{"text": "SUBMISSIONAGREEMENT"}]
@@ -448,7 +448,7 @@
         {
           "-min": "0",
           "#content": [{"var": "PREVIOUSSUBMISSIONAGREEMENT"}],
-          "attr": [{
+          "-attr": [{
             "-name": "TYPE",
             "-req": "1",
             "#content": [{"text": "PREVIOUSSUBMISSIONAGREEMENT" }]
@@ -458,7 +458,7 @@
           "-min": "0",
           "-max": "1",
           "#content": [{"var": "REFERENCECODE"}],
-          "attr": [{
+          "-attr": [{
             "-name": "TYPE",
             "-req": "1",
             "#content": [{"text": "REFERENCECODE" }]
@@ -467,7 +467,7 @@
         {
           "-min": "0",
           "#content": [{"var": "PREVIOUSREFERENCECODE"}],
-          "attr": [{
+          "-attr": [{
             "-name": "TYPE",
             "-req": "1",
             "#content": [{"text": "PREVIOUSREFERENCECODE" }]
@@ -477,20 +477,20 @@
       "metsDocumentID": "MetsIdentifier"
     },
     "amdSec": {
-      "attr": [{
+      "-attr": [{
         "-name": "ID",
         "-req": "1",
         "#content": "amdLink"
       }],
       "digiprovMD": {
-        "attr": [{
+        "-attr": [{
           "-name": "ID",
           "-req": "1",
           "#content": "digiprovLink"
         }],
         "mdRef": {
           "-allowEmpty": "1",
-          "attr": [
+          "-attr": [
             {
               "-name": "LOCTYPE",
               "-req": "1",
@@ -527,7 +527,7 @@
           "-sortby": "FName=.*(.csv);",
           "file": {
             "-min": "1",
-            "attr": [
+            "-attr": [
               {
                 "-name": "CHECKSUM",
                 "-req": "1",
@@ -570,7 +570,7 @@
             ],
             "FLocat": {
               "-allowEmpty": "1",
-              "attr": [
+              "-attr": [
                 {
                   "-name": "xlink:href",
                   "-req": "1",
@@ -595,7 +595,7 @@
     "structMap": {
       "-min": "1",
       "-max": "1",
-      "attr": [{
+      "-attr": [{
         "-name": "LABEL",
         "#content": "SMLabel"
       }],
@@ -603,7 +603,7 @@
         "-containsFiles": "1",
         "fptr": {
           "-allowEmpty": "1",
-          "attr": [{
+          "-attr": [{
             "-name": "FILEID",
             "-req": "1",
             "#content": [{"text": "ID" },{"var":"FID"}]

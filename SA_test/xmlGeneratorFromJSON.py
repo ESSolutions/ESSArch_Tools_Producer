@@ -1,4 +1,4 @@
-from lxml import etree
+# from lxml import etree
 import os
 import hashlib
 import uuid
@@ -71,7 +71,7 @@ def parseFiles(filename='/SIP/huge', level=3):
         # print dirname
         for file in filenames:
 
-            #populate dictionary
+            # populate dictionary
 
             fileInfo['FName'] = dirname+'/'+file
             fileInfo['FChecksum'] = calculateChecksum(dirname+'/'+file)
@@ -85,10 +85,13 @@ def parseFiles(filename='/SIP/huge', level=3):
             fileInfo['FLoctype'] = 'URL'
             fileInfo['FLinkType'] = 'simple'
             # write to file
+            idx = 0
             for idx, e in enumerate(normalElements):
-                t = createXMLStructureForFiles(e[0], fileInfo)
-                t.printXML(normalFiles[idx],level)
-
+                for key, value in e.iteritems():
+                    t = createXMLStructureForFiles(key, value, fileInfo)
+                    t.printXML(normalFiles[idx],level)
+                idx += 1
+            idx = 0
             for idx, e in enumerate(sortedElements):
                 # test arguments
                 found = True
@@ -97,8 +100,10 @@ def parseFiles(filename='/SIP/huge', level=3):
                         found = False
                         break
                 if found:
-                    t = createXMLStructureForFiles(e[0], fileInfo)
-                    t.printXML(sortedFiles[idx],level)
+                    for key, value in e.iteritems():
+                        t = createXMLStructureForFiles(key, value, fileInfo)
+                        t.printXML(sortedFiles[idx],level)
+                idx += 1
 
 def getValue(key, info):
     if key is not None:
@@ -109,63 +114,105 @@ def getValue(key, info):
                 return info[text]
     return None
 
-def analyzeFileStructure(tree, namespace):
+def analyzeFileStructure(name, content, namespace):
     global foundFiles
-    empty = True
-    t = xmlElement(tree.tag, namespace)
-    if tree.get('containsFiles') == '1':
-        t.containsFiles = True
-        empty = False
-        if tree.get('sortby'):
-            sortedElements.append(tree)
-            filenames.append("tmp" + str(foundFiles)+".txt")
-            sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
-            #split arguments
-            reg = tree.get('sortby')
-            reg = reg.split(';')
-            arg = {}
-            for s in reg:
-                if s is not '':
-                    s = s.split('=')
-                    arg[s[0]] = s[1]
-            sortedArguments.append(arg)
-        else:
-            normalElements.append(tree)
-            filenames.append("tmp" + str(foundFiles)+".txt")
-            normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
-        foundFiles += 1
+    t = xmlElement(name, namespace)
+    if '-containsFiles' in content:
+        if content['-containsFiles'] == '1':
+            t.containsFiles = True
 
-    for child in tree:
-        ch = analyzeFileStructure(child, namespace)
-        if ch is not None:
-            t.addChild(ch)
-            empty = False
-    if not empty:
+            c = {}
+            # print content
+            for key, value in content.iteritems():
+                if key[:1] != '-' and key[:1] != '#':
+                    # if key != '-attr':
+                        c[key] = value
+
+            t.containsFiles = True
+            if '-sortby' in content:
+                sortedElements.append(c)
+                filenames.append("tmp" + str(foundFiles)+".txt")
+                sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+                #split arguments
+                reg = content['-sortby']
+                reg = reg.split(';')
+                arg = {}
+                for s in reg:
+                    if s is not '':
+                        s = s.split('=')
+                        arg[s[0]] = s[1]
+                sortedArguments.append(arg)
+            else:
+                normalElements.append(c)
+                filenames.append("tmp" + str(foundFiles)+".txt")
+                normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+            foundFiles += 1
+
+        for key, value in content.iteritems():
+            ch = analyzeFileStructure(key, value, namespace)
+            if ch is not None:
+                t.addChild(ch)
+    if t.containsFiles:
         return t
+    else:
+        return None
+
+def parseChild(name, content, info, namespace, t):
+    if '-arr' not in content:
+        c = createXMLStructure(name, content, info, namespace)
+        if c is not None:
+            t.addChild(c)
+    else:
+        occurrences = 1
+        if '-max' in content:
+            occurrences = int(content['-max'])
+            if occurrences == -1:
+                occurrences = 10000000000 # unlikely to surpass this
+        #parse array string and pass info
+        attr = content['-arr'] # TODO could be improved with JSON
+        attr = attr.split(':')
+        args = attr[1].split(',')
+        testArgs = {}
+        for s in args:
+            r = s.split('=')
+            testArgs[r[0]] = r[1]
+        dictionaries = info[attr[0]]
+        for used in xrange(0, occurrences):
+            dic = findMatchingSubDict(dictionaries, testArgs)
+            if dic is not None:
+                #done, found matching entries
+                c = createXMLStructure(name, content, dic, namespace)
+                if c is not None:
+                    t.addChild(c)
+                    dictionaries.remove(dic)
+                else:
+                    break
+            else:
+                break
 
 
 def createXMLStructure(name, content, info, namespace=''):
     global foundFiles
     t = xmlElement(name, namespace)
     # loop through all attribute and children
-    if 'containsFiles' in content:
-
+    if '-containsFiles' in content:
+        t.containsFiles = True
         c = {}
-        for key, value in content:
+        for key, value in content.iteritems():
             if key[:1] != '-' and key[:1] != '#':
-                if key != 'attr':
+                # if key != 'attr':
                     c[key] = value
 
-        if 'sortby' in content:
+        if '-sortby' in content:
             sortedElements.append(c)
             filenames.append("tmp" + str(foundFiles)+".txt")
             sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
             #split arguments
-            reg = content['sortby']
+            reg = content['-sortby']
             reg = reg.split(';')
             arg = {}
             for s in reg:
-                if s is not '':
+                if s != '':
                     s = s.split('=')
                     arg[s[0]] = s[1]
             sortedArguments.append(arg)
@@ -175,8 +222,8 @@ def createXMLStructure(name, content, info, namespace=''):
             normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
         foundFiles += 1
 
-        for key, value in c:
-            ch = analyzeFileStructure(key, value, namespace)
+        for k, v in content.iteritems():
+            ch = analyzeFileStructure(k, v, namespace)
             if ch is not None:
                 t.addChild(ch)
         t.containsFiles = True
@@ -190,63 +237,30 @@ def createXMLStructure(name, content, info, namespace=''):
                         text = getValue(c['var'], info)
                         if text is not None:
                             t.value += text
+            elif key == '-attr':
+                #parse attrib children
+                for attrib in value:
+                    attribute = parseAttribute(attrib, info)
+                    if attribute is None:
+                        if '-req' in attrib:
+                            if attrib['-req'] == '1':
+                                print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
+                            else:
+                                dlog("INFO: missing optional value for: " + attrib['-name'])
+                        else:
+                            dlog("INFO: missing optional value for: " + attrib['-name'])
+                    else:
+                        t.addAttribute(attribute)
+            elif key == '-namespace':
+                t.setNamespace(value)
+                namespace = value
             elif key[:1] != '-':
                 #child
-                if key == 'attr':
-                    #parse attrib children
-                    for attrib in value:
-                        attribute = parseAttribute(attrib, info)
-                        if attribute is None:
-                            if '-req' in attrib:
-                                if attrib['-req'] == '1':
-                                    print "ERROR: missing required value for: " + key
-                                else:
-                                    dlog("INFO: missing optional value for: " + key)
-                            else:
-                                dlog("INFO: missing optional value for: " + key)
-                        else:
-                            t.addAttribute(attribute)
-                elif key == 'namespace':
-                    t.setNamespace(value)
-                    namespace = value
-                else:
-                    if 'arr' not in value:
-                        if isinstance(value, OrderedDict):
-                            c = createXMLStructure(key, value, info, namespace)
-                            if c is not None:
-                                t.addChild(c)
-                        elif isinstance(value, list):
-                            for l in value:
-                                c = createXMLStructure(key, l, info, namespace)
-                                if c is not None:
-                                    t.addChild(c)
-                    else:
-                        occurrences = 1
-                        if 'max' in value:
-                            occurrences = int(value['max'])
-                            if occurrences == -1:
-                                occurrences = 10000000000 # unlikely to surpass this
-                        #parse array string and pass info
-                        attr = value['attr'] # TODO could be improved with JSON
-                        attr = attr.split(':')
-                        args = attr[1].split(',')
-                        testArgs = {}
-                        for s in args:
-                            r = s.split('=')
-                            testArgs[r[0]] = r[1]
-                        dictionaries = info[attr[0]]
-                        for used in xrange(0, occurrences):
-                            dic = findMatchingSubDict(dictionaries, testArgs)
-                            if dic is not None:
-                                #done, found matching entries
-                                c = createXMLStructure(key, value, dic, namespace)
-                                if c is not None:
-                                    t.addChild(c)
-                                    dictionaries.remove(dic)
-                                else:
-                                    break
-                            else:
-                                break
+                if isinstance(value, OrderedDict):
+                    parseChild(key, value, info, namespace, t)
+                elif isinstance(value, list):
+                    for l in value:
+                        parseChild(key, l, info, namespace, t)
 
     if t.isEmpty():
         if  '-allowEmpty' in content:
@@ -264,47 +278,90 @@ def findMatchingSubDict(dictionaries, testValue):
         # compare agent dicts
         found = True
         for key, value in testValue.iteritems():
-            if dic[key] != value:
+            if key in dic:
+                if dic[key] != value:
+                    found = False
+            else:
                 found = False
         if found:
             return dic
     return None
 
-def createXMLStructureForFiles(el, fileInfo, namespace='mets'):
-    empty = True
-    t = xmlElement(el.tag, namespace)
-    text = getValue(el.text, info)
-    if text is not None:
-        t.value = text
-        empty = False
-    for child in el:
-        if child.tag == 'attr':
-
-            #parse attrib children
-            attribute = parseAttribute(child, fileInfo)
-            if attribute is None:
-                if child.get('req') == '1':
-                    print "ERROR: missing required value for: " + child.text
+def parseChildForFiles(name, content, info, namespace, t):
+    if '-arr' not in content:
+        c = createXMLStructure(name, content, info, namespace)
+        if c is not None:
+            t.addChild(c)
+    else:
+        occurrences = 1
+        if '-max' in content:
+            occurrences = int(content['-max'])
+            if occurrences == -1:
+                occurrences = 10000000000 # unlikely to surpass this
+        #parse array string and pass info
+        attr = content['-arr'] # TODO could be improved with JSON
+        attr = attr.split(':')
+        args = attr[1].split(',')
+        testArgs = {}
+        for s in args:
+            r = s.split('=')
+            testArgs[r[0]] = r[1]
+        dictionaries = info[attr[0]]
+        for used in xrange(0, occurrences):
+            dic = findMatchingSubDict(dictionaries, testArgs)
+            if dic is not None:
+                #done, found matching entries
+                c = createXMLStructureForFiles(name, content, dic, namespace)
+                if c is not None:
+                    t.addChild(c)
+                    dictionaries.remove(dic)
                 else:
-                    # debug
-                    dlog("INFO: missing optional value for: " + child.text)
+                    break
             else:
-                t.addAttribute(attribute)
+                break
 
-        elif child.tag == 'namespace':
-            t.setNamespace(child.text)
-            namespace = child.text
-        elif child.tag == 'metsGenText':
-            if child.get('name'):
-                t.value += child.get('name')
-        else:
-            c = createXMLStructureForFiles(child, fileInfo, namespace)
-            if c is not None:
-                empty = False
-                t.addChild(c)
-    if empty:
-        if el.get('allowEmpty') == '1':
-            return t
+def createXMLStructureForFiles(name, content, fileInfo, namespace='mets'):
+    t = xmlElement(name, namespace)
+
+    for key, value in content.iteritems():
+        if key == '#content':
+            for c in value:
+                if 'text' in c:
+                    t.value += c['text']
+                elif 'var' in c:
+                    text = getValue(c['var'], fileInfo)
+                    if text is not None:
+                        t.value += text
+        elif key == '-attr':
+            #parse attrib children
+            for attrib in value:
+                attribute = parseAttribute(attrib, fileInfo)
+                if attribute is None:
+                    if '-req' in attrib:
+                        if attrib['-req'] == '1':
+                            print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
+                        else:
+                            dlog("INFO: missing optional value for: " + attrib['-name'])
+                    else:
+                        dlog("INFO: missing optional value for: " + attrib['-name'])
+                else:
+                    t.addAttribute(attribute)
+        elif key == '-namespace':
+            t.setNamespace(value)
+            namespace = value
+        elif key[:1] != '-':
+            #child
+            if isinstance(value, OrderedDict):
+                parseChildForFiles(key, value, fileInfo, namespace, t)
+            elif isinstance(value, list):
+                for l in value:
+                    parseChildForFiles(key, l, fileInfo, namespace, t)
+    if t.isEmpty():
+        if  '-allowEmpty' in content:
+            if content['-allowEmpty'] != '1':
+                return None
+            else:
+                return t
         else:
             return None
     else:
@@ -400,7 +457,7 @@ class xmlElement(object):
             self.printed = 2
 
     def isEmpty(self):
-        if self.value != '' or self.children:
+        if self.value != '' or self.children or self.containsFiles:
             return False
         else:
             return True
@@ -465,6 +522,38 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
                 "OTHERTYPE":"SOFTWARE",
                 "name":"Other By hand Systems",
                 "note":"1.2.0",
+            },{
+                "ROLE":"CREATOR",
+                "TYPE":"ORGANIZATION",
+                "name":"Arkivbildar namn",
+                "note":"HSA:SE2098109810-AF87",
+            },{
+                "ROLE":"OTHER",
+                "OTHERROLE":"PRODUCER",
+                "TYPE":"ORGANIZATION",
+                "name":"Sydarkivera",
+                "note":"HSA:SE2098109810-AF87",
+            },{
+                "ROLE":"OTHER",
+                "OTHERROLE":"SUBMITTER",
+                "TYPE":"ORGANIZATION",
+                "name":"Arkivbildare",
+                "note":"HSA:SE2098109810-AF87",
+            },{
+                "ROLE":"IPOWNER",
+                "TYPE":"ORGANIZATION",
+                "name":"Informations agare",
+                "note":"HSA:SE2098109810-AF87",
+            },{
+                "ROLE":"EDITOR",
+                "TYPE":"ORGANIZATION",
+                "name":"Axenu",
+                "note":"VAT:SE9512114233",
+            },{
+                "ROLE":"CREATOR",
+                "TYPE":"INDIVIDUAL",
+                "name":"Simon Nilsson",
+                "note":"0706758942, simonseregon@gmail.com",
             }],
         }
 
@@ -528,4 +617,21 @@ rootE = data['mets']
 #     print el
 xmlFile = os.open(info['filename'],os.O_RDWR|os.O_CREAT)
 rootEl = createXMLStructure('mets', rootE, info)
-rootEl.printXML(xmlFile)
+parseFiles('/SIP/huge/csv/000')
+if rootEl.printXML(xmlFile):
+    # rootEl.printXML(xmlFile)
+    #add file to bottom of xml
+    for filename in filenames:
+        # add tmp file to end of xml
+        fd = os.open(filename, os.O_RDONLY)
+        while True:
+            data = os.read(fd, 65536)
+            if data:
+                os.write(xmlFile, data)
+            else:
+                break
+        # print more XML
+        rootEl.printXML(xmlFile)
+    pass
+for filename in filenames:
+    os.remove(filename)

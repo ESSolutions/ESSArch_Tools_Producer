@@ -92,25 +92,25 @@
         <altRecordID min="0" max="1">REFERENCECODE<attr name="TYPE" req="1"><metsGenText name="REFERENCECODE"/></attr></altRecordID>
         <altRecordID min="0">PREVIOUSREFERENCECODE<attr name="TYPE" req="1"><metsGenText name="PREVIOUSREFERENCECODE"/></attr></altRecordID>
         <metsDocumentID>MetsIdentifier</metsDocumentID>
-        <amdSec>
-            <attr name="ID" req="1">amdLink</attr>
-            <digiprovMD>
-                <attr name="ID" req="1">digiprovLink</attr>
-                <mdRef allowEmpty="1">
-                    <attr name="LOCTYPE" req="1">LOCTYPE</attr>
-                    <attr name="MDTYPE" req="1">MDTYPE</attr>
-                    <attr name="xlink:href" req="1">xlink:href</attr>
-                    <attr name="xlink:type" req="1">xlink:type</attr>
-                    <attr name="ID" req="1">ID</attr>
-                </mdRef>
-            </digiprovMD>
-        </amdSec>
     </metsHdr>
+    <amdSec>
+        <attr name="ID" req="1">amdLink</attr>
+        <digiprovMD>
+            <attr name="ID" req="1">digiprovLink</attr>
+            <mdRef allowEmpty="1">
+                <attr name="LOCTYPE" req="1">LOCTYPE</attr>
+                <attr name="MDTYPE" req="1">MDTYPE</attr>
+                <attr name="xlink:href" req="1">xlink:href</attr>
+                <attr name="xlink:type" req="1">xlink:type</attr>
+                <attr name="ID" req="1">ID</attr>
+            </mdRef>
+        </digiprovMD>
+    </amdSec>
     <fileSec>
-        <fileGrp containsFiles="1" sortBy=".*(.csv)">
+        <fileGrp containsFiles="1" sortby="FName=.*(.csv);">
             <file min="1">
                 <attr name="CHECKSUM" req="1">FChecksum</attr>
-                <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
+                <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
                 <attr name="MIMETYPE" req="1">FMimetype</attr>
                 <attr name="CREATED" req="1">FCreated</attr>
                 <attr name="ext:FILEFORMATNAME">FFormatName</attr>
@@ -123,10 +123,10 @@
                     <attr name="xlink:type" req="1">FLinkType</attr>
                 </FLocat>
             </file>
-            <fileGrp containsFiles="1" sortBy="[4][\.](?!\p\h\p)+[A-z]+">
+            <fileGrp containsFiles="1" sortby="FName=[4][\.](?!csv)+[A-z]+;">
                 <file min="1">
                     <attr name="CHECKSUM" req="1">FChecksum</attr>
-                    <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
+                    <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
                     <attr name="MIMETYPE" req="1">FMimetype</attr>
                     <attr name="CREATED" req="1">FCreated</attr>
                     <attr name="ext:FILEFORMATNAME">FFormatName</attr>
@@ -141,10 +141,10 @@
                 </file>
             </fileGrp>
         </fileGrp>
-        <fileGrp containsFiles="1" sortBy="[\.](?!\p\h\p)+[A-z]+">
+        <fileGrp containsFiles="1" sortby="FName=[\.](?!csv)+[A-z]+;">
             <file min="1">
                 <attr name="CHECKSUM" req="1">FChecksum</attr>
-                <attr name="ID" req="1"><metsGenText name="UUID:"/>FID</attr>
+                <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
                 <attr name="MIMETYPE" req="1">FMimetype</attr>
                 <attr name="CREATED" req="1">FCreated</attr>
                 <attr name="ext:FILEFORMATNAME">FFormatName</attr>
@@ -163,7 +163,7 @@
         <attr name="LABEL">SMLabel</attr>
         <div containsFiles="1">
             <fptr allowEmpty="1">
-                <attr name="FILEID" req="1">FID</attr>
+                <attr name="FILEID" req="1"><metsGenText name="ID"/>FID</attr>
             </fptr>
         </div>
     </structMap>

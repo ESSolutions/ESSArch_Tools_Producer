@@ -2,6 +2,7 @@ from lxml import etree
 import os
 import hashlib
 import uuid
+import re
 
 debug = False
 pretty = True
@@ -12,6 +13,7 @@ filenames = []
 normalElements = []
 normalFiles = []
 sortedElements = []
+sortedArguments = []
 sortedFiles = []
 foundFiles = 0
 xmlFile = ''
@@ -54,14 +56,8 @@ def sanitizeString(s):
 #         self.children.append(fileGrp(el, fid, children))
 
 
-def parseFiles(filename='/SIP/huge/corp', level=3):
+def parseFiles(filename='/SIP/huge', level=3):
     fileInfo = {}
-
-    # for e in fileElements:
-    #     if e.attr('sortBy'):
-    #         sortedElements.append(e)
-    #     else:
-    #         normalElements.append(e)
 
     for dirname, dirnames, filenames in os.walk(filename):
         # print dirname
@@ -71,13 +67,13 @@ def parseFiles(filename='/SIP/huge/corp', level=3):
 
             fileInfo['FName'] = dirname+'/'+file
             fileInfo['FChecksum'] = calculateChecksum(dirname+'/'+file)
-            fileInfo['FID'] = "ID" + uuid.uuid4().__str__()
+            fileInfo['FID'] = uuid.uuid4().__str__()
             fileInfo['FMimetype'] = 'application/msword'
             fileInfo['FCreated'] = '2016-02-21T11:18:44+01:00'
             fileInfo['FFormatName'] = 'MS word'
             fileInfo['FSize'] = str(os.path.getsize(dirname+'/'+file))
             fileInfo['FUse'] = 'DataFile'
-            fileInfo['FChecksumType'] = 'SHA256'
+            fileInfo['FChecksumType'] = 'SHA-256'
             fileInfo['FLoctype'] = 'URL'
             fileInfo['FLinkType'] = 'simple'
             # write to file
@@ -86,8 +82,15 @@ def parseFiles(filename='/SIP/huge/corp', level=3):
                 t.printXML(normalFiles[idx],level)
 
             for idx, e in enumerate(sortedElements):
-                t = createXMLStructureForFiles(e[0], fileInfo)
-                t.printXML(sortedFiles[idx],level)
+                # test arguments
+                found = True
+                for key, value in sortedArguments[idx].iteritems():
+                    if re.search(value, fileInfo[key]) is None:
+                        found = False
+                        break
+                if found:
+                    t = createXMLStructureForFiles(e[0], fileInfo)
+                    t.printXML(sortedFiles[idx],level)
 
 def getValue(key, info):
     if key is not None:
@@ -109,6 +112,15 @@ def analyzeFileStructure(tree, namespace):
             sortedElements.append(tree)
             filenames.append("tmp" + str(foundFiles)+".txt")
             sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+            #split arguments
+            reg = tree.get('sortby')
+            reg = reg.split(';')
+            arg = {}
+            for s in reg:
+                if s is not '':
+                    s = s.split('=')
+                    arg[s[0]] = s[1]
+            sortedArguments.append(arg)
         else:
             normalElements.append(tree)
             filenames.append("tmp" + str(foundFiles)+".txt")
@@ -138,6 +150,15 @@ def createXMLStructure(tree, info, namespace=''):
             sortedElements.append(tree)
             filenames.append("tmp" + str(foundFiles)+".txt")
             sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+            #split arguments
+            reg = tree.get('sortby')
+            reg = reg.split(';')
+            arg = {}
+            for s in reg:
+                if s is not '':
+                    s = s.split('=')
+                    arg[s[0]] = s[1]
+            sortedArguments.append(arg)
         else:
             normalElements.append(tree)
             filenames.append("tmp" + str(foundFiles)+".txt")
@@ -388,7 +409,7 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "xmlns:ext": "ExtensionMETS",
         "xmlns:xlink": "http://www.w3.org/1999/xlink",
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd"
+        "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
         "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
         "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
         "LABEL": "Test of SIP 1",
@@ -406,6 +427,13 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "MetsIdentifier": "sip.xml",
         "filename":"sip.txt",
         "SMLabel":"Profilestructmap",
+        "amdLink":"IDce745fec-cfdd-4d14-bece-d49e867a2487",
+        "digiprovLink":"IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+        "LOCTYPE":"URL",
+        "MDTYPE":"PREMIS",
+        "xlink:href":"file:///metadata/premis.xml",
+        "xlink:type":"simple",
+        "ID":"ID31e51159-9280-44d1-b26c-014077f8eeb5",
         "agents":[{
                 "ROLE":"ARCHIVIST",
                 "TYPE":"ORGANIZATION",
@@ -443,7 +471,11 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
 #     print child.tail
 
 #REAL
+import time
+start = time.time()
+
 os.remove('sip.txt')
+os.remove('tmp0.txt')
 os.remove('tmp1.txt')
 os.remove('tmp2.txt')
 os.remove('tmp3.txt')
@@ -451,7 +483,7 @@ templatename = 'template.xml'
 pars = etree.parse(templatename)
 rootEl = createXMLStructure(pars.getroot(), info)
 xmlFile = os.open(info['filename'],os.O_RDWR|os.O_CREAT)
-parseFiles('/SIP/huge/csv/006')
+parseFiles('/SIP/huge')
 if rootEl.printXML(xmlFile):
     # rootEl.printXML(xmlFile)
     #add file to bottom of xml
@@ -467,3 +499,6 @@ if rootEl.printXML(xmlFile):
         # print more XML
         rootEl.printXML(xmlFile)
     pass
+
+end = time.time()
+print (end - start)
