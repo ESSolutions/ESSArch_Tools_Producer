@@ -5,17 +5,18 @@ import uuid
 import json
 from collections import OrderedDict
 import re
+import copy
 
 debug = False
 pretty = True
 eol_ = '\n'
-fileElements = []
-files = []
-filenames = []
-normalElements = []
-normalFiles = []
-sortedElements = []
-sortedArguments = []
+# fileElements = []
+# files = []
+# filenames = []
+# normalElements = []
+# normalFiles = []
+# sortedElements = []
+# sortedArguments = []
 sortedFiles = []
 foundFiles = 0
 xmlFile = ''
@@ -85,25 +86,43 @@ def parseFiles(filename='/SIP/huge', level=3):
             fileInfo['FLoctype'] = 'URL'
             fileInfo['FLinkType'] = 'simple'
             # write to file
-            idx = 0
-            for idx, e in enumerate(normalElements):
-                for key, value in e.iteritems():
-                    t = createXMLStructureForFiles(key, value, fileInfo)
-                    t.printXML(normalFiles[idx],level)
-                idx += 1
-            idx = 0
-            for idx, e in enumerate(sortedElements):
-                # test arguments
-                found = True
-                for key, value in sortedArguments[idx].iteritems():
-                    if re.search(value, fileInfo[key]) is None:
-                        found = False
-                        break
-                if found:
-                    for key, value in e.iteritems():
-                        t = createXMLStructureForFiles(key, value, fileInfo)
-                        t.printXML(sortedFiles[idx],level)
-                idx += 1
+
+            for fi in sortedFiles:
+                for fil in fi.files:
+                    if not fil.arguments:
+                        for key, value in fil.element.iteritems():
+                            t = createXMLStructureForFiles(key, value, fileInfo)
+                            t.printXML(fil.fid,fil.level)
+                    else:
+                        found = True
+                        for key, value in fil.arguments.iteritems():
+                            if re.search(value, fileInfo[key]) is None:
+                                found = False
+                                break
+                        if found:
+                            for key, value in fil.element.iteritems():
+                                t = createXMLStructureForFiles(key, value, fileInfo)
+                                t.printXML(fil.fid,fil.level)
+            # idx = 0
+
+            # for idx, e in enumerate(normalElements):
+            #     for key, value in e.iteritems():
+            #         t = createXMLStructureForFiles(key, value, fileInfo)
+            #         t.printXML(normalFiles[idx],level)
+            #     idx += 1
+            # idx = 0
+            # for idx, e in enumerate(sortedElements):
+            #     # test arguments
+            #     found = True
+            #     for key, value in sortedArguments[idx].iteritems():
+            #         if re.search(value, fileInfo[key]) is None:
+            #             found = False
+            #             break
+            #     if found:
+            #         for key, value in e.iteritems():
+            #             t = createXMLStructureForFiles(key, value, fileInfo)
+            #             t.printXML(sortedFiles[idx],level)
+            #     idx += 1
 
 def getValue(key, info):
     if key is not None:
@@ -114,7 +133,7 @@ def getValue(key, info):
                 return info[text]
     return None
 
-def analyzeFileStructure(name, content, namespace):
+def analyzeFileStructure(name, content, namespace, fob, level=0):
     global foundFiles
     t = xmlElement(name, namespace)
     if '-containsFiles' in content:
@@ -130,9 +149,9 @@ def analyzeFileStructure(name, content, namespace):
 
             t.containsFiles = True
             if '-sortby' in content:
-                sortedElements.append(c)
-                filenames.append("tmp" + str(foundFiles)+".txt")
-                sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+                # sortedElements.append(c)
+                # filenames.append("tmp" + str(foundFiles)+".txt")
+                # sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
                 #split arguments
                 reg = content['-sortby']
                 reg = reg.split(';')
@@ -141,15 +160,19 @@ def analyzeFileStructure(name, content, namespace):
                     if s is not '':
                         s = s.split('=')
                         arg[s[0]] = s[1]
-                sortedArguments.append(arg)
+                f = fileInfo(c, "tmp" + str(foundFiles)+".txt", arg)
+                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+                f.level = level
+                fob.files.append(f)
             else:
-                normalElements.append(c)
-                filenames.append("tmp" + str(foundFiles)+".txt")
-                normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+                f = fileInfo(c, "tmp" + str(foundFiles)+".txt")
+                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+                f.level = level
+                fob.files.append(f)
             foundFiles += 1
 
         for key, value in content.iteritems():
-            ch = analyzeFileStructure(key, value, namespace)
+            ch = analyzeFileStructure(key, value, namespace, fob, level+1)
             if ch is not None:
                 t.addChild(ch)
     if t.containsFiles:
@@ -157,9 +180,9 @@ def analyzeFileStructure(name, content, namespace):
     else:
         return None
 
-def parseChild(name, content, info, namespace, t):
+def parseChild(name, content, info, namespace, t, fob, level=0):
     if '-arr' not in content:
-        c = createXMLStructure(name, content, info, namespace)
+        c = createXMLStructure(name, content, info, fob, namespace, level+1)
         if c is not None:
             t.addChild(c)
     else:
@@ -176,12 +199,12 @@ def parseChild(name, content, info, namespace, t):
         for s in args:
             r = s.split('=')
             testArgs[r[0]] = r[1]
-        dictionaries = info[attr[0]]
+        dictionaries = copy.deepcopy(info[attr[0]])
         for used in xrange(0, occurrences):
             dic = findMatchingSubDict(dictionaries, testArgs)
             if dic is not None:
                 #done, found matching entries
-                c = createXMLStructure(name, content, dic, namespace)
+                c = createXMLStructure(name, content, dic, fob, namespace, level+1)
                 if c is not None:
                     t.addChild(c)
                     dictionaries.remove(dic)
@@ -191,7 +214,7 @@ def parseChild(name, content, info, namespace, t):
                 break
 
 
-def createXMLStructure(name, content, info, namespace=''):
+def createXMLStructure(name, content, info, fob, namespace='', level=1):
     global foundFiles
     t = xmlElement(name, namespace)
     # loop through all attribute and children
@@ -204,9 +227,9 @@ def createXMLStructure(name, content, info, namespace=''):
                     c[key] = value
 
         if '-sortby' in content:
-            sortedElements.append(c)
-            filenames.append("tmp" + str(foundFiles)+".txt")
-            sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+            # sortedElements.append(c)
+            # filenames.append("tmp" + str(foundFiles)+".txt")
+            # sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
             #split arguments
             reg = content['-sortby']
             reg = reg.split(';')
@@ -215,15 +238,20 @@ def createXMLStructure(name, content, info, namespace=''):
                 if s != '':
                     s = s.split('=')
                     arg[s[0]] = s[1]
-            sortedArguments.append(arg)
+            # sortedArguments.append(arg)
+            f = fileInfo(c, "tmp" + str(foundFiles)+".txt", arg)
+            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+            f.level = level
+            fob.files.append(f)
         else:
-            normalElements.append(c)
-            filenames.append("tmp" + str(foundFiles)+".txt")
-            normalFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
+            f = fileInfo(c, "tmp" + str(foundFiles)+".txt")
+            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+            f.level = level
+            fob.files.append(f)
         foundFiles += 1
 
         for k, v in content.iteritems():
-            ch = analyzeFileStructure(k, v, namespace)
+            ch = analyzeFileStructure(k, v, namespace, fob, level+1)
             if ch is not None:
                 t.addChild(ch)
         t.containsFiles = True
@@ -257,10 +285,10 @@ def createXMLStructure(name, content, info, namespace=''):
             elif key[:1] != '-':
                 #child
                 if isinstance(value, OrderedDict):
-                    parseChild(key, value, info, namespace, t)
+                    parseChild(key, value, info, namespace, t, fob, level)
                 elif isinstance(value, list):
                     for l in value:
-                        parseChild(key, l, info, namespace, t)
+                        parseChild(key, l, info, namespace, t, fob, level)
 
     if t.isEmpty():
         if  '-allowEmpty' in content:
@@ -608,30 +636,110 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
 
 # json
 
-json_data=open('JSONTemplate.txt').read()
+class fileInfo():
+    # element = {}
+    # filename = ''
+    # arguments = {}
+    # fid = None
+    # level = 0
 
-data = json.loads(json_data, object_pairs_hook=OrderedDict)
-# pprint(data)
-rootE = data['mets']
-# for el, val in rootE.iteritems():
-#     print el
-xmlFile = os.open(info['filename'],os.O_RDWR|os.O_CREAT)
-rootEl = createXMLStructure('mets', rootE, info)
+    def __init__(self, element, filename, arguments={}, level=0):
+        self.element = element
+        self.filename = filename
+        self.arguments = arguments
+        self.level = level
+
+class fileObject():
+
+    # files = []
+    # fid = None
+    # xmlFileName = ''
+    # template = ''
+
+    def __init__(self, xmlFileName, template, fid):
+        self.xmlFileName = xmlFileName
+        self.template = template
+        self.fid = fid
+        self.files = []
+        self.rootElement = None
+
+
+# sortedFiles = {"sip.txt":{"fid":"test","files":[{"file":"tmp0.txt", "arguments":"arg..."}]}}
+
+fileToCreate = {
+    "sip.txt":"JSONTemplate.txt",
+    "sip1.txt":"JSONTemplate.txt",
+    "sip2.txt":"JSONTemplate.txt",
+}
+
+rootElements = []
+# key = 'sip.txt'
+# value = 'JSONTemplate.txt'
+for key, value in fileToCreate.iteritems():
+    json_data=open(value).read()
+    data = json.loads(json_data, object_pairs_hook=OrderedDict)
+    name, rootE = data.items()[0] # root element
+    xmlFile = os.open(key,os.O_RDWR|os.O_CREAT)
+    fob = fileObject(key, value, xmlFile)
+    sortedFiles.append(fob)
+    rootEl = createXMLStructure(name, rootE, info, fob)
+    rootEl.printXML(xmlFile)
+    fob.rootElement = rootEl
+
 parseFiles('/SIP/huge/csv/000')
-if rootEl.printXML(xmlFile):
-    # rootEl.printXML(xmlFile)
-    #add file to bottom of xml
-    for filename in filenames:
-        # add tmp file to end of xml
-        fd = os.open(filename, os.O_RDONLY)
+
+for fob in sortedFiles:
+    for fin in fob.files:
+        f = os.open(fin.filename, os.O_RDONLY)
         while True:
-            data = os.read(fd, 65536)
+            data = os.read(f, 65536)
             if data:
-                os.write(xmlFile, data)
+                os.write(fob.fid, data)
             else:
                 break
         # print more XML
-        rootEl.printXML(xmlFile)
-    pass
-for filename in filenames:
-    os.remove(filename)
+        fob.rootElement.printXML(fob.fid)
+        os.close(f)
+        os.remove(fin.filename)
+
+# for key, value in sortedFiles.iteritems():
+#     for dic in value:
+#         # add tmp file to end of xml
+#         fd = os.open(dic['file'], os.O_RDONLY)
+#         while True:
+#             data = os.read(fd, 65536)
+#             if data:
+#                 os.write(key, data)
+#             else:
+#                 break
+#         # print more XML
+#         rootEl.printXML(xmlFile)
+
+
+# json_data=open('JSONTemplate.txt').read()
+#
+# data = json.loads(json_data, object_pairs_hook=OrderedDict)
+# # pprint(data)
+# rootE = data['mets']
+# # for el, val in rootE.iteritems():
+# #     print el
+# xmlFile = os.open(info['filename'],os.O_RDWR|os.O_CREAT)
+# rootEl = createXMLStructure('mets', rootE, info)
+# parseFiles('/SIP/huge/csv/000')
+# if rootEl.printXML(xmlFile):
+#     # rootEl.printXML(xmlFile)
+#     #add file to bottom of xml
+    # for filename in filenames:
+    #     # add tmp file to end of xml
+    #     fd = os.open(filename, os.O_RDONLY)
+    #     while True:
+    #         data = os.read(fd, 65536)
+    #         if data:
+    #             os.write(xmlFile, data)
+    #         else:
+    #             break
+    #     # print more XML
+    #     rootEl.printXML(xmlFile)
+    # pass
+# for filename in filenames:
+#     os.remove(filename)
