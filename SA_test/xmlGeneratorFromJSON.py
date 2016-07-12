@@ -85,6 +85,9 @@ def parseFiles(filename='/SIP/huge', level=3):
             fileInfo['FChecksumType'] = 'SHA-256'
             fileInfo['FLoctype'] = 'URL'
             fileInfo['FLinkType'] = 'simple'
+            fileInfo['FChecksumLib'] = 'hashlib'
+            fileInfo['FLocationType'] = 'URI'
+            fileInfo['FIDType'] = 'UUID'
             # write to file
 
             for fi in sortedFiles:
@@ -137,35 +140,35 @@ def analyzeFileStructure(name, content, namespace, fob, level=0):
     global foundFiles
     t = xmlElement(name, namespace)
     if '-containsFiles' in content:
-        if content['-containsFiles'] == '1':
-            t.containsFiles = True
-
-            c = {}
-            # print content
-            for key, value in content.iteritems():
+        t.containsFiles = True
+        c = content['-containsFiles']
+        arg = None
+        if isinstance(c, OrderedDict):
+            con = {}
+            for key, value in c.iteritems():
                 if key[:1] != '-' and key[:1] != '#':
-                    # if key != '-attr':
-                        c[key] = value
+                    con[key] = value
+            if '-sortby' in c:
+                arg = c['-sortby']
+            f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
+            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+            f.level = level
+            fob.files.append(f)
+            for key, value in c:
+                if key[:1] != '-' and key[:1] != '#':
+                    ch = analyzeFileStructure(key, value, namespace, fob, level+1)
+                    if ch is not None:
+                        t.addChild(ch)
 
-            t.containsFiles = True
-            if '-sortby' in content:
-                # sortedElements.append(c)
-                # filenames.append("tmp" + str(foundFiles)+".txt")
-                # sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
-                #split arguments
-                reg = content['-sortby']
-                reg = reg.split(';')
-                arg = {}
-                for s in reg:
-                    if s is not '':
-                        s = s.split('=')
-                        arg[s[0]] = s[1]
-                f = fileInfo(c, "tmp" + str(foundFiles)+".txt", arg)
-                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-                f.level = level
-                fob.files.append(f)
-            else:
-                f = fileInfo(c, "tmp" + str(foundFiles)+".txt")
+        elif isinstance(c, list):
+            for co in c:
+                con = {}
+                for key, value in co.iteritems():
+                    if key[:1] != '-' and key[:1] != '#':
+                        con[key] = value
+                if '-sortby' in co:
+                    arg = co['-sortby']
+                f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
                 f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
                 f.level = level
                 fob.files.append(f)
@@ -175,6 +178,7 @@ def analyzeFileStructure(name, content, namespace, fob, level=0):
             ch = analyzeFileStructure(key, value, namespace, fob, level+1)
             if ch is not None:
                 t.addChild(ch)
+        foundFiles += 1
     if t.containsFiles:
         return t
     else:
@@ -220,75 +224,71 @@ def createXMLStructure(name, content, info, fob, namespace='', level=1):
     # loop through all attribute and children
     if '-containsFiles' in content:
         t.containsFiles = True
-        c = {}
-        for key, value in content.iteritems():
-            if key[:1] != '-' and key[:1] != '#':
-                # if key != 'attr':
-                    c[key] = value
+        c = content['-containsFiles']
+        arg = None
+        if isinstance(c, OrderedDict):
+            con = {}
+            for key, value in c.iteritems():
+                if key[:1] != '-' and key[:1] != '#':
+                    con[key] = value
+            if '-sortby' in c:
+                arg = c['-sortby']
+            f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
+            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+            f.level = level
+            fob.files.append(f)
+            for key, value in c:
+                if key[:1] != '-' and key[:1] != '#':
+                    ch = analyzeFileStructure(key, value, namespace, fob, level+1)
+                    if ch is not None:
+                        t.addChild(ch)
 
-        if '-sortby' in content:
-            # sortedElements.append(c)
-            # filenames.append("tmp" + str(foundFiles)+".txt")
-            # sortedFiles.append(os.open("tmp" + str(foundFiles)+".txt",os.O_RDWR|os.O_CREAT))
-            #split arguments
-            reg = content['-sortby']
-            reg = reg.split(';')
-            arg = {}
-            for s in reg:
-                if s != '':
-                    s = s.split('=')
-                    arg[s[0]] = s[1]
-            # sortedArguments.append(arg)
-            f = fileInfo(c, "tmp" + str(foundFiles)+".txt", arg)
-            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-            f.level = level
-            fob.files.append(f)
-        else:
-            f = fileInfo(c, "tmp" + str(foundFiles)+".txt")
-            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-            f.level = level
-            fob.files.append(f)
+        elif isinstance(c, list):
+            for co in c:
+                con = {}
+                for key, value in co.iteritems():
+                    if key[:1] != '-' and key[:1] != '#':
+                        con[key] = value
+                if '-sortby' in co:
+                    arg = co['-sortby']
+                f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
+                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+                f.level = level
+                fob.files.append(f)
         foundFiles += 1
-
-        for k, v in content.iteritems():
-            ch = analyzeFileStructure(k, v, namespace, fob, level+1)
-            if ch is not None:
-                t.addChild(ch)
-        t.containsFiles = True
-    else:
-        for key, value in content.iteritems():
-            if key == '#content':
-                for c in value:
-                    if 'text' in c:
-                        t.value += c['text']
-                    elif 'var' in c:
-                        text = getValue(c['var'], info)
-                        if text is not None:
-                            t.value += text
-            elif key == '-attr':
-                #parse attrib children
-                for attrib in value:
-                    attribute = parseAttribute(attrib, info)
-                    if attribute is None:
-                        if '-req' in attrib:
-                            if attrib['-req'] == '1':
-                                print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
-                            else:
-                                dlog("INFO: missing optional value for: " + attrib['-name'])
+    for key, value in content.iteritems():
+        if key == '#content':
+            for c in value:
+                if 'text' in c:
+                    t.value += c['text']
+                elif 'var' in c:
+                    text = getValue(c['var'], info)
+                    if text is not None:
+                        t.value += text
+        elif key == '-attr':
+            #parse attrib children
+            for attrib in value:
+                attribute = parseAttribute(attrib, info)
+                if attribute is None:
+                    if '-req' in attrib:
+                        if attrib['-req'] == '1':
+                            print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
                         else:
                             dlog("INFO: missing optional value for: " + attrib['-name'])
                     else:
-                        t.addAttribute(attribute)
-            elif key == '-namespace':
-                t.setNamespace(value)
-                namespace = value
-            elif key[:1] != '-':
-                #child
-                if isinstance(value, OrderedDict):
-                    parseChild(key, value, info, namespace, t, fob, level)
-                elif isinstance(value, list):
-                    for l in value:
-                        parseChild(key, l, info, namespace, t, fob, level)
+                        dlog("INFO: missing optional value for: " + attrib['-name'])
+                else:
+                    t.addAttribute(attribute)
+        elif key == '-namespace':
+            t.setNamespace(value)
+            namespace = value
+        elif key[:1] != '-':
+            #child
+            if isinstance(value, OrderedDict):
+                parseChild(key, value, info, namespace, t, fob, level)
+            elif isinstance(value, list):
+                for l in value:
+                    parseChild(key, l, info, namespace, t, fob, level)
 
     if t.isEmpty():
         if  '-allowEmpty' in content:
@@ -510,10 +510,10 @@ info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
         "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
         "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+        "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
         "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
         "LABEL": "Test of SIP 1",
         "TYPE": "Personnel",
-        # "mets:ID":"ID8b42fed2-c281-43b4-9798-5168126b0a4b",
         "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
         "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
         "CREATEDATE": "2016-06-08T10:44:00+02:00",
@@ -668,7 +668,7 @@ class fileObject():
 
 fileToCreate = {
     "sip.txt":"JSONTemplate.txt",
-    "sip1.txt":"JSONTemplate.txt",
+    "premis.txt":"JSONPremisTemplate.txt",
     "sip2.txt":"JSONTemplate.txt",
 }
 
