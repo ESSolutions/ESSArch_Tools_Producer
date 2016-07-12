@@ -523,72 +523,75 @@
     "fileSec": {
       "fileGrp": [
         {
-          "-containsFiles": "1",
-          "-sortby": "FName=.*(.csv);",
-          "file": {
-            "-min": "1",
-            "-attr": [
+          "-containsFiles": [
               {
-                "-name": "CHECKSUM",
-                "-req": "1",
-                "#content": [{"var": "FChecksum"}]
-              },
-              {
-                "-name": "ID",
-                "-req": "1",
-                "#content": [{"text": "ID" },{"var": "FID"}]
-              },
-              {
-                "-name": "MIMETYPE",
-                "-req": "1",
-                "#content": [{"var": "FMimetype"}]
-              },
-              {
-                "-name": "CREATED",
-                "-req": "1",
-                "#content": [{"var": "FCreated"}]
-              },
-              {
-                "-name": "ext:FILEFORMATNAME",
-                "#content": [{"var": "FFormatName"}]
-              },
-              {
-                "-name": "SIZE",
-                "-req": "1",
-                "#content": [{"var": "FSize"}]
-              },
-              {
-                "-name": "USE",
-                "-req": "1",
-                "#content": [{"var": "FUse"}]
-              },
-              {
-                "-name": "CHECKSUMTYPE",
-                "-req": "1",
-                "#content": [{"var": "FChecksumType"}]
+                  "-sortby": {"FName":".*(.csv)"},
+                  "file": {
+                    "-min": "1",
+                    "-attr": [
+                      {
+                        "-name": "CHECKSUM",
+                        "-req": "1",
+                        "#content": [{"var": "FChecksum"}]
+                      },
+                      {
+                        "-name": "ID",
+                        "-req": "1",
+                        "#content": [{"text": "ID" },{"var": "FID"}]
+                      },
+                      {
+                        "-name": "MIMETYPE",
+                        "-req": "1",
+                        "#content": [{"var": "FMimetype"}]
+                      },
+                      {
+                        "-name": "CREATED",
+                        "-req": "1",
+                        "#content": [{"var": "FCreated"}]
+                      },
+                      {
+                        "-name": "ext:FILEFORMATNAME",
+                        "#content": [{"var": "FFormatName"}]
+                      },
+                      {
+                        "-name": "SIZE",
+                        "-req": "1",
+                        "#content": [{"var": "FSize"}]
+                      },
+                      {
+                        "-name": "USE",
+                        "-req": "1",
+                        "#content": [{"var": "FUse"}]
+                      },
+                      {
+                        "-name": "CHECKSUMTYPE",
+                        "-req": "1",
+                        "#content": [{"var": "FChecksumType"}]
+                      }
+                    ],
+                    "FLocat": {
+                      "-allowEmpty": "1",
+                      "-attr": [
+                        {
+                          "-name": "xlink:href",
+                          "-req": "1",
+                          "#content": [{"var": "FName"}]
+                        },
+                        {
+                          "-name": "LOCTYPE",
+                          "-req": "1",
+                          "#content": [{"var": "FLoctype"}]
+                        },
+                        {
+                          "-name": "xlink:type",
+                          "-req": "1",
+                          "#content": [{"var": "FLinkType"}]
+                        }
+                      ]
+                    }
+                  }
               }
-            ],
-            "FLocat": {
-              "-allowEmpty": "1",
-              "-attr": [
-                {
-                  "-name": "xlink:href",
-                  "-req": "1",
-                  "#content": [{"var": "FName"}]
-                },
-                {
-                  "-name": "LOCTYPE",
-                  "-req": "1",
-                  "#content": [{"var": "FLoctype"}]
-                },
-                {
-                  "-name": "xlink:type",
-                  "-req": "1",
-                  "#content": [{"var": "FLinkType"}]
-                }
-              ]
-            }
-          }
+          ]
         }
       ]
     },
@@ -600,15 +603,16 @@
         "#content": "SMLabel"
       }],
       "div": {
-        "-containsFiles": "1",
-        "fptr": {
-          "-allowEmpty": "1",
-          "-attr": [{
-            "-name": "FILEID",
-            "-req": "1",
-            "#content": [{"text": "ID" },{"var":"FID"}]
-          }]
-        }
+        "-containsFiles": [{
+            "fptr": {
+              "-allowEmpty": "1",
+              "-attr": [{
+                "-name": "FILEID",
+                "-req": "1",
+                "#content": [{"text": "ID" },{"var":"FID"}]
+              }]
+            }
+        }]
       }
     }
   }
