@@ -1,29 +1,27 @@
 from __future__ import absolute_import
 
-from celery import shared_task
+from workflow.celeryapp import app
+from workflow.workflowtask import WorkflowTask
 
-#from sip_generator import prepareIP
-
-@shared_task
-def prepareip_start(map_structure):
+@app.task
+def prepareip(map_structure=None):
     print "starting, prepare IP"
-    pass
+    return 1
 
-
-@shared_task
-def prepareip_undo(map_structure):
+@app.task
+def prepareip_undo(map_structure=None):
     print "undoing, delete dirs"
-    pass
+    return 2
 
-#from xml_generator import XMLGenerator
-
-@shared_task
-def generateipmetadata_start(premis = False):
+@app.task
+def generateipmetadata(premis = False):
     print "starting, generateXML" + " with premis" if premis else ""
-    pass
+    if premis is False:
+        raise ValueError
+    return 3
 
 
-@shared_task
+@app.task
 def generateipmetadata_undo(premis = False):
     print "undoing, remove XML files"
-    pass
+    return 4
