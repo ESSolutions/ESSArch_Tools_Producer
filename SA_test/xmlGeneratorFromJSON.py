@@ -46,27 +46,8 @@ def calculateChecksum(filename):
 def sanitizeString(s):
     return s.rstrip()
 
-# class fileGrp():
-#
-#     el = None
-#     fid = None
-#     children = []
-#
-#     def __init__(self, el=None, fid=None, children=[]):
-#         pass
-#
-#     def addChild(self, el=None, fid=None, children=[]):
-#         self.children.append(fileGrp(el, fid, children))
-
-
 def parseFiles(filename='/SIP/huge', level=3):
     fileInfo = {}
-
-    # for e in fileElements:
-    #     if e.attr('sortBy'):
-    #         sortedElements.append(e)
-    #     else:
-    #         normalElements.append(e)
 
     for dirname, dirnames, filenames in os.walk(filename):
         # print dirname
@@ -94,7 +75,7 @@ def parseFiles(filename='/SIP/huge', level=3):
                 for fil in fi.files:
                     if not fil.arguments:
                         for key, value in fil.element.iteritems():
-                            t = createXMLStructureForFiles(key, value, fileInfo)
+                            t = createXMLStructure(key, value, fileInfo)
                             t.printXML(fil.fid,fil.level)
                     else:
                         found = True
@@ -104,28 +85,8 @@ def parseFiles(filename='/SIP/huge', level=3):
                                 break
                         if found:
                             for key, value in fil.element.iteritems():
-                                t = createXMLStructureForFiles(key, value, fileInfo)
+                                t = createXMLStructure(key, value, fileInfo)
                                 t.printXML(fil.fid,fil.level)
-            # idx = 0
-
-            # for idx, e in enumerate(normalElements):
-            #     for key, value in e.iteritems():
-            #         t = createXMLStructureForFiles(key, value, fileInfo)
-            #         t.printXML(normalFiles[idx],level)
-            #     idx += 1
-            # idx = 0
-            # for idx, e in enumerate(sortedElements):
-            #     # test arguments
-            #     found = True
-            #     for key, value in sortedArguments[idx].iteritems():
-            #         if re.search(value, fileInfo[key]) is None:
-            #             found = False
-            #             break
-            #     if found:
-            #         for key, value in e.iteritems():
-            #             t = createXMLStructureForFiles(key, value, fileInfo)
-            #             t.printXML(sortedFiles[idx],level)
-            #     idx += 1
 
 def getValue(key, info):
     if key is not None:
@@ -136,9 +97,10 @@ def getValue(key, info):
                 return info[text]
     return None
 
-def analyzeFileStructure(name, content, namespace, fob, level=0):
+def analyzeFileStructure(name, content, namespace, fob, t=None, level=0):
     global foundFiles
-    t = xmlElement(name, namespace)
+    if t is None:
+        t = xmlElement(name, namespace)
     if '-containsFiles' in content:
         t.containsFiles = True
         c = content['-containsFiles']
@@ -154,9 +116,9 @@ def analyzeFileStructure(name, content, namespace, fob, level=0):
             f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
             f.level = level
             fob.files.append(f)
-            for key, value in c:
+            for key, value in con.iteritems():
                 if key[:1] != '-' and key[:1] != '#':
-                    ch = analyzeFileStructure(key, value, namespace, fob, level+1)
+                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
                     if ch is not None:
                         t.addChild(ch)
 
@@ -174,10 +136,11 @@ def analyzeFileStructure(name, content, namespace, fob, level=0):
                 fob.files.append(f)
             foundFiles += 1
 
-        for key, value in content.iteritems():
-            ch = analyzeFileStructure(key, value, namespace, fob, level+1)
-            if ch is not None:
-                t.addChild(ch)
+            for key, value in con.iteritems():
+                if key[:1] != '-' and key[:1] != '#':
+                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
+                    if ch is not None:
+                        t.addChild(ch)
         foundFiles += 1
     if t.containsFiles:
         return t
@@ -218,44 +181,12 @@ def parseChild(name, content, info, namespace, t, fob, level=0):
                 break
 
 
-def createXMLStructure(name, content, info, fob, namespace='', level=1):
+def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
     global foundFiles
     t = xmlElement(name, namespace)
     # loop through all attribute and children
-    if '-containsFiles' in content:
-        t.containsFiles = True
-        c = content['-containsFiles']
-        arg = None
-        if isinstance(c, OrderedDict):
-            con = {}
-            for key, value in c.iteritems():
-                if key[:1] != '-' and key[:1] != '#':
-                    con[key] = value
-            if '-sortby' in c:
-                arg = c['-sortby']
-            f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
-            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-            f.level = level
-            fob.files.append(f)
-            for key, value in c:
-                if key[:1] != '-' and key[:1] != '#':
-                    ch = analyzeFileStructure(key, value, namespace, fob, level+1)
-                    if ch is not None:
-                        t.addChild(ch)
-
-        elif isinstance(c, list):
-            for co in c:
-                con = {}
-                for key, value in co.iteritems():
-                    if key[:1] != '-' and key[:1] != '#':
-                        con[key] = value
-                if '-sortby' in co:
-                    arg = co['-sortby']
-                f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
-                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-                f.level = level
-                fob.files.append(f)
-        foundFiles += 1
+    if '-containsFiles' in content and fob is not None:
+        analyzeFileStructure(name, content, namespace, fob, t, level)
     for key, value in content.iteritems():
         if key == '#content':
             for c in value:
@@ -314,86 +245,6 @@ def findMatchingSubDict(dictionaries, testValue):
         if found:
             return dic
     return None
-
-def parseChildForFiles(name, content, info, namespace, t):
-    if '-arr' not in content:
-        c = createXMLStructure(name, content, info, namespace)
-        if c is not None:
-            t.addChild(c)
-    else:
-        occurrences = 1
-        if '-max' in content:
-            occurrences = int(content['-max'])
-            if occurrences == -1:
-                occurrences = 10000000000 # unlikely to surpass this
-        #parse array string and pass info
-        attr = content['-arr'] # TODO could be improved with JSON
-        attr = attr.split(':')
-        args = attr[1].split(',')
-        testArgs = {}
-        for s in args:
-            r = s.split('=')
-            testArgs[r[0]] = r[1]
-        dictionaries = info[attr[0]]
-        for used in xrange(0, occurrences):
-            dic = findMatchingSubDict(dictionaries, testArgs)
-            if dic is not None:
-                #done, found matching entries
-                c = createXMLStructureForFiles(name, content, dic, namespace)
-                if c is not None:
-                    t.addChild(c)
-                    dictionaries.remove(dic)
-                else:
-                    break
-            else:
-                break
-
-def createXMLStructureForFiles(name, content, fileInfo, namespace='mets'):
-    t = xmlElement(name, namespace)
-
-    for key, value in content.iteritems():
-        if key == '#content':
-            for c in value:
-                if 'text' in c:
-                    t.value += c['text']
-                elif 'var' in c:
-                    text = getValue(c['var'], fileInfo)
-                    if text is not None:
-                        t.value += text
-        elif key == '-attr':
-            #parse attrib children
-            for attrib in value:
-                attribute = parseAttribute(attrib, fileInfo)
-                if attribute is None:
-                    if '-req' in attrib:
-                        if attrib['-req'] == '1':
-                            print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
-                        else:
-                            dlog("INFO: missing optional value for: " + attrib['-name'])
-                    else:
-                        dlog("INFO: missing optional value for: " + attrib['-name'])
-                else:
-                    t.addAttribute(attribute)
-        elif key == '-namespace':
-            t.setNamespace(value)
-            namespace = value
-        elif key[:1] != '-':
-            #child
-            if isinstance(value, OrderedDict):
-                parseChildForFiles(key, value, fileInfo, namespace, t)
-            elif isinstance(value, list):
-                for l in value:
-                    parseChildForFiles(key, l, fileInfo, namespace, t)
-    if t.isEmpty():
-        if  '-allowEmpty' in content:
-            if content['-allowEmpty'] != '1':
-                return None
-            else:
-                return t
-        else:
-            return None
-    else:
-        return t
 
 def parseAttribute(content, info):
     text = ''
@@ -503,87 +354,95 @@ class xmlElement(object):
             el.setNamespace(self.namespace)
         self.children.append(el)
 
-
-info = {"xmlns:mets": "http://www.loc.gov/METS/",
-        "xmlns:ext": "ExtensionMETS",
-        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
-        "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
-        "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-        "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
-        "LABEL": "Test of SIP 1",
-        "TYPE": "Personnel",
-        "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
-        "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-        "CREATEDATE": "2016-06-08T10:44:00+02:00",
-        "RECORDSTATUS": "NEW",
-        "ext:OAISTYPE": "SIP",
-        "agentName": "name",
-        "agentNote": "note",
-        "REFERENCECODE": "SE/RA/123456/24/F",
-        "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
-        "MetsIdentifier": "sip.xml",
-        "filename":"sip.txt",
-        "SMLabel":"Profilestructmap",
-        "amdLink":"IDce745fec-cfdd-4d14-bece-d49e867a2487",
-        "digiprovLink":"IDa32a20cb-5ff8-4d36-8202-f96519154de2",
-        "LOCTYPE":"URL",
-        "MDTYPE":"PREMIS",
-        "xlink:href":"file:///metadata/premis.xml",
-        "xlink:type":"simple",
-        "ID":"ID31e51159-9280-44d1-b26c-014077f8eeb5",
-        "agents":[{
-                "ROLE":"ARCHIVIST",
-                "TYPE":"ORGANIZATION",
-                "name":"Arkivbildar namn",
-                "note":"VAT:SE201345098701",
-            },{
-                "ROLE":"ARCHIVIST",
-                "TYPE":"OTHER",
-                "OTHERTYPE":"SOFTWARE",
-                "name":"By hand Systems",
-                "note":"1.0.0",
-            },{
-                "ROLE":"ARCHIVIST",
-                "TYPE":"OTHER",
-                "OTHERTYPE":"SOFTWARE",
-                "name":"Other By hand Systems",
-                "note":"1.2.0",
-            },{
-                "ROLE":"CREATOR",
-                "TYPE":"ORGANIZATION",
-                "name":"Arkivbildar namn",
-                "note":"HSA:SE2098109810-AF87",
-            },{
-                "ROLE":"OTHER",
-                "OTHERROLE":"PRODUCER",
-                "TYPE":"ORGANIZATION",
-                "name":"Sydarkivera",
-                "note":"HSA:SE2098109810-AF87",
-            },{
-                "ROLE":"OTHER",
-                "OTHERROLE":"SUBMITTER",
-                "TYPE":"ORGANIZATION",
-                "name":"Arkivbildare",
-                "note":"HSA:SE2098109810-AF87",
-            },{
-                "ROLE":"IPOWNER",
-                "TYPE":"ORGANIZATION",
-                "name":"Informations agare",
-                "note":"HSA:SE2098109810-AF87",
-            },{
-                "ROLE":"EDITOR",
-                "TYPE":"ORGANIZATION",
-                "name":"Axenu",
-                "note":"VAT:SE9512114233",
-            },{
-                "ROLE":"CREATOR",
-                "TYPE":"INDIVIDUAL",
-                "name":"Simon Nilsson",
-                "note":"0706758942, simonseregon@gmail.com",
-            }],
-        }
+inputData = {
+    "info": {
+        "xmlns:mets": "http://www.loc.gov/METS/",
+                "xmlns:ext": "ExtensionMETS",
+                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+                "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+                "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+                "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+                "LABEL": "Test of SIP 1",
+                "TYPE": "Personnel",
+                "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+                "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+                "CREATEDATE": "2016-06-08T10:44:00+02:00",
+                "RECORDSTATUS": "NEW",
+                "ext:OAISTYPE": "SIP",
+                "agentName": "name",
+                "agentNote": "note",
+                "REFERENCECODE": "SE/RA/123456/24/F",
+                "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+                "MetsIdentifier": "sip.xml",
+                "filename":"sip.txt",
+                "SMLabel":"Profilestructmap",
+                "amdLink":"IDce745fec-cfdd-4d14-bece-d49e867a2487",
+                "digiprovLink":"IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+                "LOCTYPE":"URL",
+                "MDTYPE":"PREMIS",
+                "xlink:href":"file:///metadata/premis.xml",
+                "xlink:type":"simple",
+                "ID":"ID31e51159-9280-44d1-b26c-014077f8eeb5",
+                "agents":[{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildar namn",
+                        "note":"VAT:SE201345098701"
+                    },{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"OTHER",
+                        "OTHERTYPE":"SOFTWARE",
+                        "name":"By hand Systems",
+                        "note":"1.0.0"
+                    },{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"OTHER",
+                        "OTHERTYPE":"SOFTWARE",
+                        "name":"Other By hand Systems",
+                        "note":"1.2.0"
+                    },{
+                        "ROLE":"CREATOR",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildar namn",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"OTHER",
+                        "OTHERROLE":"PRODUCER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Sydarkivera",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"OTHER",
+                        "OTHERROLE":"SUBMITTER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildare",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"IPOWNER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Informations agare",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"EDITOR",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Axenu",
+                        "note":"VAT:SE9512114233"
+                    },{
+                        "ROLE":"CREATOR",
+                        "TYPE":"INDIVIDUAL",
+                        "name":"Simon Nilsson",
+                        "note":"0706758942, simonseregon@gmail.com"
+                    }],
+    },
+    "filesToCreate": {
+    "sip.txt":"JSONTemplate.txt",
+    "premis.txt":"JSONPremisTemplate.txt",
+    "sip2.txt":"JSONTemplate.txt"
+    },
+    "folderToParse":"/SIP/huge/csv/000"
+}
 
 #testing
 
@@ -666,27 +525,27 @@ class fileObject():
 
 # sortedFiles = {"sip.txt":{"fid":"test","files":[{"file":"tmp0.txt", "arguments":"arg..."}]}}
 
-fileToCreate = {
-    "sip.txt":"JSONTemplate.txt",
-    "premis.txt":"JSONPremisTemplate.txt",
-    "sip2.txt":"JSONTemplate.txt",
-}
+# fileToCreate = {
+#     "sip.txt":"JSONTemplate.txt",
+#     "premis.txt":"JSONPremisTemplate.txt",
+#     "sip2.txt":"JSONTemplate.txt",
+# }
 
 rootElements = []
 # key = 'sip.txt'
 # value = 'JSONTemplate.txt'
-for key, value in fileToCreate.iteritems():
+for key, value in inputData['filesToCreate'].iteritems():
     json_data=open(value).read()
     data = json.loads(json_data, object_pairs_hook=OrderedDict)
     name, rootE = data.items()[0] # root element
     xmlFile = os.open(key,os.O_RDWR|os.O_CREAT)
     fob = fileObject(key, value, xmlFile)
     sortedFiles.append(fob)
-    rootEl = createXMLStructure(name, rootE, info, fob)
+    rootEl = createXMLStructure(name, rootE, inputData['info'], fob)
     rootEl.printXML(xmlFile)
     fob.rootElement = rootEl
 
-parseFiles('/SIP/huge/csv/000')
+parseFiles(inputData['folderToParse'])
 
 for fob in sortedFiles:
     for fin in fob.files:
