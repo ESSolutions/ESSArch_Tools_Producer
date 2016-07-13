@@ -82,60 +82,6 @@ def getValue(key, info):
                 return info[text]
     return None
 
-def analyzeFileStructure(name, content, namespace, fob, t=None, level=0):
-    """
-    parse through the element and it's children only looking for elements containing files
-    """
-    global foundFiles
-    if t is None:
-        t = xmlElement(name, namespace)
-    if '-containsFiles' in content:
-        print name
-        print content
-        t.containsFiles = True
-        c = content['-containsFiles']
-        arg = None
-        if isinstance(c, OrderedDict):
-            con = {}
-            for key, value in c.iteritems():
-                if key[:1] != '-' and key[:1] != '#':
-                    con[key] = value
-            if '-sortby' in c:
-                arg = c['-sortby']
-            f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
-            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-            f.level = level
-            fob.files.append(f)
-            foundFiles += 1
-            for key, value in con.iteritems():
-                if key[:1] != '-' and key[:1] != '#':
-                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
-                    if ch is not None:
-                        t.addChild(ch)
-
-        elif isinstance(c, list):
-            for co in c:
-                con = {}
-                for key, value in co.iteritems():
-                    if key[:1] != '-' and key[:1] != '#':
-                        con[key] = value
-                if '-sortby' in co:
-                    arg = co['-sortby']
-                f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
-                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
-                f.level = level
-                fob.files.append(f)
-                foundFiles += 1
-                for key, value in con.iteritems():
-                    if key[:1] != '-' and key[:1] != '#':
-                        ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
-                        if ch is not None:
-                            t.addChild(ch)
-    if t.containsFiles:
-        return t
-    else:
-        return None
-
 def parseChild(name, content, info, namespace, t, fob, level=0):
     """
     Parse a child to get the correct values even if the values are in an array
@@ -147,18 +93,13 @@ def parseChild(name, content, info, namespace, t, fob, level=0):
     else:
         occurrences = 1
         if '-max' in content:
-            occurrences = int(content['-max'])
+            occurrences = content['-max']
             if occurrences == -1:
                 occurrences = 10000000000 # unlikely to surpass this
         #parse array string and pass info
-        attr = content['-arr'] # TODO could be improved with JSON
-        attr = attr.split(':')
-        args = attr[1].split(',')
-        testArgs = {}
-        for s in args:
-            r = s.split('=')
-            testArgs[r[0]] = r[1]
-        dictionaries = copy.deepcopy(info[attr[0]])
+        arguments = content['-arr']
+        testArgs = arguments['arguments']
+        dictionaries = copy.deepcopy(info[arguments['arrayName']])
         for used in xrange(0, occurrences):
             dic = findMatchingSubDict(dictionaries, testArgs)
             if dic is not None:
@@ -196,11 +137,6 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
             f.level = level
             fob.files.append(f)
             foundFiles += 1
-            for key, value in con.iteritems():
-                if key[:1] != '-' and key[:1] != '#':
-                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
-                    if ch is not None:
-                        t.addChild(ch)
 
         elif isinstance(c, list):
             for co in c:
@@ -215,11 +151,6 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
                 f.level = level
                 fob.files.append(f)
                 foundFiles += 1
-                for key, value in con.iteritems():
-                    if key[:1] != '-' and key[:1] != '#':
-                        ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
-                        if ch is not None:
-                            t.addChild(ch)
     for key, value in content.iteritems():
         if key == '#content':
             for c in value:
@@ -235,7 +166,7 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
                 attribute = parseAttribute(attrib, info)
                 if attribute is None:
                     if '-req' in attrib:
-                        if attrib['-req'] == '1':
+                        if attrib['-req'] == 1:
                             print "ERROR: missing required value for element: " + name + " and attribute: " + attrib['-name']
                         else:
                             dlog("INFO: missing optional value for: " + attrib['-name'])
@@ -256,7 +187,7 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
 
     if t.isEmpty():
         if  '-allowEmpty' in content:
-            if content['-allowEmpty'] != '1':
+            if content['-allowEmpty'] != 1:
                 return None
             else:
                 return t
@@ -306,7 +237,11 @@ def createXML(inputData):
     """
     for key, value in inputData['filesToCreate'].iteritems():
         json_data=open(value).read()
-        data = json.loads(json_data, object_pairs_hook=OrderedDict)
+        try:
+            data = json.loads(json_data, object_pairs_hook=OrderedDict)
+        except ValueError as err:
+            print err # implement logger
+            return  False
         name, rootE = data.items()[0] # root element
         xmlFile = os.open(key,os.O_RDWR|os.O_CREAT)
         fob = fileObject(key, value, xmlFile)
@@ -418,12 +353,17 @@ inputData = {
                     }],
     },
     "filesToCreate": {
-    "sip.txt":"templates/JSONTemplate.txt",
-    "premis.txt":"templates/JSONPremisTemplate.txt",
-    "sip2.txt":"templates/JSONTemplate.txt"
+    "sip.txt":"templates/JSONTemplate.json",
+    # "premis.txt":"templates/JSONPremisTemplate.txt",
+    # "sip2.txt":"templates/JSONTemplate.txt"
     },
     "folderToParse":"/SIP/huge/csv/000"
 }
 
 
 createXML(inputData)
+
+
+## TODO
+
+# 1. enable -attr tag to contain dict only
