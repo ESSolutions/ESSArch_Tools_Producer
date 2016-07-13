@@ -7,7 +7,7 @@ from celeryapp import app
 from celery import chain
 from celery.result import AsyncResult
 
-import workflow.tasks as t
+import workflow.tasks as wt
 
 
 class Workflow(object):
@@ -22,21 +22,21 @@ class Workflow(object):
         yield task
 
     def run(self):
-        c = chain(getattr(t, task['name']).si(**task['params']) for task in self.tasks)()
+        c = chain(getattr(wt, task['name']).si(**task['params']) for task in self.tasks)()
 
         try:
             c.get()
         finally:
-            succeeded = [task for task in reversed(list(self.trail(c))) if task.status == "SUCCESS" or task.status == "FAILURE"]
-            self.completed = self.tasks[:len(succeeded)]
+            comp = [t for t in reversed(list(self.trail(c))) if t.status == "SUCCESS" or t.status == "FAILURE"]
+            self.completed = self.tasks[:len(comp)]
 
     def undo_last(self):
         last = self.completed.pop()
-        getattr(t, last['name'] + '_undo').delay(last['params'])
+        getattr(wt, last['name'] + '_undo').delay(**last['params'])
 
     def undo_all(self):
         self.completed.reverse()
-        chain(getattr(t, task['name'] + '_undo').si(*task['params']) for task in self.completed)()
+        chain(getattr(wt, task['name'] + '_undo').si(**task['params']) for task in self.completed)()
 
         del self.completed[:]
 
