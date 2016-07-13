@@ -37,9 +37,10 @@ class Workflow(object):
             comp = [t for t in reversed(list(self.trail(c))) if t.status == "SUCCESS" or t.status == "FAILURE"]
             self.completed = self.tasks[:len(comp)]
 
-    def undo_last(self):
-        last = self.completed.pop()
-        getattr(wt, last['name'] + '_undo').delay(**last['params'])
+    def undo_last(self, n=1):
+        for i in xrange(n):
+            last = self.completed.pop()
+            getattr(wt, last['name'] + '_undo').delay(**last['params'])
 
     def undo_all(self):
         self.completed.reverse()
@@ -73,6 +74,15 @@ class testWorkflow(unittest.TestCase):
         beforeUndo = len(self.failingworkflow.completed)
         self.failingworkflow.undo_last()
         self.assertEqual(len(self.failingworkflow.completed), beforeUndo-1)
+
+    def test_undo_n(self):
+        self.workflow.run()
+        self.workflow.completed
+        beforeUndo = len(self.workflow.completed)
+
+        number = 2
+        self.workflow.undo_last(n=number)
+        self.assertEqual(len(self.workflow.completed), beforeUndo-number)
 
     def test_undo_all(self):
         self.assertRaises(ValueError, self.failingworkflow.run)
