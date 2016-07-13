@@ -5,7 +5,7 @@ import json
 import copy
 from collections import OrderedDict
 
-from xmlGenerator import xmlElement, xmlAttribute, fileInfo, fileObject, dlog
+from xmlStructure import xmlElement, xmlAttribute, fileInfo, fileObject, dlog
 
 sortedFiles = []
 foundFiles = 0
@@ -90,6 +90,8 @@ def analyzeFileStructure(name, content, namespace, fob, t=None, level=0):
     if t is None:
         t = xmlElement(name, namespace)
     if '-containsFiles' in content:
+        print name
+        print content
         t.containsFiles = True
         c = content['-containsFiles']
         arg = None
@@ -104,6 +106,7 @@ def analyzeFileStructure(name, content, namespace, fob, t=None, level=0):
             f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
             f.level = level
             fob.files.append(f)
+            foundFiles += 1
             for key, value in con.iteritems():
                 if key[:1] != '-' and key[:1] != '#':
                     ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
@@ -122,14 +125,12 @@ def analyzeFileStructure(name, content, namespace, fob, t=None, level=0):
                 f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
                 f.level = level
                 fob.files.append(f)
-            foundFiles += 1
-
-            for key, value in con.iteritems():
-                if key[:1] != '-' and key[:1] != '#':
-                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
-                    if ch is not None:
-                        t.addChild(ch)
-        foundFiles += 1
+                foundFiles += 1
+                for key, value in con.iteritems():
+                    if key[:1] != '-' and key[:1] != '#':
+                        ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
+                        if ch is not None:
+                            t.addChild(ch)
     if t.containsFiles:
         return t
     else:
@@ -180,7 +181,45 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
     t = xmlElement(name, namespace)
     # loop through all attribute and children
     if '-containsFiles' in content and fob is not None:
-        analyzeFileStructure(name, content, namespace, fob, t, level)
+        t.containsFiles = True
+        c = content['-containsFiles']
+        arg = None
+        if isinstance(c, OrderedDict):
+            con = {}
+            for key, value in c.iteritems():
+                if key[:1] != '-' and key[:1] != '#':
+                    con[key] = value
+            if '-sortby' in c:
+                arg = c['-sortby']
+            f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
+            f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+            f.level = level
+            fob.files.append(f)
+            foundFiles += 1
+            for key, value in con.iteritems():
+                if key[:1] != '-' and key[:1] != '#':
+                    ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
+                    if ch is not None:
+                        t.addChild(ch)
+
+        elif isinstance(c, list):
+            for co in c:
+                con = {}
+                for key, value in co.iteritems():
+                    if key[:1] != '-' and key[:1] != '#':
+                        con[key] = value
+                if '-sortby' in co:
+                    arg = co['-sortby']
+                f = fileInfo(con, "tmp" + str(foundFiles)+".txt", arg)
+                f.fid = os.open(f.filename,os.O_RDWR|os.O_CREAT)
+                f.level = level
+                fob.files.append(f)
+                foundFiles += 1
+                for key, value in con.iteritems():
+                    if key[:1] != '-' and key[:1] != '#':
+                        ch = analyzeFileStructure(key, value, namespace, fob, level=level+1)
+                        if ch is not None:
+                            t.addChild(ch)
     for key, value in content.iteritems():
         if key == '#content':
             for c in value:
@@ -296,92 +335,95 @@ def createXML(inputData):
 
 # Example of inputData:
 
-# inputData = {
-#     "info": {
-#         "xmlns:mets": "http://www.loc.gov/METS/",
-#                 "xmlns:ext": "ExtensionMETS",
-#                 "xmlns:xlink": "http://www.w3.org/1999/xlink",
-#                 "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-#                 "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
-#                 "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
-#                 "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-#                 "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
-#                 "LABEL": "Test of SIP 1",
-#                 "TYPE": "Personnel",
-#                 "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
-#                 "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-#                 "CREATEDATE": "2016-06-08T10:44:00+02:00",
-#                 "RECORDSTATUS": "NEW",
-#                 "ext:OAISTYPE": "SIP",
-#                 "agentName": "name",
-#                 "agentNote": "note",
-#                 "REFERENCECODE": "SE/RA/123456/24/F",
-#                 "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
-#                 "MetsIdentifier": "sip.xml",
-#                 "filename":"sip.txt",
-#                 "SMLabel":"Profilestructmap",
-#                 "amdLink":"IDce745fec-cfdd-4d14-bece-d49e867a2487",
-#                 "digiprovLink":"IDa32a20cb-5ff8-4d36-8202-f96519154de2",
-#                 "LOCTYPE":"URL",
-#                 "MDTYPE":"PREMIS",
-#                 "xlink:href":"file:///metadata/premis.xml",
-#                 "xlink:type":"simple",
-#                 "ID":"ID31e51159-9280-44d1-b26c-014077f8eeb5",
-#                 "agents":[{
-#                         "ROLE":"ARCHIVIST",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Arkivbildar namn",
-#                         "note":"VAT:SE201345098701"
-#                     },{
-#                         "ROLE":"ARCHIVIST",
-#                         "TYPE":"OTHER",
-#                         "OTHERTYPE":"SOFTWARE",
-#                         "name":"By hand Systems",
-#                         "note":"1.0.0"
-#                     },{
-#                         "ROLE":"ARCHIVIST",
-#                         "TYPE":"OTHER",
-#                         "OTHERTYPE":"SOFTWARE",
-#                         "name":"Other By hand Systems",
-#                         "note":"1.2.0"
-#                     },{
-#                         "ROLE":"CREATOR",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Arkivbildar namn",
-#                         "note":"HSA:SE2098109810-AF87"
-#                     },{
-#                         "ROLE":"OTHER",
-#                         "OTHERROLE":"PRODUCER",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Sydarkivera",
-#                         "note":"HSA:SE2098109810-AF87"
-#                     },{
-#                         "ROLE":"OTHER",
-#                         "OTHERROLE":"SUBMITTER",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Arkivbildare",
-#                         "note":"HSA:SE2098109810-AF87"
-#                     },{
-#                         "ROLE":"IPOWNER",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Informations agare",
-#                         "note":"HSA:SE2098109810-AF87"
-#                     },{
-#                         "ROLE":"EDITOR",
-#                         "TYPE":"ORGANIZATION",
-#                         "name":"Axenu",
-#                         "note":"VAT:SE9512114233"
-#                     },{
-#                         "ROLE":"CREATOR",
-#                         "TYPE":"INDIVIDUAL",
-#                         "name":"Simon Nilsson",
-#                         "note":"0706758942, simonseregon@gmail.com"
-#                     }],
-#     },
-#     "filesToCreate": {
-#     "sip.txt":"templates/JSONTemplate.txt",
-#     "premis.txt":"templates/JSONPremisTemplate.txt",
-#     "sip2.txt":"templates/JSONTemplate.txt"
-#     },
-#     "folderToParse":"/SIP/huge/csv/000"
-# }
+inputData = {
+    "info": {
+        "xmlns:mets": "http://www.loc.gov/METS/",
+                "xmlns:ext": "ExtensionMETS",
+                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+                "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+                "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+                "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+                "LABEL": "Test of SIP 1",
+                "TYPE": "Personnel",
+                "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+                "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+                "CREATEDATE": "2016-06-08T10:44:00+02:00",
+                "RECORDSTATUS": "NEW",
+                "ext:OAISTYPE": "SIP",
+                "agentName": "name",
+                "agentNote": "note",
+                "REFERENCECODE": "SE/RA/123456/24/F",
+                "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+                "MetsIdentifier": "sip.xml",
+                "filename":"sip.txt",
+                "SMLabel":"Profilestructmap",
+                "amdLink":"IDce745fec-cfdd-4d14-bece-d49e867a2487",
+                "digiprovLink":"IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+                "LOCTYPE":"URL",
+                "MDTYPE":"PREMIS",
+                "xlink:href":"file:///metadata/premis.xml",
+                "xlink:type":"simple",
+                "ID":"ID31e51159-9280-44d1-b26c-014077f8eeb5",
+                "agents":[{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildar namn",
+                        "note":"VAT:SE201345098701"
+                    },{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"OTHER",
+                        "OTHERTYPE":"SOFTWARE",
+                        "name":"By hand Systems",
+                        "note":"1.0.0"
+                    },{
+                        "ROLE":"ARCHIVIST",
+                        "TYPE":"OTHER",
+                        "OTHERTYPE":"SOFTWARE",
+                        "name":"Other By hand Systems",
+                        "note":"1.2.0"
+                    },{
+                        "ROLE":"CREATOR",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildar namn",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"OTHER",
+                        "OTHERROLE":"PRODUCER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Sydarkivera",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"OTHER",
+                        "OTHERROLE":"SUBMITTER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Arkivbildare",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"IPOWNER",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Informations agare",
+                        "note":"HSA:SE2098109810-AF87"
+                    },{
+                        "ROLE":"EDITOR",
+                        "TYPE":"ORGANIZATION",
+                        "name":"Axenu",
+                        "note":"VAT:SE9512114233"
+                    },{
+                        "ROLE":"CREATOR",
+                        "TYPE":"INDIVIDUAL",
+                        "name":"Simon Nilsson",
+                        "note":"0706758942, simonseregon@gmail.com"
+                    }],
+    },
+    "filesToCreate": {
+    "sip.txt":"templates/JSONTemplate.txt",
+    "premis.txt":"templates/JSONPremisTemplate.txt",
+    "sip2.txt":"templates/JSONTemplate.txt"
+    },
+    "folderToParse":"/SIP/huge/csv/000"
+}
+
+
+createXML(inputData)
