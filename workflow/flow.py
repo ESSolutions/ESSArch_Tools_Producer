@@ -15,6 +15,13 @@ class Workflow(object):
         self.tasks = json.loads(jsonstr)
         self.completed = []
 
+    def add_task(self, name, params, index=None):
+        idx = index or len(self.tasks)
+        self.tasks.insert(idx, {
+            "name": name,
+            "params": params
+        })
+
     def trail(self, task):
         while task.parent:
             yield task
@@ -72,6 +79,25 @@ class testWorkflow(unittest.TestCase):
         self.assertTrue(self.failingworkflow.completed)
         self.failingworkflow.undo_all()
         self.assertFalse(self.failingworkflow.completed)
+
+    def test_add_task(self):
+        name = "added"
+        params = {
+            "foo": "bar"
+        }
+
+        before = len(self.workflow.tasks)
+        idx = 1
+
+        self.workflow.add_task(name, params, index=idx)
+
+        self.assertEqual(before+1, len(self.workflow.tasks))
+        self.assertEqual(self.workflow.tasks[idx]["name"], name)
+        self.assertEqual(self.workflow.tasks[idx]["params"], params)
+
+        self.workflow.add_task(name, params)
+        self.assertEqual(self.workflow.tasks[-1]["name"], name)
+        self.assertEqual(self.workflow.tasks[-1]["params"], params)
 
 if __name__ == '__main__':
     unittest.main()
