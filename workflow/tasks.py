@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 from workflow.celeryapp import app
-from workflow.workflowtask import WorkflowTask
 
 @app.task
 def prepareip(map_structure=None):
