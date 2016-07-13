@@ -44,14 +44,6 @@ import uuid
 
 # test med 50,000,000 file entries, (inte lasta ifran systemet) pa 447s.
 
-############## ((  TODO  )) ##############
-
-# 1. sanitize all attributes and values
-
-# 2. indentation for pretty print
-
-# 3. namespace
-
 
 info = {"xmlns:mets": "http://www.loc.gov/METS/",
         "xmlns:ext": "ExtensionMETS",

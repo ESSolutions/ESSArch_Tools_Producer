@@ -89,7 +89,13 @@
     ],
     "agent": [
         {
-            "-arr": "agents:ROLE=ARCHIVIST,TYPE=ORGANIZATION",
+            "-arr": {
+                "arrayName":"agents",
+                "arguments": {
+                    "ROLE":"ARCHIVIST",
+                    "TYPE":"ORGANIZATION"
+                }
+            },
             "agentIdentifier": {
                 "agentIdentifierValue": {
                     "#content": [{"var":"note"}]
@@ -106,7 +112,13 @@
             }
         },
         {
-            "-arr": "agents:ROLE=ARCHIVIST,OTHERTYPE=SOFTWARE",
+            "-arr": {
+                "arrayName":"agents",
+                "arguments": {
+                    "ROLE":"ARCHIVIST",
+                    "OTHERTYPE":"SOFTWARE"
+                }
+            },
             "agentIdentifier": {
                 "agentIdentifierValue": {
                     "#content": [{"var":"note"}]
@@ -123,7 +135,13 @@
             }
         },
         {
-            "-arr": "agents:ROLE=CREATOR,TYPE=ORGANIZATION",
+            "-arr": {
+                "arrayName":"agents",
+                "arguments": {
+                    "ROLE":"CREATOR",
+                    "TYPE":"ORGANIZATION"
+                }
+            },
             "agentIdentifier": {
                 "agentIdentifierValue": {
                     "#content": [{"var":"note"}]
