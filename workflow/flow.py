@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import json
+import sys
 import unittest
 
 from celeryapp import app
@@ -108,6 +109,19 @@ class testWorkflow(unittest.TestCase):
         self.workflow.add_task(name, params)
         self.assertEqual(self.workflow.tasks[-1]["name"], name)
         self.assertEqual(self.workflow.tasks[-1]["params"], params)
+
+    def test_progress(self):
+        task = wt.Sleepy().delay("bar")
+        while not task.ready():
+            try:
+                prog = task.result["current"]
+                total = task.result["total"]
+                diff = total - prog
+                sys.stdout.write("\r" + ("#" * prog) + ("-" * diff))
+                sys.stdout.flush()
+            except:
+                pass
+
 
 if __name__ == '__main__':
     unittest.main()
