@@ -17,9 +17,9 @@
         element: {{node.name}}
     </treecontrol>
 
-    <div class="container col-md-4 col-md-offset-4">
+    <div class="container col-md-4">
         <form novalidate>
-            <h1>Agent</h1>
+            <h1>{{formTitle}}</h1>
             <formly-form model="vm.rental" fields="vm.rentalFields" form="vm.rentalForm">
                 <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
             </formly-form>
