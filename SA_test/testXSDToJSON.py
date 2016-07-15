@@ -47,6 +47,7 @@ class xmlElement():
         self.value = ''
         self.karMin = 0
         self.karMax = -1
+        self.meta = {}
         # self.namespace = namespace
         # self.completeTagName = ''
         # self.containsFiles = False
@@ -86,6 +87,7 @@ class xmlElement():
             children.append(child.generateJSON())
         result['children'] = children
         result['attributes'] = self.attrib
+        result['meta'] = self.meta
         return result
 
     def isEmpty(self):
@@ -136,16 +138,41 @@ def analyze2(element, tree=None, usedTypes=[]):
     tag = printTag(element.tag)
     # print tag
     if tag == 'element':
+        meta = {}
+        if element.get('minOccurs') is None or int(element.get('minOccurs')) <= 0:
+            meta['minOccurs'] = 1
+        else:
+            meta['minOccurs'] = int(element.get('minOccurs'))
+        if element.get('maxOccurs') is None:
+            meta['maxOccurs'] = 1
+        elif element.get('maxOccurs') == 'unbounded':
+            meta['maxOccurs'] = -1
+        else:
+            meta['maxOccurs'] = int(element.get('maxOccurs'))
+
         if element.get('type') is None:
             t = xmlElement(element.get('name'))
+            t.meta = meta
             tree.addChild(t)
             for child in element:
                 analyze2(child, t, usedTypes)
         elif getPrefix(element.get('type')) == 'xsd':
             t = xmlElement(element.get('name'))
+            t.meta = meta
+            att = {}
+            att['key'] = 'Content'
+            att['type'] = 'input'
+            templateOptions = {}
+            templateOptions['type'] = 'text' # TODO
+            templateOptions['label'] = 'Content'
+            templateOptions['placeholder'] = 'Content'
+            templateOptions['required'] = 'True'
+            att['templateOptions'] = templateOptions
+            t.attrib.append(att)
             tree.addChild(t)
         else:
             t = xmlElement(element.get('name'))
+            t.meta = meta
             tree.addChild(t)
             key = element.get('type')
             if key not in usedTypes:
@@ -177,54 +204,9 @@ def analyze2(element, tree=None, usedTypes=[]):
         for child in element:
             analyze2(child, tree, usedTypes)
     elif tag == 'attribute':
-        if element.get('type') is not None:
-            att = {}
-            att['type'] = 'input'
-            att['key'] = element.get('name')
-            templateOptions = {}
-            templateOptions['type'] = 'text'  #TODO add options
-            templateOptions['label'] = element.get('name')
-            att['templateOptions'] = templateOptions
-            # templateOptions['placeholder'] = 'text'
-            # templateOptions['required'] #TODO
-            # att['type'] = element.get('type')
-            # att['use'] = element.get('use')
-            # tree.attrib[element.get('name')] = att
+        att = parseAttribute(element)
+        if att != None:
             tree.attrib.append(att)
-            # print att
-        else:
-            if element.get('name') is not None:
-                att = {}
-                att['key'] = element.get('name')
-                # att['use'] = element.get('use')
-                templateOptions = {}
-                templateOptions['label'] = element.get('name')
-                for child in element:
-                    if printTag(child.tag) == 'simpleType':
-                        restrictions = {}
-                        for ch in child:
-                            if printTag(ch.tag) == 'restriction':
-                                enumerations = []
-                                for c in ch:
-                                    if printTag(c.tag) == 'enumeration':
-                                        att['type'] = 'select'
-                                        a = {}
-                                        a['name'] = c.get('value')
-                                        a['value'] = c.get('value')
-                                        enumerations.append(a)
-                                    else:
-                                        if isinstance(c.tag, str):
-                                            print "unknown restriction: " + c.tag
-                                        pass
-                                if len(enumerations) > 0:
-                                    templateOptions['options'] = enumerations
-                        # print restrictions
-                # print att
-                att['templateOptions'] = templateOptions
-                tree.attrib.append(att)
-                # tree.attrib[element.get('name')] = att
-            else:
-                print "ERROR: attribute name is none"
 
     elif tag == 'attributeGroup':
         if element.get('ref'):
@@ -235,6 +217,70 @@ def analyze2(element, tree=None, usedTypes=[]):
         pass
     else:
         print 'other: ' + tag
+
+def parseAttribute(element):
+    att = {}
+    if element.get('type') is not None:
+        att = {}
+        att['type'] = 'input'
+        att['key'] = element.get('name')
+        templateOptions = {}
+        templateOptions['type'] = 'text'  #TODO add options
+        templateOptions['label'] = element.get('name')
+        use = element.get('use')
+        if use is None or use == 'optional':
+            templateOptions['required'] = False
+        elif use == 'required':
+            templateOptions['required'] = True
+        else:
+            print "Odd use value for attribute. value: " + str(use)
+            return None
+        att['templateOptions'] = templateOptions
+        # print att
+    else:
+        if element.get('name') is not None:
+            att['key'] = element.get('name')
+            templateOptions = {}
+            templateOptions['label'] = element.get('name')
+            use = element.get('use')
+            req = False
+            if use is None or use == 'optional':
+                templateOptions['required'] = False
+            elif use == 'required':
+                templateOptions['required'] = True
+                req = True
+            else:
+                print "Odd use value for attribute. value: " + str(use)
+                return None
+            for child in element:
+                if printTag(child.tag) == 'simpleType':
+                    for ch in child:
+                        if printTag(ch.tag) == 'restriction':
+                            enumerations = []
+                            for c in ch:
+                                if printTag(c.tag) == 'enumeration':
+                                    att['type'] = 'select'
+                                    a = {}
+                                    a['name'] = c.get('value')
+                                    a['value'] = c.get('value')
+                                    enumerations.append(a)
+                                else:
+                                    if isinstance(c.tag, str):
+                                        print "unknown restriction: " + c.tag #TODO handle regex string
+                                    pass
+                            if len(enumerations) > 0:
+                                if not req:
+                                    a = {}
+                                    a['name'] = ' -- None -- '
+                                    a['value'] = ''
+                                    enumerations.insert(0, a)
+                                templateOptions['options'] = enumerations
+            att['templateOptions'] = templateOptions
+        else:
+            print "ERROR: attribute name is none"
+            return None
+
+    return att
 
 ## TODO list:
 
