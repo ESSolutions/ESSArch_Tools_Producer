@@ -2,9 +2,12 @@
 from lxml import etree
 import os
 import json
+import copy
+import uuid
+from collections import OrderedDict
 
-complexTypes = {}
-attributeGroups = {}
+complexTypes = OrderedDict()
+attributeGroups = OrderedDict()
 pretty = True
 eol_ = '\n'
 
@@ -37,7 +40,7 @@ class xmlAttribute(object):
 
 class xmlElement():
 
-    def __init__(self, name):
+    def __init__(self, name, path=''):
         self.name = name
         self.children = []
         # self.tagName = tagName
@@ -47,7 +50,8 @@ class xmlElement():
         self.value = ''
         self.karMin = 0
         self.karMax = -1
-        self.meta = {}
+        self.meta = OrderedDict()
+        self.path = path + self.name + '/'
         # self.namespace = namespace
         # self.completeTagName = ''
         # self.containsFiles = False
@@ -80,8 +84,11 @@ class xmlElement():
             # print self.name + ': ' + att + ': ' + str(self.attrib[att])
 
     def generateJSON(self):
-        result = {}
+        result = OrderedDict()
         result['name'] = self.name
+        result['key'] = uuid.uuid4().__str__()
+        path = self.path
+        result['path'] = path
         children = []
         for child in self.children:
             children.append(child.generateJSON())
@@ -89,6 +96,33 @@ class xmlElement():
         result['attributes'] = self.attrib
         result['meta'] = self.meta
         return result
+
+    def generateJSONTemplate(self):
+        content = OrderedDict()
+        content['-min'] = self.karMin
+        content['-max'] = self.karMax
+        attr = []
+        for a in self.attrib:
+            to = a['templateOptions']
+            b = OrderedDict()
+            b['-name'] = to['label']
+            b['-req'] = int(to['required'])
+            b['#content'] = []
+            attr.append(b)
+        content['-attr'] = attr
+        for child in self.children:
+            name, con = child.generateJSONTemplate()
+            if name in content:
+                if isinstance(content[name], list):
+                    content[name].append(con)
+                else:
+                    c = content[name]
+                    content[name] = []
+                    content[name].append(c)
+                    content[name].append(con)
+            else:
+                content[name] = con
+        return self.name, content
 
     def isEmpty(self):
         if self.value != '' or self.children:
@@ -133,12 +167,12 @@ def getPostfix(tag):
     else:
         return ''
 
-def analyze2(element, tree=None, usedTypes=[]):
+def analyze2(element, tree, usedTypes=[]):
     # print element.local-name()
     tag = printTag(element.tag)
     # print tag
     if tag == 'element':
-        meta = {}
+        meta = OrderedDict()
         if element.get('minOccurs') is None or int(element.get('minOccurs')) <= 0:
             meta['minOccurs'] = 1
         else:
@@ -151,27 +185,58 @@ def analyze2(element, tree=None, usedTypes=[]):
             meta['maxOccurs'] = int(element.get('maxOccurs'))
 
         if element.get('type') is None:
-            t = xmlElement(element.get('name'))
+            t = xmlElement(element.get('name'), tree.path)
+            path = t.path
+            if meta['minOccurs'] > 1:
+                t.path += '0/'
+            t.karMin = meta['minOccurs']
+            t.karMax = meta['maxOccurs']
             t.meta = meta
             tree.addChild(t)
             for child in element:
                 analyze2(child, t, usedTypes)
+            if meta['minOccurs'] > 1:
+                for i in range(1, meta['minOccurs']):
+                    ti = xmlElement(t.name, tree.path)
+                    ti.path = path + str(i) + '/'
+                    ti.meta = meta
+                    tree.addChild(ti)
+                    for child in element:
+                        analyze2(child, ti, usedTypes)
         elif getPrefix(element.get('type')) == 'xsd':
-            t = xmlElement(element.get('name'))
+            t = xmlElement(element.get('name'), tree.path)
+            path = t.path
+            if meta['minOccurs'] > 1:
+                t.path += '0/'
+            t.karMin = meta['minOccurs']
+            t.karMax = meta['maxOccurs']
             t.meta = meta
-            att = {}
+            att = OrderedDict()
             att['key'] = 'Content'
             att['type'] = 'input'
-            templateOptions = {}
+            templateOptions = OrderedDict()
             templateOptions['type'] = 'text' # TODO
             templateOptions['label'] = 'Content'
             templateOptions['placeholder'] = 'Content'
-            templateOptions['required'] = 'True'
+            templateOptions['required'] = True
             att['templateOptions'] = templateOptions
             t.attrib.append(att)
             tree.addChild(t)
+            if meta['minOccurs'] > 1:
+                for i in range(1, meta['minOccurs']):
+                    ti = xmlElement(t.name, tree.path)
+                    ti.path = path + str(i) + '/'
+                    ti.meta = meta
+                    a = copy.deepcopy(t.attrib)
+                    ti.attrib = a
+                    tree.addChild(ti)
         else:
-            t = xmlElement(element.get('name'))
+            t = xmlElement(element.get('name'), tree.path)
+            path = t.path
+            if meta['minOccurs'] > 1:
+                t.path += '0/'
+            t.karMin = meta['minOccurs']
+            t.karMax = meta['maxOccurs']
             t.meta = meta
             tree.addChild(t)
             key = element.get('type')
@@ -182,6 +247,19 @@ def analyze2(element, tree=None, usedTypes=[]):
                         analyze2(child, t, usedTypes)
                 else:
                     print "type unknown: " + element.get('type')
+            if meta['minOccurs'] > 1:
+                for i in range(1, meta['minOccurs']):
+                    ti = xmlElement(t.name, tree.path)
+                    ti.path = path + str(i) + '/'
+                    ti.meta = meta
+                    a = copy.deepcopy(t.attrib)
+                    ti.attrib = a
+                    tree.addChild(ti)
+                    if key in complexTypes:
+                        for child in complexTypes[key]:
+                            analyze2(child, ti, usedTypes)
+                    else:
+                        print "type unknown: " + element.get('type')
     elif tag == 'complexType':
         for child in element:
             analyze2(child, tree, usedTypes)
@@ -219,12 +297,12 @@ def analyze2(element, tree=None, usedTypes=[]):
         print 'other: ' + tag
 
 def parseAttribute(element):
-    att = {}
+    att = OrderedDict()
     if element.get('type') is not None:
-        att = {}
+        att = OrderedDict()
         att['type'] = 'input'
         att['key'] = element.get('name')
-        templateOptions = {}
+        templateOptions = OrderedDict()
         templateOptions['type'] = 'text'  #TODO add options
         templateOptions['label'] = element.get('name')
         use = element.get('use')
@@ -240,7 +318,7 @@ def parseAttribute(element):
     else:
         if element.get('name') is not None:
             att['key'] = element.get('name')
-            templateOptions = {}
+            templateOptions = OrderedDict()
             templateOptions['label'] = element.get('name')
             use = element.get('use')
             req = False
@@ -260,7 +338,7 @@ def parseAttribute(element):
                             for c in ch:
                                 if printTag(c.tag) == 'enumeration':
                                     att['type'] = 'select'
-                                    a = {}
+                                    a = OrderedDict()
                                     a['name'] = c.get('value')
                                     a['value'] = c.get('value')
                                     enumerations.append(a)
@@ -270,7 +348,7 @@ def parseAttribute(element):
                                     pass
                             if len(enumerations) > 0:
                                 if not req:
-                                    a = {}
+                                    a = OrderedDict()
                                     a['name'] = ' -- None -- '
                                     a['value'] = ''
                                     enumerations.insert(0, a)
@@ -328,6 +406,11 @@ for child in root.iterfind(schema + 'element'):
         if tree is not None:
             with open('test.txt', 'wb') as outfile:
                 json.dump(tree.generateJSON(), outfile)
+            with open('test2.txt', 'wb') as outfile:
+                name, content = tree.generateJSONTemplate()
+                arr = OrderedDict()
+                arr[name] = content
+                json.dump(arr, outfile)
             # tree.printDebug()
             # tree.printXML(xmlFile)
             # print tree.generateJSON()
