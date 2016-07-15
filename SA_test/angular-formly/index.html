@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>angular-formly</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-tree-control/css/tree-control.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-tree-control/css/tree-control-attribute.css">
+</head>
+<body ng-app="formlyApp" ng-controller="MainController as vm">
+
+    <treecontrol class="tree-classic"
+        tree-model="dataForTheTree"
+        options="treeOptions"
+        on-selection="showSelected(node)"
+        selected-node="node1">
+        element: {{node.name}}
+    </treecontrol>
+
+    <div class="container col-md-4 col-md-offset-4">
+        <form novalidate>
+            <h1>Agent</h1>
+            <formly-form model="vm.rental" fields="vm.rentalFields" form="vm.rentalForm">
+                <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
+            </formly-form>
+        </form>
+    </div>
+
+</body>
+
+    <!-- Application Dependencies -->
+    <script src="node_modules/api-check/dist/api-check.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-formly/dist/formly.js"></script>
+    <script src="node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+    <script type="text/javascript" src="node_modules/angular-tree-control/angular-tree-control.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="app.js"></script>
+    <script src="scripts/MainController.js"></script>
+    <script src="scripts/province.js"></script>
+</html>

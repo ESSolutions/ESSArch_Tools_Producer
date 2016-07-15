@@ -525,7 +525,7 @@
         {
           "-containsFiles": [
               {
-                  "-sortby": {"FName":".*(.csv)"},
+                  "-sortby": {"FName": ".*(.csv)"},
                   "file": {
                     "-min": "1",
                     "-attr": [
@@ -603,16 +603,15 @@
         "#content": "SMLabel"
       }],
       "div": {
-        "-containsFiles": [{
-            "fptr": {
-              "-allowEmpty": "1",
-              "-attr": [{
-                "-name": "FILEID",
-                "-req": "1",
-                "#content": [{"text": "ID" },{"var":"FID"}]
-              }]
-            }
-        }]
+        "-containsFiles": "1",
+        "fptr": {
+          "-allowEmpty": "1",
+          "-attr": [{
+            "-name": "FILEID",
+            "-req": "1",
+            "#content": [{"text": "ID" },{"var":"FID"}]
+          }]
+        }
       }
     }
   }
