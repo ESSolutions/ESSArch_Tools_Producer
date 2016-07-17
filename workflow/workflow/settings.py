@@ -122,5 +122,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Celery settings
-BROKER_URL = 'amqp://guest:guest@10.0.1.174:5672//'
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 CELERY_RESULT_BACKEND = 'amqp://'
