@@ -97,6 +97,12 @@ class ProcessTask(Process):
         def __unicode__(self):
             return '%s - %s' % (self.name, self.id)
 
+class Step(models.Model):
+    name = models.CharField(primary_key=True, max_length=128, unique=True)
+
+    class Meta:
+        db_table = 'Step'
+
 class Task(models.Model):
     name = models.CharField(primary_key=True, max_length=128, unique=True)
 
