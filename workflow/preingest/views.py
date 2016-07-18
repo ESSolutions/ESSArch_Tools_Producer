@@ -4,7 +4,7 @@ from django.template import loader
 from rest_framework.renderers import JSONRenderer
 
 from preingest.models import ProcessStep, ProcessTask, Task
-from preingest.serializers import ProcessTaskSerializer
+from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -24,6 +24,11 @@ def run(request, name, *args, **kwargs):
     [module, task] = name.rsplit('.', 1)
     getattr(importlib.import_module(module), task)().delay()
     return HttpResponse("Running {}".format(name), request)
+
+def steps(request, *args, **kwargs):
+    steps = ProcessStep.objects.all()
+    serializer = ProcessStepSerializer(steps, many=True)
+    return JSONResponse(serializer.data)
 
 def tasks(request, *args, **kwargs):
     tasks = ProcessTask.objects.all()
