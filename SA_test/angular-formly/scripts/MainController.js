@@ -24,12 +24,8 @@
             $scope.template = {
 
             };
-            // The model object that we reference
-            // on the  element in index.html
-            vm.rental = {
-
-            };
             $scope.formTitle = 'TEST';
+            vm.title = 'ttt';
             // An array of our form fields with configuration
             // and options set. We make reference to this in
             // the 'fields' attribute on the  element
@@ -74,14 +70,85 @@
             $scope.parseElements = parseElements
 
             $scope.showSelected = function(sel) {
-                 $scope.selectedNode = sel;
-                 console.log(sel)
-                 vm.rentalFields = sel.attributes
-                 $scope.formTitle = sel.path
-                 console.log(parseElements($scope.template, sel.path))
+                $scope.selectedNode = sel;
+                vm.fields = sel.attributes;
+                vm.title = sel.path;
+                // console.log(sel);
+                //  vm.selection = sel;
+                vm.min = sel.meta['minOccurs'];
+                vm.max = sel.meta['maxOccurs'];
+                if (vm.max == -1) {
+                    vm.max = 'infinite'
+                }
+                vm.model = [];
              };
 
-            vm.rentalFields = [
+            vm.onSubmit = onSubmit;
+
+            // function definition
+            function onSubmit() {
+                // console.log(vm.title)
+                // alert(JSON.stringify(vm.model), null, 2);
+
+                var path = vm.title.split('/');
+                var t = $scope.template;
+                for (var i = 0; i < path.length; i++) {
+                    if (path[i].length > 0) {
+                        t = t[path[i]];
+                    }
+                }
+                var attr = t['-attr']
+                console.log(attr);
+                for (var key in vm.model) {
+                    for (var j = 0; j < attr.length; j++) {
+                        if (attr[j]['-name'] == key) {
+                            attr[j]['#content'] = analyzeContent(vm.model[key]);
+                            break;
+                        }
+                    }
+                }
+                // find element to modify and update values
+                console.log(attr);
+                // console.log($scope.template[path[0]]);
+
+            }
+
+            function analyzeContent(c) {
+                var res = [];
+                var i = c.indexOf('{{')
+                if (i > 0) {
+                    var d = {};
+                    d['text'] = c.substring(0, i);
+                    res.push(d);
+                    var r = analyzeContent(c.substring(i));
+                    for (var j = 0; j < r.length; j++) {
+                        res.push(r[j]);
+                    }
+                } else if (i == -1) {
+                    if (c.length > 0) {
+                        var d = {};
+                        d['text'] = c;
+                        res.push(d);
+                    }
+                } else {
+                    var d = {};
+                    var v = c.substring(i+2);
+                    i = v.indexOf('}}');
+                    d['var'] = v.substring(0, i);
+                    res.push(d);
+                    var r = analyzeContent(v.substring(i+2));
+                    for (var j = 0; j < r.length; j++) {
+                        res.push(r[j]);
+                    }
+                }
+                return res
+            }
+
+            vm.model = {
+
+            };
+
+            vm.fields = [
                 {
                     key: 'name',
                     type: 'input',

@@ -18,9 +18,10 @@
     </treecontrol>
 
     <div class="container col-md-4">
-        <form novalidate>
-            <h1>{{formTitle}}</h1>
-            <formly-form model="vm.rental" fields="vm.rentalFields" form="vm.rentalForm">
+        <form novalidate ng-submit="vm.onSubmit()">
+            <h1>{{vm.title}}</h1>
+            <h3>Min: {{vm.min}} Max: {{vm.max}}</h3>
+            <formly-form model="vm.model" fields="vm.fields" form="vm.form">
                 <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
             </formly-form>
         </form>
