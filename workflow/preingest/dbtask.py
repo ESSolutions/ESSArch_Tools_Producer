@@ -2,6 +2,8 @@ from __future__ import absolute_import, division
 
 from celery import states as celery_states, Task
 
+from django.utils import timezone
+
 from preingest.models import ProcessTask
 
 class DBTask(Task):
@@ -14,6 +16,7 @@ class DBTask(Task):
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         print "finalize task with id {}".format(task_id)
         self.taskobj.status = status
+        self.taskobj.date_done = timezone.now()
         self.taskobj.save()
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):

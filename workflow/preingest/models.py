@@ -85,7 +85,7 @@ class ProcessTask(Process):
                               default=celery_states.PENDING,
                               choices=TASK_STATE_CHOICES)
     result = PickledObjectField(null=True, default=None, editable=False)
-    date_done = models.DateTimeField(_('done at'), auto_now=True)
+    date_done = models.DateTimeField(_('done at'), null=True)
     traceback = models.TextField(_('traceback'), blank=True, null=True)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = PickledObjectField(null=True, default=None, editable=False)
