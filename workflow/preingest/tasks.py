@@ -2,8 +2,6 @@ from __future__ import absolute_import
 
 import time
 
-from celery import shared_task
-
 from preingest.dbtask import DBTask
 
 class Sleepy(DBTask):
