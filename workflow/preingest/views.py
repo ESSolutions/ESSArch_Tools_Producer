@@ -1,15 +1,8 @@
-import sys
-
-from celery.result import AsyncResult
-
 from django.http import HttpResponse
 from django.template import loader
 
 from rest_framework.renderers import JSONRenderer
 
-from tasks import Sleepy
-
-from preingest.dbtask import DBTask
 from preingest.models import ProcessStep, ProcessTask, Task
 from preingest.serializers import ProcessTaskSerializer
 
