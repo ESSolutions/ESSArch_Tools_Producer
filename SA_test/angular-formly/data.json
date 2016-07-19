@@ -38,6 +38,7 @@
                     "key": "Content",
                     "type": "input",
                     "templateOptions": {
+                        "content": [{"text": "testsd"}],
                         "type": "text",
                         "label": "Content",
                         "placeholder": "Content",
@@ -46,7 +47,7 @@
                 }],
                 "meta": {
                     "minOccurs": 1,
-                    "maxOccurs": -1
+                    "maxOccurs": 5
                 }
             }],
             "attributes": [{

@@ -1,0 +1,185 @@
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:ext="ExtensionMETS" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd" PROFILE="http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll" LABEL="Test of SIP 1" TYPE="Personnel" OBJID="UUID:9bc10faa-3fff-4a8f-bf9a-638841061065" ext:CONTENTTYPESPECIFICATION="FGS Personal, version 1">
+    <mets:metsHdr CREATEDATE="2016-06-08T10:44:00+02:00" RECORDSTATUS="NEW" ext:OAISTYPE="SIP">
+        <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildar namn
+            </mets:name>
+            <mets:note>
+                VAT:SE201345098701
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="ARCHIVIST" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+            <mets:name>
+                By hand Systems
+            </mets:name>
+            <mets:note>
+                1.0.0
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildar namn
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="OTHER" OTHERROLE="PRODUCER" TYPE="ORGANIZATION">
+            <mets:name>
+                Sydarkivera
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="OTHER" OTHERROLE="SUBMITTER" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildare
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="IPOWNER" TYPE="ORGANIZATION">
+            <mets:name>
+                Informations agare
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="EDITOR" TYPE="ORGANIZATION">
+            <mets:name>
+                Axenu
+            </mets:name>
+            <mets:note>
+                VAT:SE9512114233
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="INDIVIDUAL">
+            <mets:name>
+                Simon Nilsson
+            </mets:name>
+            <mets:note>
+                0706758942, simonseregon@gmail.com
+            </mets:note>
+        </mets:agent>
+        <mets:altRecordID TYPE="SUBMISSIONAGREEMENT">
+            RA 13-2011/5329, 2012-04-12
+        </mets:altRecordID>
+        <mets:altRecordID TYPE="REFERENCECODE">
+            SE/RA/123456/24/F
+        </mets:altRecordID>
+    </mets:metsHdr>
+    <mets:amdSec>
+        <mets:digiprovMD>
+            <mets:mdRef/>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp>
+            <file CHECKSUM="0866266dd2d56500c68844bf485475f2d5ad0cc63e343bb0f4f9ebc8e0b0878b" ID="ID93660316-dc59-4d78-9d8b-97a08d78e75f" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="38637" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000027.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="fa44a30c2a01014fc15c461e8096caf90ca9d14cbb745ade846e7d98a2025d5c" ID="ID7ef3bd6a-0a8f-4455-b634-9967dafec086" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="7484691" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000564.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="208daa408460735205501473cc6847a56b24f1d6e4cf197284bc8ddeb076e7c8" ID="IDc177eade-c359-45c1-9836-a3e5f755d8db" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="43100" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000565.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="b0bfaa855f95753d0426222fe70de1bb07f6bbe0e4e3b771b70346aba43e078e" ID="IDcc504f74-e74c-47b4-a4a3-dafe42692876" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="37629" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000575.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="53596de1d6f8635297691647e3302a9158474d3b79d1e4321fb91520d9ab408a" ID="IDfe3db1b5-b91b-4d30-a3af-be767da7de91" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="145813" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000576.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="9d586440ea9684d6eb38105a7603c128528976dcab5728f6aa1de21cda1497ce" ID="IDdbc6fb00-935e-467a-bdd2-4b3d892f616a" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="2575" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000689.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="1b12ea44316df94a39df18299cd58b41e905c1c25cd1b3a1a6587ba9b4bb85e3" ID="ID548ceb30-7ba5-4bed-ad4b-ea3901922ccc" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="37449" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000690.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="a409d3c36ba45b91093eb7e86b84a2e520ecb5a52040527faaed9edc364dea8e" ID="ID3ebf0a26-b6f8-497e-9e2d-90c1b2d86570" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="8601" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000721.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="28a2c638ab71ed03683af11a5d49cd7520bd949d136dd69d5309504a0ab6e6dd" ID="IDd2e4acce-2a80-4b86-9f8a-61e2dbed255d" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="3815" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000722.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="c7866cea665215056005fadcf49924a012d7cd02cbaed9c2e48029cb6d791311" ID="IDf822bad8-9fc5-44ce-9af8-4bfe62f7b4ba" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="2099672" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000756.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="7785c0a682accf7e60f4c193414e25c860c56b53573554aa3b50a0884d096f11" ID="IDa0e84314-fc11-407d-8064-1b12235356f0" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="8305" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000764.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap>
+        <mets:div>
+            <fptr FILEID="ID93660316-dc59-4d78-9d8b-97a08d78e75f"/>
+            <fptr FILEID="ID7ef3bd6a-0a8f-4455-b634-9967dafec086"/>
+            <fptr FILEID="IDc177eade-c359-45c1-9836-a3e5f755d8db"/>
+            <fptr FILEID="IDcc504f74-e74c-47b4-a4a3-dafe42692876"/>
+            <fptr FILEID="IDfe3db1b5-b91b-4d30-a3af-be767da7de91"/>
+            <fptr FILEID="IDdbc6fb00-935e-467a-bdd2-4b3d892f616a"/>
+            <fptr FILEID="ID548ceb30-7ba5-4bed-ad4b-ea3901922ccc"/>
+            <fptr FILEID="ID3ebf0a26-b6f8-497e-9e2d-90c1b2d86570"/>
+            <fptr FILEID="IDd2e4acce-2a80-4b86-9f8a-61e2dbed255d"/>
+            <fptr FILEID="IDf822bad8-9fc5-44ce-9af8-4bfe62f7b4ba"/>
+            <fptr FILEID="IDa0e84314-fc11-407d-8064-1b12235356f0"/>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>
+32523e85-f622-41d7-a3d5-3314ae5030e3"/>
+                <fptr FILEID="ID7b51c68d-b276-4605-866e-62fbd859cb9d"/>
+                <fptr FILEID="IDa93ba452-675b-43a0-b63d-64b7a264158a"/>
+                <fptr FILEID="ID44ec20cf-a596-4882-876d-4ea86e6176df"/>
+                <fptr FILEID="IDb74e9ee0-bcec-4d4d-b0d3-07b40441b18f"/>
+                <fptr FILEID="ID2149186b-e66d-471e-af7d-870c3b31f27c"/>
+                <fptr FILEID="ID695f2d2a-dee7-4cd1-a9a6-105c96e8ddc1"/>
+                <fptr FILEID="IDa26c49d5-92aa-479e-9ec6-ab91aa4dbf36"/>
+                <fptr FILEID="IDaabd08de-4617-4908-929b-3c873ab81c96"/>
+                <fptr FILEID="ID479c8622-bafe-40bd-a45b-5a172ba6f9f9"/>
+                <fptr FILEID="ID50d8a424-eba1-4e93-929f-9e002e458138"/>
+                <mets:div>
+                    <fptr FILEID="ID32523e85-f622-41d7-a3d5-3314ae5030e3"/>
+                    <fptr FILEID="ID7b51c68d-b276-4605-866e-62fbd859cb9d"/>
+                    <fptr FILEID="IDa93ba452-675b-43a0-b63d-64b7a264158a"/>
+                    <fptr FILEID="ID44ec20cf-a596-4882-876d-4ea86e6176df"/>
+                    <fptr FILEID="IDb74e9ee0-bcec-4d4d-b0d3-07b40441b18f"/>
+                    <fptr FILEID="ID2149186b-e66d-471e-af7d-870c3b31f27c"/>
+                    <fptr FILEID="ID695f2d2a-dee7-4cd1-a9a6-105c96e8ddc1"/>
+                    <fptr FILEID="IDa26c49d5-92aa-479e-9ec6-ab91aa4dbf36"/>
+                    <fptr FILEID="IDaabd08de-4617-4908-929b-3c873ab81c96"/>
+                    <fptr FILEID="ID479c8622-bafe-40bd-a45b-5a172ba6f9f9"/>
+                    <fptr FILEID="ID50d8a424-eba1-4e93-929f-9e002e458138"/>
+                    <mets:div>
+                        <fptr FILEID="ID32523e85-f622-41d7-a3d5-3314ae5030e3"/>
+                        <fptr FILEID="ID7b51c68d-b276-4605-866e-62fbd859cb9d"/>
+                        <fptr FILEID="IDa93ba452-675b-43a0-b63d-64b7a264158a"/>
+                        <fptr FILEID="ID44ec20cf-a596-4882-876d-4ea86e6176df"/>
+                        <fptr FILEID="IDb74e9ee0-bcec-4d4d-b0d3-07b40441b18f"/>
+                        <fptr FILEID="ID2149186b-e66d-471e-af7d-870c3b31f27c"/>
+                        <fptr FILEID="ID695f2d2a-dee7-4cd1-a9a6-105c96e8ddc1"/>
+                        <fptr FILEID="IDa26c49d5-92aa-479e-9ec6-ab91aa4dbf36"/>
+                        <fptr FILEID="IDaabd08de-4617-4908-929b-3c873ab81c96"/>
+                        <fptr FILEID="ID479c8622-bafe-40bd-a45b-5a172ba6f9f9"/>
+                        <fptr FILEID="ID50d8a424-eba1-4e93-929f-9e002e458138"/>
+                    </mets:div>
+                    <mets:div>
+                        <fptr FILEID="ID32523e85-f622-41d7-a3d5-3314ae5030e3"/>
+                        <fptr FILEID="ID7b51c68d-b276-4605-866e-62fbd859cb9d"/>
+                        <fptr FILEID="IDa93ba452-675b-43a0-b63d-64b7a264158a"/>
+                        <fptr FILEID="ID44ec20cf-a596-4882-876d-4ea86e6176df"/>
+                        <fptr FILEID="IDb74e9ee0-bcec-4d4d-b0d3-07b40441b18f"/>
+                        <fptr FILEID="ID2149186b-e66d-471e-af7d-870c3b31f27c"/>
+                        <fptr FILEID="ID695f2d2a-dee7-4cd1-a9a6-105c96e8ddc1"/>
+                        <fptr FILEID="IDa26c49d5-92aa-479e-9ec6-ab91aa4dbf36"/>
+                        <fptr FILEID="IDaabd08de-4617-4908-929b-3c873ab81c96"/>
+                        <fptr FILEID="ID479c8622-bafe-40bd-a45b-5a172ba6f9f9"/>
+                        <fptr FILEID="ID50d8a424-eba1-4e93-929f-9e002e458138"/>
+                    </mets:div>
+                </mets:div>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

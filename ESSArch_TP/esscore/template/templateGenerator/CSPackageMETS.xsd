@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.loc.gov/METS/" xmlns="http://www.loc.gov/METS/"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://xml.ra.se/e-arkiv/xlink/xlink.xsd"/>
+	<!-- old schemalocation for xlink: http://www.loc.gov/standards/xlink/xlink.xsd -->
+	<!-- Change of xlink location based om risk of not getting access to Library of Congress servers -->
+	<xsd:element name="mets">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="metsType"/>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="metsType">
+		<xsd:sequence>
+			<xsd:element name="metsHdr">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="agent" minOccurs="3" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="name" type="xsd:string">
+									</xsd:element>
+									<xsd:element name="note" type="xsd:string" minOccurs="0"
+										maxOccurs="unbounded">
+									</xsd:element>
+								</xsd:sequence>
+								<xsd:attribute name="ID" type="xsd:ID" use="optional">
+								</xsd:attribute>
+								<xsd:attribute name="ROLE" use="required">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:enumeration value="CREATOR"/>
+											<xsd:enumeration value="EDITOR"/>
+											<xsd:enumeration value="ARCHIVIST"/>
+											<xsd:enumeration value="PRESERVATION"/>
+											<xsd:enumeration value="DISSEMINATOR"/>
+											<xsd:enumeration value="CUSTODIAN"/>
+											<xsd:enumeration value="IPOWNER"/>
+											<xsd:enumeration value="OTHER"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="OTHERROLE" use="optional">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:enumeration value="SUBMITTER"/>
+											<xsd:enumeration value="PRODUCER"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="TYPE" use="required">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:enumeration value="INDIVIDUAL"/>
+											<xsd:enumeration value="ORGANIZATION"/>
+											<xsd:enumeration value="OTHER"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+								<xsd:attribute name="OTHERTYPE" use="optional">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:enumeration value="SOFTWARE"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="altRecordID" minOccurs="1" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="ID" type="xsd:ID" use="optional">
+										</xsd:attribute>
+										<xsd:attribute name="TYPE" use="optional">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:enumeration value="SUBMISSIONAGREEMENT"/>
+													<xsd:enumeration value="PREVIOUSSUBMISSIONAGREEMENT"/>
+													<xsd:enumeration value="REFERENCECODE"/>
+													<xsd:enumeration value="PREVIOUSREFERENCECODE"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="metsDocumentID" minOccurs="0">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="ID" type="xsd:ID" use="optional">
+										</xsd:attribute>
+										<xsd:attribute name="TYPE" type="xsd:string" use="optional">
+										</xsd:attribute>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="CREATEDATE" type="xsd:dateTime" use="required">
+					</xsd:attribute>
+					<xsd:attribute name="LASTMODDATE" type="xsd:dateTime" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="RECORDSTATUS" use="optional">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="SUPPLEMENT"/>
+								<xsd:enumeration value="REPLACEMENT"/>
+								<xsd:enumeration value="NEW"/>
+								<xsd:enumeration value="TEST"/>
+								<xsd:enumeration value="VERSION"/>
+								<xsd:enumeration value="DEPOSIT"/>
+								<xsd:enumeration value="AGREEMENT"/>
+								<xsd:enumeration value="OTHER"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:anyAttribute namespace="##other" processContents="lax"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="dmdSec" type="mdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="amdSec" type="amdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="fileSec" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="fileGrp" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:complexContent>
+									<xsd:extension base="fileGrpType"/>
+								</xsd:complexContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:anyAttribute namespace="##other" processContents="lax"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="structMap" type="structMapType" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="structLink" minOccurs="0">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="structLinkType"/>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="behaviorSec" type="behaviorSecType" minOccurs="0"
+				maxOccurs="unbounded">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="OBJID" type="xsd:string" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="TYPE" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="ERMS"/>
+					<xsd:enumeration value="Personnel"/>
+					<xsd:enumeration value="Medical record"/>
+					<xsd:enumeration value="Economics"/>
+					<xsd:enumeration value="Databases"/>
+					<xsd:enumeration value="Webpages"/>
+					<xsd:enumeration value="GIS"/>
+					<xsd:enumeration value="No specification"/>
+					<xsd:enumeration value="AIC"/>
+					<xsd:enumeration value="Publication"/>
+					<xsd:enumeration value="Archival information"/>
+					<xsd:enumeration value="Unstructured"/>
+					<xsd:enumeration value="Single records"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="PROFILE" type="xsd:string" use="required">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="amdSecType">
+		<xsd:sequence>
+			<xsd:element name="techMD" type="mdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="rightsMD" type="mdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="sourceMD" type="mdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+			<xsd:element name="digiprovMD" type="mdSecType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="required">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="fileGrpType">
+		<xsd:choice>
+			<xsd:element name="fileGrp" type="fileGrpType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="file" minOccurs="0" maxOccurs="unbounded" type="fileType">
+			</xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="VERSDATE" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="USE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="structMapType">
+		<xsd:sequence>
+			<xsd:element name="div" type="divType">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="TYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="divType">
+		<xsd:sequence>
+			<xsd:element name="mptr" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attributeGroup ref="LOCATION"/>
+					<xsd:attributeGroup ref="xlink:simpleLink"/>
+					<xsd:attribute name="CONTENTIDS" type="URIs" use="optional">
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="fptr" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:element name="par" type="parType" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="seq" type="seqType" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="area" type="areaType" minOccurs="0">
+						</xsd:element>
+					</xsd:choice>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="FILEID" type="xsd:IDREF" use="required">
+					</xsd:attribute>
+					<xsd:attribute name="CONTENTIDS" type="URIs" use="optional">
+					</xsd:attribute>
+					<xsd:anyAttribute namespace="##other" processContents="lax"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="div" type="divType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="ORDERLABELS"/>
+		<xsd:attribute name="DMDID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="TYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CONTENTIDS" type="URIs" use="optional">
+		</xsd:attribute>
+		<xsd:attribute ref="xlink:label">
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="parType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="area" type="areaType" minOccurs="0"/>
+			<xsd:element name="seq" type="seqType" minOccurs="0"/>
+		</xsd:choice>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="ORDERLABELS"/>
+		<xsd:anyAttribute namespace="##other" processContents="lax"></xsd:anyAttribute>
+	</xsd:complexType>
+	<xsd:complexType name="seqType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="area" type="areaType" minOccurs="0"/>
+			<xsd:element name="par" type="parType" minOccurs="0"/>
+		</xsd:choice>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="ORDERLABELS"/>
+		<xsd:anyAttribute namespace="##other" processContents="lax"></xsd:anyAttribute>
+	</xsd:complexType>
+	<xsd:complexType name="areaType">
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="FILEID" type="xsd:IDREF" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="SHAPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="RECT"/>
+					<xsd:enumeration value="CIRCLE"/>
+					<xsd:enumeration value="POLY"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="COORDS" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="BEGIN" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="END" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="BETYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="BYTE"/>
+					<xsd:enumeration value="IDREF"/>
+					<xsd:enumeration value="SMIL"/>
+					<xsd:enumeration value="MIDI"/>
+					<xsd:enumeration value="SMPTE-25"/>
+					<xsd:enumeration value="SMPTE-24"/>
+					<xsd:enumeration value="SMPTE-DF30"/>
+					<xsd:enumeration value="SMPTE-NDF30"/>
+					<xsd:enumeration value="SMPTE-DF29.97"/>
+					<xsd:enumeration value="SMPTE-NDF29.97"/>
+					<xsd:enumeration value="TIME"/>
+					<xsd:enumeration value="TCF"/>
+					<xsd:enumeration value="XPTR"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="EXTENT" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="EXTTYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="BYTE"/>
+					<xsd:enumeration value="SMIL"/>
+					<xsd:enumeration value="MIDI"/>
+					<xsd:enumeration value="SMPTE-25"/>
+					<xsd:enumeration value="SMPTE-24"/>
+					<xsd:enumeration value="SMPTE-DF30"/>
+					<xsd:enumeration value="SMPTE-NDF30"/>
+					<xsd:enumeration value="SMPTE-DF29.97"/>
+					<xsd:enumeration value="SMPTE-NDF29.97"/>
+					<xsd:enumeration value="TIME"/>
+					<xsd:enumeration value="TCF"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CONTENTIDS" type="URIs" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="ORDERLABELS"/>
+		<xsd:anyAttribute namespace="##other" processContents="lax"></xsd:anyAttribute>
+	</xsd:complexType>
+	<xsd:complexType name="structLinkType">
+		<xsd:choice maxOccurs="unbounded">
+			<xsd:element name="smLink">
+				<xsd:complexType>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:arcrole" use="optional">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:title" use="optional">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:show" use="optional">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:actuate" use="optional">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:to" use="required">
+					</xsd:attribute>
+					<xsd:attribute ref="xlink:from" use="required">
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="smLinkGrp">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="smLocatorLink" minOccurs="2" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="ID" type="xsd:ID">
+								</xsd:attribute>
+								<xsd:attributeGroup ref="xlink:locatorLink"/>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="smArcLink" minOccurs="1" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="ID" type="xsd:ID">
+								</xsd:attribute>
+								<xsd:attributeGroup ref="xlink:arcLink"/>
+								<xsd:attribute name="ARCTYPE" type="xsd:string">
+								</xsd:attribute>
+								<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="ID" type="xsd:ID"/>
+					<xsd:attribute name="ARCLINKORDER" default="unordered">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="ordered"/>
+								<xsd:enumeration value="unordered"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+					<xsd:attributeGroup ref="xlink:extendedLink"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="behaviorSecType">
+		<xsd:sequence>
+			<xsd:element name="behaviorSec" type="behaviorSecType" minOccurs="0"
+				maxOccurs="unbounded"/>
+			<xsd:element name="behavior" type="behaviorType" minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="behaviorType">
+		<xsd:sequence>
+			<xsd:element name="interfaceDef" type="objectType" minOccurs="0">
+			</xsd:element>
+			<xsd:element name="mechanism" type="objectType">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="STRUCTID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="BTYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="GROUPID" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="objectType">
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="LOCATION"/>
+		<xsd:attributeGroup ref="xlink:simpleLink"/>
+	</xsd:complexType>
+	<xsd:complexType name="mdSecType">
+		<xsd:all>
+			<xsd:element name="mdRef" minOccurs="0">
+				<xsd:complexType>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attributeGroup ref="LOCATION"/>
+					<xsd:attributeGroup ref="xlink:simpleLink"/>
+					<xsd:attributeGroup ref="METADATA"/>
+					<xsd:attributeGroup ref="FILECORE_MDREF"/>
+					<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="XPTR" type="xsd:string" use="optional">
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="mdWrap" minOccurs="0">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:element name="binData" type="xsd:base64Binary" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="xmlData" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:any namespace="##any" maxOccurs="unbounded"
+										processContents="lax"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:choice>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attributeGroup ref="METADATA"/>
+					<xsd:attributeGroup ref="FILECORE_MDWRAP">
+					</xsd:attributeGroup>
+					<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:all>
+		<xsd:attribute name="ID" type="xsd:ID" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="GROUPID" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="STATUS" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+	<xsd:complexType name="fileType">
+
+		<xsd:sequence>
+			<xsd:element name="FLocat">
+				<xsd:complexType>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attributeGroup ref="LOCATION"/>
+					<xsd:attribute name="USE" type="xsd:string" use="optional">
+					</xsd:attribute>
+					<xsd:attributeGroup ref="xlink:simpleLink"/>
+					<!-- This placement has been changed in the original METS-schema version 1.10.1 -->
+					<!--<xsd:anyAttribute namespace="##other" processContents="lax"/>-->
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FContent" minOccurs="0">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:element name="binData" type="xsd:base64Binary" minOccurs="0">
+						</xsd:element>
+						<xsd:element name="xmlData" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:any namespace="##any" maxOccurs="unbounded"
+										processContents="lax"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:choice>
+					<xsd:attribute name="ID" type="xsd:ID" use="optional">
+					</xsd:attribute>
+					<xsd:attribute name="USE" type="xsd:string" use="optional">
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="stream" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:restriction base="xsd:anyType">
+							<xsd:attribute name="ID" type="xsd:ID" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="streamType" type="xsd:string" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="OWNERID" type="xsd:string" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="DMDID" type="xsd:IDREFS" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="BEGIN" type="xsd:string" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="END" type="xsd:string" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="BETYPE" use="optional">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="BYTE"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+						</xsd:restriction>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="transformFile" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:restriction base="xsd:anyType">
+							<xsd:attribute name="ID" type="xsd:ID" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="TRANSFORMTYPE" use="required">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="decompression"/>
+										<xsd:enumeration value="decryption"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:attribute>
+							<xsd:attribute name="TRANSFORMALGORITHM" type="xsd:string"
+								use="required">
+							</xsd:attribute>
+							<xsd:attribute name="TRANSFORMKEY" type="xsd:string" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="TRANSFORMBEHAVIOR" type="xsd:IDREF" use="optional">
+							</xsd:attribute>
+							<xsd:attribute name="TRANSFORMORDER" type="xsd:positiveInteger"
+								use="required">
+							</xsd:attribute>
+						</xsd:restriction>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="file" type="fileType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:ID" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="SEQ" type="xsd:int" use="optional">
+		</xsd:attribute>
+		<xsd:attributeGroup ref="FILECORE"/>
+		<xsd:attribute name="OWNERID" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ADMID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="DMDID" type="xsd:IDREFS" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="GROUPID" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="USE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="BEGIN" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="END" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="BETYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="BYTE"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<!-- The correct placement of anyAttribute moved here in METS-schema version 1.10.1 -->
+		<xsd:anyAttribute namespace="##other" processContents="lax"/>
+	</xsd:complexType>
+
+	<xsd:simpleType name="URIs">
+		<xsd:list itemType="xsd:anyURI"/>
+	</xsd:simpleType>
+
+	<xsd:attributeGroup name="ORDERLABELS">
+		<xsd:attribute name="ORDER" type="xsd:integer" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="ORDERLABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="LABEL" type="xsd:string" use="optional">
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="METADATA">
+		<xsd:attribute name="MDTYPE" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="MARC"/>
+					<xsd:enumeration value="MODS"/>
+					<xsd:enumeration value="EAD"/>
+					<xsd:enumeration value="DC"/>
+					<xsd:enumeration value="NISOIMG"/>
+					<xsd:enumeration value="LC-AV"/>
+					<xsd:enumeration value="VRA"/>
+					<xsd:enumeration value="TEIHDR"/>
+					<xsd:enumeration value="DDI"/>
+					<xsd:enumeration value="FGDC"/>
+					<xsd:enumeration value="LOM"/>
+					<xsd:enumeration value="PREMIS"/>
+					<xsd:enumeration value="PREMIS:OBJECT"/>
+					<xsd:enumeration value="PREMIS:AGENT"/>
+					<xsd:enumeration value="PREMIS:RIGHTS"/>
+					<xsd:enumeration value="PREMIS:EVENT"/>
+					<xsd:enumeration value="TEXTMD"/>
+					<xsd:enumeration value="METSRIGHTS"/>
+					<xsd:enumeration value="ISO 19115:2003 NAP"/>
+					<xsd:enumeration value="EAC-CPF"/>
+					<xsd:enumeration value="LIDO"/>
+					<xsd:enumeration value="OTHER"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="OTHERMDTYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="ADDML"/>
+					<xsd:enumeration value="BAGIT"/>
+					<xsd:enumeration value="EAC-F"/>
+					<xsd:enumeration value="EAG"/>
+					<xsd:enumeration value="METS"/>
+					<xsd:enumeration value="COMMENT"/>
+                    <xsd:enumeration value="SIARD"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="MDTYPEVERSION" type="xsd:string" use="optional">
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="LOCATION">
+		<xsd:attribute name="LOCTYPE" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<!-- <xsd:enumeration value="ARK"/> -->
+					<xsd:enumeration value="URN"/>
+					<xsd:enumeration value="URL"/>
+					<!-- <xsd:enumeration value="PURL"/> -->
+					<xsd:enumeration value="HANDLE"/>
+					<!-- <xsd:enumeration value="DOI"/> -->
+					<xsd:enumeration value="OTHER"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="OTHERLOCTYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="FILECORE">
+		<xsd:attribute name="MIMETYPE" type="xsd:string" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="SIZE" type="xsd:long" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="required">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUM" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUMTYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<!-- <xsd:enumeration value="Adler-32"/> -->
+					<!-- <xsd:enumeration value="CRC32"/> -->
+					<!-- <xsd:enumeration value="HAVAL"/> -->
+					<xsd:enumeration value="MD5"/>
+					<!-- <xsd:enumeration value="MNP"/> -->
+					<xsd:enumeration value="SHA-1"/>
+					<xsd:enumeration value="SHA-256"/>
+					<xsd:enumeration value="SHA-384"/>
+					<xsd:enumeration value="SHA-512"/>
+					<!-- <xsd:enumeration value="TIGER"/> -->
+					<!-- <xsd:enumeration value="WHIRLPOOL"/> -->
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="FILECORE_MDWRAP">
+		<xsd:attribute name="MIMETYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="SIZE" type="xsd:long" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUM" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUMTYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<!--					<xsd:enumeration value="Adler-32"/>-->
+					<!--					<xsd:enumeration value="CRC32"/>-->
+					<!--					<xsd:enumeration value="HAVAL"/>-->
+					<xsd:enumeration value="MD5"/>
+					<!--					<xsd:enumeration value="MNP"/>-->
+					<xsd:enumeration value="SHA-1"/>
+					<xsd:enumeration value="SHA-256"/>
+					<xsd:enumeration value="SHA-384"/>
+					<xsd:enumeration value="SHA-512"/>
+					<!--					<xsd:enumeration value="TIGER"/>-->
+					<!--					<xsd:enumeration value="WHIRLPOOL"/>-->
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="FILECORE_MDREF">
+		<xsd:attribute name="MIMETYPE" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="SIZE" type="xsd:long" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CREATED" type="xsd:dateTime" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUM" type="xsd:string" use="optional">
+		</xsd:attribute>
+		<xsd:attribute name="CHECKSUMTYPE" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<!--					<xsd:enumeration value="Adler-32"/>-->
+					<!--					<xsd:enumeration value="CRC32"/>-->
+					<!--					<xsd:enumeration value="HAVAL"/>-->
+					<xsd:enumeration value="MD5"/>
+					<!--					<xsd:enumeration value="MNP"/>-->
+					<xsd:enumeration value="SHA-1"/>
+					<xsd:enumeration value="SHA-256"/>
+					<xsd:enumeration value="SHA-384"/>
+					<xsd:enumeration value="SHA-512"/>
+					<!--					<xsd:enumeration value="TIGER"/>-->
+					<!--					<xsd:enumeration value="WHIRLPOOL"/>-->
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+</xsd:schema>
