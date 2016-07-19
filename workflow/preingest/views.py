@@ -30,8 +30,16 @@ def run_step(request, name, *args, **kwargs):
         data = f.read()
         tasks = json.loads(data)
 
-    DBStep(name, tasks)
-    return HttpResponse("Running {}".format(name), request)
+    step = DBStep(name, tasks)
+    step.run()
+
+    template = loader.get_template('preingest/run_step.html')
+
+    context = {
+        'step': step.get_process_obj()
+    }
+
+    return HttpResponse(template.render(context, request))
 
 def run_task(request, name, *args, **kwargs):
     import importlib
@@ -48,3 +56,21 @@ def tasks(request, *args, **kwargs):
     tasks = ProcessTask.objects.all()
     serializer = ProcessTaskSerializer(tasks, many=True)
     return JSONResponse(serializer.data)
+
+def history(request, *args, **kwargs):
+    template = loader.get_template('preingest/history.html')
+
+    context = {
+        'steps': ProcessStep.objects.all()
+    }
+
+    return HttpResponse(template.render(context, request))
+
+def history_detail(request, step_id, *args, **kwargs):
+    template = loader.get_template('preingest/history_detail.html')
+
+    context = {
+        'step': ProcessStep.objects.get(id=step_id)
+    }
+
+    return HttpResponse(template.render(context, request))

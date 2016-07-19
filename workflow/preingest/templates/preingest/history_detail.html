@@ -1,0 +1,28 @@
+<h2>Results for {{ step.name }} with id {{ step.id }}</h2>
+<h2>Tasks</h2>
+<div>
+    <table border=1>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>progress</th>
+                <th>status</th>
+                <th>started</th>
+                <th>date_done</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in step.tasks.all %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.name }}</td>
+                <td>{{ t.progress }}</td>
+                <td>{{ t.status }}</td>
+                <td>{{ t.started }}</td>
+                <td>{{ t.date_done }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

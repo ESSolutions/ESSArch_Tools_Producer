@@ -26,14 +26,14 @@ class DBStep(object):
             fn = getattr(importlib.import_module(module), task)()
             fns.append((fn, t["params"]))
 
-        chain(fn.si(processstep=self.stepobj, params=params)
-              for (fn, params) in fns)()
-
-        self.tasks = tasks
+        self.chain = chain(fn.si(processstep=self.stepobj, params=params)
+                           for (fn, params) in fns)
 
     def run(self):
-        for t in self.tasks:
-            pass
+        return self.chain()
+
+    def get_process_obj(self):
+        return self.stepobj
 
     def undo_last(self, n=1):
         for i in xrange(n):
