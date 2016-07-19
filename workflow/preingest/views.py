@@ -1,9 +1,12 @@
+import json
+
 from django.http import HttpResponse
 from django.template import loader
 
 from rest_framework.renderers import JSONRenderer
 
-from preingest.models import ProcessStep, ProcessTask, Task
+from preingest.dbstep import DBStep
+from preingest.models import ProcessStep, ProcessTask, Step, Task
 from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer
 
 class JSONResponse(HttpResponse):
@@ -15,11 +18,22 @@ class JSONResponse(HttpResponse):
 def index(request):
     template = loader.get_template('preingest/index.html')
     context = {
+        'steps' : Step.objects.all(),
         'tasks' : Task.objects.all()
     }
     return HttpResponse(template.render(context, request))
 
-def run(request, name, *args, **kwargs):
+def run_step(request, name, *args, **kwargs):
+    newname = name.replace(".", "/").replace("/json", ".json")
+
+    with open(newname) as f:
+        data = f.read()
+        tasks = json.loads(data)
+
+    DBStep(name, tasks)
+    return HttpResponse("Running {}".format(name), request)
+
+def run_task(request, name, *args, **kwargs):
     import importlib
     [module, task] = name.rsplit('.', 1)
     getattr(importlib.import_module(module), task)().delay()

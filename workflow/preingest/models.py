@@ -24,6 +24,7 @@ class Process(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=256, blank=True)
     progress = models.IntegerField(blank=True, default=0)
+    result = PickledObjectField(null=True, default=None, editable=False)
 
 
 class ProcessStep(Process):
@@ -64,7 +65,6 @@ class ProcessStep(Process):
 
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
-    result = PickledObjectField(blank=True)
     status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
     posted = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
@@ -84,12 +84,14 @@ class ProcessTask(Process):
     status = models.CharField(_('state'), max_length=50,
                               default=celery_states.PENDING,
                               choices=TASK_STATE_CHOICES)
-    result = PickledObjectField(null=True, default=None, editable=False)
+    params = PickledObjectField(null=True)
+    started = models.DateTimeField(_('started at'), null=True, auto_now_add=True)
     date_done = models.DateTimeField(_('done at'), null=True)
     traceback = models.TextField(_('traceback'), blank=True, null=True)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = PickledObjectField(null=True, default=None, editable=False)
     processstep = models.ForeignKey('ProcessStep', blank=True, null=True)
+    processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
 
     class Meta:
         db_table = 'ProcessTask'
@@ -97,14 +99,21 @@ class ProcessTask(Process):
         def __unicode__(self):
             return '%s - %s' % (self.name, self.id)
 
-class Step(models.Model):
-    name = models.CharField(primary_key=True, max_length=128, unique=True)
-
-    class Meta:
-        db_table = 'Step'
 
 class Task(models.Model):
     name = models.CharField(primary_key=True, max_length=128, unique=True)
 
     class Meta:
         db_table = 'Task'
+
+class Step(models.Model):
+    name = models.CharField(primary_key=True, max_length=128, unique=True)
+    tasks = models.ManyToManyField(Task, through='StepTask')
+
+    class Meta:
+        db_table = 'Step'
+
+class StepTask(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    step = models.ForeignKey(Step, on_delete=models.CASCADE)
+    order = models.IntegerField()
