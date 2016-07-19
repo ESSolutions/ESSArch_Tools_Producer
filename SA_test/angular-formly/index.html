@@ -24,6 +24,12 @@
             <formly-form model="vm.model" fields="vm.fields" form="vm.form">
                 <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
             </formly-form>
+            <h3>Avaliable children</h3>
+            <div>
+                <p ng-repeat="child in vm.possibleChildren">
+                    <span ng-click="vm.addChild(child)">{{child.name}}
+                    </span></p>
+            </div>
         </form>
     </div>
 

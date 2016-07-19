@@ -81,15 +81,6 @@ def index(request):
     return HttpResponse(t.render(c))
 '''
 
-def index(request):
-    # v=add.delay(4,4)
-    iterations = randint(1,10)  # That's a lot. Right?
-    step = 10
-    result = LotsOfDivisionTask.delay_or_fail(
-        numerators=range(0, step * iterations * 2, step * 2),
-        denominators=range(1, step * iterations, step),)
-    return HttpResponse("Hello, world. You're at the polls index." + str(result.get()))
-
 class test(View):
     template_name = 'create/prepare_create.html'
 

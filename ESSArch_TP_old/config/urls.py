@@ -43,14 +43,16 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
     url(r'^admin/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
     url(r'^changepassword$', 'configuration.views.change_password'),
-    
+
     # URLS to include:
     #url(r'^receive/', include('receive.urls')),
     url(r'^submit/', include('submit.urls')),
     url(r'^create/', include('create.urls')),
+    url(r'^template/', include('templateMaker.urls')),
+
     #url(r'^api/', include('api.urls')),
 
-    # Configuration URLS:    
+    # Configuration URLS:
     url(r'^about$', 'configuration.views.sysinfo'),
     #url(r'^configuration/logevents$', 'configuration.views.logevents'),
     url(r'^configuration/logevents/install_defaults$', 'configuration.views.installogdefaults'),
@@ -84,12 +86,12 @@ urlpatterns = patterns('',
     #url(r'^create/view$', 'create.views.viewIPs'), ##
     #url(r'^create_upload/?$', CreateTmpWorkareaUploadView.as_view(), name='chunked_upload'),
     #url(r'^create_upload_complete/?$', CreateTmpWorkareaUploadCompleteView.as_view(), name='chunked_upload_complete'),
-    url(r'^directoryinfo/(?P<ipid>[^&]*)$', IPcontentasJSON.as_view(), name='directoryinfo'), 
+    url(r'^directoryinfo/(?P<ipid>[^&]*)$', IPcontentasJSON.as_view(), name='directoryinfo'),
     url(r'^etp_upload/?$', ETPUploadView.as_view(), name='etp_chunked_upload'),
-    #url(r'^etp_upload_complete/?$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'), 
+    #url(r'^etp_upload_complete/?$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'),
     url(r'^etp_upload_complete/(?P<ipid>[^&]*)$', ETPUploadCompleteView.as_view(), name='etp_chunked_upload_complete'),
     #url(r'^create/view/(?P<uuid>[^//]+)/(?P<creator>[^//]+)/(?P<label>[^//]+)/(?P<startdate>[^//]+)/(?P<enddate>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)/(?P<state>[^//]+)$', 'create.views.viewIPs'),
-        
+
     # Deliver IP URLS:
     #url(r'^prepare$', 'prepare.views.index'),
     url(r'^deliver$', 'deliver.views.index'),
@@ -104,7 +106,7 @@ urlpatterns = patterns('',
     url(r'^logevents/view/(?P<uuid>[^//]+)/(?P<archivist_organization>[^//]+)/(?P<label>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)$', 'logevents.views.viewlog'),    url(r'^logevents/out$', 'logevents.views.listlog'),
     #url(r'^logevents/view$', 'logevents.views.viewlog'),
 #    url(r'^logevents/(?P<id>\d+)$', 'logevents.views.viewlog'), ##
-        
+
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 

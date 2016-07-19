@@ -230,10 +230,12 @@ INSTALLED_APPS = (
     'ip',
     'profiles',
     'create',
+    'templateMaker',
     'chunked_upload',
     'submit',
     'workers',
-    'jobtastic'
+    'jobtastic',
+    'esscore'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

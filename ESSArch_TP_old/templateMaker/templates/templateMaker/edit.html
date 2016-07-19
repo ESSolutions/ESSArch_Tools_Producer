@@ -1,0 +1,69 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block app-extra-style %}
+    <link rel="stylesheet" type="text/css" href={% static "angular/bootstrap/dist/css/bootstrap.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "angular/angular-tree-control/css/tree-control.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "angular/angular-tree-control/css/tree-control-attribute.css" %}>
+{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block bodyattribute %}
+    ng-app="formlyApp" ng-controller="MainController as vm"
+{% endblock %}
+
+{% block content %}
+
+
+<div style="margin:20px">
+
+    <H1>Edit template <i>({{ ip.label }})</i> from <i>({{ ip.archivist_organization }})</i></H1><p>
+    <p><i>Please fill in the fields or use prefilled data   (* indicates mandatory field)</i></p><br/>
+
+    <treecontrol class="tree-classic"
+        tree-model="treeInfo"
+        options="treeOptions"
+        on-selection="showSelected(node)"
+        selected-node="node1"
+        style="float:left;">
+        element: {% verbatim %}{{node.name}}{% endverbatim %}
+    </treecontrol>
+
+    <div class="container col-md-4">
+        <form novalidate action method="post">
+            {% csrf_token %}
+            <input type="hidden" name="uuid" value="{% verbatim %}{{vm.uuid}}{% endverbatim %}"/>
+            <input type="hidden" name="schemaName" value="{% verbatim %}{{vm.schemaName}}{% endverbatim %}"/>
+            <h1>{% verbatim %}{{vm.title}}{% endverbatim %}</h1>
+            <h3>Min: {% verbatim %}{{vm.min}}{% endverbatim %} Max: {% verbatim %}{{vm.max}}{% endverbatim %}</h3>
+            <formly-form model="vm.model" fields="vm.fields" form="vm.form">
+                <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
+            </formly-form>
+            <h3>Avaliable children</h3>
+            <div>
+                <p ng-repeat="child in vm.possibleChildren">
+                    <span ng-click="vm.addChild(child)">{% verbatim %}{{child.name}}{% endverbatim %}
+                    </span></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra-script %}
+    <!-- Application Dependencies -->
+    <script src={% static "angular/api-check/dist/api-check.js" %}></script>
+    <script src={% static "angular/angular/angular.js" %}></script>
+    <script src={% static "angular/angular-formly/dist/formly.js" %}></script>
+    <script src={% static "angular/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js" %}></script>
+    <script type="text/javascript" src={% static "angular/angular-tree-control/angular-tree-control.js" %}></script>
+
+    <!-- Application Scripts -->
+    <script src={% static "scripts/app.js" %}></script>
+    <script src={% static "scripts/MainController.js" %}></script>
+    <script src={% static "scripts/province.js" %}></script>
+{% endblock %}
