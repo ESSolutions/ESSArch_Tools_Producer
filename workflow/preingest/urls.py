@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^tasks/$', views.tasks, name='tasks'),
     url(r'^history/$', views.history, name='history'),
     url(r'^history/(?P<step_id>[-\w]+)/$', views.history_detail, name='history_detail'),
+    url(r'^undo_task/(?P<processtask_id>[-\w]+)/$', views.undo_task, name='undo_task'),
 ]
