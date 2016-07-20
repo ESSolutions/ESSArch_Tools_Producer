@@ -14,6 +14,7 @@
             //not hardcoded in future
             $http.get('/template/struct/test').then(function(res){
                 $scope.treeInfo = [JSON.parse(res.data)];
+                // $scope.expandedNodes = $scope.treeInfo;
             });
             // $http.get('template.json').then(function(res){
             //     $scope.template = res.data;
@@ -44,7 +45,11 @@
                     label: "a6",
                     labelSelected: "a8"
                 }
-            }
+            };
+
+            $scope.expandedNodes = [
+                // {name: 'mets',key: "a5b810a8-7187-45c1-a9e7-f7c02a5fc8fa"}
+            ];
 
             $scope.dataForTheTree =
             [
@@ -72,18 +77,26 @@
             $scope.parseElements = parseElements
 
             vm.countAll = {
+                name: {count: 1, element: {}}
             };
             // vm.count = 0;
 
-            $scope.showSelected = function(sel) {
-                // console.log(sel['key']);
+            $scope.showSelected = function(sel, selected) {
+                // console.log($scope);
+                // if (selected) {
+                //     $scope.expandedNodes.push(sel);
+                // } else {
+                //     var i = $scope.expandedNodes.indexOf(sel);
+                //     $scope.expandedNodes.splice(i, 1);
+                // }
+                // console.log($scope.expandedNodes)
+                vm.selectedNode = sel;
                 $http.get(('/template/struct/test/'+sel['key'])).then(function(res){
                     // console.log(res.data);
                     var data = JSON.parse(res.data);
-                    // console.log(data);
-                    vm.title = data['name']; //TODO make first char capitol
-                    vm.min = data.meta['minOccurs'];
-                    vm.max = data.meta['maxOccurs'];
+                    vm.title = sel['name']; //TODO make first char capitol
+                    vm.min = sel.meta['minOccurs'];
+                    vm.max = sel.meta['maxOccurs'];
                     if (vm.max == -1) {
                         vm.max = 'infinite';
                     }
@@ -91,7 +104,35 @@
                     vm.schemaName = 'test';
                     vm.fields = data['attributes'];
                     vm.model = [];
-                    console.log(vm.fields);
+                    // console.log(sel);
+                    vm.selectedElement = data;
+                    vm.countAll = {};
+                    vm.possibleChildren = [];
+                    for (var i in sel.children) {
+                        var child = sel.children[i];
+                        if (!(child.name in vm.countAll)) {
+                            var d = {};
+                            d['count'] = 1;
+                            d['element'] = child;
+                            d['name'] = child.name;
+                            var max = child.meta.maxOccurs;
+                            if (max == -1) {
+                                max = 100000000; // most unlikly to exceed
+                            }
+                            d['max'] = max;
+                            vm.countAll[child.name] = d;
+                        } else {
+                            vm.countAll[child.name]['count'] += 1;
+                        }
+                    }
+                    for (var i in vm.countAll) {
+                        var child = vm.countAll[i];
+                        if (child.count < child.max) {
+                            vm.possibleChildren.push(child);
+                        }
+                    }
+
+                    // console.log(vm.fields);
                 });
                 // vm.selectedNode = sel;
                 // vm.fields = sel.attributes;
@@ -105,12 +146,12 @@
                 // vm.possibleChildren = [];
                 // // vm.possibleChildren = sel.children;
                 //
-                // // load avaliable children
+                // load avaliable children
                 // for (var i in sel.children) {
                 //     var child = sel.children[i];
-                //     if (!(child.path in vm.countAll)) {
-                //         vm.countAll[child.path] = child.meta.minOccurs;
-                //     }
+                    // if (!(child.path in vm.countAll)) {
+                    //     vm.countAll[child.path] = child.meta.minOccurs;
+                    // }
                 //     if (child.meta.maxOccurs == -1 || vm.countAll[child.path] < child.meta.maxOccurs) {
                 //         var found = false;
                 //         for (i in vm.possibleChildren) {
@@ -136,10 +177,32 @@
             vm.onSubmit = onSubmit;
             vm.addChild = addChild;
 
+            String.prototype.replaceAll = function(str1, str2, ignore) {
+                return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+            }
+
             function addChild(child) {
 
-                console.log(child)
+                // send child.element to server for processing
+                // reload page
+                // TODO remember expandedNodes
+
+                console.log(child);
                 console.log(vm.selectedNode);
+                // $http.get('/template/struct/addChild/test').then(function(res){
+                //     // $scope.treeInfo = [JSON.parse(res.data)];
+                //     // $scope.expandedNodes = $scope.treeInfo;
+                // });
+                $http.get('/template/struct/addChild/test/' + child.element['path'].replaceAll('/', '-')).then(function(res){
+                    // $scope.treeInfo = [JSON.parse(res.data)];
+                    console.log(res);
+                    // $scope.expandedNodes = $scope.treeInfo;
+                });
+                // $http({
+                //     method: 'POST',
+                //     url: '/template/struct/addChild/test/', //TODO test to varaible
+                //     data: JSON.stringify(child.element)
+                // });
 
                 // console.log(child)
                 // var copy = JSON.parse(JSON.stringify(child));

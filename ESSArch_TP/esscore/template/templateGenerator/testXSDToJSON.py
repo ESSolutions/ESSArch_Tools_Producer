@@ -102,6 +102,8 @@ class xmlElement():
         result = OrderedDict()
         result['name'] = self.name
         result['key'] = self.uuid
+        result['meta'] = self.meta
+        result['path'] = self.path
         arr = []
         for child in self.children:
             arr.append(child.generateStruct())
@@ -111,13 +113,12 @@ class xmlElement():
     def listAllElements(self):
         res = {}
         result = OrderedDict()
-        result['name'] = self.name
+        # result['name'] = self.name
         # result['key'] = self.uuid
         for child in self.children:
             a = child.listAllElements()
             res.update(a)
         result['attributes'] = self.attrib
-        result['meta'] = self.meta
         res[self.uuid] = result
         return res
 
@@ -227,8 +228,7 @@ def analyze2(element, tree, usedTypes=[]):
         if element.get('type') is None:
             t = xmlElement(element.get('name'), tree.path)
             path = t.path
-            if meta['minOccurs'] > 1:
-                t.path += '0/'
+            t.path += '0/'
             t.karMin = meta['minOccurs']
             t.karMax = meta['maxOccurs']
             t.meta = meta
@@ -246,8 +246,7 @@ def analyze2(element, tree, usedTypes=[]):
         elif getPrefix(element.get('type')) == 'xsd':
             t = xmlElement(element.get('name'), tree.path)
             path = t.path
-            if meta['minOccurs'] > 1:
-                t.path += '0/'
+            t.path += '0/'
             t.karMin = meta['minOccurs']
             t.karMax = meta['maxOccurs']
             t.meta = meta
@@ -273,8 +272,7 @@ def analyze2(element, tree, usedTypes=[]):
         else:
             t = xmlElement(element.get('name'), tree.path)
             path = t.path
-            if meta['minOccurs'] > 1:
-                t.path += '0/'
+            t.path += '0/'
             t.karMin = meta['minOccurs']
             t.karMax = meta['maxOccurs']
             t.meta = meta
@@ -444,6 +442,7 @@ def generate():
         tag = printTag(child.tag)
         if tag != 'complexType' and tag != 'attributeGroup':
             tree = xmlElement(child.get('name'))
+            tree.path += '0/'
             for ch in child:
                 analyze2(ch, tree, [])
             if tree is not None:
@@ -460,7 +459,7 @@ def generate():
     # complexTypes = OrderedDict()
     # attributeGroups = OrderedDict()
 
-print generate()
+# print generate()
 # print generate(2)
 # print generate(3)
 # print generate(4)

@@ -26,8 +26,9 @@
     <treecontrol class="tree-classic"
         tree-model="treeInfo"
         options="treeOptions"
-        on-selection="showSelected(node)"
+        on-selection="showSelected(node, selected)"
         selected-node="node1"
+        expanded-nodes="expandedNodes"
         style="float:left;">
         element: {% verbatim %}{{node.name}}{% endverbatim %}
     </treecontrol>
