@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import Context, loader, RequestContext
 from models import templatePackage
 #file upload
@@ -11,9 +11,9 @@ import logging
 logger = logging.getLogger('code.exceptions')
 
 import re
-import shutil
+import copy
 import json
-import os
+import uuid
 from collections import OrderedDict
 
 from django.views.generic import View
@@ -50,6 +50,36 @@ def constructContent(text):
             res.append(r[j])
     return res
 
+def cloneElement(el, allElements, found=0, begin=''):
+    newElement = OrderedDict()
+    newElement['name'] = el['name']
+    newElement['key'] = uuid.uuid4().__str__()
+    newElement['meta'] = copy.deepcopy(el['meta'])
+    # change last num to found if found != 0
+    # repeat change for all children
+    newElement['path'] = el['path']
+    path = newElement['path']
+    if found != 0:
+        newElement['path'] = path[0:path[:-1].rfind('/')] + '/'+str(found)+'/'
+    elif begin != '':
+        newElement['path'] = begin + path[path[:path[:-1].rfind('/')].rfind('/')+1:]
+    children = []
+    for child in el['children']:
+        children.append(cloneElement(child, allElements, begin=newElement['path']))
+    newElement['children'] = children
+    # TODO add elements to allElementsList
+    allElements[newElement['key']] = copy.deepcopy(allElements[str(el['key'])])
+
+
+    return newElement
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
 def index(request):
 
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -60,7 +90,7 @@ def resetData(request):
     struc, el = generate();
     t = templatePackage(structure=struc, elements=el, name='test')
     t.save()
-    return JsonResponse(struc, safe=False)
+    return JsonResponse(el, safe=False)
 
 def getStruct(request, name):
 
@@ -81,6 +111,66 @@ def getDataJSON(request):
     struc, el = generate();
     return JsonResponse(struc, safe=False)
     # return HttpResponse(j, content_type="application/json")
+
+def addChild(request, name, path):
+    # find location in structure
+    # add element and children with new uuid
+    # add children to elemnts list with new id:s
+    obj = get_object_or_404(templatePackage, pk=name)
+    j = json.loads(obj.structure, object_pairs_hook=OrderedDict)
+    allElements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    # body = json.loads(request.body, object_pairs_hook=OrderedDict)
+    t = j;
+    p = path.split('-')
+    p = p[:-1]
+    name = p[-2:][0]
+    p = p[:-2]
+    for i in range(0, len(p), 2):
+        found = 0
+        for dic in t['children']:
+            if dic['name'] == p[i]:
+                if found == int(p[i+1]):
+                    t = dic
+                    break
+                else:
+                    found += 1
+
+
+
+
+    # loop through and find last occurence of name as child
+    found = 0
+    body = None
+    i = 0
+    done = False
+    for dic in t['children']:
+        if dic['name'] == name:
+            found += 1
+            body = dic
+        else:
+            if found > 0:
+                # remember index for insert
+                newElement = cloneElement(body, allElements, found)
+                # return HttpResponse('body: ' + str(i))
+                t['children'].insert(i, newElement)
+                done = True
+                break
+        i += 1
+    if not done and found > 0:
+        newElement = cloneElement(body, allElements, found)
+        # return HttpResponse('body: ' + str(i))
+        t['children'].insert(i, newElement)
+
+
+    obj.structure = json.dumps(j)
+    obj.elements = json.dumps(allElements)
+    obj.save()
+    return JsonResponse(t, safe=False)
+
+    # add element and children (reqursivly?)
+
+    # request.body
+
 
 class create(View):
     template_name = 'templateMaker/create.html'
@@ -169,4 +259,4 @@ class edit(View):
 
         obj.elements = json.dumps(j)
         obj.save()
-        return HttpResponse(obj.elements)
+        return redirect('/template/edit/')
