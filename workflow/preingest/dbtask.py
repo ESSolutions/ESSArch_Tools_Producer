@@ -9,7 +9,7 @@ from preingest.models import ProcessTask
 class DBTask(Task):
     def __call__(self, *args, **kwargs):
         processstep = kwargs.get('processstep', None)
-        params = kwargs.get('params', {})
+        params = kwargs.get('params', {}) or {}
         undo = kwargs.get('undo', False)
         print "init task with name {}, id {}".format(self.name, self.request.id)
         self.taskobj = ProcessTask(task_id=self.request.id, processstep=processstep, name=self.name, status=celery_states.STARTED)
