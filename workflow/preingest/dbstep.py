@@ -41,10 +41,6 @@ class DBStep(object):
             print "undoing last task ({}) in step with id {}".format(self.stepobj.id, task.id)
         pass
 
-    def undo_all(self):
-        for t in self.tasks:
-            pass
-
     def after_return(self):
         print "finalize step with id {}".format(self.id)
         #self.stepobj.status = status

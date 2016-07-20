@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import uuid
 
-from celery import states as celery_states
+from celery import chain, states as celery_states
 
 from django.db import models
 from django.utils.translation import ugettext as _
@@ -69,6 +69,19 @@ class ProcessStep(Process):
     posted = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
+
+    def undo(self):
+        fns = []
+
+        import importlib
+
+        for task in reversed(self.tasks.all()):
+            [module, taskname] = task.name.rsplit('.', 1)
+            fn = getattr(importlib.import_module(module), taskname)
+            fns.append((fn, task.params))
+
+        chain(fn().si(processstep=self, params=params, undo=True)
+              for (fn, params) in fns)()
 
     class Meta:
         db_table = u'ProcessStep'

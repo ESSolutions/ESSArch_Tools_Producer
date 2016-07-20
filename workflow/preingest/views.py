@@ -83,3 +83,8 @@ def undo_task(request, processtask_id, *args, **kwargs):
     [module, task] = undo.rsplit('.', 1)
     getattr(importlib.import_module(module), task)().delay(undo=True, processstep=step)
     return HttpResponse("undo {}".format(undo))
+
+def undo_step(request, processstep_id, *args, **kwargs):
+    step = ProcessStep.objects.get(id=processstep_id)
+    step.undo()
+    return HttpResponse("undo {}".format(step.name))
