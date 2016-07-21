@@ -240,6 +240,38 @@ def generateTemplate(request, name):
 
     return JsonResponse(jsonString)
 
+def saveForm(request, name):
+
+    res = json.loads(request.body)
+    name = res['schemaName']
+    uuid = res['uuid']
+    del res['schemaName']
+    del res['uuid']
+
+    obj = get_object_or_404(templatePackage, pk=name)
+    j = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    oldData = j[uuid]
+    for key, value in res.iteritems():
+        # if key.startswith('formly_'):
+        #     # key has format formly_[form_id]_[type (input | select)]_[key]_[num] Wanted value is [key]
+        #     end = key.rfind('_')
+        #     k = key[0:end]
+        #     start = k.rfind('_')
+        #     k = k[start+1:]
+        for attrib in oldData['attributes']:
+            if attrib['key'] == key:
+                v = value
+                if value.startswith('string:'):
+                    v = v[7:]
+                attrib['defaultValue'] = v
+                break
+
+    obj.elements = json.dumps(j)
+    obj.save()
+    return JsonResponse(j[uuid], safe=False);
+    # return redirect('/template/edit/')
+
+    pass
 
 class create(View):
     template_name = 'templateMaker/create.html'
@@ -305,6 +337,7 @@ class edit(View):
         # 3. update
         # 4. save
         # return HttpResponse(json.dumps(request.POST))
+        # return JsonResponse(request.body);
         name = request.POST['schemaName']
         uuid = request.POST['uuid']
 

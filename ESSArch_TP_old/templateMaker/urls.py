@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^struct/(?P<name>[A-z]+)/$', views.getStruct, name='get_data_template'),
     url(r'^struct/(?P<name>[A-z0-9-]+)/(?P<uuid>[A-z0-9-]+)/$', views.getElement, name='get_element_template'),
     url(r'^make/$', create.as_view(), name='create_template'),
+    url(r'^edit/(?P<name>[A-z0-9-]+)/$', views.saveForm, name='update_template'),
     url(r'^edit/$', edit.as_view(), name='edit_template'),
     # url(r'^submitipcreate/(?P<id>\d+)$', SubmitIPCreate.as_view(), name='submit_submitipcreate'),
 )

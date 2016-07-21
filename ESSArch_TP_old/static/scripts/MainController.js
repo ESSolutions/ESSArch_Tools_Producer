@@ -12,7 +12,7 @@
 
     function MainController($scope, $http) {
 
-        //not hardcoded 'test' in future
+        //TODO not hardcoded 'test' in future
         $http.get('/template/struct/test').then(function(res) {
             $scope.treeInfo = [JSON.parse(res.data)];
             vm.tree = JSON.parse(res.data);
@@ -94,7 +94,7 @@
                 } else {
                     vm.canDelete = false;
                 }
-                vm.model = [];
+                vm.model = {};
                 vm.selectedElement = data;
                 vm.anyAttribute = data['anyAttribute'];
                 vm.countAll = {};
@@ -127,22 +127,41 @@
             });
         };
 
-        vm.onSubmit = function() {
-            for (var key in vm.model) {
-                for (var j = 0; j < vm.selectedNode.attributes.length; j++) {
-                    console.log(key);
-                    console.log(vm.selectedNode.attributes[j].key);
-                    if (key == vm.selectedNode.attributes[j].key) {
-                        vm.selectedNode.attributes[j].defaultValue = vm.model[key];
-                        break;
-                    }
-                }
-            }
+        vm.submitForm = function() {
+            var data = vm.model;
+            data['uuid'] = vm.uuid;
+            data['schemaName'] = vm.schemaName;
+            // console.log(vm.model);
+            $http({
+                method: 'POST',
+                url: '/template/edit/test/',
+                data: data
+            }).then(function(res) {
+                console.log(res);
+            });
+            //TODO give feedback
+            // $scope.showSelected(vm.selectedNode, false);
         };
 
+        // vm.onSubmit = function() {
+        //     for (var key in vm.model) {
+        //         for (var j = 0; j < vm.selectedNode.attributes.length; j++) {
+        //             console.log(key);
+        //             console.log(vm.selectedNode.attributes[j].key);
+        //             if (key == vm.selectedNode.attributes[j].key) {
+        //                 vm.selectedNode.attributes[j].defaultValue = vm.model[key];
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // };
+
         vm.addChild = function(child) {
-            // TODO remember expandedNodes for all reloads
             $http.get('/template/struct/addChild/test/' + child.element['path'].split('/').join('-')).then(function(res) {
+                $http.get('/template/struct/test').then(function(res) {
+                    $scope.treeInfo = [JSON.parse(res.data)];
+                    vm.tree = JSON.parse(res.data);
+                });
             });
 
         };
@@ -168,13 +187,11 @@
                 method: 'POST',
                 url: '/template/struct/addAttrib/test/' + vm.uuid + '/',
                 data: attribute
-            })
+            });
         };
 
         vm.removeElement = function(child) {
             //post path and if it is one of the last so it should not be removed but merly changed value of templateOnly
-            // $http.get('/template/struct/removeChild/test/' + child.element['path'].split('/').join('-')).then(function(res) {
-            // });
             var data = {};
             data['path'] = vm.selectedNode['path'];
             if (vm.countOfCurrent <= 1) {
@@ -186,14 +203,16 @@
                 method: 'POST',
                 url: '/template/struct/removeChild/test/',
                 data: data
-            })
+            }).then(function() {
+                $http.get('/template/struct/test').then(function(res) {
+                    $scope.treeInfo = [JSON.parse(res.data)];
+                    vm.tree = JSON.parse(res.data);
+                });
+            });
         };
 
-        // String.prototype.replaceAll = function(str1, str2, ignore) {
-        //     return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof(str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
-        // }
-
-        vm.model = {};
+        vm.model = {
+        };
 
         vm.fields = [];
         vm.floatingfields = [{
