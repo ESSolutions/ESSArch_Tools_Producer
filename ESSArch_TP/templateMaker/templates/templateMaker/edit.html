@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href={% static "angular/bootstrap/dist/css/bootstrap.css" %}>
     <link rel="stylesheet" type="text/css" href={% static "angular/angular-tree-control/css/tree-control.css" %}>
     <link rel="stylesheet" type="text/css" href={% static "angular/angular-tree-control/css/tree-control-attribute.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "scripts/style.css" %}>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -32,16 +33,22 @@
         style="float:left;">
         element: {% verbatim %}{{node.name}}{% endverbatim %}
     </treecontrol>
+    <formly-form model="vm.floatingmodel" fields="vm.floatingfields" form="vm.floatingform" class="floatingForm" ng-show="vm.floatingVisable">
+        {% csrf_token %}
+        <button type="button" class="btn btn-primary" ng-click="vm.saveAttribute()" ng-disabled="vm.floatingform.$invalid">Add Attribute</button>
+    </formly-form>
 
     <div class="container col-md-4">
-        <form novalidate action method="post">
+        <form action method="post">
             {% csrf_token %}
             <input type="hidden" name="uuid" value="{% verbatim %}{{vm.uuid}}{% endverbatim %}"/>
             <input type="hidden" name="schemaName" value="{% verbatim %}{{vm.schemaName}}{% endverbatim %}"/>
-            <h1>{% verbatim %}{{vm.title}}{% endverbatim %}</h1>
+            <h2>{% verbatim %}{{vm.title}}{% endverbatim %}</h2>
+            <h3>Empty, non-required fields won't be used in the template</h3>
             <h3>Min: {% verbatim %}{{vm.min}}{% endverbatim %} Max: {% verbatim %}{{vm.max}}{% endverbatim %}</h3>
             <formly-form model="vm.model" fields="vm.fields" form="vm.form">
-                <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
+                <button type="button" class="btn btn-primary" ng-click="vm.addAttribute()" ng-show="vm.anyAttribute">Add Attribute</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="vm.form.$invalid">Submit</button>
             </formly-form>
             <h3>Avaliable children</h3>
             <div>
