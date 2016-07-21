@@ -172,7 +172,6 @@ def addChild(request, name, path):
         # return HttpResponse('body: ' + str(i))
         t['children'].insert(i, newElement)
 
-
     obj.structure = json.dumps(j)
     obj.elements = json.dumps(allElements)
     obj.save()

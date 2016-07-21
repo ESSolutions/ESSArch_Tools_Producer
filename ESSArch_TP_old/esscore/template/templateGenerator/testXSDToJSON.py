@@ -105,7 +105,7 @@ class xmlElement():
         result['key'] = self.uuid
         result['meta'] = self.meta
         result['path'] = self.path
-        result['templateOnly'] = False
+        result['templateOnly'] = ''
         arr = []
         for child in self.children:
             arr.append(child.generateStruct())
