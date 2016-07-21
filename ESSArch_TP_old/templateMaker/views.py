@@ -31,9 +31,6 @@ def constructContent(text):
         r = constructContent(text[i])
         for j in range(len(r)):
             res.append(r[j])
-        # for (var j = 0; j < r.length; j++) {
-        #     res.push(r[j]);
-        # }
     elif i == -1:
         if len(text) > 0:
             d = {}
@@ -55,8 +52,6 @@ def cloneElement(el, allElements, found=0, begin=''):
     newElement['name'] = el['name']
     newElement['key'] = uuid.uuid4().__str__()
     newElement['meta'] = copy.deepcopy(el['meta'])
-    # change last num to found if found != 0
-    # repeat change for all children
     newElement['path'] = el['path']
     path = newElement['path']
     if found != 0:
@@ -67,24 +62,53 @@ def cloneElement(el, allElements, found=0, begin=''):
     for child in el['children']:
         children.append(cloneElement(child, allElements, begin=newElement['path']))
     newElement['children'] = children
-    # TODO add elements to allElementsList
     allElements[newElement['key']] = copy.deepcopy(allElements[str(el['key'])])
-
 
     return newElement
 
-def is_number(s):
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
+def generateElement(structure, elements):
+    el = OrderedDict()
+    meta = structure['meta']
+    if 'minOccurs' in meta:
+        el['-min'] = meta['minOccurs']
+    if 'maxOccurs' in meta:
+        el['-max'] = meta['maxOccurs']
+    if 'allowEmpty' in meta: # TODO save allowEmpty
+        el['-allowEmpty'] = meta['allowEmpty']
+    # TODO namespace
+    a = elements[structure['key']]
+    attributes = a['attributes']
+    attributeList = []
+    for attrib in attributes:
+        if attrib['key'] == '#content':
+            el['#content'] = constructContent(attrib['defaulValue'])
+        else:
+            att = OrderedDict()
+            att['-name'] = attrib['key']
+            if 'required' in attrib:
+                if attrib['required']:
+                    att['-req'] = 1
+                else:
+                    att['-req'] = 0
+            else:
+                att['-req'] = 0
+            if 'defaulValue' in attrib:
+                att['#content'] = constructContent(attrib['defaulValue'])
+            else:
+                att['#content'] = '' # TODO warning, should not be added if it can't contain any value
+            attributeList.append(att)
+    el['-attr'] = attributeList
+    for child in structure['children']:
+        el[child['name']] = generateElement(child, elements)
+
+    return el
+
 
 def index(request):
 
     return HttpResponse("Hello, world. You're at the polls index.")
 
-#debugg only
+#debugg only NEEDS TO BE REMOVED IN FUTURE
 def resetData(request):
 
     struc, el = generate();
@@ -101,16 +125,6 @@ def getElement(request, name, uuid):
     obj = get_object_or_404(templatePackage, pk=name)
     j = json.loads(obj.elements, object_pairs_hook=OrderedDict)
     return JsonResponse(json.dumps(j[uuid]), safe=False)
-
-def getDataJSON(request):
-    # j = ''
-    # jsonFile = os.open('/ESSArch/etp/data.json',os.O_RDWR|os.O_CREAT)
-    # with open('/ESSArch/etp/data.json', 'r') as jsonFile:
-    #     j = jsonFile.read()
-        # TODO possibly remove all but structure info
-    struc, el = generate();
-    return JsonResponse(struc, safe=False)
-    # return HttpResponse(j, content_type="application/json")
 
 def addChild(request, name, path):
     # find location in structure
@@ -134,9 +148,6 @@ def addChild(request, name, path):
                     break
                 else:
                     found += 1
-
-
-
 
     # loop through and find last occurence of name as child
     found = 0
@@ -167,9 +178,23 @@ def addChild(request, name, path):
     obj.save()
     return JsonResponse(t, safe=False)
 
-    # add element and children (reqursivly?)
+def addAttribute(request, name, uuid):
+    obj = get_object_or_404(templatePackage, pk=name)
+    elements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    res = json.loads(request.body)
+    elements[uuid]['userAttributes'].append(res)
+    obj.elements = json.dumps(elements)
+    obj.save()
+    return JsonResponse(elements[uuid]['userAttributes'], safe=False)
 
-    # request.body
+def generateTemplate(request, name):
+    obj = get_object_or_404(templatePackage, pk=name)
+    structure = json.loads(obj.structure, object_pairs_hook=OrderedDict)
+    elements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    jsonString = OrderedDict()
+    jsonString[structure['name']] = generateElement(structure, elements)
+
+    return JsonResponse(jsonString)
 
 
 class create(View):

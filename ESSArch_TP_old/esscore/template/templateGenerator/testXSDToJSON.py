@@ -53,6 +53,7 @@ class xmlElement():
         self.meta = OrderedDict()
         self.path = path + self.name + '/'
         self.uuid = uuid.uuid4().__str__()
+        self.anyAttribute = False
         # self.namespace = namespace
         # self.completeTagName = ''
         # self.containsFiles = False
@@ -104,6 +105,7 @@ class xmlElement():
         result['key'] = self.uuid
         result['meta'] = self.meta
         result['path'] = self.path
+        result['templateOnly'] = False
         arr = []
         for child in self.children:
             arr.append(child.generateStruct())
@@ -119,6 +121,8 @@ class xmlElement():
             a = child.listAllElements()
             res.update(a)
         result['attributes'] = self.attrib
+        result['anyAttribute'] = self.anyAttribute
+        result['userAttributes'] = []
         res[self.uuid] = result
         return res
 
@@ -211,7 +215,7 @@ def analyze2(element, tree, usedTypes=[]):
     global complexTypes
     global attributeGroups
     tag = printTag(element.tag)
-    print tag
+    # print tag
     if tag == 'element':
         meta = OrderedDict()
         if element.get('minOccurs') is None or int(element.get('minOccurs')) <= 0:
@@ -251,7 +255,7 @@ def analyze2(element, tree, usedTypes=[]):
             t.karMax = meta['maxOccurs']
             t.meta = meta
             att = OrderedDict()
-            att['key'] = 'Content'
+            att['key'] = '#content'
             att['type'] = 'input'
             templateOptions = OrderedDict()
             templateOptions['type'] = 'text' # TODO
@@ -331,6 +335,8 @@ def analyze2(element, tree, usedTypes=[]):
                 for child in attributeGroups[ref]:
                     analyze2(child, tree, usedTypes)
         pass
+    elif tag == 'anyAttribute':
+        tree.anyAttribute = True
     else:
         print 'other: ' + tag
 
@@ -459,6 +465,7 @@ def generate():
     # complexTypes = OrderedDict()
     # attributeGroups = OrderedDict()
 
+# generate()
 # print generate()
 # print generate(2)
 # print generate(3)
