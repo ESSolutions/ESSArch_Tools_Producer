@@ -15,10 +15,15 @@
         //not hardcoded 'test' in future
         $http.get('/template/struct/test').then(function(res) {
             $scope.treeInfo = [JSON.parse(res.data)];
+            vm.tree = JSON.parse(res.data);
         });
 
         var vm = this;
-        vm.title = 'title';
+        vm.title = 'title'; // placeholder only
+        vm.countAll = {};
+        vm.anyAttribute = false;
+        vm.possibleChildren = [];
+        vm.existingChildren = [];
 
         // tree values
         $scope.treeOptions = {
@@ -39,6 +44,34 @@
         $scope.dataForTheTree = [];
         $scope.showSelected = function(sel, selected) {
             vm.selectedNode = sel;
+            // find parent
+            var p = sel['path'].split('/')
+            var t = vm.tree;
+            for (var i = 0; i < p.length-3; i+=2) {
+                var found = 0;
+                for (var j in t['children']) {
+                    var dic = t['children'][j];
+                    if (dic['name'] == p[i]) {
+                        if (found == parseInt(p[i+1])) {
+                            t = dic;
+                            break;
+                        } else {
+                            found += 1;
+                        }
+                    }
+                }
+            }
+            //count children of this type
+            var found = 0;
+            var name = p[p.length-3];
+            var nameid = p[p.length-2];
+            for (var i in t['children']) {
+                var dic = t['children'][i];
+                if (dic['name'] == name) {
+                    found += 1;
+                }
+            }
+            vm.countOfCurrent = found;
             $http.get(('/template/struct/test/' + sel['key'])).then(function(res) {
                 // console.log(res.data);
                 var data = JSON.parse(res.data);
@@ -56,6 +89,11 @@
                     vm.fields.push({template: '<hr/><p><b>User defined attributes</b></p>'}); //divider
                     vm.fields = vm.fields.concat(data['userAttributes']);
                 }
+                if (found > vm.min) {
+                    vm.canDelete = true;
+                } else {
+                    vm.canDelete = false;
+                }
                 vm.model = [];
                 vm.selectedElement = data;
                 vm.anyAttribute = data['anyAttribute'];
@@ -63,9 +101,10 @@
                 vm.possibleChildren = [];
                 for (var i in sel.children) {
                     var child = sel.children[i];
+                    //only add if it actually exists and is not just a placeholder
                     if (!(child.name in vm.countAll)) {
                         var d = {};
-                        d['count'] = 1;
+                        d['count'] = 0;
                         d['element'] = child;
                         d['name'] = child.name;
                         var max = child.meta.maxOccurs;
@@ -74,7 +113,8 @@
                         }
                         d['max'] = max;
                         vm.countAll[child.name] = d;
-                    } else {
+                    }
+                    if (child['templateOnly'] == false) {
                         vm.countAll[child.name]['count'] += 1;
                     }
                 }
@@ -85,12 +125,7 @@
                     }
                 }
             });
-
         };
-
-        vm.countAll = {};
-        vm.anyAttribute = false;
-        vm.possibleChildren = [];
 
         vm.onSubmit = function() {
             for (var key in vm.model) {
@@ -136,8 +171,22 @@
             })
         };
 
-        vm.removeElement = function() {
-
+        vm.removeElement = function(child) {
+            //post path and if it is one of the last so it should not be removed but merly changed value of templateOnly
+            // $http.get('/template/struct/removeChild/test/' + child.element['path'].split('/').join('-')).then(function(res) {
+            // });
+            var data = {};
+            data['path'] = vm.selectedNode['path'];
+            if (vm.countOfCurrent <= 1) {
+                data['remove'] = false;
+            } else {
+                data['remove'] = true;
+            }
+            $http({
+                method: 'POST',
+                url: '/template/struct/removeChild/test/',
+                data: data
+            })
         };
 
         // String.prototype.replaceAll = function(str1, str2, ignore) {
