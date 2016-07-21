@@ -105,7 +105,7 @@ class xmlElement():
         result['key'] = self.uuid
         result['meta'] = self.meta
         result['path'] = self.path
-        result['templateOnly'] = ''
+        result['templateOnly'] = False
         arr = []
         for child in self.children:
             arr.append(child.generateStruct())
@@ -218,8 +218,8 @@ def analyze2(element, tree, usedTypes=[]):
     # print tag
     if tag == 'element':
         meta = OrderedDict()
-        if element.get('minOccurs') is None or int(element.get('minOccurs')) <= 0:
-            meta['minOccurs'] = 1
+        if element.get('minOccurs') is None or int(element.get('minOccurs')) < 0:
+            meta['minOccurs'] = 0
         else:
             meta['minOccurs'] = int(element.get('minOccurs'))
         if element.get('maxOccurs') is None:

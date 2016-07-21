@@ -53,6 +53,7 @@ def cloneElement(el, allElements, found=0, begin=''):
     newElement['key'] = uuid.uuid4().__str__()
     newElement['meta'] = copy.deepcopy(el['meta'])
     newElement['path'] = el['path']
+    newElement['templateOnly'] = False
     path = newElement['path']
     if found != 0:
         newElement['path'] = path[0:path[:-1].rfind('/')] + '/'+str(found)+'/'
@@ -100,8 +101,12 @@ def generateElement(structure, elements):
     el['-attr'] = attributeList
     for child in structure['children']:
         el[child['name']] = generateElement(child, elements)
-
     return el
+
+def deleteElement(structure, elements):
+    del elements[structure['key']]
+    for child in structure['children']:
+        deleteElement(child, elements)
 
 
 def index(request):
@@ -126,6 +131,51 @@ def getElement(request, name, uuid):
     j = json.loads(obj.elements, object_pairs_hook=OrderedDict)
     return JsonResponse(json.dumps(j[uuid]), safe=False)
 
+def deleteChild(request, name):
+    # find element
+    # delete element and all sub elements
+    # delete listAllElements entries
+    obj = get_object_or_404(templatePackage, pk=name)
+    j = json.loads(obj.structure, object_pairs_hook=OrderedDict)
+    allElements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    t = j
+    res = json.loads(request.body)
+    path = res['path']
+    p = path.split('/')
+    p = p[:-1]
+    name = p[-2:][0]
+    elementId = int(p[-2:][1])
+    p = p[:-2]
+    for i in range(0, len(p), 2):
+        found = 0
+        for dic in t['children']:
+            if dic['name'] == p[i]:
+                if found == int(p[i+1]):
+                    t = dic
+                    break
+                else:
+                    found += 1
+    found = 0
+    index = 0
+    for dic in t['children']:
+        if dic['name'] == name:
+            # return JsonResponse(found, safe=False)
+            if found == elementId:
+                # delete element and sub elements
+                if res['remove']:
+                    deleteElement(dic, allElements)
+                    del t['children'][index]
+                else:
+                    dic['templateOnly'] = True
+                break
+            found += 1
+        index += 1
+
+    obj.structure = json.dumps(j)
+    obj.elements = json.dumps(allElements)
+    obj.save()
+    return JsonResponse(t, safe=False)
+
 def addChild(request, name, path):
     # find location in structure
     # add element and children with new uuid
@@ -133,7 +183,6 @@ def addChild(request, name, path):
     obj = get_object_or_404(templatePackage, pk=name)
     j = json.loads(obj.structure, object_pairs_hook=OrderedDict)
     allElements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
-    # body = json.loads(request.body, object_pairs_hook=OrderedDict)
     t = j;
     p = path.split('-')
     p = p[:-1]
@@ -153,24 +202,20 @@ def addChild(request, name, path):
     found = 0
     body = None
     i = 0
-    done = False
     for dic in t['children']:
         if dic['name'] == name:
             found += 1
             body = dic
         else:
             if found > 0:
-                # remember index for insert
-                newElement = cloneElement(body, allElements, found)
-                # return HttpResponse('body: ' + str(i))
-                t['children'].insert(i, newElement)
-                done = True
                 break
         i += 1
-    if not done and found > 0:
-        newElement = cloneElement(body, allElements, found)
-        # return HttpResponse('body: ' + str(i))
-        t['children'].insert(i, newElement)
+    if found > 0:
+        if body['templateOnly'] != True:
+            newElement = cloneElement(body, allElements, found)
+            t['children'].insert(i, newElement)
+        else:
+            body['templateOnly'] = False
 
     obj.structure = json.dumps(j)
     obj.elements = json.dumps(allElements)
