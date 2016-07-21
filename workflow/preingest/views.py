@@ -89,3 +89,8 @@ def undo_step(request, processstep_id, *args, **kwargs):
     step = ProcessStep.objects.get(id=processstep_id)
     step.undo()
     return redirect('history_detail', step_id=processstep_id)
+
+def retry_step(request, processstep_id, *args, **kwargs):
+    step = ProcessStep.objects.get(id=processstep_id)
+    step.retry()
+    return redirect('history_detail', step_id=processstep_id)
