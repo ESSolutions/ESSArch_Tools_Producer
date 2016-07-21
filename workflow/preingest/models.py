@@ -70,12 +70,19 @@ class ProcessStep(Process):
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
 
-    def undo(self):
+    def undo(self, only_failed=False):
         fns = []
 
         import importlib
 
-        for task in reversed(self.tasks.filter(undo_type=False, undone=False)):
+        tasks = self.tasks
+
+        if only_failed:
+            tasks = tasks.filter(status=celery_states.FAILURE)
+
+        tasks = tasks.filter(undo_type=False, undone=False)
+
+        for task in reversed(tasks):
             task.undone = True
             task.save()
             [module, taskname] = task.name.rsplit('.', 1)

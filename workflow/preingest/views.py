@@ -76,14 +76,10 @@ def history_detail(request, step_id, *args, **kwargs):
 
     return HttpResponse(template.render(context, request))
 
-def undo_task(request, processtask_id, *args, **kwargs):
-    task = ProcessTask.objects.get(id=processtask_id)
-    step = task.processstep
-    undo = task.name
-    import importlib
-    [module, task] = undo.rsplit('.', 1)
-    getattr(importlib.import_module(module), task)().delay(undo=True, processstep=step)
-    return HttpResponse("undo {}".format(undo))
+def undo_failed(request, processstep_id, *args, **kwargs):
+    step = ProcessStep.objects.get(id=processstep_id)
+    step.undo(only_failed=True)
+    return redirect('history_detail', step_id=processstep_id)
 
 def undo_step(request, processstep_id, *args, **kwargs):
     step = ProcessStep.objects.get(id=processstep_id)

@@ -27,6 +27,9 @@
             {% endfor %}
         </tbody>
     </table>
+    <form method="get" action="/preingest/undo_failed/{{ step.id }}">
+        <input type="submit" value="Undo failed"/>
+    </form>
     <form method="get" action="/preingest/undo_step/{{ step.id }}">
         <input type="submit" value="Undo all"/>
     </form>
