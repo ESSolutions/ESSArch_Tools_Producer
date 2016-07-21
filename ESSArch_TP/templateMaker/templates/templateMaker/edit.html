@@ -31,7 +31,7 @@
         selected-node="node1"
         expanded-nodes="expandedNodes"
         style="float:left;">
-        element: {% verbatim %}{{node.name}}{% endverbatim %}
+        <span class="{% verbatim %}{{node.templateOnly}}{% endverbatim %}">element: {% verbatim %}{{node.name}}{% endverbatim %}</span>
     </treecontrol>
     <formly-form model="vm.floatingmodel" fields="vm.floatingfields" form="vm.floatingform" class="floatingForm" ng-show="vm.floatingVisable">
         {% csrf_token %}
@@ -49,6 +49,7 @@
             <formly-form model="vm.model" fields="vm.fields" form="vm.form">
                 <button type="button" class="btn btn-primary" ng-click="vm.addAttribute()" ng-show="vm.anyAttribute">Add Attribute</button>
                 <button type="submit" class="btn btn-primary" ng-disabled="vm.form.$invalid">Submit</button>
+                <button type="button" class="btn btn-danger" ng-click="vm.removeElement()">Delete</button>
             </formly-form>
             <h3>Avaliable children</h3>
             <div>
