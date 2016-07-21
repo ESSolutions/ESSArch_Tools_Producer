@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 
 from rest_framework.renderers import JSONRenderer
@@ -87,4 +88,4 @@ def undo_task(request, processtask_id, *args, **kwargs):
 def undo_step(request, processstep_id, *args, **kwargs):
     step = ProcessStep.objects.get(id=processstep_id)
     step.undo()
-    return HttpResponse("undo {}".format(step.name))
+    return redirect('history_detail', step_id=processstep_id)
