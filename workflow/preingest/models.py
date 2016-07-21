@@ -75,7 +75,9 @@ class ProcessStep(Process):
 
         import importlib
 
-        for task in reversed(self.tasks.all()):
+        for task in reversed(self.tasks.filter(undo_type=False, undone=False)):
+            task.undone = True
+            task.save()
             [module, taskname] = task.name.rsplit('.', 1)
             fn = getattr(importlib.import_module(module), taskname)
             fns.append((fn, task.params))
@@ -105,6 +107,8 @@ class ProcessTask(Process):
     meta = PickledObjectField(null=True, default=None, editable=False)
     processstep = models.ForeignKey('ProcessStep', related_name='tasks', blank=True, null=True)
     processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
+    undone = models.BooleanField(editable=True, default=False)
+    undo_type = models.BooleanField(editable=False, default=False)
 
     class Meta:
         db_table = 'ProcessTask'
