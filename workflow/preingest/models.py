@@ -85,6 +85,22 @@ class ProcessStep(Process):
         chain(fn().si(processstep=self, params=params, undo=True)
               for (fn, params) in fns)()
 
+    def retry(self):
+        tasks = self.tasks.filter(undone=True).order_by('started')
+
+        fns = []
+
+        import importlib
+
+        for task in tasks:
+            print "retrying {}".format(task.name)
+            [module, taskname] = task.name.rsplit('.', 1)
+            fn = getattr(importlib.import_module(module), taskname)
+            fns.append((fn, task.params))
+
+        chain(fn().si(processstep=self, params=params)
+              for (fn, params) in fns)()
+
     class Meta:
         db_table = u'ProcessStep'
 

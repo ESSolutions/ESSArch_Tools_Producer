@@ -16,6 +16,7 @@ class DBTask(Task):
         self.taskobj.save()
         if undo:
             self.taskobj.name += " undo"
+            self.taskobj.undo_type = True
             self.taskobj.save()
             return self.undo(**params)
         else:

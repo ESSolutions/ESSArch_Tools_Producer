@@ -30,4 +30,7 @@
     <form method="get" action="/preingest/undo_step/{{ step.id }}">
         <input type="submit" value="Undo all"/>
     </form>
+    <form method="get" action="/preingest/retry_step/{{ step.id }}">
+        <input type="submit" value="Retry"/>
+    </form>
 </div>
