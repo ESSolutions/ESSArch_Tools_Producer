@@ -4,6 +4,7 @@ import uuid
 import json
 import copy
 from collections import OrderedDict
+import fileinput
 
 from xmlStructure import xmlElement, xmlAttribute, fileInfo, fileObject, dlog
 
@@ -179,7 +180,7 @@ def createXMLStructure(name, content, info, fob=None, namespace='', level=1):
             namespace = value
         elif key[:1] != '-':
             #child
-            if isinstance(value, OrderedDict):
+            if isinstance(value, OrderedDict) or isinstance(value, dict):
                 parseChild(key, value, info, namespace, t, fob, level)
             elif isinstance(value, list):
                 for l in value:
@@ -234,6 +235,7 @@ def parseAttribute(content, info):
 def createXML(inputData):
     """
     The task method for executing the xmlGenerator and completing the xml files
+    This is also the TASK to be run in the background.
     """
     for key, value in inputData['filesToCreate'].iteritems():
         json_data=open(value).read()
@@ -267,6 +269,56 @@ def createXML(inputData):
             os.close(f)
             os.remove(fin.filename)
 
+def appendXML(inputData):
+    """
+    Searches throught the file for the expected tag and appends the new element before the end (appending it to the end)
+    """
+    for line in fileinput.FileInput(inputData['path'],inplace=1):
+        if "</"+inputData['elementToAppendTo']+">" in line:
+            name, rootE = inputData['template'].items()[0]
+            rootEl = createXMLStructure(name, rootE, inputData['data'])
+            level = (len(line) - len(line.lstrip(' ')))/4
+            rootEl.XMLToString(level+1)
+        print line,
+
+# example of input for appendXML
+
+inputD = {
+    "path": "/SIP/sip2.txt",
+    "elementToAppendTo": "mets:fileGrp",
+    "template": {
+        "event": {
+            "-min": 1,
+            "-max": 1,
+            "-allowEmpty": 1,
+            "-namespace": "premis",
+            "-attr": [{
+                "-name": "xmlID",
+                "-req": 1,
+                "#content": [{"var": "xmlID"}]
+            }],
+            "eventIdentifierType": {
+                "-min": 1,
+                "-max": 1,
+                "#content": [{"var":"eventIdentifierType"}]
+            },
+            "eventIdentifierValue": {
+                "-min": 1,
+                "-max": 1,
+                "-allowEmpty": 1,
+                "#content": [{"var": "eventIdentifierValue"}]
+            }
+        }
+    },
+    "data": {
+        "xmlID": "some id",
+        "eventIdentifierType": "some event type",
+        "eventIdentifierValue": "some event value thing"
+    }
+
+}
+
+# appendXML(inputD)
 
 # Example of inputData:
 
@@ -361,9 +413,15 @@ inputData = {
 }
 
 
-createXML(inputData)
+# createXML(inputData)
 
 
 ## TODO
 
 # 1. enable -attr tag to contain dict only
+
+# Idea: format varaibles to be like
+
+#1. agents[0].name
+#2. agents{ROLE=CREATOR;TYPE=INDIVIDUAL}.name
+#3. dict1.dict2.arr[2].dict3.name

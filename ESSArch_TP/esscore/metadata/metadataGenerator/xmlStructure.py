@@ -16,6 +16,13 @@ def pretty_print(fd, level, pretty):
     if pretty:
         for idx in range(level):
             os.write(fd, '    ')
+def pretty_print_string(level, pretty):
+    """
+    Print some tabs to give the xml output a better structure
+    """
+    if pretty:
+        for idx in range(level):
+            print '   ',
 
 class xmlAttribute(object):
     '''
@@ -35,6 +42,13 @@ class xmlAttribute(object):
         """
         if self.value is not '':
             os.write(fd, ' ' + self.attrName + '="' + self.value + '"')
+
+    def XMLToString(self):
+        """
+        Print out the attribute
+        """
+        if self.value is not '':
+            print ' ' + self.attrName + '="' + self.value + '"',
 
 class xmlElement(object):
     '''
@@ -96,6 +110,38 @@ class xmlElement(object):
                 return True
         else:
             os.write(fd, '/>' + eol_)
+            self.printed = 2
+
+    def XMLToString(self, level=0, pretty=True):
+        """
+        Print out the complete element.
+        """
+        if self.printed == 2:
+            return False
+        if self.printed == 0:
+            pretty_print_string(level, pretty)
+            print '<' + self.completeTagName,
+            for a in self.attributes:
+                a.XMLToString()
+        if self.children or self.value is not '' or self.containsFiles:
+            if self.printed == 0:
+                print '>' + eol_,
+            if not self.containsFiles or self.printed == 1:
+                for child in self.children:
+                    if child.XMLToString(level + 1, pretty):
+                        self.printed = 1
+                        return True
+                if self.value is not '':
+                    pretty_print_string(level + 1, pretty)
+                    print self.value + eol_,
+                pretty_print_string(level, pretty)
+                print '</' + self.completeTagName + '>' + eol_,
+                self.printed = 2
+            else:
+                self.printed = 1
+                return True
+        else:
+            print '/>' + eol_,
             self.printed = 2
 
     def isEmpty(self):

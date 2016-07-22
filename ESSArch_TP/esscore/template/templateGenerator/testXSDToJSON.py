@@ -54,6 +54,7 @@ class xmlElement():
         self.path = path + self.name + '/'
         self.uuid = uuid.uuid4().__str__()
         self.anyAttribute = False
+        self.anyElement = False
         # self.namespace = namespace
         # self.completeTagName = ''
         # self.containsFiles = False
@@ -122,6 +123,7 @@ class xmlElement():
             res.update(a)
         result['attributes'] = self.attrib
         result['anyAttribute'] = self.anyAttribute
+        result['anyElement'] = self.anyElement
         result['userAttributes'] = []
         res[self.uuid] = result
         return res
@@ -210,12 +212,11 @@ def getPostfix(tag):
     else:
         return ''
 
-def analyze2(element, tree, usedTypes=[]):
+def analyze2(element, tree, usedTypes=[], minC=0, maxC=1):
     # print element.local-name()
     global complexTypes
     global attributeGroups
     tag = printTag(element.tag)
-    # print tag
     if tag == 'element':
         meta = OrderedDict()
         if element.get('minOccurs') is None or int(element.get('minOccurs')) < 0:
@@ -231,16 +232,20 @@ def analyze2(element, tree, usedTypes=[]):
 
         if element.get('type') is None:
             t = xmlElement(element.get('name'), tree.path)
+            t.karMin = minC
+            t.karMax = maxC
             path = t.path
             t.path += '0/'
-            t.karMin = meta['minOccurs']
-            t.karMax = meta['maxOccurs']
+            if 'minOccurs' in meta:
+                t.karMin = meta['minOccurs']
+            if 'maxOccurs' in meta:
+                t.karMax = meta['maxOccurs']
             t.meta = meta
             tree.addChild(t)
             for child in element:
                 analyze2(child, t, usedTypes)
-            if meta['minOccurs'] > 1:
-                for i in range(1, meta['minOccurs']):
+            if t.karMin > 1:
+                for i in range(1, t.karMin):
                     ti = xmlElement(t.name, tree.path)
                     ti.path = path + str(i) + '/'
                     ti.meta = meta
@@ -249,10 +254,14 @@ def analyze2(element, tree, usedTypes=[]):
                         analyze2(child, ti, usedTypes)
         elif getPrefix(element.get('type')) == 'xsd':
             t = xmlElement(element.get('name'), tree.path)
+            t.karMin = minC
+            t.karMax = maxC
             path = t.path
             t.path += '0/'
-            t.karMin = meta['minOccurs']
-            t.karMax = meta['maxOccurs']
+            if 'minOccurs' in meta:
+                t.karMin = meta['minOccurs']
+            if 'maxOccurs' in meta:
+                t.karMax = meta['maxOccurs']
             t.meta = meta
             att = OrderedDict()
             att['key'] = '#content'
@@ -265,8 +274,8 @@ def analyze2(element, tree, usedTypes=[]):
             att['templateOptions'] = templateOptions
             t.attrib.append(att)
             tree.addChild(t)
-            if meta['minOccurs'] > 1:
-                for i in range(1, meta['minOccurs']):
+            if t.karMin > 1:
+                for i in range(1, t.karMin):
                     ti = xmlElement(t.name, tree.path)
                     ti.path = path + str(i) + '/'
                     ti.meta = meta
@@ -275,10 +284,14 @@ def analyze2(element, tree, usedTypes=[]):
                     tree.addChild(ti)
         else:
             t = xmlElement(element.get('name'), tree.path)
+            t.karMin = minC
+            t.karMax = maxC
             path = t.path
             t.path += '0/'
-            t.karMin = meta['minOccurs']
-            t.karMax = meta['maxOccurs']
+            if 'minOccurs' in meta:
+                t.karMin = meta['minOccurs']
+            if 'maxOccurs' in meta:
+                t.karMax = meta['maxOccurs']
             t.meta = meta
             tree.addChild(t)
             key = element.get('type')
@@ -289,8 +302,8 @@ def analyze2(element, tree, usedTypes=[]):
                         analyze2(child, t, usedTypes)
                 else:
                     print "type unknown: " + element.get('type')
-            if meta['minOccurs'] > 1:
-                for i in range(1, meta['minOccurs']):
+            if t.karMin > 1:
+                for i in range(1, t.karMin):
                     ti = xmlElement(t.name, tree.path)
                     ti.path = path + str(i) + '/'
                     ti.meta = meta
@@ -316,7 +329,7 @@ def analyze2(element, tree, usedTypes=[]):
                 if t in complexTypes:
                     usedTypes.append(t)
                     for child in complexTypes[t]:
-                        analyze2(child, tree, usedTypes)
+                        analyze2(child, tree, usedTypes, minC, maxC)
     elif tag == 'sequence':
         for child in element:
             analyze2(child, tree, usedTypes)
@@ -327,16 +340,36 @@ def analyze2(element, tree, usedTypes=[]):
         att = parseAttribute(element)
         if att != None:
             tree.attrib.append(att)
-
     elif tag == 'attributeGroup':
         if element.get('ref'):
             ref = element.get('ref')
             if ref in attributeGroups:
                 for child in attributeGroups[ref]:
                     analyze2(child, tree, usedTypes)
-        pass
     elif tag == 'anyAttribute':
         tree.anyAttribute = True
+    elif tag == 'simpleContent':
+        att = OrderedDict()
+        att['key'] = '#content'
+        att['type'] = 'input'
+        templateOptions = OrderedDict()
+        templateOptions['type'] = 'text' # TODO
+        templateOptions['label'] = 'Content'
+        templateOptions['placeholder'] = 'Content'
+        templateOptions['required'] = True
+        att['templateOptions'] = templateOptions
+        tree.attrib.append(att)
+    elif tag == 'any':
+        tree.anyElement = True
+    elif tag == 'all':
+        minC = 1
+        if element.get('minOccurs') is not None:
+            minC = int(element.get('minOccurs'))
+            if minC != 0 or minC != 1:
+                minC = 1
+        maxC = 1
+        for child in element:
+            analyze2(child, tree, usedTypes, minC=minC, maxC=maxC)
     else:
         print 'other: ' + tag
 
@@ -465,7 +498,7 @@ def generate():
     # complexTypes = OrderedDict()
     # attributeGroups = OrderedDict()
 
-# generate()
+generate()
 # print generate()
 # print generate(2)
 # print generate(3)
