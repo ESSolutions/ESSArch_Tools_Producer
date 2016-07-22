@@ -68,40 +68,49 @@ def cloneElement(el, allElements, found=0, begin=''):
     return newElement
 
 def generateElement(structure, elements):
-    el = OrderedDict()
-    meta = structure['meta']
-    if 'minOccurs' in meta:
-        el['-min'] = meta['minOccurs']
-    if 'maxOccurs' in meta:
-        el['-max'] = meta['maxOccurs']
-    if 'allowEmpty' in meta: # TODO save allowEmpty
-        el['-allowEmpty'] = meta['allowEmpty']
-    # TODO namespace
-    a = elements[structure['key']]
-    attributes = a['attributes']
-    attributeList = []
-    for attrib in attributes:
-        if attrib['key'] == '#content':
-            el['#content'] = constructContent(attrib['defaulValue'])
-        else:
-            att = OrderedDict()
-            att['-name'] = attrib['key']
-            if 'required' in attrib:
-                if attrib['required']:
-                    att['-req'] = 1
+    if 'templateOnly' not in structure or structure['templateOnly'] == False:
+        el = OrderedDict()
+        meta = structure['meta']
+        if 'minOccurs' in meta:
+            el['-min'] = meta['minOccurs']
+        if 'maxOccurs' in meta:
+            el['-max'] = meta['maxOccurs']
+        if 'allowEmpty' in meta: # TODO save allowEmpty
+            el['-allowEmpty'] = meta['allowEmpty']
+        # TODO namespace
+        a = elements[structure['key']]
+        attributes = a['attributes'] + a['userAttributes']
+        attributeList = []
+        for attrib in attributes:
+            # return attrib
+            if attrib['key'] == '#content':
+                if 'defaultValue' in attrib:
+                    el['#content'] = constructContent(attrib['defaultValue'])
+                else:
+                    el['#content'] = [] # TODO warning, should not be added if it can't contain any value
+            else:
+                att = OrderedDict()
+                att['-name'] = attrib['key']
+                if 'required' in attrib['templateOptions']:
+                    if attrib['templateOptions']['required']:
+                        att['-req'] = 1
+                    else:
+                        att['-req'] = 0
                 else:
                     att['-req'] = 0
-            else:
-                att['-req'] = 0
-            if 'defaulValue' in attrib:
-                att['#content'] = constructContent(attrib['defaulValue'])
-            else:
-                att['#content'] = '' # TODO warning, should not be added if it can't contain any value
-            attributeList.append(att)
-    el['-attr'] = attributeList
-    for child in structure['children']:
-        el[child['name']] = generateElement(child, elements)
-    return el
+                if 'defaultValue' in attrib:
+                    att['#content'] = constructContent(attrib['defaultValue'])
+                else:
+                    att['#content'] = [] # TODO warning, should not be added if it can't contain any value
+                attributeList.append(att)
+        el['-attr'] = attributeList
+        for child in structure['children']:
+            e = generateElement(child, elements)
+            if e is not None:
+                el[child['name']] = e
+        return el
+    else:
+        return None
 
 def deleteElement(structure, elements):
     del elements[structure['key']]
@@ -162,7 +171,10 @@ def deleteChild(request, name):
             # return JsonResponse(found, safe=False)
             if found == elementId:
                 # delete element and sub elements
-                if res['remove']:
+                userCreated = False
+                if 'userCreated' in allElements[dic['key']]:
+                    userCreated = allElements[dic['key']]['userCreated']
+                if res['remove'] or userCreated == True:
                     deleteElement(dic, allElements)
                     del t['children'][index]
                 else:
@@ -221,6 +233,54 @@ def addChild(request, name, path):
     obj.elements = json.dumps(allElements)
     obj.save()
     return JsonResponse(t, safe=False)
+
+def addUserChild(request, name):
+    obj = get_object_or_404(templatePackage, pk=name)
+    j = json.loads(obj.structure, object_pairs_hook=OrderedDict)
+    allElements = json.loads(obj.elements, object_pairs_hook=OrderedDict)
+    res = json.loads(request.body)
+    t = j;
+    p = res['path'].split('/')
+    p = p[:-1]
+    # name = p[-1:][0]
+    # p = p[:-1]
+    for i in range(0, len(p), 2):
+        found = 0
+        for dic in t['children']:
+            if dic['name'] == p[i]:
+                if found == int(p[i+1]):
+                    t = dic
+                    break
+                else:
+                    found += 1
+    found = 0
+    i = 0
+    for dic in t['children']:
+        if dic['name'] == res['name']:
+            found += 1
+        else:
+            if found > 0:
+                break
+        i += 1
+    if found > 0:
+        res['path'] += res['name'] + '/' + str(found) + '/'
+        res['key'] = uuid.uuid4().__str__()
+        t['children'].insert(i, res)
+    else:
+        res['path'] += res['name'] + '/0/'
+        res['key'] = uuid.uuid4().__str__()
+        t['children'].append(res)
+    att = {};
+    att['attributes'] = [];
+    att['anyAttribute'] = True
+    att['anyElement'] = True
+    att['userAttributes'] = [];
+    att['userCreated'] = True
+    allElements[res['key']] = att;
+    obj.structure = json.dumps(j)
+    obj.elements = json.dumps(allElements)
+    obj.save()
+    return JsonResponse(obj.structure, safe=False)
 
 def addAttribute(request, name, uuid):
     obj = get_object_or_404(templatePackage, pk=name)
