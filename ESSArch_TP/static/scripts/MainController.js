@@ -22,6 +22,7 @@
         vm.title = 'title'; // placeholder only
         vm.countAll = {};
         vm.anyAttribute = false;
+        vm.anyElement = false;
         vm.possibleChildren = [];
         vm.existingChildren = [];
 
@@ -44,6 +45,7 @@
         $scope.dataForTheTree = [];
         $scope.showSelected = function(sel, selected) {
             vm.selectedNode = sel;
+            console.log(sel);
             // find parent
             var p = sel['path'].split('/')
             var t = vm.tree;
@@ -89,7 +91,7 @@
                     vm.fields.push({template: '<hr/><p><b>User defined attributes</b></p>'}); //divider
                     vm.fields = vm.fields.concat(data['userAttributes']);
                 }
-                if (found > vm.min) {
+                if (found > vm.min || data['userCreated'] == true) {
                     vm.canDelete = true;
                 } else {
                     vm.canDelete = false;
@@ -97,6 +99,7 @@
                 vm.model = {};
                 vm.selectedElement = data;
                 vm.anyAttribute = data['anyAttribute'];
+                vm.anyElement = data['anyElement'];
                 vm.countAll = {};
                 vm.possibleChildren = [];
                 for (var i in sel.children) {
@@ -190,6 +193,41 @@
             });
         };
 
+        vm.addElement = function() {
+            vm.floatingElementVisable = !vm.floatingElementVisable;
+            vm.floatingElementmodel = [];
+        };
+
+        vm.saveElement = function() {
+            // console.log(sle)
+            var element = {};
+            element['templateOnly'] = false;
+            element['path'] = vm.selectedNode['path']; // + number ? //set in python ?
+            element['name'] = vm.floatingElementmodel['elementname'];
+            var meta = {};
+            if ('kardMin' in vm.floatingElementmodel) {
+                meta['minOccurs'] = vm.floatingElementmodel['kardMin'];
+            } else {
+                meta['minOccurs'] = 0;
+            }
+            if ('kardMax' in vm.floatingElementmodel) {
+                meta['maxOccurs'] = vm.floatingElementmodel['kardMax'];
+            } else {
+                meta['maxOccurs'] = -1;
+            }
+            element['meta'] = meta;
+            element['children'] = [];
+            $http({
+                method: 'POST',
+                url: '/template/struct/addUserChild/test/',
+                data: element
+            }).then(function(res) {
+                vm.floatingElementVisable = false;
+                $scope.treeInfo = [JSON.parse(res.data)];
+                vm.tree = JSON.parse(res.data);
+            });
+        };
+
         vm.removeElement = function(child) {
             //post path and if it is one of the last so it should not be removed but merly changed value of templateOnly
             var data = {};
@@ -221,7 +259,7 @@
             templateOptions: {
                 type: 'text',
                 label: 'Name',
-                placeholder: 'string',
+                placeholder: 'Name',
                 required: true
             }
         }, {
@@ -230,7 +268,7 @@
             templateOptions: {
                 type: 'text',
                 label: 'Value',
-                placeholder: 'string',
+                placeholder: 'Value',
                 required: false
             }
         }, {
@@ -243,6 +281,44 @@
             }
         }, ];
         vm.floatingVisable = false;
+        vm.floatingElementfields = [{
+            key: 'elementname',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Name',
+                placeholder: 'Name',
+                required: true
+            }
+        }, {
+            key: 'textContent',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Text content',
+                placeholder: 'content',
+                required: false
+            }
+        }, {
+            key: 'kardMin',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Min required count (default: 0)',
+                placeholder: 'Min',
+                required: false
+            }
+        }, {
+            key: 'kardMax',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Max allowed count. -1 for infinite (default: -1)',
+                placeholder: 'Max',
+                required: false
+            }
+        }];
+        vm.floatingElementVisable = false;
 
     }
 })();
