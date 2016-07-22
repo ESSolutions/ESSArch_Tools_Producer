@@ -93,13 +93,15 @@ class ProcessStep(Process):
               for (fn, params) in fns)()
 
     def retry(self):
-        tasks = self.tasks.filter(undone=True).order_by('started')
+        tasks = self.tasks.filter(undone=True, retried=False).order_by('started')
 
         fns = []
 
         import importlib
 
         for task in tasks:
+            task.retried = True
+            task.save()
             print "retrying {}".format(task.name)
             [module, taskname] = task.name.rsplit('.', 1)
             fn = getattr(importlib.import_module(module), taskname)
@@ -132,6 +134,7 @@ class ProcessTask(Process):
     processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
     undone = models.BooleanField(editable=True, default=False)
     undo_type = models.BooleanField(editable=False, default=False)
+    retried = models.BooleanField(editable=True, default=False)
 
     class Meta:
         db_table = 'ProcessTask'
