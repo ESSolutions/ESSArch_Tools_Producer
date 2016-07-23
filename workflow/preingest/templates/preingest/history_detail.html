@@ -1,3 +1,13 @@
+<style>
+    .failure {
+        background-color: #ff8288;
+    }
+
+    .success {
+        background-color: #82ff82;
+    }
+</style>
+
 <h2>Results for {{ step.name }} with id {{ step.id }}</h2>
 <h2>Tasks</h2>
 <div>
@@ -15,7 +25,7 @@
         </thead>
         <tbody>
             {% for t in step.tasks.all %}
-            <tr>
+            <tr class="{{ t.status }}">
                 <td>{{ t.id }}</td>
                 <td>{{ t.name }}</td>
                 <td>{{ t.progress }}</td>
