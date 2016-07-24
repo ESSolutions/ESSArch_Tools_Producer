@@ -79,7 +79,7 @@ class ProcessStep(Process):
         [module, task] = name.rsplit('.', 1)
         return getattr(importlib.import_module(module), task)()
 
-    def _create_taskobj(self, task, undo=False, retry=False):
+    def _create_taskobj(self, task, attempt=None, undo=False, retry=False):
         if undo:
             task.undone = undo
 
@@ -91,8 +91,10 @@ class ProcessStep(Process):
         taskobj = ProcessTask(
             processstep=self,
             name=task.name+" undo" if undo else task.name,
+            processstep_pos=task.processstep_pos,
             undo_type=undo,
             params=task.params,
+            attempt=attempt,
             status="PREPARED"
         )
 
@@ -112,13 +114,14 @@ class ProcessStep(Process):
             tasks = tasks.filter(status=celery_states.FAILURE)
 
         tasks = tasks.filter(
-            started__isnull=False,
             undo_type=False,
             undone=False
         )
 
+        attempt = uuid.uuid4()
+
         chain(self._create_task(t.name).si(
-            taskobj=self._create_taskobj(t, undo=True),
+            taskobj=self._create_taskobj(t, attempt=attempt, undo=True),
             params=t.params,
             undo=True
         ) for t in reversed(tasks))()
@@ -127,10 +130,12 @@ class ProcessStep(Process):
         tasks = self.tasks.filter(
             undone=True,
             retried=False
-        ).order_by('started')
+        ).order_by('processstep_pos')
+
+        attempt = uuid.uuid4()
 
         chain(self._create_task(t.name).si(
-            taskobj=self._create_taskobj(t, retry=True),
+            taskobj=self._create_taskobj(t, attempt=attempt, retry=True),
             params=t.params
         ) for t in tasks)()
 
@@ -156,6 +161,7 @@ class ProcessTask(Process):
     meta = PickledObjectField(null=True, default=None, editable=False)
     processstep = models.ForeignKey('ProcessStep', related_name='tasks', blank=True, null=True)
     processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
+    attempt = models.UUIDField(null=True)
     undone = models.BooleanField(editable=True, default=False)
     undo_type = models.BooleanField(editable=False, default=False)
     retried = models.BooleanField(editable=True, default=False)

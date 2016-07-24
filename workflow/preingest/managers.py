@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division
 
+import uuid
+
 from celery import states as celery_states, Task
 
 from django.db import models
@@ -17,9 +19,18 @@ class StepManager(models.Manager):
         from preingest.models import ProcessTask
 
         step = self.create(name=name)
+        attempt = uuid.uuid4()
 
         for pos, t in enumerate(tasks):
-            task = ProcessTask(processstep=step, name=t["name"], params=t["params"], status="PREPARED")
+            task = ProcessTask(
+                processstep=step,
+                processstep_pos=pos,
+                name=t["name"],
+                params=t["params"],
+                attempt=attempt,
+                status="PREPARED"
+            )
+
             step.tasks.add(task, bulk=False)
 
         return step

@@ -36,6 +36,11 @@ class DBTask(Task):
         self.taskobj.traceback = einfo.traceback
         self.taskobj.save()
 
+        ProcessTask.objects.filter(
+            attempt=self.taskobj.attempt,
+            processstep_pos__gt=self.taskobj.processstep_pos
+        ).update(status=celery_states.FAILURE)
+
     def on_success(self, retval, task_id, args, kwargs):
         self.taskobj.result = retval
         self.taskobj.save()
