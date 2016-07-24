@@ -6,7 +6,6 @@ from django.template import loader
 
 from rest_framework.renderers import JSONRenderer
 
-from preingest.dbstep import DBStep
 from preingest.models import ProcessStep, ProcessTask, Step, Task
 from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer
 
@@ -31,13 +30,14 @@ def run_step(request, name, *args, **kwargs):
         data = f.read()
         tasks = json.loads(data)
 
-    step = DBStep(name, tasks)
+    step = ProcessStep.objects.create_step(name, tasks)
+    step.save()
     step.run()
 
     template = loader.get_template('preingest/run_step.html')
 
     context = {
-        'step': step.get_process_obj()
+        'step': step
     }
 
     return HttpResponse(template.render(context, request))

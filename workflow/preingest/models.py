@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import importlib
 import uuid
 
 from celery import chain, states as celery_states
@@ -8,6 +9,8 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 from picklefield.fields import PickledObjectField
+
+from preingest.managers import StepManager
 
 
 class ArchiveObject(models.Model):
@@ -70,45 +73,66 @@ class ProcessStep(Process):
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
 
+    objects = StepManager()
+
+    def _create_task(self, name):
+        [module, task] = name.rsplit('.', 1)
+        return getattr(importlib.import_module(module), task)()
+
+    def _create_taskobj(self, task, undo=False, retry=False):
+        if undo:
+            task.undone = undo
+
+        if retry:
+            task.retried = retry
+
+        task.save()
+
+        taskobj = ProcessTask(
+            processstep=self,
+            name=task.name+" undo" if undo else task.name,
+            undo_type=undo,
+            params=task.params,
+            status="PREPARED"
+        )
+
+        taskobj.save()
+        return taskobj
+
+    def run(self):
+        chain(self._create_task(t.name).si(
+            taskobj=t,
+            params=t.params
+        ) for t in self.tasks.all())()
+
     def undo(self, only_failed=False):
-        fns = []
-
-        import importlib
-
-        tasks = self.tasks
+        tasks = self.tasks.all()
 
         if only_failed:
             tasks = tasks.filter(status=celery_states.FAILURE)
 
-        tasks = tasks.filter(undo_type=False, undone=False)
+        tasks = tasks.filter(
+            started__isnull=False,
+            undo_type=False,
+            undone=False
+        )
 
-        for task in reversed(tasks):
-            task.undone = True
-            task.save()
-            [module, taskname] = task.name.rsplit('.', 1)
-            fn = getattr(importlib.import_module(module), taskname)
-            fns.append((fn, task.params))
-
-        chain(fn().si(processstep=self, params=params, undo=True)
-              for (fn, params) in fns)()
+        chain(self._create_task(t.name).si(
+            taskobj=self._create_taskobj(t, undo=True),
+            params=t.params,
+            undo=True
+        ) for t in reversed(tasks))()
 
     def retry(self):
-        tasks = self.tasks.filter(undone=True, retried=False).order_by('started')
+        tasks = self.tasks.filter(
+            undone=True,
+            retried=False
+        ).order_by('started')
 
-        fns = []
-
-        import importlib
-
-        for task in tasks:
-            task.retried = True
-            task.save()
-            print "retrying {}".format(task.name)
-            [module, taskname] = task.name.rsplit('.', 1)
-            fn = getattr(importlib.import_module(module), taskname)
-            fns.append((fn, task.params))
-
-        chain(fn().si(processstep=self, params=params)
-              for (fn, params) in fns)()
+        chain(self._create_task(t.name).si(
+            taskobj=self._create_taskobj(t, retry=True),
+            params=t.params
+        ) for t in tasks)()
 
     class Meta:
         db_table = u'ProcessStep'
@@ -120,12 +144,12 @@ class ProcessTask(Process):
     TASK_STATE_CHOICES = zip(celery_states.ALL_STATES,
                              celery_states.ALL_STATES)
 
-    task_id = models.CharField(_('task id'), max_length=255, unique=True)
+    task_id = models.CharField(_('task id'), max_length=255, unique=False)
     status = models.CharField(_('state'), max_length=50,
                               default=celery_states.PENDING,
                               choices=TASK_STATE_CHOICES)
     params = PickledObjectField(null=True)
-    started = models.DateTimeField(_('started at'), null=True, auto_now_add=True)
+    started = models.DateTimeField(_('started at'), null=True)
     date_done = models.DateTimeField(_('done at'), null=True)
     traceback = models.TextField(_('traceback'), blank=True, null=True)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
