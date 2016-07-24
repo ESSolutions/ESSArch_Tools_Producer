@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division
 
+from datetime import datetime
+
 from celery import states as celery_states, Task
 
 from django.utils import timezone
@@ -8,16 +10,18 @@ from preingest.models import ProcessTask
 
 class DBTask(Task):
     def __call__(self, *args, **kwargs):
+        self.taskobj = kwargs.get('taskobj', None)
         processstep = kwargs.get('processstep', None)
         params = kwargs.get('params', {}) or {}
         undo = kwargs.get('undo', False)
         print "init task with name {}, id {}".format(self.name, self.request.id)
-        self.taskobj = ProcessTask(task_id=self.request.id, processstep=processstep, name=self.name, status=celery_states.STARTED)
+
+        self.taskobj.task_id = self.request.id
+        self.taskobj.status=celery_states.STARTED
+        self.taskobj.started = datetime.now()
         self.taskobj.save()
+
         if undo:
-            self.taskobj.name += " undo"
-            self.taskobj.undo_type = True
-            self.taskobj.save()
             return self.undo(**params)
         else:
             return self.run(**params)
