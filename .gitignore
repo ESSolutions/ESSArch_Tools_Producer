@@ -1,7 +1,6 @@
 *.py[co]
 *.pyo
 *~
-dist/
 ESSArch_TP.egg-info/
 MANIFEST
 .settings/
