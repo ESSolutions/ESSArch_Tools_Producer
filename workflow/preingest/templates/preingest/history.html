@@ -7,7 +7,7 @@
                 <th>name</th>
                 <th>progress</th>
                 <th>status</th>
-                <th>posted</th>
+                <th>created</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
                 <td>{{ s.name }}</td>
                 <td>{{ s.get_progress }}</td>
                 <td>{{ s.status }}</td>
-                <td>{{ s.posted }}</td>
+                <td>{{ s.time_created }}</td>
             </tr>
             {% endfor %}
         </tbody>
