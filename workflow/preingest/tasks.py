@@ -27,23 +27,39 @@ class Sleepy(DBTask):
 class First(DBTask):
     def run(self, foo=None):
         print "run task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=1)
+        print "completed task with name {} and id {}".format(self.__name__, self.request.id)
         return foo
 
     def undo(self, foo=None):
         print "undo task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=1)
 
 class Second(DBTask):
     def run(self, foo=None):
         print "run task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=2)
+        print open("file.txt").read()
+        self.set_progress(2, total=2)
+        print "completed task with name {} and id {}".format(self.__name__, self.request.id)
         return foo
 
     def undo(self, foo=None):
         print "undo task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=2)
+        self.set_progress(2, total=2)
 
 class Third(DBTask):
     def run(self, foo=None):
         print "run task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=1)
+        self.set_progress(2, total=2)
+        self.set_progress(3, total=3)
+        print "completed task with name {} and id {}".format(self.__name__, self.request.id)
         return foo
 
     def undo(self, foo=None):
         print "undo task with name {} and id {}".format(self.__name__, self.request.id)
+        self.set_progress(1, total=1)
+        self.set_progress(2, total=2)
+        self.set_progress(3, total=3)

@@ -70,7 +70,7 @@ class ProcessStep(Process):
     user = models.CharField(max_length=45)
     task_set = PickledObjectField(default=[])
     status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
-    posted = models.DateTimeField(auto_now_add=True)
+    time_created = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
 
@@ -167,8 +167,8 @@ class ProcessTask(Process):
                               default=celery_states.PENDING,
                               choices=TASK_STATE_CHOICES)
     params = PickledObjectField(null=True)
-    started = models.DateTimeField(_('started at'), null=True)
-    date_done = models.DateTimeField(_('done at'), null=True)
+    time_started = models.DateTimeField(_('started at'), null=True)
+    time_done = models.DateTimeField(_('done at'), null=True)
     traceback = models.TextField(_('traceback'), blank=True, null=True)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = PickledObjectField(null=True, default=None, editable=False)

@@ -18,7 +18,7 @@ class DBTask(Task):
 
         self.taskobj.task_id = self.request.id
         self.taskobj.status=celery_states.STARTED
-        self.taskobj.started = datetime.now()
+        self.taskobj.time_started = datetime.now()
         self.taskobj.save()
 
         if undo:
@@ -29,7 +29,7 @@ class DBTask(Task):
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         print "finalize task with id {}".format(task_id)
         self.taskobj.status = status
-        self.taskobj.date_done = timezone.now()
+        self.taskobj.time_done = timezone.now()
         self.taskobj.save()
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
