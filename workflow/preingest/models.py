@@ -6,6 +6,7 @@ import uuid
 from celery import chain, states as celery_states
 
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import ugettext as _
 
 from picklefield.fields import PickledObjectField
@@ -26,7 +27,6 @@ class Process(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=256, blank=True)
-    progress = models.IntegerField(blank=True, default=0)
     result = PickledObjectField(null=True, default=None, editable=False)
 
 
@@ -68,6 +68,7 @@ class ProcessStep(Process):
 
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
+    task_set = PickledObjectField(default=[])
     status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
     posted = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
@@ -139,6 +140,21 @@ class ProcessStep(Process):
             params=t.params
         ) for t in tasks)()
 
+    def get_progress(self):
+        tasks = self.tasks.filter(
+            undone=False,
+            undo_type=False,
+            retried=False
+        )
+
+        if not tasks:
+            return 0
+
+        progress = tasks.aggregate(Sum("progress"))["progress__sum"]
+
+        return progress / len(self.task_set)
+
+
     class Meta:
         db_table = u'ProcessStep'
 
@@ -162,6 +178,7 @@ class ProcessTask(Process):
     processstep = models.ForeignKey('ProcessStep', related_name='tasks', blank=True, null=True)
     processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
     attempt = models.UUIDField(null=True)
+    progress = models.IntegerField(blank=True, default=0)
     undone = models.BooleanField(editable=True, default=False)
     undo_type = models.BooleanField(editable=False, default=False)
     retried = models.BooleanField(editable=True, default=False)

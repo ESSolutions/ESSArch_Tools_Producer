@@ -18,7 +18,11 @@ class StepManager(models.Manager):
 
         from preingest.models import ProcessTask
 
-        step = self.create(name=name)
+        step = self.create(
+            name=name,
+            task_set=[d['name'] for d in tasks]
+        )
+
         attempt = uuid.uuid4()
 
         for pos, t in enumerate(tasks):
