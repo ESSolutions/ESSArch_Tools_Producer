@@ -104,8 +104,7 @@ class ProcessStep(Process):
 
     def run(self):
         chain(self._create_task(t.name).si(
-            taskobj=t,
-            params=t.params
+            taskobj=t
         ) for t in self.tasks.all())()
 
     def undo(self, only_failed=False):
@@ -123,7 +122,6 @@ class ProcessStep(Process):
 
         chain(self._create_task(t.name).si(
             taskobj=self._create_taskobj(t, attempt=attempt, undo=True),
-            params=t.params,
             undo=True
         ) for t in reversed(tasks))()
 
@@ -137,7 +135,6 @@ class ProcessStep(Process):
 
         chain(self._create_task(t.name).si(
             taskobj=self._create_taskobj(t, attempt=attempt, retry=True),
-            params=t.params
         ) for t in tasks)()
 
     def get_progress(self):

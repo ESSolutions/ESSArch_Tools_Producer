@@ -12,8 +12,8 @@ class DBTask(Task):
     def __call__(self, *args, **kwargs):
         self.taskobj = kwargs.get('taskobj', None)
         processstep = kwargs.get('processstep', None)
-        params = kwargs.get('params', {}) or {}
         undo = kwargs.get('undo', False)
+        params = self.taskobj.params
         print "init task with name {}, id {}".format(self.name, self.request.id)
 
         self.taskobj.task_id = self.request.id
