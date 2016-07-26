@@ -137,7 +137,7 @@ class ProcessStep(Process):
             taskobj=self._create_taskobj(t, attempt=attempt, retry=True),
         ) for t in tasks)()
 
-    def get_progress(self):
+    def progress(self):
         tasks = self.tasks.filter(
             undone=False,
             undo_type=False,
