@@ -1,20 +1,6 @@
-[
-    {
-        "name": "preingest.tasks.First",
-        "params": {
-            "foo": 1
-        }
-    },
-    {
-        "name": "preingest.tasks.Second",
-        "params": {
-            "foo": 2
-        }
-    },
-    {
-        "name": "preingest.tasks.Third",
-        "params": {
-            "foo": 3
-        }
-    }
-]
+{
+    "steps": [
+        "preingest.steps.a.json",
+        "preingest.steps.b.json"
+    ]
+}

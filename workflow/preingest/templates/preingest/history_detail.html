@@ -9,6 +9,43 @@
 </style>
 
 <h2>Results for {{ step.name }} with id {{ step.id }}</h2>
+<h2>Steps</h2>
+<div>
+    <table border=1>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>progress</th>
+                <th>status</th>
+                <th>time_created</th>
+                <th>time_done</th>
+                <th>undone</th>
+                <th>undo_type</th>
+                <th>retried</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in step.child_steps.all %}
+            <tr class="{{ s.status }}">
+                <td>
+                    <a href="/preingest/history/{{ s.id }}">
+                        {{ s.id }}
+                    </a>
+                </td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.progress }}</td>
+                <td>{{ s.status }}</td>
+                <td>{{ s.time_created }}</td>
+                <td>{{ s.time_done }}</td>
+                <td>{{ s.undone }}</td>
+                <td>{{ s.undo_type }}</td>
+                <td>{{ s.retried }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 <h2>Tasks</h2>
 <div>
     <table border=1>
