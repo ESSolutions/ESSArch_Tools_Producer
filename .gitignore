@@ -1,7 +1,8 @@
 *.py[co]
 *.pyo
 *~
-ESSArch_TP.egg-info/
+/dist/
+/ESSArch_TP.egg-info/
 MANIFEST
 .settings/
 tools.db
