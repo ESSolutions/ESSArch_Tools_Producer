@@ -9,7 +9,8 @@
         {
             "name": "preingest.tasks.Second",
             "params": {
-                "foo": 2
+                "foo": 2,
+                "file": "file.txt"
             }
         },
         {
