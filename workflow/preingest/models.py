@@ -68,6 +68,7 @@ class ProcessStep(Process):
 
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
+    parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
     task_set = PickledObjectField(default=[])
     status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
     time_created = models.DateTimeField(auto_now_add=True)
@@ -103,6 +104,9 @@ class ProcessStep(Process):
         return taskobj
 
     def run(self):
+        for s in self.child_steps.all():
+            s.run()
+
         chain(self._create_task(t.name).si(
             taskobj=t
         ) for t in self.tasks.all())()

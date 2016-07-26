@@ -1,5 +1,3 @@
-import json
-
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
@@ -24,13 +22,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def run_step(request, name, *args, **kwargs):
-    newname = name.replace(".", "/").replace("/json", ".json")
 
-    with open(newname) as f:
-        data = f.read()
-        tasks = json.loads(data)
-
-    step = ProcessStep.objects.create_step(name, tasks)
+    step = ProcessStep.objects.create_step(name)
     step.save()
     step.run()
 
