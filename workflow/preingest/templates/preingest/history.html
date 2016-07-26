@@ -1,25 +1,11 @@
-<h2>Steps</h2>
-<div>
-    <table border=1>
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>progress</th>
-                <th>status</th>
-                <th>created</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for s in steps %}
-            <tr>
-                <td><a href="/preingest/history/{{ s.id }}">{{ s.id }}</a></td>
-                <td>{{ s.name }}</td>
-                <td>{{ s.progress }}</td>
-                <td>{{ s.status }}</td>
-                <td>{{ s.time_created }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<style>
+    details details {
+        padding-left: 20px;
+    }
+</style>
+
+{% for s in steps %}
+    {%with step=s %}
+       {%include "preingest/step.html"%}
+    {%endwith%}
+{% endfor %}

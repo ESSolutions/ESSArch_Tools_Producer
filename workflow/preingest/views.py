@@ -55,7 +55,7 @@ def history(request, *args, **kwargs):
     template = loader.get_template('preingest/history.html')
 
     context = {
-        'steps': ProcessStep.objects.all()
+        'steps': ProcessStep.objects.filter(parent_step__isnull=True)
     }
 
     return HttpResponse(template.render(context, request))
