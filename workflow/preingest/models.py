@@ -142,6 +142,12 @@ class ProcessStep(Process):
         ) for t in tasks)()
 
     def progress(self):
+        child_steps = self.child_steps.all()
+
+        if child_steps:
+            progress = sum([c.progress() for c in child_steps])
+            return progress / len(child_steps)
+
         tasks = self.tasks.filter(
             undone=False,
             undo_type=False,
