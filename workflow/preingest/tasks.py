@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import os
+import shutil
 import time
 
 from preingest.dbtask import DBTask
@@ -23,6 +25,34 @@ class Sleepy(DBTask):
     def undo(self, foo=None):
         print "undoing task with id {}".format(self.request.id)
 
+class CreatePhysicalModel(DBTask):
+
+    def run(self, structure={}, root=""):
+        """
+        Creates the IP physical model based on a logical model.
+
+        Args:
+            structure: A dict specifying the logical model.
+            root: The root dictionary to be used
+        """
+
+        for k, v in structure.iteritems():
+            dirname = os.path.join(root, k)
+            os.makedirs(dirname)
+
+            if isinstance(v, dict):
+                self.run(v, dirname)
+
+        self.set_progress(1, total=1)
+
+    def undo(self, structure={}, root=""):
+        if root:
+            shutil.rmtree(root)
+            return
+
+        for k, v in structure.iteritems():
+            dirname = os.path.join(root, k)
+            shutil.rmtree(dirname)
 
 class First(DBTask):
     def run(self, foo=None):
