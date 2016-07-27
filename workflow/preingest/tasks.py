@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import os
 import shutil
+import sys
 import time
 
 from preingest.dbtask import DBTask
@@ -53,6 +54,19 @@ class CreatePhysicalModel(DBTask):
         for k, v in structure.iteritems():
             dirname = os.path.join(root, k)
             shutil.rmtree(dirname)
+
+class GenerateXML(DBTask):
+    def run(self, data={}):
+        sys.path.append("../ESSArch_TP/esscore/metadata/metadataGenerator")
+        import xmlGenerator
+        xmlGenerator.createXML(data)
+        self.set_progress(1, total=1)
+
+    def undo(self, data={}):
+        key = "filesToCreate"
+        if key in data:
+            for f, _ in data[key].iteritems():
+                os.remove(f)
 
 class First(DBTask):
     def run(self, foo=None):
