@@ -25,13 +25,13 @@ WSGI config for ESSArch TP.
 import os, sys, platform
 
 # Activate virtualenv before any imports
-if platform.system() != 'Linux' :
-    activate_this = '/ESSArch/env/Scripts/activate_this.py'
-    execfile(activate_this, dict(__file__=activate_this))
-    sys.path.append('/ESSArch/etp')
-else:
-    sys.path.append('/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP')
-    sys.path.append('/ESSArch/config')
+# if platform.system() != 'Linux' :
+#     activate_this = '/ESSArch/env/Scripts/activate_this.py'
+#     execfile(activate_this, dict(__file__=activate_this))
+#     sys.path.append('/ESSArch/etp')
+# else:
+sys.path.append('/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP')
+sys.path.append('/ESSArch/config')
     #sys.path.append('/ESSArch/etp') # append path
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings"

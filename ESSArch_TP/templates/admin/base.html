@@ -12,7 +12,7 @@
 </head>
 {% load i18n %}
 
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}" {% block bodyattribute %}{% endblock %}>
 
 <!-- Container -->
 <div id="container">
