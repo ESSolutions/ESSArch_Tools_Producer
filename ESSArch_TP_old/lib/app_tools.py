@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 '''
 
-from django.template import Context, loader 
+from django.template import Context, loader
 from django.http import Http404
 from lxml import etree
 from urllib2 import Request, urlopen, URLError, HTTPError
@@ -35,7 +35,7 @@ logger = logging.getLogger('code.exceptions')
 # own models etc
 from ip.models import InformationPackage
 from configuration.models import LogEvent, Parameter, SchemaProfile, Path, IPParameter
-import mets_eARD as m 
+import mets_eARD as m
 import utils, ESSMD, ESSPGM
 
 
@@ -47,7 +47,7 @@ ET090 - BS130301 - Ready for test
 def create_AgentList_SE(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_AgentList_SE' % version) # debug info
-            
+
     # agent lists
     agent_list = []
     # list 1
@@ -96,7 +96,7 @@ ET090 - BS130301 - Ready for test
 def create_altRecordIDList_SE(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_altRecordIDList_SE' % version) # debug info
-                
+
     # altRecordID lists
     altRecordID_list = []
     # list 1
@@ -143,7 +143,7 @@ ET090 - BS130301 - Ready for test
 def create_AgentList_NO(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_AgentList_NO' % version) # debug info
-            
+
     # agent lists
     agent_list_info = [] # list for info.xml
     agent_list_mets = [] # list for mets.xml
@@ -318,7 +318,7 @@ def create_AgentList_NO(ip, contextdata):
         else:
             agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
             agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            
+
     return agent_list_info, agent_list_mets
 
 
@@ -328,10 +328,10 @@ def create_AgentList_NO(ip, contextdata):
 """
 ET090 - BS130301 - Ready for test
 """
-def create_altRecordIDList_NO(ip, contextdata):                 
+def create_altRecordIDList_NO(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_altRecordIDList_NO' % version) # debug info
-    
+
     # altRecordID lists
     altRecordID_list_info = [] # list for info.xml
     altRecordID_list_mets = [] # list for mets.xml
@@ -373,7 +373,7 @@ def create_altRecordIDList_NO(ip, contextdata):
     if len(value):
         altRecordID_list_info.append([TYPE,value])
         altRecordID_list_mets.append([TYPE,value])
-            
+
     return altRecordID_list_info, altRecordID_list_mets
 
 
@@ -386,7 +386,7 @@ def prepareIP( agent, contextdata ):
     version = 'ET090'
     logger.debug('%s Entered prepareIP' % version) # debug info
     logger.info('Preparing IP') # info for logfile
-    
+
     # get current site_profile and zone
     site_profile, zone = getSiteZone()
 
@@ -395,12 +395,12 @@ def prepareIP( agent, contextdata ):
     templatefile_log = parameters.get(entity="ip_logfile").value
     templatefile_cspec = parameters.get(entity="content_descriptionfile").value
     templatefile_pspec = parameters.get(entity="package_descriptionfile").value
-    
+
     # need to find out path to log files
     logfilepath = getLogFilePath()
 
     ##### zone1 #####
-    
+
     # create related metadata for zone1
     if zone == 'zone1' :
 
@@ -427,15 +427,15 @@ def prepareIP( agent, contextdata ):
 
         # create aic_uuid for zone1
         aic_uuid = ""
-        
+
         # initial event for preparation of IP in zone1
         eventType = 10000   # type of event
         eventDetail = 'Log circular created'  # event detail
         state = "Prepared"  # state
-        progress = 100  # progress  
+        progress = 100  # progress
 
         ##### zone1 end #####
-    
+
     ##### zone2 start #####
 
     # create related metadata for zone2
@@ -458,7 +458,7 @@ def prepareIP( agent, contextdata ):
             status_code = 201
             error_list.append('Package description file %s does not exist' % filename)
             return 1, status_code, error_list
-        
+
         # if asked for validate inner mets-file
         if contextdata["package_description"] == 'Yes':
             XMLSchema = SchemaProfile.objects.get(entity='mets_schemalocation').value
@@ -468,21 +468,21 @@ def prepareIP( agent, contextdata ):
                 error_list.append('Could not validate package description file %s Reason: %s' % (filename, why))
             else:
                 status_list.append('Successfully validated package description file %s' % filename)
-                
-        # if asked for validate logical and physical representation of objects 
+
+        # if asked for validate logical and physical representation of objects
         if contextdata["package_content"] == 'Yes':
             # define checksum algoritm, timezone etc
             if site_profile == 'SE' :
                 checksumtype = 1 # MD5
                 checksumalgoritm = 'MD5'
                 TimeZone = 'Europe/Stockholm'
-                
-            if  site_profile == 'NO' : 
+
+            if  site_profile == 'NO' :
                 checksumtype = 2 # SHA256
                 checksumalgoritm = 'SHA-256'
                 TimeZone = 'Europe/Stockholm'
-                
-            ObjectIdentifierValue = context['ip_uuid']  
+
+            ObjectIdentifierValue = context['ip_uuid']
             #ObjectPath = contextdata["sourceroot"]
             ObjectPath = contextdata["iplocation"]
             checksumtype_default = checksumalgoritm
@@ -494,7 +494,7 @@ def prepareIP( agent, contextdata ):
                 error_list.append('Physical files mismatch the logical representation of content description file %s Reason: %s' % (METS_ObjectPath, result[0]))
             else:
                 status_list.append('Physical files match the logical representation of content description file %s' % METS_ObjectPath)
- 
+
         # TODO dev validation
         # if asked for validate delivery type specification file
         #if contextdata["deliverytype_description"] == 'Yes':
@@ -503,7 +503,7 @@ def prepareIP( agent, contextdata ):
         #        XMLSchema = SchemaProfile.objects.get(entity='erms_schemalocation').value
         #    if context["deliverytype"] == "Personnel":
         #        XMLSchema = SchemaProfile.objects.get(entity='personnel_schemalocation').value
-        #    
+        #
         #     validate spec file
         #    errno, why = validate(FILENAME=filename, XMLSchema=XMLSchema)
         #    if errno:
@@ -516,11 +516,11 @@ def prepareIP( agent, contextdata ):
         if status_code == 0:
             for stat in status_list:
                 logger.info(stat)
-        else: 
+        else:
             for err in error_list:
                 logger.error(err)
             return 1, status_code, error_list
-       
+
         # need to search through all log files to find any duplicates
         loglist = getLogFiles(logfilepath, templatefile_log)
         for log in loglist:
@@ -541,9 +541,9 @@ def prepareIP( agent, contextdata ):
             aic_uuid = context["aic_uuid"]
         except:
             aic_uuid = str(uuid.uuid1())
-                
+
         # create ip_uuid
-        if context["ip_uuid"][:5] == 'UUID:' or context["ip_uuid"][:5] == 'RAID:' : 
+        if context["ip_uuid"][:5] == 'UUID:' or context["ip_uuid"][:5] == 'RAID:' :
             ip_uuid = context["ip_uuid"][5:]
         else :
             ip_uuid = context["ip_uuid"]
@@ -554,7 +554,7 @@ def prepareIP( agent, contextdata ):
         # create IP_UUID directory
         iproot = createIPdirectory( root, ip_uuid )
         #iproot = createIPdirectory( root, ip_uuid, site_profile )
-        
+
         # copy specfile from source to destination
         src_specfile = filename
         dst_specfile = root+'/'+templatefile_pspec
@@ -569,27 +569,27 @@ def prepareIP( agent, contextdata ):
             dst1_ipfile = reception+'/'+ip_uuid+'.tar'
             shutil.copy(src_ipfile, dst_ipfile)
             shutil.copy(src_ipfile, dst1_ipfile)
-                
+
         # Initial event for preparation of IP in zone2
         eventType = 20000   # type of event
         eventDetail = 'Created log circular'  # event detail
         state = "Received"  # state
-        progress = 100  # progress  
+        progress = 100  # progress
 
         ##### zone2 end #####
-                    
+
     # creation timestamp regardless zone
     create_time = utils.creation_time('Europe/Stockholm')
-            
+
     # common package info regardless zone
     contextdata["site_profile"] = site_profile
     contextdata["aic_uuid"] = aic_uuid
     contextdata["ip_uuid"] = ip_uuid
     contextdata["createdate"] = create_time
     contextdata["creation_time"] = create_time
-    
+
     # schema profile regardless zone
-    contextdata["premis_namespace"] = SchemaProfile.objects.get(entity='premis_namespace').value 
+    contextdata["premis_namespace"] = SchemaProfile.objects.get(entity='premis_namespace').value
     contextdata["xsi_namespace"] = SchemaProfile.objects.get(entity='xsi_namespace').value
     contextdata["xlink_namespace"] = SchemaProfile.objects.get(entity='xlink_namespace').value
     contextdata["premis_schemalocation"] = SchemaProfile.objects.get(entity='premis_schemalocation').value
@@ -597,18 +597,18 @@ def prepareIP( agent, contextdata ):
 
     # event regardless zone
     contextdata["eventIdentifierValue"] = str(uuid.uuid1())  # create unique event_uuid
-#    contextdata["eventType"] = LogEvent.objects.get(eventType=eventType).eventType  # event code 
+#    contextdata["eventType"] = LogEvent.objects.get(eventType=eventType).eventType  # event code
 #    contextdata["eventDetail"] = LogEvent.objects.get(eventType=eventType).eventDetail  # event detail
-    contextdata["eventType"] = eventType  # event code 
+    contextdata["eventType"] = eventType  # event code
     contextdata["eventDetail"] = eventDetail  # event detail
-    contextdata["eventOutcome"] = 0  # status = Ok 
+    contextdata["eventOutcome"] = 0  # status = Ok
     contextdata["eventOutcomeDetailNote"] = "Success to create logfile"  # comments
-    contextdata["linkingAgentIdentifierValue"] = agent   # agent e.q user str(request.user) 
+    contextdata["linkingAgentIdentifierValue"] = agent   # agent e.q user str(request.user)
     contextdata["linkingObjectIdentifierValue"] = ip_uuid  # ipuuid
-                
+
     # render template logfile
     t = loader.get_template( "xml/"+templatefile_log )
-  
+
     # create log.xml and place it in IP folder
     logfilename = os.path.join( iproot, templatefile_log )
     logXML = open( logfilename, "w" )
@@ -617,7 +617,7 @@ def prepareIP( agent, contextdata ):
     c = Context(contextdata)
     logXML.write( t.render( c ).encode( "utf-8" ) )
     logXML.close()
- 
+
     # everything is created in the filesystem, so now we create
     # a database entry for this IP
     ip = InformationPackage( archivist_organization = contextdata["archivist_organization"],
@@ -633,7 +633,7 @@ def prepareIP( agent, contextdata ):
                              zone = zone,
                              progress = progress )
     ip.save()
-        
+
     # return status
     return ip, 0, "Ok"
 
@@ -649,10 +649,10 @@ def createIP( ip, contextdata ):
     version = 'ET091'
     logger.debug('%s Entered createIP' % version) # debug info
     logger.info('Creating IP') # info for logfile
-    
+
     # get current site_profile and zone
     site_profile, zone = getSiteZone()
-    
+
     # get template files
     parameters = Parameter.objects.all()
     templatefile_log = parameters.get(entity="ip_logfile").value
@@ -675,7 +675,7 @@ def createIP( ip, contextdata ):
     namespacedef += ' xmlns:xsi="%s"' % XSI_NAMESPACE
     namespacedef += ' xsi:schemaLocation="%s %s"' % (METS_NAMESPACE, METS_SCHEMALOCATION)
     PREMIS_SCHEMALOCATION = SchemaProfile.objects.get(entity='premis_schemalocation').value
-    
+
 
     # create IP for site profile SE and relevant zone
     if site_profile == 'SE' :
@@ -684,26 +684,26 @@ def createIP( ip, contextdata ):
         checksumalgoritm = 'MD5'
         path4m = ip.directory+'/'+ip.uuid+'/'+ 'metadata'
         #path4s = ip.directory+'/'+ip.uuid+'/'+ 'system'
-        
+
         if zone == 'zone1':
 
             # METS records
-            ObjectIdentifierValue = ip.uuid  
+            ObjectIdentifierValue = ip.uuid
             #Cmets_objpath = destination_path+'/'+templatefile_cspec
             Cmets_objpath = ip.directory+'/'+ip.uuid+'/'+templatefile_cspec
-            #METS_LABEL = contextdata['label']                   
+            #METS_LABEL = contextdata['label']
             METS_LABEL = ip.label
             METS_PROFILE = SchemaProfile.objects.get(entity='mets_profile').value
-            #METS_TYPE = 'SIP' 
+            #METS_TYPE = 'SIP'
             #METS_TYPE = contextdata['type']
-            METS_TYPE = ip.iptype 
+            METS_TYPE = ip.iptype
             METS_RECORDSTATUS = 'NEW'
             METS_DocumentID = templatefile_cspec
             TimeZone = 'Europe/Stockholm'
 
             # get agent lists
             agent_list = create_AgentList_SE(ip, contextdata)
-            
+
             # get altRecordID lists
             altRecordID_list = create_altRecordIDList_SE(ip, contextdata)
 
@@ -715,7 +715,7 @@ def createIP( ip, contextdata ):
         checksumalgoritm = 'SHA-256'
         path4am = ip.directory+'/'+ip.uuid+'/'+ 'administrative_metadata'
         path4dm = ip.directory+'/'+ip.uuid+'/'+ 'descriptive_metadata'
-        
+
         if zone == 'zone1':
 
             # NS definitions
@@ -724,24 +724,24 @@ def createIP( ip, contextdata ):
             namespacedeflocal += ' xmlns:xlink="%s"' % XLINK_NAMESPACE
             namespacedeflocal += ' xmlns:xsi="%s"' % XSI_NAMESPACE
             namespacedeflocal += ' xsi:schemaLocation="%s %s"' % (METS_NAMESPACE, METS_SCHEMALOCATION_LOCAL)
-            
+
             # METS records
-            ObjectIdentifierValue = ip.uuid  
+            ObjectIdentifierValue = ip.uuid
             #Cmets_objpath = destination_path+'/'+templatefile_spec
             Cmets_objpath = ip.directory+'/'+ip.uuid+'/'+templatefile_cspec
-            #METS_LABEL = contextdata['label']                   
+            #METS_LABEL = contextdata['label']
             METS_LABEL = ip.label
             METS_PROFILE = SchemaProfile.objects.get(entity='mets_profile').value
-            #METS_TYPE = 'SIP' 
+            #METS_TYPE = 'SIP'
             #METS_TYPE = contextdata['type']
-            METS_TYPE = ip.iptype 
+            METS_TYPE = ip.iptype
             METS_RECORDSTATUS = 'NEW'
             METS_DocumentID = templatefile_cspec
             TimeZone = 'Europe/Stockholm'
-        
+
             # get agent lists
             agent_list_info, agent_list_mets = create_AgentList_NO(ip, contextdata)
-            
+
             # get altRecordID lists
             altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_NO(ip, contextdata)
 
@@ -779,7 +779,7 @@ def createIP( ip, contextdata ):
             logger.info('Successfully saved XSD-file %s', filename)
         if status == 4:
             logger.info('Successfully copied XSD-file %s', filename)
-   
+
     #print 'Premis file %s' % filename
 
     # copy public or local inner mets xsd-file to IP directory
@@ -849,7 +849,7 @@ def createIP( ip, contextdata ):
     else:
         logger.error('Content description file %s already exist', Cmets_objpath)
 
-    
+
     # Validate inner mets-file
     logger.info('Validate METS xml file')
     errno, why = validate(FILENAME=Cmets_objpath)
@@ -859,9 +859,9 @@ def createIP( ip, contextdata ):
     else:
         logger.info('Successfully validated content description file %s', Cmets_objpath)
 
-            
+
     # validate logical and physical representation of objects
-    logger.info('Diffcheck inner METS xml file') 
+    logger.info('Diffcheck inner METS xml file')
     checksumtype_default = checksumalgoritm
     METS_ObjectPath = Cmets_objpath
     errno, result, reslist = DiffCheck_IP(ObjectIdentifierValue, ObjectPath, METS_ObjectPath, TimeZone, checksumtype_default)
@@ -869,7 +869,7 @@ def createIP( ip, contextdata ):
     if result_sum != len(reslist[0]):
         result[0].append("We have a mismatch !!!")
         errno = 1
-        return ip, errno, result[0] 
+        return ip, errno, result[0]
     else:
         logger.info('Physical files match the logical representation of content description file %s', METS_ObjectPath)
 
@@ -882,7 +882,7 @@ def createIP( ip, contextdata ):
     os.makedirs( delivery_root )
 
 
-    # create IP tar file 
+    # create IP tar file
     ip_file = os.path.join(delivery_root, ip.uuid)
     root_dir = ip.directory
     base_dir = ip.uuid
@@ -896,7 +896,7 @@ def createIP( ip, contextdata ):
         agent_list = agent_list_info
         altRecordID_list = altRecordID_list_info
 
-    
+
     # create outer mets-file file format = tar etc
     logger.info('Create outer METS xml file')
     templatefile_spec = templatefile_pspec
@@ -922,7 +922,7 @@ def createIP( ip, contextdata ):
     else:
         logger.error('Package description file %s already exist', mets_objpath)
 
-                                        
+
     # Validate outer mets-file
     logger.info('Validate outer METS xml file')
     errno, why = validate(FILENAME=mets_objpath)
@@ -931,7 +931,7 @@ def createIP( ip, contextdata ):
     else:
         logger.info('Successfully validated package description file %s', mets_objpath)
 
-    
+
     # validate logical and physical representation of objects
     logger.info('Diffcheck outer METS xml file')
     checksumtype_default = checksumalgoritm
@@ -940,11 +940,11 @@ def createIP( ip, contextdata ):
     result_sum = len(reslist[0]) + len(reslist[1]) + len(reslist[2]) + len(reslist[3]) + len(reslist[4]) + len(reslist[5])
     if result_sum != len(reslist[0]):
         result[0].append("We have a mismatch !!!")
-        return ip, errno, result[0] 
+        return ip, errno, result[0]
     else:
         logger.info('Physical files match the logical representation of package description file %s', METS_ObjectPath)
 
-    
+
     # Remove source ip directory and all files in it
     while True:
         try:
@@ -954,10 +954,10 @@ def createIP( ip, contextdata ):
         except:
             time.sleep(1)
 
-        
+
     # mark IP as created and new directory
     ip.state = "Created"
-    ip.directory = delivery_root 
+    ip.directory = delivery_root
     ip.progress = 100
     ip.save()
 
@@ -974,11 +974,11 @@ ET091 - BS130324 - Wrapped in get_URL() and changed return value strings
 def copy_Schema( xsdpath, schema, env ):
     version = 'ET091'
     logger.debug('%s Entered copy_Schema' % version) # debug info
-        
+
     # keep track of error descriptions etc
     status_list = []
-    status = 0 
-    
+    status = 0
+
     #filename = ip.directory + '/' + ip.uuid + '/' + schema.split('/')[-1]
     filename = xsdpath + '/' + schema.split('/')[-1]
     if schema.split('/')[0] == 'http:':
@@ -999,7 +999,7 @@ def copy_Schema( xsdpath, schema, env ):
             return filename, status, context
     else:
         status = 4
-        src_file = env + '/' + schema.split('/')[-1] 
+        src_file = env + '/' + schema.split('/')[-1]
         dst_file = filename
         shutil.copy(src_file, dst_file)
 
@@ -1035,14 +1035,14 @@ def get_URL(url):
 
         #url = response.geturl() # get url
         #filename = url.split('/')[-1] # get filename in url
-        
+
 
 ###############################################
 "Diffcheck"
 """
 ET090 - BS130301 - Ready for test
 """
-def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone='Europe/Stockholm',checksumtype_default='MD5'):  
+def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone='Europe/Stockholm',checksumtype_default='MD5'):
     version = 'ET090'
     logger.debug('%s Entered DiffCheck_IP' % version) # debug info
 
@@ -1050,7 +1050,7 @@ def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone=
     status_list = []
     error_list = []
     res_list = []
-    errno = 0 
+    errno = 0
 
     ObjectPath = ObjectPath
     if METS_ObjectPath is None:
@@ -1060,10 +1060,10 @@ def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone=
         Cmets_objpath = METS_ObjectPath
         Cmets_obj = os.path.split(Cmets_objpath)[1]
     ObjectIdentifierValue = ObjectIdentifierValue
-    
+
     if status_code == 0:
         ###########################################################
-        # get object_list from METS 
+        # get object_list from METS
         res_info, res_files, res_struct, errno, why = getMETSFileList(FILENAME=Cmets_objpath)
         if not errno == 0:
             event_info = 'Problem to get object_list from METS for information package: %s, errno: %s, detail: %s' % (ObjectIdentifierValue,str(errno),str(why))
@@ -1086,18 +1086,18 @@ def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone=
         # present is used to detect case changed files on Windows
         checksums = {} # Map fname->checksum
         checksums_algo = {} # Map fname->checksumtype
-        present = {}   # Map checksum->fname for present files 
+        present = {}   # Map checksum->fname for present files
         deleted = {}   # Map checksum->fname for deleted files
-        
+
         file_list = []
         changed = []   # Changed files
         added = []     # Added files
         confirmed = [] # Confirmed files
         renamed = []   # Renamed files as (old,new) pairs
         permission = [] # Permission problem
-     
-        result = ''           
-        
+
+        result = ''
+
         for object in res_files:
             ok = 1
             filepath = os.path.join(ObjectPath, object[8][5:])
@@ -1148,10 +1148,10 @@ def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone=
     if status_code == 0:
         # Log all changes
         #for fname in confirmed:
-        #    result+="%s\n" % "CONFIRMED %s" % os.path.join(self.ObjectPath,fname) 
+        #    result+="%s\n" % "CONFIRMED %s" % os.path.join(self.ObjectPath,fname)
         for old, new in renamed:
             result+="%s\n" % "RENAMED %s: %s --> %s" % (ObjectPath,old,new)
-            status_list.append("RENAMED %s: %s --> %s" % (ObjectPath,old,new)) 
+            status_list.append("RENAMED %s: %s --> %s" % (ObjectPath,old,new))
         for fname in added:
             result+="%s\n" % "ADDED %s" % os.path.join(ObjectPath,fname)
             status_list.append("ADDED %s" % os.path.join(ObjectPath,fname))
@@ -1174,8 +1174,8 @@ def DiffCheck_IP(ObjectIdentifierValue,ObjectPath,METS_ObjectPath=None,TimeZone=
         res_list.append(deleted)
         res_list.append(changed)
         res_list.append(permission)
-         
-    return status_code, [status_list,error_list], res_list    
+
+    return status_code, [status_list,error_list], res_list
 
 
 ###############################################
@@ -1251,7 +1251,7 @@ def getMETSFileList(DOC=None,SecTYPE=['ALL'],ID=['ALL'],USE=['ALL'],MIMETYPE=["A
         altRecordID_value = altRecordID.text
         altRecordID_res.append([a_TYPE,altRecordID_value])
     Hdr_res.append(altRecordID_res)
-    
+
     if 'dmdSec' in SecTYPE or 'ALL' in SecTYPE:
         ###############################################
         # dmdSec
@@ -1283,7 +1283,7 @@ def getMETSFileList(DOC=None,SecTYPE=['ALL'],ID=['ALL'],USE=['ALL'],MIMETYPE=["A
                 Grp_USE = techMD.get("USE")
                 if techMD.get("ID") in ID or 'ALL' in ID:
                     for md in getmd(techMD,Sec_NAME,Sec_ID,Grp_NAME,Grp_ID,Grp_USE):
-                        res.append(md)    
+                        res.append(md)
             ###############################################
             # digiprovMD
             digiprovMD_all = amdSec.findall("%sdigiprovMD[@ID]" % mets_NS)
@@ -1351,7 +1351,7 @@ def getMETSFileList(DOC=None,SecTYPE=['ALL'],ID=['ALL'],USE=['ALL'],MIMETYPE=["A
     ###############################################
     # structMap
     structMap = DOC.find("%sstructMap" % mets_NS)
-    
+
     a_LABEL = structMap.get("LABEL")
     struct_res = [a_LABEL, getdiv(structMap)]
 
@@ -1366,7 +1366,7 @@ ET090 - BS130301 - Ready for test
 def getdiv(EL):
     version = 'ET090'
     logger.debug('%s Entered getdiv' % version) # debug info
-    
+
     mets_NS = "{%s}" % EL.nsmap['mets']
     xlink_NS = "{%s}" % EL.nsmap['xlink']
     res = []
@@ -1399,7 +1399,7 @@ ET090 - BS130301 - Ready for test
 def getmd(EL,Sec_NAME,Sec_ID,Grp_NAME,Grp_ID,Grp_USE):
     version = 'ET090'
     logger.debug('%s Entered getmd' % version) # debug info
-    
+
     mets_NS = "{%s}" % EL.nsmap['mets']
     xlink_NS = "{%s}" % EL.nsmap['xlink']
     res = []
@@ -1468,7 +1468,7 @@ def getmd(EL,Sec_NAME,Sec_ID,Grp_NAME,Grp_ID,Grp_USE):
                         a_MDTYPE,
                         a_OTHERMDTYPE,
                         ])
-    
+
     return res
 
 
@@ -1481,7 +1481,7 @@ ET090 - BS130301 - Ready for test
 def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumtype, checksumalgoritm ):
     version = 'ET090'
     logger.debug('%s Entered CreateMetsStructmap' % version) # debug info
-    
+
     # get template files
     parameters = Parameter.objects.all()
     templatefile_cspec = parameters.get(entity="content_descriptionfile").value
@@ -1494,19 +1494,19 @@ def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumty
         #print i[8][5:]
         if i[8][5:] == templatefile_log:
             logfile_exist = 1
-            break 
-        
-        
-        
+            break
+
+
+
     # find out path for metadata
-    if site_profile == 'SE':    
+    if site_profile == 'SE':
         path4m = 'metadata/'
         #print path4m
     if site_profile == 'NO':
         path4m = 'administrative_metadata/'
         #print path4m
     # create filetree to read
-    if not len(ms_files):      
+    if not len(ms_files):
         ms_files = []
     if ObjectPath is not None:
         Filetree_list, errno, why = GetFiletree2(ObjectPath,checksumtype)
@@ -1522,7 +1522,7 @@ def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumty
                 # Don't add log file if already exist
                 if f_name == templatefile_log and logfile_exist:
                     continue
-                    
+
                 # Don't add preservation file
                 #print ObjectPath.split('/')
                 if f_name == path4m + templatefile_prspec:
@@ -1533,7 +1533,7 @@ def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumty
                 # Don't add content spec file
                 if f_name == templatefile_cspec:
                     continue
-                
+
                 #if f_name[-10:] == 'premis.xml':
                 #    ms_files.append(['amdSec', None, 'digiprovMD', 'digiprovMD001', None,
                 #                     None, 'ID%s' % str(uuid.uuid1()), 'URL', 'file:%s' % f_name, 'simple',
@@ -1569,11 +1569,11 @@ ET090 - BS130301 - Ready for test
 def getSiteZone():
     version = 'ET090'
     logger.debug('%s Entered getSiteZone' % version) # debug info
-    
+
     # find out which zone, if none set it to zone1
     try:
         zone = Parameter.objects.get(entity="zone").value
-        if zone != "zone1" and zone != "zone2" and zone != "zone3" :  
+        if zone != "zone1" and zone != "zone2" and zone != "zone3" :
             zone = "zone1"
     except:
         zone = "zone1"
@@ -1597,7 +1597,7 @@ ET090 - BS130301 - Ready for test
 def create_PremisFile(ip, ms_files, ObjectPath, PREMIS_ObjectPath, ObjectIdentifierValue, checksumalgoritm, checksumtype):
     version = 'ET090'
     logger.debug('%s Entered create_PremisFile' % version) # debug info
-    
+
     status_list = []
     error_list = []
     status_code = 0
@@ -1612,12 +1612,12 @@ def create_PremisFile(ip, ms_files, ObjectPath, PREMIS_ObjectPath, ObjectIdentif
     #ms_files, errno, why = CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumtype, checksumalgoritm )
     ms_files = CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumtype, checksumalgoritm )
 
-######    
+######
 #    if errno:
 #        error_list.append(why)
 #        logger.error(why)
 #        return ms_files, status_list, status_code, error_list
-    
+
     # Create PREMISfile etc
     if PREMIS_ObjectPath is not None:
         status_list.append('Create new PREMIS: %s' % PREMIS_ObjectPath)
@@ -1645,8 +1645,8 @@ def create_PremisFile(ip, ms_files, ObjectPath, PREMIS_ObjectPath, ObjectIdentif
             status_code = 2
             error_list.append('Problem to validate "PREMISfile: %s", errno: %s, why: %s' % (PREMIS_ObjectPath,errno,str(why)))
             logger.error('Problem to validate "PREMISfile: %s", errno: %s, why: %s' % (PREMIS_ObjectPath,errno,str(why)))
-        
-        # create Premis file 
+
+        # create Premis file
         errno,why = writeToFile(xml_PREMIS,PREMIS_ObjectPath)
         if errno:
             status_code = 3
@@ -1654,7 +1654,7 @@ def create_PremisFile(ip, ms_files, ObjectPath, PREMIS_ObjectPath, ObjectIdentif
             logger.error('Problem to write "PREMISfile: %s", errno: %s, why: %s' % (PREMIS_ObjectPath,errno,str(why)))
         else:
             logger.info('Successfully created and validated Premis file %s' % PREMIS_ObjectPath )
-        
+
         # Add PREMISfile to METS filelist
         f_name = PREMIS_ObjectPath.replace( ObjectPath + '/', '' )
         f_stat = os.stat(PREMIS_ObjectPath)
@@ -1679,11 +1679,11 @@ ET090 - BS130301 - Ready for test
 def getLogMetadata( filename ):
     version = 'ET090'
     logger.debug('%s Entered getLogMetadata' % version) # debug info
-    
+
     # Pull out the log file PREMIS metadata using a simple state-machine
     # approach, searching for the following tags:
-    #  - objectIdentifierValue 
-    #  - significantPropertiesType / significantPropertiesValue 
+    #  - objectIdentifierValue
+    #  - significantPropertiesType / significantPropertiesValue
     significantPropertiesType=""
     significantPropertiesValue=""
 
@@ -1713,11 +1713,11 @@ ET090 - BS130301 - Ready for test
 def getLogEvents( filename ):
     version = 'ET090'
     logger.debug('%s Entered getLogEvents' % version) # debug info
-    
+
     # Pull out the log file PREMIS metadata using a simple state-machine
     # approach, searching for specified tags:
     tags = [ "eventType", "eventDateTime", "eventDetail",
-             "eventOutcome", "eventOutcomeDetailNote", 
+             "eventOutcome", "eventOutcomeDetailNote",
              "linkingAgentIdentifierValue", "linkingObjectIdentifierValue" ]
 
     significantPropertiesType=""
@@ -1725,9 +1725,9 @@ def getLogEvents( filename ):
 
     tmpdata = {}
     logdata = []
-    
+
     context = etree.iterparse( filename )
-    
+
     for event, element in context:
         if element.tag.endswith( "event" ):
                 # we have a complete event, add it to log data.
@@ -1744,7 +1744,7 @@ def getLogEvents( filename ):
                                 tmpdata[ tag ] = element.text
                             #print element.tag, element.text
                             #print '%s' % logdata
-        
+
     return logdata
 
 
@@ -1756,12 +1756,12 @@ ET090 - BS130301 - Ready for test
 def getLogFilePath():
     version = 'ET090'
     logger.debug('%s Entered getLogFilePath' % version) # debug info
-    
+
     # find out path to logfile
     # get current site_profile and zone
     site_profile, zone = getSiteZone()
-    
-    # check which source directory to use 
+
+    # check which source directory to use
     if zone == 'zone1' :
         logfilepath = Path.objects.get(entity="path_preingest_prepare").value
     if zone == 'zone2' :
@@ -1770,7 +1770,7 @@ def getLogFilePath():
         logfilepath = Path.objects.get(entity="path_gate").value
     if zone == 'zone3' :
         logfilepath = Path.objects.get(entity="path_work").value
-    
+
     return logfilepath
 
 
@@ -1783,8 +1783,8 @@ ET090 - BS130301 - Ready for test
 def checkLogMetadata(loglist):
     version = 'ET090'
     logger.debug('%s Entered checkLogMetdata' % version) # debug info
-    
-    # expected tags in logfile 
+
+    # expected tags in logfile
     tags = {'uuid',
             'archivist_organization',
             'label',
@@ -1793,7 +1793,7 @@ def checkLogMetadata(loglist):
             'iptype',
             'createdate',
             }
-    
+
     errno = 0
     diff_list = []
     for elem in tags:
@@ -1815,10 +1815,10 @@ ET090 - BS130301 - Ready for test
 def getFiles(sourceroot, filename):
     version = 'ET090'
     logger.debug('%s Entered getFiles' % version) # debug info
-    
+
     # iterate through the directory structures looking for spec files,
     # load the spec file and extract metadata.
-    
+
     files = []
     errno = 0
     for dirname, dirnames, filenames in os.walk( sourceroot ):
@@ -1835,7 +1835,7 @@ def getFiles(sourceroot, filename):
                     #print metadata
                     files.append( metadata )
                     while len(dirnames) > 0 :
-                        del dirnames[0] # remove the first entry in the list of sub-directories  
+                        del dirnames[0] # remove the first entry in the list of sub-directories
 
     return files
 
@@ -1848,10 +1848,10 @@ ET090 - BS130301 - Ready for test
 def getLogFiles(sourceroot, filename):
     version = 'ET090'
     logger.debug('%s Entered getLogFiles' % version) # debug info
-    
+
     # iterate through the directory structures looking for log files,
     # load the log file and extract metadata.
-    
+
     logs=[]
 
     for dirname, dirnames, filenames in os.walk( sourceroot ):
@@ -1865,7 +1865,7 @@ def getLogFiles(sourceroot, filename):
                     metadata[ "iplocation" ] = os.path.split(dirname)[0]
                     logs.append( metadata )
                     while len(dirnames) > 0 :
-                        del dirnames[0] # remove the first entry in the list of sub-directories  
+                        del dirnames[0] # remove the first entry in the list of sub-directories
 
     return logs
 
@@ -1878,9 +1878,9 @@ ET090 - BS130301 - Ready for test
 def appendToLogFile( logfile, eventType, eventOutcome, eventOutcomeDetailNote, linkingAgentIdentifierValue, linkingObjectIdentifierValue ):
     version = 'ET090'
     logger.debug('%s Entered appendToLogFile' % version) # debug info
-    
+
     # append event to logfile
-    
+
     # get current site_profile and zone
     site_profile, zone = getSiteZone()
 
@@ -1889,13 +1889,13 @@ def appendToLogFile( logfile, eventType, eventOutcome, eventOutcomeDetailNote, l
 
     # create timestamp
     eventDateTime = utils.creation_time('Europe/Stockholm')
-    
+
     # get eventDetail
     eventDetail=LogEvent.objects.filter( eventType=eventType )[0].eventDetail
 
     # create event_uuid
     event_uuid = str(uuid.uuid1())
-    
+
     # add premis event to logfile
     xml_PREMIS = AddPremisEvent( DOC,
                                  [('%s/ESS' % site_profile,
@@ -1913,7 +1913,7 @@ def appendToLogFile( logfile, eventType, eventOutcome, eventOutcomeDetailNote, l
     writeToFile(xml_PREMIS,logfile)
 
 
-###############################################    
+###############################################
 "Create AIC directory"
 """
 ET090 - BS130301 - Ready for test
@@ -1921,11 +1921,11 @@ ET090 - BS130301 - Ready for test
 def createAICdirectory(sourceroot, aicuuid):
     version = 'ET090'
     logger.debug('%s Entered createAICdirectory' % version) # debug info
-    
+
     # create AIC_UUID directory
     aicroot = os.path.join( sourceroot, aicuuid )
     os.makedirs( aicroot )
-    
+
     return aicroot
 
 
@@ -1937,7 +1937,7 @@ ET090 - BS130301 - Ready for test
 def createIPdirectory(sourceroot, ip_uuid):
     version = 'ET090'
     logger.debug('%s Entered createIPdirectory' % version) # debug info
-    
+
     # get current site_profile and zone
     site_profile, zone = getSiteZone()
 
@@ -1961,7 +1961,7 @@ def createIPdirectory(sourceroot, ip_uuid):
         #os.makedirs( os.path.join( os.path.join( iproot, "content" ), "documents" ) )
 
     return iproot
-    
+
 
 ###############################################
 "Parse specification file"
@@ -1971,24 +1971,24 @@ ET090 - BS130301 - Ready for test
 def ParseSpecFile(filename):
     version = 'ET090'
     logger.debug('%s Entered ParseSpecFile' % version) # debug info
-    
+
     # only parse start and end elements
     events = ('start', 'end', )
-        
+
     # declare variables
     root = None
-    metadata = {} 
-        
+    metadata = {}
+
     # iterparse xml file
     context = etree.iterparse( filename, events=events)
-    
+
     # get metadata in xml file
     for event, elem in context:
-            
-        ##########################################        
+
+        ##########################################
         # separate namespace from tag
         namespace, tag = elem.tag[1:].split('}', 1)
-            
+
         ##########################################
         # get root elements metadata
         if event == 'start' and root is None:
@@ -1998,13 +1998,13 @@ def ParseSpecFile(filename):
             metadata["ip_uuid"] = elem.get('OBJID')
             metadata["ip_type"] = elem.get('TYPE')
             utils.clearNode(elem)
-    
+
         ##########################################
         # get metsHdr element metadata
         if event == 'start' and tag == 'metsHdr' :
             metadata["ip_createdate"] = elem.get('CREATEDATE')
             utils.clearNode(elem)
-                
+
         ##########################################
         # get agent elements metadata
         if event == 'end' and tag == 'agent' :
@@ -2019,7 +2019,7 @@ def ParseSpecFile(filename):
             #    metadata["ip_system"] = elem[0].text
             #    metadata["ip_version"] = elem[1].text
             utils.clearNode(elem)
-        
+
         ##########################################
         # get altrecordid elements metadata
         if event == 'end' and tag == 'altRecordID' :
@@ -2030,7 +2030,7 @@ def ParseSpecFile(filename):
             if m_TYPE == 'ENDDATE' :
                 metadata["ip_enddate"] = elem.text
             utils.clearNode(elem)
-            
+
     # remove context from memory
     del context
 
@@ -2045,10 +2045,10 @@ ET090 - BS130301 - Ready for test
 def AddPremisEvent(DOC=None,EVENTS=[('SE/RA','GUID123xasd','TIFF editering','2005-11-08 12:24:09','TIFF editering','Status: OK','Profil: GREY;gsuidxx123',[['SE/RA','TIFFedit_MKC']],[['SE/RA','00067990/00000001.TIF']])]):
     version = 'ET090'
     logger.debug('%s Entered AddPremisEvent' % version) # debug info
-    
-    premis_NS = "{%s}" % SchemaProfile.objects.get(entity='premis_namespace').value 
+
+    premis_NS = "{%s}" % SchemaProfile.objects.get(entity='premis_namespace').value
     xlink_NS = "{%s}" % SchemaProfile.objects.get(entity='xlink_namespace').value
-    
+
     ELs_event = DOC.findall("%sevent" % (premis_NS))
 
     root = DOC.getroot()
@@ -2114,7 +2114,7 @@ ET091 - BS130324 - Added mimetype application/octet-stream
 def GetFiletree2(root,checksumtype=None):
     version = 'ET091'
     logger.debug('%s Entered GetFiletree2' % version) # debug info
-    
+
     try:
         mimefilepath = Path.objects.get(entity='path_mimetypes_definitionfile').value
     except Parameter.DoesNotExist as e:
@@ -2190,7 +2190,7 @@ ET090 - BS130301 - Ready for test
 def checksum(fname,ChecksumAlgorithm = 1):
     version = 'ET090'
     logger.debug('%s Entered checksum' % version) # debug info
-    
+
     #md = []
     #fname = Check().unicode2str(fname)
     #logging.info('Start to create MD5Checksum for: ' + fname)
@@ -2222,7 +2222,7 @@ ET090 - BS130301 - Ready for test
 def CreateMetsHdr(agent_list=[],altRecordID_list=[],DocumentID='',TimeZone='Europe/Stockholm',CREATEDATE=None, RECORDSTATUS=None):
     version = 'ET090'
     logger.debug('%s Entered CreateMetsHdr' % version) # debug info
-    
+
     # create mets header
     loc_timezone=pytz.timezone(TimeZone)
     if CREATEDATE is None:
@@ -2249,7 +2249,7 @@ ET090 - BS130301 - Ready for test
 def CreateMetsFileInfo(file_list=[]):
     version = 'ET090'
     logger.debug('%s Entered CreateMetsFileInfo' % version) # debug info
-    
+
     # create amdSec / structMap / fileSec
     _dmdSec = None
     _amdSec = m.amdSecType(ID='amdSec001')
@@ -2316,7 +2316,7 @@ ET090 - BS130301 - Ready for test
 def validate(DOC=None,FILENAME=None,XMLSchema=None):
     version = 'ET090'
     logger.debug('%s Entered validate' % version) # debug info
-    
+
     #XMLSchema = SchemaProfile.objects.get(entity='mets_schemalocation').value
     #if XMLSchema == None:
     #    XMLSchema = SchemaProfile.objects.get(entity='mets_schemalocation').value
@@ -2459,7 +2459,7 @@ ET090 - BS130301 - Ready for test
 def getSchemaLocation(DOC=None,FILENAME=None,NS='http://xml.ra.se/PREMIS',PREFIX='premis'):
     version = 'ET090'
     logger.debug('%s Entered getSchemaLocation' % version) # debug info
-    
+
     if FILENAME:
         try:
             DOC  =  etree.ElementTree ( file=FILENAME )
@@ -2470,7 +2470,7 @@ def getSchemaLocation(DOC=None,FILENAME=None,NS='http://xml.ra.se/PREMIS',PREFIX
     res=[]
 
     EL_root = DOC.getroot()
-    
+
     xlink_NS = "{%s}" % EL_root.nsmap['xlink']
     xsi_NS = "{%s}" % EL_root.nsmap['xsi']
     all_schemaLocations = DOC.findall("[@%sschemaLocation]" % xsi_NS)
@@ -2480,7 +2480,7 @@ def getSchemaLocation(DOC=None,FILENAME=None,NS='http://xml.ra.se/PREMIS',PREFIX
             if a == 0:
                 ns_item = item
                 a = 1
-            elif a == 1: 
+            elif a == 1:
                 res.append([ns_item,item])
                 a = 0
     all_schemaLocations = DOC.findall(".//*[@%sschemaLocation]" % xsi_NS)
@@ -2505,7 +2505,7 @@ ET090 - BS130301 - Ready for test
 def writeToFile(DOC=None,FILENAME=None):
     version = 'ET090'
     logger.debug('%s Entered writeToFile' % version) # debug info
-    
+
     try:
         DOC.write(FILENAME,encoding='UTF-8',xml_declaration=True,pretty_print=True)
     except etree.XMLSyntaxError, detail:
@@ -2545,7 +2545,7 @@ class FileLock(object):
             if self.valid_lock():
                 intervals -= 1
                 time.sleep(interval)
-                print('stopping %s' % intervals)        
+                print('stopping %s' % intervals)
             else:
                 return False
 
@@ -2568,7 +2568,7 @@ class FileLock(object):
                 # Opening file in append mode and read the first 8 characters.
                 file_object = open(self.fname, 'a', buffer_size)
                 if file_object:
-                    locked = False 
+                    locked = False
             except IOError, message:
                 locked = True
             finally:
@@ -2577,4 +2577,3 @@ class FileLock(object):
         else:
             locked = None
         return locked
-

@@ -1,0 +1,1921 @@
+{
+    "name": "mets",
+    "key": "5148cf49-08d7-478d-b20e-dfbceed9f283",
+    "path": "mets/",
+    "children": [{
+        "name": "metsHdr",
+        "key": "2d894d37-e663-4ff1-b94d-5c75b0f51c63",
+        "path": "mets/metsHdr/",
+        "children": [{
+            "name": "agent",
+            "key": "4d6d72a4-9158-45b1-af92-ce284ee67623",
+            "path": "mets/metsHdr/agent/0/",
+            "children": [{
+                "name": "name",
+                "key": "cc6215af-b889-4b57-bf0c-f5bc26f90c22",
+                "path": "mets/metsHdr/agent/0/name/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                }
+            }, {
+                "name": "note",
+                "key": "bc64f237-781c-4c67-afe4-1a14f854611f",
+                "path": "mets/metsHdr/agent/0/note/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "content": [{"text": "testsd"}],
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 5
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "key": "ROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "ROLE",
+                    "required": true,
+                    "options": [{
+                        "name": "CREATOR",
+                        "value": "CREATOR"
+                    }, {
+                        "name": "EDITOR",
+                        "value": "EDITOR"
+                    }, {
+                        "name": "ARCHIVIST",
+                        "value": "ARCHIVIST"
+                    }, {
+                        "name": "PRESERVATION",
+                        "value": "PRESERVATION"
+                    }, {
+                        "name": "DISSEMINATOR",
+                        "value": "DISSEMINATOR"
+                    }, {
+                        "name": "CUSTODIAN",
+                        "value": "CUSTODIAN"
+                    }, {
+                        "name": "IPOWNER",
+                        "value": "IPOWNER"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERROLE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SUBMITTER",
+                        "value": "SUBMITTER"
+                    }, {
+                        "name": "PRODUCER",
+                        "value": "PRODUCER"
+                    }]
+                }
+            }, {
+                "key": "TYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "TYPE",
+                    "required": true,
+                    "options": [{
+                        "name": "INDIVIDUAL",
+                        "value": "INDIVIDUAL"
+                    }, {
+                        "name": "ORGANIZATION",
+                        "value": "ORGANIZATION"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERTYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERTYPE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SOFTWARE",
+                        "value": "SOFTWARE"
+                    }]
+                }
+            }],
+            "meta": {
+                "minOccurs": 3,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "agent",
+            "key": "1557e782-1d03-4683-938e-ee01d617283c",
+            "path": "mets/metsHdr/agent/1/",
+            "children": [{
+                "name": "name",
+                "key": "8348b08e-fdd7-4280-aa21-eae421d25216",
+                "path": "mets/metsHdr/agent/1/name/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                }
+            }, {
+                "name": "note",
+                "key": "1395aaec-ea5c-427b-86e6-cb0d010375d4",
+                "path": "mets/metsHdr/agent/1/note/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "key": "ROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "ROLE",
+                    "required": true,
+                    "options": [{
+                        "name": "CREATOR",
+                        "value": "CREATOR"
+                    }, {
+                        "name": "EDITOR",
+                        "value": "EDITOR"
+                    }, {
+                        "name": "ARCHIVIST",
+                        "value": "ARCHIVIST"
+                    }, {
+                        "name": "PRESERVATION",
+                        "value": "PRESERVATION"
+                    }, {
+                        "name": "DISSEMINATOR",
+                        "value": "DISSEMINATOR"
+                    }, {
+                        "name": "CUSTODIAN",
+                        "value": "CUSTODIAN"
+                    }, {
+                        "name": "IPOWNER",
+                        "value": "IPOWNER"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERROLE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SUBMITTER",
+                        "value": "SUBMITTER"
+                    }, {
+                        "name": "PRODUCER",
+                        "value": "PRODUCER"
+                    }]
+                }
+            }, {
+                "key": "TYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "TYPE",
+                    "required": true,
+                    "options": [{
+                        "name": "INDIVIDUAL",
+                        "value": "INDIVIDUAL"
+                    }, {
+                        "name": "ORGANIZATION",
+                        "value": "ORGANIZATION"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERTYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERTYPE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SOFTWARE",
+                        "value": "SOFTWARE"
+                    }]
+                }
+            }],
+            "meta": {
+                "minOccurs": 3,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "agent",
+            "key": "6ea4ddd7-0b5e-4338-8af0-e4cada1ba1f5",
+            "path": "mets/metsHdr/agent/2/",
+            "children": [{
+                "name": "name",
+                "key": "9115cd21-aa2d-4363-9f4d-ab18fb58aec7",
+                "path": "mets/metsHdr/agent/2/name/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                }
+            }, {
+                "name": "note",
+                "key": "cf3dd747-4619-4933-958c-09aff3224667",
+                "path": "mets/metsHdr/agent/2/note/",
+                "children": [],
+                "attributes": [{
+                    "key": "Content",
+                    "type": "input",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "Content",
+                        "placeholder": "Content",
+                        "required": true
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "key": "ROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "ROLE",
+                    "required": true,
+                    "options": [{
+                        "name": "CREATOR",
+                        "value": "CREATOR"
+                    }, {
+                        "name": "EDITOR",
+                        "value": "EDITOR"
+                    }, {
+                        "name": "ARCHIVIST",
+                        "value": "ARCHIVIST"
+                    }, {
+                        "name": "PRESERVATION",
+                        "value": "PRESERVATION"
+                    }, {
+                        "name": "DISSEMINATOR",
+                        "value": "DISSEMINATOR"
+                    }, {
+                        "name": "CUSTODIAN",
+                        "value": "CUSTODIAN"
+                    }, {
+                        "name": "IPOWNER",
+                        "value": "IPOWNER"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERROLE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERROLE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SUBMITTER",
+                        "value": "SUBMITTER"
+                    }, {
+                        "name": "PRODUCER",
+                        "value": "PRODUCER"
+                    }]
+                }
+            }, {
+                "key": "TYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "TYPE",
+                    "required": true,
+                    "options": [{
+                        "name": "INDIVIDUAL",
+                        "value": "INDIVIDUAL"
+                    }, {
+                        "name": "ORGANIZATION",
+                        "value": "ORGANIZATION"
+                    }, {
+                        "name": "OTHER",
+                        "value": "OTHER"
+                    }]
+                }
+            }, {
+                "key": "OTHERTYPE",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OTHERTYPE",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "SOFTWARE",
+                        "value": "SOFTWARE"
+                    }]
+                }
+            }],
+            "meta": {
+                "minOccurs": 3,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "altRecordID",
+            "key": "baf3c973-0e1c-45d6-9789-870a40b4c48b",
+            "path": "mets/metsHdr/altRecordID/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "metsDocumentID",
+            "key": "409689bf-11e2-4120-824e-0bf203adbb0f",
+            "path": "mets/metsHdr/metsDocumentID/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": 1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "ADMID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ADMID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "CREATEDATE",
+            "templateOptions": {
+                "type": "text",
+                "label": "CREATEDATE",
+                "required": true
+            }
+        }, {
+            "type": "input",
+            "key": "LASTMODDATE",
+            "templateOptions": {
+                "type": "text",
+                "label": "LASTMODDATE",
+                "required": false
+            }
+        }, {
+            "key": "RECORDSTATUS",
+            "type": "select",
+            "templateOptions": {
+                "label": "RECORDSTATUS",
+                "required": false,
+                "options": [{
+                    "name": " -- None -- ",
+                    "value": ""
+                }, {
+                    "name": "SUPPLEMENT",
+                    "value": "SUPPLEMENT"
+                }, {
+                    "name": "REPLACEMENT",
+                    "value": "REPLACEMENT"
+                }, {
+                    "name": "NEW",
+                    "value": "NEW"
+                }, {
+                    "name": "TEST",
+                    "value": "TEST"
+                }, {
+                    "name": "VERSION",
+                    "value": "VERSION"
+                }, {
+                    "name": "DEPOSIT",
+                    "value": "DEPOSIT"
+                }, {
+                    "name": "AGREEMENT",
+                    "value": "AGREEMENT"
+                }, {
+                    "name": "OTHER",
+                    "value": "OTHER"
+                }]
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": 1
+        }
+    }, {
+        "name": "dmdSec",
+        "key": "fbc1b6cd-27eb-494d-b92e-3f3b1120f761",
+        "path": "mets/dmdSec/",
+        "children": [],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": true
+            }
+        }, {
+            "type": "input",
+            "key": "GROUPID",
+            "templateOptions": {
+                "type": "text",
+                "label": "GROUPID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "ADMID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ADMID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "CREATED",
+            "templateOptions": {
+                "type": "text",
+                "label": "CREATED",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "STATUS",
+            "templateOptions": {
+                "type": "text",
+                "label": "STATUS",
+                "required": false
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": -1
+        }
+    }, {
+        "name": "amdSec",
+        "key": "1247a692-6ae0-47cb-89d1-9738599287bd",
+        "path": "mets/amdSec/",
+        "children": [{
+            "name": "techMD",
+            "key": "9c292b78-5431-4ad3-90bd-fb9798581b26",
+            "path": "mets/amdSec/techMD/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "rightsMD",
+            "key": "6df90dc9-fa77-4559-ae23-410abf1df60f",
+            "path": "mets/amdSec/rightsMD/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "sourceMD",
+            "key": "376749e8-98c3-4bf0-8425-26bb9b02cdcf",
+            "path": "mets/amdSec/sourceMD/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "digiprovMD",
+            "key": "7fc43faa-3997-410f-849e-530536629be6",
+            "path": "mets/amdSec/digiprovMD/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": true
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": -1
+        }
+    }, {
+        "name": "fileSec",
+        "key": "6f83e3fb-5339-49e4-a88f-0c8592928902",
+        "path": "mets/fileSec/",
+        "children": [{
+            "name": "fileGrp",
+            "key": "34c87c69-f0b8-4bf4-ace0-d9d18c9d59f9",
+            "path": "mets/fileSec/fileGrp/",
+            "children": [{
+                "name": "fileGrp",
+                "key": "445d3928-cb31-42c8-8eb8-468effd6b086",
+                "path": "mets/fileSec/fileGrp/fileGrp/",
+                "children": [],
+                "attributes": [],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }, {
+                "name": "file",
+                "key": "a0f34373-d869-41ea-8506-d41307fc1e5d",
+                "path": "mets/fileSec/fileGrp/file/",
+                "children": [{
+                    "name": "FLocat",
+                    "key": "514f3e41-b86b-4b24-b5bc-36c6238ed351",
+                    "path": "mets/fileSec/fileGrp/file/FLocat/",
+                    "children": [],
+                    "attributes": [{
+                        "type": "input",
+                        "key": "ID",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "ID",
+                            "required": false
+                        }
+                    }, {
+                        "key": "LOCTYPE",
+                        "type": "select",
+                        "templateOptions": {
+                            "label": "LOCTYPE",
+                            "required": true,
+                            "options": [{
+                                "name": "URN",
+                                "value": "URN"
+                            }, {
+                                "name": "URL",
+                                "value": "URL"
+                            }, {
+                                "name": "HANDLE",
+                                "value": "HANDLE"
+                            }, {
+                                "name": "OTHER",
+                                "value": "OTHER"
+                            }]
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "OTHERLOCTYPE",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "OTHERLOCTYPE",
+                            "required": false
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "USE",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "USE",
+                            "required": false
+                        }
+                    }],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": 1
+                    }
+                }, {
+                    "name": "FContent",
+                    "key": "bf4d695b-179c-4c6c-adc7-28c9153cc9be",
+                    "path": "mets/fileSec/fileGrp/file/FContent/",
+                    "children": [{
+                        "name": "binData",
+                        "key": "117178eb-5aa2-4e7f-839e-a7102181e62a",
+                        "path": "mets/fileSec/fileGrp/file/FContent/binData/",
+                        "children": [],
+                        "attributes": [{
+                            "key": "Content",
+                            "type": "input",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "Content",
+                                "placeholder": "Content",
+                                "required": true
+                            }
+                        }],
+                        "meta": {
+                            "minOccurs": 1,
+                            "maxOccurs": 1
+                        }
+                    }, {
+                        "name": "xmlData",
+                        "key": "6834aa35-d270-4d21-9a9b-457f187a3881",
+                        "path": "mets/fileSec/fileGrp/file/FContent/xmlData/",
+                        "children": [],
+                        "attributes": [],
+                        "meta": {
+                            "minOccurs": 1,
+                            "maxOccurs": 1
+                        }
+                    }],
+                    "attributes": [{
+                        "type": "input",
+                        "key": "ID",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "ID",
+                            "required": false
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "USE",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "USE",
+                            "required": false
+                        }
+                    }],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": 1
+                    }
+                }, {
+                    "name": "stream",
+                    "key": "a39b4776-99ec-4bc8-8b96-85e67493baa6",
+                    "path": "mets/fileSec/fileGrp/file/stream/",
+                    "children": [],
+                    "attributes": [],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": -1
+                    }
+                }, {
+                    "name": "transformFile",
+                    "key": "6a75d3af-e03f-439d-a5d4-cb65ab641e18",
+                    "path": "mets/fileSec/fileGrp/file/transformFile/",
+                    "children": [],
+                    "attributes": [],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": -1
+                    }
+                }, {
+                    "name": "file",
+                    "key": "747f866d-6f60-4fa8-93ec-facc5757fca4",
+                    "path": "mets/fileSec/fileGrp/file/file/",
+                    "children": [],
+                    "attributes": [],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": -1
+                    }
+                }],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": true
+                    }
+                }, {
+                    "type": "input",
+                    "key": "SEQ",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "SEQ",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "MIMETYPE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "MIMETYPE",
+                        "required": true
+                    }
+                }, {
+                    "type": "input",
+                    "key": "SIZE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "SIZE",
+                        "required": true
+                    }
+                }, {
+                    "type": "input",
+                    "key": "CREATED",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "CREATED",
+                        "required": true
+                    }
+                }, {
+                    "type": "input",
+                    "key": "CHECKSUM",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "CHECKSUM",
+                        "required": false
+                    }
+                }, {
+                    "key": "CHECKSUMTYPE",
+                    "type": "select",
+                    "templateOptions": {
+                        "label": "CHECKSUMTYPE",
+                        "required": false,
+                        "options": [{
+                            "name": " -- None -- ",
+                            "value": ""
+                        }, {
+                            "name": "MD5",
+                            "value": "MD5"
+                        }, {
+                            "name": "SHA-1",
+                            "value": "SHA-1"
+                        }, {
+                            "name": "SHA-256",
+                            "value": "SHA-256"
+                        }, {
+                            "name": "SHA-384",
+                            "value": "SHA-384"
+                        }, {
+                            "name": "SHA-512",
+                            "value": "SHA-512"
+                        }]
+                    }
+                }, {
+                    "type": "input",
+                    "key": "OWNERID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "OWNERID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "ADMID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ADMID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "DMDID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "DMDID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "GROUPID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "GROUPID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "USE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "USE",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "BEGIN",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "BEGIN",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "END",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "END",
+                        "required": false
+                    }
+                }, {
+                    "key": "BETYPE",
+                    "type": "select",
+                    "templateOptions": {
+                        "label": "BETYPE",
+                        "required": false,
+                        "options": [{
+                            "name": " -- None -- ",
+                            "value": ""
+                        }, {
+                            "name": "BYTE",
+                            "value": "BYTE"
+                        }]
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "VERSDATE",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "VERSDATE",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "ADMID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ADMID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "USE",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "USE",
+                    "required": false
+                }
+            }],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": false
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": 1
+        }
+    }, {
+        "name": "structMap",
+        "key": "4c8ac4aa-7615-4929-a043-65dea10aea97",
+        "path": "mets/structMap/",
+        "children": [{
+            "name": "div",
+            "key": "44f1932c-bb28-4ee6-b120-22dd8ba91a87",
+            "path": "mets/structMap/div/",
+            "children": [{
+                "name": "mptr",
+                "key": "9bbccff9-b5c1-445d-a6f2-74bb6376fc12",
+                "path": "mets/structMap/div/mptr/",
+                "children": [],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }, {
+                    "key": "LOCTYPE",
+                    "type": "select",
+                    "templateOptions": {
+                        "label": "LOCTYPE",
+                        "required": true,
+                        "options": [{
+                            "name": "URN",
+                            "value": "URN"
+                        }, {
+                            "name": "URL",
+                            "value": "URL"
+                        }, {
+                            "name": "HANDLE",
+                            "value": "HANDLE"
+                        }, {
+                            "name": "OTHER",
+                            "value": "OTHER"
+                        }]
+                    }
+                }, {
+                    "type": "input",
+                    "key": "OTHERLOCTYPE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "OTHERLOCTYPE",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "CONTENTIDS",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "CONTENTIDS",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }, {
+                "name": "fptr",
+                "key": "47b2d8c7-f82f-415f-9adc-ee2607cd6b33",
+                "path": "mets/structMap/div/fptr/",
+                "children": [{
+                    "name": "par",
+                    "key": "e1c9295f-c30a-49d9-b6d7-5599acfad4c0",
+                    "path": "mets/structMap/div/fptr/par/",
+                    "children": [{
+                        "name": "area",
+                        "key": "ae65a832-9e91-493b-9b7a-57fed14f38de",
+                        "path": "mets/structMap/div/fptr/par/area/",
+                        "children": [],
+                        "attributes": [{
+                            "type": "input",
+                            "key": "ID",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ID",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "FILEID",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "FILEID",
+                                "required": true
+                            }
+                        }, {
+                            "key": "SHAPE",
+                            "type": "select",
+                            "templateOptions": {
+                                "label": "SHAPE",
+                                "required": false,
+                                "options": [{
+                                    "name": " -- None -- ",
+                                    "value": ""
+                                }, {
+                                    "name": "RECT",
+                                    "value": "RECT"
+                                }, {
+                                    "name": "CIRCLE",
+                                    "value": "CIRCLE"
+                                }, {
+                                    "name": "POLY",
+                                    "value": "POLY"
+                                }]
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "COORDS",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "COORDS",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "BEGIN",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "BEGIN",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "END",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "END",
+                                "required": false
+                            }
+                        }, {
+                            "key": "BETYPE",
+                            "type": "select",
+                            "templateOptions": {
+                                "label": "BETYPE",
+                                "required": false,
+                                "options": [{
+                                    "name": " -- None -- ",
+                                    "value": ""
+                                }, {
+                                    "name": "BYTE",
+                                    "value": "BYTE"
+                                }, {
+                                    "name": "IDREF",
+                                    "value": "IDREF"
+                                }, {
+                                    "name": "SMIL",
+                                    "value": "SMIL"
+                                }, {
+                                    "name": "MIDI",
+                                    "value": "MIDI"
+                                }, {
+                                    "name": "SMPTE-25",
+                                    "value": "SMPTE-25"
+                                }, {
+                                    "name": "SMPTE-24",
+                                    "value": "SMPTE-24"
+                                }, {
+                                    "name": "SMPTE-DF30",
+                                    "value": "SMPTE-DF30"
+                                }, {
+                                    "name": "SMPTE-NDF30",
+                                    "value": "SMPTE-NDF30"
+                                }, {
+                                    "name": "SMPTE-DF29.97",
+                                    "value": "SMPTE-DF29.97"
+                                }, {
+                                    "name": "SMPTE-NDF29.97",
+                                    "value": "SMPTE-NDF29.97"
+                                }, {
+                                    "name": "TIME",
+                                    "value": "TIME"
+                                }, {
+                                    "name": "TCF",
+                                    "value": "TCF"
+                                }, {
+                                    "name": "XPTR",
+                                    "value": "XPTR"
+                                }]
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "EXTENT",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "EXTENT",
+                                "required": false
+                            }
+                        }, {
+                            "key": "EXTTYPE",
+                            "type": "select",
+                            "templateOptions": {
+                                "label": "EXTTYPE",
+                                "required": false,
+                                "options": [{
+                                    "name": " -- None -- ",
+                                    "value": ""
+                                }, {
+                                    "name": "BYTE",
+                                    "value": "BYTE"
+                                }, {
+                                    "name": "SMIL",
+                                    "value": "SMIL"
+                                }, {
+                                    "name": "MIDI",
+                                    "value": "MIDI"
+                                }, {
+                                    "name": "SMPTE-25",
+                                    "value": "SMPTE-25"
+                                }, {
+                                    "name": "SMPTE-24",
+                                    "value": "SMPTE-24"
+                                }, {
+                                    "name": "SMPTE-DF30",
+                                    "value": "SMPTE-DF30"
+                                }, {
+                                    "name": "SMPTE-NDF30",
+                                    "value": "SMPTE-NDF30"
+                                }, {
+                                    "name": "SMPTE-DF29.97",
+                                    "value": "SMPTE-DF29.97"
+                                }, {
+                                    "name": "SMPTE-NDF29.97",
+                                    "value": "SMPTE-NDF29.97"
+                                }, {
+                                    "name": "TIME",
+                                    "value": "TIME"
+                                }, {
+                                    "name": "TCF",
+                                    "value": "TCF"
+                                }]
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "ADMID",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ADMID",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "CONTENTIDS",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "CONTENTIDS",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "ORDER",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ORDER",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "ORDERLABEL",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ORDERLABEL",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "LABEL",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "LABEL",
+                                "required": false
+                            }
+                        }],
+                        "meta": {
+                            "minOccurs": 1,
+                            "maxOccurs": 1
+                        }
+                    }, {
+                        "name": "seq",
+                        "key": "128218a4-21dc-495b-83bb-c1be68cd7ae1",
+                        "path": "mets/structMap/div/fptr/par/seq/",
+                        "children": [{
+                            "name": "area",
+                            "key": "0ebfd0a5-3808-4b9f-9787-a9bf784e1696",
+                            "path": "mets/structMap/div/fptr/par/seq/area/",
+                            "children": [],
+                            "attributes": [],
+                            "meta": {
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }
+                        }, {
+                            "name": "par",
+                            "key": "8716d83c-5273-4c83-8838-25121ac1c345",
+                            "path": "mets/structMap/div/fptr/par/seq/par/",
+                            "children": [],
+                            "attributes": [],
+                            "meta": {
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }
+                        }],
+                        "attributes": [{
+                            "type": "input",
+                            "key": "ID",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ID",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "ORDER",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ORDER",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "ORDERLABEL",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "ORDERLABEL",
+                                "required": false
+                            }
+                        }, {
+                            "type": "input",
+                            "key": "LABEL",
+                            "templateOptions": {
+                                "type": "text",
+                                "label": "LABEL",
+                                "required": false
+                            }
+                        }],
+                        "meta": {
+                            "minOccurs": 1,
+                            "maxOccurs": 1
+                        }
+                    }],
+                    "attributes": [{
+                        "type": "input",
+                        "key": "ID",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "ID",
+                            "required": false
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "ORDER",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "ORDER",
+                            "required": false
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "ORDERLABEL",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "ORDERLABEL",
+                            "required": false
+                        }
+                    }, {
+                        "type": "input",
+                        "key": "LABEL",
+                        "templateOptions": {
+                            "type": "text",
+                            "label": "LABEL",
+                            "required": false
+                        }
+                    }],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": 1
+                    }
+                }, {
+                    "name": "seq",
+                    "key": "b7e9abad-96dc-490d-94ab-c96fb354bf9f",
+                    "path": "mets/structMap/div/fptr/seq/",
+                    "children": [],
+                    "attributes": [],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": 1
+                    }
+                }, {
+                    "name": "area",
+                    "key": "8b07c688-c812-4ce0-b498-fbffc123cfce",
+                    "path": "mets/structMap/div/fptr/area/",
+                    "children": [],
+                    "attributes": [],
+                    "meta": {
+                        "minOccurs": 1,
+                        "maxOccurs": 1
+                    }
+                }],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "FILEID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "FILEID",
+                        "required": true
+                    }
+                }, {
+                    "type": "input",
+                    "key": "CONTENTIDS",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "CONTENTIDS",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }, {
+                "name": "div",
+                "key": "53b48eb3-9753-4eee-b3ae-db2030f6359b",
+                "path": "mets/structMap/div/div/",
+                "children": [],
+                "attributes": [],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "ORDER",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ORDER",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "ORDERLABEL",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ORDERLABEL",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "LABEL",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LABEL",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "DMDID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "DMDID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "ADMID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ADMID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "TYPE",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "TYPE",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "CONTENTIDS",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "CONTENTIDS",
+                    "required": false
+                }
+            }],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": 1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "TYPE",
+            "templateOptions": {
+                "type": "text",
+                "label": "TYPE",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "LABEL",
+            "templateOptions": {
+                "type": "text",
+                "label": "LABEL",
+                "required": false
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": -1
+        }
+    }, {
+        "name": "structLink",
+        "key": "ccb8af22-a5c6-444c-a083-5f9b40fd41c0",
+        "path": "mets/structLink/",
+        "children": [{
+            "name": "smLink",
+            "key": "955e348b-25d0-4e58-9031-b63f0c5e48e6",
+            "path": "mets/structLink/smLink/",
+            "children": [],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": 1
+            }
+        }, {
+            "name": "smLinkGrp",
+            "key": "d4c6a39c-af63-416e-9299-ac84d69e6d49",
+            "path": "mets/structLink/smLinkGrp/",
+            "children": [{
+                "name": "smLocatorLink",
+                "key": "1b0d65fa-7db7-43fc-bd6c-e41426c863f6",
+                "path": "mets/structLink/smLinkGrp/smLocatorLink/0/",
+                "children": [],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 2,
+                    "maxOccurs": -1
+                }
+            }, {
+                "name": "smLocatorLink",
+                "key": "0ea48b33-91ef-4f13-9e3f-0bcc8c4a2c22",
+                "path": "mets/structLink/smLinkGrp/smLocatorLink/1/",
+                "children": [],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 2,
+                    "maxOccurs": -1
+                }
+            }, {
+                "name": "smArcLink",
+                "key": "13ffe43e-8b64-46a0-8175-d7c25a8ae0d4",
+                "path": "mets/structLink/smLinkGrp/smArcLink/",
+                "children": [],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "ARCTYPE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ARCTYPE",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "ADMID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ADMID",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": -1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "key": "ARCLINKORDER",
+                "type": "select",
+                "templateOptions": {
+                    "label": "ARCLINKORDER",
+                    "required": false,
+                    "options": [{
+                        "name": " -- None -- ",
+                        "value": ""
+                    }, {
+                        "name": "ordered",
+                        "value": "ordered"
+                    }, {
+                        "name": "unordered",
+                        "value": "unordered"
+                    }]
+                }
+            }],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": 1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": false
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": 1
+        }
+    }, {
+        "name": "behaviorSec",
+        "key": "d44b92d6-f533-4666-8c15-5cd17df3aeed",
+        "path": "mets/behaviorSec/",
+        "children": [{
+            "name": "behaviorSec",
+            "key": "3ca2b66b-6260-4870-ad0d-ff66ed8ff882",
+            "path": "mets/behaviorSec/behaviorSec/",
+            "children": [],
+            "attributes": [],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }, {
+            "name": "behavior",
+            "key": "e0699caa-fa90-4a0f-ad52-b377e61476fa",
+            "path": "mets/behaviorSec/behavior/",
+            "children": [{
+                "name": "interfaceDef",
+                "key": "ab32e80c-9231-42e5-83e1-f7c0b4523689",
+                "path": "mets/behaviorSec/behavior/interfaceDef/",
+                "children": [],
+                "attributes": [{
+                    "type": "input",
+                    "key": "ID",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "ID",
+                        "required": false
+                    }
+                }, {
+                    "type": "input",
+                    "key": "LABEL",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "LABEL",
+                        "required": false
+                    }
+                }, {
+                    "key": "LOCTYPE",
+                    "type": "select",
+                    "templateOptions": {
+                        "label": "LOCTYPE",
+                        "required": true,
+                        "options": [{
+                            "name": "URN",
+                            "value": "URN"
+                        }, {
+                            "name": "URL",
+                            "value": "URL"
+                        }, {
+                            "name": "HANDLE",
+                            "value": "HANDLE"
+                        }, {
+                            "name": "OTHER",
+                            "value": "OTHER"
+                        }]
+                    }
+                }, {
+                    "type": "input",
+                    "key": "OTHERLOCTYPE",
+                    "templateOptions": {
+                        "type": "text",
+                        "label": "OTHERLOCTYPE",
+                        "required": false
+                    }
+                }],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                }
+            }, {
+                "name": "mechanism",
+                "key": "56b39ea5-7602-495c-9c40-8a9441dbee44",
+                "path": "mets/behaviorSec/behavior/mechanism/",
+                "children": [],
+                "attributes": [],
+                "meta": {
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                }
+            }],
+            "attributes": [{
+                "type": "input",
+                "key": "ID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "STRUCTID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "STRUCTID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "BTYPE",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "BTYPE",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "CREATED",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "CREATED",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "LABEL",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LABEL",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "GROUPID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "GROUPID",
+                    "required": false
+                }
+            }, {
+                "type": "input",
+                "key": "ADMID",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ADMID",
+                    "required": false
+                }
+            }],
+            "meta": {
+                "minOccurs": 1,
+                "maxOccurs": -1
+            }
+        }],
+        "attributes": [{
+            "type": "input",
+            "key": "ID",
+            "templateOptions": {
+                "type": "text",
+                "label": "ID",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "CREATED",
+            "templateOptions": {
+                "type": "text",
+                "label": "CREATED",
+                "required": false
+            }
+        }, {
+            "type": "input",
+            "key": "LABEL",
+            "templateOptions": {
+                "type": "text",
+                "label": "LABEL",
+                "required": false
+            }
+        }],
+        "meta": {
+            "minOccurs": 1,
+            "maxOccurs": -1
+        }
+    }],
+    "attributes": [{
+        "type": "input",
+        "key": "ID",
+        "templateOptions": {
+            "type": "text",
+            "label": "ID",
+            "required": false
+        }
+    }, {
+        "type": "input",
+        "key": "OBJID",
+        "templateOptions": {
+            "type": "text",
+            "label": "OBJID",
+            "required": true
+        }
+    }, {
+        "type": "input",
+        "key": "LABEL",
+        "templateOptions": {
+            "type": "text",
+            "label": "LABEL",
+            "required": false
+        }
+    }, {
+        "key": "TYPE",
+        "type": "select",
+        "templateOptions": {
+            "label": "TYPE",
+            "required": true,
+            "options": [{
+                "name": "ERMS",
+                "value": "ERMS"
+            }, {
+                "name": "Personnel",
+                "value": "Personnel"
+            }, {
+                "name": "Medical record",
+                "value": "Medical record"
+            }, {
+                "name": "Economics",
+                "value": "Economics"
+            }, {
+                "name": "Databases",
+                "value": "Databases"
+            }, {
+                "name": "Webpages",
+                "value": "Webpages"
+            }, {
+                "name": "GIS",
+                "value": "GIS"
+            }, {
+                "name": "No specification",
+                "value": "No specification"
+            }, {
+                "name": "AIC",
+                "value": "AIC"
+            }, {
+                "name": "Publication",
+                "value": "Publication"
+            }, {
+                "name": "Archival information",
+                "value": "Archival information"
+            }, {
+                "name": "Unstructured",
+                "value": "Unstructured"
+            }, {
+                "name": "Single records",
+                "value": "Single records"
+            }]
+        }
+    }, {
+        "type": "input",
+        "key": "PROFILE",
+        "templateOptions": {
+            "type": "text",
+            "label": "PROFILE",
+            "required": true
+        }
+    }],
+    "meta": {}
+}
