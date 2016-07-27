@@ -107,7 +107,17 @@ def generateElement(structure, elements):
         for child in structure['children']:
             e = generateElement(child, elements)
             if e is not None:
-                el[child['name']] = e
+                if child['name'] in el:
+                    # cerate array
+                    if isinstance(el[child['name']], list):
+                        el[child['name']].append(e)
+                    else:
+                        temp = el[child['name']]
+                        el[child['name']] = []
+                        el[child['name']].append(temp)
+                        el[child['name']].append(e)
+                else:
+                    el[child['name']] = e
         return el
     else:
         return None
