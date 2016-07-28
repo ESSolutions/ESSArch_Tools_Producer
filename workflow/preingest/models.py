@@ -104,12 +104,14 @@ class ProcessStep(Process):
         return taskobj
 
     def run(self):
-        for s in self.child_steps.all():
-            s.run()
 
-        chain(self._create_task(t.name).si(
+        chain(s.run() for s in self.child_steps.all())()
+
+        c = chain(self._create_task(t.name).si(
             taskobj=t
-        ) for t in self.tasks.all())()
+        ) for t in self.tasks.all())
+
+        return c if self.parent_step else c()
 
     def undo(self, only_failed=False):
         tasks = self.tasks.all()
