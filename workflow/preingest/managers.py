@@ -22,14 +22,15 @@ class StepManager(models.Manager):
         newname = name.replace(".", "/").replace("/json", ".json")
 
         with open(newname) as f:
-            data = f.read()
-            tasks = json.loads(data).get("tasks", [])
-            steps = json.loads(data).get("steps", [])
-
+            data = json.loads(f.read())
+            tasks = data.get("tasks", [])
+            steps = data.get("steps", [])
+            waitForParams = data.get("waitForParams", False)
 
         step = self.create(
             name=name,
-            task_set=[d['name'] for d in tasks]
+            task_set=[d['name'] for d in tasks],
+            waitForParams=waitForParams
         )
 
         for s in steps:

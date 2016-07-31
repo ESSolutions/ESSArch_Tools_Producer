@@ -35,6 +35,24 @@ def run_step(request, name, *args, **kwargs):
 
     return HttpResponse(template.render(context, request))
 
+def continue_step(request, step_id, *args, **kwargs):
+
+    step = ProcessStep.objects.get(id=step_id)
+    task = step.tasks.first()
+    step.waitForParams = False
+
+    if request.method == "POST":
+        for k, v in request.POST.iteritems():
+            if k in task.params:
+                task.params[k] = v
+
+        task.save()
+
+    step.save()
+    step.parent_step.run(continuing=True)
+
+    return redirect('history_detail', step_id=step.parent_step.id)
+
 def run_task(request, name, *args, **kwargs):
     import importlib
     [module, task] = name.rsplit('.', 1)
