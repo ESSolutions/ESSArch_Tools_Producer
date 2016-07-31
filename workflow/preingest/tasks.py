@@ -80,10 +80,9 @@ class First(DBTask):
         self.set_progress(1, total=1)
 
 class Second(DBTask):
-    def run(self, foo=None, file=None):
+    def run(self, foo=None):
         print "run task with name {} and id {}".format(self.__name__, self.request.id)
         self.set_progress(1, total=2)
-        print open(file).read()
         self.set_progress(2, total=2)
         print "completed task with name {} and id {}".format(self.__name__, self.request.id)
         return foo
