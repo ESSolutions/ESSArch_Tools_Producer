@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from picklefield.fields import PickledObjectField
 
 from preingest.managers import StepManager
+from preingest.util import sliceUntilAttr
 
 
 class ArchiveObject(models.Model):
@@ -74,6 +75,7 @@ class ProcessStep(Process):
     time_created = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
+    waitForParams = models.BooleanField(default=False)
 
     objects = StepManager()
 
@@ -103,9 +105,14 @@ class ProcessStep(Process):
         taskobj.save()
         return taskobj
 
-    def run(self):
+    def run(self, continuing=False):
+        child_steps = self.child_steps.all()
 
-        chain(s.run() for s in self.child_steps.all())()
+        if continuing:
+            child_steps = [s for s in self.child_steps.all() if s.progress() < 100]
+
+        child_steps = sliceUntilAttr(child_steps, "waitForParams", True)
+        chain(s.run() for s in child_steps)()
 
         c = chain(self._create_task(t.name).si(
             taskobj=t
@@ -194,6 +201,7 @@ class ProcessTask(Process):
 
     class Meta:
         db_table = 'ProcessTask'
+        ordering = ('processstep_pos',)
 
         def __unicode__(self):
             return '%s - %s' % (self.name, self.id)

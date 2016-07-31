@@ -27,21 +27,36 @@
         </thead>
         <tbody>
             {% for s in step.child_steps.all %}
-            <tr class="{{ s.status }}">
-                <td>
-                    <a href="/preingest/history/{{ s.id }}">
-                        {{ s.id }}
-                    </a>
-                </td>
-                <td>{{ s.name }}</td>
-                <td>{{ s.progress }}</td>
-                <td>{{ s.status }}</td>
-                <td>{{ s.time_created }}</td>
-                <td>{{ s.time_done }}</td>
-                <td>{{ s.undone }}</td>
-                <td>{{ s.undo_type }}</td>
-                <td>{{ s.retried }}</td>
-            </tr>
+                {% if s.waitForParams %}
+                    <tr class="{{ s.status }}">
+                        <td colspan="100%">
+                            <h4>Params for next step</h4>
+                            <form method="POST" action="/preingest/continue_step/{{ s.id }}/">
+                            {% csrf_token %}
+                            {% for k, v in s.tasks.first.params.iteritems %}
+                                <label for="id_{{ k }}">{{ k }}</label>
+                                <input type="text" name="{{ k }}" value="{{ v }}" id="id_{{ k }}"/>
+                            {% endfor %}
+                            <input type="submit" value="Submit and continue"/>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr class="{{ s.status }}">
+                    <td>
+                        <a href="/preingest/history/{{ s.id }}">
+                            {{ s.id }}
+                        </a>
+                    </td>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.progress }}</td>
+                    <td>{{ s.status }}</td>
+                    <td>{{ s.time_created }}</td>
+                    <td>{{ s.time_done }}</td>
+                    <td>{{ s.undone }}</td>
+                    <td>{{ s.undo_type }}</td>
+                    <td>{{ s.retried }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
