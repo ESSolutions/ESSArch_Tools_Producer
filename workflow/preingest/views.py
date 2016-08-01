@@ -23,7 +23,7 @@ def index(request):
 
 def run_step(request, name, *args, **kwargs):
 
-    step = ProcessStep.objects.create_step(name)
+    step = ProcessStep.objects.create_step_from_file(name)
     step.save()
     step.run()
 
