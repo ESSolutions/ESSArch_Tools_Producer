@@ -37,7 +37,10 @@ class CreatePhysicalModel(DBTask):
             root: The root dictionary to be used
         """
 
+        root = str(root)
+
         for k, v in structure.iteritems():
+            k = str(k)
             dirname = os.path.join(root, k)
             os.makedirs(dirname)
 
@@ -47,11 +50,14 @@ class CreatePhysicalModel(DBTask):
         self.set_progress(1, total=1)
 
     def undo(self, structure={}, root=""):
+        root = str(root)
+
         if root:
             shutil.rmtree(root)
             return
 
         for k, v in structure.iteritems():
+            k = str(k)
             dirname = os.path.join(root, k)
             shutil.rmtree(dirname)
 
@@ -67,6 +73,51 @@ class GenerateXML(DBTask):
         if key in data:
             for f, _ in data[key].iteritems():
                 os.remove(f)
+
+class UploadFile(DBTask):
+    def run(self, src_file=None, dst_file=None):
+        self.set_progress(1, total=1)
+
+    def undo(self, src_file=None, dst_file=None):
+        pass
+
+class CreateIPEventsFile(DBTask):
+    def run(self, events=[]):
+        for event in events:
+            print "Adding event {}".format(event)
+
+        self.set_progress(1, total=1)
+
+    def undo(self):
+        pass
+
+class AddPremisToMetsAmdSec(DBTask):
+    def run(self, data={}):
+        self.set_progress(1, total=1)
+
+    def undo(self, data={}):
+        pass
+
+class ValidateMetadata(DBTask):
+    def run(self, metadata_file=None, schema_file=None):
+        self.set_progress(1, total=1)
+
+    def undo(self, metadata_file=None, schema_file=None):
+        pass
+
+class ValidateLogicalPhysical(DBTask):
+    def run(self, structure={}):
+        self.set_progress(1, total=1)
+
+    def undo(self, structure={}):
+        pass
+
+class CreateTAR(DBTask):
+    def run(self):
+        self.set_progress(1, total=1)
+
+    def undo(self):
+        pass
 
 class First(DBTask):
     def run(self, foo=None):
