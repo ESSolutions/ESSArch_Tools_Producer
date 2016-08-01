@@ -9,23 +9,15 @@ from django.db import models
 
 
 class StepManager(models.Manager):
-    def create_step(self, name):
+    def create_step(self, name, tasks=[], steps=[], waitForParams=False):
         """
-        Creates a process step with the given tasks
+        Creates a process step with the given name, tasks and steps
 
         Args:
             tasks: A dict of tasks containing the name and params of the task
         """
 
         from preingest.models import ProcessStep, ProcessTask
-
-        newname = name.replace(".", "/").replace("/json", ".json")
-
-        with open(newname) as f:
-            data = json.loads(f.read())
-            tasks = data.get("tasks", [])
-            steps = data.get("steps", [])
-            waitForParams = data.get("waitForParams", False)
 
         step = self.create(
             name=name,
@@ -53,6 +45,18 @@ class StepManager(models.Manager):
             step.tasks.add(task, bulk=False)
 
         return step
+
+    def create_step_from_file(self, name):
+        newname = name.replace(".", "/").replace("/json", ".json")
+
+        with open(newname) as f:
+            data = json.loads(f.read())
+            tasks = data.get("tasks", [])
+            steps = data.get("steps", [])
+            waitForParams = data.get("waitForParams", False)
+
+        return self.create_step(name, tasks=tasks, steps=steps, waitForParams=waitForParams)
+
 
 class TaskManager(models.Manager):
     pass
