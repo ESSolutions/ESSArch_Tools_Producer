@@ -31,7 +31,7 @@ class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
         model = ProcessTask
 
     result = PickledObjectField(allow_null=True, default=None)
-    params = serializers.JSONField()
+    params = serializers.JSONField(binary=True)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
