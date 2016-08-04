@@ -70,7 +70,6 @@ class ProcessStep(Process):
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
     parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
-    task_set = PickledObjectField(default=[])
     status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
     time_created = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
@@ -104,6 +103,9 @@ class ProcessStep(Process):
 
         taskobj.save()
         return taskobj
+
+    def task_set(self):
+        return [t["name"] for t in self.tasks.order_by("name").values("name").distinct()]
 
     def run(self, continuing=False):
         child_steps = self.child_steps.all()
@@ -154,8 +156,11 @@ class ProcessStep(Process):
         child_steps = self.child_steps.all()
 
         if child_steps:
-            progress = sum([c.progress() for c in child_steps])
-            return progress / len(child_steps)
+            try:
+                progress = sum([c.progress() for c in child_steps])
+                return progress / len(child_steps)
+            except:
+                return 0
 
         tasks = self.tasks.filter(
             undone=False,
@@ -167,8 +172,10 @@ class ProcessStep(Process):
             return 0
 
         progress = tasks.aggregate(Sum("progress"))["progress__sum"]
-
-        return progress / len(self.task_set)
+        try:
+            return progress / len(self.task_set())
+        except:
+            return 0
 
 
     class Meta:
@@ -195,7 +202,7 @@ class ProcessTask(Process):
     params = PickledObjectField(null=True)
     time_started = models.DateTimeField(_('started at'), null=True)
     time_done = models.DateTimeField(_('done at'), null=True)
-    traceback = models.TextField(_('traceback'), blank=True, null=True)
+    traceback = models.TextField(_('traceback'), blank=True, null=True, editable=False)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = PickledObjectField(null=True, default=None, editable=False)
     processstep = models.ForeignKey('ProcessStep', related_name='tasks', on_delete=models.CASCADE)
