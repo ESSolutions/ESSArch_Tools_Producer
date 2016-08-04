@@ -1,11 +1,20 @@
+import os
+import uuid
+
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import loader
 
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 
+from preingest.forms import CreateSIPForm, PrepareSIPForm
 from preingest.models import ProcessStep, ProcessTask, Step, Task
-from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer
+from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer, UserSerializer, GroupSerializer
+
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -101,3 +110,38 @@ def retry_step(request, processstep_id, *args, **kwargs):
     step = ProcessStep.objects.get(id=processstep_id)
     step.retry()
     return redirect('history_detail', step_id=processstep_id)
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class ProcessStepViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows steps to be viewed or edited.
+    """
+    queryset = ProcessStep.objects.all()
+    serializer_class = ProcessStepSerializer
+
+    @detail_route()
+    def run(self, request, pk=None):
+        self.get_object().run()
+        return Response({'status': 'running step'})
+
+class ProcessTaskViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows tasks to be viewed or edited.
+    """
+    queryset = ProcessTask.objects.all()
+    serializer_class = ProcessTaskSerializer
