@@ -18,17 +18,3 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 import django
 django.setup()
-
-from preingest.models import Task
-from celery import current_app
-
-current_app.loader.import_default_modules()
-
-ignored = ["preingest.dbtask.DBTask"]
-tasks = [t for t in current_app.tasks.keys()
-         if not t.startswith("celery.") and t not in ignored]
-
-Task.objects.all().delete()
-
-for t in tasks:
-    Task(name=t).save()
