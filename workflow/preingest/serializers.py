@@ -11,10 +11,6 @@ class PickledObjectField(serializers.Field):
     def to_internal_value(self, data):
         return data
 
-class ProfileSerializer(serializers.Serializer):
-    organization = serializers.CharField(max_length=200)
-    created = serializers.DateTimeField()
-
 class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProcessStep
@@ -25,8 +21,6 @@ class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
-    profile = ProfileSerializer()
-
     class Meta:
         model = ProcessTask
 
