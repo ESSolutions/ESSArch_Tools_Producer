@@ -224,3 +224,74 @@ class StepTask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     step = models.ForeignKey(Step, on_delete=models.CASCADE)
     order = models.IntegerField()
+
+class Nationality(models.Model):
+    name = models.CharField(primary_key=True, max_length=128)
+    shortname = models.CharField(max_length=2)
+
+    class Meta:
+        db_table = 'Nationality'
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.name, self.shortname)
+
+class SubmissionAgreement(models.Model):
+    name = models.CharField(primary_key=True, max_length=128)
+
+    class Meta:
+        db_table = 'SubmissionAgreement'
+
+    def __unicode__(self):
+        return '%s' % (self.name)
+
+class Profile(models.Model):
+    UNSPECIFIED = "Unspecified"
+    COMPLETE = "Complete"
+
+    ProfileState_CHOICES = (
+        (0, UNSPECIFIED),
+        (10, COMPLETE)
+    )
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    state = models.CharField(
+            max_length=255,
+            choices=ProfileState_CHOICES,
+            default=UNSPECIFIED
+    )
+
+    submissionAgreement = models.ForeignKey(SubmissionAgreement)
+    nationality = models.ForeignKey(Nationality)
+
+    archivistOrganisation = models.CharField(max_length=255)
+    archivistOrganisationIdentity = models.CharField(max_length=255)
+    archivistOrganisationSoftware = models.CharField(max_length=255)
+    archivistOrganisationSoftwareIdentity = models.CharField(max_length=255)
+    creatorOrganisation = models.CharField(max_length=255)
+    creatorOrganisationIdentity = models.CharField(max_length=255)
+    creatorOrganisationSoftware = models.CharField(max_length=255)
+    creatorOrganisationSoftwareIdentity = models.CharField(max_length=255)
+    producerOrganisation = models.CharField(max_length=255)
+    producerIndividual = models.CharField(max_length=255)
+    producerOrganisationSoftware = models.CharField(max_length=255)
+    producerOrganisationSoftwareIdentity = models.CharField(max_length=255)
+    ipOwnerOrganisation = models.CharField(max_length=255)
+    ipOwnerIndividual = models.CharField(max_length=255)
+    ipOwnerOrganisationSoftware = models.CharField(max_length=255)
+    ipOwnerOrganisationSoftwareIdentity = models.CharField(max_length=255)
+    editorOrganisation = models.CharField(max_length=255)
+    editorIndividual = models.CharField(max_length=255)
+    editorOrganisationSoftware = models.CharField(max_length=255)
+    editorOrganisationSoftwareIdentity = models.CharField(max_length=255)
+    preservationOrganisation = models.CharField(max_length=255)
+    preservationIndividual = models.CharField(max_length=255)
+    preservationOrganisationSoftware = models.CharField(max_length=255)
+    preservationOrganisationSoftwareIdentity = models.CharField(max_length=255)
+
+
+    class Meta:
+        db_table = 'Profile'
+
+    def __unicode__(self):
+        return '%s - %s' % (self.name, self.id)
