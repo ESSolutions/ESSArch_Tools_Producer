@@ -1,0 +1,200 @@
+body {
+    background-color: #e6e6ff;
+    margin: 0px auto;
+    width: 1440px;
+}
+.body-wrapper {
+    display: flex;
+    flex-direction: column;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    border-style: solid;
+    border-radius: 1px;
+    background-color: white;
+}
+.logo-search-user-admin-wrapper {
+    display: flex;
+    display: -webkit-flex
+    width: 100%;
+    height: 50px;
+}
+.logo {
+    width: 65%;
+    height: 100%;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.logo h2 {
+    font-size: 28pt;
+    line-height: 0;
+}
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+    width: 20%;
+    height: 100%;
+}
+.search > .search-input {
+    border-radius: 10px;
+    margin-right: 5px;
+}
+.user-admin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+    width: 15%;
+    height: 100%;
+    float: right;
+}
+.user-dropdown {
+    display: flex;
+    flex-direction: row;
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+
+    cursor: pointer;
+    -webkit-user-select: none;
+}
+.user-dropdown > h4 {
+    margin-right: 5px;
+}
+.user-dropdown > .glyphicon-user {
+    font-size: 30px;
+}
+.user-dropdown > .glyphicon-triangle-bottom {
+    font-size: 10px;
+}
+.menu-task-wrapper {
+    display: flex;
+    flex-direction: inline;
+    display: -webkit-flex;
+    -webkit-flex-direction: inline;
+    width: 100%;
+    height: 45px;
+}
+.menu {
+    display: inline-block;
+    width: 85%;
+    height: 100%;
+}
+.tasks-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+    width: 15%;
+    height: 100%;
+    margin: auto;
+}
+.tasks-icons > .glyphicon {
+    margin-right: 2px;
+    margin-left: 2px;
+    cursor: pointer;
+}
+.shortcut-nav-calendar-wrapper {
+    display: flex;
+    flex-direction: column;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    width: 20%;
+    margin: 5px;
+    height: 1000px;
+}
+.shortcut-list {
+    width: 100%;
+    float: left;
+}
+.shortcut-list button {
+    border-radius: 20px;
+}
+.navigation {
+    padding: 5px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #666;
+    height: 60%;
+    width: 100%;
+    margin-top: 5px;
+}
+.calendar {
+    display: flex;
+    flex-direction: column;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    height: 40%;
+    width: 100%;
+    margin-top: 10px;
+    border-style: solid;
+    border-color: #AAA;
+
+
+}
+.datepicker {
+    width: 100px;
+    position: absolute;
+}
+.datepicker .form-control {
+    height: 15px;
+    padding: 15px;
+}
+
+.datepicker .btn {
+    padding: 8px 8px;
+}
+.nav-dynamic-wrapper {
+    display: flex;
+    flex-direction: inline;
+    display: -webkit-flex;
+    -webkit-flex-direction: inline;
+    height: 1000px;
+    width: 100%;
+}
+.dynamic-part {
+    height: 100%;
+    width: 80%;
+}
+/*Shared styling among views*/
+.sub-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    height: 48px;
+}
+.sub-menu > button {
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.glyphicon.glyphicon-refresh {
+    font-size: 20px;
+}
+.glyphicon.glyphicon-pencil {
+    font-size: 20px;
+}
+.glyphicon.glyphicon-print {
+    font-size: 20px;
+}
+.glyphicon.glyphicon-cog {
+    font-size: 20px;
+}
+.glyphicon.glyphicon-envelope {
+    font-size: 20px;
+}
+.glyphicon.glyphicon-question-sign {
+    font-size: 20px;
+}
