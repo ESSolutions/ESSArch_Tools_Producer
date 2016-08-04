@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from picklefield.fields import PickledObjectField
 
 from preingest.managers import StepManager
-from preingest.util import sliceUntilAttr
+from preingest.util import available_tasks, sliceUntilAttr
 
 
 class ArchiveObject(models.Model):
@@ -27,7 +27,6 @@ class Process(models.Model):
         abstract = True
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=256, blank=True)
     result = PickledObjectField(null=True, default=None, editable=False)
 
 
@@ -67,6 +66,7 @@ class ProcessStep(Process):
         (9999, "Deleted"),
     )
 
+    name = models.CharField(max_length=256, blank=True)
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
     parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
@@ -178,10 +178,17 @@ class ProcessStep(Process):
             return '%s - %s - archiveobject:%s' % (self.name, self.id, self.archiveobject.ObjectUUID)
 
 class ProcessTask(Process):
+    available = available_tasks()
+    TASK_CHOICES = zip(
+        ["preingest.tasks."+t for t in available],
+        available
+    )
+
     TASK_STATE_CHOICES = zip(celery_states.ALL_STATES,
                              celery_states.ALL_STATES)
 
     task_id = models.CharField(_('task id'), max_length=255, unique=False)
+    name = models.CharField(max_length=255, choices=TASK_CHOICES)
     status = models.CharField(_('state'), max_length=50,
                               default=celery_states.PENDING,
                               choices=TASK_STATE_CHOICES)
