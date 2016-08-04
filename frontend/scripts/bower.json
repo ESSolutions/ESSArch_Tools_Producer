@@ -1,0 +1,27 @@
+{
+  "name": "essarch_test",
+  "homepage": "https://github.com/pettanj/essarch_test",
+  "authors": [
+    "petrus <petrus.jonsson@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-formly-templates-bootstrap": "^6.3.2",
+    "angular-formly": "^8.3.0",
+    "angular-smart-table": "^2.1.8",
+    "angular-route": "1.5.7",
+    "angular-ui-tree": "^2.17.0",
+    "angular-tree-control": "^0.2.27",
+    "angular": "1.5.7",
+    "bootstrap": "^3.3.6"
+  }
+}

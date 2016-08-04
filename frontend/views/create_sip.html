@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <link rel="stylesheet" type"text/css" href="scripts/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/create_sip.css">
+        <link rel="stylesheet" type="text/css" href="styles/index.css">
+        <!--Angular Scripts -->
+        <!--App -->
+        <!--Controllers-->
+    </head>
+    <body>
+        <div>
+            <div class="sub-menu">
+                <button ng-click="selectedPage=pages[0];" type="button" class="btn-primary btn-lg">Info page</button>
+                <button ng-click="selectedPage=pages[1];" type="button" class="btn-primary btn-lg">Prepare IP</button>
+                <button ng-click="selectedPage=pages[2];" type="button" class="btn-primary btn-lg">Data selection</button>
+                <button ng-click="selectedPage=pages[3];" type="button" class="btn-primary btn-lg">Data extraction</button>
+                <button ng-click="selectedPage=pages[4];" type="button" class="btn-primary btn-lg">Manage Data</button>
+                <button ng-click="selectedPage=pages[5];" type="button" class="btn-primary btn-lg">IP Approval</button>
+                <button ng-click="selectedPage=pages[6];" type="button" class="btn-primary btn-lg">IP Management</button>
+            </div>
+            <div class="content-wrapper">
+                <div class="list-view">
+                    <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="label" class="column-label">Label</th>
+                                <th st-sort="content" class="column-label">Content</th>
+                                <th st-sort="responsible" class="column-label">Responsible</th>
+                                <th st-sort="date" class="column-label">Date</th>
+                                <th st-sort="state" class="column-label">State</th>
+                                <th st-sort="status" class="column-label">Status</th>
+                            </tr>
+                            <tr>
+                                <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td>{{row.label}}</td>
+                                <td>{{row.content}}</td>
+                                <td>{{row.responsible}}</td>
+                                <td>{{row.date}}</td>
+                                <td>{{row.state}}</td>
+                                <td>
+                                    <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="list-view-buttons">
+                        <button type="button" ng-click="toggleSelectView()" class="btn btn-default">Show/hide select view</button>
+                        <button ng-click="toggleEditView()" type="button" class="btn btn-default">Show/hide edit view</button>
+                        <button type="button" ng-click="toggleSubSelectView()" class="btn btn-default">Show/hide sub select view</button>
+                        <button type="button" ng-click="toggleEventlogView()" class="btn btn-default">Show/hide sub eventlog view</button>
+                    </div>
+                </div>
+                <div ng-show="select" class="select-view">
+                    <h1>Select view</h1>
+                </div>
+                <div ng-show="subSelect" class="sub-select-view">
+                    <h1>Sub Select view</h1>
+                </div>
+                <div ng-show="edit" ng-controller="CreateSipCtrl" id="edit-veiw" class="edit-view" >
+                    <h1>Edit view</h1>
+                    <form ng-submit="vm.onSubmit()" novalidate>
+                        <formly-form model="vm.archivistOrganisationModel" fields="vm.archivistOrganisationFields" options="vm.options">
+                        </formly-form>
+                        <formly-form model="vm.creatorOrganisationModel" fields="vm.creatorOrganisationFields">
+                        </formly-form>
+                         <formly-form model="vm.producerOrganisationModel" fields="vm.producerOrganisationFields">
+                        </formly-form>
+                         <formly-form model="vm.ipOwnerOrganisationModel" fields="vm.ipOwnerOrganisationFields">
+                        </formly-form>
+                         <formly-form model="vm.editorOrganisationModel" fields="vm.editorOrganisationFields">
+                        </formly-form>
+                         <formly-form model="vm.preservationOrganisationModel" fields="vm.preservationOrganisationFields">
+                        </formly-form>
+                        <p>{{vm.archivistOrganisation}}</p>
+                        <button type="submit" class="btn btn-info submit-button">Submit</button>
+                    </form>
+                </div>
+                <div ng-show="eventlog" class="eventlog-view">
+                    <h1>Eventlog and submit buttons</h1>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
