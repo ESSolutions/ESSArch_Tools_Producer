@@ -1,6 +1,15 @@
-angular.module('myApp').controller('CreateSipCtrl', function ($scope, $location, $sce){
+angular.module('myApp').controller('CreateSipCtrl', function ($scope, $location, $sce, $http){
     var vm = this;
     // List view
+    $http({
+            method: 'GET',
+            url: 'http://localhost:8000/steps/',
+            })
+    .then(function successCallback(response) {
+        alert(JSON.stringify(response.data));
+    }), function errorCallback(){
+        alert('error');
+    };
     $scope.rowCollection = [
         {label: 'Bygglov 2012', content: 'ERMS', responsible: 'Kalle Karlsson', date: '2013-01-14', state: 'Submitted', status: 100},
         {label: 'Bygglov 2013', content: 'ERMS', responsible: 'Eva Rööse', date: '2013-12-30', state: 'Created', status: 75},
@@ -271,17 +280,25 @@ vm.archivistOrganisationFields = [
     // prints stringified JSON representation of entered fields
     // will probably save the data later on
     vm.onSubmit = function() {
-        alert(JSON.stringify(vm.archivistOrganisationModel) + " "
-                + JSON.stringify(vm.creatorOrganisationModel) + " "
-                + JSON.stringify(vm.producerOrganisationModel) + " "
-                + JSON.stringify(vm.ipOwnerOrganisationModel) + " "
-                + JSON.stringify(vm.editorOrganisationModel) + " "
-                + JSON.stringify(vm.preservationOrganisationModel));
-    }
+        var sendData ={"params": "{\"foo\": 123}", "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 0, "processstep": "http://localhost:8000/steps/5865fcdc-5d86-49cc-8af1-a083cb110928/", "task_id": "123"};
+            //vm.archivistOrganisationModel.concat(vm.creatorOrganisationModel).concat(vm.producerOrganisationModel).concat(vm.ipOwnerOrganisationModel).concat(vm.editorOrganisationModel).concat(vm.preservationOrganisationModel);
+        var uri = 'http://localhost:8000/tasks/';
+        $http({
+            method: 'POST',
+            url: uri,
+            data: sendData,
+        })
+        .success(function (response) {
+                alert('success');
+            })
+        .error(function (response) {
+            alert('error');
+        });
+    };
 
-    // Page selection
-    //      &
-    // ng-show code
+// Page selection
+//      &
+// ng-show code
 
     $scope.select = false;
     $scope.subSelect = false;
