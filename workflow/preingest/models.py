@@ -31,14 +31,6 @@ class Process(models.Model):
 
 
 class ProcessStep(Process):
-    StatusProcess_CHOICES = (
-        (0, 'Pending'),
-        (2, 'Initiate'),
-        (5, 'Progress'),
-        (20, 'Success'),
-        (100, 'FAIL'),
-    )
-
     Type_CHOICES = (
         (0, "Receive new object"),
         (5, "The object is ready to remodel"),
@@ -70,7 +62,6 @@ class ProcessStep(Process):
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
     parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
-    status = models.IntegerField(blank=True, default=0, choices=Type_CHOICES)
     time_created = models.DateTimeField(auto_now_add=True)
     archiveobject = models.ForeignKey('ArchiveObject', to_field='ObjectUUID', blank=True, null=True)
     hidden = models.BooleanField(default=False)
@@ -177,6 +168,22 @@ class ProcessStep(Process):
         except:
             return 0
 
+    def status(self):
+        child_steps = self.child_steps.all()
+        tasks = self.tasks.filter(undo_type=False, undone=False, retried=False)
+
+        if not child_steps and not tasks:
+            return celery_states.PENDING
+
+        for c in child_steps:
+            if c.state in (celery_states.FAILURE, celery_states.PENDING):
+                return c.state
+
+        for t in tasks:
+            if t.status in (celery_states.FAILURE, celery_states.PENDING):
+                return t.status
+
+        return celery_states.SUCCESS
 
     class Meta:
         db_table = u'ProcessStep'
