@@ -213,12 +213,12 @@ class ProcessTask(Process):
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = PickledObjectField(null=True, default=None, editable=False)
     processstep = models.ForeignKey('ProcessStep', related_name='tasks', on_delete=models.CASCADE)
-    processstep_pos = models.IntegerField(_('ProcessStep position'), null=True)
-    attempt = models.UUIDField(null=True)
-    progress = models.IntegerField(blank=True, default=0)
-    undone = models.BooleanField(editable=True, default=False)
+    processstep_pos = models.IntegerField(_('ProcessStep position'), default=0)
+    attempt = models.UUIDField(default=uuid.uuid4)
+    progress = models.IntegerField(default=0)
+    undone = models.BooleanField(default=False)
     undo_type = models.BooleanField(editable=False, default=False)
-    retried = models.BooleanField(editable=True, default=False)
+    retried = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'ProcessTask'
