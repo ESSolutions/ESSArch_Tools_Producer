@@ -5,7 +5,19 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         })
     .when('/create-SIP', {
         templateUrl: '/views/create_sip.html',
-        controller: 'CreateSipCtrl as vm'
+        controller: 'PrepareIpCtrl as vm'
+    })
+    .when('/create-SIP/info', {
+        templateUrl: '/views/create_sip_info.html',
+        controller: 'InfoCtrl as vm'
+    })
+    .when('/create-SIP/prepare-IP', {
+        templateUrl: '/views/create_sip_prepare_ip.html',
+        controller: 'PrepareIpCtrl as vm'
+    })
+    .when('/create-SIP/IP-approval', {
+        templateUrl: '/views/create_sip_ip_approval.html',
+        controller: 'IpApprovalCtrl as vm'
     })
     .when('/submit-SIP', {
         templateUrl: '/views/submit_sip.html'
@@ -22,3 +34,10 @@ angular.module('myApp').config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }]);
+angular.module('myApp').factory('myService', function($location) {
+    return {
+        changePath: function(path) {
+            $location.path(path);
+        }
+    };
+});
