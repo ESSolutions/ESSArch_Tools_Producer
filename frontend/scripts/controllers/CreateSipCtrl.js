@@ -3,18 +3,21 @@ angular.module('myApp').controller('CreateSipCtrl', function ($scope, $location,
     // List view
     $http({
             method: 'GET',
-            url: 'http://localhost:8000/steps/',
+            url: 'http://localhost:8000/steps/'
             })
     .then(function successCallback(response) {
-        alert(JSON.stringify(response.data));
+        //alert(JSON.stringify(response.data));
+        $scope.rowCollection = response.data;
     }), function errorCallback(){
         alert('error');
     };
+    /*
     $scope.rowCollection = [
         {label: 'Bygglov 2012', content: 'ERMS', responsible: 'Kalle Karlsson', date: '2013-01-14', state: 'Submitted', status: 100},
         {label: 'Bygglov 2013', content: 'ERMS', responsible: 'Eva Rööse', date: '2013-12-30', state: 'Created', status: 75},
         {label: 'Bygglov 2014', content: 'ERMS', responsible: 'Ove Jansson', date: '2014-12-19', state: 'Preparing', status: 40}
     ];
+    */
     // Progress bar handler
     $scope.max = 100;
 
@@ -280,9 +283,24 @@ vm.archivistOrganisationFields = [
     // prints stringified JSON representation of entered fields
     // will probably save the data later on
     vm.onSubmit = function() {
-        var sendData ={"params": "{\"foo\": 123}", "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 0, "processstep": "http://localhost:8000/steps/5865fcdc-5d86-49cc-8af1-a083cb110928/", "task_id": "123"};
+     var sendData = {
+    "url": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/",
+    "id": "f69355fc-bb1e-4bde-958c-8e6b66c91d5b",
+    "name": "new stuff",
+    "result": null,
+    "type": 100,
+    "user": "petrus",
+    "status": 0,
+    "progress": 50,
+    "time_created": "2016-08-05T09:39:26.987468Z",
+    "parent_step": null,
+    "archiveobject": null,
+    "tasks": [],
+    "task_set": []
+};
+//{"params": "{\"foo\": 123}", "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 50, "processstep": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/", "task_id": "123"};
             //vm.archivistOrganisationModel.concat(vm.creatorOrganisationModel).concat(vm.producerOrganisationModel).concat(vm.ipOwnerOrganisationModel).concat(vm.editorOrganisationModel).concat(vm.preservationOrganisationModel);
-        var uri = 'http://localhost:8000/tasks/';
+        var uri = 'http://localhost:8000/steps/';
         $http({
             method: 'POST',
             url: uri,

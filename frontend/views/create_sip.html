@@ -36,13 +36,13 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in displayedCollection">
-                                <td>{{row.label}}</td>
-                                <td>{{row.content}}</td>
-                                <td>{{row.responsible}}</td>
-                                <td>{{row.date}}</td>
-                                <td>{{row.state}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{'content'}}</td>
+                                <td>{{row.user}}</td>
+                                <td>{{row.time_created}}</td>
+                                <td>{{'status'}}</td>
                                 <td>
-                                    <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
+                                    <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
 
                                 </td>
                             </tr>
@@ -61,8 +61,7 @@
                 <div ng-show="subSelect" class="sub-select-view">
                     <h1>Sub Select view</h1>
                 </div>
-                <div ng-show="edit" ng-controller="CreateSipCtrl" id="edit-veiw" class="edit-view" >
-                    <h1>Edit view</h1>
+                <div ng-show="edit" id="edit-veiw" class="edit-view" >
                     <form ng-submit="vm.onSubmit()" novalidate>
                         <formly-form model="vm.archivistOrganisationModel" fields="vm.archivistOrganisationFields" options="vm.options">
                         </formly-form>
