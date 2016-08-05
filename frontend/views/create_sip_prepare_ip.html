@@ -1,7 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" type"text/css" href="scripts/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="styles/create_sip.css">
+        <link rel="stylesheet" type="text/css" href="styles/create_sip_prepare_ip.css">
         <link rel="stylesheet" type="text/css" href="styles/index.css">
         <!--Angular Scripts -->
         <!--App -->
@@ -9,15 +9,7 @@
     </head>
     <body>
         <div>
-            <div class="sub-menu">
-                <button ng-click="selectedPage=pages[0];" type="button" class="btn-primary btn-lg">Info page</button>
-                <button ng-click="selectedPage=pages[1];" type="button" class="btn-primary btn-lg">Prepare IP</button>
-                <button ng-click="selectedPage=pages[2];" type="button" class="btn-primary btn-lg">Data selection</button>
-                <button ng-click="selectedPage=pages[3];" type="button" class="btn-primary btn-lg">Data extraction</button>
-                <button ng-click="selectedPage=pages[4];" type="button" class="btn-primary btn-lg">Manage Data</button>
-                <button ng-click="selectedPage=pages[5];" type="button" class="btn-primary btn-lg">IP Approval</button>
-                <button ng-click="selectedPage=pages[6];" type="button" class="btn-primary btn-lg">IP Management</button>
-            </div>
+            <div ng-include src="'views/sub_menu.html'"></div>
             <div class="content-wrapper">
                 <div class="list-view">
                     <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
