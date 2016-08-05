@@ -59,7 +59,7 @@ class ProcessStep(Process):
     )
 
     name = models.CharField(max_length=256)
-    type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
+    type = models.IntegerField(null=True, choices=Type_CHOICES)
     user = models.CharField(max_length=45)
     parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
     time_created = models.DateTimeField(auto_now_add=True)
