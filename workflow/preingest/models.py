@@ -66,7 +66,7 @@ class ProcessStep(Process):
         (9999, "Deleted"),
     )
 
-    name = models.CharField(max_length=256, blank=True)
+    name = models.CharField(max_length=256)
     type = models.IntegerField(null=True, choices=StatusProcess_CHOICES)
     user = models.CharField(max_length=45)
     parent_step = models.ForeignKey('self', related_name='child_steps', on_delete=models.CASCADE, null=True)
