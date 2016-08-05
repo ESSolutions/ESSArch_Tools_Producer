@@ -24,7 +24,8 @@ height: 800px;
     margin-left: 10px;
 }
 .list-view {
-    height: 40%;
+    max-height: 270px;
+    overflow-y: scroll;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
@@ -33,6 +34,9 @@ height: 800px;
     flex-direction: column;
     -webkit-flex-direction: column;
     margin-top: 8px;
+}
+.column-label {
+    cursor: pointer;
 }
 .edit-view .submit-button {
     margin-bottom: 5px;
