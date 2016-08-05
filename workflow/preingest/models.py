@@ -105,7 +105,7 @@ class ProcessStep(Process):
         return taskobj
 
     def task_set(self):
-        return [t["name"] for t in self.tasks.order_by("name").values("name").distinct()]
+        return [t for t in self.tasks.order_by("processstep_pos").values("name", "params")]
 
     def run(self, continuing=False):
         child_steps = self.child_steps.all()
