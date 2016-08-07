@@ -96,7 +96,13 @@ class ProcessStep(Process):
         return taskobj
 
     def task_set(self):
-        return [t for t in self.tasks.order_by("processstep_pos").values("name", "params")]
+        tasks = self.tasks.filter(
+            undone=False,
+            undo_type=False,
+            retried=False
+        ).order_by("processstep_pos")
+
+        return [t for t in tasks.values("name", "params")]
 
     def run(self, continuing=False):
         child_steps = self.child_steps.all()
