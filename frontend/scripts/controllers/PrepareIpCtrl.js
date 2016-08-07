@@ -4,19 +4,28 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-
+    localStorage.setItem('tableItemSelected', "false");
+    $scope.tableItemClick = function() {
+        if(localStorage.getItem('tableItemSelected') == "true"){
+            localStorage.setItem('tableItemSelected', "false");
+        } else {
+            localStorage.setItem('tableItemSelected', "true");
+        }
+    };
     //Getting data for list view
     $scope.getListViewData = function() {
-        $http({
-            method: 'GET',
-            url: 'http://localhost:8000/steps/'
-        })
-        .then(function successCallback(response) {
-            //alert(JSON.stringify(response.data));
-            $scope.rowCollection = response.data;
-        }), function errorCallback(){
-            alert('error');
-        };
+        if(localStorage.getItem('tableItemSelected') == "false"){
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8000/steps/'
+            })
+            .then(function successCallback(response) {
+                //alert(JSON.stringify(response.data));
+                $scope.rowCollection = response.data;
+            }), function errorCallback(){
+                alert('error');
+            };
+        }
     };
     $scope.getListViewData();
     //updates every 5 seconds
@@ -27,15 +36,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         }, 5000)
     };
     $scope.listViewUpdate();
-    /*
-       $scope.rowCollection = [
-       {label: 'Bygglov 2012', content: 'ERMS', responsible: 'Kalle Karlsson', date: '2013-01-14', state: 'Submitted', status: 100},
-       {label: 'Bygglov 2013', content: 'ERMS', responsible: 'Eva Rööse', date: '2013-12-30', state: 'Created', status: 75},
-       {label: 'Bygglov 2014', content: 'ERMS', responsible: 'Ove Jansson', date: '2014-12-19', state: 'Preparing', status: 40}
-       ];
-       */
     // Progress bar handler
     $scope.max = 100;
+
 
     // Archivist
     // Organisation
