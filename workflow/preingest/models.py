@@ -104,20 +104,31 @@ class ProcessStep(Process):
 
         return [t for t in tasks.values("name", "params")]
 
-    def run(self, continuing=False):
+    def run(self, continuing=False, direct=True):
+        """
+        Runs the process step
+
+        Args:
+            continuing: True if continuing a step that was waiting for params,
+                        false otherwise
+            direct: False if the step is called from a parent step,
+                    true otherwise
+        """
+
+
         child_steps = self.child_steps.all()
 
         if continuing:
             child_steps = [s for s in self.child_steps.all() if s.progress() < 100]
 
         child_steps = sliceUntilAttr(child_steps, "waitForParams", True)
-        chain(s.run() for s in child_steps)()
+        chain(s.run(direct=False) for s in child_steps)()
 
         c = chain(self._create_task(t.name).si(
             taskobj=t
         ) for t in self.tasks.all())
 
-        return c if self.parent_step else c()
+        return c() if direct else c
 
     def undo(self, only_failed=False):
         tasks = self.tasks.all()
