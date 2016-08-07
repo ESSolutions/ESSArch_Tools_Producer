@@ -139,6 +139,16 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
         self.get_object().run()
         return Response({'status': 'running step'})
 
+    @detail_route()
+    def undo(self, request, pk=None):
+        self.get_object().undo()
+        return Response({'status': 'undoing step'})
+
+    @detail_route()
+    def retry(self, request, pk=None):
+        self.get_object().retry()
+        return Response({'status': 'retrying step'})
+
 class ProcessTaskViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows tasks to be viewed or edited.
