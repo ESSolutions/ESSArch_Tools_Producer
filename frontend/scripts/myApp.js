@@ -40,4 +40,5 @@ angular.module('myApp').factory('myService', function($location) {
             $location.path(path);
         }
     };
+
 });

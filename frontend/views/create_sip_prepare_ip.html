@@ -27,7 +27,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="row in displayedCollection">
+                            <tr st-select-row="row" ng-repeat="row in displayedCollection" ng-click="tableItemClick()">
                                 <td>{{row.name}}</td>
                                 <td>{{'content'}}</td>
                                 <td>{{row.user}}</td>
@@ -49,6 +49,7 @@
                 </div>
                 <div ng-show="select" class="select-view">
                     <h1>Select view</h1>
+
                 </div>
                 <div ng-show="subSelect" class="sub-select-view">
                     <h1>Sub Select view</h1>
