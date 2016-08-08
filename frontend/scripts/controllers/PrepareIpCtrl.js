@@ -20,8 +20,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 url: appConfig.djangoUrl+'steps/'
             })
             .then(function successCallback(response) {
-                //alert(JSON.stringify(response.data));
-                $scope.rowCollection = response.data;
+                // console.log(JSON.stringify(response.data));
+                var data = response.data;
+                var parentRows = [];
+                for (i = 0; i < data.length; i++) {
+                    if(data[i].parent_step == null){
+                        parentRows.push(data[i]);
+                    }
+                    $scope.parentRowCollection = parentRows;
+                }
             }), function errorCallback(){
                 alert('error');
             };
@@ -43,13 +50,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     // Archivist
     // Organisation
     vm.archivistOrganisationModel = {
-        ArchivistOrganisation: "Sigtuna Kommun"
+        ArchivistOrganisation: "Sigtuna Kommun",
+        ArchivistOrganisationIdentity: "",
+        ArchivistOrganisationSoftware: "",
+        ArchivistOrganisationSoftwareIdentity: ""
     };
 vm.archivistOrganisationFields = [
 {
     key: "ArchivistOrganisation",
     type: "select",
-    defaultValue: "Sigtuna Kommun",
     templateOptions: {
             label: "Archivist organisation",
             placeholder: "ArchivistOrganisation",
@@ -95,10 +104,14 @@ vm.archivistOrganisationFields = [
     // Creator
     // Organisation
     vm.creatorOrganisationModel = {
-        CreatorOrganisation: "Riksarkivet"
+        CreatorOrganisation: "Riksarkivet",
+        CreatorOrganisationIdentity: "",
+        CreatorOrganisationSoftware: "",
+        CreatorOrganisationSoftwareIdentity: ""
     };
 
     vm.creatorOrganisationFields = [
+
     {
         key: 'CreatorOrganisation',
         type: 'input',
@@ -138,6 +151,10 @@ vm.archivistOrganisationFields = [
     // Producer
     // organisation
     vm.producerOrganisationModel = {
+        ProducerOrganisation: "",
+        ProducerIndividual: "",
+        ProducerOrganisationSoftware: "",
+        ProducerOrganisationSoftwareIdentity: ""
     };
 
     vm.producerOrganisationFields = [
@@ -179,6 +196,10 @@ vm.archivistOrganisationFields = [
     // IP Owner
     // organisation
     vm.ipOwnerOrganisationModel = {
+        IpOwnerOrganisation: "",
+        IpOwnerIndividual: "",
+        IpOwnerOrganisationSoftware: "",
+        IpOwnerOrganisationSoftwareIdentity: ""
     };
 
     vm.ipOwnerOrganisationFields = [
@@ -220,6 +241,10 @@ vm.archivistOrganisationFields = [
     // Editor
     // organisation
     vm.editorOrganisationModel = {
+        EditorOrganisation: "",
+        EditorIndividual: "",
+        EditorOrganisationSoftware: "",
+        EditorOrganisationSoftwareIdentity: ""
     };
 
     vm.editorOrganisationFields = [
@@ -261,6 +286,10 @@ vm.archivistOrganisationFields = [
     // Preservation
     // organisation
     vm.preservationOrganisationModel = {
+        PreservationOrganisation: "",
+        PreservationIndividual: "",
+        PreservationOrganisationSoftware: "",
+        PreservationOrganisationSoftwareIdentity: ""
     };
 
     vm.preservationOrganisationFields = [
