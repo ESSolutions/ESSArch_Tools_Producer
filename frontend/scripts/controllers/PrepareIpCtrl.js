@@ -11,24 +11,19 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         } else {
             localStorage.setItem('tableItemSelected', "true");
         }
+        $scope.toggleSelectView();
     };
     //Getting data for list view
     $scope.getListViewData = function() {
         if(localStorage.getItem('tableItemSelected') == "false"){
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'steps/'
+                url: appConfig.djangoUrl+'archive-objects/'
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
-                var parentRows = [];
-                for (i = 0; i < data.length; i++) {
-                    if(data[i].parent_step == null){
-                        parentRows.push(data[i]);
-                    }
-                    $scope.parentRowCollection = parentRows;
-                }
+                $scope.archiveObjectRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };
@@ -43,6 +38,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         }, 5000)
     };
     $scope.listViewUpdate();
+    //Getting data for status view
+    $scope.getStatusViewData = function() {
+        $http({
+            method: 'GET',
+            url: appConfig.djangoUrl+'steps/'
+        })
+        .then(function successCallback(response) {
+            // console.log(JSON.stringify(response.data));
+            var data = response.data;
+            $scope.parentStepsRowCollection = data;
+        }), function errorCallback(){
+            alert('error');
+        };
+    };
+    $scope.getStatusViewData();
     // Progress bar handler
     $scope.max = 100;
 
