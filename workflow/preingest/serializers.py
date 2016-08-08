@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 
 from rest_framework import serializers
 
-from preingest.models import ProcessStep, ProcessTask
+from preingest.models import ArchiveObject, ProcessStep, ProcessTask
 
 class PickledObjectField(serializers.Field):
     def to_representation(self, obj):
@@ -10,6 +10,11 @@ class PickledObjectField(serializers.Field):
 
     def to_internal_value(self, data):
         return data
+
+class ArchiveObjectSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ArchiveObject
+        fields = ('url', 'ObjectUUID', 'label',)
 
 class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

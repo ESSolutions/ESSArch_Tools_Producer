@@ -22,6 +22,7 @@ from preingest import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'archive-objects', views.ArchiveObjectViewSet)
 router.register(r'steps', views.ProcessStepViewSet)
 router.register(r'tasks', views.ProcessTaskViewSet)
 
