@@ -226,7 +226,7 @@ class ProcessTask(Process):
     TASK_STATE_CHOICES = zip(celery_states.ALL_STATES,
                              celery_states.ALL_STATES)
 
-    task_id = models.CharField(_('task id'), max_length=255, unique=False)
+    celery_id = models.UUIDField(_('celery id'), max_length=255, null=True, editable=False)
     name = models.CharField(max_length=255, choices=TASK_CHOICES)
     status = models.CharField(_('state'), max_length=50,
                               default=celery_states.PENDING,

@@ -16,7 +16,7 @@ class DBTask(Task):
         params = self.taskobj.params
         print "init task with name {}, id {}".format(self.name, self.request.id)
 
-        self.taskobj.task_id = self.request.id
+        self.taskobj.celery_id = self.request.id
         self.taskobj.status=celery_states.STARTED
         self.taskobj.time_started = datetime.now()
         self.taskobj.save()
