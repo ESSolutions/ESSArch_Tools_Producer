@@ -130,7 +130,11 @@ class ProcessStep(Process):
         return c() if direct else c
 
     def undo(self, only_failed=False):
+        child_steps = self.child_steps.all()
         tasks = self.tasks.all()
+
+        for c in child_steps:
+            c.undo(only_failed=only_failed)
 
         if only_failed:
             tasks = tasks.filter(status=celery_states.FAILURE)
@@ -147,17 +151,22 @@ class ProcessStep(Process):
             undo=True
         ) for t in reversed(tasks))()
 
-    def retry(self):
+    def retry(self, direct=True):
+        child_steps = sliceUntilAttr(self.child_steps.all(), "waitForParams", True)
         tasks = self.tasks.filter(
             undone=True,
             retried=False
         ).order_by('processstep_pos')
 
+        chain(c.retry(direct=False) for c in child_steps)()
+
         attempt = uuid.uuid4()
 
-        chain(self._create_task(t.name).si(
+        c = chain(self._create_task(t.name).si(
             taskobj=self._create_taskobj(t, attempt=attempt, retry=True),
-        ) for t in tasks)()
+        ) for t in tasks)
+
+        return c() if direct else c
 
     def progress(self):
         child_steps = self.child_steps.all()
