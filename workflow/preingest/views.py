@@ -10,8 +10,14 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from preingest.forms import CreateSIPForm, PrepareSIPForm
-from preingest.models import ProcessStep, ProcessTask, Step, Task
-from preingest.serializers import ProcessStepSerializer, ProcessTaskSerializer, UserSerializer, GroupSerializer
+from preingest.models import ArchiveObject, ProcessStep, ProcessTask, Step, Task
+from preingest.serializers import (
+    ArchiveObjectSerializer,
+    ProcessStepSerializer,
+    ProcessTaskSerializer,
+    UserSerializer,
+    GroupSerializer,
+)
 
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
@@ -125,6 +131,13 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class ArchiveObjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows tasks to be viewed or edited.
+    """
+    queryset = ArchiveObject.objects.all()
+    serializer_class = ArchiveObjectSerializer
 
 
 class ProcessStepViewSet(viewsets.ModelViewSet):
