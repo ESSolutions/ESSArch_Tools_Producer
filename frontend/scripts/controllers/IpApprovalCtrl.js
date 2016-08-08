@@ -18,11 +18,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         if(localStorage.getItem('tableItemSelected') == "false"){
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'steps/'
+                url: appConfig.djangoUrl+'archive-objects/'
             })
             .then(function successCallback(response) {
                 //alert(JSON.stringify(response.data));
-                $scope.rowCollection = response.data;
+                var data = response.data;
+                $scope.archiveObjectRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };

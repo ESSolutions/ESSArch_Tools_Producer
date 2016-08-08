@@ -56,28 +56,27 @@ height: 800px;
 .list-view-buttons .btn {
     margin-left: 10px;
 }
-.select-view {
+.select-sub-edit-eventlog-wrapper {
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
 }
-.sub-select-view {
-    border-style: solid;
+.select-view {
+    border-bottom-style: solid;
     border-color: #666;
-    border-radius: 15px;
+}
+.sub-select-view {
+    border-bottom-style: solid;
+    border-color: #666;
 }
 
 .edit-view {
     height: 60%;
-    border-style: solid;
+    border-bottom-style: solid;
     border-color: #666;
-    border-radius: 15px;
 }
 
 .eventlog-view {
-    border-style: solid;
-    border-color: #666;
-    border-radius: 15px;
 }
 .formly {
     display: flex;
