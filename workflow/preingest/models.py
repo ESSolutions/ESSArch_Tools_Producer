@@ -18,6 +18,7 @@ from preingest.util import available_tasks, sliceUntilAttr
 class ArchiveObject(models.Model):
     ObjectUUID = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                   editable=False)
+    label = models.CharField(max_length=255)
 
     class Meta:
         db_table = u'ArchiveObject'
