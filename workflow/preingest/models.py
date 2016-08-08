@@ -97,7 +97,6 @@ class ProcessStep(Process):
 
     def task_set(self):
         tasks = self.tasks.filter(
-            undone=False,
             undo_type=False,
             retried=False
         ).order_by("processstep_pos")
