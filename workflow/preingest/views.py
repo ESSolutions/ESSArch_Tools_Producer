@@ -144,6 +144,11 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
         self.get_object().undo()
         return Response({'status': 'undoing step'})
 
+    @detail_route(url_path='undo-failed')
+    def undo_failed(self, request, pk=None):
+        self.get_object().undo(only_failed=True)
+        return Response({'status': 'undoing failed tasks in step'})
+
     @detail_route()
     def retry(self, request, pk=None):
         self.get_object().retry()
