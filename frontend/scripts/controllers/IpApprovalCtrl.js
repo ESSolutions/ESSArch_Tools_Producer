@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, $http, $timeout){
+angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout){
     var vm = this;
     // List view
     $scope.changePath= function(path) {
@@ -18,7 +18,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         if(localStorage.getItem('tableItemSelected') == "false"){
             $http({
                 method: 'GET',
-                url: 'http://localhost:8000/steps/'
+                url: appConfig.djangoUrl+'steps/'
             })
             .then(function successCallback(response) {
                 //alert(JSON.stringify(response.data));
@@ -34,7 +34,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         $timeout(function() {
             $scope.getListViewData();
             $scope.listViewUpdate();
-        }, 2000)
+        }, 5000)
     };
     $scope.listViewUpdate();
 
