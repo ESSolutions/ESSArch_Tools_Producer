@@ -23,6 +23,9 @@ class ArchiveObject(models.Model):
     class Meta:
         db_table = u'ArchiveObject'
 
+    def __unicode__(self):
+        return self.label
+
 class Process(models.Model):
     class Meta:
         abstract = True
@@ -30,6 +33,8 @@ class Process(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     result = PickledObjectField(null=True, default=None, editable=False)
 
+    def __unicode__(self):
+        return self.name
 
 class ProcessStep(Process):
     Type_CHOICES = (
