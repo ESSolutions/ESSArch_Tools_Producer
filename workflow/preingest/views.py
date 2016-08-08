@@ -134,7 +134,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ArchiveObjectViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows tasks to be viewed or edited.
+    API endpoint that allows archive objects to be viewed or edited.
     """
     queryset = ArchiveObject.objects.all()
     serializer_class = ArchiveObjectSerializer
