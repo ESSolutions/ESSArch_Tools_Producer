@@ -16,10 +16,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.alertClicked = function(row){
         if($scope.statusShow){
             $scope.statusShow = false;
-            $scope.archiveSelected = false;
+            if(!row.isSelected){
+                $scope.archiveSelected = false;
+            }
         }else {
             $scope.statusShow = true;
-            $scope.archiveSelected = true;
+            if(row.isSelected){
+                $scope.archiveSelected = true;
+            }
         }
     };
 
