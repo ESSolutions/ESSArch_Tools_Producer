@@ -4,18 +4,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-    localStorage.setItem('tableItemSelected', "false");
-    $scope.tableItemClick = function() {
-        if(localStorage.getItem('tableItemSelected') == "true"){
-            localStorage.setItem('tableItemSelected', "false");
-        } else {
-            localStorage.setItem('tableItemSelected', "true");
+
+    $scope.archiveSelected = false;
+    $scope.archiveTableClick = function(row) {
+        console.log(row);
+        if(row.isSelected){
+            $scope.select = true;
+            $scope.archiveSelected = true;
+        }else{
+            $scope.select = false;
+            $scope.archiveSelected = false;
         }
-        $scope.toggleSelectView();
     };
     //Getting data for list view
     $scope.getListViewData = function() {
-        if(localStorage.getItem('tableItemSelected') == "false"){
+        if(!$scope.archiveSelected){
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+'archive-objects/'
@@ -23,7 +26,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
-                $scope.archiveObjectRowCollection = data;
+                $scope.archiveObjectsRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };
@@ -38,6 +41,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         }, 5000)
     };
     $scope.listViewUpdate();
+    //show select view
     //Getting data for status view
     $scope.getStatusViewData = function() {
         $http({
@@ -53,6 +57,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         };
     };
     $scope.getStatusViewData();
+
     // Progress bar handler
     $scope.max = 100;
 
@@ -414,3 +419,4 @@ vm.archivistOrganisationFields = [
 
 
 });
+
