@@ -28,15 +28,15 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     .otherwise({
         redirectTo: '/404'
     });
-});
-angular.module('myApp').config(['$httpProvider', function($httpProvider, $rootScope) {
+})
+.config(['$httpProvider', function($httpProvider, $rootScope) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }])
 .constant('appConfig', {
     djangoUrl: "http://localhost:8000/"
-});
-angular.module('myApp').factory('myService', function($location) {
+})
+.factory('myService', function($location) {
     return {
         changePath: function(path) {
             $location.path(path);
