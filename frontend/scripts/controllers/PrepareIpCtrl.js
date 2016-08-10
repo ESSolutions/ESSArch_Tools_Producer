@@ -4,16 +4,37 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
+    function amIclicked(e, element)
+    {
+        e = e || event;
+        var target = e.target || e.srcElement;
+        if(target.id==element.id)
+            return true;
+        else
+            return false;
+    };
+    $scope.alertClicked = function(row){
+        if($scope.statusShow){
+            $scope.statusShow = false;
+            $scope.archiveSelected = false;
+        }else {
+            $scope.statusShow = true;
+            $scope.archiveSelected = true;
+        }
+    };
 
     $scope.archiveSelected = false;
     $scope.archiveTableClick = function(row) {
-        //console.log(row);
+        console.log(row);
         if(row.isSelected){
             $scope.select = true;
             $scope.archiveSelected = true;
         }else{
             $scope.select = false;
             $scope.archiveSelected = false;
+        }
+        if($scope.statusShow){
+            $scope.select = false;
         }
     };
     //Getting data for list view
@@ -41,7 +62,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         }, 5000)
     };
     $scope.listViewUpdate();
-    //show select view
     //Getting data for status view
     $scope.getStatusViewData = function() {
         $http({
@@ -375,7 +395,7 @@ vm.archivistOrganisationFields = [
 // Page selection
 //      &
 // ng-show code
-
+    $scope.statusShow = false;
     $scope.select = false;
     $scope.subSelect = false;
     $scope.edit = true;

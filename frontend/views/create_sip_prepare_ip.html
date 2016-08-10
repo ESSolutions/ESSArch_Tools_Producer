@@ -32,7 +32,7 @@
                                 <td>{{row.ObjectUUID}}</td>
                                 <td>{{'user'}}</td>
                                 <td>{{'time created'}}</td>
-                                <td>{{'state'}}</td>
+                                <td ng-click="alertClicked(row)"><a href="">{{'state'}}</a></td>
                                 <td>
                                     <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
 
@@ -48,6 +48,34 @@
                     </div>
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
+                    <div ng-show="statusShow" class="status-view">
+                        <h1>Status view</h1>
+                    <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="label" class="column-label">Label</th>
+                                <th st-sort="responsible" class="column-label">Responsible</th>
+                                <th st-sort="date" class="column-label">Date</th>
+                                <th st-sort="state" class="column-label">State</th>
+                                <th st-sort="status" class="column-label">Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr st-select-row="row" ng-repeat="row in stepsCollection">
+                                <td>{{row.name}}</td>
+                                <td>{{row.user}}</td>
+                                <td>{{row.time_created}}</td>
+                                <td>{{row.status}}</td>
+                                <td>
+                                    <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    </div>
                     <div ng-show="select" class="select-view">
                         <h1>Select view</h1>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
