@@ -7,7 +7,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
     $scope.archiveSelected = false;
     $scope.archiveTableClick = function(row) {
-        console.log(row);
+        //console.log(row);
         if(row.isSelected){
             $scope.select = true;
             $scope.archiveSelected = true;
