@@ -65,6 +65,10 @@ height: 800px;
     border-bottom-style: solid;
     border-color: #666;
 }
+.status-view {
+    border-bottom-style: solid;
+    border-color: #666;
+}
 .sub-select-view {
     border-bottom-style: solid;
     border-color: #666;
