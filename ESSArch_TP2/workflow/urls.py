@@ -27,8 +27,9 @@ router.register(r'steps', views.ProcessStepViewSet)
 router.register(r'tasks', views.ProcessTaskViewSet)
 
 urlpatterns = [
+    url(r'^$', 'frontend.views.home', name='home'),
     url(r'^preingest/', include('preingest.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
