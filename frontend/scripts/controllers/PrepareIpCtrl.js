@@ -12,6 +12,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.archiveSelected = false;
         } else {
             $scope.statusShow = true;
+            $scope.edit = false;
             $scope.archiveSelected = true;
         }
         $scope.select = false;
@@ -73,8 +74,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
     // Progress bar handler
     $scope.max = 100;
-
-
+    //populating select view
+    $scope.selectRowCollection = [
+        {
+            entity: "SA_Profile",
+            profile: "standard profile",
+            profiles: ["profile1","profile2","profile3"],
+            state: "unspecified"
+        }
+    ];
+    //Populating edit view fields
     // Archivist
     // Organisation
     vm.archivistOrganisationModel = {
@@ -83,11 +92,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         ArchivistOrganisationSoftware: "",
         ArchivistOrganisationSoftwareIdentity: ""
     };
-vm.archivistOrganisationFields = [
-{
-    key: "ArchivistOrganisation",
-    type: "select",
-    templateOptions: {
+    vm.archivistOrganisationFields = [
+    {
+        key: "ArchivistOrganisation",
+        type: "select",
+        templateOptions: {
             label: "Archivist organisation",
             placeholder: "ArchivistOrganisation",
             options: [
