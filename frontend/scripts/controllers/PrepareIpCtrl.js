@@ -4,42 +4,31 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-    function amIclicked(e, element)
-    {
-        e = e || event;
-        var target = e.target || e.srcElement;
-        if(target.id==element.id)
-            return true;
-        else
-            return false;
-    };
-    $scope.alertClicked = function(row){
-        if($scope.statusShow){
+    $scope.archiveSelected = false;
+    $scope.stateClicked = function(row){
+        console.log(row);
+        if($scope.statusShow && $scope.archive == row){
             $scope.statusShow = false;
-            if(!row.isSelected){
-                $scope.archiveSelected = false;
-            }
-        }else {
+            $scope.archiveSelected = false;
+        } else {
             $scope.statusShow = true;
-            if(row.isSelected){
-                $scope.archiveSelected = true;
-            }
+            $scope.archiveSelected = true;
         }
+        $scope.select = false;
+        $scope.archive = row;
     };
 
-    $scope.archiveSelected = false;
     $scope.archiveTableClick = function(row) {
-        console.log(row);
-        if(row.isSelected){
-            $scope.select = true;
-            $scope.archiveSelected = true;
-        }else{
+        console.log("archive object clicked. row: "+row.label);
+        if($scope.select && $scope.archive == row){
             $scope.select = false;
             $scope.archiveSelected = false;
+        } else {
+            $scope.select = true;
+            $scope.archiveSelected = true;
         }
-        if($scope.statusShow){
-            $scope.select = false;
-        }
+        $scope.statusShow = false;
+        $scope.archive = row;
     };
     //Getting data for list view
     $scope.getListViewData = function() {
