@@ -35,10 +35,10 @@ height: 800px;
     -webkit-flex-direction: column;
     margin-top: 8px;
 }
-.st-selected > td{
-    background-color: cornFlowerBlue;
-}
 .column-label {
+    cursor: pointer;
+}
+.clickable {
     cursor: pointer;
 }
 .edit-view .submit-button {

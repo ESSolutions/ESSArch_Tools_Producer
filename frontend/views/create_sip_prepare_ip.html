@@ -27,12 +27,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" ng-click="archiveTableClick(row)">
-                                <td>{{row.label}}</td>
-                                <td>{{row.ObjectUUID}}</td>
+                            <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" class="table-item">
+                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.label}}</td>
+                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.ObjectUUID}}</td>
                                 <td>{{'user'}}</td>
                                 <td>{{'time created'}}</td>
-                                <td ng-click="alertClicked(row)"><a href="">{{'state'}}</a></td>
+                                <td class="clickable" ng-click="stateClicked(row)"><a href="">{{'state'}}</a></td>
                                 <td>
                                     <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
 
@@ -49,7 +49,7 @@
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="statusShow" class="status-view">
-                        <h1>Status view</h1>
+                        <h1>Status view, current archive selected: {{archive.label}}</h1>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
                         <thead>
                             <tr>
@@ -77,7 +77,7 @@
 
                     </div>
                     <div ng-show="select" class="select-view">
-                        <h1>Select view</h1>
+                        <h1>Select view, current item selected: {{archive.label}}</h1>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
                         <thead>
                             <tr>
