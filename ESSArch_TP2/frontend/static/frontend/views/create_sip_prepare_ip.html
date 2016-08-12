@@ -89,7 +89,7 @@
 
                             <tbody>
                                 <tr st-select-row="row" ng-repeat="row in selectCollection">
-                                    <td><input type="checkBox" checked="checked">{{row.entity}}</input></td>
+                                    <td><input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input></td>
                                     <td><select ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
                                     <td>{{row.state}}</td>
                                 </tr>
@@ -99,6 +99,7 @@
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
                         <h1>Sub Select view</h1>
+                        <h3>{{subSelectProfile.entity}}, {{subSelectProfile.profile}}, {{subSelectProfile.state}}</h3>
                     </div>
                     <div ng-show="edit" id="edit-veiw" class="edit-view" >
                         <form ng-submit="vm.onSubmit()" novalidate>

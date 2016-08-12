@@ -74,14 +74,115 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
     // Progress bar handler
     $scope.max = 100;
+    //funcitons for select view
+    $scope.profileClick = function(row){
+        $scope.toggleSubSelectView();
+        $scope.subSelectProfile = row;
+        console.log($scope.subSelect.profile);
+    };
     //populating select view
     $scope.selectRowCollection = [
-        {
-            entity: "SA_Profile",
-            profile: "standard profile",
-            profiles: ["profile1","profile2","profile3"],
-            state: "unspecified"
-        }
+    {
+        entity: "PROFILE_SUBMISSION_AGREEMENT",
+        profile: "standard profil",
+        profiles: [
+            "default SA"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_TRANSFER_PROJECT",
+        profile: "standard profile",
+        profiles: [
+            "default PTP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_CONTENT_TYPE",
+        profile: "standard profile",
+        profiles: [
+            "default PCT"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DATA_SELECTION",
+        profile: "standard profile",
+        profiles: [
+            "default PDS"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_CLASSIFICATION",
+        profile: "standard profile",
+        profiles: [
+            "default PC"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_IMPORT",
+        profile: "standard profile",
+        profiles: [
+            "default PCT"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMIT_DESCRIPTION",
+        profile: "standard profile",
+        profiles: [
+            "default PSD"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMISSION INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PSIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_ARCHIVAL INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PAIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DISSEMINATION INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PDIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_WORKFLOW",
+        profile: "standard profile",
+        profiles: [
+            "default PWF"
+        ],
+        state: "unspecified"
+    }
+    /*
+     "PROFILE_SUBMISSION_AGREEMENT",
+     "PROFILE_TRANSFER_PROJECT",
+     "PROFILE_CONTENT_TYPE",
+     "PROFILE_DATA_SELECTION",
+     "PROFILE_CLASSIFICATION",
+     "PROFILE_IMPORT",
+     "PROFILE_SUBMIT_DESCRIPTION",
+     "PROFILE_SUBMISSION INFORMATION PACKAGE",
+     "PROFILE_ARCHIVAL INFORMATION PACKAGE",
+     "PROFILE_DISSEMINATION INFORMATION PACKAGE",
+     "PROFILE_WORKFLOW"
+     */
     ];
     //Populating edit view fields
     // Archivist

@@ -64,6 +64,10 @@ height: 800px;
 .select-view {
     border-bottom-style: solid;
     border-color: #666;
+    max-height: 300px;
+    overflow-y: scroll;
+    margin: 5px;
+    padding: 5px;
 
 }
 .status-view {
@@ -79,6 +83,10 @@ height: 800px;
     height: 60%;
     border-bottom-style: solid;
     border-color: #666;
+    max-height: 300px;
+    overflow-y: scroll;
+    margin: 5px;
+    padding: 5px;
 }
 
 .eventlog-view {
