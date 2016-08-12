@@ -35,10 +35,10 @@ height: 800px;
     -webkit-flex-direction: column;
     margin-top: 8px;
 }
-.st-selected > td{
-    background-color: cornFlowerBlue;
-}
 .column-label {
+    cursor: pointer;
+}
+.clickable {
     cursor: pointer;
 }
 .edit-view .submit-button {
@@ -64,6 +64,7 @@ height: 800px;
 .select-view {
     border-bottom-style: solid;
     border-color: #666;
+
 }
 .status-view {
     border-bottom-style: solid;
@@ -82,17 +83,18 @@ height: 800px;
 
 .eventlog-view {
 }
-.formly {
+.edit-view .formly {
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
+    width: 100%;
 }
 .control-label {
     font-size: 10px;
 }
 .formly-field {
-    width: 23%;
+    width: 100%;
     margin-left: 5px;
 }
 .submit-button {

@@ -4,42 +4,32 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-    function amIclicked(e, element)
-    {
-        e = e || event;
-        var target = e.target || e.srcElement;
-        if(target.id==element.id)
-            return true;
-        else
-            return false;
-    };
-    $scope.alertClicked = function(row){
-        if($scope.statusShow){
+    $scope.archiveSelected = false;
+    $scope.stateClicked = function(row){
+        console.log(row);
+        if($scope.statusShow && $scope.archive == row){
             $scope.statusShow = false;
-            if(!row.isSelected){
-                $scope.archiveSelected = false;
-            }
-        }else {
+            $scope.archiveSelected = false;
+        } else {
             $scope.statusShow = true;
-            if(row.isSelected){
-                $scope.archiveSelected = true;
-            }
+            $scope.edit = false;
+            $scope.archiveSelected = true;
         }
+        $scope.select = false;
+        $scope.archive = row;
     };
 
-    $scope.archiveSelected = false;
     $scope.archiveTableClick = function(row) {
-        console.log(row);
-        if(row.isSelected){
-            $scope.select = true;
-            $scope.archiveSelected = true;
-        }else{
+        console.log("archive object clicked. row: "+row.label);
+        if($scope.select && $scope.archive == row){
             $scope.select = false;
             $scope.archiveSelected = false;
+        } else {
+            $scope.select = true;
+            $scope.archiveSelected = true;
         }
-        if($scope.statusShow){
-            $scope.select = false;
-        }
+        $scope.statusShow = false;
+        $scope.archive = row;
     };
     //Getting data for list view
     $scope.getListViewData = function() {
@@ -84,8 +74,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
     // Progress bar handler
     $scope.max = 100;
-
-
+    //populating select view
+    $scope.selectRowCollection = [
+        {
+            entity: "SA_Profile",
+            profile: "standard profile",
+            profiles: ["profile1","profile2","profile3"],
+            state: "unspecified"
+        }
+    ];
+    //Populating edit view fields
     // Archivist
     // Organisation
     vm.archivistOrganisationModel = {
@@ -94,11 +92,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         ArchivistOrganisationSoftware: "",
         ArchivistOrganisationSoftwareIdentity: ""
     };
-vm.archivistOrganisationFields = [
-{
-    key: "ArchivistOrganisation",
-    type: "select",
-    templateOptions: {
+    vm.archivistOrganisationFields = [
+    {
+        key: "ArchivistOrganisation",
+        type: "select",
+        templateOptions: {
             label: "Archivist organisation",
             placeholder: "ArchivistOrganisation",
             options: [

@@ -27,12 +27,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" ng-click="archiveTableClick(row)">
-                                <td>{{row.label}}</td>
-                                <td>{{row.ObjectUUID}}</td>
+                            <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" class="table-item">
+                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.label}}</td>
+                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.ObjectUUID}}</td>
                                 <td>{{'user'}}</td>
                                 <td>{{'time created'}}</td>
-                                <td ng-click="alertClicked(row)"><a href="">{{'state'}}</a></td>
+                                <td class="clickable" ng-click="stateClicked(row)"><a href="">{{'state'}}</a></td>
                                 <td>
                                     <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
 
@@ -49,7 +49,7 @@
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="statusShow" class="status-view">
-                        <h1>Status view</h1>
+                        <h1>Status view, current archive selected: {{archive.label}}</h1>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
                         <thead>
                             <tr>
@@ -77,31 +77,24 @@
 
                     </div>
                     <div ng-show="select" class="select-view">
-                        <h1>Select view</h1>
-                    <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th st-sort="label" class="column-label">Label</th>
-                                <th st-sort="responsible" class="column-label">Responsible</th>
-                                <th st-sort="date" class="column-label">Date</th>
-                                <th st-sort="state" class="column-label">State</th>
-                                <th st-sort="status" class="column-label">Status</th>
-                            </tr>
-                        </thead>
+                        <h1>Select view, current item selected: {{archive.label}}</h1>
+                        <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th st-sort="entity" class="column-entity">Entity</th>
+                                    <th st-sort="profile" class="column-profile">Profile</th>
+                                    <th st-sort="state" class="column-state">State</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            <tr st-select-row="row" ng-repeat="row in stepsCollection">
-                                <td>{{row.name}}</td>
-                                <td>{{row.user}}</td>
-                                <td>{{row.time_created}}</td>
-                                <td>{{row.status}}</td>
-                                <td>
-                                    <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <tbody>
+                                <tr st-select-row="row" ng-repeat="row in selectCollection">
+                                    <td><input type="checkBox" checked="checked">{{row.entity}}</input></td>
+                                    <td><select ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
+                                    <td>{{row.state}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
