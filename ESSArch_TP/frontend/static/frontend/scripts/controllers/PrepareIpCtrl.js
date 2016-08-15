@@ -86,6 +86,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         ];
         console.log($scope.selectProfile);
     };
+
     //populating select view
     $scope.selectRowCollection = [
     {
@@ -95,7 +96,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             "default SA"
         ],
         state: "unspecified"
-    },
+    }];
+    var selectRowCollapse = [
     {
         entity: "PROFILE_TRANSFER_PROJECT",
         profile: "standard profile",
@@ -176,7 +178,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         ],
         state: "unspecified"
     }
-    /*
+    /* Profiles
      "PROFILE_SUBMISSION_AGREEMENT",
      "PROFILE_TRANSFER_PROJECT",
      "PROFILE_CONTENT_TYPE",
@@ -189,17 +191,26 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
      "PROFILE_DISSEMINATION INFORMATION PACKAGE",
      "PROFILE_WORKFLOW"
      */
-    ];
-    //Populating edit view fields
-    // Archivist
-    // Organisation
-    vm.archivistOrganisationModel = {
-        ArchivistOrganisation: "Sigtuna Kommun",
-        ArchivistOrganisationIdentity: "",
-        ArchivistOrganisationSoftware: "",
-        ArchivistOrganisationSoftwareIdentity: ""
-    };
-    vm.archivistOrganisationFields = [
+        ];
+        $scope.showHideAllProfiles = function() {
+            if($scope.selectRowCollection.length == 1){
+                for(i = 0; i < selectRowCollapse.length; i++){
+                    $scope.selectRowCollection.push(selectRowCollapse[i]);
+                }
+            } else {
+                $scope.selectRowCollection = [$scope.selectRowCollection[0]];
+            }
+        };
+        //Populating edit view fields
+        // Archivist
+        // Organisation
+        vm.archivistOrganisationModel = {
+            ArchivistOrganisation: "Sigtuna Kommun",
+            ArchivistOrganisationIdentity: "",
+            ArchivistOrganisationSoftware: "",
+            ArchivistOrganisationSoftwareIdentity: ""
+        };
+        vm.archivistOrganisationFields = [
     {
         key: "ArchivistOrganisation",
         type: "select",
