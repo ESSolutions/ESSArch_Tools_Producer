@@ -77,6 +77,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     //funcitons for select view
     $scope.profileClick = function(row){
         $scope.toggleSubSelectView();
+        $scope.toggleEditView();
         $scope.selectProfile = row;
         $scope.subSelectProfile = "profile";
         $scope.subSelectOptions = [
@@ -482,9 +483,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     }
     ];
 
+    $scope.exampleData = "1";
+    $scope.exampleSelectData = [
+        "1",
+        "2",
+        "3"
+    ];
     // onSubmit function
-    // prints stringified JSON representation of entered fields
-    // will probably save the data later on
+
     vm.onSubmit = function() {
         var params = {
             info: {
@@ -518,7 +524,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.statusShow = false;
     $scope.select = false;
     $scope.subSelect = false;
-    $scope.edit = true;
+    $scope.edit = false;
     $scope.eventlog = false;
     $scope.htmlPopover = $sce.trustAsHtml('<font size="3" color="red">Currently disabled</font>');
     $scope.pages = ['Info', 'Prepare Ip', 'Selection', 'Extraction', 'Manage Data', 'IP Approval', 'IP Management'];
@@ -542,9 +548,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         if($scope.edit == false){
             $('.edit-view').show();
             $scope.edit = true;
+            $scope.eventlog = true;
         } else {
             $('.edit-view').hide();
             $scope.edit = false;
+            $scope.eventlog = false;
         }
     };
     $scope.toggleEventlogView = function() {
