@@ -57,5 +57,117 @@ $scope.archiveSelected = false;
     };
     $scope.listViewUpdate();
 
-
+    //Dummy values for Sub select view
+    $scope.selectProfile = {
+        entity: "dummyValue"
+    };
+    $scope.subSelect = true;
+    $scope.subSelectProfile = "";
+    $scope.subSelectOptions = [
+        "test1",
+        "test2",
+        "test3"
+    ];
+    $scope.selectRowCollection = [
+    {
+        entity: "PROFILE_SUBMISSION_AGREEMENT",
+        profile: "standard profil",
+        profiles: [
+            "default SA"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_TRANSFER_PROJECT",
+        profile: "standard profile",
+        profiles: [
+            "default PTP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_CONTENT_TYPE",
+        profile: "standard profile",
+        profiles: [
+            "default PCT"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DATA_SELECTION",
+        profile: "standard profile",
+        profiles: [
+            "default PDS"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_CLASSIFICATION",
+        profile: "standard profile",
+        profiles: [
+            "default PC"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_IMPORT",
+        profile: "standard profile",
+        profiles: [
+            "default PCT"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMIT_DESCRIPTION",
+        profile: "standard profile",
+        profiles: [
+            "default PSD"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMISSION INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PSIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_ARCHIVAL INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PAIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DISSEMINATION INFORMATION PACKAGE",
+        profile: "standard profile",
+        profiles: [
+            "default PDIP"
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_WORKFLOW",
+        profile: "standard profile",
+        profiles: [
+            "default PWF"
+        ],
+        state: "unspecified"
+    }
+    ];
+    $scope.profileClick = function(row){
+        $scope.toggleSubSelectView();
+        $scope.toggleEditView();
+        $scope.selectProfile = row;
+        $scope.subSelectProfile = "profile";
+        $scope.subSelectOptions = [
+            "option1",
+            "option2",
+            "option3"
+        ];
+        console.log($scope.selectProfile);
+    };
 });

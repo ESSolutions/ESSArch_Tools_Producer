@@ -26,8 +26,8 @@
                 </thead>
                 <tbody>
                     <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" class="table-item">
-                        <td class="clickable" ng-click="archiveTableClick()">{{row.label}}</td>
-                        <td class="clickable" ng-click="archiveTableClick()">{{row.ObjectUUID}}</td>
+                        <td class="clickable" ng-click="archiveTableClick(row)">{{row.label}}</td>
+                        <td class="clickable" ng-click="archiveTableClick(row)">{{row.ObjectUUID}}</td>
                         <td>{{'user'}}</td>
                         <td>{{'time created'}}</td>
                         <td>{{'state'}}</td>
@@ -39,6 +39,36 @@
                 </tbody>
             </table>
             <p ng-model="chosenIp">{{chosenIp}}</p>
+        </div>
+        <div class="select-sub-edit-eventlog-wrapper">
+            <div ng-show="select" class="select-view">
+                <p>{{archive.label}}</p>
+                <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="column-entity">Entity</th>
+                            <th class="column-profile">Profile</th>
+                            <th class="column-state">State</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="row in selectCollection">
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input>
+                                    </label>
+                                </div>
+                            </td>
+                            <td><select ng-disabled="true" class="form-control"ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
+                            <td>{{row.state}}</td>
+                        </tr>
+                        <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
 </body>

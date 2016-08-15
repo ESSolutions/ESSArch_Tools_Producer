@@ -138,10 +138,10 @@
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkBox">Approved to create</input>
+                                <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
                             </label>
                         </div>
-                        <button type="submit" ng-click="vm.onSubmit()" class="btn btn-info submit-button">Submit</button>
+                        <button type="submit" ng-disabled="!approvedToCreate"ng-click="vm.onSubmit()" class="btn btn-info submit-button">Submit</button>
                     </div>
                 </div>
             </div>
