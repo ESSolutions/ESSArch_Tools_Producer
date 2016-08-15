@@ -4,26 +4,44 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-
-    localStorage.setItem('tableItemSelected', "false");
-    $scope.tableItemClick = function() {
-        if(localStorage.getItem('tableItemSelected') == "true"){
-            localStorage.setItem('tableItemSelected', "false");
+$scope.archiveSelected = false;
+    $scope.stateClicked = function(row){
+        console.log(row);
+        if($scope.statusShow && $scope.archive == row){
+            $scope.statusShow = false;
+            $scope.archiveSelected = false;
         } else {
-            localStorage.setItem('tableItemSelected', "true");
+            $scope.statusShow = true;
+            $scope.edit = false;
+            $scope.archiveSelected = true;
         }
+        $scope.select = false;
+        $scope.archive = row;
     };
 
+    $scope.archiveTableClick = function(row) {
+        console.log("archive object clicked. row: "+row.label);
+        if($scope.select && $scope.archive == row){
+            $scope.select = false;
+            $scope.archiveSelected = false;
+        } else {
+            $scope.select = true;
+            $scope.archiveSelected = true;
+        }
+        $scope.statusShow = false;
+        $scope.archive = row;
+    };
+    //Getting data for list view
     $scope.getListViewData = function() {
-        if(localStorage.getItem('tableItemSelected') == "false"){
+        if(!$scope.archiveSelected){
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+'archive-objects/'
             })
             .then(function successCallback(response) {
-                //alert(JSON.stringify(response.data));
+                // console.log(JSON.stringify(response.data));
                 var data = response.data;
-                $scope.archiveObjectRowCollection = data;
+                $scope.archiveObjectsRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };

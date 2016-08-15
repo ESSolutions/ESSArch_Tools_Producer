@@ -1,3 +1,38 @@
-.st-selected > td{
-    background-color: cornFlowerBlue;
+.content-wrapper {
+display: flex;
+display: -webkit-flex;
+flex-direction: column;
+-webkit-flex-direction: column;
+height: 800px;
+
 }
+.column-label {
+    margin: auto;
+}
+.progress {
+    width: 150px;
+}
+.content-wrapper > div {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.list-view {
+    max-height: 270px;
+    overflow-y: scroll;
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    margin-top: 8px;
+}
+.column-label {
+    cursor: pointer;
+}
+.clickable {
+    cursor: pointer;
+}
+

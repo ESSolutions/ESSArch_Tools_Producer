@@ -98,8 +98,10 @@
 
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
-                        <h1>Sub Select view</h1>
-                        <h3>{{subSelectProfile.entity}}, {{subSelectProfile.profile}}, {{subSelectProfile.state}}</h3>
+                        <p>{{selectProfile.entity}}</p>
+                        <select ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                        <select ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                        <select ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
                     </div>
                     <div ng-show="edit" id="edit-veiw" class="edit-view" >
                         <form ng-submit="vm.onSubmit()" novalidate>
