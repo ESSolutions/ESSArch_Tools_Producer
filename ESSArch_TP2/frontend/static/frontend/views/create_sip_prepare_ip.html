@@ -49,7 +49,7 @@
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="statusShow" class="status-view">
-                        <h1>Status view, current archive selected: {{archive.label}}</h1>
+                        <p>{{archive.label}}</p>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
                         <thead>
                             <tr>
@@ -77,7 +77,7 @@
 
                     </div>
                     <div ng-show="select" class="select-view">
-                        <h1>Select view, current item selected: {{archive.label}}</h1>
+                        <p>{{archive.label}}</p>
                         <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
                             <thead>
                                 <tr>
@@ -125,11 +125,23 @@
                         <formly-form model="vm.preservationOrganisationModel" fields="vm.preservationOrganisationFields">
                         </formly-form>
                         <p>{{vm.archivistOrganisation}}</p>
-                        <button type="submit" class="btn btn-info submit-button">Submit</button>
                         </form>
                     </div>
-                    <div ng-show="eventlog" class="eventlog-view">
-                        <h1>Eventlog and submit buttons</h1>
+                    <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
+                        <div class="form-group">
+                            <label>Status note</label>
+                            <select class="status-note form-control" ng-model="exampledata" ng-options="x for x in exampleSelectData"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Signature</label>
+                            <input class="signature form-control" id="signature"></input>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkBox">Approved to create</input>
+                            </label>
+                        </div>
+                        <button type="submit" ng-click="vm.onSubmit()" class="btn btn-info submit-button">Submit</button>
                     </div>
                 </div>
             </div>
