@@ -77,8 +77,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     //funcitons for select view
     $scope.profileClick = function(row){
         $scope.toggleSubSelectView();
-        $scope.subSelectProfile = row;
-        console.log($scope.subSelect.profile);
+        $scope.selectProfile = row;
+        $scope.subSelectProfile = "profile";
+        $scope.subSelectOptions = [
+            "option1",
+            "option2",
+            "option3"
+        ];
+        console.log($scope.selectProfile);
     };
     //populating select view
     $scope.selectRowCollection = [
@@ -479,7 +485,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 "PreservationOrganisation": vm.preservationOrganisationModel
             }
         };
-        var sendData = {"params": params, "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 50, "processstep": "http://0.0.0.0:8000/steps/16130473-dbcb-4ea1-b251-e9a1e9cb8185/", "task_id": "123"};
+        var sendData = {"params": params, "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 50, "processstep": appConfig.djangoUrl+"steps/16130473-dbcb-4ea1-b251-e9a1e9cb8185/", "task_id": "123"};
         //{"url": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/","id": "f69355fc-bb1e-4bde-958c-8e6b66c91d5b","name": "new stuff","result": null,"type": 100,"user": "petrus","status": 0,"progress": 50,"time_created": "2016-08-05T09:39:26.987468Z","parent_step": null,"archiveobject": null,"tasks": [],"task_set": []};
         var uri = appConfig.djangoUrl+'tasks/';
         $http({

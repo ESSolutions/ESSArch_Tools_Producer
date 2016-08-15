@@ -3,7 +3,8 @@ display: flex;
 display: -webkit-flex;
 flex-direction: column;
 -webkit-flex-direction: column;
-height: 800px;
+height: 100%;
+width: 100%;
 
 }
 .glyphicon-triangle-bottom {
@@ -14,10 +15,6 @@ height: 800px;
 }
 .progress {
     width: 150px;
-}
-.content-wrapper {
-    height: 100%;
-    width: 100%;
 }
 .content-wrapper > div {
     margin-bottom: 10px;
@@ -56,6 +53,7 @@ height: 800px;
 .list-view-buttons .btn {
     margin-left: 10px;
 }
+
 .select-sub-edit-eventlog-wrapper {
     border-style: solid;
     border-color: #666;
@@ -77,6 +75,15 @@ height: 800px;
 .sub-select-view {
     border-bottom-style: solid;
     border-color: #666;
+    text-align: center;
+    position: relative;
+}
+.sub-select-view > select {
+    margin-left: 20px;;
+    height: 20px;
+}
+.sub-select-view p {
+    font-size: 20px;
 }
 
 .edit-view {
