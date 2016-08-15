@@ -29,6 +29,23 @@ height: 800px;
     -webkit-flex-direction: column;
     margin-top: 8px;
 }
+.select-sub-edit-eventlog-wrapper {
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
+}
+.select-view {
+    border-bottom-style: solid;
+    border-color: #666;
+    max-height: 200px;
+    overflow-y: scroll;
+    margin: 5px;
+    padding: 5px;
+}
+.select-view .checkbox {
+    height: 10px;
+}
+
 .column-label {
     cursor: pointer;
 }
