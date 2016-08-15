@@ -34,7 +34,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }])
 .constant('appConfig', {
-    djangoUrl: "http://localhost:8000/api/"
+    djangoUrl: "/api/"
 })
 .factory('myService', function($location) {
     return {
