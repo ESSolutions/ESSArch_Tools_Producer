@@ -157,8 +157,15 @@ $scope.archiveSelected = false;
     }
     ];
     $scope.profileClick = function(row){
-        $scope.toggleSubSelectView();
-        $scope.toggleEditView();
+
+         if ($scope.selectProfile == row && $scope.subSelect){
+            $scope.subSelect = false;
+            $scope.eventlog = false;
+            $scope.edit = false;
+        } else {
+        $scope.subSelect = true;
+        $scope.eventlog = true;
+        $scope.edit = true;
         $scope.selectProfile = row;
         $scope.subSelectProfile = "profile";
         $scope.subSelectOptions = [
@@ -166,6 +173,7 @@ $scope.archiveSelected = false;
             "option2",
             "option3"
         ];
+        }
         console.log($scope.selectProfile);
     };
     $scope.exampleData = "1";
