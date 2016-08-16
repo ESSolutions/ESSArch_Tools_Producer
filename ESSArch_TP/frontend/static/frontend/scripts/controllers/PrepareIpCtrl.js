@@ -7,17 +7,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-    $scope.archiveSelected = false;
     $scope.stateClicked = function(row){
         console.log(row);
         if($scope.statusShow && $scope.archive == row){
             $scope.statusShow = false;
-            $scope.archiveSelected = false;
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
-            $scope.archiveSelected = true;
         }
+        $scope.subSelect = false;
+        $scope.eventlog = false;
         $scope.select = false;
         $scope.archive = row;
     };
@@ -36,7 +35,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
     //Getting data for list view
     $scope.getListViewData = function() {
-        if(!$scope.archiveSelected){
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+'archive-objects/'
@@ -48,7 +46,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             }), function errorCallback(){
                 alert('error');
             };
-        }
     };
     $scope.getListViewData();
     //updates every 5 seconds
