@@ -2,7 +2,7 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($scope, $locati
   $scope.tabs = [
       { link : '#/', label : 'My page' },
       { link : '#/create-SIP/info', label : 'Create SIP' },
-      { link : '#/submit-SIP', label : 'Submit SIP' },
+      { link : '#/submit-SIP/prepare-SIP', label : 'Submit SIP' },
      // { link : '#/recieve-SIP', label : 'Recieve SIP' }
     ];
 

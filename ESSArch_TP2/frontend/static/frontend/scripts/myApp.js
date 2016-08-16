@@ -20,11 +20,26 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         controller: 'IpApprovalCtrl as vm'
     })
     .when('/submit-SIP', {
-        templateUrl: '/static/frontend/views/submit_sip.html'
+        templateUrl: '/static/frontend/views/submit_sip.html',
+        controller: 'IpApprovalCtrl as vm'
+    })
+    .when('/submit-SIP/prepare-SIP', {
+        templateUrl: '/static/frontend/views/submit_sip_prepare_sip.html',
+        controller: 'IpApprovalCtrl as vm'
+    })
+    .when('/submit-SIP/reuse-SIP', {
+        templateUrl: '/static/frontend/views/submit_sip_reuse_sip.html',
+        controller: 'IpApprovalCtrl as vm'
+    })
+    .when('/submit-SIP/remove-SIP', {
+        templateUrl: '/static/frontend/views/submit_sip_remove_sip.html',
+        controller: 'IpApprovalCtrl as vm'
     })
     .when('/recieve-SIP', {
-        templateUrl: '/static/frontend/views/recieve_sip.html'
+        templateUrl: '/static/frontend/views/recieve_sip.html',
+        controller: 'IpApprovalCtrl as vm'
     })
+
     .otherwise({
         redirectTo: '/404'
     });

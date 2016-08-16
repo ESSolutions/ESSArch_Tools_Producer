@@ -106,7 +106,7 @@
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
                         {{selectProfile.entity}}
-                        <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
+                        <select class="sub-select-profile form-control" ng-model="selectProfile.profile" ng-options="x for x in selectProfile.profiles"></select>
                         <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                         <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
