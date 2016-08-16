@@ -106,9 +106,9 @@
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
                         {{selectProfile.entity}}
-                        <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                        <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                        <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                        <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
+                        <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
+                        <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
                     <div ng-show="edit" id="edit-veiw" class="edit-view" >
                         <form ng-submit="vm.onSubmit()" novalidate>
