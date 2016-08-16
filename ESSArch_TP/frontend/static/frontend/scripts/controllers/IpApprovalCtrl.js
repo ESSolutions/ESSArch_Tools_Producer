@@ -58,9 +58,7 @@ $scope.archiveSelected = false;
     $scope.listViewUpdate();
 
     //Dummy values for Sub select view
-    $scope.selectProfile = {
-        entity: "dummyValue"
-    };
+
     $scope.subSelect = true;
     $scope.subSelectProfile = "";
     $scope.subSelectOptions = [
@@ -170,4 +168,48 @@ $scope.archiveSelected = false;
         ];
         console.log($scope.selectProfile);
     };
+    $scope.exampleData = "1";
+    $scope.exampleSelectData = [
+        "1",
+        "2",
+        "3"
+    ];
+    $scope.statusShow = false;
+    $scope.select = false;
+    $scope.subSelect = false;
+    $scope.edit = false;
+    $scope.eventlog = false;
+   $scope.toggleSelectView = function () {
+        if($scope.select == false){
+            $scope.select = true;
+        } else {
+            $scope.select = false;
+        }
+    };
+    $scope.toggleSubSelectView = function () {
+        if($scope.subSelect == false){
+            $scope.subSelect = true;
+        } else {
+            $scope.subSelect = false;
+        }
+    };
+    $scope.toggleEditView = function () {
+        if($scope.edit == false){
+            $('.edit-view').show();
+            $scope.edit = true;
+            $scope.eventlog = true;
+        } else {
+            $('.edit-view').hide();
+            $scope.edit = false;
+            $scope.eventlog = false;
+        }
+    };
+    $scope.toggleEventlogView = function() {
+        if($scope.eventlog == false){
+            $scope.eventlog = true;
+        }else {
+            $scope.eventlog = false;
+        }
+    }
 });
+
