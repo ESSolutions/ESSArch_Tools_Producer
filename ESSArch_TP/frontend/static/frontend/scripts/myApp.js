@@ -51,11 +51,8 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .constant('appConfig', {
     djangoUrl: "/api/"
 })
-.factory('myService', function($location) {
-    return {
-        changePath: function(path) {
+.service('myService', function($location) {
+        this.changePath = function(path) {
             $location.path(path);
-        }
-    };
-
+        };
 });
