@@ -57,18 +57,26 @@
                             <td>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input>
+                                        <input ng-disabled="true" type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input>
                                     </label>
                                 </div>
                             </td>
                             <td><select ng-disabled="true" class="form-control"ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
                             <td>{{row.state}}</td>
                         </tr>
-                        <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
                     </tbody>
                 </table>
 
             </div>
+            <div ng-show="subSelect" class="sub-select-view">
+                {{selectProfile.entity}}
+                <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+            </div>
+            <div ng-show="edit" id="edit-veiw" class="edit-view" >
+            </div>
+
         </div>
     </div>
 </body>
