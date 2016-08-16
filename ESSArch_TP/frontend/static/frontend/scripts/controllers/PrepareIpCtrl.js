@@ -77,21 +77,34 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     //funcitons for select view
     $scope.profileClick = function(row){
 
-         if ($scope.selectProfile == row && $scope.subSelect){
+        if ($scope.selectProfile == row && $scope.subSelect){
             $scope.subSelect = false;
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
-        $scope.subSelect = true;
-        $scope.eventlog = true;
-        $scope.edit = true;
-        $scope.selectProfile = row;
-        $scope.subSelectProfile = "profile";
-        $scope.subSelectOptions = [
-            "option1",
-            "option2",
-            "option3"
-        ];
+            $scope.subSelect = true;
+            $scope.eventlog = true;
+            $scope.edit = true;
+            $scope.selectProfile = row;
+            $scope.subSelectProfile = "profile";
+            $http({
+                method: 'OPTIONS',
+                url: appConfig.djangoUrl+'tasks/'
+            })
+            .then(function successCallback(response) {
+                // console.log(JSON.stringify(response.data));
+                var data = response.data;
+                $scope.subSelectOptions = data.actions.POST.name.choices;
+            }), function errorCallback(){
+                alert('error');
+            };
+/*
+            $scope.subSelectOptions = [
+                "option1",
+                "option2",
+                "option3"
+            ];
+            */
         }
         console.log($scope.selectProfile);
     };
