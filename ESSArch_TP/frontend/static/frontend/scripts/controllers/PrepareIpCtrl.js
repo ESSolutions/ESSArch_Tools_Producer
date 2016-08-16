@@ -1,5 +1,8 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, $location, $sce, $http, myService, appConfig){
+angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
     var vm = this;
+    $scope.redirectAdmin = function () {
+        $window.location.href="/admin/";
+    }
     // List view
     $scope.changePath= function(path) {
         myService.changePath(path);

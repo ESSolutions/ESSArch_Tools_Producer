@@ -68,11 +68,11 @@
                     </ul>
 
                 </div>
-                <div class="tasks-icons">
+                <div ng-controller="PrepareIpCtrl" class="tasks-icons">
                     <span class="glyphicon glyphicon-refresh"></span>
                     <span class="glyphicon glyphicon-pencil"></span>
                     <span class="glyphicon glyphicon-print"></span>
-                    <span class="glyphicon glyphicon-cog"></span>
+                    <span ng-click="redirectAdmin()" class="glyphicon glyphicon-cog"></span>
                     <span class="glyphicon glyphicon-envelope"></span>
                     <span class="glyphicon glyphicon-question-sign"></span>
 
