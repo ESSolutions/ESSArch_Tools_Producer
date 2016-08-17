@@ -62,8 +62,8 @@
                         </thead>
 
                         <tbody>
-                            <tr st-select-row="row" ng-repeat="row in stepsCollection">
-                                <td>{{row.name}}</td>
+                            <tr st-select-row="row" ng-repeat-start="row in stepsCollection">
+                                <td><a href="" ng-click="toggleCollapse(row)">{{row.name}}</a></td>
                                 <td>{{row.user}}</td>
                                 <td>{{row.time_created}}</td>
                                 <td>{{row.status}}</td>
@@ -72,6 +72,22 @@
 
                                 </td>
                             </tr>
+                                <tr ng-repeat-end="">
+                                    <td colspan="5">
+                                    <div class="tasks-list" uib-collapse="row.isCollapsed">
+                                        <table class="table table-striped">
+                                        <tr ng-repeat="task in row.taskObjects">
+                                            <td>{{task.url}}</td>
+                                            <td>{{task.name}}</td>
+                                            <td>
+                                                <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{task.progress}}</b></uib-progressbar>
+                                            </td>
+                                        </tr>
+                                        </table>
+                                    </div>
+                                    </td>
+
+                                </tr>
                         </tbody>
                     </table>
 

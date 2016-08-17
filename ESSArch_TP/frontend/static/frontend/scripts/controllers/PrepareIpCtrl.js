@@ -3,17 +3,26 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
     }
+    $scope.isCollapsed = true;
+    $scope.toggleCollapse = function (row) {
+        console.log($scope.isCollapsed);
+        if(row.isCollapsed) {
+            row.isCollapsed = false;
+        } else {
+            row.isCollapsed = true;
+        }
+    };
     // List view
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
     $scope.stateClicked = function(row){
-        console.log(row);
         if($scope.statusShow && $scope.archive == row){
             $scope.statusShow = false;
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
+            $scope.getStatusViewData(row);
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
@@ -57,20 +66,44 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
     $scope.listViewUpdate();
     //Getting data for status view
-    $scope.getStatusViewData = function() {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+'steps/'
-        })
-        .then(function successCallback(response) {
-            // console.log(JSON.stringify(response.data));
-            var data = response.data;
-            $scope.parentStepsRowCollection = data;
-        }), function errorCallback(){
-            alert('error');
-        };
+    $scope.getStatusViewData = function(row) {
+        var stepRows = [];
+        for(i=0; i<row.steps.length; i++){
+            $http({
+                method: 'GET',
+                url: row.steps[i]
+            })
+            .then(function successCallback(response) {
+                // console.log(JSON.stringify(response.data));
+                var data = response.data;
+                stepRows.push(data);
+                var taskRows = [];
+                //console.log(row.steps[i]);
+                for(j=0; j<data.tasks.length; j++){
+                    //console.log(data.tasks[1]);
+                    $http({
+                        method: 'GET',
+                        url: data.tasks[j]
+                    })
+                    .then(function successCallback(response) {
+                        var data = response.data;
+                        taskRows.push(data);
+                        //console.log(taskRows);
+                    }), function errorCallback(){
+                        alert('error(getting tasks)');
+                    }
+                }
+                stepRows[stepRows.length-1].taskObjects = taskRows;
+                stepRows[stepRows.length-1].isCollapsed = true;
+
+            }), function errorCallback(){
+                alert('error(getting steps)');
+            }
+        }
+        $scope.parentStepsRowCollection = stepRows;
     };
-    $scope.getStatusViewData();
+
+       //$scope.getStatusViewData();
 
     // Progress bar handler
     $scope.max = 100;
