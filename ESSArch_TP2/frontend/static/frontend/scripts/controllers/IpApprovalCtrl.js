@@ -176,6 +176,20 @@ $scope.archiveSelected = false;
         }
         console.log($scope.selectProfile);
     };
+
+    $scope.runStep = function (stepUrl) {
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+stepUrl+'run'
+            })
+            .then(function successCallback(response) {
+                // console.log(JSON.stringify(response.data));
+                alert("Step is running!!");
+            }), function errorCallback(){
+                alert('error running step :( ');
+            };
+    };
+
     $scope.exampleData = "1";
     $scope.exampleSelectData = [
         "1",
