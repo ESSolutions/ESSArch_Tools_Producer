@@ -100,32 +100,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     //Getting data for status view
     $scope.getStatusViewData = function(row) {
         var stepRows = [];
+        var childSteps = [];
         for(i=0; i<row.steps.length; i++){
             $http({
                 method: 'GET',
                 url: row.steps[i]
             })
             .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
                 var data = response.data;
+                childSteps = getChildSteps(data.child_steps);
                 stepRows.push(data);
-                var taskRows = [];
-                //console.log(row.steps[i]);
-                for(j=0; j<data.tasks.length; j++){
-                    //console.log(data.tasks[1]);
-                    $http({
-                        method: 'GET',
-                        url: data.tasks[j]
-                    })
-                    .then(function successCallback(response) {
-                        var data = response.data;
-                        taskRows.push(data);
-                        //console.log(taskRows);
-                    }), function errorCallback(){
-                        alert('error(getting tasks)');
-                    }
-                }
+                taskRows = getTasks(data);
+                //console.log(childSteps);
                 stepRows[stepRows.length-1].taskObjects = taskRows;
+                stepRows[stepRows.length-1].child_steps_objects = childSteps;
                 stepRows[stepRows.length-1].isCollapsed = true;
 
             }), function errorCallback(){
@@ -135,7 +123,48 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $scope.parentStepsRowCollection = stepRows;
     };
 
-       //$scope.getStatusViewData();
+    //Helper functions for getStatusViewData
+    function getChildSteps(childSteps) {
+        if(childSteps.length == 0) {
+            return [];
+        }
+        var steps = [];
+        for(i=0; i<childSteps.length; i++){
+            $http({
+                method: 'GET',
+                url: childSteps[i]
+            })
+            .then(function successCallback(response) {
+                steps.push(response.data);
+            }), function errorCallback(){
+                alert('error(getting child steps)');
+            }
+        }
+        for(i=0; i<steps.length; i++){
+            steps[i].child_steps = getChildSteps(steps[i]);
+        }
+        childSteps = steps;
+        return childSteps;
+    };
+
+    function getTasks(step) {
+        var taskRows = [];
+        for(i=0; i<step.tasks.length; i++){
+            $http({
+                method: 'GET',
+                url: step.tasks[i]
+            })
+            .then(function successCallback(response) {
+                var data = response.data;
+                taskRows.push(data);
+            }), function errorCallback(){
+                alert('error(getting tasks)');
+            }
+        }
+        return taskRows;
+    };
+
+    //$scope.getStatusViewData();
 
     // Progress bar handler
     $scope.max = 100;

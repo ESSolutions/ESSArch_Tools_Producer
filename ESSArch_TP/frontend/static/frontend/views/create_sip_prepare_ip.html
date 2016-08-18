@@ -87,6 +87,17 @@
                             </tr>
                                 <tr ng-repeat-end="">
                                     <td colspan="5">
+                                        <div class="child-step-list" uib-collapse="row.isCollapsed">
+                                            <table class="table table-striped">
+                                                <tr ng-repeat="step in row.child_steps_objects">
+                                                    <td>{{step.url}}</td>
+                                                    <td>{{step.name}}</td>
+                                                    <td>
+                                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{step.progress}}</b></uib-progressbar>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     <div class="tasks-list" uib-collapse="row.isCollapsed">
                                         <table class="table table-striped">
                                         <tr ng-repeat="task in row.taskObjects">
