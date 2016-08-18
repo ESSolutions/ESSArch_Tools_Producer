@@ -62,6 +62,15 @@ width: 100%;
     border-color: #666;
     border-radius: 15px;
 }
+.event-view {
+    border-bottom-style: solid;
+    border-color: #666;
+    max-height: 500px;
+    overflow-y: scroll;
+    margin: 5px;
+    padding: 5px;
+
+}
 .select-view {
     border-bottom-style: solid;
     border-color: #666;
