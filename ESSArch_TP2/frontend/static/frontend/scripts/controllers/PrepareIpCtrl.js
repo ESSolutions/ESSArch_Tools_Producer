@@ -42,6 +42,38 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $scope.statusShow = false;
         $scope.archive = row;
     };
+
+    $scope.eventsClick = function (row) {
+      $scope.eventShow = true;
+        if($scope.eventShow && $scope.archive == row){
+            $scope.eventShow = false;
+            $scope.archiveSelected = false;
+        } else {
+            $scope.eventCollection = [];
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+'events/'
+            })
+            .then(function successCallback(response) {
+                // console.log(JSON.stringify(response.data));
+                var data = response.data;
+                for(i=0; i<data.length; i++){
+                    if(data[i].archiveObject == row.url)
+                    $scope.eventCollection.push(data[i]);
+                }
+            }), function errorCallback(){
+                alert('error');
+            };
+            $scope.eventShow = true;
+            $scope.archiveSelected = true;
+        }
+        $scope.statusShow = false;
+        $scope.select = false;
+
+
+
+        $scope.archive = row;
+    };
     //Getting data for list view
     $scope.getListViewData = function() {
             $http({
@@ -576,6 +608,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 //      &
 // ng-show code
     $scope.statusShow = false;
+    $scope.eventShow = false;
     $scope.select = false;
     $scope.subSelect = false;
     $scope.edit = false;

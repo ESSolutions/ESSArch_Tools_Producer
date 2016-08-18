@@ -20,6 +20,7 @@
                                 <th st-sort="responsible" class="column-label">Responsible</th>
                                 <th st-sort="date" class="column-label">Date</th>
                                 <th st-sort="state" class="column-label">State</th>
+                                <th st-sort="state" class="column-label">Events</th>
                                 <th st-sort="status" class="column-label">Status</th>
                             </tr>
                             <tr>
@@ -33,6 +34,7 @@
                                 <td>{{'user'}}</td>
                                 <td>{{'time created'}}</td>
                                 <td class="clickable" ng-click="stateClicked(row)"><a href="">{{'state'}}</a></td>
+                                <td class="clickable" ng-click="eventsClick(row)"><a href="">{{'Events'}}</a></td>
                                 <td>
                                     <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
 
@@ -48,6 +50,17 @@
                     </div>
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
+                    <div ng-show="eventShow" class="event-view">
+                        <p>Events associated to: {{archive.label}}</p>
+                        <ul ng-repeat="event in eventCollection">
+                            <li>
+                                {{event.id}}
+                            </li>
+                                {{event.eventDetail}}</br>
+                                {{event.eventDateTime}}
+                        </ul>
+
+                    </div>
                     <div ng-show="statusShow" class="status-view">
                         <p>{{archive.label}}</p>
                     <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
