@@ -77,6 +77,14 @@ width: 100%;
     border-bottom-style: solid;
     border-color: #666;
 }
+.tasks-list {
+    max-height: 200px;
+    overflow-y: scroll;
+   /* border-style: solid;
+    border-color: #ccc;
+    border-radius: 5px;*/
+    padding: 10px;
+}
 .sub-select-view {
     border-bottom-style: solid;
     border-color: #666;

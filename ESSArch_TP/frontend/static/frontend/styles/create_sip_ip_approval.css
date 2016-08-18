@@ -90,6 +90,9 @@ height: 800px;
     margin: 5px;
     padding: 5px;
 }
+.edit-view .btn-primary {
+    float: right;
+}
 
 .eventlog-view {
     display: flex;
