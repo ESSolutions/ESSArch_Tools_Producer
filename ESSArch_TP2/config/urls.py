@@ -25,6 +25,8 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'archive-objects', views.ArchiveObjectViewSet)
 router.register(r'steps', views.ProcessStepViewSet)
 router.register(r'tasks', views.ProcessTaskViewSet)
+router.register(r'events', views.EventViewSet)
+router.register(r'event-types', views.EventTypeViewSet)
 
 urlpatterns = [
     url(r'^$', 'frontend.views.home', name='home'),
