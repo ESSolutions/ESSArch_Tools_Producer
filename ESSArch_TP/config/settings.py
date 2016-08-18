@@ -138,7 +138,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 BROKER_URL = 'amqp://guest:guest@localhost:5672/etp'
 CELERY_RESULT_BACKEND = 'amqp://'
 
-#try:
-#    from local_settings import *
-#except ImportError, exp:
-#    pass
+try:
+    from local_etp2_settings import *
+except ImportError, exp:
+    pass
