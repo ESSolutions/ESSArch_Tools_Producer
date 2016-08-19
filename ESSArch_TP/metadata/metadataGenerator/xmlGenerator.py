@@ -238,6 +238,12 @@ def createXML(info, filesToCreate, folderToParse):
     This is also the TASK to be run in the background.
     """
 
+    global sortedFiles
+    global foundFiles
+
+    sortedFiles = []
+    foundFiles = 0
+
     for key, value in filesToCreate.iteritems():
         json_data=open(value).read()
         try:
