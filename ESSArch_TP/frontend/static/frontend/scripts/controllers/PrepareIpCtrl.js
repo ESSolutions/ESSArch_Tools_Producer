@@ -5,7 +5,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     }
     $scope.isCollapsed = true;
     $scope.toggleCollapse = function (row) {
-        console.log($scope.isCollapsed);
         if(row.isCollapsed) {
             row.isCollapsed = false;
         } else {
@@ -113,7 +112,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 taskRows = getTasks(data);
                 //console.log(childSteps);
                 stepRows[stepRows.length-1].taskObjects = taskRows;
-                stepRows[stepRows.length-1].child_steps_objects = childSteps;
+                stepRows[stepRows.length-1].child_steps = childSteps;
                 stepRows[stepRows.length-1].isCollapsed = true;
 
             }), function errorCallback(){
@@ -121,6 +120,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             }
         }
         $scope.parentStepsRowCollection = stepRows;
+
     };
 
     //Helper functions for getStatusViewData
@@ -135,13 +135,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 url: childSteps[i]
             })
             .then(function successCallback(response) {
+                response.data.child_steps = getChildSteps(response.data.child_steps);
                 steps.push(response.data);
+                console.log(steps);
             }), function errorCallback(){
                 alert('error(getting child steps)');
             }
-        }
-        for(i=0; i<steps.length; i++){
-            steps[i].child_steps = getChildSteps(steps[i]);
         }
         childSteps = steps;
         return childSteps;
