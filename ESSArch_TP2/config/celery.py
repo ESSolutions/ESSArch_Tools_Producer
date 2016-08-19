@@ -16,5 +16,5 @@ app = Celery('config')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
-import django
-django.setup()
+#import django
+#django.setup()
