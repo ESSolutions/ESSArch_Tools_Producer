@@ -31,16 +31,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'preingest',
-    'rest_framework',
-    'django.contrib.admin',
     'django.contrib.auth',
-    'corsheaders',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',                  
+    'preingest',
+    'rest_framework',
+    'corsheaders',
     'frontend',
+    'configuration',
+    'ip',
+    'profiles',
 ]
 
 MIDDLEWARE_CLASSES = [
