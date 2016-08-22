@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
 from preingest import views
@@ -29,11 +30,11 @@ router.register(r'events', views.EventViewSet)
 router.register(r'event-types', views.EventTypeViewSet)
 
 urlpatterns = [
-    url(r'^$', 'frontend.views.home', name='home'),
+    url(r'^', include('frontend.urls'), name='home'),
     url(r'^preingest/', include('preingest.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^template/', include('templateMaker.urls')),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login' ),
+    url(r'^accounts/login/$', auth_views.login),
 ]

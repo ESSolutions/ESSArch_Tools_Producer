@@ -22,28 +22,11 @@
     Email - essarch@essolutions.se
 '''
 
-# Create your views here.
-from django.template import Context, loader
-from django.template import RequestContext 
-from django.contrib.auth.models import User, Group, Permission
-from django.http import HttpResponse, HttpResponseRedirect
-from django import forms
-from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import logout
-from django.contrib.auth.views import password_change as admin_password_change
-import sys, logging, datetime, os
+import django
+django.setup()
 
 # own models etc
 from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow
-
-#import lib.utils as lu
-#import lib.app_tools as lat
-
-import django
-django.setup()
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
