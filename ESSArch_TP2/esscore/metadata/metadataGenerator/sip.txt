@@ -1,0 +1,131 @@
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:ext="ExtensionMETS" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd" PROFILE="http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll" LABEL="Test of SIP 1" TYPE="Personnel" OBJID="UUID:9bc10faa-3fff-4a8f-bf9a-638841061065" ext:CONTENTTYPESPECIFICATION="FGS Personal, version 1">
+    <mets:metsHdr CREATEDATE="2016-06-08T10:44:00+02:00" RECORDSTATUS="NEW" ext:OAISTYPE="SIP">
+        <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildar namn
+            </mets:name>
+            <mets:note>
+                VAT:SE201345098701
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="ARCHIVIST" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+            <mets:name>
+                By hand Systems
+            </mets:name>
+            <mets:note>
+                1.0.0
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildar namn
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="OTHER" OTHERROLE="PRODUCER" TYPE="ORGANIZATION">
+            <mets:name>
+                Sydarkivera
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="OTHER" OTHERROLE="SUBMITTER" TYPE="ORGANIZATION">
+            <mets:name>
+                Arkivbildare
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="IPOWNER" TYPE="ORGANIZATION">
+            <mets:name>
+                Informations agare
+            </mets:name>
+            <mets:note>
+                HSA:SE2098109810-AF87
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="EDITOR" TYPE="ORGANIZATION">
+            <mets:name>
+                Axenu
+            </mets:name>
+            <mets:note>
+                VAT:SE9512114233
+            </mets:note>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="INDIVIDUAL">
+            <mets:name>
+                Simon Nilsson
+            </mets:name>
+            <mets:note>
+                0706758942, simonseregon@gmail.com
+            </mets:note>
+        </mets:agent>
+        <mets:altRecordID TYPE="SUBMISSIONAGREEMENT">
+            RA 13-2011/5329, 2012-04-12
+        </mets:altRecordID>
+        <mets:altRecordID TYPE="REFERENCECODE">
+            SE/RA/123456/24/F
+        </mets:altRecordID>
+    </mets:metsHdr>
+    <mets:amdSec ID="IDce745fec-cfdd-4d14-bece-d49e867a2487">
+        <mets:digiprovMD ID="IDa32a20cb-5ff8-4d36-8202-f96519154de2">
+            <mets:mdRef LOCTYPE="URL" MDTYPE="PREMIS" xlink:href="file:///metadata/premis.xml" xlink:type="simple" ID="ID31e51159-9280-44d1-b26c-014077f8eeb5"/>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp>
+            <file CHECKSUM="0866266dd2d56500c68844bf485475f2d5ad0cc63e343bb0f4f9ebc8e0b0878b" ID="ID1f00c949-1693-4bcc-9039-df6ddd517788" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="38637" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000027.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="fa44a30c2a01014fc15c461e8096caf90ca9d14cbb745ade846e7d98a2025d5c" ID="ID212996c6-d3ae-4a95-89ed-7dd1ac3525b8" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="7484691" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000564.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="208daa408460735205501473cc6847a56b24f1d6e4cf197284bc8ddeb076e7c8" ID="IDf2b7801e-b845-4b30-93d3-ec6bd4b4b2ad" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="43100" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000565.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="b0bfaa855f95753d0426222fe70de1bb07f6bbe0e4e3b771b70346aba43e078e" ID="ID08d50601-5863-47f2-b9a1-2a33b2c0fcc8" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="37629" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000575.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="53596de1d6f8635297691647e3302a9158474d3b79d1e4321fb91520d9ab408a" ID="ID1901880d-ca71-4983-92a6-e0f07ea30fd6" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="145813" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000576.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="9d586440ea9684d6eb38105a7603c128528976dcab5728f6aa1de21cda1497ce" ID="ID41a94176-2178-48b6-99de-0cc9a250b83e" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="2575" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000689.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="1b12ea44316df94a39df18299cd58b41e905c1c25cd1b3a1a6587ba9b4bb85e3" ID="ID588a7396-6d76-44a8-bc31-387d3aff4b5d" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="37449" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000690.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="a409d3c36ba45b91093eb7e86b84a2e520ecb5a52040527faaed9edc364dea8e" ID="ID5edec4c8-6e9e-4821-bf42-932a2e5123d0" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="8601" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000721.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="28a2c638ab71ed03683af11a5d49cd7520bd949d136dd69d5309504a0ab6e6dd" ID="ID1fb712b5-631d-4308-a446-e561eebe55a0" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="3815" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000722.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="c7866cea665215056005fadcf49924a012d7cd02cbaed9c2e48029cb6d791311" ID="ID80d46337-76d1-44e0-a2df-db2903b4aeb1" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="2099672" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000756.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+            <file CHECKSUM="7785c0a682accf7e60f4c193414e25c860c56b53573554aa3b50a0884d096f11" ID="IDc62ef803-0fd2-4af8-be82-436bf090e94a" MIMETYPE="application/msword" CREATED="2016-02-21T11:18:44+01:00" ext:FILEFORMATNAME="MS word" SIZE="8305" USE="DataFile" CHECKSUMTYPE="SHA-256">
+                <FLocat xlink:href="/SIP/huge/csv/000/000764.csv" LOCTYPE="URL" xlink:type="simple"/>
+            </file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap LABEL="Profilestructmap">
+        <mets:div>
+            <fptr FILEID="ID1f00c949-1693-4bcc-9039-df6ddd517788"/>
+            <fptr FILEID="ID212996c6-d3ae-4a95-89ed-7dd1ac3525b8"/>
+            <fptr FILEID="IDf2b7801e-b845-4b30-93d3-ec6bd4b4b2ad"/>
+            <fptr FILEID="ID08d50601-5863-47f2-b9a1-2a33b2c0fcc8"/>
+            <fptr FILEID="ID1901880d-ca71-4983-92a6-e0f07ea30fd6"/>
+            <fptr FILEID="ID41a94176-2178-48b6-99de-0cc9a250b83e"/>
+            <fptr FILEID="ID588a7396-6d76-44a8-bc31-387d3aff4b5d"/>
+            <fptr FILEID="ID5edec4c8-6e9e-4821-bf42-932a2e5123d0"/>
+            <fptr FILEID="ID1fb712b5-631d-4308-a446-e561eebe55a0"/>
+            <fptr FILEID="ID80d46337-76d1-44e0-a2df-db2903b4aeb1"/>
+            <fptr FILEID="IDc62ef803-0fd2-4af8-be82-436bf090e94a"/>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>
