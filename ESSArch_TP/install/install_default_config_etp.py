@@ -1,4 +1,3 @@
-#!/usr/bin/env /ESSArch/python27/bin/python
 # -*- coding: UTF-8 -*-
 """
     ESSArch Tools - ESSArch is an Electronic Preservation Platform
@@ -22,28 +21,13 @@
     Email - essarch@essolutions.se
 """
 
-# Create your views here.
-from django.template import Context, loader
-from django.template import RequestContext 
-from django.contrib.auth.models import User, Group, Permission
-from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse, HttpResponseRedirect
-from django import forms
-from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import logout
-from django.contrib.auth.views import password_change as admin_password_change
-import sys, logging, datetime, os
-
-# own models etc
-from configuration.models import Parameter, Path, Schema, EventType
-#import lib.utils as lu
-#import lib.app_tools as lat
+import sys
 
 import django
 django.setup()
+
+from django.contrib.auth.models import User, Group, Permission
+from configuration.models import Parameter, Path, Schema, EventType
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
@@ -95,9 +79,9 @@ def createDefaultUsers(): # default users, groups and permissions
         pass
 
     # permissions for default users
-    can_add_ip_event = Permission.objects.get(name='Can add IP Event')
-    can_change_ip_event = Permission.objects.get(name='Can change IP Event')
-    can_delete_ip_event = Permission.objects.get(name='Can delete IP Event')
+    can_add_ip_event = Permission.objects.get(name='Can add Event Type')
+    can_change_ip_event = Permission.objects.get(name='Can change Event Type')
+    can_delete_ip_event = Permission.objects.get(name='Can delete Event Type')
     #can_add_ip = Permission.objects.get(name='Can add information package')
     #can_change_ip = Permission.objects.get(name='Can change information package')
     #can_delete_ip = Permission.objects.get(name='Can delete information package')    
