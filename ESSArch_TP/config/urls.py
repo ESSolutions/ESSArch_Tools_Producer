@@ -39,6 +39,9 @@ router.register(r'profile-sip', views.ProfileSIPViewSet)
 router.register(r'profile-aip', views.ProfileAIPViewSet)
 router.register(r'profile-dip', views.ProfileDIPViewSet)
 router.register(r'profile-workflow', views.ProfileWorkflowViewSet)
+router.register(r'parameters', views.ParameterViewSet)
+router.register(r'paths', views.PathViewSet)
+router.register(r'schemas', views.SchemaViewSet)
 
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
