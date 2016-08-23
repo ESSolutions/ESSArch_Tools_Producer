@@ -103,3 +103,16 @@ class EventType(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in EventType._meta.fields }
 
+"""
+Agents used for different operations
+"""
+class Agent(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    agentType      = models.CharField( max_length = 60, unique=True )
+    agentDetail    = models.CharField( max_length = 70 )
+
+    class Meta:
+        ordering = ["agentType"]
+        verbose_name = 'Agent'
+
+

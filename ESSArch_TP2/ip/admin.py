@@ -68,17 +68,16 @@ deleteIP.short_description = "Delete selected ip from DB and FS"
 Informaion Package
 """
 class IPAdmin( admin.ModelAdmin ):
-    list_display = ( 'Producer', 'Label', 'CreateDate', 'id', 'ObjectSize', 'ObjectNumItems', 'ObjectPath', 'State' )
-    search_fields = ( 'Producer', )
+    list_display = ( 'ArchivistOrganization', 'Label', 'CreateDate', 'id', 'ObjectSize', 'ObjectNumItems', 'ObjectPath', 'State' )
+    search_fields = ( 'ArchivistOrganization', )
     readonly_fields = ('id',)
-    list_filter = ('Producer', 'Label')
+    list_filter = ('ArchivistOrganization', 'Label')
     #fields = ('entity', 'value')
     fieldsets = (
                 (None,{
                    'classes': ('wide'),
                    'fields': (
                               'id',
-                              'Producer',
                               'Label',
                               'Content',
                               'Responsible',
@@ -91,6 +90,11 @@ class IPAdmin( admin.ModelAdmin ):
                               'Startdate',
                               'Enddate',
                               'OAIStype',
+                              'SubmissionAgreement',
+                              'ArchivalInstitution',
+                              'ArchivistOrganization',
+                              'ArchivalType',
+                              'ArchivalLocation',
                               )}),
                 )
 
