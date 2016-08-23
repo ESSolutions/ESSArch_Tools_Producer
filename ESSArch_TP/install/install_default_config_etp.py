@@ -27,7 +27,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from configuration.models import Parameter, Path, Schema, EventType
+from configuration.models import Parameter, Path, Schema, EventType, Agent
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
@@ -40,7 +40,8 @@ def installDefaultConfiguration(): # Install default configuration
     installDefaultParameters()	# Default Parameters
     installDefaultPaths()	# Default Paths
     installDefaultSchemas()	# Default XML Schemas
-    installDefaultEventTypes()	# Default IP events
+    installDefaultEventTypes()	# Default events
+    installDefaultAgent()	# Default Agent
 
     return 0
 
@@ -234,12 +235,12 @@ def installDefaultSchemas(): # default schema profiles for Sweden and Norway
     return 0
 
 
-def installDefaultEventTypes(): # default IP events
+def installDefaultEventTypes(): # default events
 
     # First remove all existing data
     EventType.objects.all().delete()
 
-    # create IP events dictionaries
+    # create events dictionaries
     dct = {
           'Prepare IP':'10100',
           'Create SIP':'10200',
@@ -256,6 +257,31 @@ def installDefaultEventTypes(): # default IP events
             pass
 
     return 0
+
+
+def installDefaultAgent(): # default Agent
+
+    # First remove all existing data
+    Agent.objects.all().delete()
+
+    # create agent dictionaries
+    dct = {
+          'System':'100',
+          'Organisation':'101',
+          'User':'102',
+          }
+
+    # create according to model with two fields
+    for key in dct :
+        print >> sys.stderr, "**", key
+        try:
+            le = Agent( agentType=dct[key], agentDetail=key )
+            le.save()
+        except:
+            pass
+
+    return 0
+
 
 
 if __name__ == '__main__':

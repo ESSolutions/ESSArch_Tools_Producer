@@ -24,7 +24,7 @@
 
 from django.contrib import admin
 
-from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow
+from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow, ProfilePreservationMetadata
 
 """
 Submission Agreement
@@ -116,6 +116,26 @@ class SubmissionAgreementAdmin( admin.ModelAdmin ):
                    'fields': (
 			      'profile_workflow',
                               )}),
+                ('Preservation metadata',{
+                   'classes': ('collapse','wide'),
+                   'fields': (
+                              'profile_preservation_metadata',
+                              )}),
+                ('Default Profiles',{
+                   'classes': ('collapse','wide'),
+                   'fields': (
+                              'default_profile_transfer_project',
+                              'default_profile_content_type',
+                              'default_profile_data_selection',
+                              'default_profile_classification',
+                              'default_profile_import',
+                              'default_profile_submit_description',
+                              'default_profile_sip',
+                              'default_profile_aip',
+                              'default_profile_dip',
+                              'default_profile_workflow',
+                              'default_profile_preservation_metadata',
+                              )}),
                 )
 
 admin.site.register(SubmissionAgreement, SubmissionAgreementAdmin)
@@ -139,30 +159,11 @@ class ProfileTransferProjectAdmin( admin.ModelAdmin ):
 			      'profile_transfer_project_status',
 			      'profile_transfer_project_label',
                               )}),
-                ('Metadata for transer project',{
+                ('Transfer project specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
-			      'archive_policy',
-			      'container_format',
-			      'container_format_compression',
-			      'submission_reception_validation',
-			      'submission_reception_exception_handling',
-			      'submission_reception_receipt_confirmation',
-			      'submission_risk',
-			      'submission_mitigation',
-			      'information_package_file',
-			      'submission_information_package_file',
-			      'archival_information_package_file',
-			      'dissemination_information_package_file',
-			      'submit_description_file',
-			      'content_type_specification_file',
-			      'archival_description_file',
-			      'authority_information_file',
-			      'preservation_description_file',
-			      'ip_event_description_file',
-			      'mimetypes_definition_file',
-			      'preservation_organization_receiver_email',
-			      'preservation_organization_receiver_url',
+                              'profile_transfer_project_specification',
+                              'profile_transfer_project_data',
                               )}),
                 )
 
@@ -188,10 +189,11 @@ class ProfileContentTypeAdmin( admin.ModelAdmin ):
 			      'profile_content_type_status',
 			      'profile_content_type_label',
                               )}),
-                ('Content type specification',{
+                ('Content type specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
 			      'profile_content_type_specification',
+			      'profile_content_type_data',
                               )}),
                 )
 
@@ -217,10 +219,11 @@ class ProfileDataSelectionAdmin( admin.ModelAdmin ):
                               'profile_data_selection_status',
                               'profile_data_selection_label',
                               )}),
-                ('Data selection specification',{
+                ('Data selection specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'profile_data_selection_specification',
+                              'profile_data_selection_data',
                               )}),
                 )
 
@@ -246,10 +249,11 @@ class ProfileClassificationAdmin( admin.ModelAdmin ):
                               'profile_classification_status',
                               'profile_classification_label',
                               )}),
-                ('Classification specification',{
+                ('Classification specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'profile_classification_specification',
+                              'profile_classification_data',
                               )}),
                 )
 
@@ -275,10 +279,11 @@ class ProfileImportAdmin( admin.ModelAdmin ):
                               'profile_import_status',
                               'profile_import_label',
                               )}),
-                ('Import specification',{
+                ('Import specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'profile_import_specification',
+                              'profile_import_data',
                               )}),
                 )
 
@@ -304,10 +309,11 @@ class ProfileSubmitDescriptionAdmin( admin.ModelAdmin ):
                               'profile_sd_status',
                               'profile_sd_label',
                               )}),
-                ('Submit description specification',{
+                ('Submit description specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'profile_sd_specification',
+                              'profile_sd_data',
                               )}),
                 )
 
@@ -347,14 +353,10 @@ class ProfileSIPAdmin( admin.ModelAdmin ):
                    'fields': (
                               'sip_structure',
                               )}),
-                ('SIP specification structure',{
+                ('SIP specification structure and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'sip_specification',
-                              )}),
-                ('SIP specification data',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
                               'sip_specification_data',
                               )}),
                 )
@@ -395,14 +397,10 @@ class ProfileAIPAdmin( admin.ModelAdmin ):
                    'fields': (
                               'aip_structure',
                               )}),
-                ('AIP specification structure',{
+                ('AIP specification structure and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'aip_specification',
-                              )}),
-                ('AIP specification data',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
                               'aip_specification_data',
                               )}),
                 )
@@ -443,14 +441,10 @@ class ProfileDIPAdmin( admin.ModelAdmin ):
                    'fields': (
                               'dip_structure',
                               )}),
-                ('DIP specification structure',{
+                ('DIP specification structure and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'dip_specification',
-                              )}),
-                ('DIP specification data',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
                               'dip_specification_data',
                               )}),
                 )
@@ -477,12 +471,43 @@ class ProfileWorkflowAdmin( admin.ModelAdmin ):
                               'profile_workflow_status',
                               'profile_workflow_label',
                               )}),
-                ('Workflow specification',{
+                ('Workflow specification and data',{
                    'classes': ('collapse','wide'),
                    'fields': (
                               'profile_workflow_specification',
+                              'profile_workflow_data',
                               )}),
                 )
 
 admin.site.register(ProfileWorkflow, ProfileWorkflowAdmin)
+
+
+"""
+Profile Preservation Metadata
+"""
+class ProfilePreservationMetadataAdmin( admin.ModelAdmin ):
+    list_display = ( 'profile_preservation_metadata_name', 'profile_preservation_metadata_type', 'profile_preservation_metadata_status', 'profile_preservation_metadata_label' )
+    search_fields = ( 'profile_preservation_metadata_name', )
+    readonly_fields = ('id',)
+    list_filter = ('profile_preservation_metadata_name', 'profile_preservation_metadata_label')
+    #fields = ('entity', 'value')
+    fieldsets = (
+                (None,{
+                   'classes': ('wide'),
+                   'fields': (
+                              'id', 
+                              'profile_preservation_metadata_name',
+                              'profile_preservation_metadata_type',
+                              'profile_preservation_metadata_status',
+                              'profile_preservation_metadata_label',
+                              )}),
+                ('Preservation Metadata specification and data',{
+                   'classes': ('collapse','wide'),
+                   'fields': (
+                              'profile_preservation_metadata_specification',
+                              'profile_preservation_metadata_data',
+                              )}),
+                )
+
+admin.site.register(ProfilePreservationMetadata, ProfilePreservationMetadataAdmin)
 

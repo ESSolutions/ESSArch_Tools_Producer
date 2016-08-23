@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 """
 
-from configuration.models import Parameter, Path, Schema, EventType
+from configuration.models import Parameter, Path, Schema, EventType, Agent
 from django.contrib import admin
 
 
@@ -63,11 +63,24 @@ admin.site.register(Schema, SchemaAdmin)
 
 
 """
-IP events
+Event types
 """
 class EventTypeAdmin( admin.ModelAdmin ):
     list_display = ( 'eventDetail', 'eventType' )
     search_fields = ( 'eventDetail', )
 
 admin.site.register( EventType, EventTypeAdmin )
+
+
+"""
+Agents used for different operations
+"""
+class AgentAdmin( admin.ModelAdmin ):
+    list_display = ( 'agentDetail', 'agentType' )
+    search_fields = ( 'agentDetail', )
+    readonly_fields = ('agentDetail',)
+    fields = ('agentType', 'agentDetail')
+
+admin.site.register(Agent, AgentAdmin)
+
 

@@ -75,7 +75,19 @@ class SubmissionAgreement(models.Model):
     profile_sip					= models.ForeignKey('ProfileSIP', on_delete=models.CASCADE)
     profile_aip					= models.ForeignKey('ProfileAIP', on_delete=models.CASCADE)
     profile_dip					= models.ForeignKey('ProfileDIP', on_delete=models.CASCADE)
-    profile_workflow				= models.ForeignKey('ProfileWorkflow', on_delete=models.CASCADE)
+    profile_workflow 				= models.ForeignKey('ProfileWorkflow', on_delete=models.CASCADE)
+    profile_preservation_metadata		= models.CharField( max_length = 255, default='' )
+    default_profile_transfer_project            = models.CharField( max_length = 255, default='')
+    default_profile_content_type                = models.CharField( max_length = 255, default='' )
+    default_profile_data_selection              = models.CharField( max_length = 255, default='' )
+    default_profile_classification              = models.CharField( max_length = 255, default='' )
+    default_profile_import                      = models.CharField( max_length = 255, default='' )
+    default_profile_submit_description          = models.CharField( max_length = 255, default='' )
+    default_profile_sip                         = models.CharField( max_length = 255, default='' )
+    default_profile_aip                         = models.CharField( max_length = 255, default='' )
+    default_profile_dip                         = models.CharField( max_length = 255, default='' )
+    default_profile_workflow                    = models.CharField( max_length = 255, default='' )
+    default_profile_preservation_metadata       = models.CharField( max_length = 255, default='' )
 
     class Meta:
         ordering = ["sa_name"]
@@ -101,27 +113,8 @@ class ProfileTransferProject(models.Model):
     profile_transfer_project_type		= models.CharField( max_length = 255 )
     profile_transfer_project_status		= models.CharField( max_length = 255 )
     profile_transfer_project_label		= models.CharField( max_length = 255 )
-    archive_policy				= models.CharField( max_length = 255 )
-    container_format				= models.CharField( max_length = 255 )
-    container_format_compression		= models.CharField( max_length = 255 )
-    submission_reception_validation		= models.CharField( max_length = 255 )
-    submission_reception_exception_handling	= models.CharField( max_length = 255 )
-    submission_reception_receipt_confirmation	= models.CharField( max_length = 255 )
-    submission_risk				= models.CharField( max_length = 255 )
-    submission_mitigation			= models.CharField( max_length = 255 )
-    information_package_file			= models.CharField( max_length = 255 )
-    submission_information_package_file		= models.CharField( max_length = 255 )
-    archival_information_package_file		= models.CharField( max_length = 255 )
-    dissemination_information_package_file	= models.CharField( max_length = 255 )
-    submit_description_file			= models.CharField( max_length = 255 )
-    content_type_specification_file		= models.CharField( max_length = 255 )
-    archival_description_file			= models.CharField( max_length = 255 )
-    authority_information_file			= models.CharField( max_length = 255 )
-    preservation_description_file		= models.CharField( max_length = 255 )
-    ip_event_description_file			= models.CharField( max_length = 255 )
-    mimetypes_definition_file			= models.CharField( max_length = 255 )
-    preservation_organization_receiver_email	= models.CharField( max_length = 255 )
-    preservation_organization_receiver_url	= models.CharField( max_length = 255 )
+    profile_transfer_project_specification	= models.TextField(default='')
+    profile_transfer_project_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_transfer_project_name"]
@@ -129,7 +122,7 @@ class ProfileTransferProject(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s - %s' % (self.profile_transfer_project_name, self.id)
+        return '%s - %s' % (self.profile_transfer_project_name, self.id) 
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -148,6 +141,7 @@ class ProfileContentType(models.Model):
     profile_content_type_status		= models.CharField( max_length = 255 )
     profile_content_type_label		= models.CharField( max_length = 255 )
     profile_content_type_specification	= models.TextField()
+    profile_content_type_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_content_type_name"]
@@ -174,6 +168,7 @@ class ProfileDataSelection(models.Model):
     profile_data_selection_status	= models.CharField( max_length = 255 )
     profile_data_selection_label	= models.CharField( max_length = 255 )
     profile_data_selection_specification	= models.TextField()
+    profile_data_selection_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_data_selection_name"]
@@ -200,6 +195,7 @@ class ProfileClassification(models.Model):
     profile_classification_status	= models.CharField( max_length = 255 )
     profile_classification_label	= models.CharField( max_length = 255 )
     profile_classification_specification	= models.TextField()
+    profile_classification_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_classification_name"]
@@ -226,6 +222,7 @@ class ProfileImport(models.Model):
     profile_import_status       = models.CharField( max_length = 255 )
     profile_import_label	= models.CharField( max_length = 255 )
     profile_import_specification        = models.TextField()
+    profile_import_data	        = models.TextField(default='')
 
     class Meta:
         ordering = ["profile_import_name"]
@@ -252,6 +249,7 @@ class ProfileSubmitDescription(models.Model):
     profile_sd_status       	= models.CharField( max_length = 255 )
     profile_sd_label		= models.CharField( max_length = 255 )
     profile_sd_specification    = models.TextField()
+    profile_sd_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_sd_name"]
@@ -390,6 +388,7 @@ class ProfileWorkflow(models.Model):
     profile_workflow_status		= models.CharField( max_length = 255 )
     profile_workflow_label		= models.CharField( max_length = 255 )
     profile_workflow_specification	= models.TextField()
+    profile_workflow_data		= models.TextField(default='')
 
     class Meta:
         ordering = ["profile_workflow_name"]
@@ -404,4 +403,30 @@ class ProfileWorkflow(models.Model):
         # name to the current value of the field
         return { field.name: field.value_to_string(self)
                  for field in ProfileWorkflow._meta.fields }
+
+"""
+Profile Preservation Metadata
+"""
+class ProfilePreservationMetadata(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_workflow
+    profile_preservation_metadata_name               = models.CharField( max_length = 255 )
+    profile_preservation_metadata_type               = models.CharField( max_length = 255 )
+    profile_preservation_metadata_status             = models.CharField( max_length = 255 )
+    profile_preservation_metadata_label              = models.CharField( max_length = 255 )
+    profile_preservation_metadata_specification      = models.TextField()
+    profile_preservation_metadata_data               = models.TextField()
+
+    class Meta:
+        ordering = ["profile_preservation_metadata_name"]
+        verbose_name = 'Profile Preservation Metadata'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.profile_preservation_metadata_name, self.id)
+
+    def get_value_array(self):
+        # make an associative array of all fields  mapping the field
+        # name to the current value of the field
+        return { field.name: field.value_to_string(self)
+                 for field in ProfilePreservationMetadata._meta.fields }
 

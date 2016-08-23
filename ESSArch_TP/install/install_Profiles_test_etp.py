@@ -26,7 +26,7 @@ import django
 django.setup()
 
 # own models etc
-from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow
+from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow, ProfilePreservationMetadata
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
@@ -46,6 +46,7 @@ def installProfiles(): # Install all different profiles
     installProfileAIP()  			# Profile Archival Information Package
     installProfileDIP()				# Profile Dissemination Information Package
     installProfileWorkflow()			# Profile Workflow
+    installProfilePreservationMetadata()		# Profile Preservation Metadata
 
     return 0
 
@@ -104,6 +105,18 @@ def installSubmissionAgreement(): # Submission Agreement
 	  'profile_aip':'550e8400-e29b-41d4a716-446655440008',
 	  'profile_dip':'550e8400-e29b-41d4a716-446655440009',
 	  'profile_workflow':'550e8400-e29b-41d4a716-446655440010',
+	  'profile_preservation_metadata':'550e8400-e29b-41d4a716-446655440011',
+          'default_profile_transfer_project':'550e8400-e29b-41d4a716-446655440001',
+          'default_profile_content_type':'550e8400-e29b-41d4a716-446655440002',
+          'default_profile_data_selection':'550e8400-e29b-41d4a716-446655440003',
+          'default_profile_classification':'550e8400-e29b-41d4a716-446655440004',
+          'default_profile_import':'550e8400-e29b-41d4a716-446655440005',
+          'default_profile_submit_description':'550e8400-e29b-41d4a716-446655440006',
+          'default_profile_sip':'550e8400-e29b-41d4a716-446655440007',
+          'default_profile_aip':'550e8400-e29b-41d4a716-446655440008',
+          'default_profile_dip':'550e8400-e29b-41d4a716-446655440009',
+          'default_profile_workflow':'550e8400-e29b-41d4a716-446655440010',
+          'default_profile_preservation_metadata':'550e8400-e29b-41d4a716-446655440011',
           }
 
     # create according to model with many fields
@@ -126,27 +139,8 @@ def installProfileTransferProject(): # Profile Transfer Project
 	  'profile_transfer_project_type':'Implementation',
 	  'profile_transfer_project_status':'Agreed',
 	  'profile_transfer_project_label':'Example of SIP for delivery of SE ERMS',
-	  'archive_policy':'Archive policy 1',
-	  'container_format':'TAR',
-	  'container_format_compression':'None',
-	  'submission_reception_validation':'Yes',
-	  'submission_reception_exception_handling':'None',
-	  'submission_reception_receipt_confirmation':'None',
-	  'submission_risk':'None',
-	  'submission_mitigation':'None',
-	  'information_package_file':'ip.xml',
-	  'submission_information_package_file':'sip.xml',
-	  'archival_information_package_file':'aip.xml',
-	  'dissemination_information_package_file':'dip.xml',
-	  'submit_description_file':'info.xml / ip_uuid',
-	  'content_type_specification_file':'erms.xml / siard.xml / etc',
-	  'archival_description_file':'ead.xml',
-	  'authority_information_file':'eac_cpf.xml',
-	  'preservation_description_file':'premis.xml',
-	  'ip_event_description_file':'ipevents.xml',
-	  'mimetypes_definition_file':'mime.types',
-	  'preservation_organization_receiver_email':'receiver@archive.xxx',
-	  'preservation_organization_receiver_url':'https://eta-demo.essarch.org,reta,reta',
+	  'profile_transfer_project_specification':'Any specification wrapped',
+	  'profile_transfer_project_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -170,6 +164,7 @@ def installProfileContentType(): # Profile Content Type
 	  'profile_content_type_status':'Draft',
 	  'profile_content_type_label':'Content based on SE ERMS specification',
 	  'profile_content_type_specification':'Any specification wrapped',
+	  'profile_content_type_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -193,6 +188,7 @@ def installProfileDataSelection(): # Profile Data Selection
 	  'profile_data_selection_status':'Draft',
 	  'profile_data_selection_label':'Data selection of business system xx',
 	  'profile_data_selection_specification':'Any specification wrapped',
+	  'profile_data_selection_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -216,6 +212,7 @@ def installProfileClassification(): # Profile Classification
 	  'profile_classification_status':'Draft',
 	  'profile_classification_label':'Classification of archived content',
 	  'profile_classification_specification':'Any specification wrapped',
+	  'profile_classification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -239,6 +236,7 @@ def installProfileImport(): # Profile Import
 	  'profile_import_status':'Draft',
 	  'profile_import_label':'Transformation from system x to specification y',
 	  'profile_import_specification':'Any specification wrapped',
+	  'profile_import_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -262,6 +260,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
 	  'profile_sd_status':'Draft',
 	  'profile_sd_label':'Desription of a one2one SIP2AIP',
 	  'profile_sd_specification':'Any specification wrapped',
+	  'profile_sd_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -387,6 +386,7 @@ def installProfileWorkflow(): # Profile Workflow
 	  'profile_workflow_status':'Draft',
 	  'profile_workflow_label':'Workflow Create SIP for Pre-Ingest',
 	  'profile_workflow_specification':'Any specification wrapped',
+	  'profile_workflow_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
@@ -396,6 +396,31 @@ def installProfileWorkflow(): # Profile Workflow
     print 'Installed profile workflow'
 
     return 0
+
+def installProfilePreservationMetadata(): # Profile Preservation Metadata
+
+    # First remove all existing data
+    #ProfilePreservationMetadata.objects.all().delete()
+
+    # create profile preservation metadata dictionaries
+    dct = {
+          'id':'550e8400-e29b-41d4a716-446655440011',
+          'profile_preservation_metadata_name':'Preservation profile xx',
+          'profile_preservation_metadata_type':'Implementation',
+          'profile_preservation_metadata_status':'Draft',
+          'profile_preservation_metadata_label':'Preservation profile for AIP xxyy',
+          'profile_preservation_metadata_specification':'Any specification wrapped',
+          'profile_preservation_metadata_data':'Any specification data wrapped',
+          }
+
+    # create according to model with many fields
+    ProfilePreservationMetadata.objects.create(**dct)
+
+    #logger.info('Installed Profile PreservationMetadata')
+    print 'Installed profile preservation metadata'
+
+    return 0
+
 
 if __name__ == '__main__':
     installProfiles()
