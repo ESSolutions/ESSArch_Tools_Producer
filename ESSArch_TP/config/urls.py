@@ -23,10 +23,10 @@ from preingest import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'archive-objects', views.ArchiveObjectViewSet)
+router.register(r'information-packages', views.InformationPackageViewSet)
 router.register(r'steps', views.ProcessStepViewSet)
 router.register(r'tasks', views.ProcessTaskViewSet)
-router.register(r'events', views.EventViewSet)
+router.register(r'events', views.EventIPViewSet)
 router.register(r'event-types', views.EventTypeViewSet)
 
 urlpatterns = [
