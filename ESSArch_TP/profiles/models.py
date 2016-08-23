@@ -83,7 +83,7 @@ class SubmissionAgreement(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.sa_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -129,7 +129,7 @@ class ProfileTransferProject(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_transfer_project_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -155,7 +155,7 @@ class ProfileContentType(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_content_type_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -181,7 +181,7 @@ class ProfileDataSelection(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_data_selection_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -207,7 +207,7 @@ class ProfileClassification(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_classification_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -233,7 +233,7 @@ class ProfileImport(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_import_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -259,7 +259,7 @@ class ProfileSubmitDescription(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_sd_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -297,7 +297,7 @@ class ProfileSIP(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_sip_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -334,7 +334,7 @@ class ProfileAIP(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_aip_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -371,7 +371,7 @@ class ProfileDIP(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_dip_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
@@ -397,7 +397,7 @@ class ProfileWorkflow(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.profile_workflow_name, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
