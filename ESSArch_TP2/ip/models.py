@@ -91,7 +91,10 @@ Events related to IP
 """
 class EventIP(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # eventIdentifierValue
-    eventType = models.ForeignKey('configuration.EventType')
+    eventType = models.ForeignKey(
+        'configuration.EventType',
+        on_delete=models.CASCADE
+    )
     eventType			= models.CharField( max_length = 255 )
     eventDateTime		= models.CharField( max_length = 255 )
     eventDetail			= models.CharField( max_length = 255 )
@@ -100,7 +103,11 @@ class EventIP(models.Model):
     eventOutcome		= models.CharField( max_length = 255 )
     eventOutcomeDetailNote	= models.CharField( max_length = 1024 )
     linkingAgentIdentifierValue	= models.CharField( max_length = 255 )
-    linkingObjectIdentifierValue = models.ForeignKey('InformationPackage', related_name='events')
+    linkingObjectIdentifierValue = models.ForeignKey(
+        'InformationPackage',
+        on_delete=models.CASCADE,
+        related_name='events'
+    )
 
     class Meta:
         ordering = ["eventType"]
