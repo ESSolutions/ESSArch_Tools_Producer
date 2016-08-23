@@ -95,7 +95,6 @@ class EventIP(models.Model):
         'configuration.EventType',
         on_delete=models.CASCADE
     )
-    eventType			= models.CharField( max_length = 255 )
     eventDateTime		= models.CharField( max_length = 255 )
     eventDetail			= models.CharField( max_length = 255 )
     eventApplication		= models.CharField( max_length = 255 )
