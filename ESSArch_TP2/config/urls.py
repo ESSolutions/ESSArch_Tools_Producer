@@ -28,6 +28,17 @@ router.register(r'steps', views.ProcessStepViewSet)
 router.register(r'tasks', views.ProcessTaskViewSet)
 router.register(r'events', views.EventIPViewSet)
 router.register(r'event-types', views.EventTypeViewSet)
+router.register(r'submission-agreements', views.SubmissionAgreementViewSet)
+router.register(r'profile-transfer-project', views.ProfileTransferProjectViewSet)
+router.register(r'profile-contenti-type', views.ProfileContentTypeViewSet)
+router.register(r'profile-data-selection', views.ProfileDataSelectionViewSet)
+router.register(r'profile-classification', views.ProfileClassificationViewSet)
+router.register(r'profile-import', views.ProfileImportViewSet)
+router.register(r'profile-submit-description', views.ProfileSubmitDescriptionViewSet)
+router.register(r'profile-sip', views.ProfileSIPViewSet)
+router.register(r'profile-aip', views.ProfileAIPViewSet)
+router.register(r'profile-dip', views.ProfileDIPViewSet)
+router.register(r'profile-workflow', views.ProfileWorkflowViewSet)
 
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
