@@ -66,28 +66,62 @@ class SubmissionAgreement(models.Model):
     sa_designated_community_individual_phone	= models.CharField( max_length = 255 )
     sa_designated_community_individual_email	= models.CharField( max_length = 255 )
     sa_designated_community_individual_additional	= models.CharField( max_length = 255 )
-    #profile_transfer_project			= models.ForeignKey('ProfileTransferProject', on_delete=models.CASCADE)
-    #profile_content_type			= models.ForeignKey('ProfileContentType', on_delete=models.CASCADE)
-    #profile_data_selection			= models.ForeignKey('ProfileDataSelection', on_delete=models.CASCADE)
-    #profile_classification			= models.ForeignKey('ProfileClassification', on_delete=models.CASCADE)
-    #profile_import				= models.ForeignKey('ProfileImport', on_delete=models.CASCADE)
-    #profile_submit_description			= models.ForeignKey('ProfileSubmitDescription', on_delete=models.CASCADE)
-    #profile_sip					= models.ForeignKey('ProfileSIP', on_delete=models.CASCADE)
-    #profile_aip					= models.ForeignKey('ProfileAIP', on_delete=models.CASCADE)
-    #profile_dip					= models.ForeignKey('ProfileDIP', on_delete=models.CASCADE)
-    #profile_workflow 				= models.ForeignKey('ProfileWorkflow', on_delete=models.CASCADE)
-    #profile_preservation_metadata		= models.CharField( max_length = 255, default='' )
-    #default_profile_transfer_project            = models.CharField( max_length = 255, default='')
-    #default_profile_content_type                = models.CharField( max_length = 255, default='' )
-    #default_profile_data_selection              = models.CharField( max_length = 255, default='' )
-    #default_profile_classification              = models.CharField( max_length = 255, default='' )
-    #default_profile_import                      = models.CharField( max_length = 255, default='' )
-    #default_profile_submit_description          = models.CharField( max_length = 255, default='' )
-    #default_profile_sip                         = models.CharField( max_length = 255, default='' )
-    #default_profile_aip                         = models.CharField( max_length = 255, default='' )
-    #default_profile_dip                         = models.CharField( max_length = 255, default='' )
-    #default_profile_workflow                    = models.CharField( max_length = 255, default='' )
-    #default_profile_preservation_metadata       = models.CharField( max_length = 255, default='' )
+
+    profile_transfer_project			= models.ManyToManyField(
+                                                    'ProfileTransferProject',
+                                                    through='ProfileTransferProjectRel',
+                                                    through_fields=('submissionagreement', 'profiletransferproject')
+                                                )
+    profile_content_type			= models.ManyToManyField(
+                                                    'ProfileContentType',
+                                                    through='ProfileContentTypeRel',
+                                                    through_fields=('submissionagreement', 'profilecontenttype')
+                                                )
+    profile_data_selection			= models.ManyToManyField(
+                                                    'ProfileDataSelection',
+                                                    through='ProfileDataSelectionRel',
+                                                    through_fields=('submissionagreement', 'profiledataselection')
+                                                )
+    profile_classification			= models.ManyToManyField(
+                                                    'ProfileClassification',
+                                                    through='ProfileClassificationRel',
+                                                    through_fields=('submissionagreement', 'profileclassification')
+                                                )
+    profile_import				= models.ManyToManyField(
+                                                    'ProfileImport',
+                                                    through='ProfileImportRel',
+                                                    through_fields=('submissionagreement', 'profileimport')
+                                                )
+    profile_submit_description			= models.ManyToManyField(
+                                                    'ProfileSubmitDescription',
+                                                    through='ProfileSubmitDescriptionRel',
+                                                    through_fields=('submissionagreement', 'profilesubmitdescription')
+                                                )
+    profile_sip					= models.ManyToManyField(
+                                                    'ProfileSIP',
+                                                    through='ProfileSIPRel',
+                                                    through_fields=('submissionagreement', 'profilesip')
+                                                )
+    profile_aip					= models.ManyToManyField(
+                                                    'ProfileAIP',
+                                                    through='ProfileAIPRel',
+                                                    through_fields=('submissionagreement', 'profileaip')
+                                                )
+    profile_dip					= models.ManyToManyField(
+                                                    'ProfileDIP',
+                                                    through='ProfileDIPRel',
+                                                    through_fields=('submissionagreement', 'profiledip')
+                                                )
+    profile_workflow 				= models.ManyToManyField(
+                                                    'ProfileWorkflow',
+                                                    through='ProfileWorkflowRel',
+                                                    through_fields=('submissionagreement', 'profileworkflow')
+                                                )
+    profile_preservation_metadata 		= models.ManyToManyField(
+                                                    'ProfilePreservationMetadata',
+                                                    through='ProfilePreservationMetadataRel',
+                                                    through_fields=('submissionagreement', 'profilepreservationmetadata')
+                                                )
 
     class Meta:
         ordering = ["sa_name"]
