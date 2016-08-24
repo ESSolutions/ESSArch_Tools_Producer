@@ -66,28 +66,28 @@ class SubmissionAgreement(models.Model):
     sa_designated_community_individual_phone	= models.CharField( max_length = 255 )
     sa_designated_community_individual_email	= models.CharField( max_length = 255 )
     sa_designated_community_individual_additional	= models.CharField( max_length = 255 )
-    profile_transfer_project			= models.ForeignKey('ProfileTransferProject', on_delete=models.CASCADE)
-    profile_content_type			= models.ForeignKey('ProfileContentType', on_delete=models.CASCADE)
-    profile_data_selection			= models.ForeignKey('ProfileDataSelection', on_delete=models.CASCADE)
-    profile_classification			= models.ForeignKey('ProfileClassification', on_delete=models.CASCADE)
-    profile_import				= models.ForeignKey('ProfileImport', on_delete=models.CASCADE)
-    profile_submit_description			= models.ForeignKey('ProfileSubmitDescription', on_delete=models.CASCADE)
-    profile_sip					= models.ForeignKey('ProfileSIP', on_delete=models.CASCADE)
-    profile_aip					= models.ForeignKey('ProfileAIP', on_delete=models.CASCADE)
-    profile_dip					= models.ForeignKey('ProfileDIP', on_delete=models.CASCADE)
-    profile_workflow 				= models.ForeignKey('ProfileWorkflow', on_delete=models.CASCADE)
-    profile_preservation_metadata		= models.CharField( max_length = 255, default='' )
-    default_profile_transfer_project            = models.CharField( max_length = 255, default='')
-    default_profile_content_type                = models.CharField( max_length = 255, default='' )
-    default_profile_data_selection              = models.CharField( max_length = 255, default='' )
-    default_profile_classification              = models.CharField( max_length = 255, default='' )
-    default_profile_import                      = models.CharField( max_length = 255, default='' )
-    default_profile_submit_description          = models.CharField( max_length = 255, default='' )
-    default_profile_sip                         = models.CharField( max_length = 255, default='' )
-    default_profile_aip                         = models.CharField( max_length = 255, default='' )
-    default_profile_dip                         = models.CharField( max_length = 255, default='' )
-    default_profile_workflow                    = models.CharField( max_length = 255, default='' )
-    default_profile_preservation_metadata       = models.CharField( max_length = 255, default='' )
+    #profile_transfer_project			= models.ForeignKey('ProfileTransferProject', on_delete=models.CASCADE)
+    #profile_content_type			= models.ForeignKey('ProfileContentType', on_delete=models.CASCADE)
+    #profile_data_selection			= models.ForeignKey('ProfileDataSelection', on_delete=models.CASCADE)
+    #profile_classification			= models.ForeignKey('ProfileClassification', on_delete=models.CASCADE)
+    #profile_import				= models.ForeignKey('ProfileImport', on_delete=models.CASCADE)
+    #profile_submit_description			= models.ForeignKey('ProfileSubmitDescription', on_delete=models.CASCADE)
+    #profile_sip					= models.ForeignKey('ProfileSIP', on_delete=models.CASCADE)
+    #profile_aip					= models.ForeignKey('ProfileAIP', on_delete=models.CASCADE)
+    #profile_dip					= models.ForeignKey('ProfileDIP', on_delete=models.CASCADE)
+    #profile_workflow 				= models.ForeignKey('ProfileWorkflow', on_delete=models.CASCADE)
+    #profile_preservation_metadata		= models.CharField( max_length = 255, default='' )
+    #default_profile_transfer_project            = models.CharField( max_length = 255, default='')
+    #default_profile_content_type                = models.CharField( max_length = 255, default='' )
+    #default_profile_data_selection              = models.CharField( max_length = 255, default='' )
+    #default_profile_classification              = models.CharField( max_length = 255, default='' )
+    #default_profile_import                      = models.CharField( max_length = 255, default='' )
+    #default_profile_submit_description          = models.CharField( max_length = 255, default='' )
+    #default_profile_sip                         = models.CharField( max_length = 255, default='' )
+    #default_profile_aip                         = models.CharField( max_length = 255, default='' )
+    #default_profile_dip                         = models.CharField( max_length = 255, default='' )
+    #default_profile_workflow                    = models.CharField( max_length = 255, default='' )
+    #default_profile_preservation_metadata       = models.CharField( max_length = 255, default='' )
 
     class Meta:
         ordering = ["sa_name"]
@@ -103,6 +103,26 @@ class SubmissionAgreement(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in SubmissionAgreement._meta.fields }
 
+Profile_Status_CHOICES = (
+    (0, 'Disabled'),
+    (1, 'Enabled'),
+    (2, 'Default'),
+)
+
+"""
+Relation - Profile Transfer Project
+"""
+class ProfileTransferProjectRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profiletransferproject = models.ForeignKey('ProfileTransferProject')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileTransferProject'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Transfer Project
@@ -130,6 +150,20 @@ class ProfileTransferProject(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileTransferProject._meta.fields }
 
+"""
+Relation - Profile Content Type
+"""
+class ProfileContentTypeRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profilecontenttype = models.ForeignKey('ProfileContentType')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileContentType'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Content Type
@@ -157,6 +191,20 @@ class ProfileContentType(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileContentType._meta.fields }
 
+"""
+Relation - Profile Data Selection
+"""
+class ProfileDataSelectionRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profiledataselection = models.ForeignKey('ProfileDataSelection')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileDataSelection'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Data Selection
@@ -184,6 +232,20 @@ class ProfileDataSelection(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileDataSelection._meta.fields }
 
+"""
+Relation - Profile Classification
+"""
+class ProfileClassificationRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profileclassification = models.ForeignKey('ProfileClassification')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileClassification'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Classification
@@ -211,6 +273,20 @@ class ProfileClassification(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileClassification._meta.fields }
 
+"""
+Relation - Profile Import
+"""
+class ProfileImportRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profileimport = models.ForeignKey('ProfileImport')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileImport'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Import
@@ -238,6 +314,20 @@ class ProfileImport(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileImport._meta.fields }
 
+"""
+Relation - Profile Submit Description
+"""
+class ProfileSubmitDescriptionRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profilesubmitdescription = models.ForeignKey('ProfileSubmitDescription')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileSubmitDescription'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Submit Description
@@ -265,7 +355,20 @@ class ProfileSubmitDescription(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileSubmitDescription._meta.fields }
 
-
+"""
+Relation - SIP (Submission Information Package)
+"""
+class ProfileSIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profilesip = models.ForeignKey('ProfileSIP')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileSIP'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile SIP (Submission Information Package)
@@ -303,6 +406,20 @@ class ProfileSIP(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileSIP._meta.fields }
 
+"""
+Relation - AIP (Archival Information Package)
+"""
+class ProfileAIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profileaip = models.ForeignKey('ProfileAIP')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileAIP'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile AIP (Archival Information Package)
@@ -340,6 +457,20 @@ class ProfileAIP(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileAIP._meta.fields }
 
+"""
+Relation - DIP (Dissemination Information Package)
+"""
+class ProfileDIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profiledip = models.ForeignKey('ProfileDIP')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileDIP'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile DIP (Dissemination Information Package)
@@ -377,6 +508,20 @@ class ProfileDIP(models.Model):
         return { field.name: field.value_to_string(self)
                  for field in ProfileDIP._meta.fields }
 
+"""
+Relation - Workflow
+"""
+class ProfileWorkflowRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profileworkflow = models.ForeignKey('ProfileWorkflow')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfileWorkflow'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Workflow
@@ -403,6 +548,21 @@ class ProfileWorkflow(models.Model):
         # name to the current value of the field
         return { field.name: field.value_to_string(self)
                  for field in ProfileWorkflow._meta.fields }
+
+"""
+Relation - Preservation Metadata
+"""
+class ProfilePreservationMetadataRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
+    profilepreservationmetadata = models.ForeignKey('ProfilePreservationMetadata')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    class Meta:
+        verbose_name = 'ProfilePreservationMetadata'
+        ordering = ['status']
+        
+    def __unicode__(self):
+        return unicode(self.id)
 
 """
 Profile Preservation Metadata
