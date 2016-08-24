@@ -24,7 +24,64 @@
 
 from django.contrib import admin
 
-from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow, ProfilePreservationMetadata
+from profiles.models import (
+                             SubmissionAgreement, 
+                             ProfileTransferProject, ProfileTransferProjectRel, 
+                             ProfileContentType, ProfileContentTypeRel,  
+                             ProfileDataSelection, ProfileDataSelectionRel,
+                             ProfileClassification, ProfileClassificationRel, 
+                             ProfileImport, ProfileImportRel, 
+                             ProfileSubmitDescription, ProfileSubmitDescriptionRel,
+                             ProfileSIP, ProfileSIPRel,
+                             ProfileAIP, ProfileAIPRel,
+                             ProfileDIP, ProfileDIPRel, 
+                             ProfileWorkflow, ProfileWorkflowRel,
+                             ProfilePreservationMetadata, ProfilePreservationMetadataRel,
+                             )
+
+class profile_transfer_project_Inline(admin.TabularInline):
+    model = ProfileTransferProjectRel
+    extra = 0
+
+class  profile_content_type_Inline(admin.TabularInline):
+    model = ProfileContentTypeRel
+    extra = 0
+    
+class profile_data_selection_Inline(admin.TabularInline):
+    model = ProfileDataSelectionRel
+    extra = 0
+
+class profile_classification_Inline(admin.TabularInline):
+    model = ProfileClassificationRel
+    extra = 0
+
+class profile_import_Inline(admin.TabularInline):
+    model = ProfileImportRel
+    extra = 0
+
+class profile_submit_description_Inline(admin.TabularInline):
+    model = ProfileSubmitDescriptionRel
+    extra = 0
+    
+class profile_sip_Inline(admin.TabularInline):
+    model = ProfileSIPRel
+    extra = 0
+    
+class profile_aip_Inline(admin.TabularInline):
+    model = ProfileAIPRel
+    extra = 0
+
+class profile_dip_Inline(admin.TabularInline):
+    model = ProfileDIPRel
+    extra = 0
+
+class profile_workflow_Inline(admin.TabularInline):
+    model = ProfileWorkflowRel
+    extra = 0
+
+class profile_preservation_metadata_Inline(admin.TabularInline):
+    model = ProfilePreservationMetadataRel
+    extra = 0
 
 """
 Submission Agreement
@@ -35,6 +92,19 @@ class SubmissionAgreementAdmin( admin.ModelAdmin ):
     readonly_fields = ('id',)
     list_filter = ('sa_name', 'sa_type')
     #fields = ('entity', 'value')
+    inlines = (
+               profile_transfer_project_Inline,
+               profile_content_type_Inline,
+               profile_data_selection_Inline,
+               profile_classification_Inline,
+               profile_import_Inline,
+               profile_submit_description_Inline,
+               profile_sip_Inline,
+               profile_aip_Inline,
+               profile_dip_Inline,
+               profile_workflow_Inline,
+               profile_preservation_metadata_Inline,
+               )
     fieldsets = (
                 (None,{
                    'classes': ('wide'),
@@ -94,48 +164,35 @@ class SubmissionAgreementAdmin( admin.ModelAdmin ):
 			      'sa_designated_community_individual_email',
 			      'sa_designated_community_individual_additional',
                               )}),
-                ('Profiles',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
-			      'profile_transfer_project',
-			      'profile_content_type',
-			      'profile_data_selection',
-			      'profile_classification',
-			      'profile_import',
-			      'profile_submit_description',
-                              )}),
-                ('Information Packages Characteristics',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
-			      'profile_sip',
-			      'profile_aip',
-			      'profile_dip',
-                              )}),
-                ('Workflows',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
-			      'profile_workflow',
-                              )}),
-                ('Preservation metadata',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
-                              'profile_preservation_metadata',
-                              )}),
-                ('Default Profiles',{
-                   'classes': ('collapse','wide'),
-                   'fields': (
-                              'default_profile_transfer_project',
-                              'default_profile_content_type',
-                              'default_profile_data_selection',
-                              'default_profile_classification',
-                              'default_profile_import',
-                              'default_profile_submit_description',
-                              'default_profile_sip',
-                              'default_profile_aip',
-                              'default_profile_dip',
-                              'default_profile_workflow',
-                              'default_profile_preservation_metadata',
-                              )}),
+                 
+#                ('Profiles',{
+#                  'classes': ('collapse','wide'),
+#                   'fields': (
+#                              inlines = (profile_transfer_project_Inline,)
+#			      'profile_transfer_project',
+#			      'profile_content_type',
+#			      'profile_data_selection',
+#			      'profile_classification',
+#			      'profile_import',
+#			      'profile_submit_description',
+#                              )}),
+#                ('Information Packages Characteristics',{
+#                   'classes': ('collapse','wide'),
+#                   'fields': (
+#			      'profile_sip',
+#			      'profile_aip',
+#			      'profile_dip',
+#                              )}),
+#                ('Workflows',{
+#                   'classes': ('collapse','wide'),
+#                   'fields': (
+#			      'profile_workflow',
+#                              )}),
+#                ('Preservation metadata',{
+#                   'classes': ('collapse','wide'),
+#                   'fields': (
+#                              'profile_preservation_metadata',
+#                              )}),
                 )
 
 admin.site.register(SubmissionAgreement, SubmissionAgreementAdmin)
