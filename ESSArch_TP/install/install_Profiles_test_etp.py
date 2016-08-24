@@ -26,16 +26,41 @@ import django
 django.setup()
 
 # own models etc
-from profiles.models import SubmissionAgreement, ProfileTransferProject, ProfileContentType, ProfileDataSelection, ProfileClassification, ProfileImport, ProfileSubmitDescription, ProfileSIP, ProfileAIP, ProfileDIP, ProfileWorkflow, ProfilePreservationMetadata
+from profiles.models import (
+    SubmissionAgreement,
+    ProfileTransferProject,
+    ProfileTransferProjectRel,
+    ProfileContentType,
+    ProfileContentTypeRel,
+    ProfileDataSelection,
+    ProfileDataSelectionRel,
+    ProfileClassification,
+    ProfileClassificationRel,
+    ProfileImport,
+    ProfileImportRel,
+    ProfileSubmitDescription,
+    ProfileSubmitDescriptionRel,
+    ProfileSIP,
+    ProfileSIPRel,
+    ProfileAIP,
+    ProfileAIPRel,
+    ProfileDIP,
+    ProfileDIPRel,
+    ProfileWorkflow,
+    ProfileWorkflowRel,
+    ProfilePreservationMetadata,
+    ProfilePreservationMetadataRel,
+)
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
 #zone = "zone1" # ETP=zone1, ETA=zone2
 
 def installProfiles(): # Install all different profiles
+    # First remove all existing data
+    SubmissionAgreement.objects.all().delete()
 
     # install default configuration
-    installSubmissionAgreement()     		# Submission Agreement
     installProfileTransferProject()   		# Profile Transfer Project
     installProfileContentType()         	# Profile Content Type
     installProfileDataSelection()       	# Profile Data Selection
@@ -47,13 +72,11 @@ def installProfiles(): # Install all different profiles
     installProfileDIP()				# Profile Dissemination Information Package
     installProfileWorkflow()			# Profile Workflow
     installProfilePreservationMetadata()		# Profile Preservation Metadata
+    installSubmissionAgreement()     		# Submission Agreement
 
     return 0
 
 def installSubmissionAgreement(): # Submission Agreement
-
-    # First remove all existing data
-    #SubmissionAgreement.objects.all().delete()
 
     # create submission agreement dictionaries
     dct = {
@@ -95,32 +118,88 @@ def installSubmissionAgreement(): # Submission Agreement
 	  'sa_designated_community_individual_phone':'46 (0)8-2002001',
 	  'sa_designated_community_individual_email':'Elvis.Presley@xxx.org',
 	  'sa_designated_community_individual_additional':'Celebrity',
-	  'profile_transfer_project':'550e8400-e29b-41d4a716-446655440001',
-	  'profile_content_type':'550e8400-e29b-41d4a716-446655440002',
-	  'profile_data_selection':'550e8400-e29b-41d4a716-446655440003',
-	  'profile_classification':'550e8400-e29b-41d4a716-446655440004',
-	  'profile_import':'550e8400-e29b-41d4a716-446655440005',
-	  'profile_submit_description':'550e8400-e29b-41d4a716-446655440006',
-	  'profile_sip':'550e8400-e29b-41d4a716-446655440007',
-	  'profile_aip':'550e8400-e29b-41d4a716-446655440008',
-	  'profile_dip':'550e8400-e29b-41d4a716-446655440009',
-	  'profile_workflow':'550e8400-e29b-41d4a716-446655440010',
-	  'profile_preservation_metadata':'550e8400-e29b-41d4a716-446655440011',
-          'default_profile_transfer_project':'550e8400-e29b-41d4a716-446655440001',
-          'default_profile_content_type':'550e8400-e29b-41d4a716-446655440002',
-          'default_profile_data_selection':'550e8400-e29b-41d4a716-446655440003',
-          'default_profile_classification':'550e8400-e29b-41d4a716-446655440004',
-          'default_profile_import':'550e8400-e29b-41d4a716-446655440005',
-          'default_profile_submit_description':'550e8400-e29b-41d4a716-446655440006',
-          'default_profile_sip':'550e8400-e29b-41d4a716-446655440007',
-          'default_profile_aip':'550e8400-e29b-41d4a716-446655440008',
-          'default_profile_dip':'550e8400-e29b-41d4a716-446655440009',
-          'default_profile_workflow':'550e8400-e29b-41d4a716-446655440010',
-          'default_profile_preservation_metadata':'550e8400-e29b-41d4a716-446655440011',
-          }
+    }
 
     # create according to model with many fields
-    SubmissionAgreement.objects.create(**dct)
+    sa = SubmissionAgreement.objects.create(**dct)
+
+    ProfileTransferProjectRel.objects.create(
+        profiletransferproject=ProfileTransferProject.objects.get(
+            id="550e8400-e29b-41d4a716-446655440001"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileContentTypeRel.objects.create(
+        profilecontenttype=ProfileContentType.objects.get(
+            id="550e8400-e29b-41d4a716-446655440002"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileDataSelectionRel.objects.create(
+        profiledataselection=ProfileDataSelection.objects.get(
+            id="550e8400-e29b-41d4a716-446655440003"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileClassificationRel.objects.create(
+        profileclassification=ProfileClassification.objects.get(
+            id="550e8400-e29b-41d4a716-446655440004"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileImportRel.objects.create(
+        profileimport=ProfileImport.objects.get(
+            id="550e8400-e29b-41d4a716-446655440005"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileSubmitDescriptionRel.objects.create(
+        profilesubmitdescription=ProfileSubmitDescription.objects.get(
+            id="550e8400-e29b-41d4a716-446655440006"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileSIPRel.objects.create(
+        profilesip=ProfileSIP.objects.get(
+            id="550e8400-e29b-41d4a716-446655440007"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileAIPRel.objects.create(
+        profileaip=ProfileAIP.objects.get(
+            id="550e8400-e29b-41d4a716-446655440008"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileDIPRel.objects.create(
+        profiledip=ProfileDIP.objects.get(
+            id="550e8400-e29b-41d4a716-446655440009"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfileWorkflowRel.objects.create(
+        profileworkflow=ProfileWorkflow.objects.get(
+            id="550e8400-e29b-41d4a716-446655440010"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
+    ProfilePreservationMetadataRel.objects.create(
+        profilepreservationmetadata=ProfilePreservationMetadata.objects.get(
+            id="550e8400-e29b-41d4a716-446655440011"
+        ),
+        submissionagreement=sa,
+        status=2
+    )
 
     #logger.info('Installed Submission Agreement')
     print 'Installed submission agreement'
@@ -130,7 +209,7 @@ def installSubmissionAgreement(): # Submission Agreement
 def installProfileTransferProject(): # Profile Transfer Project
 
     # First remove all existing data
-    #ProfileTransferProject.objects.all().delete()
+    ProfileTransferProject.objects.all().delete()
 
     # create profile transfer project dictionaries
     dct = {
@@ -154,7 +233,7 @@ def installProfileTransferProject(): # Profile Transfer Project
 def installProfileContentType(): # Profile Content Type
 
     # First remove all existing data
-    #ProfileContentType.objects.all().delete()
+    ProfileContentType.objects.all().delete()
 
     # create profile content type dictionaries
     dct = {
@@ -178,7 +257,7 @@ def installProfileContentType(): # Profile Content Type
 def installProfileDataSelection(): # Profile Data Selection
 
     # First remove all existing data
-    #ProfileDataSelection.objects.all().delete()
+    ProfileDataSelection.objects.all().delete()
 
     # create profile data selection dictionaries
     dct = {
@@ -202,7 +281,7 @@ def installProfileDataSelection(): # Profile Data Selection
 def installProfileClassification(): # Profile Classification
 
     # First remove all existing data
-    #ProfileClassification.objects.all().delete()
+    ProfileClassification.objects.all().delete()
 
     # create profile classification dictionaries
     dct = {
@@ -226,7 +305,7 @@ def installProfileClassification(): # Profile Classification
 def installProfileImport(): # Profile Import
 
     # First remove all existing data
-    #ProfileImport.objects.all().delete()
+    ProfileImport.objects.all().delete()
 
     # create profile import dictionaries
     dct = {
@@ -250,7 +329,7 @@ def installProfileImport(): # Profile Import
 def installProfileSubmitDescription(): # Profile Submit Description
 
     # First remove all existing data
-    #ProfileSubmitDescription.objects.all().delete()
+    ProfileSubmitDescription.objects.all().delete()
 
     # create profile submit description dictionaries
     dct = {
@@ -274,7 +353,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
 def installProfileSIP(): # Profile Submission Information Package
 
     # First remove all existing data
-    #ProfileSIP.objects.all().delete()
+    ProfileSIP.objects.all().delete()
 
     # create profile submission information package dictionaries
     dct = {
@@ -308,7 +387,7 @@ def installProfileSIP(): # Profile Submission Information Package
 def installProfileAIP(): # Profile Archival Information Package
 
     # First remove all existing data
-    #ProfileAIP.objects.all().delete()
+    ProfileAIP.objects.all().delete()
 
     # create profile archival information package dictionaries
     dct = {
@@ -342,7 +421,7 @@ def installProfileAIP(): # Profile Archival Information Package
 def installProfileDIP(): # Profile Dissemination Information Package
 
     # First remove all existing data
-    #ProfileDIP.objects.all().delete()
+    ProfileDIP.objects.all().delete()
 
     # create profile dissemination information package dictionaries
     dct = {
@@ -376,7 +455,7 @@ def installProfileDIP(): # Profile Dissemination Information Package
 def installProfileWorkflow(): # Profile Workflow
 
     # First remove all existing data
-    #ProfileWorkflow.objects.all().delete()
+    ProfileWorkflow.objects.all().delete()
 
     # create profile workflow dictionaries
     dct = {
@@ -400,7 +479,7 @@ def installProfileWorkflow(): # Profile Workflow
 def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     # First remove all existing data
-    #ProfilePreservationMetadata.objects.all().delete()
+    ProfilePreservationMetadata.objects.all().delete()
 
     # create profile preservation metadata dictionaries
     dct = {
