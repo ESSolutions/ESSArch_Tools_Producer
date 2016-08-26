@@ -39,7 +39,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         templateUrl: '/static/frontend/views/recieve_sip.html',
         controller: 'IpApprovalCtrl as vm'
     })
-
+    .when('/login', {
+        templateUrl: '/static/frontend/views/login.html',
+        controller: 'IpApprovalCtrl as vm'
+    })
     .otherwise({
         redirectTo: '/404'
     });

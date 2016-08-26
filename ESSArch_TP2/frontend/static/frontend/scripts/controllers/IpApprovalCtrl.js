@@ -4,44 +4,44 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
-$scope.archiveSelected = false;
+$scope.ipSelected = false;
     $scope.stateClicked = function(row){
         console.log(row);
-        if($scope.statusShow && $scope.archive == row){
+        if($scope.statusShow && $scope.ip == row){
             $scope.statusShow = false;
-            $scope.archiveSelected = false;
+            $scope.ipSelected = false;
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
-            $scope.archiveSelected = true;
+            $scope.ipSelected = true;
         }
         $scope.select = false;
-        $scope.archive = row;
+        $scope.ip = row;
     };
 
-    $scope.archiveTableClick = function(row) {
-        console.log("archive object clicked. row: "+row.label);
-        if($scope.select && $scope.archive == row){
+    $scope.ipTableClick = function(row) {
+        console.log("ip object clicked. row: "+row.label);
+        if($scope.select && $scope.ip == row){
             $scope.select = false;
-            $scope.archiveSelected = false;
+            $scope.ipSelected = false;
         } else {
             $scope.select = true;
-            $scope.archiveSelected = true;
+            $scope.ipSelected = true;
         }
         $scope.statusShow = false;
-        $scope.archive = row;
+        $scope.ip = row;
     };
     //Getting data for list view
     $scope.getListViewData = function() {
-        if(!$scope.archiveSelected){
+        if(!$scope.ipSelected){
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'archive-objects/'
+                url: appConfig.djangoUrl+'information-packages/'
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
-                $scope.archiveObjectsRowCollection = data;
+                $scope.ipRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };
