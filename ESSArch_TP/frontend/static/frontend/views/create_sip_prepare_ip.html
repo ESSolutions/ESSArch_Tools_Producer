@@ -12,7 +12,7 @@
             <div ng-include src="'static/frontend/views/sub_menu.html'"></div>
             <div class="content-wrapper">
                 <div class="list-view">
-                    <table st-table="archiveObjectsCollection" st-safe-src="archiveObjectsRowCollection" class="table table-striped">
+                    <table st-table="ipCollection" st-safe-src="ipRowCollection" class="table table-striped">
                         <thead>
                             <tr>
                                 <th st-sort="label" class="column-label">Label</th>
@@ -28,15 +28,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" class="table-item">
-                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.label}}</td>
-                                <td class="clickable" ng-click="archiveTableClick(row)">{{row.ObjectUUID}}</td>
-                                <td>{{'user'}}</td>
-                                <td>{{'time created'}}</td>
-                                <td class="clickable" ng-click="stateClicked(row)"><a href="">{{'state'}}</a></td>
+                            <tr st-select-row="row" ng-repeat="row in ipCollection" class="table-item">
+                                <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
+                                <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
+                                <td>{{row.Responsible}}</td>
+                                <td>{{row.CreateDate}}</td>
+                                <td class="clickable" ng-click="stateClicked(row)"><a href="">{{row.State}}</a></td>
                                 <td class="clickable" ng-click="eventsClick(row)"><a href="">{{'Events'}}</a></td>
                                 <td>
-                                    <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
+                                    <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.Status}}</b></uib-progressbar>
 
                                 </td>
                             </tr>
@@ -51,77 +51,124 @@
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="eventShow" class="event-view">
-                        <p>Events associated to: {{archive.label}}</p>
+                        <p>Events associated to: {{ip.label}}</p>
                         <ul ng-repeat="event in eventCollection">
                             <li>
                                 {{event.id}}
                             </li>
-                                {{event.detail}}</br>
-                                {{event.dateTime}}
+                            {{event.detail}}</br>
+                            {{event.dateTime}}
                         </ul>
 
                     </div>
-                    <div ng-show="statusShow" class="status-view">
-                        <p>{{archive.label}}</p>
-                    <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th st-sort="label" class="column-label">Label</th>
-                                <th st-sort="responsible" class="column-label">Responsible</th>
-                                <th st-sort="date" class="column-label">Date</th>
-                                <th st-sort="state" class="column-label">State</th>
-                                <th st-sort="status" class="column-label">Status</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            <tr st-select-row="row" ng-repeat-start="row in stepsCollection">
-                                <td><a href="" ng-click="toggleCollapse(row)">{{row.name}}</a></td>
-                                <td>{{row.user}}</td>
-                                <td>{{row.time_created}}</td>
-                                <td>{{row.status}}</td>
-                                <td>
-                                    <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
-
-                                </td>
-                            </tr>
-                                <tr ng-repeat-end="">
-                                    <td colspan="5">
-                                        <div class="child-step-list" uib-collapse="row.isCollapsed">
-                                            <table class="table table-striped">
-                                                <tr ng-repeat="step in row.child_steps">
-                                                    <td>{{step.url}}</td>
-                                                    <td>{{step.name}}</td>
-                                                    <td>
-                                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{step.progress}}</b></uib-progressbar>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                    <script type="text/ng-template" id="child_step_template.html">
+                                        <div class="child-step-list">
+                                        <tr ng-repeat="step in step.child_steps" ng-include="'child_step_template.html'">
+                                        <td><a ng-click="toggleCollapse(step)">{{step.url}}</a></td>
+                                        <td>{{step.name}}</td>
+                                        <td>
+                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{step.progress}}</b></uib-progressbar>
+                                        </td>
+                                        </tr>
                                         </div>
-                                    <div class="tasks-list" uib-collapse="row.isCollapsed">
-                                        <table class="table table-striped">
-                                        <tr ng-repeat="task in row.taskObjects">
+                    </script>
+
+
+                    <script type="text/ng-template" id="task_template.html">
+                                        <div class="tasks-list" uib-collapse="step.isCollapsed">
                                             <td>{{task.url}}</td>
                                             <td>{{task.name}}</td>
                                             <td>
                                                 <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{task.progress}}</b></uib-progressbar>
                                             </td>
-                                        </tr>
-                                        </table>
-                                    </div>
-                                    </td>
+                                        <tr ng-repeat="task in tasks">
+                                            </tr>
+                                            </div>
+                    </script>
 
-                                </tr>
-                        </tbody>
-                    </table>
 
-                    </div>
-                    <div ng-show="select" class="select-view">
-                        <p>{{archive.label}}</p>
-                        <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                    <div ng-show="statusShow" class="status-view">
+                        <p>{{ip.Label}}</p>
+                        <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
+                        <!--
+                        <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="column-entity">Entity</th>
+                                    <th st-sort="label" class="column-label">Label</th>
+                                    <th st-sort="responsible" class="column-label">Responsible</th>
+                                    <th st-sort="date" class="column-label">Date</th>
+                                    <th st-sort="state" class="column-label">State</th>
+                                    <th st-sort="status" class="column-label">Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr st-select-row="row" ng-repeat-start="row in stepsCollection">
+                                    <td><a ng-click="toggleCollapse(row)">{{row.name}}</a></td>
+                                    <td>{{row.user}}</td>
+                                    <td>{{row.time_created}}</td>
+                                    <td>{{row.status}}</td>
+                                    <td>
+                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
+
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end="">
+                                    <td colspan="5">
+
+                                        <div class="child-step-list" uib-collapse="row.isCollapsed">
+                                            <table class="table table-striped">
+                                                <tr ng-if="row.child_steps" ng-repeat="step in row.child_steps" ng-include="'tree_template.html'"></tr>
+
+                                            </table>
+                                        </div>
+                                    </td>
+
+                                    </tr>
+                            </tbody>
+                        </table>
+                        -->
+                        <!-- EXAMPLE OF WHAT SHOULD BE DONE ABOVE IN TABLE BUT IN <UL> LIST INSTEAD OF TABLE-->
+                        <script type="text/ng-template" id="test_template.html">
+{{ step.name }}
+                        </br>
+                        {{step.status}}
+                        <ul ng-if="step.child_steps">
+                            <li ng-repeat="step in step.child_steps" ng-include="'test_template.html'">
+                            </li>
+                            <ul ng-if="step.taskObjects">
+                                <li ng-repeat="task in step.taskObjects" ng-include"'test_template.html'">{{task.name}}</li>
+                            </ul>
+                        </ul>
+                        </script>
+                        <!--
+                            <ul>
+                            <li ng-repeat="step in parentStepsRowCollection" ng-include="'test_template.html'"></li>
+                            </ul>
+                        -->
+                        <script type="text/ng-template" id="tree_template.html">
+                        <treecontrol class="tree-light"
+                                     tree-model="parentStepsRowCollection"
+                                     options="treeOptions"
+                                     on-selection="showSelected(node)"
+                                     selected-node="node1">
+                        {{node.name}}, {{node.status}}, {{node.progress}}, 
+                        <a ng-click="node.tasksCollapsed = !node.tasksCollapsed">tasks: {{node.taskObjects.length}}</a>
+                        <ul uib-collapse="node.tasksCollapsed"ng-repeat="task in node.taskObjects">
+                            <li>{{task.name}}</li>
+                        </ul>
+                        </treecontrol>
+                        </script>
+
+                    <!-- END OF EXAMPLE-->
+                                    </div>
+                                    <div ng-show="select" class="select-view">
+                                        <p>{{ip.label}}</p>
+                                        <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="column-entity">Entity</th>
                                     <th class="column-profile">Profile</th>
                                     <th class="column-state">State</th>
                                 </tr>
@@ -138,8 +185,8 @@
                                     </td>
                                     <td><select class="form-control"ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
                                     <td>{{row.state}}</td>
+                                    <a ng-click="showHideAllProfiles(); getSelectCollection(currentSa)">Show/hide profiles</a>
                                 </tr>
-                                <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
                             </tbody>
                         </table>
 

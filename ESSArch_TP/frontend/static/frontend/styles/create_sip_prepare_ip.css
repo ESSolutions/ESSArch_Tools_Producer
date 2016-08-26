@@ -86,9 +86,10 @@ width: 100%;
     border-bottom-style: solid;
     border-color: #666;
 }
+/*.status-view treecontrol {
+    font-size: 20px;
+}*/
 .tasks-list {
-    max-height: 200px;
-    overflow-y: scroll;
    /* border-style: solid;
     border-color: #ccc;
     border-radius: 5px;*/

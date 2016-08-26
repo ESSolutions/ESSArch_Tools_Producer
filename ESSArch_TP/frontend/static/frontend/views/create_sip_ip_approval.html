@@ -10,7 +10,7 @@
     <div ng-include src="'static/frontend/views/sub_menu.html'"></div>
     <div class="content-wrapper">
         <div class="list-view">
-            <table st-table="archiveObjectsCollection" st-safe-src="archiveObjectsRowCollection" class="table table-striped">
+            <table st-table="ipCollection" st-safe-src="ipRowCollection" class="table table-striped">
                 <thead>
                     <tr>
                         <th st-sort="label" class="column-label">Label</th>
@@ -25,9 +25,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr st-select-row="row" ng-repeat="row in archiveObjectsCollection" class="table-item">
-                        <td class="clickable" ng-click="archiveTableClick(row)">{{row.label}}</td>
-                        <td class="clickable" ng-click="archiveTableClick(row)">{{row.ObjectUUID}}</td>
+                    <tr st-select-row="row" ng-repeat="row in ipCollection" class="table-item">
+                        <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
+                        <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
                         <td>{{'user'}}</td>
                         <td>{{'time created'}}</td>
                         <td>{{'state'}}</td>
@@ -42,7 +42,7 @@
         </div>
         <div class="select-sub-edit-eventlog-wrapper">
             <div ng-show="select" class="select-view">
-                <p>{{archive.label}}</p>
+                <p>{{ip.label}}</p>
                 <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
                     <thead>
                         <tr>

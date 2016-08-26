@@ -4,19 +4,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $window.location.href="/admin/";
     }
     $scope.isCollapsed = true;
-    $scope.toggleCollapse = function (row) {
-        if(row.isCollapsed) {
-            row.isCollapsed = false;
+    $scope.toggleCollapse = function (step) {
+        if(step.isCollapsed) {
+            step.isCollapsed = false;
         } else {
-            row.isCollapsed = true;
+            step.isCollapsed = true;
         }
+        console.log(step.isCollapsed);
+        console.log(step);
     };
     // List view
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
     $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.archive == row){
+        if($scope.statusShow && $scope.ip== row){
             $scope.statusShow = false;
         } else {
             $scope.statusShow = true;
@@ -26,27 +28,28 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $scope.subSelect = false;
         $scope.eventlog = false;
         $scope.select = false;
-        $scope.archive = row;
+        $scope.ip= row;
     };
 
-    $scope.archiveTableClick = function(row) {
-        console.log("archive object clicked. row: "+row.label);
-        if($scope.select && $scope.archive == row){
+    $scope.ipTableClick = function(row) {
+        console.log("ipobject clicked. row: "+row.Label);
+        if($scope.select && $scope.ip== row){
             $scope.select = false;
-            $scope.archiveSelected = false;
+            $scope.ipSelected = false;
         } else {
             $scope.select = true;
-            $scope.archiveSelected = true;
+            $scope.ipSelected = true;
+            $scope.getSaProfiles();
         }
         $scope.statusShow = false;
-        $scope.archive = row;
+        $scope.ip= row;
     };
 
     $scope.eventsClick = function (row) {
       $scope.eventShow = true;
-        if($scope.eventShow && $scope.archive == row){
+        if($scope.eventShow && $scope.ip== row){
             $scope.eventShow = false;
-            $scope.archiveSelected = false;
+            $scope.ipSelected = false;
         } else {
             $scope.eventCollection = [];
             $http({
@@ -57,32 +60,32 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
                 for(i=0; i<data.length; i++){
-                    if(data[i].archiveObject == row.url)
+                    if(data[i].ipObject == row.url)
                     $scope.eventCollection.push(data[i]);
                 }
             }), function errorCallback(){
                 alert('error');
             };
             $scope.eventShow = true;
-            $scope.archiveSelected = true;
+            $scope.ipSelected = true;
         }
         $scope.statusShow = false;
         $scope.select = false;
 
 
 
-        $scope.archive = row;
+        $scope.ip= row;
     };
     //Getting data for list view
     $scope.getListViewData = function() {
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'archive-objects/'
+                url: appConfig.djangoUrl+'information-packages/'
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
-                $scope.archiveObjectsRowCollection = data;
+                $scope.ipRowCollection = data;
             }), function errorCallback(){
                 alert('error');
             };
@@ -114,7 +117,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 stepRows[stepRows.length-1].taskObjects = taskRows;
                 stepRows[stepRows.length-1].child_steps = childSteps;
                 stepRows[stepRows.length-1].isCollapsed = true;
-
+                stepRows[stepRows.length-1].tasksCollapsed = true;
+                console.log("steprows start");
+                console.log(stepRows);
+                console.log("steprows end");
             }), function errorCallback(){
                 alert('error(getting steps)');
             }
@@ -135,7 +141,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 url: childSteps[i]
             })
             .then(function successCallback(response) {
+                response.data.isCollapsed = false;
                 response.data.child_steps = getChildSteps(response.data.child_steps);
+                response.data.taskObjects = getTasks(response.data);
+                response.data.tasksCollapsed = true;
                 steps.push(response.data);
                 console.log(steps);
             }), function errorCallback(){
@@ -163,7 +172,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         return taskRows;
     };
 
-    //$scope.getStatusViewData();
+    $scope.treeOptions = {
+        nodeChildren: "child_steps",
+        dirSelectable: true,
+        injectClasses: {
+            ul: "a1",
+            li: "a2",
+            liSelected: "a7",
+            iExpanded: "a3",
+            iCollapsed: "a4",
+            iLeaf: "a5",
+            label: "a6",
+            labelSelected: "a8"
+        }
+    }
+
+       //$scope.getStatusViewData();
 
     // Progress bar handler
     $scope.max = 100;
@@ -208,10 +232,46 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         entity: "PROFILE_SUBMISSION_AGREEMENT",
         profile: "standard profil",
         profiles: [
-            "default SA"
         ],
         state: "unspecified"
     }];
+    $scope.getSaProfiles = function() {
+        var sas = [];
+        $http({
+            method: 'GET',
+            url: appConfig.djangoUrl+'submission-agreements'
+        })
+        .then(function successCallback(response) {
+            // console.log(JSON.stringify(response.data));
+            sas = response.data;
+            $scope.submissionAgreements = sas;
+            $scope.selectRowCollection[0].profileObjects = sas;
+            for(i=0; i<sas.length; i++){
+                $scope.selectRowCollection[0].profiles.push(sas[i].sa_name);
+            }
+            $scope.currentSa = sas[0];
+            console.log($scope.currentSa);
+        }), function errorCallback(){
+            alert('error');
+        };
+    };
+    $scope.getSelectCollection = function (submissionAgreement) {
+        getProfile(submissionAgreement.profile_transfer_project[0]);
+        console.log(selectRowCollapse);
+
+    };
+    function getProfile(profile) {
+        $http({
+            method: 'GET',
+            url: profile
+        })
+        .then(function successCallback(response) {
+            // console.log(JSON.stringify(response.data));
+            selectRowCollapse.push(response.data);
+        }), function errorCallback(){
+            alert('error');
+        };
+    };
     var selectRowCollapse = [
     {
         entity: "PROFILE_TRANSFER_PROJECT",
@@ -617,7 +677,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             }
         };
         var sendData = {"params": params, "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 50, "processstep": appConfig.djangoUrl+"steps/16130473-dbcb-4ea1-b251-e9a1e9cb8185/", "task_id": "123"};
-        //{"url": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/","id": "f69355fc-bb1e-4bde-958c-8e6b66c91d5b","name": "new stuff","result": null,"type": 100,"user": "petrus","status": 0,"progress": 50,"time_created": "2016-08-05T09:39:26.987468Z","parent_step": null,"archiveobject": null,"tasks": [],"task_set": []};
+        //{"url": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/","id": "f69355fc-bb1e-4bde-958c-8e6b66c91d5b","name": "new stuff","result": null,"type": 100,"user": "petrus","status": 0,"progress": 50,"time_created": "2016-08-05T09:39:26.987468Z","parent_step": null,"ipobject": null,"tasks": [],"task_set": []};
         var uri = appConfig.djangoUrl+'tasks/';
         $http({
             method: 'POST',
