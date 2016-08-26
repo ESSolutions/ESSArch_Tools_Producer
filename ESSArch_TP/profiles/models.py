@@ -22,6 +22,8 @@
 
 from django.db import models
 
+import jsonfield
+
 import uuid
 
 """
@@ -423,8 +425,9 @@ class ProfileSIP(models.Model):
     sip_submission_schedule		= models.CharField( max_length = 255 )
     sip_submission_data_inventory	= models.CharField( max_length = 255 )
     sip_structure                       = models.TextField()
-    sip_specification			= models.TextField()
-    sip_specification_data		= models.TextField()
+    sip_template			= jsonfield.JSONField(null=True)
+    sip_specification			= jsonfield.JSONField(null=True)
+    sip_specification_data		= jsonfield.JSONField(null=True)
 
     class Meta:
         ordering = ["profile_sip_name"]
