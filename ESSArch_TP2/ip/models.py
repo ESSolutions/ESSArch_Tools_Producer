@@ -23,6 +23,8 @@
 # Create your models here.
 from django.db import models
 
+from profiles.models import SubmissionAgreement
+
 import uuid
 
 """
@@ -43,38 +45,15 @@ class InformationPackage(models.Model):
     Startdate		= models.CharField( max_length = 255 )
     Enddate		= models.CharField( max_length = 255 )
     OAIStype		= models.CharField( max_length = 255 )
-    SubmissionAgreement	= models.CharField( max_length = 255, default='' )
+    SA          	= models.ForeignKey(
+        SubmissionAgreement,
+        on_delete=models.CASCADE,
+        default=None
+    )
     ArchivalInstitution	= models.CharField( max_length = 255, default='' )
     ArchivistOrganization = models.CharField( max_length = 255, default='' )
     ArchivalType	= models.CharField( max_length = 255, default='' )
     ArchivalLocation	= models.CharField( max_length = 255, default='' )
-#    ObjectIdentifierValue	= models.CharField( max_length = 255 )
-#    ObjectPackageName		= models.CharField( max_length = 255 )
-#    ObjectMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    ObjectMessageDigest		= models.CharField( max_length = 255 )
-#    ObjectActive		= models.CharField( max_length = 255 )
-#    MetaObjectIdentifier	= models.CharField( max_length = 255 )
-#    MetaObjectSize		= models.CharField( max_length = 255 )
-#    CMetaMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    CMetaMessageDigest		= models.CharField( max_length = 255 )
-#    PMetaMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    PMetaMessageDigest		= models.CharField( max_length = 255 )
-#    DataObjectSize		= models.CharField( max_length = 255 )
-#    DataObjectNumItems		= models.CharField( max_length = 255 )
-#    Status			= models.CharField( max_length = 255 )
-#    StatusActivity		= models.CharField( max_length = 255 )
-#    StatusProcess		= models.CharField( max_length = 255 )
-#    LastEventDate		= models.CharField( max_length = 255 )
-#    linkingAgentIdentifierValue	= models.CharField( max_length = 255 )
-#    CreateAgentIdentifierValue	= models.CharField( max_length = 255 )
-#    EntryDate			= models.CharField( max_length = 255 )
-#    preservationLevelValue	= models.CharField( max_length = 255 )
-#    Informationclass		= models.CharField( max_length = 255 )
-#    Generation			= models.CharField( max_length = 255 )
-#    LocalDBdatetime		= models.CharField( max_length = 255 )
-#    ExtDBdatetime		= models.CharField( max_length = 255 )
-#    PolicyId			= models.CharField( max_length = 255 )
-#    ObjectMetadata_id		= models.CharField( max_length = 255 )
 
     class Meta:
         ordering = ["id"]
