@@ -29,101 +29,314 @@ import uuid
 """
 Submission Agreement
 """
-class SubmissionAgreement(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # submission_agreement
-    sa_name					= models.CharField( max_length = 255 )
-    sa_type					= models.CharField( max_length = 255 )
-    sa_status					= models.CharField( max_length = 255 )
-    sa_label					= models.CharField( max_length = 255 )
-    sa_cm_version				= models.CharField( max_length = 255 )
-    sa_cm_release_date				= models.CharField( max_length = 255 )
-    sa_cm_change_authority			= models.CharField( max_length = 255 )
-    sa_cm_change_description			= models.CharField( max_length = 255 )
-    sa_cm_sections_affected			= models.CharField( max_length = 255 )
-    sa_producer_organization			= models.CharField( max_length = 255 )
-    sa_producer_main_name			= models.CharField( max_length = 255 )
-    sa_producer_main_address			= models.CharField( max_length = 255 )
-    sa_producer_main_phone			= models.CharField( max_length = 255 )
-    sa_producer_main_email			= models.CharField( max_length = 255 )
-    sa_producer_main_additional			= models.CharField( max_length = 255 )
-    sa_producer_individual_name			= models.CharField( max_length = 255 )
-    sa_producer_individual_role			= models.CharField( max_length = 255 )
-    sa_producer_individual_phone		= models.CharField( max_length = 255 )
-    sa_producer_individual_email		= models.CharField( max_length = 255 )
-    sa_producer_individual_additional		= models.CharField( max_length = 255 )
-    sa_archivist_organization			= models.CharField( max_length = 255 )
-    sa_archivist_main_name			= models.CharField( max_length = 255 )
-    sa_archivist_main_address			= models.CharField( max_length = 255 )
-    sa_archivist_main_phone			= models.CharField( max_length = 255 )
-    sa_archivist_main_email			= models.CharField( max_length = 255 )
-    sa_archivist_main_additional		= models.CharField( max_length = 255 )
-    sa_archivist_individual_name		= models.CharField( max_length = 255 )
-    sa_archivist_individual_role		= models.CharField( max_length = 255 )
-    sa_archivist_individual_phone		= models.CharField( max_length = 255 )
-    sa_archivist_individual_email		= models.CharField( max_length = 255 )
-    sa_archivist_individual_additional		= models.CharField( max_length = 255 )
-    sa_designated_community_description		= models.CharField( max_length = 255 )
-    sa_designated_community_individual_name	= models.CharField( max_length = 255 )
-    sa_designated_community_individual_role	= models.CharField( max_length = 255 )
-    sa_designated_community_individual_phone	= models.CharField( max_length = 255 )
-    sa_designated_community_individual_email	= models.CharField( max_length = 255 )
-    sa_designated_community_individual_additional	= models.CharField( max_length = 255 )
 
-    profile_transfer_project			= models.ManyToManyField(
-                                                    'ProfileTransferProject',
-                                                    through='ProfileTransferProjectRel',
-                                                    through_fields=('submissionagreement', 'profiletransferproject')
-                                                )
-    profile_content_type			= models.ManyToManyField(
-                                                    'ProfileContentType',
-                                                    through='ProfileContentTypeRel',
-                                                    through_fields=('submissionagreement', 'profilecontenttype')
-                                                )
-    profile_data_selection			= models.ManyToManyField(
-                                                    'ProfileDataSelection',
-                                                    through='ProfileDataSelectionRel',
-                                                    through_fields=('submissionagreement', 'profiledataselection')
-                                                )
-    profile_classification			= models.ManyToManyField(
-                                                    'ProfileClassification',
-                                                    through='ProfileClassificationRel',
-                                                    through_fields=('submissionagreement', 'profileclassification')
-                                                )
-    profile_import				= models.ManyToManyField(
-                                                    'ProfileImport',
-                                                    through='ProfileImportRel',
-                                                    through_fields=('submissionagreement', 'profileimport')
-                                                )
-    profile_submit_description			= models.ManyToManyField(
-                                                    'ProfileSubmitDescription',
-                                                    through='ProfileSubmitDescriptionRel',
-                                                    through_fields=('submissionagreement', 'profilesubmitdescription')
-                                                )
-    profile_sip					= models.ManyToManyField(
-                                                    'ProfileSIP',
-                                                    through='ProfileSIPRel',
-                                                    through_fields=('submissionagreement', 'profilesip')
-                                                )
-    profile_aip					= models.ManyToManyField(
-                                                    'ProfileAIP',
-                                                    through='ProfileAIPRel',
-                                                    through_fields=('submissionagreement', 'profileaip')
-                                                )
-    profile_dip					= models.ManyToManyField(
-                                                    'ProfileDIP',
-                                                    through='ProfileDIPRel',
-                                                    through_fields=('submissionagreement', 'profiledip')
-                                                )
-    profile_workflow 				= models.ManyToManyField(
-                                                    'ProfileWorkflow',
-                                                    through='ProfileWorkflowRel',
-                                                    through_fields=('submissionagreement', 'profileworkflow')
-                                                )
-    profile_preservation_metadata 		= models.ManyToManyField(
-                                                    'ProfilePreservationMetadata',
-                                                    through='ProfilePreservationMetadataRel',
-                                                    through_fields=('submissionagreement', 'profilepreservationmetadata')
-                                                )
+Profile_Status_CHOICES = (
+    (0, 'Disabled'),
+    (1, 'Enabled'),
+    (2, 'Default'),
+)
+
+class ProfileTransferProjectRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profiletransferproject = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileContentTypeRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profilecontenttype = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileDataSelectionRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profiledataselection = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileClassificationRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profileclassification = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileImportRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profileimport = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileSubmitDescriptionRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profilesubmitdescription = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileSIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profilesip = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileAIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profileaip = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileDIPRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profiledip = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfileWorkflowRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profileworkflow = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+class ProfilePreservationMetadataRel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.IntegerField(
+        'Profile status',
+        choices=Profile_Status_CHOICES,
+        default=0
+    )
+    profilepreservationmetadata = models.ForeignKey('Profile')
+    submissionagreement = models.ForeignKey('SubmissionAgreement')
+
+    class Meta:
+        verbose_name = 'ProfileRel'
+        ordering = ['status']
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+
+class SubmissionAgreement(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    sa_name = models.CharField(max_length=255)
+    sa_type = models.CharField(max_length=255)
+    sa_status = models.CharField(max_length=255)
+    sa_label = models.CharField(max_length=255)
+    sa_cm_version = models.CharField(max_length=255)
+    sa_cm_release_date = models.CharField(max_length=255)
+    sa_cm_change_authority = models.CharField(max_length=255)
+    sa_cm_change_description = models.CharField(max_length=255)
+    sa_cm_sections_affected = models.CharField(max_length=255)
+    sa_producer_organization = models.CharField(max_length=255)
+    sa_producer_main_name = models.CharField(max_length=255)
+    sa_producer_main_address = models.CharField(max_length=255)
+    sa_producer_main_phone = models.CharField(max_length=255)
+    sa_producer_main_email = models.CharField(max_length=255)
+    sa_producer_main_additional = models.CharField(max_length=255)
+    sa_producer_individual_name = models.CharField(max_length=255)
+    sa_producer_individual_role = models.CharField(max_length=255)
+    sa_producer_individual_phone = models.CharField(max_length=255)
+    sa_producer_individual_email = models.CharField(max_length=255)
+    sa_producer_individual_additional = models.CharField(max_length=255)
+    sa_archivist_organization = models.CharField(max_length=255)
+    sa_archivist_main_name = models.CharField(max_length=255)
+    sa_archivist_main_address = models.CharField(max_length=255)
+    sa_archivist_main_phone = models.CharField(max_length=255)
+    sa_archivist_main_email = models.CharField(max_length=255)
+    sa_archivist_main_additional = models.CharField(max_length=255)
+    sa_archivist_individual_name = models.CharField(max_length=255)
+    sa_archivist_individual_role = models.CharField(max_length=255)
+    sa_archivist_individual_phone = models.CharField(max_length=255)
+    sa_archivist_individual_email = models.CharField(max_length=255)
+    sa_archivist_individual_additional = models.CharField(max_length=255)
+    sa_designated_community_description = models.CharField(max_length=255)
+    sa_designated_community_individual_name = models.CharField(max_length=255)
+    sa_designated_community_individual_role = models.CharField(max_length=255)
+    sa_designated_community_individual_phone = models.CharField(max_length=255)
+    sa_designated_community_individual_email = models.CharField(max_length=255)
+    sa_designated_community_individual_additional = models.CharField(
+        max_length=255)
+
+    profile_transfer_project = models.ManyToManyField(
+        'Profile',
+        related_name='profile_transfer_project',
+        through='ProfileTransferProjectRel',
+        through_fields=('submissionagreement', 'profiletransferproject')
+    )
+    profile_content_type = models.ManyToManyField(
+        'Profile',
+        related_name='profile_content_type',
+        through='ProfileContentTypeRel',
+        through_fields=('submissionagreement', 'profilecontenttype')
+    )
+
+    profile_data_selection = models.ManyToManyField(
+        'Profile',
+        related_name='profile_data_selection',
+        through='ProfileDataSelectionRel',
+        through_fields=('submissionagreement', 'profiledataselection')
+    )
+    profile_classification = models.ManyToManyField(
+        'Profile',
+        related_name='profile_classification',
+        through='ProfileClassificationRel',
+        through_fields=('submissionagreement', 'profileclassification')
+    )
+    profile_import = models.ManyToManyField(
+        'Profile',
+        related_name='profile_import',
+        through='ProfileImportRel',
+        through_fields=('submissionagreement', 'profileimport')
+    )
+    profile_submit_description = models.ManyToManyField(
+        'Profile',
+        related_name='profile_submit_description',
+        through='ProfileSubmitDescriptionRel',
+        through_fields=('submissionagreement', 'profilesubmitdescription')
+    )
+    profile_sip = models.ManyToManyField(
+        'Profile',
+        related_name='profile_sip',
+        through='ProfileSIPRel',
+        through_fields=('submissionagreement', 'profilesip')
+    )
+    profile_aip = models.ManyToManyField(
+        'Profile',
+        related_name='profile_aip',
+        through='ProfileAIPRel',
+        through_fields=('submissionagreement', 'profileaip')
+    )
+    profile_dip = models.ManyToManyField(
+        'Profile',
+        related_name='profile_dip',
+        through='ProfileDIPRel',
+        through_fields=('submissionagreement', 'profiledip')
+    )
+    profile_workflow = models.ManyToManyField(
+        'Profile',
+        related_name='profile_workflow',
+        through='ProfileWorkflowRel',
+        through_fields=('submissionagreement', 'profileworkflow')
+    )
+    profile_preservation_metadata = models.ManyToManyField(
+        'Profile',
+        related_name='profile_preservation_metadata',
+        through='ProfilePreservationMetadataRel',
+        through_fields=('submissionagreement', 'profilepreservationmetadata')
+    )
 
     class Meta:
         ordering = ["sa_name"]
@@ -133,497 +346,72 @@ class SubmissionAgreement(models.Model):
         # create a unicode representation of this object
         return '%s - %s' % (self.sa_name, self.id)
 
+    """
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in SubmissionAgreement._meta.fields }
+        return {field.name: field.value_to_string(self)
+                for field in SubmissionAgreement._meta.fields}
+    """
 
-Profile_Status_CHOICES = (
-    (0, 'Disabled'),
-    (1, 'Enabled'),
-    (2, 'Default'),
+profile_types = [
+    "Transfer Project",
+    "Content Type",
+    "Data Selection",
+    "Classification",
+    "Import",
+    "Submit Description",
+    "SIP",
+    "AIP",
+    "DIP",
+    "Workflow",
+    "Preservation Description",
+]
+
+PROFILE_TYPE_CHOICES = zip(
+    [p.replace(' ', '_').lower() for p in profile_types],
+    profile_types
 )
 
-"""
-Relation - Profile Transfer Project
-"""
-class ProfileTransferProjectRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profiletransferproject = models.ForeignKey('ProfileTransferProject')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileTransferProject'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
 
-"""
-Profile Transfer Project
-"""
-class ProfileTransferProject(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_transfer_project
-    profile_transfer_project_name		= models.CharField( max_length = 255 )
-    profile_transfer_project_type		= models.CharField( max_length = 255 )
-    profile_transfer_project_status		= models.CharField( max_length = 255 )
-    profile_transfer_project_label		= models.CharField( max_length = 255 )
-    profile_transfer_project_specification	= models.TextField(default='')
-    profile_transfer_project_data		= models.TextField(default='')
+class Profile(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    profile_type = models.CharField(
+        max_length=255,
+        choices=PROFILE_TYPE_CHOICES
+    )
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    label = models.CharField(max_length=255)
+    representation_info = models.CharField(max_length=255)
+    preservation_descriptive_info = models.CharField(max_length=255)
+    supplemental = models.CharField(max_length=255)
+    access_constraints = models.CharField(max_length=255)
+    datamodel_reference = models.CharField(max_length=255)
+    additional = models.CharField(max_length=255)
+    submission_method = models.CharField(max_length=255)
+    submission_schedule = models.CharField(max_length=255)
+    submission_data_inventory = models.CharField(max_length=255)
+    structure = models.TextField()
+    template = jsonfield.JSONField(null=True)
+    specification = jsonfield.JSONField(null=True)
+    specification_data = jsonfield.JSONField(null=True)
 
     class Meta:
-        ordering = ["profile_transfer_project_name"]
-        verbose_name = 'Profile Transfer Project'
+        ordering = ["name"]
+        verbose_name = 'Profile'
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s - %s' % (self.profile_transfer_project_name, self.id) 
+        return '%s (%s) - %s' % (self.name, self.profile_type, self.id)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileTransferProject._meta.fields }
-
-"""
-Relation - Profile Content Type
-"""
-class ProfileContentTypeRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profilecontenttype = models.ForeignKey('ProfileContentType')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileContentType'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Content Type
-"""
-class ProfileContentType(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_content_type
-    profile_content_type_name		= models.CharField( max_length = 255 )
-    profile_content_type_type		= models.CharField( max_length = 255 )
-    profile_content_type_status		= models.CharField( max_length = 255 )
-    profile_content_type_label		= models.CharField( max_length = 255 )
-    profile_content_type_specification	= models.TextField()
-    profile_content_type_data		= models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_content_type_name"]
-        verbose_name = 'Profile Content Type'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_content_type_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileContentType._meta.fields }
-
-"""
-Relation - Profile Data Selection
-"""
-class ProfileDataSelectionRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profiledataselection = models.ForeignKey('ProfileDataSelection')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileDataSelection'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Data Selection
-"""
-class ProfileDataSelection(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_data_selection
-    profile_data_selection_name		= models.CharField( max_length = 255 )
-    profile_data_selection_type		= models.CharField( max_length = 255 )
-    profile_data_selection_status	= models.CharField( max_length = 255 )
-    profile_data_selection_label	= models.CharField( max_length = 255 )
-    profile_data_selection_specification	= models.TextField()
-    profile_data_selection_data		= models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_data_selection_name"]
-        verbose_name = 'Profile Data Selection'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_data_selection_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileDataSelection._meta.fields }
-
-"""
-Relation - Profile Classification
-"""
-class ProfileClassificationRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profileclassification = models.ForeignKey('ProfileClassification')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileClassification'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Classification
-"""
-class ProfileClassification(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_classification
-    profile_classification_name		= models.CharField( max_length = 255 )
-    profile_classification_type		= models.CharField( max_length = 255 )
-    profile_classification_status	= models.CharField( max_length = 255 )
-    profile_classification_label	= models.CharField( max_length = 255 )
-    profile_classification_specification	= models.TextField()
-    profile_classification_data		= models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_classification_name"]
-        verbose_name = 'Profile Classification'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_classification_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileClassification._meta.fields }
-
-"""
-Relation - Profile Import
-"""
-class ProfileImportRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profileimport = models.ForeignKey('ProfileImport')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileImport'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Import
-"""
-class ProfileImport(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_import
-    profile_import_name         = models.CharField( max_length = 255 )
-    profile_import_type         = models.CharField( max_length = 255 )
-    profile_import_status       = models.CharField( max_length = 255 )
-    profile_import_label	= models.CharField( max_length = 255 )
-    profile_import_specification        = models.TextField()
-    profile_import_data	        = models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_import_name"]
-        verbose_name = 'Profile Import'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_import_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileImport._meta.fields }
-
-"""
-Relation - Profile Submit Description
-"""
-class ProfileSubmitDescriptionRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profilesubmitdescription = models.ForeignKey('ProfileSubmitDescription')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileSubmitDescription'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Submit Description
-"""
-class ProfileSubmitDescription(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_submit_description
-    profile_sd_name         	= models.CharField( max_length = 255 )
-    profile_sd_type         	= models.CharField( max_length = 255 )
-    profile_sd_status       	= models.CharField( max_length = 255 )
-    profile_sd_label		= models.CharField( max_length = 255 )
-    profile_sd_specification    = models.TextField()
-    profile_sd_data		= models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_sd_name"]
-        verbose_name = 'Profile Submit Description'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_sd_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileSubmitDescription._meta.fields }
-
-"""
-Relation - SIP (Submission Information Package)
-"""
-class ProfileSIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profilesip = models.ForeignKey('ProfileSIP')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileSIP'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile SIP (Submission Information Package)
-"""
-class ProfileSIP(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_sip
-    profile_sip_name			= models.CharField( max_length = 255 )
-    profile_sip_type			= models.CharField( max_length = 255 )
-    profile_sip_status			= models.CharField( max_length = 255 )
-    profile_sip_label			= models.CharField( max_length = 255 )
-    sip_representation_info		= models.CharField( max_length = 255 )
-    sip_preservation_descriptive_info	= models.CharField( max_length = 255 )
-    sip_supplemental			= models.CharField( max_length = 255 )
-    sip_access_constraints		= models.CharField( max_length = 255 )
-    sip_datamodel_reference		= models.CharField( max_length = 255 )
-    sip_additional			= models.CharField( max_length = 255 )
-    sip_submission_method		= models.CharField( max_length = 255 )
-    sip_submission_schedule		= models.CharField( max_length = 255 )
-    sip_submission_data_inventory	= models.CharField( max_length = 255 )
-    sip_structure                       = models.TextField()
-    sip_template			= jsonfield.JSONField(null=True)
-    sip_specification			= jsonfield.JSONField(null=True)
-    sip_specification_data		= jsonfield.JSONField(null=True)
-
-    class Meta:
-        ordering = ["profile_sip_name"]
-        verbose_name = 'Profile SIP'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_sip_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileSIP._meta.fields }
-
-"""
-Relation - AIP (Archival Information Package)
-"""
-class ProfileAIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profileaip = models.ForeignKey('ProfileAIP')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileAIP'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile AIP (Archival Information Package)
-"""
-class ProfileAIP(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_aip
-    profile_aip_name                    = models.CharField( max_length = 255 )
-    profile_aip_type                    = models.CharField( max_length = 255 )
-    profile_aip_status                  = models.CharField( max_length = 255 )
-    profile_aip_label                   = models.CharField( max_length = 255 )
-    aip_representation_info             = models.CharField( max_length = 255 )
-    aip_preservation_descriptive_info   = models.CharField( max_length = 255 )
-    aip_supplemental                    = models.CharField( max_length = 255 )
-    aip_access_constraints              = models.CharField( max_length = 255 )
-    aip_datamodel_reference             = models.CharField( max_length = 255 )
-    aip_additional                      = models.CharField( max_length = 255 )
-    aip_submission_method               = models.CharField( max_length = 255 )
-    aip_submission_schedule             = models.CharField( max_length = 255 )
-    aip_submission_data_inventory       = models.CharField( max_length = 255 )
-    aip_structure                       = models.TextField()
-    aip_specification                   = models.TextField()
-    aip_specification_data              = models.TextField()
-
-    class Meta:
-        ordering = ["profile_aip_name"]
-        verbose_name = 'Profile AIP'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_aip_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileAIP._meta.fields }
-
-"""
-Relation - DIP (Dissemination Information Package)
-"""
-class ProfileDIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profiledip = models.ForeignKey('ProfileDIP')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileDIP'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile DIP (Dissemination Information Package)
-"""
-class ProfileDIP(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_dip
-    profile_dip_name                    = models.CharField( max_length = 255 )
-    profile_dip_type                    = models.CharField( max_length = 255 )
-    profile_dip_status                  = models.CharField( max_length = 255 )
-    profile_dip_label                   = models.CharField( max_length = 255 )
-    dip_representation_info             = models.CharField( max_length = 255 )
-    dip_preservation_descriptive_info   = models.CharField( max_length = 255 )
-    dip_supplemental                    = models.CharField( max_length = 255 )
-    dip_access_constraints              = models.CharField( max_length = 255 )
-    dip_datamodel_reference             = models.CharField( max_length = 255 )
-    dip_additional                      = models.CharField( max_length = 255 )
-    dip_submission_method               = models.CharField( max_length = 255 )
-    dip_submission_schedule             = models.CharField( max_length = 255 )
-    dip_submission_data_inventory       = models.CharField( max_length = 255 )
-    dip_structure                       = models.TextField()
-    dip_specification                   = models.TextField()
-    dip_specification_data              = models.TextField()
-
-    class Meta:
-        ordering = ["profile_dip_name"]
-        verbose_name = 'Profile DIP'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_dip_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileDIP._meta.fields }
-
-"""
-Relation - Workflow
-"""
-class ProfileWorkflowRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profileworkflow = models.ForeignKey('ProfileWorkflow')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfileWorkflow'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Workflow
-"""
-class ProfileWorkflow(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_workflow
-    profile_workflow_name		= models.CharField( max_length = 255 )
-    profile_workflow_type		= models.CharField( max_length = 255 )
-    profile_workflow_status		= models.CharField( max_length = 255 )
-    profile_workflow_label		= models.CharField( max_length = 255 )
-    profile_workflow_specification	= models.TextField()
-    profile_workflow_data		= models.TextField(default='')
-
-    class Meta:
-        ordering = ["profile_workflow_name"]
-        verbose_name = 'Profile Workflow'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_workflow_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfileWorkflow._meta.fields }
-
-"""
-Relation - Preservation Metadata
-"""
-class ProfilePreservationMetadataRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField('Profile status', choices=Profile_Status_CHOICES,default=0)
-    profilepreservationmetadata = models.ForeignKey('ProfilePreservationMetadata')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-    class Meta:
-        verbose_name = 'ProfilePreservationMetadata'
-        ordering = ['status']
-        
-    def __unicode__(self):
-        return unicode(self.id)
-
-"""
-Profile Preservation Metadata
-"""
-class ProfilePreservationMetadata(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # profile_workflow
-    profile_preservation_metadata_name               = models.CharField( max_length = 255 )
-    profile_preservation_metadata_type               = models.CharField( max_length = 255 )
-    profile_preservation_metadata_status             = models.CharField( max_length = 255 )
-    profile_preservation_metadata_label              = models.CharField( max_length = 255 )
-    profile_preservation_metadata_specification      = models.TextField()
-    profile_preservation_metadata_data               = models.TextField()
-
-    class Meta:
-        ordering = ["profile_preservation_metadata_name"]
-        verbose_name = 'Profile Preservation Metadata'
-
-    def __unicode__(self):
-        # create a unicode representation of this object
-        return '%s - %s' % (self.profile_preservation_metadata_name, self.id)
-
-    def get_value_array(self):
-        # make an associative array of all fields  mapping the field
-        # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in ProfilePreservationMetadata._meta.fields }
-
+        return {field.name: field.value_to_string(self)
+                for field in Profile._meta.fields}
