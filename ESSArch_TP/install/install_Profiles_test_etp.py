@@ -28,27 +28,17 @@ django.setup()
 # own models etc
 from profiles.models import (
     SubmissionAgreement,
-    ProfileTransferProject,
+    Profile,
     ProfileTransferProjectRel,
-    ProfileContentType,
     ProfileContentTypeRel,
-    ProfileDataSelection,
     ProfileDataSelectionRel,
-    ProfileClassification,
     ProfileClassificationRel,
-    ProfileImport,
     ProfileImportRel,
-    ProfileSubmitDescription,
     ProfileSubmitDescriptionRel,
-    ProfileSIP,
     ProfileSIPRel,
-    ProfileAIP,
     ProfileAIPRel,
-    ProfileDIP,
     ProfileDIPRel,
-    ProfileWorkflow,
     ProfileWorkflowRel,
-    ProfilePreservationMetadata,
     ProfilePreservationMetadataRel,
 )
 
@@ -59,6 +49,7 @@ site_profile = "SE" # SE_NEW, SE, NO, EC
 def installProfiles(): # Install all different profiles
     # First remove all existing data
     SubmissionAgreement.objects.all().delete()
+    Profile.objects.all().delete()
 
     # install default configuration
     installProfileTransferProject()   		# Profile Transfer Project
@@ -124,77 +115,77 @@ def installSubmissionAgreement(): # Submission Agreement
     sa = SubmissionAgreement.objects.create(**dct)
 
     ProfileTransferProjectRel.objects.create(
-        profiletransferproject=ProfileTransferProject.objects.get(
+        profiletransferproject=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440001"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileContentTypeRel.objects.create(
-        profilecontenttype=ProfileContentType.objects.get(
+        profilecontenttype=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440002"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileDataSelectionRel.objects.create(
-        profiledataselection=ProfileDataSelection.objects.get(
+        profiledataselection=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440003"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileClassificationRel.objects.create(
-        profileclassification=ProfileClassification.objects.get(
+        profileclassification=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440004"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileImportRel.objects.create(
-        profileimport=ProfileImport.objects.get(
+        profileimport=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440005"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileSubmitDescriptionRel.objects.create(
-        profilesubmitdescription=ProfileSubmitDescription.objects.get(
+        profilesubmitdescription=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440006"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileSIPRel.objects.create(
-        profilesip=ProfileSIP.objects.get(
+        profilesip=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440007"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileAIPRel.objects.create(
-        profileaip=ProfileAIP.objects.get(
+        profileaip=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440008"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileDIPRel.objects.create(
-        profiledip=ProfileDIP.objects.get(
+        profiledip=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440009"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfileWorkflowRel.objects.create(
-        profileworkflow=ProfileWorkflow.objects.get(
+        profileworkflow=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440010"
         ),
         submissionagreement=sa,
         status=2
     )
     ProfilePreservationMetadataRel.objects.create(
-        profilepreservationmetadata=ProfilePreservationMetadata.objects.get(
+        profilepreservationmetadata=Profile.objects.get(
             id="550e8400-e29b-41d4a716-446655440011"
         ),
         submissionagreement=sa,
@@ -208,22 +199,21 @@ def installSubmissionAgreement(): # Submission Agreement
 
 def installProfileTransferProject(): # Profile Transfer Project
 
-    # First remove all existing data
-    ProfileTransferProject.objects.all().delete()
-
     # create profile transfer project dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440001',
-	  'profile_transfer_project_name':'SE ERMS Delivery',
-	  'profile_transfer_project_type':'Implementation',
-	  'profile_transfer_project_status':'Agreed',
-	  'profile_transfer_project_label':'Example of SIP for delivery of SE ERMS',
-	  'profile_transfer_project_specification':'Any specification wrapped',
-	  'profile_transfer_project_data':'Any specification data wrapped',
+	  'name':'SE ERMS Delivery',
+          'profile_type': 'transfer_project',
+	  'type':'Implementation',
+	  'status':'Agreed',
+	  'label':'Example of SIP for delivery of SE ERMS',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileTransferProject.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Transfer Project')
     print 'Installed profile transfer project'
@@ -232,22 +222,21 @@ def installProfileTransferProject(): # Profile Transfer Project
 
 def installProfileContentType(): # Profile Content Type
 
-    # First remove all existing data
-    ProfileContentType.objects.all().delete()
-
     # create profile content type dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440002',
-	  'profile_content_type_name':'SE ERMS',
-	  'profile_content_type_type':'Implementation',
-	  'profile_content_type_status':'Draft',
-	  'profile_content_type_label':'Content based on SE ERMS specification',
-	  'profile_content_type_specification':'Any specification wrapped',
-	  'profile_content_type_data':'Any specification data wrapped',
+	  'name':'SE ERMS',
+          'profile_type': 'content_type',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Content based on SE ERMS specification',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileContentType.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Content Type')
     print 'Installed profile content type'
@@ -256,22 +245,21 @@ def installProfileContentType(): # Profile Content Type
 
 def installProfileDataSelection(): # Profile Data Selection
 
-    # First remove all existing data
-    ProfileDataSelection.objects.all().delete()
-
     # create profile data selection dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440003',
-	  'profile_data_selection_name':'Classification of business system xx',
-	  'profile_data_selection_type':'Implementation',
-	  'profile_data_selection_status':'Draft',
-	  'profile_data_selection_label':'Data selection of business system xx',
-	  'profile_data_selection_specification':'Any specification wrapped',
-	  'profile_data_selection_data':'Any specification data wrapped',
+	  'name':'Classification of business system xx',
+          'profile_type': 'data_selection',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Data selection of business system xx',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileDataSelection.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Data Selection')
     print 'Installed profile data selection'
@@ -280,22 +268,21 @@ def installProfileDataSelection(): # Profile Data Selection
 
 def installProfileClassification(): # Profile Classification
 
-    # First remove all existing data
-    ProfileClassification.objects.all().delete()
-
     # create profile classification dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440004',
-	  'profile_classification_name':'Classification of archived objects',
-	  'profile_classification_type':'Implementation',
-	  'profile_classification_status':'Draft',
-	  'profile_classification_label':'Classification of archived content',
-	  'profile_classification_specification':'Any specification wrapped',
-	  'profile_classification_data':'Any specification data wrapped',
+	  'name':'Classification of archived objects',
+          'profile_type': 'classification',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Classification of archived content',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileClassification.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Classification')
     print 'Installed profile classification'
@@ -304,22 +291,21 @@ def installProfileClassification(): # Profile Classification
 
 def installProfileImport(): # Profile Import
 
-    # First remove all existing data
-    ProfileImport.objects.all().delete()
-
     # create profile import dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440005',
-	  'profile_import_name':'Transformation import profile for system xx',
-	  'profile_import_type':'Implementation',
-	  'profile_import_status':'Draft',
-	  'profile_import_label':'Transformation from system x to specification y',
-	  'profile_import_specification':'Any specification wrapped',
-	  'profile_import_data':'Any specification data wrapped',
+	  'name':'Transformation import profile for system xx',
+          'profile_type': 'import',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Transformation from system x to specification y',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileImport.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Import')
     print 'Installed profile import'
@@ -328,22 +314,21 @@ def installProfileImport(): # Profile Import
 
 def installProfileSubmitDescription(): # Profile Submit Description
 
-    # First remove all existing data
-    ProfileSubmitDescription.objects.all().delete()
-
     # create profile submit description dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440006',
-	  'profile_sd_name':'Submit description of a single SIP',
-	  'profile_sd_type':'Implementation',
-	  'profile_sd_status':'Draft',
-	  'profile_sd_label':'Desription of a one2one SIP2AIP',
-	  'profile_sd_specification':'Any specification wrapped',
-	  'profile_sd_data':'Any specification data wrapped',
+	  'name':'Submit description of a single SIP',
+          'profile_type': 'submit_description',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Desription of a one2one SIP2AIP',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileSubmitDescription.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Submit Description')
     print 'Installed profile submit description'
@@ -352,32 +337,31 @@ def installProfileSubmitDescription(): # Profile Submit Description
 
 def installProfileSIP(): # Profile Submission Information Package
 
-    # First remove all existing data
-    ProfileSIP.objects.all().delete()
-
     # create profile submission information package dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440007',
-	  'profile_sip_name':'SIP based on SE FGS Package',
-	  'profile_sip_type':'Implementation',
-	  'profile_sip_status':'Draft',
-	  'profile_sip_label':'SIP profile for SE submissions',
-	  'sip_representation_info':'Documentation 1',
-	  'sip_preservation_descriptive_info':'Documentation 2',
-	  'sip_supplemental':'Documentation 3',
-	  'sip_access_constraints':'Documentation 4',
-	  'sip_datamodel_reference':'Documentation 5',
-	  'sip_additional':'Documentation 6',
-	  'sip_submission_method':'Electronically',
-	  'sip_submission_schedule':'Once',
-	  'sip_submission_data_inventory':'According to submit description',
-	  'sip_structure':'SIP SE structure xx',
-	  'sip_specification':'Any specification wrapped',
-	  'sip_specification_data':'Any specification data wrapped',
+	  'name':'SIP based on SE FGS Package',
+          'profile_type': 'sip',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'SIP profile for SE submissions',
+	  'representation_info':'Documentation 1',
+	  'preservation_descriptive_info':'Documentation 2',
+	  'supplemental':'Documentation 3',
+	  'access_constraints':'Documentation 4',
+	  'datamodel_reference':'Documentation 5',
+	  'additional':'Documentation 6',
+	  'submission_method':'Electronically',
+	  'submission_schedule':'Once',
+	  'submission_data_inventory':'According to submit description',
+	  'structure':'SIP SE structure xx',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileSIP.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile SIP')
     print 'Installed profile SIP'
@@ -386,32 +370,31 @@ def installProfileSIP(): # Profile Submission Information Package
 
 def installProfileAIP(): # Profile Archival Information Package
 
-    # First remove all existing data
-    ProfileAIP.objects.all().delete()
-
     # create profile archival information package dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440008',
-	  'profile_aip_name':'AIP based on SE FGS Package',
-	  'profile_aip_type':'Implementation',
-	  'profile_aip_status':'Draft',
-	  'profile_aip_label':'AIP profile for SE Packages',
-	  'aip_representation_info':'Documentation 1',
-	  'aip_preservation_descriptive_info':'Documentation 2',
-	  'aip_supplemental':'Documentation 3',
-	  'aip_access_constraints':'Documentation 4',
-	  'aip_datamodel_reference':'Documentation 5',
-	  'aip_additional':'Documentation 6',
-	  'aip_submission_method':'Electronically',
-	  'aip_submission_schedule':'Once',
-	  'aip_submission_data_inventory':'According to submit description',
-	  'aip_structure':'AIP SE structure xx',
-	  'aip_specification':'Any specification wrapped',
-	  'aip_specification_data':'Any specification data wrapped',
+	  'name':'AIP based on SE FGS Package',
+          'profile_type': 'aip',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'AIP profile for SE Packages',
+	  'representation_info':'Documentation 1',
+	  'preservation_descriptive_info':'Documentation 2',
+	  'supplemental':'Documentation 3',
+	  'access_constraints':'Documentation 4',
+	  'datamodel_reference':'Documentation 5',
+	  'additional':'Documentation 6',
+	  'submission_method':'Electronically',
+	  'submission_schedule':'Once',
+	  'submission_data_inventory':'According to submit description',
+	  'structure':'AIP SE structure xx',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileAIP.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile AIP')
     print 'Installed profile AIP'
@@ -420,32 +403,31 @@ def installProfileAIP(): # Profile Archival Information Package
 
 def installProfileDIP(): # Profile Dissemination Information Package
 
-    # First remove all existing data
-    ProfileDIP.objects.all().delete()
-
     # create profile dissemination information package dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440009',
-	  'profile_dip_name':'DIP based on SE FGS Package',
-	  'profile_dip_type':'Implementation',
-	  'profile_dip_status':'Draft',
-	  'profile_dip_label':'DIP profile for SE Packages',
-	  'dip_representation_info':'Documentation 1',
-	  'dip_preservation_descriptive_info':'Documentation 2',
-	  'dip_supplemental':'Documentation 3',
-	  'dip_access_constraints':'Documentation 4',
-	  'dip_datamodel_reference':'Documentation 5',
-	  'dip_additional':'Documentation 6',
-	  'dip_submission_method':'Electronically',
-	  'dip_submission_schedule':'Once',
-	  'dip_submission_data_inventory':'According to submit description',
-	  'dip_structure':'DIP SE structure xx',
-	  'dip_specification':'Any specification wrapped',
-	  'dip_specification_data':'Any specification data wrapped',
+	  'name':'DIP based on SE FGS Package',
+          'profile_type': 'dip',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'DIP profile for SE Packages',
+	  'representation_info':'Documentation 1',
+	  'preservation_descriptive_info':'Documentation 2',
+	  'supplemental':'Documentation 3',
+	  'access_constraints':'Documentation 4',
+	  'datamodel_reference':'Documentation 5',
+	  'additional':'Documentation 6',
+	  'submission_method':'Electronically',
+	  'submission_schedule':'Once',
+	  'submission_data_inventory':'According to submit description',
+	  'structure':'DIP SE structure xx',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileDIP.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile DIP')
     print 'Installed profile DIP'
@@ -454,22 +436,21 @@ def installProfileDIP(): # Profile Dissemination Information Package
 
 def installProfileWorkflow(): # Profile Workflow
 
-    # First remove all existing data
-    ProfileWorkflow.objects.all().delete()
-
     # create profile workflow dictionaries
+
     dct = {
 	  'id':'550e8400-e29b-41d4a716-446655440010',
-	  'profile_workflow_name':'Workflow xx for Pre-Ingest',
-	  'profile_workflow_type':'Implementation',
-	  'profile_workflow_status':'Draft',
-	  'profile_workflow_label':'Workflow Create SIP for Pre-Ingest',
-	  'profile_workflow_specification':'Any specification wrapped',
-	  'profile_workflow_data':'Any specification data wrapped',
+	  'name':'Workflow xx for Pre-Ingest',
+          'profile_type': 'workflow',
+	  'type':'Implementation',
+	  'status':'Draft',
+	  'label':'Workflow Create SIP for Pre-Ingest',
+	  'specification':'Any specification wrapped',
+	  'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfileWorkflow.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile Workflow')
     print 'Installed profile workflow'
@@ -478,22 +459,21 @@ def installProfileWorkflow(): # Profile Workflow
 
 def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
-    # First remove all existing data
-    ProfilePreservationMetadata.objects.all().delete()
-
     # create profile preservation metadata dictionaries
+
     dct = {
           'id':'550e8400-e29b-41d4a716-446655440011',
-          'profile_preservation_metadata_name':'Preservation profile xx',
-          'profile_preservation_metadata_type':'Implementation',
-          'profile_preservation_metadata_status':'Draft',
-          'profile_preservation_metadata_label':'Preservation profile for AIP xxyy',
-          'profile_preservation_metadata_specification':'Any specification wrapped',
-          'profile_preservation_metadata_data':'Any specification data wrapped',
+          'name':'Preservation profile xx',
+          'profile_type': 'preservation_metadata',
+          'type':'Implementation',
+          'status':'Draft',
+          'label':'Preservation profile for AIP xxyy',
+          'specification':'Any specification wrapped',
+          'specification_data':'Any specification data wrapped',
           }
 
     # create according to model with many fields
-    ProfilePreservationMetadata.objects.create(**dct)
+    Profile.objects.create(**dct)
 
     #logger.info('Installed Profile PreservationMetadata')
     print 'Installed profile preservation metadata'
