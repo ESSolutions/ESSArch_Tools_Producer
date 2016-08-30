@@ -23,7 +23,7 @@
 # Create your models here.
 from django.db import models
 
-from profiles.models import SubmissionAgreement
+from profiles.models import SubmissionAgreement as SA
 
 import uuid
 
@@ -45,8 +45,8 @@ class InformationPackage(models.Model):
     Startdate		= models.CharField( max_length = 255 )
     Enddate		= models.CharField( max_length = 255 )
     OAIStype		= models.CharField( max_length = 255 )
-    SA          	= models.ForeignKey(
-        SubmissionAgreement,
+    SubmissionAgreement = models.ForeignKey(
+        SA,
         on_delete=models.CASCADE,
         default=None
     )
