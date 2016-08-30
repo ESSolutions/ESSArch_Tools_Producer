@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',                  
+    'django.contrib.admin',
     'preingest',
     'rest_framework',
     'corsheaders',
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ip',
     'profiles',
     'templateMaker',
+    'Demo',
 ]
 
 MIDDLEWARE_CLASSES = [

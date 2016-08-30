@@ -52,5 +52,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^template/', include('templateMaker.urls')),
+    url(r'^demo/', include('Demo.urls')),
     url(r'^accounts/login/$', auth_views.login),
 ]

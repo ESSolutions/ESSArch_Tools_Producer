@@ -41,7 +41,7 @@ def parseFiles(filename='/SIP/huge', level=3):
             fileInfo['FName'] = dirname+'/'+file
             fileInfo['FChecksum'] = calculateChecksum(dirname+'/'+file)
             fileInfo['FID'] = uuid.uuid4().__str__()
-            fileInfo['FMimetype'] = 'application/msword'
+            fileInfo['FMimetype'] = 'application/x-tar'
             fileInfo['FCreated'] = '2016-02-21T11:18:44+01:00'
             fileInfo['FFormatName'] = 'MS word'
             fileInfo['FSize'] = str(os.path.getsize(dirname+'/'+file))
@@ -275,6 +275,7 @@ def createXML(info, filesToCreate, folderToParse):
             fob.rootElement.printXML(fob.fid)
             os.close(f)
             os.remove(fin.filename)
+
 
 def appendXML(inputData):
     """
