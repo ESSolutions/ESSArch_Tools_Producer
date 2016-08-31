@@ -336,15 +336,46 @@ def installProfileSubmitDescription(): # Profile Submit Description
     # create profile submit description dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440006',
-	  'name':'Submit description of a single SIP',
-          'profile_type': 'submit_description',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Desription of a one2one SIP2AIP',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id':'550e8400-e29b-41d4a716-446655440006',
+        'name':'Submit description of a single SIP',
+        'profile_type': 'submit_description',
+        'type':'Implementation',
+        'status':'Draft',
+        'label':'Desription of a one2one SIP2AIP',
+        'template': [
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label":"some id"
+                },
+                "type": "input",
+                "key": "some id"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "some object id"
+                },
+                "type": "input",
+                "key": "some object id"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "some labeeel"
+                },
+                "type": "input",
+                "key": "some labeeel"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "a random profile"
+                },
+                "type": "input",
+                "key": "a random profile"
+            }
+        ],
+        'specification':'Any specification wrapped',
+        'specification_data':'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
