@@ -37,7 +37,6 @@ class InformationPackage(models.Model):
     Responsible		= models.CharField( max_length = 255 )
     CreateDate		= models.DateTimeField()
     State		= models.CharField( max_length = 255 )
-    Status		= models.CharField( max_length = 255 )
     ObjectSize		= models.CharField( max_length = 255 )
     ObjectNumItems	= models.CharField( max_length = 255 )
     ObjectPath		= models.CharField( max_length = 255 )
@@ -55,6 +54,18 @@ class InformationPackage(models.Model):
     ArchivistOrganization = models.CharField( max_length = 255, default='' )
     ArchivalType	= models.CharField( max_length = 255, default='' )
     ArchivalLocation	= models.CharField( max_length = 255, default='' )
+
+    def status(self):
+        steps = self.steps.all()
+
+        if steps:
+            try:
+                progress = sum([s.progress() for s in steps])
+                return progress / len(steps)
+            except:
+                return 0
+
+        return 0
 
     class Meta:
         ordering = ["id"]
