@@ -39,7 +39,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         } else {
             $scope.select = true;
             $scope.ipSelected = true;
-            $scope.getSaProfiles();
+            $scope.getSaProfiles(row);
         }
         $scope.statusShow = false;
         $scope.ip= row;
@@ -60,7 +60,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
                 for(i=0; i<data.length; i++){
-                    if(data[i].ipObject == row.url)
+                    if(data[i].linkingObjectIdentifierValue == row.url)
                     $scope.eventCollection.push(data[i]);
                 }
             }), function errorCallback(){
@@ -192,17 +192,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     // Progress bar handler
     $scope.max = 100;
     //funcitons for select view
+    vm.profileModel = {};
+    vm.profileFields=[];
     $scope.profileClick = function(row){
-
+        console.log(row);
         if ($scope.selectProfile == row && $scope.subSelect){
-            $scope.subSelect = false;
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
-            $scope.subSelect = true;
             $scope.eventlog = true;
             $scope.edit = true;
             $scope.selectProfile = row;
+            vm.profileFields = row.profile.template;
             $scope.subSelectProfile = "profile";
             $http({
                 method: 'OPTIONS',
@@ -215,27 +216,103 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             }), function errorCallback(){
                 alert('error');
             };
-/*
-            $scope.subSelectOptions = [
-                "option1",
-                "option2",
-                "option3"
-            ];
-            */
         }
+        console.log("selected profile: ");
         console.log($scope.selectProfile);
     };
 
     //populating select view
-    $scope.selectRowCollection = [
-    {
-        entity: "PROFILE_SUBMISSION_AGREEMENT",
-        profile: "standard profil",
+    $scope.selectRowCollection = [];
+    $scope.selectRowCollapse = [
+   /* {
+        entity: "PROFILE_TRANSFER_PROJECT",
+        profile: {},
         profiles: [
         ],
         state: "unspecified"
-    }];
-    $scope.getSaProfiles = function() {
+    },
+    {
+        entity: "PROFILE_CONTENT_TYPE",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DATA_SELECTION",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_CLASSIFICATION",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_IMPORT",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMIT_DESCRIPTION",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_SUBMISSION_INFORMATION_PACKAGE",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_ARCHIVAL_INFORMATION_PACKAGE",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_DISSEMINATION_INFORMATION_PACKAGE",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_WORKFLOW",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    },
+    {
+        entity: "PROFILE_PRESERVATION_METADATA",
+        profile: {},
+        profiles: [
+        ],
+        state: "unspecified"
+    }*/
+    ];
+    $scope.saProfile =
+    {
+        entity: "PROFILE_SUBMISSION_AGREEMENT",
+        profile: {},
+        profiles: [
+
+        ],
+        state: "unspecified"
+    };
+
+    $scope.getSaProfiles = function(ip) {
         var sas = [];
         $http({
             method: 'GET',
@@ -244,139 +321,348 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         .then(function successCallback(response) {
             // console.log(JSON.stringify(response.data));
             sas = response.data;
+            var tempProfiles = [];
             $scope.submissionAgreements = sas;
-            $scope.selectRowCollection[0].profileObjects = sas;
+            $scope.saProfile.profileObjects = sas;
             for(i=0; i<sas.length; i++){
-                $scope.selectRowCollection[0].profiles.push(sas[i].sa_name);
+                tempProfiles.push(sas[i]);
+                if(sas[i].information_packages.url == ip.url){
+                    saProfile.profile = sa[i];
+                }
             }
-            $scope.currentSa = sas[0];
+            $scope.saProfile.profiles = tempProfiles;
+            console.log("current sa: ");
             console.log($scope.currentSa);
         }), function errorCallback(){
             alert('error');
         };
     };
-    $scope.getSelectCollection = function (submissionAgreement) {
-        getProfile(submissionAgreement.profile_transfer_project[0]);
-        console.log(selectRowCollapse);
+    $scope.getSelectCollection = function (sa) {
+        $scope.currentProfiles = {};
+        $scope.selectRowCollapse = [];
+        for(i=0;i<sa.profile_transfer_project.length;i++){
+            getProfile("profile-transfer-project/", sa.profile_transfer_project[i].id);
+        }
+        for(i=0;i<sa.profile_content_type.length;i++){
+            getProfile("profile-content-type/", sa.profile_content_type[i].id);
+        }
+        for(i=0;i<sa.profile_data_selection.length;i++){
+            getProfile("profile-data-selection/", sa.profile_data_selection[i].id);
+        }
+        for(i=0;i<sa.profile_classification.length;i++){
+            getProfile("profile-classification/", sa.profile_classification[i].id);
+        }
+        for(i=0;i<sa.profile_import.length;i++){
+            getProfile("profile-import/", sa.profile_import[i].id);
+        }
+        for(i=0;i<sa.profile_submit_description.length;i++){
+            getProfile("profile-submit-description/", sa.profile_submit_description[i].id);
+        }
+        for(i=0;i<sa.profile_sip.length;i++){
+            getProfile("profile-sip/", sa.profile_sip[i].id);
+        }
+        for(i=0;i<sa.profile_aip.length;i++){
+            getProfile("profile-aip/", sa.profile_aip[i].id);
+        }
+        for(i=0;i<sa.profile_dip.length;i++){
+            getProfile("profile-dip/", sa.profile_dip[i].id);
+        }
+        for(i=0;i<sa.profile_workflow.length;i++){
+            getProfile("profile-workflow/", sa.profile_workflow[i].id);
+        }
+        for(i=0;i<sa.profile_preservation_metadata.length;i++){
+            getProfile("profile-preservation-metadata/", sa.profile_preservation_metadata[i].id);
+        }
 
     };
-    function getProfile(profile) {
+    function getProfile(profile_type, profile_id) {
         $http({
             method: 'GET',
-            url: profile
+            url: appConfig.djangoUrl + "profiles/" + profile_id
         })
         .then(function successCallback(response) {
-            // console.log(JSON.stringify(response.data));
-            selectRowCollapse.push(response.data);
+            var newProfileType = true;
+            for(i=0; i<$scope.selectRowCollapse.length;i++){
+                if($scope.selectRowCollapse[i].profile_type == response.data.profile_type.toUpperCase()){
+                    newProfileType = false;
+                    $scope.selectRowCollapse[i].profiles.push(response.data);
+                    break;
+                } else {
+                    newProfileType = true;
+                }
+            }
+            console.log("newProfileType = " + newProfileType);
+            if(newProfileType){
+                var tempProfileObject = {
+                    profile_type: response.data.profile_type.toUpperCase(),
+                    profile: response.data,
+                    profiles: [
+                        response.data
+                    ],
+                    state: "working on it!"
+                };
+                $scope.selectRowCollapse.push(tempProfileObject);
+            }
+            /*
+            switch(profile_type){
+                case "profile-transfer-project/":
+                    $scope.currentProfiles.profile_transfer_project = response.data;
+                    $scope.selectRowCollapse[0].profiles.push(response.data);
+                    $scope.selectRowCollapse[0].state = response.data.status;
+                    $scope.selectRowCollapse[0].entity = response.data.profile_type.toUpperCase();
+                    break;
+                case "profile-content-type/":
+                    $scope.currentProfiles.profile_content_type = response.data;
+                    $scope.selectRowCollapse[1].profiles.push(response.data);
+                    $scope.selectRowCollapse[1].state = response.data.status;
+                    break;
+                case "profile-data-selection/":
+                    $scope.currentProfiles.profile_data_selection = response.data;
+                    $scope.selectRowCollapse[2].profiles.push(response.data);
+                    $scope.selectRowCollapse[2].state = response.data.status;
+                    break;
+                case "profile-classification/":
+                    $scope.currentProfiles.profile_classification = response.data;
+                    $scope.selectRowCollapse[3].profiles.push(response.data);
+                    $scope.selectRowCollapse[3].state = response.data.status;
+                    break;
+                case "profile-import/":
+                    $scope.currentProfiles.profile_import = response.data;
+                    $scope.selectRowCollapse[4].profiles.push(response.data);
+                    $scope.selectRowCollapse[4].state = response.data.status;
+                    break;
+                case "profile-submit-description/":
+                    $scope.currentProfiles.profile_submit_description = response.data;
+                    $scope.selectRowCollapse[5].profiles.push(response.data);
+                    $scope.selectRowCollapse[5].state = response.data.status;
+                    break;
+                case "profile-sip/":
+                    $scope.currentProfiles.profile_sip = response.data;
+                    $scope.selectRowCollapse[6].profiles.push(response.data);
+                    $scope.selectRowCollapse[6].state = response.data.status;
+                    break;
+                case "profile-aip/":
+                    $scope.currentProfiles.profile_aip = response.data;
+                    $scope.selectRowCollapse[7].profiles.push(response.data);
+                    $scope.selectRowCollapse[7].state = response.data.status;
+                    break;
+                case "profile-dip/":
+                    $scope.currentProfiles.profile_dip = response.data;
+                    $scope.selectRowCollapse[8].profiles.push(response.data);
+                    $scope.selectRowCollapse[8].state = response.data.status;
+                    break;
+                case "profile-workflow/":
+                    $scope.currentProfiles.profile_workflow = response.data;
+                    $scope.selectRowCollapse[9].profiles.push(response.data);
+                    $scope.selectRowCollapse[9].state = response.data.status;
+                    break;
+                case "profile-preservation-metadata/":
+                    $scope.currentProfiles.profile_preservation_metadata = response.data;
+                    $scope.selectRowCollapse[10].profiles.push(response.data);
+                    $scope.selectRowCollapse[10].state = response.data.status;
+                    break;
+            }
+            */
         }), function errorCallback(){
             alert('error');
         };
     };
-    var selectRowCollapse = [
-    {
-        entity: "PROFILE_TRANSFER_PROJECT",
-        profile: "standard profile",
-        profiles: [
-            "default PTP"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_CONTENT_TYPE",
-        profile: "standard profile",
-        profiles: [
-            "default PCT"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_DATA_SELECTION",
-        profile: "standard profile",
-        profiles: [
-            "default PDS"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_CLASSIFICATION",
-        profile: "standard profile",
-        profiles: [
-            "default PC"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_IMPORT",
-        profile: "standard profile",
-        profiles: [
-            "default PCT"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_SUBMIT_DESCRIPTION",
-        profile: "standard profile",
-        profiles: [
-            "default PSD"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_SUBMISSION INFORMATION PACKAGE",
-        profile: "standard profile",
-        profiles: [
-            "default PSIP"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_ARCHIVAL INFORMATION PACKAGE",
-        profile: "standard profile",
-        profiles: [
-            "default PAIP"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_DISSEMINATION INFORMATION PACKAGE",
-        profile: "standard profile",
-        profiles: [
-            "default PDIP"
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_WORKFLOW",
-        profile: "standard profile",
-        profiles: [
-            "default PWF"
-        ],
-        state: "unspecified"
-    }
-    /* Profiles
-     "PROFILE_SUBMISSION_AGREEMENT",
-     "PROFILE_TRANSFER_PROJECT",
-     "PROFILE_CONTENT_TYPE",
-     "PROFILE_DATA_SELECTION",
-     "PROFILE_CLASSIFICATION",
-     "PROFILE_IMPORT",
-     "PROFILE_SUBMIT_DESCRIPTION",
-     "PROFILE_SUBMISSION INFORMATION PACKAGE",
-     "PROFILE_ARCHIVAL INFORMATION PACKAGE",
-     "PROFILE_DISSEMINATION INFORMATION PACKAGE",
-     "PROFILE_WORKFLOW"
-     */
-        ];
         $scope.showHideAllProfiles = function() {
-            if($scope.selectRowCollection.length == 1){
-                for(i = 0; i < selectRowCollapse.length; i++){
-                    $scope.selectRowCollection.push(selectRowCollapse[i]);
+            if($scope.selectRowCollection.length == 0){
+                for(i = 0; i < $scope.selectRowCollapse.length; i++){
+                    $scope.selectRowCollection.push($scope.selectRowCollapse[i]);
                 }
             } else {
-                $scope.selectRowCollection = [$scope.selectRowCollection[0]];
+                $scope.selectRowCollection = [];
             }
+            $scope.profilesCollapse = !$scope.profilesCollapse;
         };
         //Populating edit view fields
+        $scope.submitDesriptionFields = [
+        {
+            "type": "input",
+            "key": "agentname1",
+            "templateOptions": {
+                "type": "text",
+                "label": "Archivist Organization"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname2",
+            "templateOptions": {
+                "type": "text",
+                "label": "Archivist Software"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname3",
+            "templateOptions": {
+                "type": "text",
+                "label": "Archivist Software"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname4",
+            "templateOptions": {
+                "type": "text",
+                "label": "Archivist Software"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname5",
+            "templateOptions": {
+                "type": "text",
+                "label": "Creator Organization"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname6",
+            "templateOptions": {
+                "type": "text",
+                "label": "Producer Organization"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname7",
+            "templateOptions": {
+                "type": "text",
+                "label": "Producer Individual"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname8",
+            "templateOptions": {
+                "type": "text",
+                "label": "Producer Software"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname9",
+            "templateOptions": {
+                "type": "text",
+                "label": "Submitter Organization"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname10",
+            "templateOptions": {
+                "type": "text",
+                "label": "Submitter Individual"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname11",
+            "templateOptions": {
+                "type": "text",
+                "label": "IPOwner Individual"
+            }
+        },
+        {
+            "type": "input",
+            "key": "agentname12",
+            "templateOptions": {
+                "type": "text",
+                "label": "Preservation Organization"
+            }
+        },
+        {
+            "type": "input",
+            "key": "SUBMISSIONAGREEMENT",
+            "templateOptions": {
+                "type": "text",
+                "label": "Submission Agreement"
+            }
+        },
+        {
+            "type": "input",
+            "key": "STARTDATE",
+            "templateOptions": {
+                "type": "text",
+                "label": "Start data"
+            }
+        },
+        {
+            "type": "input",
+            "key": "ENDDATE",
+            "templateOptions": {
+                "type": "text",
+                "label": "End date"
+            }
+        },
+        {
+            "type": "input",
+            "key": "DOCUMENTID",
+            "templateOptions": {
+                "type": "text",
+                "label": "document name"
+            }
+        },
+        {
+            "type": "input",
+            "key": "INPUTFILE",
+            "templateOptions": {
+                "type": "text",
+                "label": "tar folder"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsLABEL",
+            "templateOptions": {
+                "type": "text",
+                "label": "Mets Label"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsType",
+            "templateOptions": {
+                "type": "text",
+                "label": "Mets Type"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsId",
+            "templateOptions": {
+                "type": "text",
+                "label": "Mets ID"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsOBJID",
+            "templateOptions": {
+                "type": "text",
+                "label": "Mets OBJID"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsHdrCREATEDATE",
+            "templateOptions": {
+                "type": "text",
+                "label": "Created Date"
+            }
+        },
+        {
+            "type": "input",
+            "key": "MetsHdrRECORDSTATUS",
+            "templateOptions": {
+                "type": "text",
+                "label": "Record Status"
+            }
+        }];
         // Archivist
         // Organisation
         vm.archivistOrganisationModel = {
