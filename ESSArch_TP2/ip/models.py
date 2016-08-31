@@ -36,14 +36,14 @@ class InformationPackage(models.Model):
     Label		= models.CharField( max_length = 255 )
     Content		= models.CharField( max_length = 255 )
     Responsible		= models.CharField( max_length = 255 )
-    CreateDate		= models.CharField( max_length = 255 )
+    CreateDate		= models.DateTimeField()
     State		= models.CharField( max_length = 255 )
     Status		= models.CharField( max_length = 255 )
     ObjectSize		= models.CharField( max_length = 255 )
     ObjectNumItems	= models.CharField( max_length = 255 )
     ObjectPath		= models.CharField( max_length = 255 )
-    Startdate		= models.CharField( max_length = 255 )
-    Enddate		= models.CharField( max_length = 255 )
+    Startdate		= models.DateTimeField()
+    Enddate		= models.DateTimeField()
     OAIStype		= models.CharField( max_length = 255 )
     SubmissionAgreement = models.ForeignKey(
         SA,
