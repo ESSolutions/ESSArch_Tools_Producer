@@ -503,7 +503,6 @@ def installInformationPackages():
     lst = [
         {
             'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad1',
-            'Producer': 'Producer 1',
             'Label': 'Arkiv 1',
             'Content': 'ERMS',
             'Responsible': 'Freddie Mercury',
@@ -526,7 +525,6 @@ def installInformationPackages():
         },
         {
             'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad2',
-            'Producer': 'Producer 2',
             'Label': 'Arkiv 2',
             'Content': 'Personnel',
             'Responsible': 'Roger Taylor',
@@ -549,7 +547,6 @@ def installInformationPackages():
         },
         {
             'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad3',
-            'Producer': 'Producer 3',
             'Label': 'Arkiv 3',
             'Content': 'SFBS',
             'Responsible': 'Brian May',

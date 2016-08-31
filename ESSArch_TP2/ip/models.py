@@ -32,7 +32,6 @@ Informaion Package
 """
 class InformationPackage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # ObjectUUID
-    Producer		= models.CharField( max_length = 255 )
     Label		= models.CharField( max_length = 255 )
     Content		= models.CharField( max_length = 255 )
     Responsible		= models.CharField( max_length = 255 )
