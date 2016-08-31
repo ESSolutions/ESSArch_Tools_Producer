@@ -48,8 +48,9 @@ class InformationPackage(models.Model):
     SubmissionAgreement = models.ForeignKey(
         SA,
         on_delete=models.CASCADE,
+        related_name='information_packages',
         default=None,
-        null=True
+        null=True,
     )
     ArchivalInstitution	= models.CharField( max_length = 255, default='' )
     ArchivistOrganization = models.CharField( max_length = 255, default='' )
