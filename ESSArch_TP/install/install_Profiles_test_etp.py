@@ -26,6 +26,15 @@ import django
 django.setup()
 
 # own models etc
+from configuration.models import (
+    EventType
+)
+
+from ip.models import (
+    EventIP,
+    InformationPackage,
+)
+
 from profiles.models import (
     SubmissionAgreement,
     Profile,
@@ -48,6 +57,9 @@ site_profile = "SE" # SE_NEW, SE, NO, EC
 
 def installProfiles(): # Install all different profiles
     # First remove all existing data
+    EventIP.objects.all().delete()
+    EventType.objects.all().delete()
+    InformationPackage.objects.all().delete()
     SubmissionAgreement.objects.all().delete()
     Profile.objects.all().delete()
 
@@ -64,6 +76,13 @@ def installProfiles(): # Install all different profiles
     installProfileWorkflow()			# Profile Workflow
     installProfilePreservationMetadata()		# Profile Preservation Metadata
     installSubmissionAgreement()     		# Submission Agreement
+
+    return 0
+
+def installIPs():
+    installInformationPackages()                # Information Package
+    installEventTypes()                         # Event Types
+    installEventIPs()                           # Events
 
     return 0
 
@@ -480,7 +499,240 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     return 0
 
+def installInformationPackages():
+    lst = [
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad1',
+            'Producer': 'Producer 1',
+            'Label': 'Arkiv 1',
+            'Content': 'ERMS',
+            'Responsible': 'Freddie Mercury',
+            'CreateDate': '2012-04-26T10:45:12.865096Z',
+            'State': 'hmm',
+            'Status': 'hmm',
+            'ObjectSize': '123',
+            'ObjectNumItems': '10',
+            'ObjectPath': '/path1',
+            'Startdate': '2011-01-01T10:45:12.865096Z',
+            'Enddate': '2011-12-31T10:45:12.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': 'RA1',
+            'ArchivistOrganization': 'Producer 1',
+            'ArchivalType': 'Dokument',
+            'ArchivalLocation': 'Stockholm',
+        },
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad2',
+            'Producer': 'Producer 2',
+            'Label': 'Arkiv 2',
+            'Content': 'Personnel',
+            'Responsible': 'Roger Taylor',
+            'CreateDate': '2013-05-18T12:12:12.865096Z',
+            'State': 'hmm',
+            'Status': 'hmm',
+            'ObjectSize': '456',
+            'ObjectNumItems': '20',
+            'ObjectPath': '/path2',
+            'Startdate': '2012-01-01T23:21:22.865096Z',
+            'Enddate': '2012-08-12T01:23:21.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': 'RA2',
+            'ArchivistOrganization': 'Producer 2',
+            'ArchivalType': 'Dossier',
+            'ArchivalLocation': 'Göteborg',
+        },
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad3',
+            'Producer': 'Producer 3',
+            'Label': 'Arkiv 3',
+            'Content': 'SFBS',
+            'Responsible': 'Brian May',
+            'CreateDate': '2014-01-20T09:39:15.865096Z',
+            'State': 'hmm',
+            'Status': 'hmm',
+            'ObjectSize': '789',
+            'ObjectNumItems': '30',
+            'ObjectPath': '/path3',
+            'Startdate': '2013-02-18T14:28:46.865096Z',
+            'Enddate': '2013-12-21T08:03:21.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': 'RA3',
+            'ArchivistOrganization': 'Producer 3',
+            'ArchivalType': 'Fotografi',
+            'ArchivalLocation': 'Malmö',
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        InformationPackage.objects.create(**dct)
+
+    print 'Installed information packages'
+
+    return 0
+
+def installEventTypes():
+    lst = [
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c1',
+            'eventType': 1,
+            'eventDetail': 'Prepare IP',
+        },
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c2',
+            'eventType': 2,
+            'eventDetail': 'Generate XML',
+        },
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c3',
+            'eventType': 3,
+            'eventDetail': 'Create directory strucutre',
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        EventType.objects.create(**dct)
+
+    print 'Installed event types'
+
+    return 0
+
+def installEventIPs():
+    lst = [
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
+            ),
+            'eventDetail': 'Preparing the IP',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDetail': 'Adding files to XML',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDateTime': '',
+            'eventDetail': 'Creating METS file',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
+            ),
+            'eventDetail': 'Creating directory structure from JSON',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
+            ),
+            'eventDetail': 'Preparing the IP',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDetail': 'Adding files to XML',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDateTime': '',
+            'eventDetail': 'Creating PREMIS file',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
+            ),
+            'eventDetail': 'Creating directory structure from JSON',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        EventIP.objects.create(**dct)
+
+    print 'Installed events'
+
+    return 0
 
 if __name__ == '__main__':
     installProfiles()
-
+    installIPs()
