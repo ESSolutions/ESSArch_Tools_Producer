@@ -81,7 +81,7 @@ class EventIP(models.Model):
         'configuration.EventType',
         on_delete=models.CASCADE
     )
-    eventDateTime		= models.CharField( max_length = 255 )
+    eventDateTime		= models.DateTimeField(auto_now_add=True)
     eventDetail			= models.CharField( max_length = 255 )
     eventApplication		= models.CharField( max_length = 255 )
     eventVersion		= models.CharField( max_length = 255 )
