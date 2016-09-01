@@ -346,35 +346,915 @@ def installProfileSubmitDescription(): # Profile Submit Description
             {
                 "templateOptions": {
                     "type": "text",
-                    "label":"some id"
+                    "label":"ID"
                 },
                 "type": "input",
-                "key": "some id"
+                "key": "ID"
             }, {
                 "templateOptions": {
                     "type": "text",
-                    "label": "some object id"
+                    "label": "OBJID"
                 },
                 "type": "input",
-                "key": "some object id"
+                "key": "OBJID"
             }, {
                 "templateOptions": {
                     "type": "text",
-                    "label": "some labeeel"
+                    "label": "LABEL"
                 },
                 "type": "input",
-                "key": "some labeeel"
+                "key": "LABEL"
             }, {
                 "templateOptions": {
                     "type": "text",
-                    "label": "a random profile"
+                    "label": "PROFILE"
                 },
                 "type": "input",
-                "key": "a random profile"
+                "key": "PROFILE"
             }
         ],
-        'specification':'Any specification wrapped',
-        'specification_data':'Any specification data wrapped',
+        'specification': {
+            "mets": {
+                "dmdSec": {
+                    "mdWrap": {
+                        "-max": 1,
+                        "xmlData": {
+                            "-max": 1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "binData": {
+                            "-max": 1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "MDTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERMDTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPEVERSION",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MIMETYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "SIZE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUM",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUMTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "mdRef": {
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "LOCTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERLOCTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERMDTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPEVERSION",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MIMETYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "SIZE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUM",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUMTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "XPTR",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 1
+                    }, {
+                    "-name": "GROUPID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "ADMID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "CREATED",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "STATUS",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "-attr": [{
+                    "-name": "ID",
+                    "#content": [{
+                        "var": "ID"
+                    }],
+                    "-req": 0
+                }, {
+                "-name": "OBJID",
+                "#content": [{
+                    "var": "OBJID"
+                }, {
+                "text": "asd"
+                }],
+                "-req": 1
+                }, {
+                "-name": "LABEL",
+                "#content": [{
+                    "var": "LABEL"
+                }],
+                "-req": 0
+                }, {
+                "-name": "TYPE",
+                "#content": [{
+                    "text": "Medical record"
+                }],
+                "-req": 1
+                }, {
+                "-name": "PROFILE",
+                "#content": [{
+                    "var": "PROFILE"
+                }],
+                "-req": 1
+                }],
+                "metsHdr": {
+                    "-max": 1,
+                    "metsDocumentID": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ADMID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "CREATEDATE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "LASTMODDATE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "RECORDSTATUS",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "altRecordID": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 1
+                    },
+                    "agent": [{
+                        "note": {
+                            "-max": -1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-max": -1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ROLE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERROLE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "TYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "name": {
+                            "-max": 1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-min": 3
+                    }, {
+                    "note": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ROLE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERROLE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERTYPE",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "name": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 3
+                    }, {
+                    "note": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ROLE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERROLE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERTYPE",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "name": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 3
+                    }],
+                    "-min": 0
+                },
+                "amdSec": {
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 1
+                    }],
+                    "rightsMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 0,
+                    "sourceMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "techMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "digiprovMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    }
+                },
+                "behaviorSec": {
+                    "-max": -1,
+                    "behaviorSec": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "CREATED",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "LABEL",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "behavior": {
+                        "-max": -1,
+                        "interfaceDef": {
+                            "-max": 1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "LABEL",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "LOCTYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "OTHERLOCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "STRUCTID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "BTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "GROUPID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "mechanism": {
+                            "-max": 1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-min": 0
+                    },
+                    "-min": 0
+                },
+                "structLink": {
+                    "smLinkGrp": {
+                        "-max": 1,
+                        "smArcLink": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "ARCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "ADMID",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 1
+                        },
+                        "smLocatorLink": [{
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }],
+                            "-min": 2
+                        }, {
+                        "-max": -1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }],
+                        "-min": 2
+                        }],
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ARCLINKORDER",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-max": 1,
+                    "smLink": {
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "fileSec": {
+                    "-max": 1,
+                    "fileGrp": {
+                        "-max": -1,
+                        "fileGrp": {
+                            "-max": -1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "VERSDATE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "USE",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "file": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 1
+                            }, {
+                            "-name": "SEQ",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "MIMETYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "SIZE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CREATED",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CHECKSUM",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "CHECKSUMTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "OWNERID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "ADMID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "DMDID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "GROUPID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "USE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "BEGIN",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "END",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "BETYPE",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "stream": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "FLocat": {
+                                "-max": 1,
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "LOCTYPE",
+                                "#content": [],
+                                "-req": 1
+                                }, {
+                                "-name": "OTHERLOCTYPE",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "USE",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "-min": 0
+                            },
+                            "-min": 0,
+                            "FContent": {
+                                "-max": 1,
+                                "xmlData": {
+                                    "-max": 1,
+                                    "-attr": [],
+                                    "-min": 0
+                                },
+                                "binData": {
+                                    "-max": 1,
+                                    "#content": [],
+                                    "-attr": [],
+                                    "-min": 0
+                                },
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "USE",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "-min": 0
+                            },
+                            "transformFile": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "file": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            }
+                        },
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "structMap": {
+                    "-max": -1,
+                    "div": {
+                        "fptr": {
+                            "-max": -1,
+                            "par": {
+                                "-max": 1,
+                                "area": {
+                                    "-max": 1,
+                                    "-attr": [{
+                                        "-name": "ID",
+                                        "#content": [],
+                                        "-req": 0
+                                    }, {
+                                    "-name": "FILEID",
+                                    "#content": [],
+                                    "-req": 1
+                                    }, {
+                                    "-name": "SHAPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "COORDS",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "BEGIN",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "END",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "BETYPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "EXTENT",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "EXTTYPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ADMID",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "CONTENTIDS",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDER",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDERLABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "LABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }],
+                                    "-min": 0
+                                },
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "ORDER",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "ORDERLABEL",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "LABEL",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "seq": {
+                                    "-max": 1,
+                                    "par": {
+                                        "-max": 1,
+                                        "-attr": [],
+                                        "-min": 0
+                                    },
+                                    "area": {
+                                        "-max": 1,
+                                        "-attr": [],
+                                        "-min": 0
+                                    },
+                                    "-attr": [{
+                                        "-name": "ID",
+                                        "#content": [],
+                                        "-req": 0
+                                    }, {
+                                    "-name": "ORDER",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDERLABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "LABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }],
+                                    "-min": 0
+                                },
+                                "-min": 0
+                            },
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "FILEID",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CONTENTIDS",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "seq": {
+                                "-max": 1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "area": {
+                                "-max": 1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "-min": 0
+                        },
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ORDER",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ORDERLABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "DMDID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "TYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CONTENTIDS",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0,
+                        "div": {
+                            "-max": -1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "mptr": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "LOCTYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "OTHERLOCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "CONTENTIDS",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 0
+                        }
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "LABEL",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "-min": 0
+                }
+            }
+        },
+        'specification_data': {
+            "PROFILE": "your default profile",
+            "LABEL": "my default label",
+            "OBJID": "a default obj id",
+            "ID": "the default id"
+        },
     }
 
     # create according to model with many fields
