@@ -201,6 +201,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.edit = false;
         } else {
             $scope.eventlog = true;
+            getEventlogData();
             $scope.edit = true;
             $scope.selectProfile = row;
             vm.profileModel = row.profile.specification_data;
@@ -221,7 +222,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         console.log("selected profile: ");
         console.log($scope.selectProfile);
     };
-
+    function getEventlogData() {
+        $http({
+            method: 'GET',
+            url: appConfig.djangoUrl+'event-types'
+        })
+        .then(function successCallback(response) {
+            $scope.statusNoteCollection = response.data;
+        }), function errorCallback(){
+            alert('error');
+        };
+    };
     //populating select view
     $scope.selectRowCollection = [];
     $scope.selectRowCollapse = [
@@ -489,191 +500,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.profilesCollapse = !$scope.profilesCollapse;
         };
         //Populating edit view fields
-        $scope.submitDesriptionFields = [
-        {
-            "type": "input",
-            "key": "agentname1",
-            "templateOptions": {
-                "type": "text",
-                "label": "Archivist Organization"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname2",
-            "templateOptions": {
-                "type": "text",
-                "label": "Archivist Software"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname3",
-            "templateOptions": {
-                "type": "text",
-                "label": "Archivist Software"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname4",
-            "templateOptions": {
-                "type": "text",
-                "label": "Archivist Software"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname5",
-            "templateOptions": {
-                "type": "text",
-                "label": "Creator Organization"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname6",
-            "templateOptions": {
-                "type": "text",
-                "label": "Producer Organization"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname7",
-            "templateOptions": {
-                "type": "text",
-                "label": "Producer Individual"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname8",
-            "templateOptions": {
-                "type": "text",
-                "label": "Producer Software"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname9",
-            "templateOptions": {
-                "type": "text",
-                "label": "Submitter Organization"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname10",
-            "templateOptions": {
-                "type": "text",
-                "label": "Submitter Individual"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname11",
-            "templateOptions": {
-                "type": "text",
-                "label": "IPOwner Individual"
-            }
-        },
-        {
-            "type": "input",
-            "key": "agentname12",
-            "templateOptions": {
-                "type": "text",
-                "label": "Preservation Organization"
-            }
-        },
-        {
-            "type": "input",
-            "key": "SUBMISSIONAGREEMENT",
-            "templateOptions": {
-                "type": "text",
-                "label": "Submission Agreement"
-            }
-        },
-        {
-            "type": "input",
-            "key": "STARTDATE",
-            "templateOptions": {
-                "type": "text",
-                "label": "Start data"
-            }
-        },
-        {
-            "type": "input",
-            "key": "ENDDATE",
-            "templateOptions": {
-                "type": "text",
-                "label": "End date"
-            }
-        },
-        {
-            "type": "input",
-            "key": "DOCUMENTID",
-            "templateOptions": {
-                "type": "text",
-                "label": "document name"
-            }
-        },
-        {
-            "type": "input",
-            "key": "INPUTFILE",
-            "templateOptions": {
-                "type": "text",
-                "label": "tar folder"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsLABEL",
-            "templateOptions": {
-                "type": "text",
-                "label": "Mets Label"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsType",
-            "templateOptions": {
-                "type": "text",
-                "label": "Mets Type"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsId",
-            "templateOptions": {
-                "type": "text",
-                "label": "Mets ID"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsOBJID",
-            "templateOptions": {
-                "type": "text",
-                "label": "Mets OBJID"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsHdrCREATEDATE",
-            "templateOptions": {
-                "type": "text",
-                "label": "Created Date"
-            }
-        },
-        {
-            "type": "input",
-            "key": "MetsHdrRECORDSTATUS",
-            "templateOptions": {
-                "type": "text",
-                "label": "Record Status"
-            }
-        }];
         // Archivist
         // Organisation
         vm.archivistOrganisationModel = {
