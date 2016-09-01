@@ -203,6 +203,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.eventlog = true;
             $scope.edit = true;
             $scope.selectProfile = row;
+            vm.profileModel = row.profile.specification_data;
             vm.profileFields = row.profile.template;
             $scope.subSelectProfile = "profile";
             $http({
@@ -341,50 +342,60 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $scope.currentProfiles = {};
         $scope.selectRowCollapse = [];
         for(i=0;i<sa.profile_transfer_project.length;i++){
-            getProfile("profile-transfer-project/", sa.profile_transfer_project[i].id);
+            getProfile("profile-transfer-project/", sa.profile_transfer_project[i].id, sa.profile_transfer_project[i].status);
+
         }
         for(i=0;i<sa.profile_content_type.length;i++){
-            getProfile("profile-content-type/", sa.profile_content_type[i].id);
+            getProfile("profile-content-type/", sa.profile_content_type[i].id, sa.profile_content_type[i].status);
         }
         for(i=0;i<sa.profile_data_selection.length;i++){
-            getProfile("profile-data-selection/", sa.profile_data_selection[i].id);
+            getProfile("profile-data-selection/", sa.profile_data_selection[i].id, sa.profile_data_selection[i].status);
         }
         for(i=0;i<sa.profile_classification.length;i++){
-            getProfile("profile-classification/", sa.profile_classification[i].id);
+            getProfile("profile-classification/", sa.profile_classification[i].id, sa.profile_classification[i].status);
         }
         for(i=0;i<sa.profile_import.length;i++){
-            getProfile("profile-import/", sa.profile_import[i].id);
+            getProfile("profile-import/", sa.profile_import[i].id, sa.profile_import[i].status);
         }
         for(i=0;i<sa.profile_submit_description.length;i++){
-            getProfile("profile-submit-description/", sa.profile_submit_description[i].id);
+            getProfile("profile-submit-description/", sa.profile_submit_description[i].id, sa.profile_submit_description[i].status);
         }
         for(i=0;i<sa.profile_sip.length;i++){
-            getProfile("profile-sip/", sa.profile_sip[i].id);
+            getProfile("profile-sip/", sa.profile_sip[i].id, sa.profile_sip[i].status);
         }
         for(i=0;i<sa.profile_aip.length;i++){
-            getProfile("profile-aip/", sa.profile_aip[i].id);
+            getProfile("profile-aip/", sa.profile_aip[i].id, sa.profile_aip[i].status);
         }
         for(i=0;i<sa.profile_dip.length;i++){
-            getProfile("profile-dip/", sa.profile_dip[i].id);
+            getProfile("profile-dip/", sa.profile_dip[i].id, sa.profile_dip[i].status);
         }
         for(i=0;i<sa.profile_workflow.length;i++){
-            getProfile("profile-workflow/", sa.profile_workflow[i].id);
+            getProfile("profile-workflow/", sa.profile_workflow[i].id, sa.profile_workflow[i].status);
         }
         for(i=0;i<sa.profile_preservation_metadata.length;i++){
-            getProfile("profile-preservation-metadata/", sa.profile_preservation_metadata[i].id);
+            getProfile("profile-preservation-metadata/", sa.profile_preservation_metadata[i].id, sa.profile_preservation_metadata[i].status);
         }
+        console.log($scope.selectRowCollapse);
 
     };
-    function getProfile(profile_type, profile_id) {
+    function getProfile(profile_type, profile_id, profile_status) {
         $http({
             method: 'GET',
             url: appConfig.djangoUrl + "profiles/" + profile_id
         })
         .then(function successCallback(response) {
+            response.data.statusInSubmissionAgreement = profile_status;
             var newProfileType = true;
             for(i=0; i<$scope.selectRowCollapse.length;i++){
                 if($scope.selectRowCollapse[i].profile_type == response.data.profile_type.toUpperCase()){
                     newProfileType = false;
+                    if($scope.selectRowCollapse[i].profile.statusInSubmissionAgreement != 1 && profile_status == 2) {
+                        $scope.selectRowCollapse[i].profile = response.data;
+                    }
+                    if(profile_status == 1){
+                        $scope.selectRowCollapse[i].profile = response.data;
+                    }
+
                     $scope.selectRowCollapse[i].profiles.push(response.data);
                     break;
                 } else {
@@ -399,7 +410,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                     profiles: [
                         response.data
                     ],
-                    state: "working on it!"
+                    state: "working on it!",
                 };
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
