@@ -33,6 +33,10 @@ from configuration.models import (
 from ip.models import (
     EventIP,
     InformationPackage,
+    ArchivalInstitution,
+    ArchivistOrganization,
+    ArchivalType,
+    ArchivalLocation,
 )
 
 from profiles.models import (
@@ -59,6 +63,10 @@ def installProfiles(): # Install all different profiles
     # First remove all existing data
     EventIP.objects.all().delete()
     EventType.objects.all().delete()
+    ArchivalInstitution.objects.all().delete()
+    ArchivistOrganization.objects.all().delete()
+    ArchivalType.objects.all().delete()
+    ArchivalLocation.objects.all().delete()
     InformationPackage.objects.all().delete()
     SubmissionAgreement.objects.all().delete()
     Profile.objects.all().delete()
@@ -80,6 +88,10 @@ def installProfiles(): # Install all different profiles
     return 0
 
 def installIPs():
+    installArchivalInstitution()                # Archival Institution
+    installArchivistOrganization()              # Archivist Organization
+    installArchivalType()                       # Archival Type
+    installArchivalLocation()                   # Archival Location
     installInformationPackages()                # Information Package
     installEventTypes()                         # Event Types
     installEventIPs()                           # Events
@@ -1410,6 +1422,90 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     return 0
 
+def installArchivalInstitution():
+    lst = [
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f111',
+            'name': 'RA1'
+        },
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f112',
+            'name': 'RA2'
+        },
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f113',
+            'name': 'RA3'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalInstitution.objects.create(**dct)
+
+    print "Installed archival institutions"
+
+def installArchivistOrganization():
+    lst = [
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e1',
+            'name': 'Producer 1'
+        },
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e2',
+            'name': 'Producer 2'
+        },
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e3',
+            'name': 'Producer 3'
+        },
+    ]
+
+    for dct in lst:
+        ArchivistOrganization.objects.create(**dct)
+
+    print "Installed archivist organization"
+
+def installArchivalType():
+    lst = [
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba81',
+            'name': 'Dokument'
+        },
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba82',
+            'name': 'Dossier'
+        },
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba83',
+            'name': 'Fotografi'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalType.objects.create(**dct)
+
+    print "Installed archival type"
+
+def installArchivalLocation():
+    lst = [
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b1',
+            'name': 'Stockholm'
+        },
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b2',
+            'name': 'Göteborg'
+        },
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b3',
+            'name': 'Malmö'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalLocation.objects.create(**dct)
+
+    print "Installed archival locations"
+
 def installInformationPackages():
     lst = [
         {
@@ -1428,10 +1524,18 @@ def installInformationPackages():
             'SubmissionAgreement': SubmissionAgreement.objects.get(
                 pk="550e8400-e29b-41d4a716-446655440000"
             ),
-            'ArchivalInstitution': 'RA1',
-            'ArchivistOrganization': 'Producer 1',
-            'ArchivalType': 'Dokument',
-            'ArchivalLocation': 'Stockholm',
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f111"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e1"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba81"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b1"
+            ),
         },
         {
             'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad2',
@@ -1449,10 +1553,18 @@ def installInformationPackages():
             'SubmissionAgreement': SubmissionAgreement.objects.get(
                 pk="550e8400-e29b-41d4a716-446655440000"
             ),
-            'ArchivalInstitution': 'RA2',
-            'ArchivistOrganization': 'Producer 2',
-            'ArchivalType': 'Dossier',
-            'ArchivalLocation': 'Göteborg',
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f112"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e2"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba82"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b2"
+            ),
         },
         {
             'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad3',
@@ -1470,10 +1582,18 @@ def installInformationPackages():
             'SubmissionAgreement': SubmissionAgreement.objects.get(
                 pk="550e8400-e29b-41d4a716-446655440000"
             ),
-            'ArchivalInstitution': 'RA3',
-            'ArchivistOrganization': 'Producer 3',
-            'ArchivalType': 'Fotografi',
-            'ArchivalLocation': 'Malmö',
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f113"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e3"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba83"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b3"
+            ),
         },
     ]
 
