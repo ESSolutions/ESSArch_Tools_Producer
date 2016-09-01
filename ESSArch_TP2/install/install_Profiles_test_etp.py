@@ -26,6 +26,19 @@ import django
 django.setup()
 
 # own models etc
+from configuration.models import (
+    EventType
+)
+
+from ip.models import (
+    EventIP,
+    InformationPackage,
+    ArchivalInstitution,
+    ArchivistOrganization,
+    ArchivalType,
+    ArchivalLocation,
+)
+
 from profiles.models import (
     SubmissionAgreement,
     Profile,
@@ -48,6 +61,13 @@ site_profile = "SE" # SE_NEW, SE, NO, EC
 
 def installProfiles(): # Install all different profiles
     # First remove all existing data
+    EventIP.objects.all().delete()
+    EventType.objects.all().delete()
+    ArchivalInstitution.objects.all().delete()
+    ArchivistOrganization.objects.all().delete()
+    ArchivalType.objects.all().delete()
+    ArchivalLocation.objects.all().delete()
+    InformationPackage.objects.all().delete()
     SubmissionAgreement.objects.all().delete()
     Profile.objects.all().delete()
 
@@ -64,6 +84,17 @@ def installProfiles(): # Install all different profiles
     installProfileWorkflow()			# Profile Workflow
     installProfilePreservationMetadata()		# Profile Preservation Metadata
     installSubmissionAgreement()     		# Submission Agreement
+
+    return 0
+
+def installIPs():
+    installArchivalInstitution()                # Archival Institution
+    installArchivistOrganization()              # Archivist Organization
+    installArchivalType()                       # Archival Type
+    installArchivalLocation()                   # Archival Location
+    installInformationPackages()                # Information Package
+    installEventTypes()                         # Event Types
+    installEventIPs()                           # Events
 
     return 0
 
@@ -317,15 +348,926 @@ def installProfileSubmitDescription(): # Profile Submit Description
     # create profile submit description dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440006',
-	  'name':'Submit description of a single SIP',
-          'profile_type': 'submit_description',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Desription of a one2one SIP2AIP',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id':'550e8400-e29b-41d4a716-446655440006',
+        'name':'Submit description of a single SIP',
+        'profile_type': 'submit_description',
+        'type':'Implementation',
+        'status':'Draft',
+        'label':'Desription of a one2one SIP2AIP',
+        'template': [
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label":"ID"
+                },
+                "type": "input",
+                "key": "ID"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "OBJID"
+                },
+                "type": "input",
+                "key": "OBJID"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LABEL"
+                },
+                "type": "input",
+                "key": "LABEL"
+            }, {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "PROFILE"
+                },
+                "type": "input",
+                "key": "PROFILE"
+            }
+        ],
+        'specification': {
+            "mets": {
+                "dmdSec": {
+                    "mdWrap": {
+                        "-max": 1,
+                        "xmlData": {
+                            "-max": 1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "binData": {
+                            "-max": 1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "MDTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERMDTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPEVERSION",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MIMETYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "SIZE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUM",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUMTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "mdRef": {
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "LOCTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERLOCTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERMDTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MDTYPEVERSION",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "MIMETYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "SIZE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUM",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CHECKSUMTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "XPTR",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 1
+                    }, {
+                    "-name": "GROUPID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "ADMID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "CREATED",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "STATUS",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "-attr": [{
+                    "-name": "ID",
+                    "#content": [{
+                        "var": "ID"
+                    }],
+                    "-req": 0
+                }, {
+                "-name": "OBJID",
+                "#content": [{
+                    "var": "OBJID"
+                }, {
+                "text": "asd"
+                }],
+                "-req": 1
+                }, {
+                "-name": "LABEL",
+                "#content": [{
+                    "var": "LABEL"
+                }],
+                "-req": 0
+                }, {
+                "-name": "TYPE",
+                "#content": [{
+                    "text": "Medical record"
+                }],
+                "-req": 1
+                }, {
+                "-name": "PROFILE",
+                "#content": [{
+                    "var": "PROFILE"
+                }],
+                "-req": 1
+                }],
+                "metsHdr": {
+                    "-max": 1,
+                    "metsDocumentID": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ADMID",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "CREATEDATE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "LASTMODDATE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "RECORDSTATUS",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "altRecordID": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 1
+                    },
+                    "agent": [{
+                        "note": {
+                            "-max": -1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-max": -1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ROLE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERROLE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "TYPE",
+                        "#content": [],
+                        "-req": 1
+                        }, {
+                        "-name": "OTHERTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "name": {
+                            "-max": 1,
+                            "#content": [],
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-min": 3
+                    }, {
+                    "note": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ROLE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERROLE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERTYPE",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "name": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 3
+                    }, {
+                    "note": {
+                        "-max": -1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "ROLE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERROLE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 1
+                    }, {
+                    "-name": "OTHERTYPE",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "name": {
+                        "-max": 1,
+                        "#content": [],
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 3
+                    }],
+                    "-min": 0
+                },
+                "amdSec": {
+                    "-max": -1,
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 1
+                    }],
+                    "rightsMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-min": 0,
+                    "sourceMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "techMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "digiprovMD": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    }
+                },
+                "behaviorSec": {
+                    "-max": -1,
+                    "behaviorSec": {
+                        "-max": -1,
+                        "-attr": [],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "CREATED",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "LABEL",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "behavior": {
+                        "-max": -1,
+                        "interfaceDef": {
+                            "-max": 1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "LABEL",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "LOCTYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "OTHERLOCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "STRUCTID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "BTYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "GROUPID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "mechanism": {
+                            "-max": 1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-min": 0
+                    },
+                    "-min": 0
+                },
+                "structLink": {
+                    "smLinkGrp": {
+                        "-max": 1,
+                        "smArcLink": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "ARCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "ADMID",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 1
+                        },
+                        "smLocatorLink": [{
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }],
+                            "-min": 2
+                        }, {
+                        "-max": -1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }],
+                        "-min": 2
+                        }],
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ARCLINKORDER",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-max": 1,
+                    "smLink": {
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }],
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "fileSec": {
+                    "-max": 1,
+                    "fileGrp": {
+                        "-max": -1,
+                        "fileGrp": {
+                            "-max": -1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "VERSDATE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "USE",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "file": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 1
+                            }, {
+                            "-name": "SEQ",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "MIMETYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "SIZE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CREATED",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CHECKSUM",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "CHECKSUMTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "OWNERID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "ADMID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "DMDID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "GROUPID",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "USE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "BEGIN",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "END",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "BETYPE",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "stream": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "FLocat": {
+                                "-max": 1,
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "LOCTYPE",
+                                "#content": [],
+                                "-req": 1
+                                }, {
+                                "-name": "OTHERLOCTYPE",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "USE",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "-min": 0
+                            },
+                            "-min": 0,
+                            "FContent": {
+                                "-max": 1,
+                                "xmlData": {
+                                    "-max": 1,
+                                    "-attr": [],
+                                    "-min": 0
+                                },
+                                "binData": {
+                                    "-max": 1,
+                                    "#content": [],
+                                    "-attr": [],
+                                    "-min": 0
+                                },
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "USE",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "-min": 0
+                            },
+                            "transformFile": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "file": {
+                                "-max": -1,
+                                "-attr": [],
+                                "-min": 0
+                            }
+                        },
+                        "-min": 0
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }],
+                    "-min": 0
+                },
+                "structMap": {
+                    "-max": -1,
+                    "div": {
+                        "fptr": {
+                            "-max": -1,
+                            "par": {
+                                "-max": 1,
+                                "area": {
+                                    "-max": 1,
+                                    "-attr": [{
+                                        "-name": "ID",
+                                        "#content": [],
+                                        "-req": 0
+                                    }, {
+                                    "-name": "FILEID",
+                                    "#content": [],
+                                    "-req": 1
+                                    }, {
+                                    "-name": "SHAPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "COORDS",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "BEGIN",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "END",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "BETYPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "EXTENT",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "EXTTYPE",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ADMID",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "CONTENTIDS",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDER",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDERLABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "LABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }],
+                                    "-min": 0
+                                },
+                                "-attr": [{
+                                    "-name": "ID",
+                                    "#content": [],
+                                    "-req": 0
+                                }, {
+                                "-name": "ORDER",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "ORDERLABEL",
+                                "#content": [],
+                                "-req": 0
+                                }, {
+                                "-name": "LABEL",
+                                "#content": [],
+                                "-req": 0
+                                }],
+                                "seq": {
+                                    "-max": 1,
+                                    "par": {
+                                        "-max": 1,
+                                        "-attr": [],
+                                        "-min": 0
+                                    },
+                                    "area": {
+                                        "-max": 1,
+                                        "-attr": [],
+                                        "-min": 0
+                                    },
+                                    "-attr": [{
+                                        "-name": "ID",
+                                        "#content": [],
+                                        "-req": 0
+                                    }, {
+                                    "-name": "ORDER",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "ORDERLABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }, {
+                                    "-name": "LABEL",
+                                    "#content": [],
+                                    "-req": 0
+                                    }],
+                                    "-min": 0
+                                },
+                                "-min": 0
+                            },
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "FILEID",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "CONTENTIDS",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "seq": {
+                                "-max": 1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "area": {
+                                "-max": 1,
+                                "-attr": [],
+                                "-min": 0
+                            },
+                            "-min": 0
+                        },
+                        "-max": 1,
+                        "-attr": [{
+                            "-name": "ID",
+                            "#content": [],
+                            "-req": 0
+                        }, {
+                        "-name": "ORDER",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ORDERLABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "LABEL",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "DMDID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "TYPE",
+                        "#content": [],
+                        "-req": 0
+                        }, {
+                        "-name": "CONTENTIDS",
+                        "#content": [],
+                        "-req": 0
+                        }],
+                        "-min": 0,
+                        "div": {
+                            "-max": -1,
+                            "-attr": [],
+                            "-min": 0
+                        },
+                        "mptr": {
+                            "-max": -1,
+                            "-attr": [{
+                                "-name": "ID",
+                                "#content": [],
+                                "-req": 0
+                            }, {
+                            "-name": "LOCTYPE",
+                            "#content": [],
+                            "-req": 1
+                            }, {
+                            "-name": "OTHERLOCTYPE",
+                            "#content": [],
+                            "-req": 0
+                            }, {
+                            "-name": "CONTENTIDS",
+                            "#content": [],
+                            "-req": 0
+                            }],
+                            "-min": 0
+                        }
+                    },
+                    "-attr": [{
+                        "-name": "ID",
+                        "#content": [],
+                        "-req": 0
+                    }, {
+                    "-name": "TYPE",
+                    "#content": [],
+                    "-req": 0
+                    }, {
+                    "-name": "LABEL",
+                    "#content": [],
+                    "-req": 0
+                    }],
+                    "-min": 0
+                }
+            }
+        },
+        'specification_data': {
+            "PROFILE": "your default profile",
+            "LABEL": "my default label",
+            "OBJID": "a default obj id",
+            "ID": "the default id"
+        },
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -480,7 +1422,342 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     return 0
 
+def installArchivalInstitution():
+    lst = [
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f111',
+            'name': 'RA1'
+        },
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f112',
+            'name': 'RA2'
+        },
+        {
+            'id': 'aa8e20d9-8794-4f26-9859-c3341a31f113',
+            'name': 'RA3'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalInstitution.objects.create(**dct)
+
+    print "Installed archival institutions"
+
+def installArchivistOrganization():
+    lst = [
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e1',
+            'name': 'Producer 1'
+        },
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e2',
+            'name': 'Producer 2'
+        },
+        {
+            'id': '2fe86f14-9b09-46e3-b272-a6e971b9d4e3',
+            'name': 'Producer 3'
+        },
+    ]
+
+    for dct in lst:
+        ArchivistOrganization.objects.create(**dct)
+
+    print "Installed archivist organization"
+
+def installArchivalType():
+    lst = [
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba81',
+            'name': 'Dokument'
+        },
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba82',
+            'name': 'Dossier'
+        },
+        {
+            'id': 'fc3f23aa-203c-4aee-bb20-92373a5eba83',
+            'name': 'Fotografi'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalType.objects.create(**dct)
+
+    print "Installed archival type"
+
+def installArchivalLocation():
+    lst = [
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b1',
+            'name': 'Stockholm'
+        },
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b2',
+            'name': 'Göteborg'
+        },
+        {
+            'id': '83f1f65d-7be0-4577-ade9-543c815417b3',
+            'name': 'Malmö'
+        },
+    ]
+
+    for dct in lst:
+        ArchivalLocation.objects.create(**dct)
+
+    print "Installed archival locations"
+
+def installInformationPackages():
+    lst = [
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad1',
+            'Label': 'Arkiv 1',
+            'Content': 'ERMS',
+            'Responsible': 'Freddie Mercury',
+            'CreateDate': '2012-04-26T10:45:12.865096Z',
+            'State': 'hmm',
+            'ObjectSize': '123',
+            'ObjectNumItems': '10',
+            'ObjectPath': '/path1',
+            'Startdate': '2011-01-01T10:45:12.865096Z',
+            'Enddate': '2011-12-31T10:45:12.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f111"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e1"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba81"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b1"
+            ),
+        },
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad2',
+            'Label': 'Arkiv 2',
+            'Content': 'Personnel',
+            'Responsible': 'Roger Taylor',
+            'CreateDate': '2013-05-18T12:12:12.865096Z',
+            'State': 'hmm',
+            'ObjectSize': '456',
+            'ObjectNumItems': '20',
+            'ObjectPath': '/path2',
+            'Startdate': '2012-01-01T23:21:22.865096Z',
+            'Enddate': '2012-08-12T01:23:21.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f112"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e2"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba82"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b2"
+            ),
+        },
+        {
+            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad3',
+            'Label': 'Arkiv 3',
+            'Content': 'SFBS',
+            'Responsible': 'Brian May',
+            'CreateDate': '2014-01-20T09:39:15.865096Z',
+            'State': 'hmm',
+            'ObjectSize': '789',
+            'ObjectNumItems': '30',
+            'ObjectPath': '/path3',
+            'Startdate': '2013-02-18T14:28:46.865096Z',
+            'Enddate': '2013-12-21T08:03:21.865096Z',
+            'OAIStype': 'SIP',
+            'SubmissionAgreement': SubmissionAgreement.objects.get(
+                pk="550e8400-e29b-41d4a716-446655440000"
+            ),
+            'ArchivalInstitution': ArchivalInstitution.objects.get(
+                pk="aa8e20d9-8794-4f26-9859-c3341a31f113"
+            ),
+            'ArchivistOrganization': ArchivistOrganization.objects.get(
+                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e3"
+            ),
+            'ArchivalType': ArchivalType.objects.get(
+                pk="fc3f23aa-203c-4aee-bb20-92373a5eba83"
+            ),
+            'ArchivalLocation': ArchivalLocation.objects.get(
+                pk="83f1f65d-7be0-4577-ade9-543c815417b3"
+            ),
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        InformationPackage.objects.create(**dct)
+
+    print 'Installed information packages'
+
+    return 0
+
+def installEventTypes():
+    lst = [
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c1',
+            'eventType': 1,
+            'eventDetail': 'Prepare IP',
+        },
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c2',
+            'eventType': 2,
+            'eventDetail': 'Generate XML',
+        },
+        {
+            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c3',
+            'eventType': 3,
+            'eventDetail': 'Create directory strucutre',
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        EventType.objects.create(**dct)
+
+    print 'Installed event types'
+
+    return 0
+
+def installEventIPs():
+    lst = [
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
+            ),
+            'eventDetail': 'Preparing the IP',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDetail': 'Adding files to XML',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDateTime': '',
+            'eventDetail': 'Creating METS file',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
+            ),
+            'eventDetail': 'Creating directory structure from JSON',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
+            ),
+            'eventDetail': 'Preparing the IP',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDetail': 'Adding files to XML',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
+            ),
+            'eventDateTime': '',
+            'eventDetail': 'Creating PREMIS file',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+        {
+            'eventType': EventType.objects.get(
+                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
+            ),
+            'eventDetail': 'Creating directory structure from JSON',
+            'eventApplication': '',
+            'eventVersion': '',
+            'eventOutcome': '',
+            'eventOutcomeDetailNote': '',
+            'linkingAgentIdentifierValue': '',
+            'linkingObjectIdentifierValue': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
+            ),
+        },
+    ]
+
+    # create according to model with many fields
+    for dct in lst:
+        EventIP.objects.create(**dct)
+
+    print 'Installed events'
+
+    return 0
 
 if __name__ == '__main__':
     installProfiles()
-
+    installIPs()

@@ -51,10 +51,10 @@
                 </div>
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="eventShow" class="event-view">
-                        <p>Events associated to: {{ip.label}}</p>
+                        <p>Events associated to: {{ip.Label}}</p>
                         <ul ng-repeat="event in eventCollection">
                             <li>
-                                {{event.id}}
+                            {{event.id}}
                             </li>
                             {{event.detail}}</br>
                             {{event.dateTime}}
@@ -131,7 +131,7 @@
                         -->
                         <!-- EXAMPLE OF WHAT SHOULD BE DONE ABOVE IN TABLE BUT IN <UL> LIST INSTEAD OF TABLE-->
                         <script type="text/ng-template" id="test_template.html">
-{{ step.name }}
+                        {{step.name}}
                         </br>
                         {{step.status}}
                         <ul ng-if="step.child_steps">
@@ -164,8 +164,8 @@
                     <!-- END OF EXAMPLE-->
                                     </div>
                                     <div ng-show="select" class="select-view">
-                                        <p>{{ip.label}}</p>
-                                        <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                                        <p>{{ip.Label}}</p>
+                                        <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th class="column-entity">Entity</th>
@@ -175,17 +175,29 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="row in selectCollection">
+                                <tr>
                                     <td>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input>
+                                                <input type="checkBox" checked="checked"><a ng-click="profileClick(currentSa)">{{saProfile.entity}}</a></input>
                                             </label>
                                         </div>
                                     </td>
-                                    <td><select class="form-control"ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
-                                    <td>{{row.state}}</td>
-                                    <a ng-click="showHideAllProfiles(); getSelectCollection(currentSa)">Show/hide profiles</a>
+                                    <td><select class="form-control" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                    <td>{{currentSa.sa_status}}</td>
+                                    <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
+                                </tr>
+
+                                <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
+                                    <td>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.profile_type}}</a></input>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><select class="form-control" ng-model="row.profile" ng-options="x as x.name for x in row.profiles track by $index"></select></td>
+                                    <td>{{row.profile.status}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -193,12 +205,15 @@
                     </div>
                     <div ng-show="subSelect" class="sub-select-view">
                         {{selectProfile.entity}}
-                        <select class="sub-select-profile form-control" ng-model="selectProfile.profile" ng-options="x for x in selectProfile.profiles"></select>
+                        <select class="sub-select-profile form-control" ng-model="selectProfile.profile" ng-options="x as x.name for x in selectProfile.profiles"></select>
                         <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                         <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
                     <div ng-show="edit" id="edit-veiw" class="edit-view" >
                         <form ng-submit="vm.onSubmit()" novalidate>
+                        <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                            </formly-form>
+                        <!--
                             <formly-form model="vm.archivistOrganisationModel" fields="vm.archivistOrganisationFields" options="vm.options">
                             </formly-form>
                         <formly-form model="vm.creatorOrganisationModel" fields="vm.creatorOrganisationFields">
@@ -212,12 +227,13 @@
                         <formly-form model="vm.preservationOrganisationModel" fields="vm.preservationOrganisationFields">
                         </formly-form>
                         <p>{{vm.archivistOrganisation}}</p>
+                        -->
                         </form>
                     </div>
                     <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
                         <div class="form-group">
                             <label>Status note</label>
-                            <select class="status-note form-control" ng-model="exampledata" ng-options="x for x in exampleSelectData"></select>
+                            <select class="status-note form-control" ng-model="statusNote" ng-options="x for x in statusNoteCollection"></select>
                         </div>
                         <div class="form-group">
                             <label>Signature</label>

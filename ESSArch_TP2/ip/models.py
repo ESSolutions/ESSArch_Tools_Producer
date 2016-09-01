@@ -23,58 +23,118 @@
 # Create your models here.
 from django.db import models
 
+from profiles.models import SubmissionAgreement as SA
+
 import uuid
+
+class ArchivalInstitution(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalInstitution'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivistOrganization(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivistOrganization'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivalType(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalType'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivalLocation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalLocation'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
 
 """
 Informaion Package
 """
 class InformationPackage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # ObjectUUID
-    Producer		= models.CharField( max_length = 255 )
     Label		= models.CharField( max_length = 255 )
     Content		= models.CharField( max_length = 255 )
     Responsible		= models.CharField( max_length = 255 )
-    CreateDate		= models.CharField( max_length = 255 )
+    CreateDate		= models.DateTimeField()
     State		= models.CharField( max_length = 255 )
-    Status		= models.CharField( max_length = 255 )
     ObjectSize		= models.CharField( max_length = 255 )
     ObjectNumItems	= models.CharField( max_length = 255 )
     ObjectPath		= models.CharField( max_length = 255 )
-    Startdate		= models.CharField( max_length = 255 )
-    Enddate		= models.CharField( max_length = 255 )
+    Startdate		= models.DateTimeField()
+    Enddate		= models.DateTimeField()
     OAIStype		= models.CharField( max_length = 255 )
-    SubmissionAgreement	= models.CharField( max_length = 255, default='' )
-    ArchivalInstitution	= models.CharField( max_length = 255, default='' )
-    ArchivistOrganization = models.CharField( max_length = 255, default='' )
-    ArchivalType	= models.CharField( max_length = 255, default='' )
-    ArchivalLocation	= models.CharField( max_length = 255, default='' )
-#    ObjectIdentifierValue	= models.CharField( max_length = 255 )
-#    ObjectPackageName		= models.CharField( max_length = 255 )
-#    ObjectMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    ObjectMessageDigest		= models.CharField( max_length = 255 )
-#    ObjectActive		= models.CharField( max_length = 255 )
-#    MetaObjectIdentifier	= models.CharField( max_length = 255 )
-#    MetaObjectSize		= models.CharField( max_length = 255 )
-#    CMetaMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    CMetaMessageDigest		= models.CharField( max_length = 255 )
-#    PMetaMessageDigestAlgorithm	= models.CharField( max_length = 255 )
-#    PMetaMessageDigest		= models.CharField( max_length = 255 )
-#    DataObjectSize		= models.CharField( max_length = 255 )
-#    DataObjectNumItems		= models.CharField( max_length = 255 )
-#    Status			= models.CharField( max_length = 255 )
-#    StatusActivity		= models.CharField( max_length = 255 )
-#    StatusProcess		= models.CharField( max_length = 255 )
-#    LastEventDate		= models.CharField( max_length = 255 )
-#    linkingAgentIdentifierValue	= models.CharField( max_length = 255 )
-#    CreateAgentIdentifierValue	= models.CharField( max_length = 255 )
-#    EntryDate			= models.CharField( max_length = 255 )
-#    preservationLevelValue	= models.CharField( max_length = 255 )
-#    Informationclass		= models.CharField( max_length = 255 )
-#    Generation			= models.CharField( max_length = 255 )
-#    LocalDBdatetime		= models.CharField( max_length = 255 )
-#    ExtDBdatetime		= models.CharField( max_length = 255 )
-#    PolicyId			= models.CharField( max_length = 255 )
-#    ObjectMetadata_id		= models.CharField( max_length = 255 )
+    SubmissionAgreement = models.ForeignKey(
+        SA,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True,
+    )
+    ArchivalInstitution = models.ForeignKey(
+        ArchivalInstitution,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivistOrganization = models.ForeignKey(
+        ArchivistOrganization,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivalType = models.ForeignKey(
+        ArchivalType,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivalLocation = models.ForeignKey(
+        ArchivalLocation,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+
+    def status(self):
+        steps = self.steps.all()
+
+        if steps:
+            try:
+                progress = sum([s.progress() for s in steps])
+                return progress / len(steps)
+            except:
+                return 0
+
+        return 0
 
     class Meta:
         ordering = ["id"]
@@ -100,7 +160,7 @@ class EventIP(models.Model):
         'configuration.EventType',
         on_delete=models.CASCADE
     )
-    eventDateTime		= models.CharField( max_length = 255 )
+    eventDateTime		= models.DateTimeField(auto_now_add=True)
     eventDetail			= models.CharField( max_length = 255 )
     eventApplication		= models.CharField( max_length = 255 )
     eventVersion		= models.CharField( max_length = 255 )
