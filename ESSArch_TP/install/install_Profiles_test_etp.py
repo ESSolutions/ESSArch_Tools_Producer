@@ -39,6 +39,11 @@ from ip.models import (
     ArchivalLocation,
 )
 
+from preingest.models import (
+    ProcessStep,
+    ProcessTask,
+)
+
 from profiles.models import (
     SubmissionAgreement,
     Profile,
@@ -70,6 +75,8 @@ def installProfiles(): # Install all different profiles
     InformationPackage.objects.all().delete()
     SubmissionAgreement.objects.all().delete()
     Profile.objects.all().delete()
+    ProcessStep.objects.all().delete()
+    ProcessTask.objects.all().delete()
 
     # install default configuration
     installProfileTransferProject()   		# Profile Transfer Project
@@ -97,6 +104,10 @@ def installIPs():
     installEventIPs()                           # Events
 
     return 0
+
+def installWorkflows():
+    installSteps()                              # Steps
+    installTasks()                              # Tasks
 
 def installSubmissionAgreement(): # Submission Agreement
 
@@ -1758,6 +1769,116 @@ def installEventIPs():
 
     return 0
 
+def installSteps():
+    lst = [
+        {
+            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e1',
+            'name': 'Prepare IP',
+            'type': 10,
+            'user': 'Edsger W. Dijkstra',
+            'information_package': InformationPackage.objects.get(
+                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
+            )
+        },
+        {
+            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e2',
+            'name': 'Create directory structure',
+            'type': 10,
+            'user': 'Lester Randolph Ford Jr.',
+        },
+        {
+            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e3',
+            'name': 'Generate metadata',
+            'type': 10,
+            'user': 'Delbert Ray Fulkerson',
+        },
+    ]
+
+    for dct in lst:
+        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e2':
+            dct['parent_step'] = ProcessStep.objects.get(
+                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
+            )
+            dct['parent_step_pos'] = 1
+
+        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e3':
+            dct['parent_step'] = ProcessStep.objects.get(
+                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
+            )
+            dct['parent_step_pos'] = 2
+
+        ProcessStep.objects.create(**dct)
+
+    print 'Installed steps'
+
+    return 0
+
+def installTasks():
+    lst = [
+        {
+            'id': '14319c7d-f65f-40cf-b1ec-2350666136b1',
+            'name': 'Create physical model',
+            'params': {
+                'structure': {
+                    'representations': {
+                        'documentation': {}
+                    },
+                    'rep01': {},
+                    'metadata': {}
+                }
+            },
+            'progress': 100,
+            'status': 'SUCCESS',
+            'processstep': ProcessStep.objects.get(
+                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e2'
+            ),
+            'processstep_pos': 1,
+        },
+        {
+            'id': '14319c7d-f65f-40cf-b1ec-2350666136b2',
+            'name': 'Generate checksums',
+            'params': {
+                'files': [
+                    '/path/to/first/file.ext',
+                    '/path/to/second/file.ext',
+                    '/path/to/third/file.ext',
+                ],
+                'algorithm': 'sha256',
+            },
+            'result': [
+                {
+                    'file': '/path/to/first/file.ext',
+                    'checksum': '688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6'
+                },
+                {
+                    'file': '/path/to/second/file.ext',
+                    'checksum': 'c81ebd1b4c490ff605a7cb94561646c0c344170862e15c4f5b94721073f23a38'
+                },
+            ],
+            'progress': 66,
+            'status': 'STARTED',
+            'processstep': ProcessStep.objects.get(
+                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e3'
+            ),
+            'processstep_pos': 1,
+        }
+    ]
+
+    for dct in lst:
+        """
+        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e2':
+            dct['parent_step'] = ProcessTask.objects.get(
+                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
+            )
+            dct['parent_step_pos'] = 1
+        """
+
+        ProcessTask.objects.create(**dct)
+    print 'Installed tasks'
+
+    return 0
+
 if __name__ == '__main__':
     installProfiles()
     installIPs()
+    installWorkflows()
