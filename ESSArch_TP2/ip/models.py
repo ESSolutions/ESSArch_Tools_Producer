@@ -27,6 +27,51 @@ from profiles.models import SubmissionAgreement as SA
 
 import uuid
 
+class ArchivalInstitution(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalInstitution'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivistOrganization(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivistOrganization'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivalType(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalType'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+class ArchivalLocation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'ArchivalLocation'
+
+    def __unicode__(self):
+        # create a unicode representation of this object
+        return '%s - %s' % (self.name, self.id)
+
+
 """
 Informaion Package
 """
@@ -50,10 +95,34 @@ class InformationPackage(models.Model):
         default=None,
         null=True,
     )
-    ArchivalInstitution	= models.CharField( max_length = 255, default='' )
-    ArchivistOrganization = models.CharField( max_length = 255, default='' )
-    ArchivalType	= models.CharField( max_length = 255, default='' )
-    ArchivalLocation	= models.CharField( max_length = 255, default='' )
+    ArchivalInstitution = models.ForeignKey(
+        ArchivalInstitution,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivistOrganization = models.ForeignKey(
+        ArchivistOrganization,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivalType = models.ForeignKey(
+        ArchivalType,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
+    ArchivalLocation = models.ForeignKey(
+        ArchivalLocation,
+        on_delete=models.CASCADE,
+        related_name='information_packages',
+        default=None,
+        null=True
+    )
 
     def status(self):
         steps = self.steps.all()
