@@ -27,6 +27,7 @@ from profiles.models import SubmissionAgreement as SA
 
 import uuid
 
+
 class ArchivalInstitution(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -37,6 +38,7 @@ class ArchivalInstitution(models.Model):
     def __unicode__(self):
         # create a unicode representation of this object
         return '%s - %s' % (self.name, self.id)
+
 
 class ArchivistOrganization(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -49,6 +51,7 @@ class ArchivistOrganization(models.Model):
         # create a unicode representation of this object
         return '%s - %s' % (self.name, self.id)
 
+
 class ArchivalType(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -59,6 +62,7 @@ class ArchivalType(models.Model):
     def __unicode__(self):
         # create a unicode representation of this object
         return '%s - %s' % (self.name, self.id)
+
 
 class ArchivalLocation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -72,22 +76,25 @@ class ArchivalLocation(models.Model):
         return '%s - %s' % (self.name, self.id)
 
 
-"""
-Informaion Package
-"""
 class InformationPackage(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # ObjectUUID
-    Label		= models.CharField( max_length = 255 )
-    Content		= models.CharField( max_length = 255 )
-    Responsible		= models.CharField( max_length = 255 )
-    CreateDate		= models.DateTimeField()
-    State		= models.CharField( max_length = 255 )
-    ObjectSize		= models.CharField( max_length = 255 )
-    ObjectNumItems	= models.CharField( max_length = 255 )
-    ObjectPath		= models.CharField( max_length = 255 )
-    Startdate		= models.DateTimeField()
-    Enddate		= models.DateTimeField()
-    OAIStype		= models.CharField( max_length = 255 )
+    """
+    Informaion Package
+    """
+
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
+    Label = models.CharField(max_length=255)
+    Content = models.CharField(max_length=255)
+    Responsible = models.CharField(max_length=255)
+    CreateDate = models.DateTimeField()
+    State = models.CharField(max_length=255)
+    ObjectSize = models.CharField(max_length=255)
+    ObjectNumItems = models.CharField(max_length=255)
+    ObjectPath = models.CharField(max_length=255)
+    Startdate = models.DateTimeField()
+    Enddate = models.DateTimeField()
+    OAIStype = models.CharField(max_length=255)
     SubmissionAgreement = models.ForeignKey(
         SA,
         on_delete=models.CASCADE,
@@ -147,26 +154,29 @@ class InformationPackage(models.Model):
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in InformationPackage._meta.fields }
+        return {
+            field.name: field.value_to_string(self)
+            for field in InformationPackage._meta.fields
+        }
 
 
-"""
-Events related to IP
-"""
 class EventIP(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # eventIdentifierValue
+    """
+    Events related to IP
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     eventType = models.ForeignKey(
         'configuration.EventType',
         on_delete=models.CASCADE
     )
-    eventDateTime		= models.DateTimeField(auto_now_add=True)
-    eventDetail			= models.CharField( max_length = 255 )
-    eventApplication		= models.CharField( max_length = 255 )
-    eventVersion		= models.CharField( max_length = 255 )
-    eventOutcome		= models.CharField( max_length = 255 )
-    eventOutcomeDetailNote	= models.CharField( max_length = 1024 )
-    linkingAgentIdentifierValue	= models.CharField( max_length = 255 )
+    eventDateTime = models.DateTimeField(auto_now_add=True)
+    eventDetail = models.CharField(max_length=255)
+    eventApplication = models.CharField(max_length=255)
+    eventVersion = models.CharField(max_length=255)
+    eventOutcome = models.CharField(max_length=255)
+    eventOutcomeDetailNote = models.CharField(max_length=1024)
+    linkingAgentIdentifierValue = models.CharField(max_length=255)
     linkingObjectIdentifierValue = models.ForeignKey(
         'InformationPackage',
         on_delete=models.CASCADE,
@@ -184,6 +194,7 @@ class EventIP(models.Model):
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in EventIP._meta.fields }
-
+        return {
+            field.name: field.value_to_string(self)
+            for field in EventIP._meta.fields
+        }

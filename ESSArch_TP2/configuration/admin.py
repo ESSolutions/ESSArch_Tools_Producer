@@ -26,61 +26,59 @@ from configuration.models import Parameter, Path, Schema, EventType, Agent
 from django.contrib import admin
 
 
-"""
-Parameters for configuration options
-"""
-class ParameterAdmin( admin.ModelAdmin ):
-    list_display = ( 'entity', 'value' )
-    search_fields = ( 'entity', )
+class ParameterAdmin(admin.ModelAdmin):
+    """
+    Parameters for configuration options
+    """
+    list_display = ('entity', 'value')
+    search_fields = ('entity',)
     readonly_fields = ('entity',)
     fields = ('entity', 'value')
 
 admin.site.register(Parameter, ParameterAdmin)
 
 
-"""
-Paths used for different operations
-"""
-class PathAdmin( admin.ModelAdmin ):
-    list_display = ( 'entity', 'value' )
-    search_fields = ( 'entity', )
+class PathAdmin(admin.ModelAdmin):
+    """
+    Paths used for different operations
+    """
+    list_display = ('entity', 'value')
+    search_fields = ('entity',)
     readonly_fields = ('entity',)
     fields = ('entity', 'value')
 
 admin.site.register(Path, PathAdmin)
 
 
-"""
-XML schemas and namespaces
-"""
-class SchemaAdmin( admin.ModelAdmin ):
-    list_display = ( 'entity', 'value' )
-    search_fields = ( 'entity', )
+class SchemaAdmin(admin.ModelAdmin):
+    """
+    XML schemas and namespaces
+    """
+    list_display = ('entity', 'value')
+    search_fields = ('entity',)
     readonly_fields = ('entity',)
     fields = ('entity', 'value')
 
 admin.site.register(Schema, SchemaAdmin)
 
 
-"""
-Event types
-"""
-class EventTypeAdmin( admin.ModelAdmin ):
-    list_display = ( 'eventDetail', 'eventType' )
-    search_fields = ( 'eventDetail', )
+class EventTypeAdmin(admin.ModelAdmin):
+    """
+    Event types
+    """
+    list_display = ('eventDetail', 'eventType')
+    search_fields = ('eventDetail',)
 
-admin.site.register( EventType, EventTypeAdmin )
+admin.site.register(EventType, EventTypeAdmin)
 
 
-"""
-Agents used for different operations
-"""
-class AgentAdmin( admin.ModelAdmin ):
-    list_display = ( 'agentDetail', 'agentType' )
-    search_fields = ( 'agentDetail', )
+class AgentAdmin(admin.ModelAdmin):
+    """
+    Agents used for different operations
+    """
+    list_display = ('agentDetail', 'agentType')
+    search_fields = ('agentDetail',)
     readonly_fields = ('agentDetail',)
     fields = ('agentType', 'agentDetail')
 
 admin.site.register(Agent, AgentAdmin)
-
-

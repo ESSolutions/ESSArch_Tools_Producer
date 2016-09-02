@@ -64,6 +64,7 @@ from profiles.models import (
 site_profile = "SE" # SE_NEW, SE, NO, EC
 #zone = "zone1" # ETP=zone1, ETA=zone2
 
+
 def installProfiles(): # Install all different profiles
     # First remove all existing data
     EventIP.objects.all().delete()
@@ -94,6 +95,7 @@ def installProfiles(): # Install all different profiles
 
     return 0
 
+
 def installIPs():
     installArchivalInstitution()                # Archival Institution
     installArchivistOrganization()              # Archivist Organization
@@ -105,52 +107,54 @@ def installIPs():
 
     return 0
 
+
 def installWorkflows():
     installSteps()                              # Steps
     installTasks()                              # Tasks
 
-def installSubmissionAgreement(): # Submission Agreement
+
+def installSubmissionAgreement():
 
     # create submission agreement dictionaries
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440000',
-	  'sa_name':'SA National Archive xx and Government x',
-	  'sa_type':'Standard',
-	  'sa_status':'Agreed',
-	  'sa_label':'Submission Agreement Naxx and Government x',
-	  'sa_cm_version':'1.0',
-	  'sa_cm_release_date':'2012-04-26T12:45:00+01:00',
-	  'sa_cm_change_authority':'Ozzy Osbourne, NAxx',
-	  'sa_cm_change_description':'Original',
-	  'sa_cm_sections_affected':'None',
-	  'sa_producer_organization':'Government x',
-	  'sa_producer_main_name':'Elton John',
-	  'sa_producer_main_address':'Bourbon Street 123, City x, Country y',
-	  'sa_producer_main_phone':'46 (0)8-123450',
-	  'sa_producer_main_email':'Elton.John@company.se',
-	  'sa_producer_main_additional':'Responsible for contract',
-	  'sa_producer_individual_name':'Mike Oldfield',
-	  'sa_producer_individual_role':'Archivist',
-	  'sa_producer_individual_phone':'46 (0)8-123451',
-	  'sa_producer_individual_email':'Mike.Oldfield@company.se',
-	  'sa_producer_individual_additional':'Principal archivist',
-	  'sa_archivist_organization':'National Archive xx',
-	  'sa_archivist_main_name':'Ozzy Osbourne',
-	  'sa_archivist_main_address':'Main street 123, City x, Country y',
-	  'sa_archivist_main_phone':'46 (0)8-1001001',
-	  'sa_archivist_main_email':'Ozzy.Osbourne@archive.org',
-	  'sa_archivist_main_additional':'Responsible for contract',
-	  'sa_archivist_individual_name':'Lita Ford',
-	  'sa_archivist_individual_role':'Archivist',
-	  'sa_archivist_individual_phone':'46 (0)8-1001002',
-	  'sa_archivist_individual_email':'Lita.Ford@archive.org',
-	  'sa_archivist_individual_additional':'Principal archivist',
-	  'sa_designated_community_description':'Designated community description',
-	  'sa_designated_community_individual_name':'Elvis Presley',
-	  'sa_designated_community_individual_role':'Artist',
-	  'sa_designated_community_individual_phone':'46 (0)8-2002001',
-	  'sa_designated_community_individual_email':'Elvis.Presley@xxx.org',
-	  'sa_designated_community_individual_additional':'Celebrity',
+	  'id': '550e8400-e29b-41d4a716-446655440000',
+	  'sa_name': 'SA National Archive xx and Government x',
+	  'sa_type': 'Standard',
+	  'sa_status': 'Agreed',
+	  'sa_label': 'Submission Agreement Naxx and Government x',
+	  'sa_cm_version': '1.0',
+	  'sa_cm_release_date': '2012-04-26T12:45:00+01:00',
+	  'sa_cm_change_authority': 'Ozzy Osbourne, NAxx',
+	  'sa_cm_change_description': 'Original',
+	  'sa_cm_sections_affected': 'None',
+	  'sa_producer_organization': 'Government x',
+	  'sa_producer_main_name': 'Elton John',
+	  'sa_producer_main_address': 'Bourbon Street 123, City x, Country y',
+	  'sa_producer_main_phone': '46 (0)8-123450',
+	  'sa_producer_main_email': 'Elton.John@company.se',
+	  'sa_producer_main_additional': 'Responsible for contract',
+	  'sa_producer_individual_name': 'Mike Oldfield',
+	  'sa_producer_individual_role': 'Archivist',
+	  'sa_producer_individual_phone': '46 (0)8-123451',
+	  'sa_producer_individual_email': 'Mike.Oldfield@company.se',
+	  'sa_producer_individual_additional': 'Principal archivist',
+	  'sa_archivist_organization': 'National Archive xx',
+	  'sa_archivist_main_name': 'Ozzy Osbourne',
+	  'sa_archivist_main_address': 'Main street 123, City x, Country y',
+	  'sa_archivist_main_phone': '46 (0)8-1001001',
+	  'sa_archivist_main_email': 'Ozzy.Osbourne@archive.org',
+	  'sa_archivist_main_additional': 'Responsible for contract',
+	  'sa_archivist_individual_name': 'Lita Ford',
+	  'sa_archivist_individual_role': 'Archivist',
+	  'sa_archivist_individual_phone': '46 (0)8-1001002',
+	  'sa_archivist_individual_email': 'Lita.Ford@archive.org',
+	  'sa_archivist_individual_additional': 'Principal archivist',
+	  'sa_designated_community_description': 'Designated community description',
+	  'sa_designated_community_individual_name': 'Elvis Presley',
+	  'sa_designated_community_individual_role': 'Artist',
+	  'sa_designated_community_individual_phone': '46 (0)8-2002001',
+	  'sa_designated_community_individual_email': 'Elvis.Presley@xxx.org',
+	  'sa_designated_community_individual_additional': 'Celebrity',
     }
 
     # create according to model with many fields
@@ -244,15 +248,15 @@ def installProfileTransferProject(): # Profile Transfer Project
     # create profile transfer project dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440001',
-	  'name':'SE ERMS Delivery',
-          'profile_type': 'transfer_project',
-	  'type':'Implementation',
-	  'status':'Agreed',
-	  'label':'Example of SIP for delivery of SE ERMS',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440001',
+        'name': 'SE ERMS Delivery',
+        'profile_type': 'transfer_project',
+        'type': 'Implementation',
+        'status': 'Agreed',
+        'label': 'Example of SIP for delivery of SE ERMS',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -267,15 +271,15 @@ def installProfileContentType(): # Profile Content Type
     # create profile content type dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440002',
-	  'name':'SE ERMS',
-          'profile_type': 'content_type',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Content based on SE ERMS specification',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440002',
+        'name': 'SE ERMS',
+        'profile_type': 'content_type',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Content based on SE ERMS specification',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -290,15 +294,15 @@ def installProfileDataSelection(): # Profile Data Selection
     # create profile data selection dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440003',
-	  'name':'Classification of business system xx',
-          'profile_type': 'data_selection',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Data selection of business system xx',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440003',
+        'name': 'Classification of business system xx',
+        'profile_type': 'data_selection',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Data selection of business system xx',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -313,15 +317,15 @@ def installProfileClassification(): # Profile Classification
     # create profile classification dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440004',
-	  'name':'Classification of archived objects',
-          'profile_type': 'classification',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Classification of archived content',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440004',
+        'name': 'Classification of archived objects',
+        'profile_type': 'classification',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Classification of archived content',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -336,15 +340,15 @@ def installProfileImport(): # Profile Import
     # create profile import dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440005',
-	  'name':'Transformation import profile for system xx',
-          'profile_type': 'import',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Transformation from system x to specification y',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440005',
+        'name': 'Transformation import profile for system xx',
+        'profile_type': 'import',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Transformation from system x to specification y',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -359,17 +363,17 @@ def installProfileSubmitDescription(): # Profile Submit Description
     # create profile submit description dictionaries
 
     dct = {
-        'id':'550e8400-e29b-41d4a716-446655440006',
-        'name':'Submit description of a single SIP',
+        'id': '550e8400-e29b-41d4a716-446655440006',
+        'name': 'Submit description of a single SIP',
         'profile_type': 'submit_description',
-        'type':'Implementation',
-        'status':'Draft',
-        'label':'Desription of a one2one SIP2AIP',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Desription of a one2one SIP2AIP',
         'template': [
             {
                 "templateOptions": {
                     "type": "text",
-                    "label":"ID"
+                    "label": "ID"
                 },
                 "type": "input",
                 "key": "ID"
@@ -417,41 +421,41 @@ def installProfileSubmitDescription(): # Profile Submit Description
                             "#content": [],
                             "-req": 0
                         }, {
-                        "-name": "MDTYPE",
-                        "#content": [],
-                        "-req": 1
+                            "-name": "MDTYPE",
+                            "#content": [],
+                            "-req": 1
                         }, {
-                        "-name": "OTHERMDTYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "OTHERMDTYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "MDTYPEVERSION",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "MDTYPEVERSION",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "MIMETYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "MIMETYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "SIZE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "SIZE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CREATED",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CREATED",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CHECKSUM",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CHECKSUM",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CHECKSUMTYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CHECKSUMTYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "LABEL",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "LABEL",
+                            "#content": [],
+                            "-req": 0
                         }],
                         "-min": 0
                     },
@@ -463,53 +467,53 @@ def installProfileSubmitDescription(): # Profile Submit Description
                             "#content": [],
                             "-req": 0
                         }, {
-                        "-name": "LOCTYPE",
-                        "#content": [],
-                        "-req": 1
+                            "-name": "LOCTYPE",
+                            "#content": [],
+                            "-req": 1
                         }, {
-                        "-name": "OTHERLOCTYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "OTHERLOCTYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "MDTYPE",
-                        "#content": [],
-                        "-req": 1
+                            "-name": "MDTYPE",
+                            "#content": [],
+                            "-req": 1
                         }, {
-                        "-name": "OTHERMDTYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "OTHERMDTYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "MDTYPEVERSION",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "MDTYPEVERSION",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "MIMETYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "MIMETYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "SIZE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "SIZE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CREATED",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CREATED",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CHECKSUM",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CHECKSUM",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "CHECKSUMTYPE",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "CHECKSUMTYPE",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "LABEL",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "LABEL",
+                            "#content": [],
+                            "-req": 0
                         }, {
-                        "-name": "XPTR",
-                        "#content": [],
-                        "-req": 0
+                            "-name": "XPTR",
+                            "#content": [],
+                            "-req": 0
                         }],
                         "-min": 0
                     },
@@ -518,21 +522,21 @@ def installProfileSubmitDescription(): # Profile Submit Description
                         "#content": [],
                         "-req": 1
                     }, {
-                    "-name": "GROUPID",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "GROUPID",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "ADMID",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "CREATED",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "CREATED",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "STATUS",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "STATUS",
+                        "#content": [],
+                        "-req": 0
                     }],
                     "-min": 0
                 },
@@ -543,31 +547,39 @@ def installProfileSubmitDescription(): # Profile Submit Description
                     }],
                     "-req": 0
                 }, {
-                "-name": "OBJID",
-                "#content": [{
-                    "var": "OBJID"
+                    "-name": "OBJID",
+                    "#content": [
+                        {
+                        "var": "OBJID"
+                        }, {
+                            "text": "asd"
+                        }
+                    ],
+                    "-req": 1
                 }, {
-                "text": "asd"
-                }],
-                "-req": 1
+                    "-name": "LABEL",
+                    "#content": [
+                        {
+                            "var": "LABEL"
+                        }
+                    ],
+                    "-req": 0
                 }, {
-                "-name": "LABEL",
-                "#content": [{
-                    "var": "LABEL"
-                }],
-                "-req": 0
+                    "-name": "TYPE",
+                    "#content": [
+                        {
+                            "text": "Medical record"
+                        }
+                    ],
+                    "-req": 1
                 }, {
-                "-name": "TYPE",
-                "#content": [{
-                    "text": "Medical record"
-                }],
-                "-req": 1
-                }, {
-                "-name": "PROFILE",
-                "#content": [{
-                    "var": "PROFILE"
-                }],
-                "-req": 1
+                    "-name": "PROFILE",
+                    "#content": [
+                        {
+                            "var": "PROFILE"
+                        }
+                    ],
+                    "-req": 1
                 }],
                 "metsHdr": {
                     "-max": 1,
@@ -582,21 +594,21 @@ def installProfileSubmitDescription(): # Profile Submit Description
                         "#content": [],
                         "-req": 0
                     }, {
-                    "-name": "ADMID",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "ADMID",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "CREATEDATE",
-                    "#content": [],
-                    "-req": 1
+                        "-name": "CREATEDATE",
+                        "#content": [],
+                        "-req": 1
                     }, {
-                    "-name": "LASTMODDATE",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "LASTMODDATE",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "RECORDSTATUS",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "RECORDSTATUS",
+                        "#content": [],
+                        "-req": 0
                     }],
                     "altRecordID": {
                         "-max": -1,
@@ -653,21 +665,21 @@ def installProfileSubmitDescription(): # Profile Submit Description
                         "#content": [],
                         "-req": 0
                     }, {
-                    "-name": "ROLE",
-                    "#content": [],
-                    "-req": 1
+                        "-name": "ROLE",
+                        "#content": [],
+                        "-req": 1
                     }, {
-                    "-name": "OTHERROLE",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "OTHERROLE",
+                        "#content": [],
+                        "-req": 0
                     }, {
-                    "-name": "TYPE",
-                    "#content": [],
-                    "-req": 1
+                        "-name": "TYPE",
+                        "#content": [],
+                        "-req": 1
                     }, {
-                    "-name": "OTHERTYPE",
-                    "#content": [],
-                    "-req": 0
+                        "-name": "OTHERTYPE",
+                        "#content": [],
+                        "-req": 0
                     }],
                     "name": {
                         "-max": 1,
@@ -1288,30 +1300,31 @@ def installProfileSubmitDescription(): # Profile Submit Description
 
     return 0
 
+
 def installProfileSIP(): # Profile Submission Information Package
 
     # create profile submission information package dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440007',
-	  'name':'SIP based on SE FGS Package',
-          'profile_type': 'sip',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'SIP profile for SE submissions',
-	  'representation_info':'Documentation 1',
-	  'preservation_descriptive_info':'Documentation 2',
-	  'supplemental':'Documentation 3',
-	  'access_constraints':'Documentation 4',
-	  'datamodel_reference':'Documentation 5',
-	  'additional':'Documentation 6',
-	  'submission_method':'Electronically',
-	  'submission_schedule':'Once',
-	  'submission_data_inventory':'According to submit description',
-	  'structure':'SIP SE structure xx',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440007',
+        'name': 'SIP based on SE FGS Package',
+        'profile_type': 'sip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'SIP profile for SE submissions',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        'structure': 'SIP SE structure xx',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -1321,30 +1334,31 @@ def installProfileSIP(): # Profile Submission Information Package
 
     return 0
 
+
 def installProfileAIP(): # Profile Archival Information Package
 
     # create profile archival information package dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440008',
-	  'name':'AIP based on SE FGS Package',
-          'profile_type': 'aip',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'AIP profile for SE Packages',
-	  'representation_info':'Documentation 1',
-	  'preservation_descriptive_info':'Documentation 2',
-	  'supplemental':'Documentation 3',
-	  'access_constraints':'Documentation 4',
-	  'datamodel_reference':'Documentation 5',
-	  'additional':'Documentation 6',
-	  'submission_method':'Electronically',
-	  'submission_schedule':'Once',
-	  'submission_data_inventory':'According to submit description',
-	  'structure':'AIP SE structure xx',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440008',
+        'name': 'AIP based on SE FGS Package',
+        'profile_type': 'aip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'AIP profile for SE Packages',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        'structure': 'AIP SE structure xx',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -1354,30 +1368,31 @@ def installProfileAIP(): # Profile Archival Information Package
 
     return 0
 
+
 def installProfileDIP(): # Profile Dissemination Information Package
 
     # create profile dissemination information package dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440009',
-	  'name':'DIP based on SE FGS Package',
-          'profile_type': 'dip',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'DIP profile for SE Packages',
-	  'representation_info':'Documentation 1',
-	  'preservation_descriptive_info':'Documentation 2',
-	  'supplemental':'Documentation 3',
-	  'access_constraints':'Documentation 4',
-	  'datamodel_reference':'Documentation 5',
-	  'additional':'Documentation 6',
-	  'submission_method':'Electronically',
-	  'submission_schedule':'Once',
-	  'submission_data_inventory':'According to submit description',
-	  'structure':'DIP SE structure xx',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440009',
+        'name': 'DIP based on SE FGS Package',
+        'profile_type': 'dip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'DIP profile for SE Packages',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        'structure': 'DIP SE structure xx',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -1387,20 +1402,21 @@ def installProfileDIP(): # Profile Dissemination Information Package
 
     return 0
 
+
 def installProfileWorkflow(): # Profile Workflow
 
     # create profile workflow dictionaries
 
     dct = {
-	  'id':'550e8400-e29b-41d4a716-446655440010',
-	  'name':'Workflow xx for Pre-Ingest',
-          'profile_type': 'workflow',
-	  'type':'Implementation',
-	  'status':'Draft',
-	  'label':'Workflow Create SIP for Pre-Ingest',
-	  'specification':'Any specification wrapped',
-	  'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440010',
+        'name': 'Workflow xx for Pre-Ingest',
+        'profile_type': 'workflow',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Workflow Create SIP for Pre-Ingest',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -1410,20 +1426,21 @@ def installProfileWorkflow(): # Profile Workflow
 
     return 0
 
+
 def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     # create profile preservation metadata dictionaries
 
     dct = {
-          'id':'550e8400-e29b-41d4a716-446655440011',
-          'name':'Preservation profile xx',
-          'profile_type': 'preservation_metadata',
-          'type':'Implementation',
-          'status':'Draft',
-          'label':'Preservation profile for AIP xxyy',
-          'specification':'Any specification wrapped',
-          'specification_data':'Any specification data wrapped',
-          }
+        'id': '550e8400-e29b-41d4a716-446655440011',
+        'name': 'Preservation profile xx',
+        'profile_type': 'preservation_metadata',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Preservation profile for AIP xxyy',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
@@ -1432,6 +1449,7 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
     print 'Installed profile preservation metadata'
 
     return 0
+
 
 def installArchivalInstitution():
     lst = [
@@ -1454,6 +1472,7 @@ def installArchivalInstitution():
 
     print "Installed archival institutions"
 
+
 def installArchivistOrganization():
     lst = [
         {
@@ -1474,6 +1493,7 @@ def installArchivistOrganization():
         ArchivistOrganization.objects.create(**dct)
 
     print "Installed archivist organization"
+
 
 def installArchivalType():
     lst = [
@@ -1496,6 +1516,7 @@ def installArchivalType():
 
     print "Installed archival type"
 
+
 def installArchivalLocation():
     lst = [
         {
@@ -1516,6 +1537,7 @@ def installArchivalLocation():
         ArchivalLocation.objects.create(**dct)
 
     print "Installed archival locations"
+
 
 def installInformationPackages():
     lst = [
@@ -1616,6 +1638,7 @@ def installInformationPackages():
 
     return 0
 
+
 def installEventTypes():
     lst = [
         {
@@ -1642,6 +1665,7 @@ def installEventTypes():
     print 'Installed event types'
 
     return 0
+
 
 def installEventIPs():
     lst = [
@@ -1769,6 +1793,7 @@ def installEventIPs():
 
     return 0
 
+
 def installSteps():
     lst = [
         {
@@ -1812,6 +1837,7 @@ def installSteps():
     print 'Installed steps'
 
     return 0
+
 
 def installTasks():
     lst = [

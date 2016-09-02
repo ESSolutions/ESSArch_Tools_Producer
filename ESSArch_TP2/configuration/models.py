@@ -25,14 +25,14 @@ from django.db import models
 import uuid
 
 
-"""
-Parameters for configuration options
-"""
 class Parameter(models.Model):
+    """
+    Parameters for configuration options
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity	= models.CharField( max_length = 60, unique=True )
-    value	= models.CharField( max_length = 70 )
-    
+    entity = models.CharField(max_length=60, unique=True)
+    value = models.CharField(max_length=70)
+
     class Meta:
         ordering = ["entity"]
         verbose_name = 'Parameter'
@@ -40,47 +40,49 @@ class Parameter(models.Model):
     def __unicode__(self):
         # create a unicode representation of this object
         return self.entity
-    
+
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self) 
-                 for field in Parameter._meta.fields }
+        return {
+            field.name: field.value_to_string(self)
+            for field in Parameter._meta.fields
+        }
 
 
-"""
-Paths used for different operations
-"""
 class Path(models.Model):
+    """
+    Paths used for different operations
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity	= models.CharField( max_length = 60, unique=True )
-    value	= models.CharField( max_length = 70 )
+    entity = models.CharField(max_length=60, unique=True)
+    value = models.CharField(max_length=70)
 
     class Meta:
         ordering = ["entity"]
         verbose_name = 'Path'
 
 
-"""
-XML schemas and namespaces
-"""
 class Schema(models.Model):
+    """
+    XML schemas and namespaces
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity	= models.CharField( max_length = 60, unique=True )
-    value	= models.CharField( max_length = 70 )
-    
+    entity = models.CharField(max_length=60, unique=True)
+    value = models.CharField(max_length=70)
+
     class Meta:
         ordering = ["entity"]
-        verbose_name = 'XML Schema' 
+        verbose_name = 'XML Schema'
 
 
-"""
-EventType
-"""
 class EventType(models.Model):
+    """
+    EventType
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    eventType	= models.IntegerField( default=0, unique=True )
-    eventDetail	= models.CharField( max_length = 255 )
+    eventType = models.IntegerField(default=0, unique=True)
+    eventDetail = models.CharField(max_length=255)
 
     class Meta:
         ordering = ["eventType"]
@@ -95,24 +97,25 @@ class EventType(models.Model):
         # the values of this object.
         for field in EventType._meta.fields:
             if field.name in form.cleaned_data:
-                setattr( self, field.name, form.cleaned_data[field.name] )
+                setattr(self, field.name, form.cleaned_data[field.name])
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
-        return { field.name: field.value_to_string(self)
-                 for field in EventType._meta.fields }
+        return {
+            field.name: field.value_to_string(self)
+            for field in EventType._meta.fields
+        }
 
-"""
-Agents used for different operations
-"""
+
 class Agent(models.Model):
+    """
+    Agents used for different operations
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    agentType      = models.CharField( max_length = 60, unique=True )
-    agentDetail    = models.CharField( max_length = 70 )
+    agentType = models.CharField(max_length=60, unique=True)
+    agentDetail = models.CharField(max_length=70)
 
     class Meta:
         ordering = ["agentType"]
         verbose_name = 'Agent'
-
-
