@@ -274,7 +274,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         $scope.currentProfiles = {};
         $scope.selectRowCollapse = [];
         for(i=0;i<sa.profile_transfer_project.length;i++){
-            getProfile("profile-transfer-project/", sa.profile_transfer_project[i].id, sa.profile_transfer_project[i].status);
+            getProfile("transfer_project", sa.profile_transfer_project[i].id, sa.profile_transfer_project[i].status);
 
         }
         for(i=0;i<sa.profile_content_type.length;i++){
