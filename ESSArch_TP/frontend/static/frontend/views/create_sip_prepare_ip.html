@@ -196,7 +196,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td><select class="form-control" ng-model="row.profile" ng-options="x as x.name for x in row.profiles track by $index"></select></td>
+                                    <td><select class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles"></select></td>
                                     <td>{{row.profile.status}}</td>
                                 </tr>
                             </tbody>
