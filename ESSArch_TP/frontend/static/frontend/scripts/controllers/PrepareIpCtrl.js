@@ -395,16 +395,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             url: appConfig.djangoUrl + "profiles/" + profile_id
         })
         .then(function successCallback(response) {
-            response.data.statusInSubmissionAgreement = profile_status;
             var newProfileType = true;
+            var data = response.data;
+           data.statusInSa = profile_status;
             for(i=0; i<$scope.selectRowCollapse.length;i++){
-                if($scope.selectRowCollapse[i].profile_type == response.data.profile_type.toUpperCase()){
+                if($scope.selectRowCollapse[i].profile_type == data.profile_type){
                     newProfileType = false;
-                    if($scope.selectRowCollapse[i].profile.statusInSubmissionAgreement != 1 && profile_status == 2) {
-                        $scope.selectRowCollapse[i].profile = response.data;
-                    }
                     if(profile_status == 1){
-                        $scope.selectRowCollapse[i].profile = response.data;
+                        $scope.selectRowCollapse[i].profile =data;
+                    } else
+                    if($scope.selectRowCollapse[i].profile.statusInSa != 1 && profile_status == 2) {
+                        $scope.selectRowCollapse[i].profile =data;
                     }
 
                     $scope.selectRowCollapse[i].profiles.push(response.data);
@@ -416,75 +417,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             console.log("newProfileType = " + newProfileType);
             if(newProfileType){
                 var tempProfileObject = {
-                    profile_type: response.data.profile_type.toUpperCase(),
-                    profile: response.data,
+                    profile_label: data.profile_type.toUpperCase(),
+                    profile_type: data.profile_type,
+                    profile: {},
                     profiles: [
-                        response.data
+                       data
                     ],
-                    state: "working on it!",
                 };
+                if(profile_status == 1 || profile_status == 2){
+                    tempProfileObject.profile =data;
+                }
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
-            /*
-            switch(profile_type){
-                case "profile-transfer-project/":
-                    $scope.currentProfiles.profile_transfer_project = response.data;
-                    $scope.selectRowCollapse[0].profiles.push(response.data);
-                    $scope.selectRowCollapse[0].state = response.data.status;
-                    $scope.selectRowCollapse[0].entity = response.data.profile_type.toUpperCase();
-                    break;
-                case "profile-content-type/":
-                    $scope.currentProfiles.profile_content_type = response.data;
-                    $scope.selectRowCollapse[1].profiles.push(response.data);
-                    $scope.selectRowCollapse[1].state = response.data.status;
-                    break;
-                case "profile-data-selection/":
-                    $scope.currentProfiles.profile_data_selection = response.data;
-                    $scope.selectRowCollapse[2].profiles.push(response.data);
-                    $scope.selectRowCollapse[2].state = response.data.status;
-                    break;
-                case "profile-classification/":
-                    $scope.currentProfiles.profile_classification = response.data;
-                    $scope.selectRowCollapse[3].profiles.push(response.data);
-                    $scope.selectRowCollapse[3].state = response.data.status;
-                    break;
-                case "profile-import/":
-                    $scope.currentProfiles.profile_import = response.data;
-                    $scope.selectRowCollapse[4].profiles.push(response.data);
-                    $scope.selectRowCollapse[4].state = response.data.status;
-                    break;
-                case "profile-submit-description/":
-                    $scope.currentProfiles.profile_submit_description = response.data;
-                    $scope.selectRowCollapse[5].profiles.push(response.data);
-                    $scope.selectRowCollapse[5].state = response.data.status;
-                    break;
-                case "profile-sip/":
-                    $scope.currentProfiles.profile_sip = response.data;
-                    $scope.selectRowCollapse[6].profiles.push(response.data);
-                    $scope.selectRowCollapse[6].state = response.data.status;
-                    break;
-                case "profile-aip/":
-                    $scope.currentProfiles.profile_aip = response.data;
-                    $scope.selectRowCollapse[7].profiles.push(response.data);
-                    $scope.selectRowCollapse[7].state = response.data.status;
-                    break;
-                case "profile-dip/":
-                    $scope.currentProfiles.profile_dip = response.data;
-                    $scope.selectRowCollapse[8].profiles.push(response.data);
-                    $scope.selectRowCollapse[8].state = response.data.status;
-                    break;
-                case "profile-workflow/":
-                    $scope.currentProfiles.profile_workflow = response.data;
-                    $scope.selectRowCollapse[9].profiles.push(response.data);
-                    $scope.selectRowCollapse[9].state = response.data.status;
-                    break;
-                case "profile-preservation-metadata/":
-                    $scope.currentProfiles.profile_preservation_metadata = response.data;
-                    $scope.selectRowCollapse[10].profiles.push(response.data);
-                    $scope.selectRowCollapse[10].state = response.data.status;
-                    break;
-            }
-            */
         }), function errorCallback(){
             alert('error');
         };
