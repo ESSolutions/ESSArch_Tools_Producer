@@ -29,12 +29,12 @@ import os
 from ip.models import InformationPackage
 
 
-"""
-An action for admin operations on IP
-"""
 def deleteIP(modeladmin, request, queryset):
+    """
+    An action for admin operations on IP
+    """
     # if we have selected entryn
-    if queryset.count() :
+    if queryset.count():
         # delete files and directorys
         for obj in queryset:
             #ip_creator = "%s" % obj.creator
@@ -55,21 +55,21 @@ def deleteIP(modeladmin, request, queryset):
                 if not os.listdir(obj.directory):
                     os.rmdir(obj.directory)
                     break
-            
-            modeladmin.message_user(request, "Successfully deleted archivist organization '%s's archive '%s' in database and in directory '%s'" % (obj.archivist_organization, obj.label, obj.directory ))
 
-    # delete db entry    
+            modeladmin.message_user(request, "Successfully deleted archivist organization '%s's archive '%s' in database and in directory '%s'" % (obj.archivist_organization, obj.label, obj.directory))
+
+    # delete db entry
     queryset.delete()
-    
+
 deleteIP.short_description = "Delete selected ip from DB and FS"
 
 
-"""
-Informaion Package
-"""
-class IPAdmin( admin.ModelAdmin ):
-    list_display = ( 'ArchivistOrganization', 'Label', 'CreateDate', 'id', 'ObjectSize', 'ObjectNumItems', 'ObjectPath', 'State' )
-    search_fields = ( 'ArchivistOrganization', )
+class IPAdmin(admin.ModelAdmin):
+    """
+    Informaion Package
+    """
+    list_display = ('ArchivistOrganization', 'Label', 'CreateDate', 'id', 'ObjectSize', 'ObjectNumItems', 'ObjectPath', 'State')
+    search_fields = ('ArchivistOrganization',)
     readonly_fields = ('id',)
     list_filter = ('ArchivistOrganization', 'Label')
     #fields = ('entity', 'value')
@@ -95,8 +95,8 @@ class IPAdmin( admin.ModelAdmin ):
                               'ArchivistOrganization',
                               'ArchivalType',
                               'ArchivalLocation',
-                              )}),
-                )
+                             )}),
+               )
 
 admin.site.register(InformationPackage, IPAdmin)
 

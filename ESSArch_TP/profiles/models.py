@@ -26,15 +26,12 @@ import jsonfield
 
 import uuid
 
-"""
-Submission Agreement
-"""
-
 Profile_Status_CHOICES = (
     (0, 'Disabled'),
     (1, 'Enabled'),
     (2, 'Default'),
 )
+
 
 class ProfileTransferProjectRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,6 +50,7 @@ class ProfileTransferProjectRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
 class ProfileContentTypeRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -69,6 +67,7 @@ class ProfileContentTypeRel(models.Model):
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class ProfileDataSelectionRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -87,6 +86,7 @@ class ProfileDataSelectionRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
 class ProfileClassificationRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -103,6 +103,7 @@ class ProfileClassificationRel(models.Model):
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class ProfileImportRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -121,6 +122,7 @@ class ProfileImportRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
 class ProfileSubmitDescriptionRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -137,6 +139,7 @@ class ProfileSubmitDescriptionRel(models.Model):
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class ProfileSIPRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -155,6 +158,7 @@ class ProfileSIPRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
 class ProfileAIPRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -171,6 +175,7 @@ class ProfileAIPRel(models.Model):
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class ProfileDIPRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -189,6 +194,7 @@ class ProfileDIPRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
 class ProfileWorkflowRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -205,6 +211,7 @@ class ProfileWorkflowRel(models.Model):
 
     def __unicode__(self):
         return unicode(self.id)
+
 
 class ProfilePreservationMetadataRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -268,7 +275,8 @@ class SubmissionAgreement(models.Model):
     sa_designated_community_individual_phone = models.CharField(max_length=255)
     sa_designated_community_individual_email = models.CharField(max_length=255)
     sa_designated_community_individual_additional = models.CharField(
-        max_length=255)
+        max_length=255
+    )
 
     profile_transfer_project = models.ManyToManyField(
         'Profile',
