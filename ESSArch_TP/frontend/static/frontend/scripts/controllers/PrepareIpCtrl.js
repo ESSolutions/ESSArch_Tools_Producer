@@ -235,85 +235,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
     //populating select view
     $scope.selectRowCollection = [];
-    $scope.selectRowCollapse = [
-   /* {
-        entity: "PROFILE_TRANSFER_PROJECT",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_CONTENT_TYPE",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_DATA_SELECTION",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_CLASSIFICATION",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_IMPORT",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_SUBMIT_DESCRIPTION",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_SUBMISSION_INFORMATION_PACKAGE",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_ARCHIVAL_INFORMATION_PACKAGE",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_DISSEMINATION_INFORMATION_PACKAGE",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_WORKFLOW",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    },
-    {
-        entity: "PROFILE_PRESERVATION_METADATA",
-        profile: {},
-        profiles: [
-        ],
-        state: "unspecified"
-    }*/
-    ];
+    $scope.selectRowCollapse = [];
     $scope.saProfile =
     {
         entity: "PROFILE_SUBMISSION_AGREEMENT",
@@ -321,7 +243,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         profiles: [
 
         ],
-        state: "unspecified"
     };
 
     $scope.getSaProfiles = function(ip) {
@@ -357,34 +278,34 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
         }
         for(i=0;i<sa.profile_content_type.length;i++){
-            getProfile("profile-content-type/", sa.profile_content_type[i].id, sa.profile_content_type[i].status);
+            getProfile("content_type", sa.profile_content_type[i].id, sa.profile_content_type[i].status);
         }
         for(i=0;i<sa.profile_data_selection.length;i++){
-            getProfile("profile-data-selection/", sa.profile_data_selection[i].id, sa.profile_data_selection[i].status);
+            getProfile("data_selection", sa.profile_data_selection[i].id, sa.profile_data_selection[i].status);
         }
         for(i=0;i<sa.profile_classification.length;i++){
-            getProfile("profile-classification/", sa.profile_classification[i].id, sa.profile_classification[i].status);
+            getProfile("classification", sa.profile_classification[i].id, sa.profile_classification[i].status);
         }
         for(i=0;i<sa.profile_import.length;i++){
-            getProfile("profile-import/", sa.profile_import[i].id, sa.profile_import[i].status);
+            getProfile("import", sa.profile_import[i].id, sa.profile_import[i].status);
         }
         for(i=0;i<sa.profile_submit_description.length;i++){
-            getProfile("profile-submit-description/", sa.profile_submit_description[i].id, sa.profile_submit_description[i].status);
+            getProfile("submit_description", sa.profile_submit_description[i].id, sa.profile_submit_description[i].status);
         }
         for(i=0;i<sa.profile_sip.length;i++){
-            getProfile("profile-sip/", sa.profile_sip[i].id, sa.profile_sip[i].status);
+            getProfile("sip", sa.profile_sip[i].id, sa.profile_sip[i].status);
         }
         for(i=0;i<sa.profile_aip.length;i++){
-            getProfile("profile-aip/", sa.profile_aip[i].id, sa.profile_aip[i].status);
+            getProfile("aip", sa.profile_aip[i].id, sa.profile_aip[i].status);
         }
         for(i=0;i<sa.profile_dip.length;i++){
-            getProfile("profile-dip/", sa.profile_dip[i].id, sa.profile_dip[i].status);
+            getProfile("profile_dip", sa.profile_dip[i].id, sa.profile_dip[i].status);
         }
         for(i=0;i<sa.profile_workflow.length;i++){
-            getProfile("profile-workflow/", sa.profile_workflow[i].id, sa.profile_workflow[i].status);
+            getProfile("profile_workflow", sa.profile_workflow[i].id, sa.profile_workflow[i].status);
         }
         for(i=0;i<sa.profile_preservation_metadata.length;i++){
-            getProfile("profile-preservation-metadata/", sa.profile_preservation_metadata[i].id, sa.profile_preservation_metadata[i].status);
+            getProfile("profile_preservation_metadata", sa.profile_preservation_metadata[i].id, sa.profile_preservation_metadata[i].status);
         }
         console.log($scope.selectRowCollapse);
 
