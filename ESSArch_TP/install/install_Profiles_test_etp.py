@@ -1313,7 +1313,13 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': 'SIP SE structure xx',
+        'structure': {
+            'representations': {
+                'documentation': {}
+            },
+            'rep01': {},
+            'metadata': {}
+        },
         'specification': 'Any specification wrapped',
         'specification_data': 'Any specification data wrapped',
     }
