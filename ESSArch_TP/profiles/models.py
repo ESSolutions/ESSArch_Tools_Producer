@@ -32,6 +32,40 @@ Profile_Status_CHOICES = (
     (2, 'Default'),
 )
 
+
+class ProfileQuerySet(models.query.QuerySet):
+    def active(self):
+        """
+        Gets the first profile in the base set that have status 1 (enabled), if
+        there is none get the first profile with status 2 (default)
+
+        Args:
+
+        Returns:
+            The first profile with status 1 if there is one,
+            otherwise the first profile with status 2
+        """
+
+        profile_set = self.filter(
+            status=1
+        )
+
+        if not profile_set:
+            profile_set = self.filter(
+                status=2
+            )
+
+        return profile_set.first().profile
+
+
+class ProfileRelManager(models.Manager):
+    def get_queryset(self):
+        return ProfileQuerySet(self.model, using=self._db)
+
+    def active(self):
+        return self.get_queryset().active()
+
+
 class ProfileRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
@@ -41,8 +75,10 @@ class ProfileRel(models.Model):
     )
     profile = models.ForeignKey('Profile')
     submissionagreement = models.ForeignKey('SubmissionAgreement')
+    objects = ProfileRelManager()
 
     class Meta:
+        base_manager_name = 'objects'
         verbose_name = 'ProfileRel'
         ordering = ['status']
 
