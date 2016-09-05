@@ -23,8 +23,13 @@
 # Create your models here.
 from django.db import models
 
+from configuration.models import Path
+
+from preingest.models import ProcessStep, ProcessTask
+
 from profiles.models import SubmissionAgreement as SA
 
+import os
 import uuid
 
 
@@ -159,6 +164,31 @@ class InformationPackage(models.Model):
             for field in InformationPackage._meta.fields
         }
 
+    def prepare(self):
+        sa = self.SubmissionAgreement
+        path = Path.objects.get(entity="path_preingest_prepare").value
+
+        step = ProcessStep.objects.create(
+            name = "Prepare IP",
+            information_package = self,
+        )
+
+        profile_sip = sa.profile_sip_rel.active()
+
+        tasks = [
+            ProcessTask.objects.create(
+                name="preingest.tasks.CreatePhysicalModel",
+                params={
+                    "structure": profile_sip.structure,
+                    "root": os.path.join(path, str(self.pk))
+                },
+                processstep_pos = 0,
+            ),
+        ]
+
+        step.tasks = tasks
+        step.save()
+        step.run()
 
 class EventIP(models.Model):
     """
