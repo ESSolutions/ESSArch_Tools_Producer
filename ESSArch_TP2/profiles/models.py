@@ -32,195 +32,14 @@ Profile_Status_CHOICES = (
     (2, 'Default'),
 )
 
-
-class ProfileTransferProjectRel(models.Model):
+class ProfileRel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     status = models.IntegerField(
         'Profile status',
         choices=Profile_Status_CHOICES,
         default=0
     )
-    profiletransferproject = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileContentTypeRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profilecontenttype = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileDataSelectionRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profiledataselection = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileClassificationRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profileclassification = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileImportRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profileimport = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileSubmitDescriptionRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profilesubmitdescription = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileSIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profilesip = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileAIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profileaip = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileDIPRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profiledip = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfileWorkflowRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profileworkflow = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
-
-    class Meta:
-        verbose_name = 'ProfileRel'
-        ordering = ['status']
-
-    def __unicode__(self):
-        return unicode(self.id)
-
-
-class ProfilePreservationMetadataRel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.IntegerField(
-        'Profile status',
-        choices=Profile_Status_CHOICES,
-        default=0
-    )
-    profilepreservationmetadata = models.ForeignKey('Profile')
+    profile = models.ForeignKey('Profile')
     submissionagreement = models.ForeignKey('SubmissionAgreement')
 
     class Meta:
@@ -278,73 +97,56 @@ class SubmissionAgreement(models.Model):
         max_length=255
     )
 
-    profile_transfer_project = models.ManyToManyField(
+    profiles = models.ManyToManyField(
         'Profile',
-        related_name='profile_transfer_project',
-        through='ProfileTransferProjectRel',
-        through_fields=('submissionagreement', 'profiletransferproject')
-    )
-    profile_content_type = models.ManyToManyField(
-        'Profile',
-        related_name='profile_content_type',
-        through='ProfileContentTypeRel',
-        through_fields=('submissionagreement', 'profilecontenttype')
+        related_name='submission_agreements',
+        through='ProfileRel',
+        through_fields=('submissionagreement', 'profile')
     )
 
-    profile_data_selection = models.ManyToManyField(
-        'Profile',
-        related_name='profile_data_selection',
-        through='ProfileDataSelectionRel',
-        through_fields=('submissionagreement', 'profiledataselection')
-    )
-    profile_classification = models.ManyToManyField(
-        'Profile',
-        related_name='profile_classification',
-        through='ProfileClassificationRel',
-        through_fields=('submissionagreement', 'profileclassification')
-    )
-    profile_import = models.ManyToManyField(
-        'Profile',
-        related_name='profile_import',
-        through='ProfileImportRel',
-        through_fields=('submissionagreement', 'profileimport')
-    )
-    profile_submit_description = models.ManyToManyField(
-        'Profile',
-        related_name='profile_submit_description',
-        through='ProfileSubmitDescriptionRel',
-        through_fields=('submissionagreement', 'profilesubmitdescription')
-    )
-    profile_sip = models.ManyToManyField(
-        'Profile',
-        related_name='profile_sip',
-        through='ProfileSIPRel',
-        through_fields=('submissionagreement', 'profilesip')
-    )
-    profile_aip = models.ManyToManyField(
-        'Profile',
-        related_name='profile_aip',
-        through='ProfileAIPRel',
-        through_fields=('submissionagreement', 'profileaip')
-    )
-    profile_dip = models.ManyToManyField(
-        'Profile',
-        related_name='profile_dip',
-        through='ProfileDIPRel',
-        through_fields=('submissionagreement', 'profiledip')
-    )
-    profile_workflow = models.ManyToManyField(
-        'Profile',
-        related_name='profile_workflow',
-        through='ProfileWorkflowRel',
-        through_fields=('submissionagreement', 'profileworkflow')
-    )
-    profile_preservation_metadata = models.ManyToManyField(
-        'Profile',
-        related_name='profile_preservation_metadata',
-        through='ProfilePreservationMetadataRel',
-        through_fields=('submissionagreement', 'profilepreservationmetadata')
-    )
+    @property
+    def profile_transfer_project_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="transfer_project")
+
+    @property
+    def profile_content_type_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="content_type")
+
+    @property
+    def profile_data_selection_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="data_selection")
+
+    @property
+    def profile_classification_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="classification")
+
+    @property
+    def profile_import_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="import")
+
+    @property
+    def profile_submit_description_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="submit_description")
+
+    @property
+    def profile_sip_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="sip")
+
+    @property
+    def profile_aip_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="aip")
+
+    @property
+    def profile_dip_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="dip")
+
+    @property
+    def profile_workflow_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="workflow")
+
+    @property
+    def profile_preservation_metadata_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="preservation_metadata")
 
     class Meta:
         ordering = ["sa_name"]
