@@ -243,7 +243,7 @@ class Profile(models.Model):
     submission_method = models.CharField(max_length=255)
     submission_schedule = models.CharField(max_length=255)
     submission_data_inventory = models.CharField(max_length=255)
-    structure = models.TextField()
+    structure = jsonfield.JSONField(null=True)
     template = jsonfield.JSONField(null=True)
     specification = jsonfield.JSONField(null=True)
     specification_data = jsonfield.JSONField(null=True)
