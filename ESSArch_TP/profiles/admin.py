@@ -27,61 +27,51 @@ from django.contrib import admin
 from profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileTransferProjectRel,
-    ProfileContentTypeRel,
-    ProfileDataSelectionRel,
-    ProfileClassificationRel,
-    ProfileImportRel,
-    ProfileSubmitDescriptionRel,
-    ProfileSIPRel,
-    ProfileAIPRel,
-    ProfileDIPRel,
-    ProfileWorkflowRel,
-    ProfilePreservationMetadataRel,
+    ProfileRel
 )
 
 class profile_transfer_project_Inline(admin.TabularInline):
-    model = ProfileTransferProjectRel
+    model = ProfileRel
     extra = 0
 
 class  profile_content_type_Inline(admin.TabularInline):
-    model = ProfileContentTypeRel
+    model = ProfileRel
     extra = 0
-    
+
 class profile_data_selection_Inline(admin.TabularInline):
-    model = ProfileDataSelectionRel
+    model = ProfileRel
     extra = 0
 
 class profile_classification_Inline(admin.TabularInline):
-    model = ProfileClassificationRel
+    model = ProfileRel
     extra = 0
 
 class profile_import_Inline(admin.TabularInline):
-    model = ProfileImportRel
+    model = ProfileRel
     extra = 0
 
 class profile_submit_description_Inline(admin.TabularInline):
-    model = ProfileSubmitDescriptionRel
+    model = ProfileRel
     extra = 0
-    
+
 class profile_sip_Inline(admin.TabularInline):
-    model = ProfileSIPRel
+    model = ProfileRel
     extra = 0
-    
+
 class profile_aip_Inline(admin.TabularInline):
-    model = ProfileAIPRel
+    model = ProfileRel
     extra = 0
 
 class profile_dip_Inline(admin.TabularInline):
-    model = ProfileDIPRel
+    model = ProfileRel
     extra = 0
 
 class profile_workflow_Inline(admin.TabularInline):
-    model = ProfileWorkflowRel
+    model = ProfileRel
     extra = 0
 
 class profile_preservation_metadata_Inline(admin.TabularInline):
-    model = ProfilePreservationMetadataRel
+    model = ProfileRel
     extra = 0
 
 """

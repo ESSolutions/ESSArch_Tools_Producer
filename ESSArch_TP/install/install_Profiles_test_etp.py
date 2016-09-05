@@ -47,17 +47,7 @@ from preingest.models import (
 from profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileTransferProjectRel,
-    ProfileContentTypeRel,
-    ProfileDataSelectionRel,
-    ProfileClassificationRel,
-    ProfileImportRel,
-    ProfileSubmitDescriptionRel,
-    ProfileSIPRel,
-    ProfileAIPRel,
-    ProfileDIPRel,
-    ProfileWorkflowRel,
-    ProfilePreservationMetadataRel,
+    ProfileRel,
 )
 
 # settings
@@ -160,83 +150,85 @@ def installSubmissionAgreement():
     # create according to model with many fields
     sa = SubmissionAgreement.objects.create(**dct)
 
-    ProfileTransferProjectRel.objects.create(
-        profiletransferproject=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440001"
+    ProfileRel.objects.bulk_create([
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440001"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileContentTypeRel.objects.create(
-        profilecontenttype=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440002"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440002"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileDataSelectionRel.objects.create(
-        profiledataselection=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440003"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440003"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileClassificationRel.objects.create(
-        profileclassification=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440004"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440004"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileImportRel.objects.create(
-        profileimport=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440005"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440005"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileSubmitDescriptionRel.objects.create(
-        profilesubmitdescription=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440006"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440006"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileSIPRel.objects.create(
-        profilesip=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440007"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440007"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileAIPRel.objects.create(
-        profileaip=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440008"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440008"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileDIPRel.objects.create(
-        profiledip=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440009"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440009"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfileWorkflowRel.objects.create(
-        profileworkflow=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440010"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440010"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
-    ProfilePreservationMetadataRel.objects.create(
-        profilepreservationmetadata=Profile.objects.get(
-            id="550e8400-e29b-41d4a716-446655440011"
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440011"
+            ),
+            submissionagreement=sa,
+            status=2
         ),
-        submissionagreement=sa,
-        status=2
-    )
+    ])
 
     #logger.info('Installed Submission Agreement')
     print 'Installed submission agreement'
