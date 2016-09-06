@@ -195,6 +195,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     vm.profileModel = {};
     vm.profileFields=[];
     $scope.profileClick = function(row){
+        $scope.profileToSave = row.profile;
         console.log(row);
         if ($scope.selectProfile == row && $scope.subSelect){
             $scope.eventlog = false;
@@ -357,319 +358,45 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.profilesCollapse = !$scope.profilesCollapse;
         };
         //Populating edit view fields
-        // Archivist
-        // Organisation
-        vm.archivistOrganisationModel = {
-            ArchivistOrganisation: "Sigtuna Kommun",
-            ArchivistOrganisationIdentity: "",
-            ArchivistOrganisationSoftware: "",
-            ArchivistOrganisationSoftwareIdentity: ""
-        };
-        vm.archivistOrganisationFields = [
-    {
-        key: "ArchivistOrganisation",
-        type: "select",
-        templateOptions: {
-            label: "Archivist organisation",
-            placeholder: "ArchivistOrganisation",
-            options: [
-            {
-                name: "Petrus", value: "Petrus"
-            },
-            {
-                name: "oskar", value: "oskar"
-            },
-            {
-                name: "Sigtuna kommun", value: "Sigtuna kommun"
-            }
-            ]
-        }
-    },
-    {
-        key: 'ArchivistOrganisationIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Archivist organisation identity',
-            placeholder: 'Archivist organisation identity'
-        }
-    },
-    {
-        key: 'ArchivistOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'Archivist organisation software',
-            placeholder: 'Archivist organisation software'
-        }
-    },
-    {
-        key: 'ArchivistOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Archivist organisation software identity',
-            placeholder: 'Archivist organisation software identity'
-        }
-    }
-    ];
-
-    // Creator
-    // Organisation
-    vm.creatorOrganisationModel = {
-        CreatorOrganisation: "Riksarkivet",
-        CreatorOrganisationIdentity: "",
-        CreatorOrganisationSoftware: "",
-        CreatorOrganisationSoftwareIdentity: ""
-    };
-
-    vm.creatorOrganisationFields = [
-
-    {
-        key: 'CreatorOrganisation',
-        type: 'input',
-        defaultValue: 'Riksarkivet',
-        templateOptions: {
-            label: 'Creator organisation',
-            placeholder: 'Creator organisation'
-        }
-    },
-    {
-        key: 'CreatorOrganisationIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Creator organisation identity',
-            placeholder: 'Creator organisation identity'
-        }
-    },
-    {
-        key: 'CreatorOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'Creator organisation software',
-            placeholder: 'Creator organisation software'
-        }
-    },
-    {
-        key: 'CreatorOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Creator organisation software identity',
-            placeholder: 'Creator organisation software identity'
-        }
-    }
-    ];
-
-
-    // Producer
-    // organisation
-    vm.producerOrganisationModel = {
-        ProducerOrganisation: "",
-        ProducerIndividual: "",
-        ProducerOrganisationSoftware: "",
-        ProducerOrganisationSoftwareIdentity: ""
-    };
-
-    vm.producerOrganisationFields = [
-    {
-        key: 'ProducerOrganisation',
-        type: 'input',
-        templateOptions: {
-            label: 'Producer organisation',
-            placeholder: 'Producer organisation'
-        }
-    },
-    {
-        key: 'ProducerIndividual',
-        type: 'input',
-        templateOptions: {
-            label: 'Producer individual',
-            placeholder: 'Producer individual'
-        }
-    },
-    {
-        key: 'ProducerOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'Producer organisation software',
-            placeholder: 'Producer organisation software'
-        }
-    },
-    {
-        key: 'ProducerOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Producer organisation software identity',
-            placeholder: 'Producer organisation software identity'
-        }
-    }
-    ];
-
-
-    // IP Owner
-    // organisation
-    vm.ipOwnerOrganisationModel = {
-        IpOwnerOrganisation: "",
-        IpOwnerIndividual: "",
-        IpOwnerOrganisationSoftware: "",
-        IpOwnerOrganisationSoftwareIdentity: ""
-    };
-
-    vm.ipOwnerOrganisationFields = [
-    {
-        key: 'ipOwnerOrganisation',
-        type: 'input',
-        templateOptions: {
-            label: 'IP owner organisation',
-            placeholder: 'IP owner organisation'
-        }
-    },
-    {
-        key: 'IpOwnerIndividual',
-        type: 'input',
-        templateOptions: {
-            label: 'IP owner individual',
-            placeholder: 'IP owner individual'
-        }
-    },
-    {
-        key: 'IpOwnerOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'IP owner organisation software',
-            placeholder: 'IP owner organisation software'
-        }
-    },
-    {
-        key: 'IpOwnerOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'IP owner organisation software identity',
-            placeholder: 'IP owner organisation software identity'
-        }
-    }
-    ];
-
-
-    // Editor
-    // organisation
-    vm.editorOrganisationModel = {
-        EditorOrganisation: "",
-        EditorIndividual: "",
-        EditorOrganisationSoftware: "",
-        EditorOrganisationSoftwareIdentity: ""
-    };
-
-    vm.editorOrganisationFields = [
-    {
-        key: 'EditorOrganisation',
-        type: 'input',
-        templateOptions: {
-            label: 'Editor organisation',
-            placeholder: 'Editor organisation'
-        }
-    },
-    {
-        key: 'EditorIndividual',
-        type: 'input',
-        templateOptions: {
-            label: 'Editor individual',
-            placeholder: 'Editor indivivual'
-        }
-    },
-    {
-        key: 'EditorOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'Editor organisation software',
-            placeholder: 'Editor organisation software'
-        }
-    },
-    {
-        key: 'EditorOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Editor organisation software identity',
-            placeholder: 'Editor organisation software identity'
-        }
-    }
-    ];
-
-
-    // Preservation
-    // organisation
-    vm.preservationOrganisationModel = {
-        PreservationOrganisation: "",
-        PreservationIndividual: "",
-        PreservationOrganisationSoftware: "",
-        PreservationOrganisationSoftwareIdentity: ""
-    };
-
-    vm.preservationOrganisationFields = [
-    {
-        key: 'PreservationOrganisation',
-        type: 'input',
-        templateOptions: {
-            label: 'Preservation organisation',
-            placeholder: 'Preservation organisation'
-        }
-    },
-    {
-        key: 'PreservationIndividual',
-        type: 'input',
-        templateOptions: {
-            label: 'Preservation individual',
-            placeholder: 'Preservation individual'
-        }
-    },
-    {
-        key: 'PreservationOrganisationSoftware',
-        type: 'input',
-        templateOptions: {
-            label: 'Preservation organisation software',
-            placeholder: 'Preservation organisation software'
-        }
-    },
-    {
-        key: 'PreservationOrganisationSoftwareIdentity',
-        type: 'input',
-        templateOptions: {
-            label: 'Preservation organisation software identity',
-            placeholder: 'Preservation organisation software identity'
-        }
-    }
-    ];
-
-    $scope.exampleData = "1";
-    $scope.exampleSelectData = [
-        "1",
-        "2",
-        "3"
-    ];
     // onSubmit function
 
     vm.onSubmit = function() {
-        var params = {
-            info: {
-                "ArchivistOrganisation": vm.archivistOrganisationModel,
-                "CreatorOrganisation": vm.creatorOrganisationModel,
-                "ProducerOrganisation": vm.producerOrganisationModel,
-                "IpOwnerOrganisation": vm.ipOwnerOrganisationModel,
-                "EditorOrganisation": vm.editorOrganisationModel,
-                "PreservationOrganisation": vm.preservationOrganisationModel
-            }
+        if($scope.approvedToCreate){
+        var uri = $scope.ip.url+"prepare";
+        var sendData = {
+            "STATUSNOTE": $scope.statusNote,
+            "SIGNATURE": $scope.signature
         };
-        var sendData = {"params": params, "name": "preingest.tasks.First", "processstep_pos": 1, "attempt": 1, "progress": 50, "processstep": appConfig.djangoUrl+"steps/16130473-dbcb-4ea1-b251-e9a1e9cb8185/", "task_id": "123"};
-        //{"url": "http://0.0.0.0:8000/steps/f79355fc-bb1e-4bde-958c-8e6b66c91d5b/","id": "f69355fc-bb1e-4bde-958c-8e6b66c91d5b","name": "new stuff","result": null,"type": 100,"user": "petrus","status": 0,"progress": 50,"time_created": "2016-08-05T09:39:26.987468Z","parent_step": null,"ipobject": null,"tasks": [],"task_set": []};
-        var uri = appConfig.djangoUrl+'tasks/';
+
         $http({
             method: 'POST',
             url: uri,
-            data: sendData,
+            data: sendData
         })
         .success(function (response) {
-            alert('success');
+            alert('preparation started successfully');
         })
         .error(function (response) {
             alert('error');
         });
+        } else {
+            var uri = $scope.profileToSave.url+"save";
+            var sendData = vm.profileModel;
+            sendData.STATUSNOTE = $scope.statusNote;
+            sendData.SIGNATURE = $scope.signature;
+            console.log(sendData);
+            $http({
+                method: 'POST',
+                url: uri,
+                data: sendData
+            })
+            .success(function (response) {
+                alert('successfully saved profile');
+            })
+            .error(function (response) {
+                alert('error');
+            });
+        }
     };
 
 // Page selection

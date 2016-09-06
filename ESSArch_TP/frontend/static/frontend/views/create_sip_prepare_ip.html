@@ -213,21 +213,6 @@
                         <form ng-submit="vm.onSubmit()" novalidate>
                         <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                             </formly-form>
-                        <!--
-                            <formly-form model="vm.archivistOrganisationModel" fields="vm.archivistOrganisationFields" options="vm.options">
-                            </formly-form>
-                        <formly-form model="vm.creatorOrganisationModel" fields="vm.creatorOrganisationFields">
-                        </formly-form>
-                        <formly-form model="vm.producerOrganisationModel" fields="vm.producerOrganisationFields">
-                        </formly-form>
-                        <formly-form model="vm.ipOwnerOrganisationModel" fields="vm.ipOwnerOrganisationFields">
-                        </formly-form>
-                        <formly-form model="vm.editorOrganisationModel" fields="vm.editorOrganisationFields">
-                        </formly-form>
-                        <formly-form model="vm.preservationOrganisationModel" fields="vm.preservationOrganisationFields">
-                        </formly-form>
-                        <p>{{vm.archivistOrganisation}}</p>
-                        -->
                         </form>
                     </div>
                     <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
@@ -237,14 +222,14 @@
                         </div>
                         <div class="form-group">
                             <label>Signature</label>
-                            <input class="signature form-control" id="signature"></input>
+                            <input class="signature form-control" ng-model="signature" id="signature"></input>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
                             </label>
                         </div>
-                        <button type="submit" ng-disabled="!approvedToCreate"ng-click="vm.onSubmit()" class="btn btn-info submit-button">Submit</button>
+                        <button type="submit" ng-click="vm.onSubmit()" class="btn btn-info submit-button">Submit</button>
                     </div>
                 </div>
             </div>
