@@ -46,11 +46,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
 
     $scope.eventsClick = function (row) {
-      $scope.eventShow = true;
         if($scope.eventShow && $scope.ip== row){
             $scope.eventShow = false;
             $scope.ipSelected = false;
         } else {
+            $scope.eventShow = true;
             $scope.eventCollection = [];
             $http({
                 method: 'GET',
@@ -69,7 +69,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.eventShow = true;
             $scope.ipSelected = true;
         }
-        $scope.statusShow = false;
         $scope.select = false;
 
 
@@ -377,7 +376,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             alert('preparation started successfully');
         })
         .error(function (response) {
-            alert('error');
+            alert('error(prepare ip)');
         });
         } else {
             var uri = $scope.profileToSave.url+"save";
@@ -393,8 +392,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             .success(function (response) {
                 alert('successfully saved profile');
             })
-            .error(function (response) {
-                alert('error');
+            .error(function(response) {
+                alert('error(save profile)');
             });
         }
     };
@@ -402,6 +401,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 // Page selection
 //      &
 // ng-show code
+    $scope.ipSubmitText = "Save profile";
+    $scope.toggleIpText = function() {
+        if($scope.approvedToCreate){
+            $scope.ipSubmitText = "Prepare ip";
+        }else {
+            $scope.ipSubmitText = "Save profile";
+        }
+    }
     $scope.statusShow = false;
     $scope.eventShow = false;
     $scope.select = false;
