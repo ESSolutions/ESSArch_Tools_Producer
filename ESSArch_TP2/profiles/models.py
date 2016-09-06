@@ -184,6 +184,10 @@ class SubmissionAgreement(models.Model):
     def profile_preservation_metadata_rel(self):
         return self.profilerel_set.filter(profile__profile_type="preservation_metadata")
 
+    @property
+    def profile_event_rel(self):
+        return self.profilerel_set.filter(profile__profile_type="event")
+
     class Meta:
         ordering = ["sa_name"]
         verbose_name = 'Submission Agreement'
@@ -212,6 +216,7 @@ profile_types = [
     "DIP",
     "Workflow",
     "Preservation Description",
+    "Event",
 ]
 
 PROFILE_TYPE_CHOICES = zip(
