@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
+angular.module('myApp').controller('PrepareIpCtrl', function ($uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
     var vm = this;
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
@@ -348,7 +348,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         };
     };
     $scope.changeProfile = function(profile){
-        var sendData = profile.id;
+        var sendData = {"new_profile": profile.id};
         var uri = $scope.currentSa.url+"change-profile/";
          $http({
             method: 'PUT',
@@ -376,7 +376,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         //Populating edit view fields
     // onSubmit function
 
-    vm.onSubmit = function() {
+    vm.onSubmit = function(new_name) {
         if($scope.approvedToCreate){
         var uri = $scope.ip.url+"prepare/";
         var sendData = {
@@ -397,7 +397,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         });
         } else {
             var uri = $scope.profileToSave.url+"save/";
-            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.currentSa.id};
+            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.currentSa.id, "new_name": new_name};
             console.log(sendData);
             $http({
                 method: 'POST',
@@ -466,9 +466,36 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.eventlog = false;
         }
     }
-
-
+    // Handle modal
+    $scope.openModal = function() {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'enter-profile-name.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            vm.onSubmit(data.name);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    };
 
 
 });
+angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
+  var $ctrl = this;
 
+  $ctrl.ok = function () {
+      $ctrl.data = {
+        name: $ctrl.profileName
+      };
+        $uibModalInstance.close($ctrl.data);
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});

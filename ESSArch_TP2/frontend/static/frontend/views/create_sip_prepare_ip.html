@@ -15,13 +15,13 @@
                     <table st-table="ipCollection" st-safe-src="ipRowCollection" class="table table-striped">
                         <thead>
                             <tr>
-                                <th st-sort="label" class="column-label">Label</th>
-                                <th st-sort="content" class="column-label">Content</th>
-                                <th st-sort="responsible" class="column-label">Responsible</th>
-                                <th st-sort="date" class="column-label">Date</th>
-                                <th st-sort="state" class="column-label">State</th>
-                                <th st-sort="state" class="column-label">Events</th>
-                                <th st-sort="status" class="column-label">Status</th>
+                                <th class="clickable" st-sort="label" class="column-label">Label</th>
+                                <th class="clickable" st-sort="content" class="column-label">Content</th>
+                                <th class="clickable" st-sort="responsible" class="column-label">Responsible</th>
+                                <th class="clickable" st-sort="date" class="column-label">Date</th>
+                                <th class="clickable" st-sort="state" class="column-label">State</th>
+                                <th class="clickable"st-sort="state" class="column-label">Events</th>
+                                <th class="clickable" st-sort="status" class="column-label">Status</th>
                             </tr>
                             <tr>
                                 <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
@@ -52,14 +52,22 @@
                 <div class="select-sub-edit-eventlog-wrapper">
                     <div ng-show="eventShow" class="event-view">
                         <p>Events associated to: {{ip.Label}}</p>
-                        <ul ng-repeat="event in eventCollection">
-                            <li>
-                            {{event.id}}
-                            </li>
-                            {{event.detail}}</br>
-                            {{event.dateTime}}
-                        </ul>
-
+                        <table st-table="eventRowCollection" st-safe-src="eventCollection" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="clickable" st-sort="id">Id</th>
+                                    <th class="clickable" st-sort="eventDetail">Event detail</th>
+                                    <th class="clickable" st-sort="eventDateTime">Event Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in eventRowCollection">
+                                    <td>{{row.id}}</td>
+                                    <td>{{row.eventDetail}}</td>
+                                    <td>{{row.eventDateTime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <script type="text/ng-template" id="child_step_template.html">
@@ -179,7 +187,7 @@
                                     <td>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkBox" checked="checked"><a ng-click="profileClick(currentSa)">{{saProfile.entity}}</a></input>
+                                                <input type="checkBox" checked="checked"><a>{{saProfile.entity}}</a></input>
                                             </label>
                                         </div>
                                     </td>
@@ -210,13 +218,27 @@
                         <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
                     <div ng-show="edit" id="edit-veiw" class="edit-view" >
-                        <form ng-submit="vm.onSubmit()" novalidate>
+                        <form  novalidate>
                         <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                             </formly-form>
                         </form>
                     </div>
+
+                    <script type="text/ng-template" id="enter-profile-name.html">
+                    <div class="enter-profile-name">
+                            <h3 class="modal-title" id="modal-title">Enter new profile name</h3>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+                            <input class="form-control" ng-model="$ctrl.profileName"></input>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                        </div>
+                    </script>
+
                     <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
-                        <form class="eventlog-form" ng-submit="vm.onSubmit()">
+                        <form class="eventlog-form" ng-submit="openModal()">
                         <div class="form-group">
                             <label>Status note</label>
                             <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
