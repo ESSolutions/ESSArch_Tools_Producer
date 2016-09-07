@@ -21,6 +21,7 @@
 """
 
 # Create your models here.
+from django.contrib.auth.models import User
 from django.db import models
 
 from configuration.models import Path
@@ -100,6 +101,13 @@ class InformationPackage(models.Model):
     Startdate = models.DateTimeField()
     Enddate = models.DateTimeField()
     OAIStype = models.CharField(max_length=255)
+    Locked = models.BooleanField(default=False)
+    LockedBy = models.ForeignKey(
+        User,
+        models.SET_NULL,
+        null=True,
+    )
+    Unlockable = models.BooleanField(default=False)
     SubmissionAgreement = models.ForeignKey(
         SA,
         on_delete=models.CASCADE,
