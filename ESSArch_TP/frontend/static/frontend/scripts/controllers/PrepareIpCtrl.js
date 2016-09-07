@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
     var vm = this;
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
