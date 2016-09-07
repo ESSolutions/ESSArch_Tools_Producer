@@ -261,6 +261,70 @@ class Profile(models.Model):
         # create a unicode representation of this object
         return '%s (%s) - %s' % (self.name, self.profile_type, self.id)
 
+    def get_sa_status(self, submission_agreement):
+        """
+        Gets the status between the profile and the given submission agreement.
+
+        Args:
+            submission_agreement: The submission agreement to check the status
+                                  with
+
+        Returns:
+            The status between the profile and the given submission agreement
+        """
+
+        return self.profilerel_set.get(
+            submissionagreement=submission_agreement.pk
+        ).status
+
+    def set_sa_status(self, submission_agreement, status):
+        """
+        Sets the status between the profile and the given submission agreement.
+
+        Args:
+            submission_agreement: The submission agreement which relation
+                                  status we will update
+            status: The new status
+
+        Returns:
+            None
+        """
+
+        self.profilerel_set.filter(
+            submissionagreement=submission_agreement.pk
+        ).update(status=status)
+
+    def copy_and_switch(self, submission_agreement, specification_data, new_name):
+        """
+        Copies the profile and updates the name and specification_data of the
+        copy.  If the old profile has a status of 1 (enabled) in it's
+        connection to the given submission agreement then the old profile will
+        be given the status 0 (disabled). The status of the new profile and the
+        submission agreement will always be 1 (enabled).
+
+        Args:
+            submission_agreement: The submission agreement that the profile is
+                                  switched in
+            specification_data: The data to be used in the copy
+            new_name: The name of the new profile
+        Returns:
+            None
+        """
+
+        if self.get_sa_status(submission_agreement) == 1:
+            self.set_sa_status(submission_agreement, 0)
+            self.save()
+
+        copy = Profile.objects.get(pk=self.pk)
+        copy.id = None
+        copy.specification_data = specification_data
+        copy.save()
+
+        ProfileRel.objects.create(
+            profile=copy, submissionagreement=submission_agreement,
+            status=1
+        )
+
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
         # name to the current value of the field
