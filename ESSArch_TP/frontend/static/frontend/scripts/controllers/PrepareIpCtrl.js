@@ -349,7 +349,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
     $scope.changeProfile = function(profile){
         var sendData = profile.id;
-        var uri = $scope.currentSa.url+"update-profile/";
+        var uri = $scope.currentSa.url+"change-profile/";
          $http({
             method: 'PUT',
             url: uri,
@@ -397,7 +397,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         });
         } else {
             var uri = $scope.profileToSave.url+"save/";
-            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature};
+            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.currentSa.id};
             console.log(sendData);
             $http({
                 method: 'POST',
