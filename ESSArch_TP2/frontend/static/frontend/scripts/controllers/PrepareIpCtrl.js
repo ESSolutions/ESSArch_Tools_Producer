@@ -225,7 +225,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     function getEventlogData() {
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'event-types'
+            url: appConfig.djangoUrl+'event-types/'
         })
         .then(function successCallback(response) {
             $scope.statusNoteCollection = response.data;
@@ -249,7 +249,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         var sas = [];
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'submission-agreements'
+            url: appConfig.djangoUrl+'submission-agreements/'
         })
         .then(function successCallback(response) {
             // console.log(JSON.stringify(response.data));
@@ -349,7 +349,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     };
     $scope.changeProfile = function(profile){
         var sendData = profile.id;
-        var uri = $scope.currentSa.url+"update-profile";
+        var uri = $scope.currentSa.url+"update-profile/";
          $http({
             method: 'PUT',
             url: uri,
@@ -378,7 +378,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
 
     vm.onSubmit = function() {
         if($scope.approvedToCreate){
-        var uri = $scope.ip.url+"prepare";
+        var uri = $scope.ip.url+"prepare/";
         var sendData = {
             "status_note": $scope.statusNote.id,
             "signature": $scope.signature
@@ -396,7 +396,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             alert('error(prepare ip)');
         });
         } else {
-            var uri = $scope.profileToSave.url+"save";
+            var uri = $scope.profileToSave.url+"save/";
             var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature};
             console.log(sendData);
             $http({
