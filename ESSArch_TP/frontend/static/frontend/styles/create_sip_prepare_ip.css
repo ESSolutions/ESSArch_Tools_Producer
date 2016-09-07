@@ -171,6 +171,15 @@ input[type="checkbox"] {
     -webkit-flex-direction: row;
     width: 100%;
 }
+.eventlog-form {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    width: 100%;
+     justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
 .control-label {
     font-size: 10px;
 }
