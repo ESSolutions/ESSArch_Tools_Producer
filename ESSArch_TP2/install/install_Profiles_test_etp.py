@@ -81,6 +81,7 @@ def installProfiles(): # Install all different profiles
     installProfileDIP()				# Profile Dissemination Information Package
     installProfileWorkflow()			# Profile Workflow
     installProfilePreservationMetadata()		# Profile Preservation Metadata
+    installProfileEvent()		        # Profile Event
     installSubmissionAgreement()     		# Submission Agreement
 
     return 0
@@ -224,6 +225,13 @@ def installSubmissionAgreement():
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440011"
+            ),
+            submissionagreement=sa,
+            status=2
+        ),
+        ProfileRel(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440012"
             ),
             submissionagreement=sa,
             status=2
@@ -1445,6 +1453,30 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     #logger.info('Installed Profile PreservationMetadata')
     print 'Installed profile preservation metadata'
+
+    return 0
+
+
+def installProfileEvent(): # Profile Event
+
+    # create profile event dictionaries
+
+    dct = {
+        'id': '550e8400-e29b-41d4a716-446655440012',
+        'name': 'Event profile xx',
+        'profile_type': 'event',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Event profile for SIP xxyyzz',
+        'specification': 'Any specification wrapped',
+        'specification_data': 'Any specification data wrapped',
+    }
+
+    # create according to model with many fields
+    Profile.objects.create(**dct)
+
+    #logger.info('Installed Profile Event')
+    print 'Installed profile event'
 
     return 0
 
