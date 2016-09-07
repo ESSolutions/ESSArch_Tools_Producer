@@ -196,7 +196,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td><select class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles"></select></td>
+                                    <td><select class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
                                     <td>{{row.profile.status}}</td>
                                 </tr>
                             </tbody>
@@ -216,21 +216,23 @@
                         </form>
                     </div>
                     <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
+                        <form class="eventlog-form" ng-submit="vm.onSubmit()">
                         <div class="form-group">
                             <label>Status note</label>
-                            <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection"></select>
+                            <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true"></select>
                         </div>
                         <div class="form-group">
                             <label>Signature</label>
-                            <input class="signature form-control" ng-model="signature" id="signature"></input>
+                            <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkBox" ng-model="approvedToCreate" ng-click="toggleIpText()">Approved to create</input>
                             </label>
                         </div>
-                        <button type="submit" ng-click="vm.onSubmit()" class="btn btn-info submit-button">{{ipSubmitText}}</button>
+                        <button type="submit" class="btn btn-info submit-button">{{ipSubmitText}}</button>
                     </div>
+                        </form>
                 </div>
             </div>
         </div>

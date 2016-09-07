@@ -284,6 +284,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         getProfiles(sa.profile_dip);
         getProfiles(sa.profile_workflow);
         getProfiles(sa.profile_preservation_metadata);
+        getProfiles(sa.profile_event);
         console.log($scope.selectRowCollapse);
 
     };
@@ -346,6 +347,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             alert('error');
         };
     };
+    $scope.changeProfile = function(profile){
+        var sendData = profile.id;
+        var uri = $scope.currentSa.url+"update-profile";
+         $http({
+            method: 'PUT',
+            url: uri,
+            data: sendData
+        })
+        .success(function (response) {
+            console.log("sa updated with"+profile.id);
+        })
+        .error(function (response) {
+            alert('error(updating sa with profile)');
+        });
+
+    };
         $scope.showHideAllProfiles = function() {
             if($scope.selectRowCollection.length == 0){
                 for(i = 0; i < $scope.selectRowCollapse.length; i++){
@@ -363,8 +380,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         if($scope.approvedToCreate){
         var uri = $scope.ip.url+"prepare";
         var sendData = {
-            "STATUSNOTE": $scope.statusNote,
-            "SIGNATURE": $scope.signature
+            "status_note": $scope.statusNote.id,
+            "signature": $scope.signature
         };
 
         $http({
@@ -380,9 +397,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         });
         } else {
             var uri = $scope.profileToSave.url+"save";
-            var sendData = vm.profileModel;
-            sendData.STATUSNOTE = $scope.statusNote;
-            sendData.SIGNATURE = $scope.signature;
+            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature};
             console.log(sendData);
             $http({
                 method: 'POST',
