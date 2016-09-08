@@ -156,84 +156,84 @@ def installSubmissionAgreement():
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440002"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440003"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440004"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440005"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440006"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440008"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440009"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440010"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440011"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440012"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
     ])

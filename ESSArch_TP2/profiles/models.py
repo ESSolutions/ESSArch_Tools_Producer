@@ -74,7 +74,7 @@ class ProfileRel(models.Model):
         default=0
     )
     profile = models.ForeignKey('Profile')
-    submissionagreement = models.ForeignKey('SubmissionAgreement')
+    submission_agreement = models.ForeignKey('SubmissionAgreement')
     objects = ProfileRelManager()
 
     class Meta:
@@ -137,7 +137,7 @@ class SubmissionAgreement(models.Model):
         'Profile',
         related_name='submission_agreements',
         through='ProfileRel',
-        through_fields=('submissionagreement', 'profile')
+        through_fields=('submission_agreement', 'profile')
     )
 
     @property
@@ -274,7 +274,7 @@ class Profile(models.Model):
         """
 
         return self.profilerel_set.get(
-            submissionagreement=submission_agreement.pk
+            submission_agreement=submission_agreement.pk
         ).status
 
     def set_sa_status(self, submission_agreement, status):
@@ -291,7 +291,7 @@ class Profile(models.Model):
         """
 
         self.profilerel_set.filter(
-            submissionagreement=submission_agreement.pk
+            submission_agreement=submission_agreement.pk
         ).update(status=status)
 
     def copy_and_switch(self, submission_agreement, specification_data, new_name):
@@ -322,7 +322,7 @@ class Profile(models.Model):
         copy.save()
 
         ProfileRel.objects.create(
-            profile=copy, submissionagreement=submission_agreement,
+            profile=copy, submission_agreement=submission_agreement,
             status=1
         )
 
