@@ -238,7 +238,7 @@
                     </script>
 
                     <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
-                        <form class="eventlog-form" ng-submit="openModal()">
+                        <form class="eventlog-form" ng-submit="openModalOrRun()">
                             <div class="form-group">
                                 <label>Status note</label>
                                 <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">

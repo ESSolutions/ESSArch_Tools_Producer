@@ -38,6 +38,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.ipSelected = false;
         } else {
             $scope.select = true;
+            $scope.eventShow = false;
+            $scope.statusShow = false;
             $scope.ipSelected = true;
             $scope.getSaProfiles(row);
         }
@@ -493,6 +495,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     // Handle modal
+    $scope.openModalOrRun = function(){
+        if($scope.approvedToCreate){
+            vm.onSubmit("");
+         } else {
+            $scope.openModal();
+         }
+    }
     $scope.openModal = function() {
         var modalInstance = $uibModal.open({
             animation: true,
