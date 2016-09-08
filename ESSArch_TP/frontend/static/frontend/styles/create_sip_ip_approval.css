@@ -79,12 +79,51 @@ height: 800px;
 .sub-select-nationality {
     width: 10%;
 }
+.eventlog-view {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    height: 70px;
+    margin: 10px;
+    padding 5px;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
+.eventlog-view .form-group {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    width: 33%;
+}
+.eventlog-view .status-note{
+}
+.eventlog-view .checkbox {
+}
+input[type="checkbox"] {
+  transform:scale(1.3, 1.3);
+}
+.eventlog-view .submit-button {
+    height: 40px;
+    margin-right: 20px;
+}
+.eventlog-view .signature {
+}
+.eventlog-form {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    width: 100%;
+     justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
 
 .edit-view {
     height: 60%;
     border-bottom-style: solid;
     border-color: #666;
-    min-height: 300px;
     max-height: 300px;
     overflow-y: scroll;
     margin: 5px;
