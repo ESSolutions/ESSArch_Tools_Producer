@@ -317,6 +317,7 @@ class Profile(models.Model):
 
         copy = Profile.objects.get(pk=self.pk)
         copy.id = None
+        copy.name = new_name
         copy.specification_data = specification_data
         copy.save()
 
