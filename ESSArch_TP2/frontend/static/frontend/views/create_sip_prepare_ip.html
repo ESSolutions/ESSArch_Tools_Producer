@@ -44,7 +44,7 @@
                     </table>
                     <div class="list-view-buttons">
                         <button type="button" ng-click="toggleSelectView()" class="btn btn-default">Show/hide select view</button>
-                        <button ng-click="toggleEditView()" type="button" class="btn btn-default">Show/hide edit view</button>
+                        <button type="button" ng-click="toggleEditView()" class="btn btn-default">Show/hide edit view</button>
                         <button type="button" ng-click="toggleSubSelectView()" class="btn btn-default">Show/hide sub select view</button>
                         <button type="button" ng-click="toggleEventlogView()" class="btn btn-default">Show/hide sub eventlog view</button>
                     </div>
@@ -170,13 +170,13 @@
                         </script>
 
                     <!-- END OF EXAMPLE-->
-                                    </div>
-                                    <div ng-show="select" class="select-view">
-                                        <p>{{ip.Label}}</p>
-                                        <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th class="column-entity">Entity</th>
+                    </div>
+                    <div ng-show="select" class="select-view">
+                        <p>{{ip.Label}}</p>
+                        <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="column-entity">Entity</th>
                                     <th class="column-profile">Profile</th>
                                     <th class="column-state">State</th>
                                 </tr>
