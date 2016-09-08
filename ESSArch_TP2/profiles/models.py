@@ -196,6 +196,35 @@ class SubmissionAgreement(models.Model):
         # create a unicode representation of this object
         return '%s - %s' % (self.sa_name, self.id)
 
+    def change_profile(self, new_profile):
+        """
+        Sets the given profile as enabled profile of its type in this
+        submission agreement.
+
+        Args:
+            new_profile: The profile that will be set as enabled for its type
+
+        Returns:
+            None
+        """
+
+        old_profile = self.profilerel_set.filter(
+                profile__profile_type=new_profile.profile_type
+        ).active()
+        old_status = old_profile.get_sa_status(self)
+
+        if old_status == 1:
+            old_profile.set_sa_status(self, 0)
+
+        if new_profile.get_sa_status(self) != 2:
+            ProfileRel.objects.update_or_create(
+                submission_agreement=self,
+                profile=new_profile,
+                defaults={
+                    "status": 1
+                },
+            )
+
     """
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
