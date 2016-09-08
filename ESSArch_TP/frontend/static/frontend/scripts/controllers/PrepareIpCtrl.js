@@ -63,8 +63,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     if(data[i].linkingObjectIdentifierValue == row.url)
                     $scope.eventCollection.push(data[i]);
                 }
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
             $scope.eventShow = true;
             $scope.ipSelected = true;
@@ -82,11 +82,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 url: appConfig.djangoUrl+'information-packages/'
             })
             .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
+                //console.log(JSON.stringify(response.data));
                 var data = response.data;
                 $scope.ipRowCollection = data;
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
     };
     $scope.getListViewData();
@@ -120,8 +120,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 console.log("steprows start");
                 console.log(stepRows);
                 console.log("steprows end");
-            }), function errorCallback(){
-                alert('error(getting steps)');
+            }), function errorCallback(response){
+                alert(response.status);
             }
         }
         $scope.parentStepsRowCollection = stepRows;
@@ -146,8 +146,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 response.data.tasksCollapsed = true;
                 steps.push(response.data);
                 console.log(steps);
-            }), function errorCallback(){
-                alert('error(getting child steps)');
+            }), function errorCallback(response){
+                alert(repsonse.status);
             }
         }
         childSteps = steps;
@@ -164,8 +164,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             .then(function successCallback(response) {
                 var data = response.data;
                 taskRows.push(data);
-            }), function errorCallback(){
-                alert('error(getting tasks)');
+            }), function errorCallback(response){
+                alert(response.status);
             }
         }
         return taskRows;
@@ -215,8 +215,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
                 $scope.subSelectOptions = data.actions.POST.name.choices;
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
         }
         console.log("selected profile: ");
@@ -229,8 +229,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         })
         .then(function successCallback(response) {
             $scope.statusNoteCollection = response.data;
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     //populating select view
@@ -266,8 +266,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.saProfile.profiles = tempProfiles;
             console.log("current sa: ");
             console.log($scope.currentSa);
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     $scope.getSelectCollection = function (sa) {
@@ -343,8 +343,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 }
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     $scope.changeProfile = function(profile){
@@ -359,7 +359,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             console.log("sa updated with"+profile.id);
         })
         .error(function (response) {
-            alert('error(updating sa with profile)');
+            alert(response.status);
         });
 
     };
@@ -390,10 +390,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
         .success(function (response) {
-            alert('preparation started successfully');
+            alert(response.status);
         })
         .error(function (response) {
-            alert('error(prepare ip)');
+            alert(response.status);
         });
         } else {
             var uri = $scope.profileToSave.url+"save/";
@@ -405,10 +405,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 data: sendData
             })
             .success(function (response) {
-                alert('successfully saved profile');
+                alert(response.status);
+                //????????????
+                $scope.getSelectCollection($scope.currentSa);
+                $scope.showHideAllProfiles();
+                $scope.showHideAllProfiles();
+                //????????????
             })
             .error(function(response) {
-                alert('error(save profile)');
+                alert(response.status);
             });
         }
     };
@@ -424,6 +429,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.ipSubmitText = "Save profile";
         }
     }
+    $scope.saveProfileEnabled = false;
     $scope.statusShow = false;
     $scope.eventShow = false;
     $scope.select = false;
