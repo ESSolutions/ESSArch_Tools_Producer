@@ -154,11 +154,11 @@ $scope.ipSelected = false;
                 getProfile(profileArray[i].id, true);
             }
         }
-    };
+     };
     function getProfile(profile_id, defaultProfile) {
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl + "profiles/" + profile_id
+            url: appConfig.djangoUrl + "profiles/" + profile_id+ "/"
         })
         .then(function successCallback(response) {
             var newProfileType = true;

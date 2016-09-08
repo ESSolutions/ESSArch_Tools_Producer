@@ -273,22 +273,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSelectCollection = function (sa) {
         $scope.currentProfiles = {};
         $scope.selectRowCollapse = [];
-        getProfiles(sa.profile_transfer_project);
-        getProfiles(sa.profile_content_type);
-        getProfiles(sa.profile_data_selection);
-        getProfiles(sa.profile_classification);
-        getProfiles(sa.profile_import);
-        getProfiles(sa.profile_submit_description);
-        getProfiles(sa.profile_sip);
-        getProfiles(sa.profile_aip);
-        getProfiles(sa.profile_dip);
-        getProfiles(sa.profile_workflow);
-        getProfiles(sa.profile_preservation_metadata);
-        getProfiles(sa.profile_event);
+        getProfiles("transfer_project", sa.profile_transfer_project);
+        getProfiles("content_type", sa.profile_content_type);
+        getProfiles("data_selection", sa.profile_data_selection);
+        getProfiles("classification", sa.profile_classification);
+        getProfiles("import", sa.profile_import);
+        getProfiles("submit_description", sa.profile_submit_description);
+        getProfiles("sip", sa.profile_sip);
+        getProfiles("aip", sa.profile_aip);
+        getProfiles("dip", sa.profile_dip);
+        getProfiles("workflow", sa.profile_workflow);
+        getProfiles("preservation_metadata", sa.profile_preservation_metadata);
+        getProfiles("event", sa.profile_event);
         console.log($scope.selectRowCollapse);
 
     };
-    function getProfiles(profileArray){
+    function getProfiles(type, profileArray){
         var bestStatus = 0;
         for(i=0;i<profileArray.length;i++){
             if(profileArray[i].status == 0 ){
@@ -306,6 +306,26 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 getProfile(profileArray[i].id, true);
             }
         }
+        $http({
+            method: 'GET',
+            url: appConfig.djangoUrl+"profiles-by-type",
+            params: {type: type}
+        })
+        .then(function successCallback(response) {
+            var tempProfileArray = response.data;
+            for(i=0;i<profileArray.length;i++){
+                for(j=0;j<tempProfileArray.length;j++){
+                    if(tempProfileArray[j].id == profileArray[i].id){
+                        tempProfileArray.splice(j,1);
+                    }
+                }
+            }
+            for(i=0;i<tempProfileArray.length;i++){
+                getProfile(response.data[i].id, false);
+            }
+        }), function errorCallback(response){
+            alert(response.status);
+        };
     };
     function getProfile(profile_id, defaultProfile) {
         $http({
