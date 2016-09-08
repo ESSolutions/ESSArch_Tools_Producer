@@ -28,22 +28,21 @@
                     <tr st-select-row="row" ng-repeat="row in ipCollection" class="table-item">
                         <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
                         <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
-                        <td>{{'user'}}</td>
-                        <td>{{'time created'}}</td>
-                        <td>{{'state'}}</td>
+                        <td>{{row.Responsible}}</td>
+                        <td>{{row.CreateDate}}</td>
+                        <td>{{row.State}}</td>
                         <td>
-                            <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
+                            <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.Status}}</b></uib-progressbar>
 
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p ng-model="chosenIp">{{chosenIp}}</p>
         </div>
         <div class="select-sub-edit-eventlog-wrapper">
             <div ng-show="select" class="select-view">
-                <p>{{ip.label}}</p>
-                <table st-table="selectCollection" st-safe-src="selectRowCollection" class="table table-striped">
+                <p>{{ip.Label}}</p>
+                <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
                     <thead>
                         <tr>
                             <th class="column-entity">Entity</th>
@@ -53,21 +52,35 @@
                     </thead>
 
                     <tbody>
-                        <tr ng-repeat="row in selectCollection">
+                        <tr>
                             <td>
                                 <div class="checkbox">
                                     <label>
-                                        <input ng-disabled="true" type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.entity}}</a></input>
+                                        <input ng-disabled="true" type="checkBox" checked="checked"><a>{{saProfile.entity}}</a></input>
                                     </label>
                                 </div>
                             </td>
-                            <td><select ng-disabled="true" class="form-control"ng-init="newprofile" ng-model="row.profile" ng-options="x for x in row.profiles"><option value="" selected="selected">new profile</option></select></td>
-                            <td>{{row.state}}</td>
+                            <td><select ng-disabled="true" class="form-control" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                            <td>{{currentSa.sa_status}}</td>
+                            <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
+                        </tr>
+
+                        <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input ng-disabled="true" type="checkBox" checked="checked"><a>{{row.profile_label}}</a></input>
+                                    </label>
+                                </div>
+                            </td>
+                            <td><select ng-disabled="true" class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
+                            <td>{{row.profile.status}}</td>
                         </tr>
                     </tbody>
                 </table>
 
             </div>
+
             <div ng-show="subSelect" class="sub-select-view">
                 {{selectProfile.entity}}
                 <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
@@ -75,8 +88,33 @@
                 <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
             </div>
             <div ng-show="edit" id="edit-veiw" class="edit-view" >
-                <button type="button" class="btn-primary btn-lg" ng-click="runStep('steps/4cf29912-5ab2-4dc3-a1f3-cd7a69112875/')">Create IP</button>
+                <form  novalidate>
+                    <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                    </formly-form>
+                </form>
+
             </div>
+            <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
+                <form class="eventlog-form" ng-submit="createIp(ip)">
+                    <div class="form-group">
+                        <label>Status note</label>
+                        <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+                            <option value="" selected="selected" disabled>select one</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Signature</label>
+                        <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
+                        </label>
+                    </div>
+                    <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create IP</button>
+                </form>
+            </div>
+
 
         </div>
     </div>
