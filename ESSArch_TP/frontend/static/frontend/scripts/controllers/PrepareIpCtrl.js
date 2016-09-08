@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
     var vm = this;
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
@@ -63,8 +63,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                     if(data[i].linkingObjectIdentifierValue == row.url)
                     $scope.eventCollection.push(data[i]);
                 }
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
             $scope.eventShow = true;
             $scope.ipSelected = true;
@@ -82,11 +82,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 url: appConfig.djangoUrl+'information-packages/'
             })
             .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
+                //console.log(JSON.stringify(response.data));
                 var data = response.data;
                 $scope.ipRowCollection = data;
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
     };
     $scope.getListViewData();
@@ -120,8 +120,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 console.log("steprows start");
                 console.log(stepRows);
                 console.log("steprows end");
-            }), function errorCallback(){
-                alert('error(getting steps)');
+            }), function errorCallback(response){
+                alert(response.status);
             }
         }
         $scope.parentStepsRowCollection = stepRows;
@@ -146,8 +146,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 response.data.tasksCollapsed = true;
                 steps.push(response.data);
                 console.log(steps);
-            }), function errorCallback(){
-                alert('error(getting child steps)');
+            }), function errorCallback(response){
+                alert(repsonse.status);
             }
         }
         childSteps = steps;
@@ -164,8 +164,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             .then(function successCallback(response) {
                 var data = response.data;
                 taskRows.push(data);
-            }), function errorCallback(){
-                alert('error(getting tasks)');
+            }), function errorCallback(response){
+                alert(response.status);
             }
         }
         return taskRows;
@@ -215,8 +215,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 // console.log(JSON.stringify(response.data));
                 var data = response.data;
                 $scope.subSelectOptions = data.actions.POST.name.choices;
-            }), function errorCallback(){
-                alert('error');
+            }), function errorCallback(response){
+                alert(response.status);
             };
         }
         console.log("selected profile: ");
@@ -225,12 +225,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
     function getEventlogData() {
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'event-types'
+            url: appConfig.djangoUrl+'event-types/'
         })
         .then(function successCallback(response) {
             $scope.statusNoteCollection = response.data;
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     //populating select view
@@ -249,7 +249,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         var sas = [];
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'submission-agreements'
+            url: appConfig.djangoUrl+'submission-agreements/'
         })
         .then(function successCallback(response) {
             // console.log(JSON.stringify(response.data));
@@ -266,8 +266,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.saProfile.profiles = tempProfiles;
             console.log("current sa: ");
             console.log($scope.currentSa);
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     $scope.getSelectCollection = function (sa) {
@@ -343,13 +343,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 }
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
-        }), function errorCallback(){
-            alert('error');
+        }), function errorCallback(response){
+            alert(response.status);
         };
     };
     $scope.changeProfile = function(profile){
-        var sendData = profile.id;
-        var uri = $scope.currentSa.url+"update-profile";
+        var sendData = {"new_profile": profile.id};
+        var uri = $scope.currentSa.url+"change-profile/";
          $http({
             method: 'PUT',
             url: uri,
@@ -359,7 +359,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             console.log("sa updated with"+profile.id);
         })
         .error(function (response) {
-            alert('error(updating sa with profile)');
+            alert(response.status);
         });
 
     };
@@ -376,9 +376,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
         //Populating edit view fields
     // onSubmit function
 
-    vm.onSubmit = function() {
+    vm.onSubmit = function(new_name) {
         if($scope.approvedToCreate){
-        var uri = $scope.ip.url+"prepare";
+        var uri = $scope.ip.url+"prepare/";
         var sendData = {
             "status_note": $scope.statusNote.id,
             "signature": $scope.signature
@@ -390,14 +390,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             data: sendData
         })
         .success(function (response) {
-            alert('preparation started successfully');
+            alert(response.status);
         })
         .error(function (response) {
-            alert('error(prepare ip)');
+            alert(response.status);
         });
         } else {
-            var uri = $scope.profileToSave.url+"save";
-            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature};
+            var uri = $scope.profileToSave.url+"save/";
+            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.currentSa.id, "new_name": new_name};
             console.log(sendData);
             $http({
                 method: 'POST',
@@ -405,10 +405,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
                 data: sendData
             })
             .success(function (response) {
-                alert('successfully saved profile');
+                alert(response.status);
+                //????????????
+                $scope.getSelectCollection($scope.currentSa);
+                $scope.showHideAllProfiles();
+                $scope.showHideAllProfiles();
+                //????????????
             })
             .error(function(response) {
-                alert('error(save profile)');
+                alert(response.status);
             });
         }
     };
@@ -424,6 +429,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.ipSubmitText = "Save profile";
         }
     }
+    $scope.saveProfileEnabled = false;
     $scope.statusShow = false;
     $scope.eventShow = false;
     $scope.select = false;
@@ -466,9 +472,36 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($timeout, $scope, 
             $scope.eventlog = false;
         }
     }
-
-
+    // Handle modal
+    $scope.openModal = function() {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'enter-profile-name.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            vm.onSubmit(data.name);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    };
 
 
 });
+angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
+  var $ctrl = this;
 
+  $ctrl.ok = function () {
+      $ctrl.data = {
+        name: $ctrl.profileName
+      };
+        $uibModalInstance.close($ctrl.data);
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});

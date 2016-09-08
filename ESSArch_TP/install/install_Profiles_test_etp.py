@@ -156,84 +156,84 @@ def installSubmissionAgreement():
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440002"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440003"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440004"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440005"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440006"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440008"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440009"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440010"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440011"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
         ProfileRel(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440012"
             ),
-            submissionagreement=sa,
+            submission_agreement=sa,
             status=2
         ),
     ])
@@ -254,8 +254,8 @@ def installProfileTransferProject(): # Profile Transfer Project
         'type': 'Implementation',
         'status': 'Agreed',
         'label': 'Example of SIP for delivery of SE ERMS',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -277,8 +277,8 @@ def installProfileContentType(): # Profile Content Type
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Content based on SE ERMS specification',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -300,8 +300,8 @@ def installProfileDataSelection(): # Profile Data Selection
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Data selection of business system xx',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -323,8 +323,8 @@ def installProfileClassification(): # Profile Classification
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Classification of archived content',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -346,8 +346,8 @@ def installProfileImport(): # Profile Import
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Transformation from system x to specification y',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1328,8 +1328,8 @@ def installProfileSIP(): # Profile Submission Information Package
             'rep01': {},
             'metadata': {}
         },
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1362,8 +1362,8 @@ def installProfileAIP(): # Profile Archival Information Package
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
         'structure': 'AIP SE structure xx',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1396,8 +1396,8 @@ def installProfileDIP(): # Profile Dissemination Information Package
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
         'structure': 'DIP SE structure xx',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1420,8 +1420,8 @@ def installProfileWorkflow(): # Profile Workflow
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Workflow Create SIP for Pre-Ingest',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1444,8 +1444,8 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Preservation profile for AIP xxyy',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
@@ -1468,8 +1468,8 @@ def installProfileEvent(): # Profile Event
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Event profile for SIP xxyyzz',
-        'specification': 'Any specification wrapped',
-        'specification_data': 'Any specification data wrapped',
+        'specification': {},
+        'specification_data': {},
     }
 
     # create according to model with many fields
