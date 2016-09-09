@@ -302,9 +302,12 @@ class Profile(models.Model):
             The status between the profile and the given submission agreement
         """
 
-        return self.profilerel_set.get(
-            submission_agreement=submission_agreement.pk
-        ).status
+        try:
+            return self.profilerel_set.get(
+                submission_agreement=submission_agreement.pk
+            ).status
+        except ProfileRel.DoesNotExist:
+            return None
 
     def set_sa_status(self, submission_agreement, status):
         """
