@@ -1,5 +1,29 @@
 angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig){
     var vm = this;
+    $scope.tree_data = [];
+     $scope.expanding_property = {
+            field: "name",
+            displayName: "Label",
+        };
+    $scope.col_defs = [
+        {
+            field: "user",
+            displayName: "Responsible",
+        },
+        {
+            field: "time_created",
+            displayName: "Date"
+        },
+        {
+            field: "status",
+            displayName: "State",
+        },
+        {
+            field: "progress",
+            displayName: "Status"
+        }
+    ];
+
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
     }
@@ -24,6 +48,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.statusShow = true;
             $scope.edit = false;
             $scope.getStatusViewData(row);
+            console.log("==============before==============");
+            console.log($scope.parentStepsRowCollection);
+            console.log("==============after==============");
+
+            $scope.tree_data = $scope.parentStepsRowCollection;
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
@@ -116,7 +145,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 taskRows = $scope.getTasks(data);
                 //console.log(childSteps);
                 stepRows[stepRows.length-1].taskObjects = taskRows;
-                stepRows[stepRows.length-1].child_steps = childSteps;
+                stepRows[stepRows.length-1].children = childSteps;
                 stepRows[stepRows.length-1].isCollapsed = true;
                 stepRows[stepRows.length-1].tasksCollapsed = true;
                 console.log("steprows start");
@@ -143,7 +172,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             })
             .then(function successCallback(response) {
                 response.data.isCollapsed = false;
-                response.data.child_steps = getChildSteps(response.data.child_steps);
+                response.data.children = getChildSteps(response.data.child_steps);
                 response.data.taskObjects = $scope.getTasks(response.data);
                 response.data.tasksCollapsed = true;
                 steps.push(response.data);
@@ -174,7 +203,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
 
     $scope.treeOptions = {
-        nodeChildren: "child_steps",
+        nodeChildren: "children",
         dirSelectable: true,
         injectClasses: {
             ul: "a1",
