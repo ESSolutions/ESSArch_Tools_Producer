@@ -47,12 +47,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
-            $scope.getStatusViewData(row);
-            console.log("==============before==============");
-            console.log($scope.parentStepsRowCollection);
-            console.log("==============after==============");
+            $scope.getStatusViewData(row).then(function(steps) {
+                $scope.tree_data = steps;
+            });
 
-            $scope.tree_data = $scope.parentStepsRowCollection;
+            //$scope.tree_data = $scope.parentStepsRowCollection;
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
@@ -131,58 +130,56 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.listViewUpdate();
     //Getting data for status view
     $scope.getStatusViewData = function(row) {
-        var stepRows = [];
-        var childSteps = [];
-        for(i=0; i<row.steps.length; i++){
-            $http({
-                method: 'GET',
-                url: row.steps[i]
-            })
-            .then(function successCallback(response) {
-                var data = response.data;
-                childSteps = getChildSteps(data.child_steps);
-                stepRows.push(data);
-                taskRows = $scope.getTasks(data);
-                //console.log(childSteps);
-                stepRows[stepRows.length-1].taskObjects = taskRows;
-                stepRows[stepRows.length-1].children = childSteps;
-                stepRows[stepRows.length-1].isCollapsed = true;
-                stepRows[stepRows.length-1].tasksCollapsed = true;
-                console.log("steprows start");
-                console.log(stepRows);
-                console.log("steprows end");
-            }), function errorCallback(response){
-                alert(response.status);
-            }
-        }
-        $scope.parentStepsRowCollection = stepRows;
+        var promises = [];
 
+        row.steps.forEach(function(step){
+            promises.push(
+                $http({
+                    method: 'GET',
+                    url: step
+                })
+                .then(function (response) {
+                    return getChildSteps(response.data.child_steps).then(function(children) {
+                        taskRows = $scope.getTasks(response.data);
+                        response.data.taskObjects = taskRows;
+                        response.data.children = children;
+                        response.data.isCollapsed = true;
+                        response.data.tasksCollapsed = true;
+                        return response.data;
+                    });
+                })
+            );
+        });
+
+        return Promise.all(promises);
     };
 
     //Helper functions for getStatusViewData
     function getChildSteps(childSteps) {
-        if(childSteps.length == 0) {
-            return [];
+        if (childSteps.length == 0) {
+            return Promise.resolve([]);
         }
-        var steps = [];
-        for(i=0; i<childSteps.length; i++){
-            $http({
-                method: 'GET',
-                url: childSteps[i]
-            })
-            .then(function successCallback(response) {
-                response.data.isCollapsed = false;
-                response.data.children = getChildSteps(response.data.child_steps);
-                response.data.taskObjects = $scope.getTasks(response.data);
-                response.data.tasksCollapsed = true;
-                steps.push(response.data);
-                console.log(steps);
-            }), function errorCallback(response){
-                alert(repsonse.status);
-            }
-        }
-        childSteps = steps;
-        return childSteps;
+        promises = [];
+
+        childSteps.forEach(function(child){
+            promises.push(
+                $http({
+                    method: 'GET',
+                    url: child
+                })
+                .then(function(response) {
+                    return getChildSteps(response.data.child_steps).then(function(child_steps){
+                        response.data.children = child_steps;
+                        response.data.isCollapsed = false;
+                        response.data.taskObjects = $scope.getTasks(response.data);
+                        response.data.tasksCollapsed = true;
+                        return response.data;
+                    });
+                })
+            );
+        });
+
+        return Promise.all(promises);
     };
 
     $scope.getTasks = function(step) {
