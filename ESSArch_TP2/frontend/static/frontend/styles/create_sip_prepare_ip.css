@@ -85,6 +85,8 @@ width: 100%;
 .status-view {
     border-bottom-style: solid;
     border-color: #666;
+    max-height: 600px;
+    overflow-y: scroll;
 }
 /*.status-view treecontrol {
     font-size: 20px;
