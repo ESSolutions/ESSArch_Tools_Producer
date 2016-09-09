@@ -113,7 +113,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 var data = response.data;
                 childSteps = getChildSteps(data.child_steps);
                 stepRows.push(data);
-                taskRows = getTasks(data);
+                taskRows = $scope.getTasks(data);
                 //console.log(childSteps);
                 stepRows[stepRows.length-1].taskObjects = taskRows;
                 stepRows[stepRows.length-1].child_steps = childSteps;
@@ -144,7 +144,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             .then(function successCallback(response) {
                 response.data.isCollapsed = false;
                 response.data.child_steps = getChildSteps(response.data.child_steps);
-                response.data.taskObjects = getTasks(response.data);
+                response.data.taskObjects = $scope.getTasks(response.data);
                 response.data.tasksCollapsed = true;
                 steps.push(response.data);
                 console.log(steps);
@@ -156,7 +156,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         return childSteps;
     };
 
-    function getTasks(step) {
+    $scope.getTasks = function(step) {
         var taskRows = [];
         for(i=0; i<step.tasks.length; i++){
             $http({
