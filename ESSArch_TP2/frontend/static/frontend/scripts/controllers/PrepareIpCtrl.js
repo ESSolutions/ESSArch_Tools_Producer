@@ -140,12 +140,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 })
                 .then(function (response) {
                     return getChildSteps(response.data.child_steps).then(function(children) {
-                        taskRows = $scope.getTasks(response.data);
-                        response.data.taskObjects = taskRows;
-                        response.data.children = children;
-                        response.data.isCollapsed = true;
-                        response.data.tasksCollapsed = true;
-                        return response.data;
+                        return $scope.getTasks(response.data).then(function(tasks){
+                            tasks.forEach(function(task){
+                                task.label = task.name;
+                            });
+
+                            response.data.children = children.concat(tasks);
+                            response.data.isCollapsed = false;
+                            response.data.tasksCollapsed = true;
+                            return response.data;
+                        });
                     });
                 })
             );
@@ -169,11 +173,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 })
                 .then(function(response) {
                     return getChildSteps(response.data.child_steps).then(function(child_steps){
-                        response.data.children = child_steps;
-                        response.data.isCollapsed = false;
-                        response.data.taskObjects = $scope.getTasks(response.data);
-                        response.data.tasksCollapsed = true;
-                        return response.data;
+                        return $scope.getTasks(response.data).then(function(tasks){
+                            tasks.forEach(function(task){
+                                task.label = task.name;
+                            });
+
+                            response.data.children = child_steps.concat(tasks);
+                            response.data.isCollapsed = false;
+                            response.data.tasksCollapsed = true;
+                            return response.data;
+                        });
                     });
                 })
             );
@@ -183,20 +192,25 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
 
     $scope.getTasks = function(step) {
-        var taskRows = [];
-        for(i=0; i<step.tasks.length; i++){
-            $http({
-                method: 'GET',
-                url: step.tasks[i]
-            })
-            .then(function successCallback(response) {
-                var data = response.data;
-                taskRows.push(data);
-            }), function errorCallback(response){
-                alert(response.status);
-            }
+        if (step.tasks.length == 0) {
+            return Promise.resolve([]);
         }
-        return taskRows;
+
+        var promises = [];
+
+        step.tasks.forEach(function(task){
+            promises.push(
+                $http({
+                    method: 'GET',
+                    url: task
+                })
+                .then(function(response) {
+                    return response.data;
+                })
+            );
+        });
+
+        return Promise.all(promises);
     };
 
     $scope.treeOptions = {
