@@ -50,6 +50,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.edit = false;
             $scope.getStatusViewData(row).then(function(steps) {
                 $scope.tree_data = steps;
+                console.log(steps);
             });
 
             //$scope.tree_data = $scope.parentStepsRowCollection;
@@ -176,7 +177,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     return getChildSteps(response.data.child_steps).then(function(child_steps){
                         return $scope.getTasks(response.data).then(function(tasks){
                             tasks.forEach(function(task){
-                                task.label = task.name;
+                                task.user = response.data.user;
+                                task.time_created = task.time_started;
                             });
 
                             response.data.children = child_steps.concat(tasks);
