@@ -100,7 +100,7 @@
                         <p>{{ip.Label}}</p>
                         <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
 
-                        <tree-grid col-defs="col_defs" tree-data="tree_data" expand-on="expanding_property"></tree-grid>
+                        <tree-grid col-defs="col_defs" tree-data="tree_data" expand-on="expanding_property"                                     icon-leaf="glyphicon glyphicon-star-empty" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
 
                         <!--
                         <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
