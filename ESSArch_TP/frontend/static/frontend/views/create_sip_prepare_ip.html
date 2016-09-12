@@ -102,44 +102,6 @@
 
                         <tree-grid col-defs="col_defs" tree-data="tree_data" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
 
-                        <!--
-                        <table st-table="stepsCollection" st-safe-src="parentStepsRowCollection" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th st-sort="label" class="column-label">Label</th>
-                                    <th st-sort="responsible" class="column-label">Responsible</th>
-                                    <th st-sort="date" class="column-label">Date</th>
-                                    <th st-sort="state" class="column-label">State</th>
-                                    <th st-sort="status" class="column-label">Status</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr st-select-row="row" ng-repeat-start="row in stepsCollection">
-                                    <td><a ng-click="toggleCollapse(row)">{{row.name}}</a></td>
-                                    <td>{{row.user}}</td>
-                                    <td>{{row.time_created}}</td>
-                                    <td>{{row.status}}</td>
-                                    <td>
-                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{row.progress}}</b></uib-progressbar>
-
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end="">
-                                    <td colspan="5">
-
-                                        <div class="child-step-list" uib-collapse="row.isCollapsed">
-                                            <table class="table table-striped">
-                                                <tr ng-if="row.child_steps" ng-repeat="step in row.child_steps" ng-include="'tree_template.html'"></tr>
-
-                                            </table>
-                                        </div>
-                                    </td>
-
-                                    </tr>
-                            </tbody>
-                        </table>
-                        -->
                         <!-- EXAMPLE OF WHAT SHOULD BE DONE ABOVE IN TABLE BUT IN <UL> LIST INSTEAD OF TABLE-->
                         <script type="text/ng-template" id="test_template.html">
                         {{step.name}}
