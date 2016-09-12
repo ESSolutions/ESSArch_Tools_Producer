@@ -51,6 +51,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.tree_data = [];
             $scope.getStatusViewData(row).then(function(steps) {
                 $scope.tree_data = steps;
+                $scope.$apply();
                 console.log(steps);
             });
 
