@@ -156,7 +156,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td><select class="form-control" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                    <td><select class="form-control" ng-model="saProfile.profile" ng-change="getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>{{currentSa.sa_status}}</td>
                                     <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
                                 </tr>
