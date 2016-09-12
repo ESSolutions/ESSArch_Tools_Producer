@@ -48,6 +48,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
+            $scope.tree_data = [];
             $scope.getStatusViewData(row).then(function(steps) {
                 $scope.tree_data = steps;
                 console.log(steps);
@@ -65,12 +66,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip== row){
             $scope.select = false;
-            $scope.ipSelected = false;
         } else {
             $scope.select = true;
             $scope.eventShow = false;
             $scope.statusShow = false;
-            $scope.ipSelected = true;
             $scope.getSaProfiles(row);
         }
         $scope.statusShow = false;
@@ -80,7 +79,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip== row){
             $scope.eventShow = false;
-            $scope.ipSelected = false;
         } else {
             $scope.eventShow = true;
             $scope.eventCollection = [];
@@ -99,7 +97,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 alert(response.status);
             };
             $scope.eventShow = true;
-            $scope.ipSelected = true;
         }
         $scope.select = false;
 
