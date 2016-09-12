@@ -262,7 +262,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
             $scope.saProfile.profiles = tempProfiles;
             console.log("current sa: ");
-            console.log($scope.currentSa);
+            console.log($scope.saProfile.profile);
         }), function errorCallback(response){
             alert(response.status);
         };
@@ -366,7 +366,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
-        var uri = $scope.currentSa.url+"change-profile/";
+        var uri = $scope.saProfile.profile.url+"change-profile/";
          $http({
             method: 'PUT',
             url: uri,
@@ -414,7 +414,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
         } else {
             var uri = $scope.profileToSave.url+"save/";
-            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.currentSa.id, "new_name": new_name};
+            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
             console.log(sendData);
             $http({
                 method: 'POST',
@@ -424,7 +424,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             .success(function (response) {
                 alert(response.status);
                 //????????????
-                $scope.getSelectCollection($scope.currentSa);
+                $scope.getSelectCollection($scope.saProfile.profile);
                 $scope.showHideAllProfiles();
                 $scope.showHideAllProfiles();
                 //????????????
