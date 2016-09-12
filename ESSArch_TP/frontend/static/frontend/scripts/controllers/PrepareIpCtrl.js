@@ -351,7 +351,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+"profiles-by-type",
+            url: appConfig.djangoUrl+"profiles",
             params: {type: type}
         })
         .then(function successCallback(response) {
