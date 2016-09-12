@@ -254,13 +254,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             var tempProfiles = [];
             $scope.submissionAgreements = sas;
             $scope.saProfile.profileObjects = sas;
-            for(i=0; i<sas.length; i++){
-                tempProfiles.push(sas[i]);
-                if(sas[i].information_packages.url == ip.url){
-                    saProfile.profile = sa[i];
-                }
-            }
+            sas.forEach(function (sa) {
+                tempProfiles.push(sa);
+                sa.information_packages.forEach(function (informationPackage) {
+                    if(informationPackage == ip.url){
+                        $scope.saProfile.profile = sa;
+                    }
+                });
+            });
             $scope.saProfile.profiles = tempProfiles;
+            $scope.getSelectCollection($scope.saProfile.profile);
             console.log("current sa: ");
             console.log($scope.saProfile.profile);
         }), function errorCallback(response){
