@@ -48,11 +48,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
-            $scope.tree_data = [];
-            $scope.getStatusViewData(row).then(function(steps) {
-                $scope.tree_data = steps;
-                $scope.$apply();
-                console.log(steps);
+
+            $http({
+                method: 'GET',
+                url: row.url,
+            }).then(function(response){
+                ip = response.data
+                $scope.tree_data = $scope.getStatusViewData(ip).steps;
             });
 
             //$scope.tree_data = $scope.parentStepsRowCollection;
@@ -130,88 +132,40 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.listViewUpdate();
     //Getting data for status view
     $scope.getStatusViewData = function(row) {
-        var promises = [];
 
         row.steps.forEach(function(step){
-            promises.push(
-                $http({
-                    method: 'GET',
-                    url: step
-                })
-                .then(function (response) {
-                    return getChildSteps(response.data.child_steps).then(function(children) {
-                        return $scope.getTasks(response.data).then(function(tasks){
-                            tasks.forEach(function(task){
-                                task.label = task.name;
-                            });
-
-                            response.data.children = children.concat(tasks);
-                            response.data.isCollapsed = false;
-                            response.data.tasksCollapsed = true;
-                            return response.data;
-                        });
-                    });
-                })
-            );
+            step.children = getChildSteps(step.child_steps);
+            step.tasks.forEach(function(task){
+                task.label = task.name;
+            });
+            step.children = step.children.concat(step.tasks);
+            step.isCollapsed = false;
+            step.tasksCollapsed = true;
         });
 
-        return Promise.all(promises);
+        return row;
+
     };
 
     //Helper functions for getStatusViewData
     function getChildSteps(childSteps) {
-        if (childSteps.length == 0) {
-            return Promise.resolve([]);
-        }
-        promises = [];
-
         childSteps.forEach(function(child){
-            promises.push(
-                $http({
-                    method: 'GET',
-                    url: child
-                })
-                .then(function(response) {
-                    return getChildSteps(response.data.child_steps).then(function(child_steps){
-                        return $scope.getTasks(response.data).then(function(tasks){
-                            tasks.forEach(function(task){
-                                task.user = response.data.user;
-                                task.time_created = task.time_started;
-                            });
+            child.child_steps = getChildSteps(child.child_steps);
+            child.tasks.forEach(function(task){
+                task.user = child.user;
+                task.time_created = task.time_started;
+            });
 
-                            response.data.children = child_steps.concat(tasks);
-                            response.data.isCollapsed = false;
-                            response.data.tasksCollapsed = true;
-                            return response.data;
-                        });
-                    });
-                })
-            );
+            child.children = child.child_steps.concat(child.tasks);
+            if(child.children.length == 0){
+                child.icons = {
+                    iconLeaf: "glyphicon glyphicon-alert"
+                };
+            }
+            child.isCollapsed = false;
+            child.tasksCollapsed = true;
         });
-
-        return Promise.all(promises);
-    };
-
-    $scope.getTasks = function(step) {
-        if (step.tasks.length == 0) {
-            return Promise.resolve([]);
-        }
-
-        var promises = [];
-
-        step.tasks.forEach(function(task){
-            promises.push(
-                $http({
-                    method: 'GET',
-                    url: task
-                })
-                .then(function(response) {
-                    return response.data;
-                })
-            );
-        });
-
-        return Promise.all(promises);
+        return childSteps;
     };
 
     $scope.treeOptions = {
