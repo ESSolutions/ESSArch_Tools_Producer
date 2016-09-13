@@ -259,6 +259,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 sa.information_packages.forEach(function (informationPackage) {
                     if(informationPackage == ip.url){
                         $scope.saProfile.profile = sa;
+                        $scope.saProfile.profile.includedProfiles = [];
                     }
                 });
             });
@@ -359,17 +360,30 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     profiles: [
                        response.data
                     ],
+                    checked: true
                 };
                 if(defaultProfile){
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
                 $scope.selectRowCollapse.push(tempProfileObject);
+                $scope.updateIncludedProfiles(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
         };
     };
+    $scope.updateIncludedProfiles = function(profile){
+        if(profile.checked){
+            $scope.saProfile.profile.includedProfiles.push(profile.profile_type);
+        } else {
+            for(i=0;i<$scope.saProfile.profile.includedProfiles.length;i++) {
+                if($scope.saProfile.profile.includedProfiles[i] == profile.profile_type){
+                    $scope.saProfile.profile.includedProfiles.splice(i,1);
+                }
+            }
+        }
+    }
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.saProfile.profile.url+"change-profile/";
