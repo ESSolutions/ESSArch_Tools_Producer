@@ -29,7 +29,7 @@
                         <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
                         <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
                         <td>{{row.Responsible}}</td>
-                        <td>{{row.CreateDate}}</td>
+                        <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                         <td>{{row.State}}</td>
                         <td>
                             <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.Status}}</b></uib-progressbar>
