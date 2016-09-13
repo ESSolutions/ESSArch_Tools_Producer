@@ -271,6 +271,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         };
     };
     $scope.getSelectCollection = function (sa) {
+
+        $http({
+            method: 'PATCH',
+            url: $scope.ip.url,
+            data: {
+                'SubmissionAgreement': sa.url
+            }
+        }).then(function(response){
+            console.log(response);
+        });
+
         $scope.currentProfiles = {};
         $scope.selectRowCollapse = [];
         getProfiles("transfer_project", sa.profile_transfer_project);
