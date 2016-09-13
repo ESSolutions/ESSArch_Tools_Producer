@@ -20,6 +20,15 @@ width: 100%;
     margin-bottom: 10px;
     margin-left: 10px;
 }
+.search-prepare-wrapper {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+}
+.search-prepare-wrapper button {
+    margin-left: 10px;
+}
 .list-view {
     max-height: 270px;
     overflow-y: scroll;

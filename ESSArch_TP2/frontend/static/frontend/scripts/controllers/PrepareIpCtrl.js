@@ -408,25 +408,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     // onSubmit function
 
     vm.onSubmit = function(new_name) {
-        if($scope.approvedToCreate){
-        var uri = $scope.ip.url+"prepare/";
-        var sendData = {
-            "status_note": $scope.statusNote.id,
-            "signature": $scope.signature
-        };
-
-        $http({
-            method: 'POST',
-            url: uri,
-            data: sendData
-        })
-        .success(function (response) {
-            alert(response.status);
-        })
-        .error(function (response) {
-            alert(response.status);
-        });
-        } else {
             var uri = $scope.profileToSave.url+"save/";
             var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
             console.log(sendData);
@@ -446,7 +427,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             .error(function(response) {
                 alert(response.status);
             });
-        }
     };
 
 // Page selection
@@ -504,19 +484,54 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     // Handle modal
-    $scope.openModalOrRun = function(){
-        if($scope.approvedToCreate){
-            vm.onSubmit("");
-         } else {
-            $scope.openModal();
-         }
-    }
-    $scope.openModal = function() {
+    $scope.saveModal = function(){
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: 'enter-profile-name.html',
+            templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.approvedToCreate = false;
+            vm.onSubmit(data.name);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+
+    $scope.newIpModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/new-ip-modal.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.prepareIp(data.label);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+
+    $scope.prepareIp = function (label) {
+        $http({
+            method: 'POST',
+            url: appConfig.djangoUrl+"information-packages",
+            data: label
+        }).then(function (){
+            console.log("new ip created, with label: " + label);
+        });
+    }
+    $scope.openModal = function(modalTemplate) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'enter-profile-name-modal.html',
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
         })
@@ -532,9 +547,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
   var $ctrl = this;
 
-  $ctrl.ok = function () {
+  $ctrl.save = function () {
       $ctrl.data = {
         name: $ctrl.profileName
+      };
+        $uibModalInstance.close($ctrl.data);
+  };
+  $ctrl.prepare = function () {
+      $ctrl.data = {
+        label: $ctrl.label
       };
         $uibModalInstance.close($ctrl.data);
   };
