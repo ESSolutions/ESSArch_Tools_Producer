@@ -69,7 +69,7 @@
                                 <tr ng-repeat="row in eventRowCollection">
                                     <td>{{row.id}}</td>
                                     <td>{{row.eventDetail}}</td>
-                                    <td>{{row.eventDateTime}}</td>
+                                    <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                                 </tr>
                             </tbody>
                         </table>
