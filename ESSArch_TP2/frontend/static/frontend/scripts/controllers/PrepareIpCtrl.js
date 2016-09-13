@@ -272,15 +272,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     $scope.getSelectCollection = function (sa) {
 
-        $http({
-            method: 'PATCH',
-            url: $scope.ip.url,
-            data: {
-                'SubmissionAgreement': sa.url
-            }
-        }).then(function(response){
-            console.log(response);
-        });
+
 
         $scope.currentProfiles = {};
         $scope.selectRowCollapse = [];
@@ -394,6 +386,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
 
     };
+    $scope.changeSaProfile = function (sa) {
+        $http({
+            method: 'PATCH',
+            url: $scope.ip.url,
+            data: {
+                'SubmissionAgreement': sa.url
+            }
+        }).then(function(response){
+            console.log(response);
+        });
+    }
         $scope.showHideAllProfiles = function() {
             if($scope.selectRowCollection.length == 0){
                 for(i = 0; i < $scope.selectRowCollapse.length; i++){
