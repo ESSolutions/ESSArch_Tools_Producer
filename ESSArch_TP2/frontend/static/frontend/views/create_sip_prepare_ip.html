@@ -170,7 +170,7 @@
                                     <td>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkBox" checked="checked"><a ng-click="profileClick(row)">{{row.profile_label}}</a></input>
+                                                <input type="checkBox" ng-model="row.checked" ng-change="updateIncludedProfiles(row)"><a ng-click="profileClick(row)">{{row.profile_label}}</a></input>
                                             </label>
                                         </div>
                                     </td>
