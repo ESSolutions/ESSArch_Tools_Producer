@@ -94,7 +94,7 @@ class InformationPackage(models.Model):
     Label = models.CharField(max_length=255)
     Content = models.CharField(max_length=255)
     Responsible = models.CharField(max_length=255)
-    CreateDate = models.DateTimeField()
+    CreateDate = models.DateTimeField(auto_now_add=True)
     State = models.CharField(max_length=255)
     ObjectSize = models.CharField(max_length=255)
     ObjectNumItems = models.CharField(max_length=255)
