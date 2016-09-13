@@ -321,65 +321,7 @@ def create_AgentList_NO(ip, contextdata):
             
     return agent_list_info, agent_list_mets
 
-###############################################
-"Agent lists for site profile NO"
-"""
-ET090 - BS130301 - Ready for test
-"""
-def create_AgentList_EC(ip, contextdata):
-    version = 'ET090'
-    logger.debug('%s Entered create_AgentList_NO' % version) # debug info
-            
-    # agent lists
-    agent_list_info = [] # list for info.xml
-    agent_list_mets = [] # list for mets.xml
-    # list 1
-    ROLE = 'ARCHIVIST'
-    OTHERROLE = None
-    TYPE = 'ORGANIZATION'
-    OTHERTYPE = None
-    #name = contextdata['archivist_organization']
-    name = ip.archivist_organization
-    #note = contextdata['archivist_organization_id']
-    note = None
-    if len(name):
-        if note == None:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-        else:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-    # list 9
-    ROLE = 'OTHER'
-    OTHERROLE = 'SUBMITTER'
-    TYPE = 'ORGANIZATION'
-    OTHERTYPE = None
-    name = contextdata['submitter_organization']
-    note = None
-    if len(name):
-        if note == None:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-        else:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-    # list 12
-    ROLE = 'PRESERVATION'
-    OTHERROLE = None
-    TYPE = 'ORGANIZATION'
-    OTHERTYPE = None
-    name = contextdata['preservation_organization']
-    note = None
-    #note = contextdata['preservation_organization_id']
-    if len(name):
-        if note == None:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[]])
-        else:
-            agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            
-    return agent_list_info, agent_list_mets
+
 
 ###############################################
 "altRecordID lists for site profile NO"
@@ -434,60 +376,6 @@ def create_altRecordIDList_NO(ip, contextdata):
             
     return altRecordID_list_info, altRecordID_list_mets
 
-###############################################
-"altRecordID lists for site profile NO"
-"""
-ET090 - BS130301 - Ready for test
-"""
-def create_altRecordIDList_EC(ip, contextdata):                 
-    version = 'ET090'
-    logger.debug('%s Entered create_altRecordIDList_NO' % version) # debug info
-    
-    # altRecordID lists
-    altRecordID_list_info = [] # list for info.xml
-    altRecordID_list_mets = [] # list for mets.xml
-    # list 1
-#        TYPE = 'DELIVERYTYPE'
-#        value = contextdata['deliverytype']
-#        if len(value):
-#            altRecordID_list_info.append([TYPE,value])
-#            altRecordID_list_mets.append([TYPE,value])
-    # list 2
-#        TYPE = 'DELIVERYSPECIFICATION'
-#        value = contextdata['deliveryspecification']
-#        if len(value):
-#            altRecordID_list_info.append([TYPE,value])
-#            altRecordID_list_mets.append([TYPE,value])
-    # list 3
-    TYPE = 'SUBMISSIONAGREEMENT'
-    value = contextdata['submissionagreement']
-    if len(value):
-        altRecordID_list_info.append([TYPE,value])
-        altRecordID_list_mets.append([TYPE,value])
-    # list 4
-#        TYPE = 'SYSTEMTYPE'
-#        value = contextdata['systemtype']
-#        if len(value):
-#            altRecordID_list_info.append([TYPE,value])
-#            altRecordID_list_mets.append([TYPE,value])
-    # list 5
-    TYPE = 'STARTDATE'
-    #value = contextdata['startdate']
-    value = '2016-04-12'
-    #value = ip.startdate
-    if len(value):
-        altRecordID_list_info.append([TYPE,value])
-        altRecordID_list_mets.append([TYPE,value])
-    # list 6
-    TYPE = 'ENDDATE'
-    #value = contextdata['enddate']
-    value = '2016-04-12'
-    #value = ip.enddate
-    if len(value):
-        altRecordID_list_info.append([TYPE,value])
-        altRecordID_list_mets.append([TYPE,value])
-   
-    return altRecordID_list_info, altRecordID_list_mets
 
 ###############################################
 "Prepare information package (IP)"
@@ -825,11 +713,8 @@ def createIP( ip, contextdata ):
 
         checksumtype = 2 # SHA256
         checksumalgoritm = 'SHA-256'
-        #path4am = ip.directory+'/'+ip.uuid+'/'+ 'administrative_metadata'
-        #path4dm = ip.directory+'/'+ip.uuid+'/'+ 'descriptive_metadata'
-        path4am = ip.directory+'/'+ip.uuid+'/'+ 'metadata'
-        path4dm = ip.directory+'/'+ip.uuid+'/'+ 'documentation'
-
+        path4am = ip.directory+'/'+ip.uuid+'/'+ 'administrative_metadata'
+        path4dm = ip.directory+'/'+ip.uuid+'/'+ 'descriptive_metadata'
         
         if zone == 'zone1':
 
@@ -855,12 +740,11 @@ def createIP( ip, contextdata ):
             TimeZone = 'Europe/Stockholm'
         
             # get agent lists
-            #agent_list_info, agent_list_mets = create_AgentList_NO(ip, contextdata)
-            agent_list_info, agent_list_mets = create_AgentList_EC(ip, contextdata)
+            agent_list_info, agent_list_mets = create_AgentList_NO(ip, contextdata)
             
             # get altRecordID lists
-            #altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_NO(ip, contextdata)
-            altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_EC(ip, contextdata)
+            altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_NO(ip, contextdata)
+
 
     # If platform is windows check if any file still is open
     if platform.system() != 'Linux' :
@@ -1619,8 +1503,7 @@ def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumty
         path4m = 'metadata/'
         #print path4m
     if site_profile == 'NO':
-        #path4m = 'administrative_metadata/'
-        path4m = 'metadata/'
+        path4m = 'administrative_metadata/'
         #print path4m
     # create filetree to read
     if not len(ms_files):      
@@ -2069,16 +1952,11 @@ def createIPdirectory(sourceroot, ip_uuid):
         os.makedirs( os.path.join( iproot, "metadata" ) )
         #os.makedirs( os.path.join( iproot, "system" ) )
     elif site_profile == "NO":
-        #os.makedirs( os.path.join( iproot, "descriptive_metadata" ) )
-        #os.makedirs( os.path.join( iproot, "administrative_metadata" ) )
-        os.makedirs( os.path.join( iproot, "metadata" ) )
+        os.makedirs( os.path.join( iproot, "descriptive_metadata" ) )
+        os.makedirs( os.path.join( iproot, "administrative_metadata" ) )
         if zone == 'zone2':
-            #os.makedirs( os.path.join( os.path.join( iproot, "administrative_metadata" ), "repository_operations" ) )
-            #os.makedirs( os.path.join( os.path.join( iproot, "administrative_metadata" ), "repository_operations" ) )
-	    print "hej"
-        #os.makedirs( os.path.join( iproot, "content" ) )
-        os.makedirs( os.path.join( iproot, "representations" ) )
-        os.makedirs( os.path.join( iproot, "documentation" ) )
+            os.makedirs( os.path.join( os.path.join( iproot, "administrative_metadata" ), "repository_operations" ) )
+        os.makedirs( os.path.join( iproot, "content" ) )
         # Removed 130323 by request from NRA
         #os.makedirs( os.path.join( os.path.join( iproot, "content" ), "documents" ) )
 
