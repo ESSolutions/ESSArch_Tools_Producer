@@ -20,6 +20,7 @@
     Email - essarch@essolutions.se
 """
 
+from django.contrib.auth.models import User
 from django.db import models
 
 import jsonfield
@@ -85,6 +86,32 @@ class ProfileRel(models.Model):
     def __unicode__(self):
         return unicode(self.id)
 
+
+class ProfileLock(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
+    profile = models.ForeignKey(
+        'Profile', on_delete=models.CASCADE
+    )
+    submission_agreement = models.ForeignKey(
+        'SubmissionAgreement', on_delete=models.CASCADE
+    )
+    information_package = models.ForeignKey(
+        'ip.InformationPackage', on_delete=models.CASCADE
+    )
+    LockedBy = models.ForeignKey(
+        User, models.SET_NULL, null=True,
+    )
+    Unlockable = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return unicode(self.id)
+
+    class Meta:
+        unique_together = (
+            ("profile", "submission_agreement", "information_package"),
+        )
 
 class SubmissionAgreement(models.Model):
     id = models.UUIDField(
@@ -356,6 +383,25 @@ class Profile(models.Model):
         ProfileRel.objects.create(
             profile=copy, submission_agreement=submission_agreement,
             status=1
+        )
+
+    def lock(self, submission_agreement, information_package):
+        """
+        Locks the profile in relation to an SA and IP to stop further editing
+        (if you don't have the permission to unlock it again)
+
+        Args:
+            submission_agreement: The submission agreement
+            information_package: The information packaget
+
+        Returns:
+            The created lock
+        """
+
+        return ProfileLock.objects.create(
+            profile=self,
+            submission_agreement=submission_agreement,
+            information_package=information_package,
         )
 
     def get_value_array(self):
