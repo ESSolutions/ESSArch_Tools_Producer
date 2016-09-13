@@ -10,9 +10,10 @@
 
 <div style="margin:20px">
 
-  <H1>Create information package for <i>({{ ip.label }})</i> from <i>({{ ip.archivist_organization }})</i></H1>
+  <H1>{{ label }}</H1>
   <p>
   <p><i>Please fill in the fields or use prefilled data   (* indicates mandatory field)</i></p>
+  <p><i>Provides functionality to add descriptive metadata for selected prepared information package and to add content. The information package is then createad as a submission information package (SIP) and a submit description is created in order to facilitate the submission of the SIP.</i></p>
   <br>
   <form action="/create/createip/{{ip.id}}" method="post">
   {% csrf_token %}

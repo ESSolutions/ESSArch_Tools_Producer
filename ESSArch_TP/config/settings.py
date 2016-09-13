@@ -22,10 +22,13 @@ from __future__ import absolute_import
 '''
 import os
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Django settings for ESSArch Tools project.
 DEV = False  # development and testing (True/False = development/production)
 DEBUG = True  # only in development and testing (True/False = debug level/no debug level)
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 # Environmental settings
 SITE_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..').replace('\\', '/')
@@ -169,11 +172,31 @@ STATICFILES_FINDERS = (
 SECRET_KEY = 'spzk%#pgdx@g%rbarbw+8-js3l_caab%$tac*_^zx%+z2fwxdg'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
-)
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
+#    #'django.template.loaders.eggs.Loader',
+#)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+            ],
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -186,17 +209,17 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
+##TEMPLATE_CONTEXT_PROCESSORS = (
+#    'django.contrib.auth.context_processors.auth',
+#    'django.core.context_processors.debug',
+##    'django.core.context_processors.i18n',
+##    'django.core.context_processors.media',
+##    'django.core.context_processors.static',
+##    'django.core.context_processors.tz',
+#    'django.contrib.messages.context_processors.messages',
+#    'django.core.context_processors.request',
     #'django.core.context_processors.request',
-)
+##)
 
 ROOT_URLCONF = 'config.urls'
 
@@ -208,10 +231,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Always use forward slashes, even on Windows.
 # Don't forget to use absolute paths, not relative paths.
 #"/ESSArch/bin/src/essarch_tools/tools/templates"
-if DEV:
-    TEMPLATE_DIRS = "/ESSArch_Tools_Producer/templates" 	# development
-else:
-    TEMPLATE_DIRS = os.path.join(SITE_ROOT, 'templates'), 	# production
+#if DEV:
+#    TEMPLATE_DIRS = "/ESSArch_Tools_Producer/templates" 	# development
+#else:
+#    TEMPLATE_DIRS = os.path.join(SITE_ROOT, 'templates'), 	# production
 
 # 151213 Added SN code
 CHUNKED_UPLOAD_ABSTRACT_MODEL = True
@@ -232,6 +255,7 @@ INSTALLED_APPS = (
     'submit',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'demo',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -289,7 +313,8 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
+            #'class': 'django.utils.log.NullHandler',
+            'class': 'logging.NullHandler',
         },
         'console':{
             'level': 'DEBUG',

@@ -34,47 +34,6 @@
             </div>
         {% endif %}
     </div>
-      <!--
-    <div class="col-md-6">
-   
-        <h2>Recent Log Entries</h2>
-        {% if error_msgs %}
-            <h3>Errors</h3>
-            {% for error_msg in error_msgs %}
-                <p {% if error_msg.recent %}class="highlight"{% endif %}>{{ error_msg.datetime }}: {{ error_msg.msg }}</p>
-            {% endfor %}
-        {% endif %}
-        {% if warning_msgs %}
-            <h3>Warnings</h3>
-            {% for warning_msg in warning_msgs %}
-                <p {% if warning_msg.recent %}class="highlight"{% endif %}>{{ warning_msg.datetime }}: {{ warning_msg.msg }}</p>
-            {% endfor %}
-        {% endif %}
-        {% if info_msgs %}
-            <h3>Information</h3>
-            {% for info_msg in info_msgs %}
-                <p>{{ info_msg.datetime }}: {{ info_msg.msg }}</p>
-            {% endfor %}
-        {% endif %}
-
-        <h2>Processes</h2>
-        {% if process %}
-       	    {% for proc in process %}
-                <p {% if proc.alarm = 1 or proc.Status = "0" %}class="highlight"{% elif proc.alarm = 0 %}class="highlight-green"{% endif %}>{{ proc.Name }}: {{ proc.Status }}</p>
-            {% endfor %}
-        {% endif %}
-        <h2>Proc logfile alarms</h2>
-        {% if proc_alarm %}
-       	    {% for proc in proc_alarm %}
-                <p {% if proc.alarm = 1 %}class="highlight"{% elif proc.alarm = 0 %}class="highlight-green"{% endif %}>{{ proc.alarm_sub }}</p>
-            {% endfor %}
-        {% else %}
-        	<p class="highlight-green">None</p>
-        {% endif %}
-        -->
- 
- 
-
 
 {% endblock %}
 

@@ -1,7 +1,6 @@
 {% extends "admin/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
-{% load url from future %}
 
 {% block title %}
 {% trans 'ESSArch Tools for Producer' %}
@@ -11,7 +10,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<link rel="stylesheet" href="/static/superfish.css" type="text/css" media="all" />
 	{% block app-extra-style %}{% endblock %}
-	<link rel="stylesheet" href="/static/esstools.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/static/css/essarch.css" type="text/css" media="all" />
+	<!-- <link rel="stylesheet" href="/static/esstools.css" type="text/css" media="all" /> -->
 {% endblock %}
 
 {% block extrahead %}
@@ -33,12 +33,11 @@
 {% if user.is_active and not user.is_staff %}
 <div id="user-tools">
   {% trans 'Welcome,' %} 
-  <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %} @ {{ zone }}</strong>.
+  <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
   <a href="/changepassword">{% trans 'Change password' %}</a> /
   <a href="/logout">{% trans 'Log out' %}</a>
 </div>
 {% endif %}
-
 <div id="smenu">
 	<ul id="contents" class="sf-menu"> 
 	{% if perms.ip.Can_view_ip_menu %}
@@ -46,7 +45,7 @@
 		<a href="#vertical" class="sf-with-ul" title="Manage information packages etc .." >{% trans 'INFORMATION PACKAGE' %}</a>
 		<ul>
 	          <li><a href="/create/prepareipcreate">Prepare IP</a></li>
-	          <li><a href="/create/createiplist/">Create IP</a></li>
+	          <li><a href="/create/createiplist/">Create SIP</a></li>
 		</ul>
     </li>
 	{#<li>#}
