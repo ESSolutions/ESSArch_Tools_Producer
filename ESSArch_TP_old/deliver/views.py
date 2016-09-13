@@ -26,7 +26,8 @@
 from django.template import Context, loader
 from django.template import RequestContext 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.context_processors import csrf
+#from django.core.context_processors import csrf
+from django.middleware import csrf
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 import datetime, shutil, os.path, uuid, forms, httplib

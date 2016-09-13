@@ -28,8 +28,9 @@ from django.template import RequestContext
 from django.contrib.auth.models import User, Group, Permission
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
-from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
+from django.shortcuts import render_to_response, render
+#from django.core.context_processors import csrf
+from django.middleware import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout
@@ -56,22 +57,13 @@ else:
     __shortname__ = etp.__shortname__
     __description__ = etp.__description__
 
-
-
-
 @login_required
 def index(request):
-    # Get current site_profile and zone
+    template_name = 'index.html'
     site_profile, zone = lat.getSiteZone()    
-    t = loader.get_template('index.html')
-    c = RequestContext(request)
-    c['zone'] = zone
-    return HttpResponse(t.render(c))
-
-#    t = loader.get_template('index.html')
-#    c = RequestContext(request)
-#    return HttpResponse(t.render(c))
-
+    context = {}
+    context['zone'] = zone
+    return render(request, template_name, context)
 
 def logout_view(request):
     logout(request)
@@ -605,9 +597,8 @@ def installIPParameter(request):  # default metadata for IP
 @login_required
 def about(request):
     # Get current site_profile and zone
-    t = loader.get_template('admin/about.html')
-    c = RequestContext(request)
-    return HttpResponse(t.render(c))
+    template_name = 'admin/about.html'
+    return render(request, template_name)
     
 class installedpackages(View):
 
@@ -698,12 +689,5 @@ def sysinfo(request):
     #context['process'] = ESSProc.objects.all()
     #context['proc_alarm'] = MonitoringObject.objects.filter(alarm=1) 
     #context['time_checked'] = timezone.now()
-    return render_to_response('admin/sysinfo.html',
-                              context,
-                              RequestContext(request))
-    '''
-        # Get current site_profile and zone
-    t = loader.get_template('admin/sysinfo.html')
-    c = RequestContext(request)
-    return HttpResponse(t.render(c))
-    '''
+    template_name = 'admin/sysinfo.html'
+    return render(request, template_name, context)

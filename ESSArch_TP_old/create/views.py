@@ -25,7 +25,8 @@ from django.template import Context, loader, RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django import forms
-from django.core.context_processors import csrf
+#from django.core.context_processors import csrf
+from django.middleware import csrf
 from django.contrib.auth import logout
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
@@ -63,7 +64,7 @@ from models import ETPupload
 # from ESSArch Tools
 from ip.models import InformationPackage
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
-from .forms import PrepareFormSE, PrepareFormNO, CreateFormSE, CreateFormNO
+from .forms import PrepareFormSE, PrepareFormNO, PrepareFormEC, CreateFormSE, CreateFormNO, CreateFormEC
 import lib.utils as lu
 import lib.app_tools as lat
 from tasks import add
@@ -111,6 +112,7 @@ class test(View):
 
 class PrepareIPCreate(View):
     template_name = 'create/prepare_create.html'
+    #template_name = 'create/prepare_create_new.html'
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -129,6 +131,7 @@ class PrepareIPCreate(View):
             form = PrepareFormSE(initial=initialvalues) # Form with defaults
         if site_profile == "NO":
             form = PrepareFormNO(initial=initialvalues) # Form with defaults
+            #form = PrepareFormEC(initial=initialvalues) # Form with defaults
 
         context['form'] = form
         context['zone'] = zone
@@ -147,6 +150,7 @@ class PrepareIPCreate(View):
             form = PrepareFormSE(request.POST) # A form bound to the POST data
         if site_profile == "NO":
             form = PrepareFormNO(request.POST) # A form bound to the POST data
+            #form = PrepareFormEC(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
 
@@ -221,7 +225,9 @@ class CreateIP(View):
             form = CreateFormSE( initial=initialvalues )
         if site_profile == "NO":
             form = CreateFormNO( initial=initialvalues )
+            #form = CreateFormEC( initial=initialvalues )
 
+        #context['label'] = 'Create information package ' + ip.label ' from ' + ip.archivist_organization 
         context['form'] = form
         context['zone'] = zone
         context['ip'] = ip
@@ -245,6 +251,7 @@ class CreateIP(View):
             form = CreateFormSE(request.POST) # A form bound to the POST data
         if site_profile == "NO":
             form = CreateFormNO(request.POST) # A form bound to the POST data
+            #form = CreateFormEC(request.POST) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
 
@@ -426,6 +433,7 @@ class IPcontentasJSON(View):
         listofcontent.sort()
         #print 'listofcontent'
         #print listofcontent
+        #print listofcontent[0]
 
         return listofcontent
 
@@ -758,11 +766,13 @@ class ETPUploadCompleteView(ChunkedUploadCompleteView):
         # * Pass it as an argument to a function:
         # function_that_process_file(uploaded_file)
         #print uploaded_file.file
+        #print uploaded_file.file.path
         #print 'filename: %s, type(file): %s' % (uploaded_file.name, type(uploaded_file.file))
 
         ipidfromkwargs = self.kwargs['ipid']
         ourip = get_object_or_404(InformationPackage, pk=ipidfromkwargs)
         ipcontentpath = ourip.directory + '/' + ourip.uuid + '/content/'
-        print ipcontentpath
-        shutil.move(uploaded_file.file.path,ipcontentpath)
+        ipcontentfilepath = os.path.join(ipcontentpath,uploaded_file.name) 
+        #print ipcontentpath
+        shutil.move(uploaded_file.file.path,ipcontentfilepath)
         #pass
