@@ -21,14 +21,15 @@
 """
 
 # Create your models here.
-from django.contrib.auth.models import User
 from django.db import models
 
 from configuration.models import Path
 
 from preingest.models import ProcessStep, ProcessTask
 
-from profiles.models import SubmissionAgreement as SA
+from profiles.models import (
+    ProfileLock, SubmissionAgreement as SA
+)
 
 import os
 import uuid
@@ -101,13 +102,6 @@ class InformationPackage(models.Model):
     Startdate = models.DateTimeField()
     Enddate = models.DateTimeField()
     OAIStype = models.CharField(max_length=255)
-    Locked = models.BooleanField(default=False)
-    LockedBy = models.ForeignKey(
-        User,
-        models.SET_NULL,
-        null=True,
-    )
-    Unlockable = models.BooleanField(default=False)
     SubmissionAgreement = models.ForeignKey(
         SA,
         on_delete=models.CASCADE,
@@ -155,6 +149,12 @@ class InformationPackage(models.Model):
                 return 0
 
         return 0
+
+    def locks(self):
+        return ProfileLock.objects.filter(
+            information_package=self,
+            submission_agreement=self.SubmissionAgreement
+        )
 
     class Meta:
         ordering = ["id"]
