@@ -22,6 +22,9 @@
     Email - essarch@essolutions.se
 '''
 
+import django
+django.setup()
+
 # Create your views here.
 from django.template import Context, loader
 from django.template import RequestContext 
@@ -29,7 +32,6 @@ from django.contrib.auth.models import User, Group, Permission
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout
@@ -40,9 +42,6 @@ import sys, logging, datetime, os
 from configuration.models import Parameter, LogEvent, SchemaProfile, IPParameter, Path
 #import lib.utils as lu
 #import lib.app_tools as lat
-
-import django
-django.setup()
 
 # settings
 site_profile = "NO" # SE_NEW, SE, NO, EC

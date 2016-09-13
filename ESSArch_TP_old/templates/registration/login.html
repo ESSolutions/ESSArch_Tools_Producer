@@ -1,10 +1,19 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static %}
-{% load url from future %}
 
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />{% endblock %}
 
 {% block bodyclass %}login{% endblock %}
+
+{% block branding %}
+  <div id="header-wrapper">
+    <div id="branding-wrapper">
+        <h2 class="site-name"><a href="/" title="ESSArch">ETP</a></h2>
+        <div class='site-slogan'>(ESSArch Tools for Producer)</div>
+        <img style="padding-left:5px" src="{{ STATIC_URL }}images/logo.png" onerror="this.style.display = 'none'">
+    </div><!-- end branding wrapper -->
+  </div><!-- end header-wrapper -->
+{% endblock %}
 
 {% block nav-global %}
 {% endblock %}

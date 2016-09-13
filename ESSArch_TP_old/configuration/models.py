@@ -25,7 +25,7 @@
 from django.db import models
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 from django import forms
 
 import sys, datetime
@@ -57,18 +57,17 @@ Choices_DeliveryType = (
     ('Agreement','Agreement'),
 )
 
-
 class PlainText(forms.TextInput):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
         final_attrs = self.build_attrs(attrs)
+        title = final_attrs.get('title','')
         if not value=='' and hasattr(self, 'choices'):
             value_label = dict(self.choices)[value]
         else:
             value_label = value
-        return mark_safe(u'<input type="hidden" name="%s" %s value="%s" />%s' % (name,flatatt(final_attrs),value,value_label))
-
+        return mark_safe(u'<input type="hidden" name="%s" %s value="%s" /><p title="%s">%s</p>' % (name,flatatt(final_attrs),value, title,value_label))
 
 # Logevents
 class LogEvent(models.Model):
