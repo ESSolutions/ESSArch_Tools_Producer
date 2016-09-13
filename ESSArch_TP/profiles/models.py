@@ -25,7 +25,7 @@
 from django.db import models
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 from django import forms
 
 import sys, datetime

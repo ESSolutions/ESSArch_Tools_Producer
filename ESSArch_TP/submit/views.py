@@ -33,7 +33,8 @@ class SubmitIPList(View):
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        context = RequestContext(request)
+        #context = RequestContext(request)
+        context = {}
         context['label'] = 'Select which information package to submit'
 
         # Get current site_profile and zone

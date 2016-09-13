@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 '''
 
-from django.conf.urls import patterns, include, url, handler404
+from django.conf.urls import include, url, handler404
 from django.views.generic import DetailView, ListView
 from django.conf import settings
 
@@ -33,16 +33,25 @@ admin.autodiscover()
 #from create.views import CreateTmpWorkareaUploadView, CreateTmpWorkareaUploadCompleteView, ETPChunkedUploadView, ETPChunkedUploadCompleteView
 #from create.views import ETPChunkedUploadView, ETPChunkedUploadCompleteView
 from create.views import IPcontentasJSON, ETPUploadView, ETPUploadCompleteView
-from configuration.views import about, installedpackages
-urlpatterns = patterns('',
+from configuration.views import about, installedpackages, index
+from configuration import views as configuration_views
+from deliver import views as deliver_views
+from logevents import views as logevents_views
+from django.contrib.auth import views as auth_views
+urlpatterns = [
     # Standard URLS:
-    url(r'^$', 'configuration.views.index', name='home'),
+    url(r'^$', configuration_views.index, name='home'),
+    #url(r'^', index, name='home'),
     #url(r'^logout$', 'configuration.views.logout_view'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login' ),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
-    url(r'^admin/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
-    url(r'^changepassword$', 'configuration.views.change_password'),
+    #url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/'}),
+    #url(r'^accounts/login/$', 'django.contrib.auth.views.login' ),
+    url(r'^accounts/login/$', auth_views.login ),
+    #url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
+    url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'} ),
+    #url(r'^admin/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
+    url(r'^admin/logout/$', auth_views.logout, {'next_page': '/'} ),
+    url(r'^changepassword$', configuration_views.change_password),
 
     # URLS to include:
     #url(r'^receive/', include('receive.urls')),
@@ -53,12 +62,12 @@ urlpatterns = patterns('',
     #url(r'^api/', include('api.urls')),
 
     # Configuration URLS:
-    url(r'^about$', 'configuration.views.sysinfo'),
+    url(r'^about$', configuration_views.sysinfo),
     #url(r'^configuration/logevents$', 'configuration.views.logevents'),
-    url(r'^configuration/logevents/install_defaults$', 'configuration.views.installogdefaults'),
-    url(r'^configuration/logevents/install_defaultschemas$', 'configuration.views.installdefaultschemaprofiles'),
-    url(r'^configuration/logevents/install_defaultparameters$', 'configuration.views.installdefaultparameters'),
-    url(r'^configuration/logevents/install_defaultusers$', 'configuration.views.createdefaultusers'),
+    url(r'^configuration/logevents/install_defaults$', configuration_views.installogdefaults),
+    url(r'^configuration/logevents/install_defaultschemas$', configuration_views.installdefaultschemaprofiles),
+    url(r'^configuration/logevents/install_defaultparameters$', configuration_views.installdefaultparameters),
+    url(r'^configuration/logevents/install_defaultusers$', configuration_views.createdefaultusers),
     url(r'^installedpackages/(?P<ipid>[^&]*)$', installedpackages.as_view(), name='installedpackages'),
     #url(r'^configuration/logevents/install_defaultadditionalmetadata$', 'configuration.views.installAdditionalMetadata'),
     #url(r'^configuration/logevents/add$', 'configuration.views.newlogevent'),
@@ -94,25 +103,27 @@ urlpatterns = patterns('',
 
     # Deliver IP URLS:
     #url(r'^prepare$', 'prepare.views.index'),
-    url(r'^deliver$', 'deliver.views.index'),
-    url(r'^deliver/(?P<id>\d+)$', 'deliver.views.deliverip'),
+    url(r'^deliver$', deliver_views.index),
+    url(r'^deliver/(?P<id>\d+)$', deliver_views.deliverip),
 
     # Log Events URLS:
-    url(r'^logevents$', 'logevents.views.index'),
-    url(r'^logevents/create$', 'logevents.views.createlog'),
-    url(r'^logevents/list$', 'logevents.views.listlog'),
+    url(r'^logevents$', logevents_views.index),
+    url(r'^logevents/create$', logevents_views.createlog),
+    url(r'^logevents/list$', logevents_views.listlog),
     #url(r'^logevents/view/(?P<uuid>[^//]+)/(?P<creator>[^//]+)/(?P<system>[^//]+)/(?P<version>[^//]+)$', 'logevents.views.viewlog'),
 #    url(r'^logevents/view/(?P<uuid>[^//]+)/(?P<archivist_organization>[^//]+)/(?P<label>[^//]+)/(?P<startdate>[^//]+)/(?P<enddate>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)$', 'logevents.views.viewlog'),
-    url(r'^logevents/view/(?P<uuid>[^//]+)/(?P<archivist_organization>[^//]+)/(?P<label>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)$', 'logevents.views.viewlog'),    url(r'^logevents/out$', 'logevents.views.listlog'),
+    url(r'^logevents/view/(?P<uuid>[^//]+)/(?P<archivist_organization>[^//]+)/(?P<label>[^//]+)/(?P<iptype>[^//]+)/(?P<createdate>[^//]+)$', logevents_views.viewlog),    
+    url(r'^logevents/out$', logevents_views.listlog),
     #url(r'^logevents/view$', 'logevents.views.viewlog'),
 #    url(r'^logevents/(?P<id>\d+)$', 'logevents.views.viewlog'), ##
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/', include('admin.site.urls')),
+    url(r'^admin/', admin.site.urls),
 
     #url(r'^accounts/login/$', 'django.contrib.auth.views.login' ),
     #url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'})
     #url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     #url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'} ),
-
-)
+    url(r'^demo/', include('demo.urls')),
+]

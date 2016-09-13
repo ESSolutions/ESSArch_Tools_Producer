@@ -26,8 +26,9 @@
 from django.template import Context, loader, RequestContext 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.http import urlquote
-from django.shortcuts import render_to_response, get_object_or_404
-from django.core.context_processors import csrf
+from django.shortcuts import render_to_response, get_object_or_404, render
+#from django.core.context_processors import csrf
+from django.middleware import csrf
 from django.contrib.auth.decorators import login_required
 import os, uuid, operator
 
@@ -202,8 +203,9 @@ def viewlog(request, uuid, archivist_organization, label, iptype, createdate):
               'archivist_organization': archivist_organization,
               'label':label, 
               }
-        c.update(csrf(request))
-        return render_to_response( 'logevents/view.html', c, context_instance=RequestContext(request) )
+        #c.update(csrf(request))
+        #return render_to_response( 'logevents/view.html', c, context_instance=RequestContext(request) )
+        return render( request, 'logevents/view.html', c )
 
     else:
         # something went wrong and we have a problem.
