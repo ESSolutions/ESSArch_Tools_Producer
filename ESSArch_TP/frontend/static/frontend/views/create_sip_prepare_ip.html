@@ -157,11 +157,11 @@
                                     <td>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkBox" checked="checked"><a>{{saProfile.entity}}</a></input>
+                                                <input type="checkBox" ng-disabled="true" checked="checked"><a>{{saProfile.entity}}</a></input>
                                             </label>
                                         </div>
                                     </td>
-                                    <td><select class="form-control" ng-model="saProfile.profile" ng-change="getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                    <td><select class="form-control" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile); getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>{{saProfile.profile.sa_status}}</td>
                                     <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
                                 </tr>
@@ -206,12 +206,8 @@
                                 <label>Signature</label>
                                 <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkBox" ng-model="approvedToCreate" ng-click="toggleIpText()">Approved to prepare</input>
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-info submit-button">{{ipSubmitText}}</button>
+                            <button type="submit" class="btn btn-info submit-button">Save profile</button>
+                            <button type="button" ng-click="lockProfileModal()" class="btn btn-info submit-button">Lock profile</button>
                         </form>
                     </div>
                 </div>

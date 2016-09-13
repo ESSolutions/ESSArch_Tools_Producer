@@ -519,7 +519,34 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-
+    $scope.lockProfileModal = function () {
+        console.log($scope);
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/lock-profile-modal.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.lockProfile($scope.profileToSave.url);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    $scope.lockProfile = function (url) {
+        $http({
+            method: 'POST',
+            url: url+"lock/",
+            data: {
+                information_package: $scope.ip.id,
+                submission_agreement: $scope.saProfile.profile.id
+            }
+        }).then(function () {
+            console.log("locked");
+            });
+    }
     $scope.prepareIp = function (label) {
         $http({
             method: 'POST',
@@ -561,6 +588,12 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInsta
         label: $ctrl.label
       };
         $uibModalInstance.close($ctrl.data);
+  };
+  $ctrl.lock = function () {
+      $ctrl.data = {
+          status: "locked"
+      }
+      $uibModalInstance.close($ctrl.data);
   };
 
   $ctrl.cancel = function () {
