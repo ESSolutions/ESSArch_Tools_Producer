@@ -6,6 +6,17 @@ body {
     margin: 0px auto;
     width: 1440px;
 }
+body.modal-open {
+    overflow: auto;
+}
+body.modal-open[style] {
+    padding-right: 0px !important;
+}
+
+.modal::-webkit-scrollbar {
+    width: 0 !important; /*removes the scrollbar but still scrollable*/
+    /* reference: http://stackoverflow.com/a/26500272/2259400 */
+}
 .body-wrapper {
     display: flex;
     flex-direction: column;
