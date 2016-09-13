@@ -520,7 +520,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     $scope.lockProfileModal = function () {
-        console.log($scope);
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -543,7 +542,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 information_package: $scope.ip.id,
                 submission_agreement: $scope.saProfile.profile.id
             }
-        }).then(function () {
+        }).then(function (response) {
             console.log("locked");
             });
     }
