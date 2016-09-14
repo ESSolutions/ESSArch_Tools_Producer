@@ -401,11 +401,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         profileObject.locked = false;
         locks.forEach(function (lock) {
             if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
-                console.log("===============profileLocked function START==========");
-                console.log(lock);
-                console.log(profileObject.profile.url);
-                console.log(sa);
-                console.log("===============profileLocked function END==========");
                 profileObject.locked = true;
             }
         });
