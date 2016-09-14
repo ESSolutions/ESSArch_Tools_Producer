@@ -70,13 +70,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         if($scope.select && $scope.ip== row){
             $scope.select = false;
         } else {
+            $http({
+                method: 'GET',
+                url: row.url
+            }).then(function (response) {
+                $scope.ip = response.data;
+            });
             $scope.select = true;
             $scope.eventShow = false;
             $scope.statusShow = false;
             $scope.getSaProfiles(row);
         }
         $scope.statusShow = false;
-        $scope.ip= row;
     };
 
     $scope.eventsClick = function (row) {
@@ -188,10 +193,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     // Progress bar handler
     $scope.max = 100;
     //funcitons for select view
+    $scope.profileClickCondition = function(row){
+        if(!row.locked){
+            $scope.profileClick(row);
+        }
+    }
     vm.profileModel = {};
     vm.profileFields=[];
     $scope.profileClick = function(row){
-        $scope.profileToSave = row.profile;
+        $scope.profileToSave = row;
         console.log(row);
         if ($scope.selectProfile == row && $scope.subSelect){
             $scope.eventlog = false;
@@ -360,14 +370,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     profiles: [
                        response.data
                     ],
-                    checked: true
+                    checked: true,
                 };
                 if(defaultProfile){
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
+                tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, $scope.ip.locks);
                 $scope.selectRowCollapse.push(tempProfileObject);
                 $scope.updateIncludedProfiles(tempProfileObject);
+                console.log("finished profile object");
+                console.log(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
@@ -384,6 +397,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }
     }
+    $scope.profileLocked = function(profileObject, sa, locks) {
+        profileObject.locked = false;
+        locks.forEach(function (lock) {
+            if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
+                console.log("===============profileLocked function START==========");
+                console.log(lock);
+                console.log(profileObject.profile.url);
+                console.log(sa);
+                console.log("===============profileLocked function END==========");
+                profileObject.locked = true;
+            }
+        });
+        return profileObject;
+    }
+
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.saProfile.profile.url+"change-profile/";
@@ -425,7 +453,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     // onSubmit function
 
     vm.onSubmit = function(new_name) {
-            var uri = $scope.profileToSave.url+"save/";
+            var uri = $scope.profileToSave.profile.url+"save/";
             var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
             console.log(sendData);
             $http({
@@ -543,21 +571,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
-            $scope.lockProfile($scope.profileToSave.url);
+            $scope.lockProfile($scope.profileToSave);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-    $scope.lockProfile = function (url) {
+    $scope.lockProfile = function (profileObject) {
         $http({
             method: 'POST',
-            url: url+"lock/",
+            url: profileObject.profile.url+"lock/",
             data: {
                 information_package: $scope.ip.id,
                 submission_agreement: $scope.saProfile.profile.id
             }
         }).then(function (response) {
             console.log("locked");
+            $scope.edit = false;
             });
     }
     $scope.prepareIp = function (label) {
