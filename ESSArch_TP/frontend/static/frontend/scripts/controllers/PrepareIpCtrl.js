@@ -581,7 +581,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }).then(function (response) {
             console.log("locked");
+            $scope.profileToSave.locked = true;
             $scope.edit = false;
+            $scope.eventlog = false;
             });
     }
     $scope.prepareIp = function (label) {
