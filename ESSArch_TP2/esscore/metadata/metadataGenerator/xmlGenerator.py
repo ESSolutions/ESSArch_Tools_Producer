@@ -5,6 +5,8 @@ import json
 import copy
 from collections import OrderedDict
 import fileinput
+import mimetypes
+from django.conf import settings
 
 from xmlStructure import xmlElement, xmlAttribute, fileInfo, fileObject, dlog
 
@@ -26,50 +28,70 @@ def calculateChecksum(filename):
     os.close(fd)
     return hashSHA.hexdigest()
 
-def parseFiles(filename='/SIP/huge', level=3):
+def parseFiles(filename='/SIP/huge', level=3, resultFile=[]):
     """
     walk through the choosen folder and parse all the files to their own temporary location
     """
     fileInfo = {}
+    mimetypes.init(files=[os.path.join(settings.BASE_DIR), 'demo/mime.types'])
 
     for dirname, dirnames, filenames in os.walk(filename):
         # print dirname
         for file in filenames:
+            found = False
+            for key, value in resultFile.iteritems():
+                if dirname+'/'+file == key:
+                    found = True
 
+            if found == False:
             # populate dictionary
 
-            fileInfo['FName'] = dirname+'/'+file
-            fileInfo['FChecksum'] = calculateChecksum(dirname+'/'+file)
-            fileInfo['FID'] = uuid.uuid4().__str__()
-            fileInfo['FMimetype'] = 'application/msword'
-            fileInfo['FCreated'] = '2016-02-21T11:18:44+01:00'
-            fileInfo['FFormatName'] = 'MS word'
-            fileInfo['FSize'] = str(os.path.getsize(dirname+'/'+file))
-            fileInfo['FUse'] = 'DataFile'
-            fileInfo['FChecksumType'] = 'SHA-256'
-            fileInfo['FLoctype'] = 'URL'
-            fileInfo['FLinkType'] = 'simple'
-            fileInfo['FChecksumLib'] = 'hashlib'
-            fileInfo['FLocationType'] = 'URI'
-            fileInfo['FIDType'] = 'UUID'
-            # write to file
 
-            for fi in sortedFiles:
-                for fil in fi.files:
-                    if not fil.arguments:
-                        for key, value in fil.element.iteritems():
-                            t = createXMLStructure(key, value, fileInfo)
-                            t.printXML(fil.fid,fil.level)
-                    else:
-                        found = True
-                        for key, value in fil.arguments.iteritems():
-                            if re.search(value, fileInfo[key]) is None:
-                                found = False
-                                break
-                        if found:
+
+                fileInfo['FName'] = os.path.relpath(dirname+'/'+file, filename)
+                fileInfo['FChecksum'] = calculateChecksum(dirname+'/'+file)
+                fileInfo['FID'] = uuid.uuid4().__str__()
+                if '.'+file.split('.')[-1] in mimetypes.types_map:
+                    fileInfo['FMimetype'] = mimetypes.types_map['.'+file.split('.')[-1]]
+                else:
+                    fileInfo['FMimetype'] = 'unknown'
+                fileInfo['FCreated'] = '2016-02-21T11:18:44+01:00'
+                fileInfo['FFormatName'] = 'MS word'
+                fileInfo['FSize'] = str(os.path.getsize(dirname+'/'+file))
+                fileInfo['FUse'] = 'DataFile'
+                fileInfo['FChecksumType'] = 'SHA-256'
+                fileInfo['FLoctype'] = 'URL'
+                fileInfo['FLinkType'] = 'simple'
+                fileInfo['FChecksumLib'] = 'hashlib'
+                fileInfo['FLocationType'] = 'URI'
+                fileInfo['FIDType'] = 'UUID'
+                # write to file
+
+                for fi in sortedFiles:
+                    # print 'fi: %s (xmlFileName: %s, template: %s, namespace: %s, fid: %s, files: %s' % (
+                    #                                                                                    repr(fi),
+                    #                                                                                    fi.xmlFileName, 
+                    #                                                                                    fi.template, 
+                    #                                                                                    fi.namespace, 
+                    #                                                                                    fi.fid, 
+                    #                                                                                    fi.files)
+                    for fil in fi.files:
+                        if not fil.arguments:
                             for key, value in fil.element.iteritems():
-                                t = createXMLStructure(key, value, fileInfo)
+                                # print 'create 1 key: %s, value: %s, fileInfo: %s' % (key, value, fileInfo)
+                                t = createXMLStructure(key, value, fileInfo, namespace=fi.namespace)
                                 t.printXML(fil.fid,fil.level)
+                        else:
+                            found = True
+                            for key, value in fil.arguments.iteritems():
+                                if re.search(value, fileInfo[key]) is None:
+                                    found = False
+                                    break
+                            if found:
+                                for key, value in fil.element.iteritems():
+                                    # print 'create 2 key: %s, value: %s, fileInfo: %s' % (key, value, fileInfo)
+                                    t = createXMLStructure(key, value, fileInfo, namespace=fi.namespace)
+                                    t.printXML(fil.fid,fil.level)
 
 def getValue(key, info):
     """
@@ -232,12 +254,19 @@ def parseAttribute(content, info):
     else:
         return None
 
-def createXML(inputData):
+def createXML(info, filesToCreate, folderToParse):
     """
     The task method for executing the xmlGenerator and completing the xml files
     This is also the TASK to be run in the background.
     """
-    for key, value in inputData['filesToCreate'].iteritems():
+
+    global sortedFiles
+    global foundFiles
+
+    sortedFiles = []
+    foundFiles = 0
+
+    for key, value in filesToCreate.iteritems():
         json_data=open(value).read()
         try:
             data = json.loads(json_data, object_pairs_hook=OrderedDict)
@@ -246,13 +275,16 @@ def createXML(inputData):
             return  False
         name, rootE = data.items()[0] # root element
         xmlFile = os.open(key,os.O_RDWR|os.O_CREAT)
-        fob = fileObject(key, value, xmlFile)
+        os.write(xmlFile, '<?xml version="1.0" encoding="UTF-8"?>\n')
+        namespace = rootE.get('-namespace', None)
+        fob = fileObject(key, value, namespace, xmlFile)
         sortedFiles.append(fob)
-        rootEl = createXMLStructure(name, rootE, inputData['info'], fob)
+        rootEl = createXMLStructure(name, rootE, info, fob)
         rootEl.printXML(xmlFile)
         fob.rootElement = rootEl
+        #print 'namespace: %s' % rootE['-namespace']
 
-    parseFiles(inputData['folderToParse'])
+    parseFiles(folderToParse, resultFile=filesToCreate)
 
     # add the tmp files to the bottom of the appropriate file and write out the next section of xml until it's done
     for fob in sortedFiles:
@@ -281,6 +313,7 @@ def appendXML(inputData):
             rootEl.XMLToString(level+1)
         print line,
 
+#############################
 # example of input for appendXML
 
 inputD = {
@@ -320,10 +353,10 @@ inputD = {
 
 # appendXML(inputD)
 
-# Example of inputData:
+#############################
+# Example of info, filesToCreate, folderToParse:
 
-inputData = {
-    "info": {
+info = {
         "xmlns:mets": "http://www.loc.gov/METS/",
                 "xmlns:ext": "ExtensionMETS",
                 "xmlns:xlink": "http://www.w3.org/1999/xlink",
@@ -403,17 +436,17 @@ inputData = {
                         "name":"Simon Nilsson",
                         "note":"0706758942, simonseregon@gmail.com"
                     }],
-    },
-    "filesToCreate": {
-    "sip.txt":"templates/JSONTemplate.json",
-    # "premis.txt":"templates/JSONPremisTemplate.txt",
-    # "sip2.txt":"templates/JSONTemplate.txt"
-    },
-    "folderToParse":"/SIP/huge/csv/000"
 }
 
+filesToCreate = {
+    "sip.txt":"templates/JSONTemplate.json",
+    # "premis.txt":"templates/JSONPremisTemplate.json",
+    # "sip2.txt":"templates/JSONTemplate.json"
+}
 
-# createXML(inputData)
+folderToParse = "/SIP/huge/csv/000"
+
+# createXML(info, filesToCreate, folderToParse)
 
 
 ## TODO
