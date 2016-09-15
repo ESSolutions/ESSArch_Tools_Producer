@@ -23,6 +23,7 @@
     "angular-tree-control": "^0.2.27",
     "angular": "1.5.7",
     "bootstrap": "^3.3.6",
-    "angular-bootstrap-grid-tree": "^0.4.0"
+    "angular-bootstrap-grid-tree": "^0.4.0",
+    "angular-ui-router": "^0.3.1"
   }
 }
