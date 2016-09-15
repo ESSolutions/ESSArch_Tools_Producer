@@ -68,4 +68,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         this.changePath = function(state) {
             $state.go(state);
         };
+})
+.run(function($rootScope) {
+    $rootScope.auth = {
+        name: null,
+        password: null
+    };
 });
