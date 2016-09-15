@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout){
+angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout, $state, $stateParams){
     var vm = this;
     // List view
     $scope.changePath= function(path) {
