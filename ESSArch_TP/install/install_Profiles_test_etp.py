@@ -1673,17 +1673,17 @@ def installEventTypes():
     lst = [
         {
             'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c1',
-            'eventType': 1,
+            'eventType': 10100,
             'eventDetail': 'Prepare IP',
         },
         {
             'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c2',
-            'eventType': 2,
-            'eventDetail': 'Generate XML',
+            'eventType': 10200,
+            'eventDetail': 'Create SIP',
         },
         {
             'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c3',
-            'eventType': 3,
+            'eventType': 10300,
             'eventDetail': 'Create directory strucutre',
         },
     ]
