@@ -1,0 +1,36 @@
+.login-box {
+    border-style: solid;
+    border-radius: 30px;
+    padding: 10px;
+    width: 25%;
+    height: 300px;
+    background-color: #fff;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+h1 {
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+}
+p {
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+}
+.form-group {
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+}
+.form-actions {
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+}
