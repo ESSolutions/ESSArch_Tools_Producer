@@ -25,6 +25,8 @@
 import django
 django.setup()
 
+from django.utils import timezone
+
 # own models etc
 from configuration.models import (
     EventType
@@ -1703,6 +1705,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Preparing the IP',
             'eventApplication': '',
             'eventVersion': '',
@@ -1717,6 +1720,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Adding files to XML',
             'eventApplication': '',
             'eventVersion': '',
@@ -1731,7 +1735,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
             ),
-            'eventDateTime': '',
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Creating METS file',
             'eventApplication': '',
             'eventVersion': '',
@@ -1746,6 +1750,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Creating directory structure from JSON',
             'eventApplication': '',
             'eventVersion': '',
@@ -1760,6 +1765,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Preparing the IP',
             'eventApplication': '',
             'eventVersion': '',
@@ -1774,6 +1780,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Adding files to XML',
             'eventApplication': '',
             'eventVersion': '',
@@ -1788,7 +1795,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
             ),
-            'eventDateTime': '',
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Creating PREMIS file',
             'eventApplication': '',
             'eventVersion': '',
@@ -1803,6 +1810,7 @@ def installEventIPs():
             'eventType': EventType.objects.get(
                 pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
             ),
+            'eventDateTime': timezone.now(),
             'eventDetail': 'Creating directory structure from JSON',
             'eventApplication': '',
             'eventVersion': '',
