@@ -17,7 +17,7 @@
                             </div>
                             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
                                 <li ng-repeat="choice in editUserOptions">
-                                    <a ui-sref="{{choice.link}}">{{choice.label}}</a>
+                                    <a ng-click="gotoLink(choice)">{{choice.label}}</a>
                                 </li>
                             </ul>
                         </div>
