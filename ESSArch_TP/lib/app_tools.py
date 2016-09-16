@@ -329,7 +329,7 @@ ET090 - BS130301 - Ready for test
 def create_AgentList_EC(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_AgentList_NO' % version) # debug info
-            
+
     # agent lists
     agent_list_info = [] # list for info.xml
     agent_list_mets = [] # list for mets.xml
@@ -378,8 +378,10 @@ def create_AgentList_EC(ip, contextdata):
         else:
             agent_list_info.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
             agent_list_mets.append([ROLE,OTHERROLE,TYPE,OTHERTYPE,name,[note]])
-            
+
     return agent_list_info, agent_list_mets
+
+
 
 ###############################################
 "altRecordID lists for site profile NO"
@@ -434,15 +436,17 @@ def create_altRecordIDList_NO(ip, contextdata):
             
     return altRecordID_list_info, altRecordID_list_mets
 
+
+
 ###############################################
 "altRecordID lists for site profile NO"
 """
 ET090 - BS130301 - Ready for test
 """
-def create_altRecordIDList_EC(ip, contextdata):                 
+def create_altRecordIDList_EC(ip, contextdata):
     version = 'ET090'
     logger.debug('%s Entered create_altRecordIDList_NO' % version) # debug info
-    
+
     # altRecordID lists
     altRecordID_list_info = [] # list for info.xml
     altRecordID_list_mets = [] # list for mets.xml
@@ -486,8 +490,10 @@ def create_altRecordIDList_EC(ip, contextdata):
     if len(value):
         altRecordID_list_info.append([TYPE,value])
         altRecordID_list_mets.append([TYPE,value])
-   
+
     return altRecordID_list_info, altRecordID_list_mets
+
+
 
 ###############################################
 "Prepare information package (IP)"
@@ -827,9 +833,9 @@ def createIP( ip, contextdata ):
         checksumalgoritm = 'SHA-256'
         #path4am = ip.directory+'/'+ip.uuid+'/'+ 'administrative_metadata'
         #path4dm = ip.directory+'/'+ip.uuid+'/'+ 'descriptive_metadata'
-        path4am = ip.directory+'/'+ip.uuid+'/'+ 'metadata'
+        path4am = ip.directory+'/'+ip.uuid+'/'+ 'metadata'+'/'+'preservation' # EC req
+        path4schema = ip.directory+'/'+ip.uuid+'/'+ 'schemas' # EC req
         path4dm = ip.directory+'/'+ip.uuid+'/'+ 'documentation'
-
         
         if zone == 'zone1':
 
@@ -862,6 +868,7 @@ def createIP( ip, contextdata ):
             #altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_NO(ip, contextdata)
             altRecordID_list_info, altRecordID_list_mets = create_altRecordIDList_EC(ip, contextdata)
 
+
     # If platform is windows check if any file still is open
     if platform.system() != 'Linux' :
         sourceroot = ip.directory+'/'+ip.uuid
@@ -882,7 +889,8 @@ def createIP( ip, contextdata ):
         xsdpath = path4m  # could also be path4s
     if site_profile == 'NO':
         schema = PREMIS_SCHEMALOCATION
-        xsdpath = path4am  # could also be path4dm
+        #xsdpath = path4am  # could also be path4dm
+        xsdpath = path4schema  # EC req
     filename, status, why = copy_Schema(xsdpath,schema,env)
     if status:
         if status == 1 :
@@ -906,7 +914,8 @@ def createIP( ip, contextdata ):
     if site_profile == 'NO':
         schema = METS_SCHEMALOCATION_LOCAL
         #xsdpath = ObjectPath
-        xsdpath = ip.directory+'/'+ip.uuid
+        #xsdpath = ip.directory+'/'+ip.uuid
+        xsdpath = path4schema # EC req
     filename, status, why = copy_Schema(xsdpath,schema,env)
     if status:
         if status == 1 :
@@ -1620,7 +1629,8 @@ def CreateMetsStructmap(site_profile, ms_files, TimeZone, ObjectPath, checksumty
         #print path4m
     if site_profile == 'NO':
         #path4m = 'administrative_metadata/'
-        path4m = 'metadata/'
+        #path4m = 'metadata/'
+        path4m = 'schemas/' # EC req
         #print path4m
     # create filetree to read
     if not len(ms_files):      
@@ -2072,13 +2082,14 @@ def createIPdirectory(sourceroot, ip_uuid):
         #os.makedirs( os.path.join( iproot, "descriptive_metadata" ) )
         #os.makedirs( os.path.join( iproot, "administrative_metadata" ) )
         os.makedirs( os.path.join( iproot, "metadata" ) )
+        os.makedirs( os.path.join( os.path.join( iproot, "metadata" ), "preservation" ) )
         if zone == 'zone2':
             #os.makedirs( os.path.join( os.path.join( iproot, "administrative_metadata" ), "repository_operations" ) )
-            #os.makedirs( os.path.join( os.path.join( iproot, "administrative_metadata" ), "repository_operations" ) )
-	    print "hej"
+	    print ""
         #os.makedirs( os.path.join( iproot, "content" ) )
         os.makedirs( os.path.join( iproot, "representations" ) )
-        os.makedirs( os.path.join( iproot, "documentation" ) )
+        os.makedirs( os.path.join( iproot, "documentation" ) ) # EC req
+        os.makedirs( os.path.join( iproot, "schemas" ) ) # EC req
         # Removed 130323 by request from NRA
         #os.makedirs( os.path.join( os.path.join( iproot, "content" ), "documents" ) )
 
