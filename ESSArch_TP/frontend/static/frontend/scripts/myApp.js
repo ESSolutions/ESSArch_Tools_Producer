@@ -10,7 +10,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         controller: 'LoginCtrl as vm'
     })
     .state('home.myPage', {
-        url: '',
+        url: 'my-page',
         templateUrl: '/static/frontend/views/my_page.html'
     })
     .state('home.createSip', {
