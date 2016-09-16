@@ -51,7 +51,7 @@
                             </button>
                             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li ng-repeat="choice in items">
-                                    <a href>{{choice}}</a>
+                                    <a ng-click="gotoLink(choice)" href>{{choice}}</a>
                                 </li>
                             </ul>
                         </div>
