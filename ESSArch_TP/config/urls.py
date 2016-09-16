@@ -47,4 +47,6 @@ urlpatterns = [
     url(r'^template/', include('templateMaker.urls')),
     url(r'^demo/', include('demo.urls')),
     url(r'^accounts/login/$', auth_views.login),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
