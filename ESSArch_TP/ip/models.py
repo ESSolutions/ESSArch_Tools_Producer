@@ -99,8 +99,8 @@ class InformationPackage(models.Model):
     ObjectSize = models.CharField(max_length=255)
     ObjectNumItems = models.CharField(max_length=255)
     ObjectPath = models.CharField(max_length=255)
-    Startdate = models.DateTimeField()
-    Enddate = models.DateTimeField()
+    Startdate = models.DateTimeField(null=True)
+    Enddate = models.DateTimeField(null=True)
     OAIStype = models.CharField(max_length=255)
     SubmissionAgreement = models.ForeignKey(
         SA,
