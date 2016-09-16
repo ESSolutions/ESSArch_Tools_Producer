@@ -589,8 +589,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.prepareIp = function (label) {
         $http({
             method: 'POST',
-            url: appConfig.djangoUrl+"information-packages",
-            data: label
+            url: appConfig.djangoUrl+"information-packages/",
+            data: {label: label}
         }).then(function (){
             console.log("new ip created, with label: " + label);
         });
