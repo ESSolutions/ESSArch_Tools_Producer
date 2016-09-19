@@ -1,10 +1,11 @@
-angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams) {
+angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth) {
     $scope.items = [
         'Shortcut 1',
         'Shortcut 2',
         'Shortcut 3'
     ];
-    $scope.editUserOptions = [
+
+    var options = [
     {
         label: 'Edit profile',
         link: ''
@@ -18,10 +19,35 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         link: 'login'
     }
     ];
+    var optionsAuth = [
+    {
+        label: 'Edit profile',
+        link: ''
+    },
+    {
+        label: 'Settings',
+        link: ''
+    },
+    {
+        label: 'Log out',
+        link: 'logout'
+    }
+    ];
+
     $scope.$watch(function() {
-        return $rootScope.auth.name;
+        return djangoAuth.authenticated;;
     }, function() {
-        $scope.name = $rootScope.auth.name;
+        if(!djangoAuth.authenticated){
+            $scope.editUserOptions = options;
+        } else {
+            $scope.editUserOptions = optionsAuth;
+        }
+    }, true);
+    $scope.name = "";
+    $scope.$watch(function() {
+        return $rootScope.auth.username;
+    }, function() {
+        $scope.name = $rootScope.auth.username;
     }, true);
 
     $scope.gotoLink = function(choice) {
