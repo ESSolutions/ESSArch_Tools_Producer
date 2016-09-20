@@ -378,11 +378,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
-                tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, $scope.ip.locks);
+                if (tempProfileObject.profile_label.toUpperCase() == "SUBMIT_DESCRIPTION"){
+                }
+                $http({
+                    method: 'GET',
+                    url: $scope.ip.url
+                }).then(function(response){
+                    tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, response.data.locks);
+                });
                 $scope.selectRowCollapse.push(tempProfileObject);
                 $scope.updateIncludedProfiles(tempProfileObject);
-                console.log("finished profile object");
-                console.log(tempProfileObject);
+                // console.log("finished profile object");
+                // console.log(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
@@ -401,7 +408,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     $scope.profileLocked = function(profileObject, sa, locks) {
         profileObject.locked = false;
-        locks.forEach(function (lock) {
+              locks.forEach(function (lock) {
+                     if(lock.submission_agreement == sa) {
+            }
+            if(lock.profile == profileObject.profile.url) {
+            }
             if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
                 profileObject.locked = true;
             }
@@ -572,6 +583,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     $scope.lockProfile = function (profileObject) {
+        console.log(profileObject);
+        console.log($scope.profileToSave);
         $http({
             method: 'POST',
             url: profileObject.profile.url+"lock/",
@@ -582,6 +595,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }).then(function (response) {
             console.log("locked");
             $scope.profileToSave.locked = true;
+            profileObject.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             });
