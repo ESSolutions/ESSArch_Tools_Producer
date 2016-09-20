@@ -340,8 +340,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }), function errorCallback(response){
             alert(response.status);
         };
-        console.log("IP");
-        console.log($scope.ip);
     };
     function getProfile(profile_id, defaultProfile) {
         $http({
