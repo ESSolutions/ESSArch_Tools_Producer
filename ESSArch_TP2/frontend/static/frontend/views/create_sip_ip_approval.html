@@ -38,8 +38,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="select-sub-edit-eventlog-wrapper">
-            <div ng-show="select" class="select-view">
+        <div ng-if="select || subSelect || edit || eventlog || statusShow" class="select-sub-edit-eventlog-wrapper">
+            <div ng-if="select" class="select-view">
                 <p>{{ip.Label}}</p>
                 <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
                     <thead>
@@ -80,20 +80,20 @@
 
             </div>
 
-            <div ng-show="subSelect" class="sub-select-view">
+            <div ng-if="subSelect" class="sub-select-view">
                 {{selectProfile.entity}}
                 <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
                 <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
                 <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
             </div>
-            <div ng-show="edit" id="edit-veiw" class="edit-view" >
+            <div ng-if="edit" id="edit-veiw" class="edit-view" >
                 <form  novalidate>
                     <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                     </formly-form>
                 </form>
 
             </div>
-            <div  ng-show="eventlog" ng-show="eventlog" class="eventlog-view">
+            <div ng-if="eventlog" class="eventlog-view">
                 <form class="eventlog-form" ng-submit="createIp(ip)">
                     <div class="form-group">
                         <label>Status note</label>
