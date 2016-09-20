@@ -35,7 +35,7 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     ];
 
     $scope.$watch(function() {
-        return djangoAuth.authenticated;;
+        return djangoAuth.authenticated;
     }, function() {
         if(!djangoAuth.authenticated){
             $scope.editUserOptions = options;
