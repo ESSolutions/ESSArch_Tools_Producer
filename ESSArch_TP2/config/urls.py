@@ -23,6 +23,7 @@ from preingest import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'permissions', views.PermissionViewSet)
 router.register(r'archival-institutions', views.ArchivalInstitutionViewSet)
 router.register(r'archivist-organizations', views.ArchivistOrganizationViewSet)
 router.register(r'archival-types', views.ArchivalTypeViewSet)
