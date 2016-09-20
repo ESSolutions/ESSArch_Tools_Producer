@@ -67,7 +67,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     $scope.ipTableClick = function(row) {
         console.log("ipobject clicked. row: "+row.Label);
-        if($scope.select && $scope.ip== row){
+        if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
         } else {
             $http({
@@ -340,6 +340,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }), function errorCallback(response){
             alert(response.status);
         };
+        console.log("IP");
+        console.log($scope.ip);
     };
     function getProfile(profile_id, defaultProfile) {
         $http({
@@ -361,7 +363,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     newProfileType = true;
                 }
             }
-            console.log("newProfileType = " + newProfileType);
+            // console.log("newProfileType = " + newProfileType);
             if(newProfileType){
                 var tempProfileObject = {
                     profile_label: response.data.profile_type.toUpperCase(),
@@ -458,11 +460,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             })
             .success(function (response) {
                 alert(response.status);
-                //????????????
                 $scope.getSelectCollection($scope.saProfile.profile);
-                $scope.showHideAllProfiles();
-                $scope.showHideAllProfiles();
-                //????????????
+                $scope.edit = false;
+                $scope.eventlog = false;
             })
             .error(function(response) {
                 alert(response.status);

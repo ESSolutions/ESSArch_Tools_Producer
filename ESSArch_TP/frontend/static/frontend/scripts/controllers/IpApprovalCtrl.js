@@ -23,6 +23,7 @@ $scope.ipSelected = false;
         console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip== row){
             $scope.select = false;
+            $scope.eventlog = false;
             $scope.ipSelected = false;
         } else {
             $scope.select = true;
