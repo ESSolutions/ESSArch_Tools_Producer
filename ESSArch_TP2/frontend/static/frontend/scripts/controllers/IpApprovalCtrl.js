@@ -24,6 +24,8 @@ $scope.ipSelected = false;
         if($scope.select && $scope.ip== row){
             $scope.select = false;
             $scope.eventlog = false;
+            $scope.edit = false;
+            $scope.subSelect = false;
             $scope.ipSelected = false;
         } else {
             $scope.select = true;
@@ -49,6 +51,9 @@ $scope.ipSelected = false;
             $scope.selectProfile = row;
             vm.profileModel = row.profile.specification_data;
             vm.profileFields = row.profile.template;
+            vm.profileFields.forEach(function (field) {
+                field.templateOptions.disabled = true;
+            });
             $scope.subSelectProfile = "profile";
             $http({
                 method: 'OPTIONS',
@@ -291,6 +296,9 @@ $scope.ipSelected = false;
         }else {
             $scope.eventlog = false;
         }
+    }
+    $scope.goToPrepareIp = function() {
+        $state.go('home.createSip.prepareIp');
     }
 });
 
