@@ -25,6 +25,7 @@
     "bootstrap": "^3.3.6",
     "angular-bootstrap-grid-tree": "^0.4.0",
     "angular-ui-router": "^0.3.1",
-    "angular-cookies": "^1.5.8"
+    "angular-cookies": "^1.5.8",
+    "angular-permission": "^4.0.5"
   }
 }
