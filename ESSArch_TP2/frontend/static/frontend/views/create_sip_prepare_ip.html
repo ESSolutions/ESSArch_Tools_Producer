@@ -205,7 +205,7 @@
 
                     <div ng-if="eventlog" class="eventlog-view">
                         <form class="eventlog-form" ng-submit="saveModal()">
-                            <div class="form-group">
+                           <!-- <div class="form-group">
                                 <label>Status note</label>
                                 <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
                                     <option value="" selected="selected" disabled>select one</option>
@@ -214,7 +214,7 @@
                             <div class="form-group">
                                 <label>Signature</label>
                                 <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
-                            </div>
+                            </div>-->
                             <button type="submit" class="btn btn-info submit-button">Save profile</button>
                             <button type="button" ng-click="lockProfileModal()" class="btn btn-info submit-button">Lock profile</button>
                         </form>
