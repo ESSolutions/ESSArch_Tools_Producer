@@ -194,6 +194,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
         djangoAuth.profile().then(function(data) {
             $rootScope.auth = data;
+            console.log($rootScope.auth);
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
@@ -213,4 +214,5 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         console.log("when not logged in");
         console.log(status);
     });
+
 });
