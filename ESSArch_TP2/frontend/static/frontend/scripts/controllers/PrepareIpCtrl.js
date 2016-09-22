@@ -565,6 +565,31 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    $scope.removeIpModal = function (ipObject) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/remove-ip-modal.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.removeIp(ipObject);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    $scope.removeIp = function (ipObject) {
+        $http({
+            method: 'DELETE',
+            url: ipObject.url
+        }).then(function() {
+            console.log("ip removed");
+            $scope.ipRowCollection.splice($scope.ipRowCollection.indexOf(ipObject), 1);
+
+        });
+    }
     $scope.lockProfileModal = function () {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -603,8 +628,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: appConfig.djangoUrl+"information-packages/",
             data: {label: label}
-        }).then(function (){
+        }).then(function (response){
             console.log("new ip created, with label: " + label);
+            $scope.getListViewData();
         });
     }
     $scope.openModal = function(modalTemplate) {
@@ -645,6 +671,12 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInsta
           status: "locked"
       }
       $uibModalInstance.close($ctrl.data);
+  };
+  $ctrl.remove = function () {
+    $ctrl.data = {
+        status: "removed"
+    }
+    $uibModalInstance.close($ctrl.data);
   };
 
   $ctrl.cancel = function () {
