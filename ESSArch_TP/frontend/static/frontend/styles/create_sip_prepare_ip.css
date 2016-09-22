@@ -72,7 +72,7 @@ width: 100%;
     border-radius: 15px;
 }
 .event-view {
-    border-bottom-style: solid;
+    border-top-style: solid;
     border-color: #666;
     max-height: 500px;
     overflow-y: scroll;
@@ -81,8 +81,6 @@ width: 100%;
 
 }
 .select-view {
-    border-bottom-style: solid;
-    border-color: #666;
     max-height: 200px;
     overflow-y: scroll;
     margin: 5px;
@@ -107,7 +105,7 @@ width: 100%;
     padding: 10px;
 }
 .sub-select-view {
-    border-bottom-style: solid;
+    border-top-style: solid;
     border-color: #666;
     /*text-align: center;
     position: relative;*/
@@ -136,7 +134,7 @@ width: 100%;
 
 .edit-view {
     height: 60%;
-    border-bottom-style: solid;
+    border-top-style: solid;
     border-color: #666;
     max-height: 300px;
     overflow-y: scroll;
@@ -145,13 +143,15 @@ width: 100%;
 }
 
 .eventlog-view {
+    border-top-style: solid;
+    border-color: #666;
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
     height: 70px;
-    margin: 10px;
-    padding 5px;
+    margin: 5px;
+    padding: 5px;
     justify-content: space-between;
     -webkit-justify-content: space-between;
 }

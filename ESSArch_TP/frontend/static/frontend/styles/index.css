@@ -4,7 +4,8 @@ a {
 body {
     background-color: #e6e6ff;
     margin: 0px auto;
-    width: 1440px;
+    max-width: 1440px;
+    min-width: 1024px;
 }
 body.modal-open {
     overflow: auto;
@@ -155,7 +156,7 @@ body.modal-open[style] {
 
 }
 .datepicker {
-    width: 100px;
+    max-width: 100%;
     position: absolute;
 }
 .datepicker .form-control {
