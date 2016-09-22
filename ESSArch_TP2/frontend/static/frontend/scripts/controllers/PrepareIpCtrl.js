@@ -203,7 +203,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.profileClick = function(row){
         $scope.profileToSave = row;
         console.log(row);
-        if ($scope.selectProfile == row && $scope.subSelect){
+        if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
