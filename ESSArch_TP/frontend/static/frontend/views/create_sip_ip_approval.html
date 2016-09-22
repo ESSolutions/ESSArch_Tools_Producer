@@ -44,9 +44,11 @@
                 <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="column-entity">Entity</th>
-                            <th class="column-profile">Profile</th>
-                            <th class="column-state">State</th>
+                            <th class="info-popover column-enabled"><p uib-popover="If checked, profile is enabled" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Enabled</p></th>
+                            <th class="info-popover column-entity"><p uib-popover="Profile type" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Entity</p></th>
+                            <th class="info-popover column-profile"><p uib-popover="Select which profile to use" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Profile</p></th>
+                            <th class="info-popover column-state"><p uib-popover="State of current chosen profile" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">State</p></th>
+
                         </tr>
                     </thead>
 
@@ -55,9 +57,12 @@
                             <td>
                                 <div class="checkbox">
                                     <label>
-                                        <input ng-disabled="true" type="checkBox" checked="checked"><a>{{saProfile.entity}}</a></input>
+                                        <input type="checkBox" ng-disabled="true" checked="checked"></input>
                                     </label>
                                 </div>
+                            </td>
+                            <td>
+                                <a><p>{{saProfile.entity}}</p></a>
                             </td>
                             <td><select ng-disabled="true" class="form-control" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                             <td>{{currentSa.sa_status}}</td>
@@ -68,10 +73,14 @@
                             <td>
                                 <div class="checkbox">
                                     <label>
-                                        <input ng-disabled="true" type="checkBox" checked="checked"><a>{{row.profile_label}}</a></input>
+                                        <input type="checkBox" ng-disabled="true" checked></input>
                                     </label>
                                 </div>
                             </td>
+                            <td>
+                                <a ng-disabled="row.locked" ng-click="profileClick(row)">{{row.profile_label}}</a>
+                            </td>
+
                             <td><select ng-disabled="true" class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
                             <td>{{row.profile.status}}</td>
                         </tr>
