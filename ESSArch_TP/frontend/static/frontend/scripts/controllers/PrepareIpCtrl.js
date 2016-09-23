@@ -463,7 +463,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     vm.onSubmit = function(new_name) {
             var uri = $scope.profileToSave.profile.url+"save/";
-            var sendData = {"specification_data": vm.profileModel, "status_note": $scope.statusNote.id, "signature": $scope.signature, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
+            var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
             console.log(sendData);
             $http({
                 method: 'POST',
@@ -546,7 +546,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
-            $scope.approvedToCreate = false;
             vm.onSubmit(data.name);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
