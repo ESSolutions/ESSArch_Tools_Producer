@@ -650,6 +650,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     };
+    $scope.reloadPage = function (){
+        $state.reload();
+    }
 });
 angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
   var $ctrl = this;

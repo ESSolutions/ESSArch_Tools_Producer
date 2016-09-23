@@ -23,7 +23,6 @@
                                     </th>
                                 </tr>
                                 <th class="clickable" st-sort="label" class="column-label">Label</th>
-                                <th class="clickable" st-sort="content" class="column-label">Content</th>
                                 <th class="clickable" st-sort="responsible" class="column-label">Responsible</th>
                                 <th class="clickable" st-sort="date" class="column-label">Date</th>
                                 <th class="clickable" st-sort="state" class="column-label">State</th>
@@ -34,7 +33,6 @@
                         <tbody>
                             <tr st-select-row="row" ng-repeat="row in ipCollection" class="table-item">
                                 <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
-                                <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
                                 <td>{{row.Responsible}}</td>
                                 <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                                 <td class="clickable" ng-click="stateClicked(row)"><a href="">{{row.State}}</a></td>
@@ -49,12 +47,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="list-view-buttons">
+                    <!--<div class="list-view-buttons">
                         <button type="button" ng-click="toggleSelectView()" class="btn btn-default">Show/hide select view</button>
                         <button type="button" ng-click="toggleEditView()" class="btn btn-default">Show/hide edit view</button>
                         <button type="button" ng-click="toggleSubSelectView()" class="btn btn-default">Show/hide sub select view</button>
                         <button type="button" ng-click="toggleEventlogView()" class="btn btn-default">Show/hide sub eventlog view</button>
-                    </div>
+                    </div>-->
                 </div>
                 <div ng-if="select || subSelect || edit || eventlog || eventShow || statusShow" class="select-sub-edit-eventlog-wrapper">
                     <div ng-if="eventShow" class="event-view">
