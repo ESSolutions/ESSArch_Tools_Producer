@@ -194,7 +194,8 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
         djangoAuth.profile().then(function(data) {
             $rootScope.auth = data;
-            console.log($rootScope.auth);
+        }, function() {
+            $state.go('login');
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
