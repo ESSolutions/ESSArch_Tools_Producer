@@ -22,6 +22,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             field: "progress",
             displayName: "Status",
             cellTemplate: "<uib-progressbar class=\"progress-striped active\" animate=\"true\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+        },
+        {
+            cellTemplate: " <a style=\"color: #a00\">Undo</a></br ><a style=\"color: #0a0\">Redo</a>"
         }
     ];
 
