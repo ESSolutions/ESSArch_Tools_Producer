@@ -44,12 +44,6 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         }
     }, true);
     $scope.name = "";
-    $scope.$watch(function() {
-        return $rootScope.auth.username;
-    }, function() {
-        $scope.name = $rootScope.auth.username;
-    }, true);
-
     $scope.gotoLink = function(choice) {
         $state.go(choice.link)
     };
