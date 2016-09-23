@@ -27,14 +27,20 @@
             </div>
             <div class="menu-task-wrapper">
                 <div class="menu" ng-controller="TabsCtrl">
-                    <ul class="nav nav-tabs" ng-controller="TabsCtrl">
-                        <li ng-class="tabClass(tab)" ng-repeat="tab in tabs" tab="tab"><a ui-sref="{{tab.link}}" ng-click="setSelectedTab(tab)">{{tab.label}}</a></li>
-                    </ul>
-
+                    <uib-tabset
+                                  active="isActive"
+                        >
+                        <uib-tab
+                            ng-init="isActive = getActiveTab()"
+                                  ng-repeat="tab in tabs"
+                                  heading="{{tab.label}}"
+                                  select="setActiveTab($index)"
+                                  ui-sref="{{tab.link}}">
+                        </uib-tab>
+                    </uib-tabset>
                 </div>
                 <div ng-controller="PrepareIpCtrl" class="tasks-icons">
-                    <span class="glyphicon glyphicon-refresh"></span>
-                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span ng-click="reloadPage()" class="glyphicon glyphicon-refresh"></span>
                     <span class="glyphicon glyphicon-print"></span>
                     <span ng-click="redirectAdmin()" class="glyphicon glyphicon-cog"></span>
                     <span class="glyphicon glyphicon-envelope"></span>
