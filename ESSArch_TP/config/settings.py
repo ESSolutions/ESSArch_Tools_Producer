@@ -150,6 +150,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 # Celery settings
 BROKER_URL = 'amqp://guest:guest@localhost:5672/etp'
 CELERY_RESULT_BACKEND = 'amqp://'
+CELERY_IMPORTS = ('preingest.tasks', 'preingest.tests.tasks',)
 
 try:
     from local_etp2_settings import *
