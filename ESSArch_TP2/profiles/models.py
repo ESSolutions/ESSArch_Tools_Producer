@@ -56,6 +56,9 @@ class ProfileQuerySet(models.query.QuerySet):
                 status=2
             )
 
+        if not profile_set:
+            return None
+
         return profile_set.first().profile
 
 
