@@ -23,15 +23,10 @@
 # Create your models here.
 from django.db import models
 
-from configuration.models import Path
-
-from preingest.models import ProcessStep, ProcessTask
-
 from profiles.models import (
     ProfileLock, SubmissionAgreement as SA
 )
 
-import os
 import uuid
 
 
