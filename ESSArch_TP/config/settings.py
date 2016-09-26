@@ -120,6 +120,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Rest Auth serializers
+# http://django-rest-auth.readthedocs.io/en/latest/configuration.html
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'preingest.serializers.UserSerializer'
+}
+
 
 
 # Internationalization
