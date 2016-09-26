@@ -55,34 +55,34 @@
                     <tbody>
                         <tr>
                             <td>
-                                <div class="checkbox">
+                                <div class="checkbox table-col">
                                     <label>
                                         <input type="checkBox" ng-disabled="true" checked="checked"></input>
                                     </label>
                                 </div>
                             </td>
                             <td>
-                                <a><p>{{saProfile.entity}}</p></a>
+                                <a class="table-col"><p>{{saProfile.entity}}</p></a>
                             </td>
-                            <td><select ng-disabled="true" class="form-control" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
-                            <td>{{currentSa.sa_status}}</td>
+                            <td><select ng-disabled="true" class="form-control table-col" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                            <td><p class="table-col">{{currentSa.sa_status}}</p></td>
                             <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
                         </tr>
 
                         <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
                             <td>
-                                <div class="checkbox">
+                                <div class="checkbox table-col">
                                     <label>
                                         <input type="checkBox" ng-disabled="true" checked></input>
                                     </label>
                                 </div>
                             </td>
                             <td>
-                                <a ng-disabled="row.locked" ng-click="profileClick(row)">{{row.profile_label}}</a>
+                                <a class="table-col" ng-disabled="row.locked" ng-click="profileClick(row)">{{row.profile_label}}</a>
                             </td>
 
-                            <td><select ng-disabled="true" class="form-control" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
-                            <td>{{row.profile.status}}</td>
+                            <td><select ng-disabled="true" class="form-control table-col" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
+                            <td><p class="table-col">{{row.profile.status}}</p></td>
                         </tr>
                     </tbody>
                 </table>
