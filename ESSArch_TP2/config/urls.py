@@ -18,27 +18,56 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
-from preingest import views
+
+from configuration.views import (
+    AgentViewSet,
+    EventTypeViewSet,
+    ParameterViewSet,
+    PathViewSet,
+    SchemaViewSet,
+)
+
+from ip.views import (
+    ArchivalInstitutionViewSet,
+    ArchivistOrganizationViewSet,
+    ArchivalTypeViewSet,
+    ArchivalLocationViewSet,
+    EventIPViewSet,
+    InformationPackageViewSet,
+)
+
+from preingest.views import (
+    GroupViewSet,
+    PermissionViewSet,
+    ProcessStepViewSet,
+    ProcessTaskViewSet,
+    UserViewSet,
+)
+
+from profiles.views import (
+    ProfileViewSet,
+    SubmissionAgreementViewSet,
+)
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-router.register(r'permissions', views.PermissionViewSet)
-router.register(r'archival-institutions', views.ArchivalInstitutionViewSet)
-router.register(r'archivist-organizations', views.ArchivistOrganizationViewSet)
-router.register(r'archival-types', views.ArchivalTypeViewSet)
-router.register(r'archival-locations', views.ArchivalLocationViewSet)
-router.register(r'information-packages', views.InformationPackageViewSet)
-router.register(r'steps', views.ProcessStepViewSet)
-router.register(r'tasks', views.ProcessTaskViewSet)
-router.register(r'events', views.EventIPViewSet)
-router.register(r'event-types', views.EventTypeViewSet)
-router.register(r'submission-agreements', views.SubmissionAgreementViewSet)
-router.register(r'profiles', views.ProfileViewSet)
-router.register(r'agents', views.AgentViewSet)
-router.register(r'parameters', views.ParameterViewSet)
-router.register(r'paths', views.PathViewSet)
-router.register(r'schemas', views.SchemaViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'permissions', PermissionViewSet)
+router.register(r'archival-institutions', ArchivalInstitutionViewSet)
+router.register(r'archivist-organizations', ArchivistOrganizationViewSet)
+router.register(r'archival-types', ArchivalTypeViewSet)
+router.register(r'archival-locations', ArchivalLocationViewSet)
+router.register(r'information-packages', InformationPackageViewSet)
+router.register(r'steps', ProcessStepViewSet)
+router.register(r'tasks', ProcessTaskViewSet)
+router.register(r'events', EventIPViewSet)
+router.register(r'event-types', EventTypeViewSet)
+router.register(r'submission-agreements', SubmissionAgreementViewSet)
+router.register(r'profiles', ProfileViewSet)
+router.register(r'agents', AgentViewSet)
+router.register(r'parameters', ParameterViewSet)
+router.register(r'paths', PathViewSet)
+router.register(r'schemas', SchemaViewSet)
 
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
