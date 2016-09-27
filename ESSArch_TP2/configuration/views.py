@@ -3,7 +3,6 @@ from configuration.models import (
     EventType,
     Parameter,
     Path,
-    Schema
 )
 
 from configuration.serializers import(
@@ -11,7 +10,6 @@ from configuration.serializers import(
     EventTypeSerializer,
     ParameterSerializer,
     PathSerializer,
-    SchemaSerializer
 )
 
 from rest_framework import viewsets
@@ -43,10 +41,3 @@ class PathViewSet(viewsets.ModelViewSet):
     """
     queryset = Path.objects.all()
     serializer_class = PathSerializer
-
-class SchemaViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows schemas to be viewed or edited.
-    """
-    queryset = Schema.objects.all()
-    serializer_class = SchemaSerializer

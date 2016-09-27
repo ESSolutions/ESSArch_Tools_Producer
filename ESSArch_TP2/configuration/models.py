@@ -63,19 +63,6 @@ class Path(models.Model):
         verbose_name = 'Path'
 
 
-class Schema(models.Model):
-    """
-    XML schemas and namespaces
-    """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity = models.CharField(max_length=60, unique=True)
-    value = models.CharField(max_length=70)
-
-    class Meta:
-        ordering = ["entity"]
-        verbose_name = 'XML Schema'
-
-
 class EventType(models.Model):
     """
     EventType

@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 """
 
-from configuration.models import Parameter, Path, Schema, EventType, Agent
+from configuration.models import Parameter, Path, EventType, Agent
 from django.contrib import admin
 
 
@@ -48,18 +48,6 @@ class PathAdmin(admin.ModelAdmin):
     fields = ('entity', 'value')
 
 admin.site.register(Path, PathAdmin)
-
-
-class SchemaAdmin(admin.ModelAdmin):
-    """
-    XML schemas and namespaces
-    """
-    list_display = ('entity', 'value')
-    search_fields = ('entity',)
-    readonly_fields = ('entity',)
-    fields = ('entity', 'value')
-
-admin.site.register(Schema, SchemaAdmin)
 
 
 class EventTypeAdmin(admin.ModelAdmin):

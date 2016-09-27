@@ -298,6 +298,7 @@ class Profile(models.Model):
     type = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
     label = models.CharField(max_length=255)
+    schemas = jsonfield.JSONField(null=True)
     representation_info = models.CharField(max_length=255)
     preservation_descriptive_info = models.CharField(max_length=255)
     supplemental = models.CharField(max_length=255)
