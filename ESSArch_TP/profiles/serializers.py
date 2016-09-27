@@ -12,7 +12,7 @@ class ProfileLockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProfileLock
         fields = (
-            'id', 'submission_agreement', 'profile',
+            'url', 'id', 'submission_agreement', 'profile',
             'information_package',
         )
 
