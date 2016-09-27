@@ -7,23 +7,13 @@ from profiles.models import (
     ProfileRel,
 )
 
-class ProfileLockSerializer(serializers.ModelSerializer):
-    submission_agreement = serializers.HyperlinkedIdentityField(
-        view_name='submissionagreement-detail',
-        lookup_field="submission_agreement_id",
-        lookup_url_kwarg="pk"
-    )
-
-    profile = serializers.HyperlinkedIdentityField(
-        view_name='profile-detail',
-        lookup_field="profile_id",
-        lookup_url_kwarg="pk"
-    )
+class ProfileLockSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ProfileLock
         fields = (
             'id', 'submission_agreement', 'profile',
+            'information_package',
         )
 
 

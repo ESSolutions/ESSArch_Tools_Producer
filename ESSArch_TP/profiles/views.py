@@ -10,6 +10,7 @@ from ip.models import (
 
 from profiles.serializers import (
     ProfileSerializer,
+    ProfileLockSerializer,
     SubmissionAgreementSerializer
 )
 
@@ -40,6 +41,10 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 sa, new_profile
             )
         })
+
+class ProfileLockViewSet(viewsets.ModelViewSet):
+    queryset = ProfileLock.objects.all()
+    serializer_class = ProfileLockSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """
