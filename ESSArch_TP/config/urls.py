@@ -24,7 +24,6 @@ from configuration.views import (
     EventTypeViewSet,
     ParameterViewSet,
     PathViewSet,
-    SchemaViewSet,
 )
 
 from ip.views import (
@@ -67,7 +66,6 @@ router.register(r'profiles', ProfileViewSet)
 router.register(r'agents', AgentViewSet)
 router.register(r'parameters', ParameterViewSet)
 router.register(r'paths', PathViewSet)
-router.register(r'schemas', SchemaViewSet)
 
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),

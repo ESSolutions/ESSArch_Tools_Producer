@@ -27,7 +27,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from configuration.models import Parameter, Path, Schema, EventType, Agent
+from configuration.models import Parameter, Path, EventType, Agent
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC
@@ -39,7 +39,6 @@ def installDefaultConfiguration(): # Install default configuration
     createDefaultUsers()	# Default users and groups
     installDefaultParameters()	# Default Parameters
     installDefaultPaths()	# Default Paths
-    installDefaultSchemas()	# Default XML Schemas
     installDefaultEventTypes()	# Default events
     installDefaultAgent()	# Default Agent
 
@@ -188,52 +187,6 @@ def installDefaultPaths(): # default paths
             pass
     
     return 0
-
-    
-def installDefaultSchemas(): # default schema profiles for Sweden and Norway
-    
-    # First remove all existing data 
-    Schema.objects.all().delete()
-
-    # create schema dictionaries 
-    dct = {
-          'addml_namespace':'http://xml.ra.se/addml',
-          'addml_schemalocation':'http://xml.ra.se/addml/ra_addml.xsd',
-          'erms_schemalocation': 'http://xml.ra.se/e-arkiv/ERMS/version10/Arendehantering.xsd', # internal schema
-          'mets_namespace': 'http://www.loc.gov/METS/',
-          #'mets_profile': 'http://xml.ra.se/METS/RA_METS_eARD.xml',
-          #'mets_profile': 'http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS.xml',
-          'mets_profile': 'http://xml.ra.se/e-arkiv/METS/version10/CommonSpecificationSwedenPackageProfile.xml',
-          'mets_schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd', # public schema
-          #'mets_schemalocation': 'http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS_mets.xsd', # public schema
-          #'mets_schemalocation': 'http://xml.ra.se/METS/RA_METS_eARD.xsd', # internal schema
-          #'mets_schemalocation': 'http://xml.ra.se/e-arkiv/METS/eARD_Paket_FGS_mets.xsd', # public schema
-          'mix_namespace':'http://xml.ra.se/MIX',
-          'mix_schemalocation':'http://xml.ra.se/MIX/RA_MIX.xsd',
-          'mods_namespace':'http://www.loc.gov/mods/v3',
-          'personnel_schemalocation': 'http://xml.ra.se/e-arkiv/Personnel/version10/Personal.xsd', # internal schema
-          'premis_namespace':'http://xml.ra.se/PREMIS',
-          #'premis_schemalocation':'http://xml.ra.se/PREMIS/RA_PREMIS.xsd',
-          'premis_schemalocation':'http://xml.ra.se/PREMIS/ESS/RA_PREMIS_PreVersion.xsd',
-          'premis_version':'2.0',
-          'xhtml_namespace':'http://www.w3.org/1999/xhtml',
-          'xhtml_schemalocation':'http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd',
-          'xlink_namespace':'http://www.w3.org/1999/xlink',
-          'xsd_namespace':'http://www.w3.org/2001/XMLSchema',
-          'xsi_namespace':'http://www.w3.org/2001/XMLSchema-instance',
-          }
-
-    # create according to model with two fields
-    for key in dct :
-        print >> sys.stderr, "**", key
-        try:
-            le = Schema( entity=key, value=dct[key] )
-            le.save()
-        except:
-            pass
-    
-    return 0
-
 
 def installDefaultEventTypes(): # default events
 

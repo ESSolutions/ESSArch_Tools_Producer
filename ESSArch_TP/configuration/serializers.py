@@ -5,7 +5,6 @@ from configuration.models import (
     EventType,
     Parameter,
     Path,
-    Schema,
 )
 
 
@@ -34,11 +33,4 @@ class PathSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Path
-        fields = '__all__'
-
-class SchemaSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ReadOnlyField()
-
-    class Meta:
-        model = Schema
         fields = '__all__'
