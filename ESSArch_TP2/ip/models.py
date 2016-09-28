@@ -23,6 +23,7 @@
 # Create your models here.
 from collections import OrderedDict
 
+from django.conf import settings
 from django.db import models
 
 from configuration.models import (
@@ -239,12 +240,14 @@ class InformationPackage(models.Model):
 
         if include_premis:
             premis_path = os.path.join(ip_prepare_path, "premis.xml")
-            with open('templates/JSONPremisTemplate.json') as data_file:
+            fname = os.path.join(settings.BASE_DIR, 'templates/JSONPremisTemplate.json')
+            with open(fname) as data_file:
                 premis_template = json.load(data_file)
             filesToCreate[premis_path] = premis_template
 
         mets_path = os.path.join(ip_prepare_path, "mets.xml")
-        with open('templates/JSONTemplate.json') as data_file:
+        fname = os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')
+        with open(fname) as data_file:
             mets_template = json.load(data_file)
         filesToCreate[mets_path] = mets_template
 
