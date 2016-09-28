@@ -398,8 +398,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
                 url: ip.url+"create/"
             })
             .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
-                alert(response.status);
             }), function errorCallback(response){
                 alert(response.status);
             };
