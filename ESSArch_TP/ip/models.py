@@ -21,13 +21,23 @@
 """
 
 # Create your models here.
+from collections import OrderedDict
+
 from django.db import models
+
+from configuration.models import (
+    Path,
+)
+
+from preingest.models import (
+    ProcessStep, ProcessTask,
+)
 
 from profiles.models import (
     ProfileLock, SubmissionAgreement as SA
 )
 
-import uuid
+import json, os, uuid
 
 
 class ArchivalInstitution(models.Model):
@@ -132,6 +142,221 @@ class InformationPackage(models.Model):
         default=None,
         null=True
     )
+
+    def create(self, include_premis=False):
+        info = {
+            "xmlns:mets": "http://www.loc.gov/METS/",
+            "xmlns:ext": "ExtensionMETS",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+            "LABEL": "Test of SIP 1",
+            "TYPE": "Personnel",
+            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+            "CREATEDATE": "2016-06-08T10:44:00+02:00",
+            "RECORDSTATUS": "NEW",
+            "ext:OAISTYPE": "SIP",
+            "agentName": "name",
+            "agentNote": "note",
+            "REFERENCECODE": "SE/RA/123456/24/F",
+            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+            "MetsIdentifier": "sip.xml",
+            "filename": "sip.txt",
+            "SMLabel": "Profilestructmap",
+            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
+            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+            "LOCTYPE": "URL",
+            "MDTYPE": "PREMIS",
+            "xlink:href": "file:///metadata/premis.xml",
+            "xlink:type": "simple",
+            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "agents": [
+                {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Arkivbildar namn",
+                    "note": "VAT:SE201345098701"
+                }, {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "OTHER",
+                    "OTHERTYPE": "SOFTWARE",
+                    "name": "By hand Systems",
+                    "note": "1.0.0"
+                }, {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "OTHER",
+                    "OTHERTYPE": "SOFTWARE",
+                    "name": "Other By hand Systems",
+                    "note": "1.2.0"
+                }, {
+                    "ROLE": "CREATOR",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Arkivbildar namn",
+                    "note": "HSA:SE2098109810-AF87"
+                }, {
+                    "ROLE": "OTHER",
+                    "OTHERROLE": "PRODUCER",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Sydarkivera",
+                    "note": "HSA:SE2098109810-AF87"
+                }, {
+                    "ROLE": "OTHER",
+                    "OTHERROLE": "SUBMITTER",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Arkivbildare",
+                    "note": "HSA:SE2098109810-AF87"
+                }, {
+                    "ROLE": "IPOWNER",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Informations agare",
+                    "note": "HSA:SE2098109810-AF87"
+                }, {
+                    "ROLE": "EDITOR",
+                    "TYPE": "ORGANIZATION",
+                    "name": "Axenu",
+                    "note": "VAT:SE9512114233"
+                }, {
+                    "ROLE": "CREATOR",
+                    "TYPE": "INDIVIDUAL",
+                    "name": "Simon Nilsson",
+                    "note": "0706758942, simonseregon@gmail.com"
+                }
+            ],
+        }
+
+        # ensure premis is created before mets
+        filesToCreate = OrderedDict()
+
+        prepare_path = Path.objects.get(
+            entity="path_preingest_prepare"
+        ).value
+
+        ip_prepare_path = os.path.join(prepare_path, str(self.pk))
+
+        if include_premis:
+            premis_path = os.path.join(ip_prepare_path, "premis.xml")
+            with open('templates/JSONPremisTemplate.json') as data_file:
+                premis_template = json.load(data_file)
+            filesToCreate[premis_path] = premis_template
+
+        mets_path = os.path.join(ip_prepare_path, "mets.xml")
+        with open('templates/JSONTemplate.json') as data_file:
+            mets_template = json.load(data_file)
+        filesToCreate[mets_path] = mets_template
+
+        t1 = ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+                "folderToParse": os.path.join(ip_prepare_path, "data")
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        generate_xml_step = ProcessStep.objects.create(
+            name="Generate XML",
+        )
+        generate_xml_step.tasks = [t1]
+        generate_xml_step.save()
+
+        filename = "foo.csv"
+        fileformat = "Comma Seperated Spreadsheet"
+        xmlfile = "premis.xml"
+        schemafile = "premis.xsd"
+        logical = "logical"
+        physical = "physical"
+        checksum = uuid.uuid4()
+        #dirname = os.path.join(ip_prepare_path, "data")
+        tarname = os.path.join(ip_prepare_path)
+        zipname = os.path.join(ip_prepare_path)
+
+        t2 = ProcessTask.objects.create(
+            name="preingest.tasks.ValidateFileFormat",
+            params={
+                "filename": filename,
+                "fileformat": fileformat,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        t3 = ProcessTask.objects.create(
+            name="preingest.tasks.ValidateXMLFile",
+            params={
+                "xml_filename": xmlfile,
+                "schema_filename": schemafile,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        t4 = ProcessTask.objects.create(
+            name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+            params={
+                "logical": logical,
+                "physical": physical,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        t5 = ProcessTask.objects.create(
+            name="preingest.tasks.ValidateIntegrity",
+            params={
+                "filename": filename,
+                "checksum": checksum,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        validate_step = ProcessStep.objects.create(
+            name="Validation",
+        )
+        validate_step.tasks = [t2, t3, t4, t5]
+        validate_step.save()
+
+        t6 = ProcessTask.objects.create(
+            name="preingest.tasks.CreateTAR",
+            params={
+                "dirname": ip_prepare_path,
+                "tarname": tarname,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        t7 = ProcessTask.objects.create(
+            name="preingest.tasks.CreateZIP",
+            params={
+                "dirname": ip_prepare_path,
+                "zipname": zipname,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        create_sip_step = ProcessStep.objects.create(
+                name="Create SIP"
+        )
+        create_sip_step.tasks = [t6, t7]
+        create_sip_step.save()
+
+        main_step = ProcessStep.objects.create(
+            name="Create IP",
+        )
+        main_step.child_steps = [
+            generate_xml_step, validate_step, create_sip_step
+        ]
+        main_step.information_package = self
+        main_step.save()
+        main_step.run()
 
     def status(self):
         steps = self.steps.all()
