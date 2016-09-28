@@ -38,7 +38,7 @@
                                 <td class="clickable" ng-click="stateClicked(row)"><a href="">{{row.State}}</a></td>
                                 <td class="clickable" ng-click="eventsClick(row)"><a href="">{{'Events'}}</a></td>
                                 <td>
-                                    <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
+                                    <uib-progressbar class="progress active" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
 
                                 </td>
                                 <td>
@@ -81,7 +81,7 @@
                                         <td><a ng-click="toggleCollapse(step)">{{step.url}}</a></td>
                                         <td>{{step.name}}</td>
                                         <td>
-                                        <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{step.progress}}</b></uib-progressbar>
+                                        <uib-progressbar class="progress active" value="row.progress" type="success"><b>{{step.progress}}</b></uib-progressbar>
                                         </td>
                                         </tr>
                                         </div>
@@ -93,7 +93,7 @@
                                             <td>{{task.url}}</td>
                                             <td>{{task.name}}</td>
                                             <td>
-                                                <uib-progressbar class="progress-striped active" animate="true" value="row.progress" type="success"><b>{{task.progress}}</b></uib-progressbar>
+                                                <uib-progressbar class="progress active" value="row.progress" type="success"><b>{{task.progress}}</b></uib-progressbar>
                                             </td>
                                         <tr ng-repeat="task in tasks">
                                             </tr>
