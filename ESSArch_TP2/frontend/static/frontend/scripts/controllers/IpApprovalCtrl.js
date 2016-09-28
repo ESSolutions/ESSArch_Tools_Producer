@@ -161,9 +161,16 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
              $scope.subSelect = false;
             $scope.ipSelected = false;
         } else {
-            $scope.select = true;
-            $scope.ipSelected = true;
-            $scope.getSaProfiles(row);
+         $http({
+                method: 'GET',
+                url: row.url
+            }).then(function (response) {
+                $scope.ip = response.data;
+                $scope.select = true;
+                $scope.ipSelected = true;
+                $scope.getSaProfiles(response.data);
+            });
+
         }
         $scope.statusShow = false;
         $scope.ip= row;
@@ -328,27 +335,18 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
-                $http({
-                    method: 'GET',
-                    url: $scope.ip.url
-                }).then(function(response){
-                    tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, response.data.locks);
-                });
+                tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, $scope.ip.locks);
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
         };
     };
-     $scope.profileLocked = function(profileObject, sa, locks) {
-        profileObject.locked = "";
-              locks.forEach(function (lock) {
-                     if(lock.submission_agreement == sa) {
-            }
-            if(lock.profile == profileObject.profile.url) {
-            }
+    $scope.profileLocked = function(profileObject, sa, locks) {
+        profileObject.locked = false;
+        locks.forEach(function (lock) {
             if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
-                profileObject.locked = "Locked";
+                profileObject.locked = true;
             }
         });
         return profileObject;
