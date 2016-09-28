@@ -440,14 +440,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     $scope.profileLocked = function(profileObject, sa, locks) {
-        profileObject.locked = false;
+        profileObject.locked = "";
               locks.forEach(function (lock) {
                      if(lock.submission_agreement == sa) {
             }
             if(lock.profile == profileObject.profile.url) {
             }
             if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
-                profileObject.locked = true;
+                profileObject.locked = "Locked";
             }
         });
         return profileObject;
@@ -651,8 +651,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }).then(function (response) {
             console.log("locked");
-            $scope.profileToSave.locked = true;
-            profileObject.locked = true;
+            $scope.profileToSave.locked = "Locked";
+            profileObject.locked = "Locked";
             $scope.edit = false;
             $scope.eventlog = false;
             });

@@ -328,13 +328,31 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
+                $http({
+                    method: 'GET',
+                    url: $scope.ip.url
+                }).then(function(response){
+                    tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, response.data.locks);
+                });
                 $scope.selectRowCollapse.push(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
         };
     };
-
+     $scope.profileLocked = function(profileObject, sa, locks) {
+        profileObject.locked = "";
+              locks.forEach(function (lock) {
+                     if(lock.submission_agreement == sa) {
+            }
+            if(lock.profile == profileObject.profile.url) {
+            }
+            if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
+                profileObject.locked = "Locked";
+            }
+        });
+        return profileObject;
+    }
     //Getting data for list view
     $scope.getListViewData = function() {
         if(!$scope.ipSelected){
