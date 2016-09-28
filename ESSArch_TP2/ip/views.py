@@ -114,18 +114,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             processstep_pos=1,
         )
 
-        t3 = ProcessTask.objects.create(
-            name="preingest.tasks.CreateEvent",
-            params={
-                "detail": "Prepare IP",
-            },
-            result_params={
-                "information_package": t1.pk
-            },
-            processstep_pos=2,
-        )
-
-        step.tasks = [t1, t2, t3]
+        step.tasks = [t1, t2]
         step.save()
         step.run()
 
