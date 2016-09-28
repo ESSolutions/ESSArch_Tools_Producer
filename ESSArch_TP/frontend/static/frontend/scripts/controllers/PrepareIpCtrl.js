@@ -110,11 +110,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 url: row.url
             }).then(function (response) {
                 $scope.ip = response.data;
+                $scope.select = true;
+                $scope.eventShow = false;
+                $scope.statusShow = false;
+                $scope.getSaProfiles(response.data);
             });
-            $scope.select = true;
-            $scope.eventShow = false;
-            $scope.statusShow = false;
-            $scope.getSaProfiles(row);
         }
         $scope.statusShow = false;
     };
@@ -411,18 +411,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
-                if (tempProfileObject.profile_label.toUpperCase() == "SUBMIT_DESCRIPTION"){
-                }
-                $http({
-                    method: 'GET',
-                    url: $scope.ip.url
-                }).then(function(response){
-                    tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, response.data.locks);
-                });
+                tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, $scope.ip.locks);
                 $scope.selectRowCollapse.push(tempProfileObject);
                 $scope.updateIncludedProfiles(tempProfileObject);
-                // console.log("finished profile object");
-                // console.log(tempProfileObject);
             }
         }), function errorCallback(response){
             alert(response.status);
@@ -440,14 +431,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     $scope.profileLocked = function(profileObject, sa, locks) {
-        profileObject.locked = "";
-              locks.forEach(function (lock) {
-                     if(lock.submission_agreement == sa) {
-            }
-            if(lock.profile == profileObject.profile.url) {
-            }
+        profileObject.locked = false;
+        locks.forEach(function (lock) {
             if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
-                profileObject.locked = "Locked";
+                profileObject.locked = true;
             }
         });
         return profileObject;
@@ -651,8 +638,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }).then(function (response) {
             console.log("locked");
-            $scope.profileToSave.locked = "Locked";
-            profileObject.locked = "Locked";
+            $scope.profileToSave.locked = true;
+            profileObject.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             });
