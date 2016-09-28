@@ -21,12 +21,34 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         {
             field: "progress",
             displayName: "Status",
-            cellTemplate: "<uib-progressbar class=\"progress-striped active\" animate=\"true\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+            cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress-striped active\" animate=\"true\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
         },
         {
-            cellTemplate: " <a style=\"color: #a00\">Undo</a></br ><a style=\"color: #0a0\">Redo</a>"
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" style=\"color: #a00\">Undo</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\"style=\"color: #0a0\">Redo</a>"
         }
     ];
+    $scope.myTreeControl = {};
+    $scope.myTreeControl.scope = this;
+    $scope.myTreeControl.scope.taskStepUndo = function(branch) {
+        $http({
+            method: 'POST',
+            url: branch.url+"undo/"
+        }).then(function(response) {
+            console.log("UNDO");
+        }, function() {
+            console.log("error");
+        });
+    };
+     $scope.myTreeControl.scope.taskStepRedo = function(branch){
+        $http({
+            method: 'POST',
+            url: branch.url+"retry/"
+        }).then(function(response) {
+            console.log("REDO");
+        }, function() {
+            console.log("error");
+        });
+    };
 
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
@@ -52,14 +74,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.statusShow = true;
             $scope.edit = false;
 
-            $http({
-                method: 'GET',
-                url: row.url,
-            }).then(function(response){
-                ip = response.data
-                $scope.tree_data = $scope.getStatusViewData(ip).steps;
-            });
-
+           $scope.statusViewUpdate(row);
             //$scope.tree_data = $scope.parentStepsRowCollection;
         }
         $scope.subSelect = false;
@@ -67,7 +82,24 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.select = false;
         $scope.ip= row;
     };
+    $scope.getTreeData = function(row) {
+     $http({
+                method: 'GET',
+                url: row.url,
+            }).then(function(response){
+                ip = response.data
+                $scope.tree_data = $scope.getStatusViewData(ip).steps;
+            });
 
+    }
+    $scope.statusViewUpdate = function(row){
+            $scope.getTreeData(row);
+        if($scope.statusShow && false){
+        $timeout(function() {
+            $scope.getTreeData(row);
+            $scope.statusViewUpdate(row);
+        }, 5000)}
+    };
     $scope.ipTableClick = function(row) {
         console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip.id== row.id){

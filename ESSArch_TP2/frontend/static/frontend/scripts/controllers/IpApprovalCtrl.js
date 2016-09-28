@@ -1,31 +1,164 @@
 angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout, $state, $stateParams){
     var vm = this;
-    // List view
-    $scope.changePath= function(path) {
-        myService.changePath(path);
-    };
-$scope.ipSelected = false;
-    $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip== row){
-            $scope.statusShow = false;
-        } else {
-            $scope.statusShow = true;
-            $scope.edit = false;
-            $scope.getStatusViewData(row);
+    $scope.tree_data = [];
+     $scope.expanding_property = {
+            field: "name",
+            displayName: "Label",
+        };
+    $scope.col_defs = [
+        {
+            field: "user",
+            displayName: "Responsible",
+        },
+        {
+            field: "time_created",
+            displayName: "Date"
+        },
+        {
+            field: "status",
+            displayName: "State",
+        },
+        {
+            field: "progress",
+            displayName: "Status",
+            cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress-striped active\" animate=\"true\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+        },
+        {
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" style=\"color: #a00\">Undo</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\"style=\"color: #0a0\">Redo</a>"
         }
-        $scope.subSelect = false;
-        $scope.eventlog = false;
-        $scope.select = false;
-        $scope.ip= row;
+    ];
+    $scope.myTreeControl = {};
+    $scope.myTreeControl.scope = this;
+    $scope.myTreeControl.scope.taskStepUndo = function(branch) {
+        $http({
+            method: 'POST',
+            url: branch.url+"undo/"
+        }).then(function(response) {
+            console.log("UNDO");
+        }, function() {
+            console.log("error");
+        });
+    };
+     $scope.myTreeControl.scope.taskStepRedo = function(branch){
+        $http({
+            method: 'POST',
+            url: branch.url+"retry/"
+        }).then(function(response) {
+            console.log("REDO");
+        }, function() {
+            console.log("error");
+        });
+    };
+     // List view
+     $scope.changePath= function(path) {
+         myService.changePath(path);
+     };
+     $scope.ipSelected = false;
+     $scope.stateClicked = function(row){
+         if($scope.statusShow && $scope.ip== row){
+             $scope.statusShow = false;
+         } else {
+             $scope.statusShow = true;
+             $scope.edit = false;
+
+             $scope.statusViewUpdate(row);
+             //$scope.tree_data = $scope.parentStepsRowCollection;
+         }
+         $scope.subSelect = false;
+         $scope.eventlog = false;
+         $scope.select = false;
+         $scope.ip= row;
+     };
+     $scope.getTreeData = function(row) {
+         $http({
+             method: 'GET',
+             url: row.url,
+         }).then(function(response){
+             ip = response.data
+                 $scope.tree_data = $scope.getStatusViewData(ip).steps;
+         });
+
+     }
+     $scope.statusViewUpdate = function(row){
+         $scope.getTreeData(row);
+         if($scope.statusShow && false){
+             $timeout(function() {
+                 $scope.getTreeData(row);
+                 $scope.statusViewUpdate(row);
+             }, 5000)}
+     };
+    //Getting data for status view
+    $scope.getStatusViewData = function(row) {
+
+        row.steps.forEach(function(step){
+            step.children = getChildSteps(step.child_steps);
+            step.tasks.forEach(function(task){
+                task.label = task.name;
+            });
+            step.children = step.children.concat(step.tasks);
+            step.isCollapsed = false;
+            step.tasksCollapsed = true;
+        });
+
+        return row;
+
     };
 
-    $scope.ipTableClick = function(row) {
-        console.log("ipobject clicked. row: "+row.Label);
-        if($scope.select && $scope.ip== row){
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.edit = false;
-            $scope.subSelect = false;
+    //Helper functions for getStatusViewData
+    function getChildSteps(childSteps) {
+        childSteps.forEach(function(child){
+            child.child_steps = getChildSteps(child.child_steps);
+            child.tasks.forEach(function(task){
+                task.user = child.user;
+                task.time_created = task.time_started;
+            });
+
+            child.children = child.child_steps.concat(child.tasks);
+            if(child.children.length == 0){
+                child.icons = {
+                    iconLeaf: "glyphicon glyphicon-alert"
+                };
+            }
+            child.isCollapsed = false;
+            child.tasksCollapsed = true;
+        });
+        return childSteps;
+    };
+    $scope.eventsClick = function (row) {
+        if($scope.eventShow && $scope.ip== row){
+            $scope.eventShow = false;
+        } else {
+            $scope.eventShow = true;
+            $scope.eventCollection = [];
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+'events/'
+            })
+            .then(function successCallback(response) {
+                // console.log(JSON.stringify(response.data));
+                var data = response.data;
+                for(i=0; i<data.length; i++){
+                    if(data[i].linkingObjectIdentifierValue == row.url)
+                    $scope.eventCollection.push(data[i]);
+                }
+            }), function errorCallback(response){
+                alert(response.status);
+            };
+            $scope.eventShow = true;
+        }
+        $scope.select = false;
+
+
+
+        $scope.ip= row;
+    };
+     $scope.ipTableClick = function(row) {
+         console.log("ipobject clicked. row: "+row.Label);
+         if($scope.select && $scope.ip== row){
+             $scope.select = false;
+             $scope.eventlog = false;
+             $scope.edit = false;
+             $scope.subSelect = false;
             $scope.ipSelected = false;
         } else {
             $scope.select = true;
@@ -241,7 +374,7 @@ $scope.ipSelected = false;
             }
             $scope.profilesCollapse = !$scope.profilesCollapse;
         };
-    $scope.createIp = function (ip) {
+    $scope.createSip = function (ip) {
             $http({
                 method: 'POST',
                 url: ip.url+"create/"
@@ -265,6 +398,7 @@ $scope.ipSelected = false;
     $scope.subSelect = false;
     $scope.edit = false;
     $scope.eventlog = false;
+    $scope.eventShow = false;
    $scope.toggleSelectView = function () {
         if($scope.select == false){
             $scope.select = true;
@@ -296,6 +430,24 @@ $scope.ipSelected = false;
         }else {
             $scope.eventlog = false;
         }
+    }
+    $scope.unlockAndRedirect = function() {
+        console.log($scope.ip)
+        $http({
+            method: 'GET',
+            url: $scope.ip.url
+        }).then(function(response) {
+        response.data.locks.forEach(function(lock) {
+            if(lock.information_package == $scope.ip.url && lock.submission_agreement == $scope.currentSa.url && lock.profile == $scope.profileToSave.url){
+                $http({
+                    method: 'DELETE',
+                    url: lock.url
+                }).then(function() {
+                    $scope.goToPrepareIp();
+                });
+            }
+        });
+        });
     }
     $scope.goToPrepareIp = function() {
         $state.go('home.createSip.prepareIp');

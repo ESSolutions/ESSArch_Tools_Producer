@@ -5,17 +5,20 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($scope, $locati
     { link: 'home.submitSip', label: 'Submit SIP' },
     // { link : '#/recieve-SIP', label : 'Recieve SIP' }
     ];
-    $scope.setActiveTab = function(index){
-        $window.localStorage.setItem("activeTab", index);
+
+    $scope.setActiveTab = function (activeTab) {
+        sessionStorage.setItem("activeTab", activeTab);
     };
 
-    $scope.getActiveTab = function(){
-        return $window.localStorage.getItem("activeTab");
+    // Get active tab from localStorage
+    $scope.getActiveTab = function () {
+        return sessionStorage.getItem("activeTab");
     };
 
-    $scope.isActiveTab = function(tabName,index){
+    // Check if current tab is active
+    $scope.isActiveTab = function (tabName, index) {
         var activeTab = $scope.getActiveTab();
-        return (index === activeTab)
+        return (activeTab === tabName || (activeTab === null && index === 0));
     };
 });
 

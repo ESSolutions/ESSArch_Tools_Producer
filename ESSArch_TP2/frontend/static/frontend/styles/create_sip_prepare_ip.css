@@ -162,7 +162,9 @@ td {
     margin: 5px;
     padding: 5px;
 }
-
+.edit-view .btn-danger {
+    float: right;
+}
 .eventlog-view {
     border-top-style: solid;
     border-color: #666;
@@ -183,6 +185,9 @@ td {
     -webkit-flex-direction: column;
     width: 33%;
 }
+.eventlog-view .btn-info {
+    float: right;
+}
 .eventlog-view .status-note{
 }
 .eventlog-view .checkbox {
@@ -201,6 +206,10 @@ input[type="checkbox"] {
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
     width: 100%;
 }
 .eventlog-form {
@@ -209,14 +218,15 @@ input[type="checkbox"] {
     flex-direction: row;
     -webkit-flex-direction: row;
     width: 100%;
-     justify-content: space-between;
-    -webkit-justify-content: space-between;
+     justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    margin-left: 10px;
 }
 .control-label {
     font-size: 10px;
 }
 .formly-field {
-    width: 100%;
+    width: 20%;
     margin-left: 5px;
 }
 .submit-button {
