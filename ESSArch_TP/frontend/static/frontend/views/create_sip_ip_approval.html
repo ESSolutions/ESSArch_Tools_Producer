@@ -12,24 +12,24 @@
             <table st-table="ipCollection" st-safe-src="ipRowCollection" class="table table-striped">
                 <thead>
                     <tr>
-                        <th st-sort="label" class="column-label">Label</th>
-                        <th st-sort="content" class="column-label">Content</th>
-                        <th st-sort="responsible" class="column-label">Responsible</th>
-                        <th st-sort="date" class="column-label">Date</th>
-                        <th st-sort="state" class="column-label">State</th>
-                        <th st-sort="status" class="column-label">Status</th>
+                        <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
                     </tr>
                     <tr>
-                        <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+                        <th st-sort="label" class="column-label">Label</th>
+                        <th st-sort="responsible" class="column-label">Responsible</th>
+                        <th st-sort="date" class="column-label">Date</th>
+                        <th class="clickable" st-sort="state" class="column-label">Events</th>
+                        <th class="clickable" st-sort="status" class="column-label">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr st-select-row="row" ng-repeat="row in ipCollection" class="table-item">
                         <td class="clickable" ng-click="ipTableClick(row)">{{row.Label}}</td>
-                        <td class="clickable" ng-click="ipTableClick(row)">{{row.ObjectUUID}}</td>
                         <td>{{row.Responsible}}</td>
                         <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
-                        <td>{{row.State}}</td>
+                        <td class="clickable" ng-click="stateClicked(row)"><a href="">{{row.State}}</a></td>
+                        <td class="clickable" ng-click="eventsClick(row)"><a href="">{{'Events'}}</a></td>
+
                         <td>
                             <uib-progressbar class="progress-striped active" animate="true" value="row.status" type="success"><b>{{row.status}}</b></uib-progressbar>
 
@@ -38,7 +38,45 @@
                 </tbody>
             </table>
         </div>
-        <div ng-if="select || subSelect || edit || eventlog || statusShow" class="select-sub-edit-eventlog-wrapper">
+        <div ng-if="select || subSelect || edit || eventlog || statusShow || eventShow" class="select-sub-edit-eventlog-wrapper">
+            <div ng-if="eventShow" class="event-view">
+                <p>Events associated to: {{ip.Label}}</p>
+                <table st-table="eventRowCollection" st-safe-src="eventCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="clickable" st-sort="id">Id</th>
+                            <th class="clickable" st-sort="eventDetail">Event detail</th>
+                            <th class="clickable" st-sort="eventDateTime">Event Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in eventRowCollection">
+                            <td>{{row.id}}</td>
+                            <td>{{row.eventDetail}}</td>
+                            <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="statusShow" class="status-view">
+                <p>{{ip.Label}}</p>
+                <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
+
+                <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="myTreeControl" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
+            </div>
+            <script type="text/ng-template" id="tree_template.html">
+                <treecontrol class="tree-light"
+                                     tree-model="parentStepsRowCollection"
+                                     options="treeOptions"
+                                     on-selection="showSelected(node)"
+                                     selected-node="node1">
+                        {{node.name}}, {{node.status}}, {{node.progress}}, {{node.user}}
+                        <a ng-click="node.tasksCollapsed = !node.tasksCollapsed">tasks: {{node.taskObjects.length}}</a>
+                        <ul uib-collapse="node.tasksCollapsed"ng-repeat="task in node.taskObjects">
+                            <li>{{task.name}}</li>
+                        </ul>
+                        </treecontrol>
+            </script>
             <div ng-if="select" class="select-view">
                 <p>{{ip.Label}}</p>
                 <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
@@ -99,12 +137,16 @@
                 <form  novalidate>
                     <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                     </formly-form>
-                      <button class="btn btn-danger" ng-click="goToPrepareIp()">Unlock profile</button>
+                      <button class="btn btn-danger" ng-click="unlockAndRedirect()">Unlock profile</button>
                 </form>
+
+                <div class="package-dependencies">
+                    <p> Package dependencies </p>
+                </div>
 
             </div>
             <div ng-if="eventlog" class="eventlog-view">
-                <form class="eventlog-form" ng-submit="createIp(ip)">
+                <form class="eventlog-form" ng-submit="createSip(ip)">
                     <div class="form-group">
                         <label>Status note</label>
                         <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">

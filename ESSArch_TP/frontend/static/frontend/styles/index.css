@@ -129,6 +129,7 @@ body.modal-open[style] {
 .shortcut-list {
     width: 100%;
     float: left;
+    height: 40px;
 }
 .shortcut-list button {
     border-radius: 20px;

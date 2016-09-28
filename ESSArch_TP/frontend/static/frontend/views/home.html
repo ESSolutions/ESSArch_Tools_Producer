@@ -31,11 +31,11 @@
                                   active="isActive"
                         >
                         <uib-tab
-                            ng-init="isActive = getActiveTab()"
-                                  ng-repeat="tab in tabs"
-                                  heading="{{tab.label}}"
-                                  select="setActiveTab($index)"
-                                  ui-sref="{{tab.link}}">
+                                  ng-repeat="t in tabs"
+                                  ng-init="isActive = isActiveTab(t.label, $index)"
+                                  heading="{{t.label}}"
+                                  select="setActiveTab(t.label)"
+                                  ui-sref="{{t.link}}">
                         </uib-tab>
                     </uib-tabset>
                 </div>
@@ -51,6 +51,7 @@
             <div class="nav-dynamic-wrapper">
                 <div class="shortcut-nav-calendar-wrapper">
                     <div class="shortcut-list" ng-controller="DropdownCtrl">
+                        <!--
                         <div class="btn-group" uib-dropdown is-open="status.isopen">
                             <button id="single-button" type="button" class="btn-primary btn-lg" uib-dropdown-toggle ng-disabled="disabled">
                                 Shortcut list<span class="caret"></span>
@@ -61,9 +62,10 @@
                                 </li>
                             </ul>
                         </div>
+                        -->
                     </div>
                     <div ng-controller="AngularTreeCtrl" class="navigation">
-
+                    <!--
                         Navigation
                         </br>
                         <p>
@@ -89,7 +91,7 @@
                         {{node.name}}
                         </treecontrol>
                         </p>
-
+                    -->
                     </div>
                     <div class="calendar">
                         <style>

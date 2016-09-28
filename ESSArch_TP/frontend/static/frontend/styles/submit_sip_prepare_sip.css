@@ -1,0 +1,11 @@
+.static-form .formly {
+    display: flex;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+}
+.static-form .formly-field {
+    width: 10%;
+}
+.edit-view {
+    max-height: 920px;
+}

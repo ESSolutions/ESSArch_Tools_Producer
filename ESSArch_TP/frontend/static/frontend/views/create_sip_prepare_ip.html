@@ -105,7 +105,7 @@
                         <p>{{ip.Label}}</p>
                         <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
 
-                        <tree-grid col-defs="col_defs" tree-data="tree_data" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
+                        <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="myTreeControl" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
 
                         <!-- EXAMPLE OF WHAT SHOULD BE DONE ABOVE IN TABLE BUT IN <UL> LIST INSTEAD OF TABLE-->
                         <script type="text/ng-template" id="test_template.html">

@@ -96,7 +96,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         }
     })
     .state('home.createSip.ipApproval', {
-        url: '/IP-approval',
+        url: '/create-SIP',
         templateUrl: '/static/frontend/views/create_sip_ip_approval.html',
         controller: 'IpApprovalCtrl as vm',
         resolve: {
@@ -118,7 +118,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     .state('home.submitSip.prepareSip', {
         url: '/prepare-SIP',
         templateUrl: '/static/frontend/views/submit_sip_prepare_sip.html',
-        controller: 'IpApprovalCtrl as vm',
+        controller: 'PrepareSipCtrl as vm',
         resolve: {
           authenticated: ['djangoAuth', function(djangoAuth){
             return djangoAuth.authenticationStatus();
@@ -184,36 +184,56 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .constant('appConfig', {
     djangoUrl: "/api/"
 })
-.service('myService', function($location) {
+.service('myService', function($location, PermPermissionStore) {
         this.changePath = function(state) {
             $state.go(state);
         };
+        this.getPermissions = function(group){
+            var permissions = group.permissions.map(function(currentValue){return currentValue.codename});
+            PermPermissionStore.defineManyPermissions(permissions, function(permissionName) {
+                return_.contains(permissions, permissionName);
+            });
+            return permissions;
+        }
 })
-.run(function(djangoAuth, $rootScope, $state, $location, $cookies){
+.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService){
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
         djangoAuth.profile().then(function(data) {
             $rootScope.auth = data;
+            console.log($rootScope.auth);
+            data.groups.forEach(function(group){
+                $http({
+                    method: 'GET',
+                    url: group
+                }).then(function(response) {
+                    PermRoleStore.defineRole(response.data.name, myService.getPermissions(response.data));
+                }, function() {
+                    console.log("erroe");
+                });
+            });
+            console.log(PermRoleStore.getStore());
+            console.log(PermPermissionStore.getStore());
         }, function() {
-            $state.go('login');
+                $state.go('login');
+            });
+
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
+                if (toState.name === 'login' ){
+                    return;
+                }
+                if(djangoAuth.authenticated !== true){
+                    event.preventDefault();
+                    $state.go('login'); // go to login
+                }
+
+                // now, redirect only not authenticated
+
+
+            });
+        }, function(status) {
+            console.log("when not logged in");
+            console.log(status);
         });
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-            if (toState.name === 'login' ){
-                return;
-            }
-            if(djangoAuth.authenticated !== true){
-                event.preventDefault();
-                $state.go('login'); // go to login
-            }
-
-            // now, redirect only not authenticated
-
-
-        });
-    }, function(status) {
-        console.log("when not logged in");
-        console.log(status);
     });
-
-});
