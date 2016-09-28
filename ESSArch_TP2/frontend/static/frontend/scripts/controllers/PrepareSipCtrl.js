@@ -249,7 +249,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     vm.profileFields = [{
         templateOptions: {
             label: "transfer_project",
-            options: [{name: "OK"},{name: "NOT OK"}]
+            options: [{name: "OK", value: true},{name: "", value: false}]
 
         },
         type: "select",
@@ -258,7 +258,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "content_type",
-            options: [{name: "OK"},{name: "NOT OK"}]
+            options: [{name: "OK", value: true},{name: "", value: false}]
 
         },
         type: "select",
@@ -267,7 +267,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "data_selection",
-            options: [{name: "OK"},{name: "NOT OK"}]
+            options: [{name: "OK", value: true},{name: "", value: false}]
 
         },
         type: "select",
@@ -276,7 +276,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "classification",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -285,7 +287,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "import",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -294,7 +298,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "submit_description",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -303,7 +309,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "sip",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -312,7 +320,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "aip",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -321,7 +331,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "dip",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -330,7 +342,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "workflow",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -339,7 +353,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "preservation_metadata",
-            options: [{name: "OK"},{name: "NOT OK"}]
+
+            options: [{name: "OK", value: true},{name: "", value: false}]
+
 
         },
         type: "select",
@@ -348,46 +364,50 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     {
         templateOptions: {
             label: "event",
-            options: [{name: "OK", value: true},{name: "NOT OK", value: false}]
+            options: [{name: "OK", value: true},{name: "", value: false}]
 
         },
         type: "select",
         key: "event"
     }
     ];
+    vm.profileModel = {
+    };
 
     $scope.getPackageProfiles = function(ip) {
         $http({
             method: 'GET',
             url: ip.SubmissionAgreement
         }).then(function(response) {
+            vm.profileModel = {
+            };
 
             var sa = response.data;
-            vm.profileModel = {
-                transfer_project: getProfiles(sa.profile_transfer_project),
-                content_type: getProfiles(sa.profile_content_type),
-                data_selection: getProfiles(sa.profile_content_type),
-                classification: getProfiles(sa.profile_classification),
-                import: getProfiles(sa.profile_import),
-                submit_description: getProfiles(sa.profile_submit_description),
-                sip: getProfiles(sa.profile_sip),
-                aip: getProfiles(sa.profile_aip),
-                dip: getProfiles(sa.profile_dip),
-                workflow: getProfiles(sa.profile_workflow),
-                preservation_metadata: getProfiles(sa.profile_preservation_metadata),
-                event: getProfiles(sa.profile_event)
-            };
+            getProfiles(sa.profile_transfer_project).then(function(profileValue){vm.profileModel.transfer_project = profileValue});
+            getProfiles(sa.profile_content_type).then(function(profileValue){vm.profileModel.content_type = profileValue});
+            getProfiles(sa.profile_data_selection).then(function(profileValue){vm.profileModel.data_selection = profileValue});
+            getProfiles(sa.profile_classification).then(function(profileValue){vm.profileModel.classification = profileValue});
+            getProfiles(sa.profile_import).then(function(profileValue){vm.profileModel.import = profileValue});
+            getProfiles(sa.profile_submit_description).then(function(profileValue){vm.profileModel.submit_description = profileValue});
+            getProfiles(sa.profile_sip).then(function(profileValue){vm.profileModel.sip = profileValue});
+            getProfiles(sa.profile_aip).then(function(profileValue){vm.profileModel.aip = profileValue});
+            getProfiles(sa.profile_dip).then(function(profileValue){vm.profileModel.dip = profileValue});
+            getProfiles(sa.profile_workflow).then(function(profileValue){vm.profileModel.workflow = profileValue});
+            getProfiles(sa.profile_preservation_metadata).then(function(profileValue){vm.profileModel.preservation_metadata = profileValue});
+            getProfiles(sa.profile_event).then(function(profileValue){vm.profileModel.event = profileValue});
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             console.log(vm.profileModel);
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         }, function(response){
             console.log(response.status);
         });
     }
     function getProfiles(profiles){
-        var returnVal = false;
         var promise = $http({
             method: 'GET',
             url: getActiveProfile(profiles).url
         }).then(function(response) {
+            var returnVal = false;
             $scope.ip.locks.forEach(function(lock) {
                 if(lock.profile == response.data.url){
                     returnVal = true;
