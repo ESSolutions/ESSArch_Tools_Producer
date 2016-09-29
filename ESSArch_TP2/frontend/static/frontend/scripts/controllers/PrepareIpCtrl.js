@@ -83,13 +83,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.ip= row;
     };
     $scope.getTreeData = function(row) {
-     $http({
-                method: 'GET',
-                url: row.url,
-            }).then(function(response){
-                ip = response.data
-                $scope.tree_data = $scope.getStatusViewData(ip).steps;
+        $http({
+            method: 'GET',
+            url: row.url,
+        }).then(function(response){
+            ip = response.data;
+            $scope.getStatusViewData(ip).then(function(steps){
+                $scope.tree_data = steps;
             });
+        });
 
     }
     $scope.statusViewUpdate = function(row){
@@ -127,15 +129,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventCollection = [];
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'events/'
+                url: row.url+'events/'
             })
             .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
-                var data = response.data;
-                for(i=0; i<data.length; i++){
-                    if(data[i].linkingObjectIdentifierValue == row.url)
-                    $scope.eventCollection.push(data[i]);
-                }
+                $scope.eventCollection = response.data;
             }), function errorCallback(response){
                 alert(response.status);
             };
@@ -171,20 +168,23 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     $scope.listViewUpdate();
     //Getting data for status view
-    $scope.getStatusViewData = function(row) {
-
-        row.steps.forEach(function(step){
-            step.children = getChildSteps(step.child_steps);
-            step.tasks.forEach(function(task){
-                task.label = task.name;
+    $scope.getStatusViewData = function(ip) {
+        return $http({
+            method: 'GET',
+            url: ip.url + 'steps',
+        }).then(function(response){
+            steps = response.data;
+            steps.forEach(function(step){
+                step.children = getChildSteps(step.child_steps);
+                step.tasks.forEach(function(task){
+                    task.label = task.name;
+                });
+                step.children = step.children.concat(step.tasks);
+                step.isCollapsed = false;
+                step.tasksCollapsed = true;
             });
-            step.children = step.children.concat(step.tasks);
-            step.isCollapsed = false;
-            step.tasksCollapsed = true;
+            return steps
         });
-
-        return row;
-
     };
 
     //Helper functions for getStatusViewData

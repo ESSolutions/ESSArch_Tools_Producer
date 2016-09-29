@@ -26,6 +26,10 @@ from ip.serializers import (
     EventIPSerializer,
 )
 
+from preingest.serializers import (
+    ProcessStepSerializer,
+)
+
 from rest_framework import viewsets
 
 class ArchivalInstitutionViewSet(viewsets.ModelViewSet):
@@ -119,6 +123,26 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         step.run()
 
         return Response({"status": "Prepared IP"})
+
+    @detail_route()
+    def events(self, request, pk=None):
+        ip = self.get_object()
+        events = ip.events.all()
+        serializer = EventIPSerializer(
+            data=events, many=True, context={'request': request}
+        )
+        serializer.is_valid()
+        return Response(serializer.data)
+
+    @detail_route()
+    def steps(self, request, pk=None):
+        ip = self.get_object()
+        steps = ip.steps.all()
+        serializer = ProcessStepSerializer(
+            data=steps, many=True, context={'request': request}
+        )
+        serializer.is_valid()
+        return Response(serializer.data)
 
     @detail_route(methods=['post'], url_path='create')
     def create_ip(self, request, pk=None):
