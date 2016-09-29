@@ -25,6 +25,10 @@
 import django
 django.setup()
 
+import json
+import os
+
+from django.conf import settings
 from django.utils import timezone
 
 # own models etc
@@ -256,6 +260,44 @@ def installProfileTransferProject(): # Profile Transfer Project
         'type': 'Implementation',
         'status': 'Agreed',
         'label': 'Example of SIP for delivery of SE ERMS',
+        'schemas': [
+            {
+                'type': 'mets',
+                'namespace': 'http://www.loc.gov/METS/',
+                'schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd',
+                'version': '',
+                'preserve': True,
+                'preservation_location': 'mets_grp'
+            },
+            {
+                'type': 'mets_ext',
+                'namespace': 'EXTMETS',
+                'schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd',
+                'version': '',
+                'preserve': True,
+                'preservation_location': 'mets_grp'
+            },
+        ],
+        'schemas': {
+            'addml_namespace': 'http://xml.ra.se/addml',
+            'addml_schemalocation': 'http://xml.ra.se/addml/ra_addml.xsd',
+            'erms_schemalocation': 'http://xml.ra.se/e-arkiv/ERMS/version10/Arendehantering.xsd',
+            'mets_namespace': 'http://www.loc.gov/METS/',
+            'mets_profile': 'http://xml.ra.se/METS/RA_METS_eARD.xml http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS.xml http://xml.ra.se/e-arkiv/METS/version10/CommonSpecificationSwedenPackageProfile.xml',
+            'mets_schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS_mets.xsd http://xml.ra.se/METS/RA_METS_eARD.xsd http://xml.ra.se/e-arkiv/METS/eARD_Paket_FGS_mets.xsd',
+            'mix_namespace': 'http://xml.ra.se/MIX',
+            'mix_schemalocation': 'http://xml.ra.se/MIX/RA_MIX.xsd',
+            'mods_namespace': 'http://www.loc.gov/mods/v3',
+            'personnel_schemalocation': 'http://xml.ra.se/e-arkiv/Personnel/version10/Personal.xsd',
+            'premis_namespace': 'http://xml.ra.se/PREMIS',
+            'premis_schemalocation': 'http://xml.ra.se/PREMIS/RA_PREMIS.xsd http://xml.ra.se/PREMIS/ESS/RA_PREMIS_PreVersion.xsd',
+            'premis_version': '2.0',
+            'xhtml_namespace': 'http://www.w3.org/1999/xhtml',
+            'xhtml_schemalocation': 'http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd',
+            'xlink_namespace': 'http://www.w3.org/1999/xlink',
+            'xsd_namespace': 'http://www.w3.org/2001/XMLSchema',
+            'xsi_namespace': 'http://www.w3.org/2001/XMLSchema-instance',
+        },
         'specification': {},
         'specification_data': {},
     }
@@ -1309,7 +1351,7 @@ def installProfileSIP(): # Profile Submission Information Package
 
     dct = {
         'id': '550e8400-e29b-41d4a716-446655440007',
-        'name': 'SIP based on SE FGS Package',
+        'name': 'EC',
         'profile_type': 'sip',
         'type': 'Implementation',
         'status': 'Draft',
@@ -1325,17 +1367,825 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_data_inventory': 'According to submit description',
         'structure': {
             'representations': {
-                'documentation': {}
+                'type': 'dir',
+                'children': {
+                    'rep01': {}
+                },
             },
-            'rep01': {},
-            'metadata': {}
+            'documentation': {
+                'type': 'dir',
+                'children': {},
+            },
+            'metadata': {
+                'type': 'dir',
+                'children': {
+                    'mets_grp': {
+                        'type': 'group',
+                    },
+                    'descriptive': {
+                        'type': 'dir',
+                        'children': {
+                            '_ARCHIVAL_DESCRIPTION_FILE': {
+                                'type': 'file',
+                                'use': 'archival_description_file'
+                            },
+                            '_AUTHORITIVE_INFORMATION_FILE': {
+                                'type': 'file',
+                                'use': 'authoritive_information_file'
+                            }
+                        }
+                    },
+                    'administrative': {
+                        'type': 'dir',
+                        'children': {
+                            'premis.xml': {
+                                'type': 'file',
+                                'use': 'preservation_description_file'
+                            }
+                        }
+                    }
+                },
+            },
+            'schemas': {
+                'type': 'dir',
+                'children': {
+                    'xsd_files': {
+                        'type': 'group',
+                    }
+                }
+            }
         },
-        'specification': {},
-        'specification_data': {},
+        'template': [
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:mets",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:mets",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:ext",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:ext",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:xlink",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:xlink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:xsi",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:xsi",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xsi:schemaLocation",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xsi:schemaLocation"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xsi:schemaLocationPremis"
+                },
+                "type": "input",
+                "key": "xsi:schemaLocationPremis",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "PROFILE"
+                },
+                "type": "input",
+                "key": "PROFILE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LABEL"
+                },
+                "type": "input",
+                "key": "LABEL",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "TYPE"
+                },
+                "type": "input",
+                "key": "TYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "OBJID"
+                },
+                "type": "input",
+                "key": "OBJID",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ext:CONTENTTYPESPECIFICATION"
+                },
+                "type": "input",
+                "key": "ext:CONTENTTYPESPECIFICATION",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "CREATEDATE"
+                },
+                "type": "input",
+                "key": "CREATEDATE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "RECORDSTATUS"
+                },
+                "type": "input",
+                "key": "RECORDSTATUS",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ext:OAISTYPE"
+                },
+                "type": "input",
+                "key": "ext:OAISTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "agentName"
+                },
+                "type": "input",
+                "key": "agentName",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "agentNote"
+                },
+                "type": "input",
+                "key": "agentNote",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "REFERENCECODE"
+                },
+                "type": "input",
+                "key": "REFERENCECODE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "SUBMISSIONAGREEMENT"
+                },
+                "type": "input",
+                "key": "SUBMISSIONAGREEMENT",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "MetsIdentifier"
+                },
+                "type": "input",
+                "key": "MetsIdentifier",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "filename"
+                },
+                "type": "input",
+                "key": "filename",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "SMLabel"
+                },
+                "type": "input",
+                "key": "SMLabel",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "amdLink"
+                },
+                "type": "input",
+                "key": "amdLink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "digiprovLink"
+                },
+                "type": "input",
+                "key": "digiprovLink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LOCTYPE"
+                },
+                "type": "input",
+                "key": "LOCTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "MDTYPE"
+                },
+                "type": "input",
+                "key": "MDTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xlink:href"
+                },
+                "type": "input",
+                "key": "xlink:href",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xlink:type"
+                },
+                "type": "input",
+                "key": "xlink:type",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID"
+                },
+                "type": "input",
+                "key": "ID",
+            },
+            {
+                "key": "agents",
+                "fieldGroup": [
+                    {
+                        "key": "agent_1",
+                        #"className": "display-flex",
+                        "fieldGroup": [
+                            {
+                                "type": "input",
+                                "key": "ROLE",
+                                "templateOptions": {
+                                    "label": "ROLE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "TYPE",
+                                "templateOptions": {
+                                    "label": "TYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "OTHERTYPE",
+                                "templateOptions": {
+                                    "label": "OTHERTYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "name",
+                                "templateOptions": {
+                                    "label": "name"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "note",
+                                "templateOptions": {
+                                    "label": "note"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "key": "agent_2",
+                        #"className": "display-flex",
+                        "fieldGroup": [
+                            {
+                                "type": "input",
+                                "key": "ROLE",
+                                "templateOptions": {
+                                    "label": "ROLE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "TYPE",
+                                "templateOptions": {
+                                    "label": "TYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "OTHERTYPE",
+                                "templateOptions": {
+                                    "label": "OTHERTYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "name",
+                                "templateOptions": {
+                                    "label": "name"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "note",
+                                "templateOptions": {
+                                    "label": "note"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+        ],
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
+        'specification_data': {
+            "xmlns:mets": "http://www.loc.gov/METS/",
+            "xmlns:ext": "ExtensionMETS",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+            "LABEL": "Test of SIP 1",
+            "TYPE": "Personnel",
+            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+            "CREATEDATE": "2016-06-08T10:44:00+02:00",
+            "RECORDSTATUS": "NEW",
+            "ext:OAISTYPE": "SIP",
+            "agentName": "name",
+            "agentNote": "note",
+            "REFERENCECODE": "SE/RA/123456/24/F",
+            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+            "MetsIdentifier": "sip.xml",
+            "filename": "sip.txt",
+            "SMLabel": "Profilestructmap",
+            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
+            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+            "LOCTYPE": "URL",
+            "MDTYPE": "PREMIS",
+            "xlink:href": "file:///metadata/premis.xml",
+            "xlink:type": "simple",
+            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "agents": {
+                "agent_1": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "ORGANIZATION",
+                    "OTHERTYPE": "",
+                    "name": "Arkivbildar namn",
+                    "note": "VAT:SE201345098701"
+                },
+                "agent_2": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "OTHER",
+                    "OTHERTYPE": "SOFTWARE",
+                    "name": "By hand Systems",
+                    "note": "1.0.0"
+                }
+            }
+        }
+    }
+
+    dct2 = {
+        'id': '550e8400-e29b-41d4a716-446655440017',
+        'name': 'SE',
+        'profile_type': 'sip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'SIP profile for SE submissions',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        'structure': {
+            'content': {
+                'type': 'dir',
+                'children': {
+                    'data': {
+                        'type': 'dir',
+                        'children': {}
+                    }
+                },
+            },
+            'metadata': {
+                'type': 'dir',
+                'children': {
+                },
+            },
+        },
+        'template': [
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:mets",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:mets",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:ext",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:ext",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:xlink",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:xlink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xmlns:xsi",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xmlns:xsi",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xsi:schemaLocation",
+                    'disabled': True,
+                },
+                "type": "input",
+                "key": "xsi:schemaLocation"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xsi:schemaLocationPremis"
+                },
+                "type": "input",
+                "key": "xsi:schemaLocationPremis",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "PROFILE"
+                },
+                "type": "input",
+                "key": "PROFILE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LABEL"
+                },
+                "type": "input",
+                "key": "LABEL",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "TYPE"
+                },
+                "type": "input",
+                "key": "TYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "OBJID"
+                },
+                "type": "input",
+                "key": "OBJID",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ext:CONTENTTYPESPECIFICATION"
+                },
+                "type": "input",
+                "key": "ext:CONTENTTYPESPECIFICATION",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "CREATEDATE"
+                },
+                "type": "input",
+                "key": "CREATEDATE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "RECORDSTATUS"
+                },
+                "type": "input",
+                "key": "RECORDSTATUS",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ext:OAISTYPE"
+                },
+                "type": "input",
+                "key": "ext:OAISTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "agentName"
+                },
+                "type": "input",
+                "key": "agentName",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "agentNote"
+                },
+                "type": "input",
+                "key": "agentNote",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "REFERENCECODE"
+                },
+                "type": "input",
+                "key": "REFERENCECODE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "SUBMISSIONAGREEMENT"
+                },
+                "type": "input",
+                "key": "SUBMISSIONAGREEMENT",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "MetsIdentifier"
+                },
+                "type": "input",
+                "key": "MetsIdentifier",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "filename"
+                },
+                "type": "input",
+                "key": "filename",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "SMLabel"
+                },
+                "type": "input",
+                "key": "SMLabel",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "amdLink"
+                },
+                "type": "input",
+                "key": "amdLink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "digiprovLink"
+                },
+                "type": "input",
+                "key": "digiprovLink",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "LOCTYPE"
+                },
+                "type": "input",
+                "key": "LOCTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "MDTYPE"
+                },
+                "type": "input",
+                "key": "MDTYPE",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xlink:href"
+                },
+                "type": "input",
+                "key": "xlink:href",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "xlink:type"
+                },
+                "type": "input",
+                "key": "xlink:type",
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "ID"
+                },
+                "type": "input",
+                "key": "ID",
+            },
+            {
+                "key": "agents",
+                "fieldGroup": [
+                    {
+                        "key": "agent_1",
+                        #"className": "display-flex",
+                        "fieldGroup": [
+                            {
+                                "type": "input",
+                                "key": "ROLE",
+                                "templateOptions": {
+                                    "label": "ROLE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "TYPE",
+                                "templateOptions": {
+                                    "label": "TYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "OTHERTYPE",
+                                "templateOptions": {
+                                    "label": "OTHERTYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "name",
+                                "templateOptions": {
+                                    "label": "name"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "note",
+                                "templateOptions": {
+                                    "label": "note"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "key": "agent_2",
+                        #"className": "display-flex",
+                        "fieldGroup": [
+                            {
+                                "type": "input",
+                                "key": "ROLE",
+                                "templateOptions": {
+                                    "label": "ROLE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "TYPE",
+                                "templateOptions": {
+                                    "label": "TYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "OTHERTYPE",
+                                "templateOptions": {
+                                    "label": "OTHERTYPE"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "name",
+                                "templateOptions": {
+                                    "label": "name"
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "key": "note",
+                                "templateOptions": {
+                                    "label": "note"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+        ],
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
+        'specification_data': {
+            "xmlns:mets": "http://www.loc.gov/METS/",
+            "xmlns:ext": "ExtensionMETS",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+            "LABEL": "Test of SIP 1",
+            "TYPE": "Personnel",
+            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+            "CREATEDATE": "2016-06-08T10:44:00+02:00",
+            "RECORDSTATUS": "NEW",
+            "ext:OAISTYPE": "SIP",
+            "agentName": "name",
+            "agentNote": "note",
+            "REFERENCECODE": "SE/RA/123456/24/F",
+            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+            "MetsIdentifier": "sip.xml",
+            "filename": "sip.txt",
+            "SMLabel": "Profilestructmap",
+            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
+            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+            "LOCTYPE": "URL",
+            "MDTYPE": "PREMIS",
+            "xlink:href": "file:///metadata/premis.xml",
+            "xlink:type": "simple",
+            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "agents": {
+                "agent_1": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "ORGANIZATION",
+                    "OTHERTYPE": "",
+                    "name": "Arkivbildar namn",
+                    "note": "VAT:SE201345098701"
+                },
+                "agent_2": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "OTHER",
+                    "OTHERTYPE": "SOFTWARE",
+                    "name": "By hand Systems",
+                    "note": "1.0.0"
+                }
+            }
+        }
     }
 
     # create according to model with many fields
     Profile.objects.create(**dct)
+    Profile.objects.create(**dct2)
 
     #logger.info('Installed Profile SIP')
     print 'Installed profile SIP'
