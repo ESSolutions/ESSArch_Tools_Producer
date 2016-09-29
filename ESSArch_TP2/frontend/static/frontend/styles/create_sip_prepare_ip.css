@@ -224,6 +224,15 @@ input[type="checkbox"] {
 .control-label {
     font-size: 10px;
 }
+
+.formly-field-group {
+    width: 100% !important;
+}
+
+.formly-field-group .formly-field {
+    width: 15%;
+}
+
 .formly-field {
     width: 20%;
     margin-left: 5px;
