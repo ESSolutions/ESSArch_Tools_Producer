@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout, $state, $stateParams){
+angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService){
     var vm = this;
     $scope.tree_data = [];
      $scope.expanding_property = {
