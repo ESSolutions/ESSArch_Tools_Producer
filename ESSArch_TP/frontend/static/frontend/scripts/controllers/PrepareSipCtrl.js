@@ -105,11 +105,11 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 $scope.getPackageDependencies(response.data);
                 $scope.getPackageProfiles(response.data);
                 $scope.getFileList(response.data);
+                $scope.edit = true;
+                $scope.eventlog = true;
+                $scope.eventShow = false;
+                $scope.statusShow = false;
             });
-            $scope.edit = true;
-            $scope.eventlog = true;
-            $scope.eventShow = false;
-            $scope.statusShow = false;
         }
         $scope.statusShow = false;
     };
@@ -126,11 +126,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
-                var data = response.data;
-                for(i=0; i<data.length; i++){
-                    if(data[i].linkingObjectIdentifierValue == row.url)
-                        $scope.eventCollection.push(data[i]);
-                }
+                $scope.eventCollection = response.data;
             }), function errorCallback(response){
                 alert(response.status);
             };
