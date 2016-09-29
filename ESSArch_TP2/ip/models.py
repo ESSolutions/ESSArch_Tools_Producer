@@ -195,17 +195,17 @@ class InformationPackage(models.Model):
             processstep_pos=0,
             information_package=self
         )
-        """
+
         t01 = ProcessTask.objects.create(
             name="preingest.tasks.AppendEvents",
             params={
                 "filename": events_path,
-                "events": self.events,
+                "events": self.events.all(),
             },
             processstep_pos=0,
-            #information_package=self
+            information_package=self
         )
-        """
+
         # ensure premis is created before mets
         filesToCreate = OrderedDict()
 
@@ -231,7 +231,7 @@ class InformationPackage(models.Model):
         generate_xml_step = ProcessStep.objects.create(
             name="Generate XML",
         )
-        generate_xml_step.tasks = [t0, t1]
+        generate_xml_step.tasks = [t0, t01, t1]
         generate_xml_step.save()
 
         filename = "foo.csv"
