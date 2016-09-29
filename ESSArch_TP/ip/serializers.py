@@ -43,13 +43,12 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'State', 'status', 'ObjectSize', 'ObjectNumItems', 'ObjectPath',
             'Startdate', 'Enddate', 'OAIStype', 'SubmissionAgreement',
             'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
-            'ArchivalLocation', 'steps', 'events',
+            'ArchivalLocation',
         )
 
 
 class InformationPackageDetailSerializer(InformationPackageSerializer):
     locks = ProfileLockSerializer(many=True, read_only=True)
-    steps = ProcessStepSerializer(many=True, read_only=True)
 
     class Meta:
         model = InformationPackageSerializer.Meta.model

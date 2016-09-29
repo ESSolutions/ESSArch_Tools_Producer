@@ -74,8 +74,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
              method: 'GET',
              url: row.url,
          }).then(function(response){
-             ip = response.data
-                 $scope.tree_data = $scope.getStatusViewData(ip).steps;
+             ip = response.data;
+             $scope.getStatusViewData(ip).then(function(steps){
+                 $scope.tree_data = steps;
+             });
          });
 
      }
@@ -87,21 +89,25 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
                  $scope.statusViewUpdate(row);
              }, 5000)}
      };
-    //Getting data for status view
-    $scope.getStatusViewData = function(row) {
 
-        row.steps.forEach(function(step){
-            step.children = getChildSteps(step.child_steps);
-            step.tasks.forEach(function(task){
-                task.label = task.name;
+     //Getting data for status view
+    $scope.getStatusViewData = function(ip) {
+        return $http({
+            method: 'GET',
+            url: ip.url + 'steps',
+        }).then(function(response){
+            steps = response.data;
+            steps.forEach(function(step){
+                step.children = getChildSteps(step.child_steps);
+                step.tasks.forEach(function(task){
+                    task.label = task.name;
+                });
+                step.children = step.children.concat(step.tasks);
+                step.isCollapsed = false;
+                step.tasksCollapsed = true;
             });
-            step.children = step.children.concat(step.tasks);
-            step.isCollapsed = false;
-            step.tasksCollapsed = true;
+            return steps
         });
-
-        return row;
-
     };
 
     //Helper functions for getStatusViewData
@@ -132,7 +138,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.eventCollection = [];
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'events/'
+                url: row.url+'events/'
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
