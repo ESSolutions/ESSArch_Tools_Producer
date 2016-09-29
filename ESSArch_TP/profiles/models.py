@@ -23,8 +23,16 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-import jsonfield
+from configuration.models import (
+    Path
+)
 
+from preingest.models import (
+    ProcessStep, ProcessTask,
+)
+
+import jsonfield
+import os
 import uuid
 
 Profile_Status_CHOICES = (
@@ -389,6 +397,24 @@ class Profile(models.Model):
             status=1
         )
 
+    def locked(self, submission_agreement, information_package):
+        """
+        Checks if the profiel is locked to the provided SA and IP
+
+        Args:
+            submission_agreement: The submission agreement
+            information_package: The information packaget
+
+        Returns:
+            True if locked, false otherwise
+        """
+
+        return ProfileLock.objects.filter(
+            profile=self,
+            submission_agreement=submission_agreement,
+            information_package=information_package
+        ).exists()
+
     def lock(self, submission_agreement, information_package):
         """
         Locks the profile in relation to an SA and IP to stop further editing
@@ -401,6 +427,27 @@ class Profile(models.Model):
         Returns:
             The created lock
         """
+
+        if self.profile_type == "sip":
+            root = os.path.join(
+                Path.objects.get(
+                    entity="path_preingest_prepare"
+                ).value,
+                str(information_package.pk)
+            )
+
+            step = ProcessStep.objects.create(name="Create Physical Model")
+            task = ProcessTask.objects.create(
+                name="preingest.tasks.CreatePhysicalModel",
+                params={
+                    "structure": self.structure,
+                    "root": root
+                }
+            )
+
+            step.tasks = [task]
+            step.save()
+            step.run()
 
         return ProfileLock.objects.create(
             profile=self,

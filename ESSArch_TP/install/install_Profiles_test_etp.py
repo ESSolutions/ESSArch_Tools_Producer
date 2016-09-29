@@ -264,40 +264,36 @@ def installProfileTransferProject(): # Profile Transfer Project
             {
                 'type': 'mets',
                 'namespace': 'http://www.loc.gov/METS/',
-                'schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd',
-                'version': '',
+                'location': 'http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd',
+                'version': '1.11',
                 'preserve': True,
-                'preservation_location': 'mets_grp'
+                'preservation_location': 'metadata'
             },
             {
                 'type': 'mets_ext',
                 'namespace': 'EXTMETS',
-                'schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd',
-                'version': '',
+                'location': 'http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd',
                 'preserve': True,
-                'preservation_location': 'mets_grp'
+                'preservation_location': 'metadata'
             },
+            {
+                'type': 'mets',
+                'namespace': 'http://www.loc.gov/METS/',
+                'location': 'http://schema.arkivverket.no/METS/info.xsd',
+                'version': '1.91',
+                'preserve': True,
+                'preservation_location': 'metadata'
+            },
+            {
+                'type': 'premis',
+                'namespace': 'http://xml.ra.se/PREMIS',
+                'location': 'http://xml.ra.se/PREMIS/ESS/RA_PREMIS_PreVersion.xsd',
+                'version': '2.0',
+                'preserve': True,
+                'preservation_location': 'metadata'
+            },
+
         ],
-        'schemas': {
-            'addml_namespace': 'http://xml.ra.se/addml',
-            'addml_schemalocation': 'http://xml.ra.se/addml/ra_addml.xsd',
-            'erms_schemalocation': 'http://xml.ra.se/e-arkiv/ERMS/version10/Arendehantering.xsd',
-            'mets_namespace': 'http://www.loc.gov/METS/',
-            'mets_profile': 'http://xml.ra.se/METS/RA_METS_eARD.xml http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS.xml http://xml.ra.se/e-arkiv/METS/version10/CommonSpecificationSwedenPackageProfile.xml',
-            'mets_schemalocation': 'http://xml.ra.se/e-arkiv/METS/version10/CSPackageMETS.xsd http://xml.ra.se/e-arkiv/METS/version20/eARD_Paket_FGS_mets.xsd http://xml.ra.se/METS/RA_METS_eARD.xsd http://xml.ra.se/e-arkiv/METS/eARD_Paket_FGS_mets.xsd',
-            'mix_namespace': 'http://xml.ra.se/MIX',
-            'mix_schemalocation': 'http://xml.ra.se/MIX/RA_MIX.xsd',
-            'mods_namespace': 'http://www.loc.gov/mods/v3',
-            'personnel_schemalocation': 'http://xml.ra.se/e-arkiv/Personnel/version10/Personal.xsd',
-            'premis_namespace': 'http://xml.ra.se/PREMIS',
-            'premis_schemalocation': 'http://xml.ra.se/PREMIS/RA_PREMIS.xsd http://xml.ra.se/PREMIS/ESS/RA_PREMIS_PreVersion.xsd',
-            'premis_version': '2.0',
-            'xhtml_namespace': 'http://www.w3.org/1999/xhtml',
-            'xhtml_schemalocation': 'http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd',
-            'xlink_namespace': 'http://www.w3.org/1999/xlink',
-            'xsd_namespace': 'http://www.w3.org/2001/XMLSchema',
-            'xsi_namespace': 'http://www.w3.org/2001/XMLSchema-instance',
-        },
         'specification': {},
         'specification_data': {},
     }
@@ -2296,7 +2292,7 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Preservation profile for AIP xxyy',
-        'specification': {},
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONPremisTemplate.json')).read()),
         'specification_data': {},
     }
 
