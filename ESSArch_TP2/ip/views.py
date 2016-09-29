@@ -156,10 +156,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             None
         """
         try:
-            include_premis = self.request.query_params.get('premis', False)
-            InformationPackage.objects.get(pk=pk).create(
-                include_premis=include_premis
-            )
+            InformationPackage.objects.get(pk=pk).create()
             return Response({'status': 'creating ip'})
         except InformationPackage.DoesNotExist:
             return Response(

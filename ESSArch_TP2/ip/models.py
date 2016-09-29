@@ -38,6 +38,10 @@ from profiles.models import (
     ProfileLock, SubmissionAgreement as SA
 )
 
+from preingest.util import (
+    create_event,
+)
+
 import json, os, uuid
 
 
@@ -144,119 +148,81 @@ class InformationPackage(models.Model):
         null=True
     )
 
-    def create(self, include_premis=False):
-        info = {
-            "xmlns:mets": "http://www.loc.gov/METS/",
-            "xmlns:ext": "ExtensionMETS",
-            "xmlns:xlink": "http://www.w3.org/1999/xlink",
-            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
-            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
-            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
-            "LABEL": "Test of SIP 1",
-            "TYPE": "Personnel",
-            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
-            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "CREATEDATE": "2016-06-08T10:44:00+02:00",
-            "RECORDSTATUS": "NEW",
-            "ext:OAISTYPE": "SIP",
-            "agentName": "name",
-            "agentNote": "note",
-            "REFERENCECODE": "SE/RA/123456/24/F",
-            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
-            "MetsIdentifier": "sip.xml",
-            "filename": "sip.txt",
-            "SMLabel": "Profilestructmap",
-            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
-            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
-            "LOCTYPE": "URL",
-            "MDTYPE": "PREMIS",
-            "xlink:href": "file:///metadata/premis.xml",
-            "xlink:type": "simple",
-            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
-            "agents": [
-                {
-                    "ROLE": "ARCHIVIST",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Arkivbildar namn",
-                    "note": "VAT:SE201345098701"
-                }, {
-                    "ROLE": "ARCHIVIST",
-                    "TYPE": "OTHER",
-                    "OTHERTYPE": "SOFTWARE",
-                    "name": "By hand Systems",
-                    "note": "1.0.0"
-                }, {
-                    "ROLE": "ARCHIVIST",
-                    "TYPE": "OTHER",
-                    "OTHERTYPE": "SOFTWARE",
-                    "name": "Other By hand Systems",
-                    "note": "1.2.0"
-                }, {
-                    "ROLE": "CREATOR",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Arkivbildar namn",
-                    "note": "HSA:SE2098109810-AF87"
-                }, {
-                    "ROLE": "OTHER",
-                    "OTHERROLE": "PRODUCER",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Sydarkivera",
-                    "note": "HSA:SE2098109810-AF87"
-                }, {
-                    "ROLE": "OTHER",
-                    "OTHERROLE": "SUBMITTER",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Arkivbildare",
-                    "note": "HSA:SE2098109810-AF87"
-                }, {
-                    "ROLE": "IPOWNER",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Informations agare",
-                    "note": "HSA:SE2098109810-AF87"
-                }, {
-                    "ROLE": "EDITOR",
-                    "TYPE": "ORGANIZATION",
-                    "name": "Axenu",
-                    "note": "VAT:SE9512114233"
-                }, {
-                    "ROLE": "CREATOR",
-                    "TYPE": "INDIVIDUAL",
-                    "name": "Simon Nilsson",
-                    "note": "0706758942, simonseregon@gmail.com"
-                }
-            ],
-        }
-
-        # ensure premis is created before mets
-        filesToCreate = OrderedDict()
+    def create(self):
+        create_event(
+            10200, "Creating IP", "System", self
+        )
 
         prepare_path = Path.objects.get(
             entity="path_preingest_prepare"
         ).value
 
         ip_prepare_path = os.path.join(prepare_path, str(self.pk))
+        sa = self.SubmissionAgreement
 
-        if include_premis:
+        schemas = sa.profile_transfer_project_rel.active().schemas
+        structure = sa.profile_sip_rel.active().structure
+        t1 = ProcessTask.objects.create(
+            name="preingest.tasks.CopySchemas",
+            params={
+                "schemas": schemas,
+                "root": ip_prepare_path,
+                "structure": structure,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
+        copy_schemas_step = ProcessStep.objects.create(
+            name="Copy schemas",
+        )
+        copy_schemas_step.tasks = [t1]
+        copy_schemas_step.save()
+
+        info = sa.profile_sip_rel.active().specification_data
+        info['agents'] = info['agents'].values()
+
+        events_path = os.path.join(ip_prepare_path, "ipevents.xml")
+        filesToCreate = OrderedDict()
+        filesToCreate[events_path] = sa.profile_preservation_metadata_rel.active().specification
+
+        t0 = ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+        """
+        t01 = ProcessTask.objects.create(
+            name="preingest.tasks.AppendEvents",
+            params={
+                "filename": events_path,
+                "events": self.events,
+            },
+            processstep_pos=0,
+            #information_package=self
+        )
+        """
+        # ensure premis is created before mets
+        filesToCreate = OrderedDict()
+
+        premis_profile = sa.profile_preservation_metadata_rel.active()
+        if premis_profile.locked(sa, self):
             premis_path = os.path.join(ip_prepare_path, "premis.xml")
-            fname = os.path.join(settings.BASE_DIR, 'templates/JSONPremisTemplate.json')
-            with open(fname) as data_file:
-                premis_template = json.load(data_file)
-            filesToCreate[premis_path] = premis_template
+            filesToCreate[premis_path] = sa.profile_preservation_metadata_rel.active().specification
 
         mets_path = os.path.join(ip_prepare_path, "mets.xml")
-        fname = os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')
-        with open(fname) as data_file:
-            mets_template = json.load(data_file)
-        filesToCreate[mets_path] = mets_template
+        filesToCreate[mets_path] = sa.profile_sip_rel.active().specification
 
         t1 = ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
                 "info": info,
                 "filesToCreate": filesToCreate,
-                "folderToParse": os.path.join(ip_prepare_path, "data")
+                "folderToParse": ip_prepare_path
             },
             processstep_pos=0,
             information_package=self
@@ -265,7 +231,7 @@ class InformationPackage(models.Model):
         generate_xml_step = ProcessStep.objects.create(
             name="Generate XML",
         )
-        generate_xml_step.tasks = [t1]
+        generate_xml_step.tasks = [t0, t1]
         generate_xml_step.save()
 
         filename = "foo.csv"
@@ -355,7 +321,8 @@ class InformationPackage(models.Model):
             name="Create IP",
         )
         main_step.child_steps = [
-            generate_xml_step, validate_step, create_sip_step
+            generate_xml_step, copy_schemas_step, validate_step,
+            create_sip_step
         ]
         main_step.information_package = self
         main_step.save()
