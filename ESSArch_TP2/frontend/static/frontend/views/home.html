@@ -65,33 +65,47 @@
                         -->
                     </div>
                     <div ng-controller="AngularTreeCtrl" class="navigation">
-                    <!--
-                        Navigation
+                        <!--
+                        <p ng-click="loadNavigation()"> Navigation</p>
                         </br>
                         <p>
                         <treecontrol class="tree-light"
-                                     tree-model="barnOchUngdom"
+                                     tree-model="ArchivalInstitution"
                                      options="treeOptions"
                                      on-selection="showSelected(node)"
                                      selected-node="node1">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
-                                     tree-model="byggnadsnamnd"
+                                     tree-model="ArchivistOrganization"
                                      options="treeOptions"
                                      on-selection="showSelected(node)"
                                      selected-node="node1">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
-                                     tree-model="miljonamnd"
+                                     tree-model="ArchivalType"
+                                     options="treeOptions"
+                                     on-selection="showSelected(node)"
+                                     selected-node="node1">
+                        {{node.name}}
+                        </treecontrol>
+                        <treecontrol class="tree-light"
+                                     tree-model="ArchivalLocation"
+                                     options="treeOptions"
+                                     on-selection="showSelected(node)"
+                                     selected-node="node1">
+                        {{node.name}}
+                        </treecontrol>
+                        <treecontrol class="tree-light"
+                                     tree-model="other"
                                      options="treeOptions"
                                      on-selection="showSelected(node)"
                                      selected-node="node1">
                         {{node.name}}
                         </treecontrol>
                         </p>
-                    -->
+                        -->
                     </div>
                     <div class="calendar">
                         <style>

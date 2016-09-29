@@ -1,4 +1,4 @@
-angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($scope) {
+angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($scope, $http, $rootScope, appConfig) {
     $scope.treeOptions = {
         nodeChildren: "children",
         dirSelectable: true,
@@ -13,40 +13,57 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             labelSelected: "a8"
         }
     }
-    $scope.barnOchUngdom =
+    $scope.ArchivalInstitution =
         [
-        { "name" : "Barn och ungdom", "children" : [
-            { "name" : "asd", "children" : [] },
-            { "name" : "dsa", "children" : [
-                { "name" : "asddfgdfgasd", "children" : [
-                    { "name" : "asdasd", "children" : [] },
-                    { "name" : "asdasggffd", "children" : [] }
-                ]}
-            ]}
+        { "name" : "Archival institution", "children" : [
         ]}
         ];
-        $scope.byggnadsnamnd = [
-        { "name" : "Byggnadsnämnd", "children" : [
-            { "name" : "Bygglov", "children" : [] },
-            { "name" : "Personal", "children" : [
-                { "name" : "asdasd", "children" : [
-                    { "name" : "jjafa", "children" : [] },
-                    { "name" : "asdasdfagh", "children" : [] }
-                ]}
+        $scope.ArchivistOrganization = [
+        { "name" : "Archivist organization", "children" : [
             ]}
+        ];
+        $scope.ArchivalType = [
+        { "name" : "Archival type", "children" : [
         ]}
         ];
-        $scope.miljonamnd = [
-        { "name" : "Miljönämnd", "children" : [
-            { "name" : "asd", "children" : [] },
-            { "name" : "hshsbg", "children" : [
-                { "name" : "asdasd", "children" : [
-                    { "name" : "dsads", "children" : [] },
-                    { "name" : "hfdhdfhd", "children" : [] }
-                ]}
-            ]}
+        $scope.ArchivalLocation = [
+        { "name" : "Archival location", "children" : [
         ]}
         ];
-
+        $scope.other = [
+        { "name" : "other", "children" : [
+        ]}
+        ];
+        $scope.loadNavigation = function() {
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+"archival-institutions/"
+            }).then(function(response) {
+                console.log(response.data);
+                $scope.ArchivalInstitution[0].children = response.data;
+            });
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+"archivist-organizations/"
+            }).then(function(response) {
+                console.log(response.data);
+                $scope.ArchivistOrganization[0].children = response.data;
+            });
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+"archival-types/"
+            }).then(function(response) {
+                console.log(response.data);
+                $scope.ArchivalType[0].children = response.data;
+            });
+            $http({
+                method: 'GET',
+                url: appConfig.djangoUrl+"archival-locations/"
+            }).then(function(response) {
+                console.log(response.data);
+                $scope.ArchivalLocation[0].children = response.data;
+            });
+        }
+        $scope.loadNavigation();
 
 });
