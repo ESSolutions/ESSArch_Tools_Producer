@@ -73,7 +73,7 @@ width: 100%;
 .event-view {
     border-top-style: solid;
     border-color: #666;
-    max-height: 500px;
+    max-height: 100%;
     overflow-y: scroll;
     margin: 5px;
     padding: 5px;
@@ -113,7 +113,7 @@ td {
 .status-view {
     border-bottom-style: solid;
     border-color: #666;
-    max-height: 600px;
+    max-height: 100%;
     overflow-y: scroll;
 }
 /*.status-view treecontrol {
@@ -178,6 +178,7 @@ td {
     justify-content: space-between;
     -webkit-justify-content: space-between;
 }
+
 .eventlog-view .form-group {
     display: flex;
     display: -webkit-flex;
@@ -218,9 +219,34 @@ input[type="checkbox"] {
     flex-direction: row;
     -webkit-flex-direction: row;
     width: 100%;
-     justify-content: space-between;
-    -webkit-justify-content: space-between;
+     justify-content: flex-end;
+    -webkit-justify-content: flex-end;
     margin-left: 10px;
+}
+.events-footer {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    height: 60px;
+    margin: 5px;
+    padding: 5px;
+}
+.events-form {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    width: 50%;
+    margin-left: 10px;
+}
+.events-form .submit-button {
+    height: 40px;
+    margin-top: 10px;
 }
 .control-label {
     font-size: 10px;
