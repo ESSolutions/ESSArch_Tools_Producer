@@ -67,6 +67,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
          $scope.subSelect = false;
          $scope.eventlog = false;
          $scope.select = false;
+        $scope.eventShow = false;
          $scope.ip= row;
      };
      $scope.getTreeData = function(row) {
@@ -142,44 +143,47 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
-                var data = response.data;
-                for(i=0; i<data.length; i++){
-                    if(data[i].linkingObjectIdentifierValue == row.url)
-                    $scope.eventCollection.push(data[i]);
-                }
+                    $scope.eventCollection = response.data;
+                    getEventlogData();
             }), function errorCallback(response){
                 alert(response.status);
             };
             $scope.eventShow = true;
+            $scope.statusShow = false;
         }
         $scope.select = false;
+        $scope.edit = false;
+        $scope.eventlog = false;
 
 
 
         $scope.ip= row;
     };
+    $scope.addEvent = function(ip, eventType, eventDetail) {
+        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+            console.log(value);
+        });
+    }
      $scope.ipTableClick = function(row) {
          console.log("ipobject clicked. row: "+row.Label);
-         if($scope.select && $scope.ip== row){
+         if($scope.select && $scope.ip.id== row.id){
              $scope.select = false;
              $scope.eventlog = false;
              $scope.edit = false;
-             $scope.subSelect = false;
-            $scope.ipSelected = false;
         } else {
          $http({
                 method: 'GET',
                 url: row.url
             }).then(function (response) {
                 $scope.ip = response.data;
-                $scope.select = true;
-                $scope.ipSelected = true;
+                $rootScope.ip = response.data;
                 $scope.getSaProfiles(response.data);
             });
+         $scope.select = true;
 
         }
+         $scope.eventShow = false;
         $scope.statusShow = false;
-        $scope.ip= row;
     };
 //funcitons for select view
     vm.profileModel = {};

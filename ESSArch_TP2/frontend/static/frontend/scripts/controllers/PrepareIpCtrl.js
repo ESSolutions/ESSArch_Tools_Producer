@@ -80,6 +80,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.subSelect = false;
         $scope.eventlog = false;
         $scope.select = false;
+        $scope.eventShow = false;
         $scope.ip= row;
     };
     $scope.getTreeData = function(row) {
@@ -106,18 +107,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
+             $scope.eventlog = false;
+            $scope.edit = false;
         } else {
             $http({
                 method: 'GET',
                 url: row.url
             }).then(function (response) {
                 $scope.ip = response.data;
-                $scope.select = true;
-                $scope.eventShow = false;
-                $scope.statusShow = false;
+                $rootScope.ip = response.data;
                 $scope.getSaProfiles(response.data);
             });
+            $scope.select = true;
         }
+        $scope.eventShow = false;
         $scope.statusShow = false;
     };
 
@@ -133,30 +136,29 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             })
             .then(function successCallback(response) {
                 $scope.eventCollection = response.data;
+                getEventlogData();
             }), function errorCallback(response){
                 alert(response.status);
             };
+
             $scope.eventShow = true;
+            $scope.statusShow = false;
         }
         $scope.select = false;
-
-
-
+        $scope.edit = false;
+        $scope.eventlog = false;
         $scope.ip= row;
     };
+    $scope.addEvent = function(ip, eventType, eventDetail) {
+        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+            console.log(value); 
+        });
+    }
     //Getting data for list view
     $scope.getListViewData = function() {
-            $http({
-                method: 'GET',
-                url: appConfig.djangoUrl+'information-packages/'
-            })
-            .then(function successCallback(response) {
-                //console.log(JSON.stringify(response.data));
-                var data = response.data;
-                $scope.ipRowCollection = data;
-            }), function errorCallback(response){
-                alert(response.status);
-            };
+        listViewService.getListViewData().then(function(value){
+            $scope.ipRowCollection = value;
+        });
     };
     $scope.getListViewData();
     //updates every 5 seconds
@@ -183,7 +185,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 step.isCollapsed = false;
                 step.tasksCollapsed = true;
             });
-            return steps
+            return steps;
         });
     };
 
