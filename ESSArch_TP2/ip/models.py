@@ -242,8 +242,8 @@ class InformationPackage(models.Model):
         physical = "physical"
         checksum = uuid.uuid4()
         #dirname = os.path.join(ip_prepare_path, "data")
-        tarname = os.path.join(ip_prepare_path)
-        zipname = os.path.join(ip_prepare_path)
+        tarname = os.path.join(ip_prepare_path) + '.tar'
+        zipname = os.path.join(ip_prepare_path) + '.zip'
 
         t2 = ProcessTask.objects.create(
             name="preingest.tasks.ValidateFileFormat",
