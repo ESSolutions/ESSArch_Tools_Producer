@@ -223,6 +223,16 @@ input[type="checkbox"] {
     -webkit-justify-content: flex-end;
     margin-left: 10px;
 }
+.submit-sip-eventlog-form {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    width: 100%;
+     justify-content: space-between;
+    -webkit-justify-content: space-between;
+    margin-left: 10px;
+}
 .events-footer {
     display: flex;
     display: -webkit-flex;

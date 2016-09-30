@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams){
+angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService){
     var vm = this;
     // List view
     $scope.changePath= function(path) {
@@ -68,6 +68,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
+        $scope.eventShow = false;
         $scope.select = false;
         $scope.ip= row;
     };
@@ -122,22 +123,29 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.eventCollection = [];
             $http({
                 method: 'GET',
-                url: appConfig.djangoUrl+'events/'
+                url: row.url+'events/'
             })
             .then(function successCallback(response) {
                 // console.log(JSON.stringify(response.data));
                 $scope.eventCollection = response.data;
+                getEventlogData();
             }), function errorCallback(response){
                 alert(response.status);
             };
             $scope.eventShow = true;
         }
         $scope.select = false;
+        $scope.statusShow = false;
 
 
 
         $scope.ip= row;
     };
+    $scope.addEvent = function(ip, eventType, eventDetail) {
+        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+            console.log(value);
+        });
+    }
     //Getting data for list view
     $scope.getListViewData = function() {
         $http({

@@ -28,6 +28,7 @@
                                 <th class="clickable" st-sort="state" class="column-label">State</th>
                                 <th class="clickable"st-sort="state" class="column-label">Events</th>
                                 <th class="clickable" st-sort="status" class="column-label">Status</th>
+                                <th class="clickable" st-sort="Delete" class="column-label">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,7 +77,7 @@
                 <div class="events-footer">
                 <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
                     <div class="form-group">
-                        <label>Status note</label>
+                        <label>Event type</label>
                         <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
                             <option value="" selected="selected" disabled>select one</option>
                         </select>
@@ -178,7 +179,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="table-col"><p>{{saProfile.entity}}</p></a>
+                                        <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
                                     </td>
                                     <td><select class="form-control table-col" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile); getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td><p class="table-col">{{}}</p></td>
