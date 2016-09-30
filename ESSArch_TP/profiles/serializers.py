@@ -17,6 +17,20 @@ class ProfileLockSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class ActiveProfileSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+    name = serializers.ReadOnlyField()
+    url = serializers.HyperlinkedIdentityField(
+        view_name='profile-detail',
+        lookup_field="id",
+        lookup_url_kwarg="pk"
+    )
+
+    class Meta:
+        model = ProfileRel
+        fields = ('url', 'id', 'name',)
+
+
 class ProfileRelSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField(source='profile.id')
     name = serializers.ReadOnlyField(source='profile.name')
@@ -31,66 +45,59 @@ class ProfileRelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'name', 'status',)
 
 
+class ActiveProfileRelSerializer(serializers.Serializer):
+    active = ActiveProfileSerializer()
+    profiles = ProfileRelSerializer(many=True, source="all")
+
+
 class SubmissionAgreementSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
-    profile_transfer_project = ProfileRelSerializer(
+    profile_transfer_project = ActiveProfileRelSerializer(
         source="profile_transfer_project_rel",
-        many=True,
         read_only=True,
     )
-    profile_content_type = ProfileRelSerializer(
+    profile_content_type = ActiveProfileRelSerializer(
         source="profile_content_type_rel",
-        many=True,
         read_only=True,
     )
-    profile_data_selection = ProfileRelSerializer(
+    profile_data_selection = ActiveProfileRelSerializer(
         source="profile_data_selection_rel",
-        many=True,
         read_only=True,
     )
-    profile_classification = ProfileRelSerializer(
+    profile_classification = ActiveProfileRelSerializer(
         source="profile_classification_rel",
-        many=True,
         read_only=True,
     )
-    profile_import = ProfileRelSerializer(
+    profile_import = ActiveProfileRelSerializer(
         source="profile_import_rel",
-        many=True,
         read_only=True,
     )
-    profile_submit_description = ProfileRelSerializer(
+    profile_submit_description = ActiveProfileRelSerializer(
         source="profile_submit_description_rel",
-        many=True,
         read_only=True,
     )
-    profile_sip = ProfileRelSerializer(
+    profile_sip = ActiveProfileRelSerializer(
         source="profile_sip_rel",
-        many=True,
         read_only=True,
     )
-    profile_aip = ProfileRelSerializer(
+    profile_aip = ActiveProfileRelSerializer(
         source="profile_aip_rel",
-        many=True,
         read_only=True,
     )
-    profile_dip = ProfileRelSerializer(
+    profile_dip = ActiveProfileRelSerializer(
         source="profile_dip_rel",
-        many=True,
         read_only=True,
     )
-    profile_workflow = ProfileRelSerializer(
+    profile_workflow = ActiveProfileRelSerializer(
         source="profile_workflow_rel",
-        many=True,
         read_only=True,
     )
-    profile_preservation_metadata = ProfileRelSerializer(
+    profile_preservation_metadata = ActiveProfileRelSerializer(
         source="profile_preservation_metadata_rel",
-        many=True,
         read_only=True,
     )
-    profile_event = ProfileRelSerializer(
+    profile_event = ActiveProfileRelSerializer(
         source="profile_event_rel",
-        many=True,
         read_only=True,
     )
 
