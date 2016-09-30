@@ -60,7 +60,7 @@
                 <div class="events-footer">
                 <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
                     <div class="form-group">
-                        <label>Status note</label>
+                        <label>Event type</label>
                         <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
                             <option value="" selected="selected" disabled>select one</option>
                         </select>
@@ -115,7 +115,7 @@
                                 </div>
                             </td>
                             <td>
-                                <a class="table-col"><p>{{saProfile.entity}}</p></a>
+                                <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
                             </td>
                             <td><select ng-disabled="true" class="form-control table-col" ng-model="currentSa" ng-change="getSelectCollection(currentSa)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                             <td><p class="table-col">{{}}</p></td>
