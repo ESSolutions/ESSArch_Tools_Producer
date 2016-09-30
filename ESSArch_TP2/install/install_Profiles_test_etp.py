@@ -1860,7 +1860,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xsi:schemaLocationPremis"
+                    "label": "xsi:schemaLocationPremis",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "xsi:schemaLocationPremis",
@@ -1868,7 +1869,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "PROFILE"
+                    "label": "PROFILE",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "PROFILE",
@@ -1876,7 +1878,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "LABEL"
+                    "label": "LABEL",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "LABEL",
@@ -1892,7 +1895,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "OBJID"
+                    "label": "OBJID",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "OBJID",
@@ -1908,7 +1912,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "CREATEDATE"
+                    "label": "CREATEDATE",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "CREATEDATE",
@@ -1988,7 +1993,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "amdLink"
+                    "label": "amdLink",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "amdLink",
@@ -1996,7 +2002,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "digiprovLink"
+                    "label": "digiprovLink",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "digiprovLink",
@@ -2012,7 +2019,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "MDTYPE"
+                    "label": "MDTYPE",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "MDTYPE",
@@ -2020,7 +2028,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xlink:href"
+                    "label": "xlink:href",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "xlink:href",
@@ -2028,7 +2037,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xlink:type"
+                    "label": "xlink:type",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "xlink:type",
@@ -2036,7 +2046,8 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "ID"
+                    "label": "ID",
+                    'disabled': True,
                 },
                 "type": "input",
                 "key": "ID",
