@@ -2,6 +2,10 @@ from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
+from configuration.models import (
+    EventType,
+)
+
 from ip.models import (
     ArchivalInstitution,
     ArchivistOrganization,
@@ -171,3 +175,20 @@ class EventIPViewSet(viewsets.ModelViewSet):
     """
     queryset = EventIP.objects.all()
     serializer_class = EventIPSerializer
+
+    def create(self, request):
+        """
+        """
+
+        detail = request.data.get('eventDetail', None)
+        type_id = request.data.get('eventType', None)
+        ip_id = request.data.get('information_package', None)
+
+        eventType = EventType.objects.get(pk=type_id)
+        ip = InformationPackage.objects.get(pk=ip_id)
+
+        EventIP.objects.create(
+            eventDetail=detail, eventType=eventType,
+            linkingObjectIdentifierValue=ip
+        )
+        return Response({"status": "Created event"})
