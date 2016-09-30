@@ -311,10 +311,20 @@ class InformationPackage(models.Model):
             information_package=self
         )
 
+        t8 = ProcessTask.objects.create(
+            name="preingest.tasks.UpdateIPStatus",
+            params={
+                "ip": self,
+                "status": "CREATED",
+            },
+            processstep_pos=0,
+            information_package=self
+        )
+
         create_sip_step = ProcessStep.objects.create(
                 name="Create SIP"
         )
-        create_sip_step.tasks = [t6, t7]
+        create_sip_step.tasks = [t6, t7, t8]
         create_sip_step.save()
 
         main_step = ProcessStep.objects.create(
