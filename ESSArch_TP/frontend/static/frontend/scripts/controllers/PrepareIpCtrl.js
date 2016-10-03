@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval){
     var vm = this;
     $scope.tree_data = [];
      $scope.expanding_property = {
@@ -75,7 +75,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.edit = false;
 
            $scope.statusViewUpdate(row);
-            //$scope.tree_data = $scope.parentStepsRowCollection;
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
@@ -84,16 +83,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.ip= row;
     };
     $scope.getTreeData = function(row) {
-        $http({
-            method: 'GET',
-            url: row.url,
-        }).then(function(response){
-            ip = response.data;
-            $scope.getStatusViewData(ip).then(function(steps){
-                $scope.tree_data = steps;
-            });
+        listViewService.getTreeData(row).then(function(value) {
+            $scope.tree_data = value;
         });
-
     }
     $scope.statusViewUpdate = function(row){
             $scope.getTreeData(row);
@@ -129,18 +121,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventShow = false;
         } else {
             $scope.eventShow = true;
-            $scope.eventCollection = [];
-            $http({
-                method: 'GET',
-                url: row.url+'events/'
-            })
-            .then(function successCallback(response) {
-                $scope.eventCollection = response.data;
+            listViewService.getEvents(row).then(function(value) {
+                $scope.eventCollection = value;
                 getEventlogData();
-            }), function errorCallback(response){
-                alert(response.status);
-            };
-
+            });
             $scope.eventShow = true;
             $scope.statusShow = false;
         }
@@ -151,7 +135,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
-            console.log(value); 
+            console.log(value);
         });
     }
     //Getting data for list view
@@ -160,71 +144,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.ipRowCollection = value;
         });
     };
-    $scope.getListViewData();
     //updates every 5 seconds
-    $scope.listViewUpdate = function(){
-        $timeout(function() {
-            $scope.getListViewData();
-            $scope.listViewUpdate();
-        }, 5000)
-    };
-    $scope.listViewUpdate();
-    //Getting data for status view
-    $scope.getStatusViewData = function(ip) {
-        return $http({
-            method: 'GET',
-            url: ip.url + 'steps',
-        }).then(function(response){
-            steps = response.data;
-            steps.forEach(function(step){
-                step.children = getChildSteps(step.child_steps);
-                step.tasks.forEach(function(task){
-                    task.label = task.name;
-                });
-                step.children = step.children.concat(step.tasks);
-                step.isCollapsed = false;
-                step.tasksCollapsed = true;
-            });
-            return steps;
-        });
-    };
-
-    //Helper functions for getStatusViewData
-    function getChildSteps(childSteps) {
-        childSteps.forEach(function(child){
-            child.child_steps = getChildSteps(child.child_steps);
-            child.tasks.forEach(function(task){
-                task.user = child.user;
-                task.time_created = task.time_started;
-            });
-
-            child.children = child.child_steps.concat(child.tasks);
-            if(child.children.length == 0){
-                child.icons = {
-                    iconLeaf: "glyphicon glyphicon-alert"
-                };
-            }
-            child.isCollapsed = false;
-            child.tasksCollapsed = true;
-        });
-        return childSteps;
-    };
-
-    $scope.treeOptions = {
-        nodeChildren: "children",
-        dirSelectable: true,
-        injectClasses: {
-            ul: "a1",
-            li: "a2",
-            liSelected: "a7",
-            iExpanded: "a3",
-            iCollapsed: "a4",
-            iLeaf: "a5",
-            label: "a6",
-            labelSelected: "a8"
-        }
-    }
-
+    $scope.getListViewData();
+    $interval(function(){$scope.getListViewData();}, 5000, false);
+       //Getting data for status view
        //$scope.getStatusViewData();
 
     // Progress bar handler
@@ -251,175 +174,30 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             vm.profileModel = row.profile.specification_data;
             vm.profileFields = row.profile.template;
             $scope.subSelectProfile = "profile";
-            $http({
-                method: 'OPTIONS',
-                url: appConfig.djangoUrl+'tasks/'
-            })
-            .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
-                var data = response.data;
-                $scope.subSelectOptions = data.actions.POST.name.choices;
-            }), function errorCallback(response){
-                alert(response.status);
-            };
         }
         console.log("selected profile: ");
         console.log($scope.selectProfile);
     };
     function getEventlogData() {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+'event-types/'
-        })
-        .then(function successCallback(response) {
-            $scope.statusNoteCollection = response.data;
-        }), function errorCallback(response){
-            alert(response.status);
-        };
+        listViewService.getEventlogData().then(function(value){
+            $scope.statusNoteCollection = value;
+        });
     };
     //populating select view
     $scope.selectRowCollection = [];
     $scope.selectRowCollapse = [];
-    $scope.saProfile =
-    {
-        entity: "PROFILE_SUBMISSION_AGREEMENT",
-        profile: {},
-        profiles: [
-
-        ],
-    };
-
     $scope.getSaProfiles = function(ip) {
-        var sas = [];
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+'submission-agreements/'
-        })
-        .then(function successCallback(response) {
-            // console.log(JSON.stringify(response.data));
-            sas = response.data;
-            var tempProfiles = [];
-            $scope.submissionAgreements = sas;
-            $scope.saProfile.profileObjects = sas;
-            sas.forEach(function (sa) {
-                tempProfiles.push(sa);
-                sa.information_packages.forEach(function (informationPackage) {
-                    if(informationPackage == ip.url){
-                        $scope.saProfile.profile = sa;
-                        $scope.saProfile.profile.includedProfiles = [];
-                    }
-                });
-            });
-            $scope.saProfile.profiles = tempProfiles;
-            $scope.getSelectCollection($scope.saProfile.profile);
-            console.log("current sa: ");
-            console.log($scope.saProfile.profile);
-        }), function errorCallback(response){
-            alert(response.status);
-        };
+        console.log("current sa: ");
+        console.log($scope.saProfile);
+        listViewService.getSaProfiles(ip).then(function(value) {
+            $scope.saProfile = value;
+            $scope.getSelectCollection(value.profile);
+        });
     };
+
     $scope.getSelectCollection = function (sa) {
-
-
-
-        $scope.currentProfiles = {};
-        $scope.selectRowCollapse = [];
-        getProfiles("transfer_project", sa.profile_transfer_project);
-        getProfiles("content_type", sa.profile_content_type);
-        getProfiles("data_selection", sa.profile_data_selection);
-        getProfiles("classification", sa.profile_classification);
-        getProfiles("import", sa.profile_import);
-        getProfiles("submit_description", sa.profile_submit_description);
-        getProfiles("sip", sa.profile_sip);
-        getProfiles("aip", sa.profile_aip);
-        getProfiles("dip", sa.profile_dip);
-        getProfiles("workflow", sa.profile_workflow);
-        getProfiles("preservation_metadata", sa.profile_preservation_metadata);
-        getProfiles("event", sa.profile_event);
+        $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
         console.log($scope.selectRowCollapse);
-
-    };
-    function getProfiles(type, profileArray){
-        var bestStatus = 0;
-        for(i=0;i<profileArray.length;i++){
-            if(profileArray[i].status == 0 ){
-                getProfile(profileArray[i].id, false);
-            }
-            if(profileArray[i].status == 2 && bestStatus != 1){
-                bestStatus = 2;
-                getProfile(profileArray[i].id, true);
-            }
-            if(profileArray[i].status == 2 && bestStatus == 1){
-                getProfile(profileArray[i].id, false);
-            }
-            if(profileArray[i].status == 1){
-                bestStatus = 1;
-                getProfile(profileArray[i].id, true);
-            }
-        }
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"profiles",
-            params: {type: type}
-        })
-        .then(function successCallback(response) {
-            var tempProfileArray = response.data;
-            for(i=0;i<profileArray.length;i++){
-                for(j=0;j<tempProfileArray.length;j++){
-                    if(tempProfileArray[j].id == profileArray[i].id){
-                        tempProfileArray.splice(j,1);
-                    }
-                }
-            }
-            for(i=0;i<tempProfileArray.length;i++){
-                getProfile(response.data[i].id, false);
-            }
-        }), function errorCallback(response){
-            alert(response.status);
-        };
-    };
-    function getProfile(profile_id, defaultProfile) {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl + "profiles/" + profile_id
-        })
-        .then(function successCallback(response) {
-            var newProfileType = true;
-            for(i=0; i<$scope.selectRowCollapse.length;i++){
-                if($scope.selectRowCollapse[i].profile_type == response.data.profile_type){
-                    newProfileType = false;
-                    $scope.selectRowCollapse[i].profiles.push(response.data);
-                    if(defaultProfile){
-                        response.data.defaultProfile = true;
-                        $scope.selectRowCollapse[i].profile = response.data;
-                    }
-                    break;
-                } else {
-                    newProfileType = true;
-                }
-            }
-            // console.log("newProfileType = " + newProfileType);
-            if(newProfileType){
-                var tempProfileObject = {
-                    profile_label: response.data.profile_type.toUpperCase(),
-                    profile_type: response.data.profile_type,
-                    profile: {},
-                    profiles: [
-                       response.data
-                    ],
-                    checked: true,
-                };
-                if(defaultProfile){
-                    response.data.defaultProfile = true;
-                    tempProfileObject.profile = response.data;
-                }
-                tempProfileObject = $scope.profileLocked(tempProfileObject, $scope.saProfile.profile.url, $scope.ip.locks);
-                $scope.selectRowCollapse.push(tempProfileObject);
-                $scope.updateIncludedProfiles(tempProfileObject);
-            }
-        }), function errorCallback(response){
-            alert(response.status);
-        };
     };
     $scope.updateIncludedProfiles = function(profile){
         if(profile.checked){
@@ -432,16 +210,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }
     }
-    $scope.profileLocked = function(profileObject, sa, locks) {
-        profileObject.locked = false;
-        locks.forEach(function (lock) {
-            if(lock.submission_agreement == sa && lock.profile == profileObject.profile.url){
-                profileObject.locked = true;
-            }
-        });
-        return profileObject;
-    }
-
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.saProfile.profile.url+"change-profile/";
@@ -469,50 +237,38 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             console.log(response);
         });
     }
-        $scope.showHideAllProfiles = function() {
-            if($scope.selectRowCollection.length == 0){
-                for(i = 0; i < $scope.selectRowCollapse.length; i++){
-                    $scope.selectRowCollection.push($scope.selectRowCollapse[i]);
-                }
-            } else {
-                $scope.selectRowCollection = [];
+    $scope.showHideAllProfiles = function() {
+        if($scope.selectRowCollection.length == 0){
+            for(i = 0; i < $scope.selectRowCollapse.length; i++){
+                $scope.selectRowCollection.push($scope.selectRowCollapse[i]);
             }
-            $scope.profilesCollapse = !$scope.profilesCollapse;
-        };
-        //Populating edit view fields
+        } else {
+            $scope.selectRowCollection = [];
+        }
+        $scope.profilesCollapse = !$scope.profilesCollapse;
+    };
+    //Populating edit view fields
     // onSubmit function
 
     vm.onSubmit = function(new_name) {
-            var uri = $scope.profileToSave.profile.url+"save/";
-            var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
-            console.log(sendData);
-            $http({
-                method: 'POST',
-                url: uri,
-                data: sendData
-            })
-            .success(function (response) {
-                alert(response.status);
-                $scope.getSelectCollection($scope.saProfile.profile);
-                $scope.edit = false;
-                $scope.eventlog = false;
-            })
-            .error(function(response) {
-                alert(response.status);
-            });
+        var uri = $scope.profileToSave.profile.url+"save/";
+        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
+        console.log(sendData);
+        $http({
+            method: 'POST',
+            url: uri,
+            data: sendData
+        })
+        .success(function (response) {
+            alert(response.status);
+            $scope.getSelectCollection($scope.saProfile.profile);
+            $scope.edit = false;
+            $scope.eventlog = false;
+        })
+        .error(function(response) {
+            alert(response.status);
+        });
     };
-
-// Page selection
-//      &
-// ng-show code
-    $scope.ipSubmitText = "Save profile";
-    $scope.toggleIpText = function() {
-        if($scope.approvedToCreate){
-            $scope.ipSubmitText = "Prepare ip";
-        }else {
-            $scope.ipSubmitText = "Save profile";
-        }
-    }
     $scope.saveProfileEnabled = false;
     $scope.statusShow = false;
     $scope.eventShow = false;
@@ -630,7 +386,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     $scope.lockProfile = function (profileObject) {
         console.log(profileObject);
-        console.log($scope.profileToSave);
         $http({
             method: 'POST',
             url: profileObject.profile.url+"lock/",
@@ -647,12 +402,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
     }
     $scope.prepareIp = function (label) {
-        $http({
-            method: 'POST',
-            url: appConfig.djangoUrl+"information-packages/",
-            data: {label: label}
-        }).then(function (response){
-            console.log("new ip created, with label: " + label);
+        listViewService.prepareIp(label).then(function() {
             $scope.getListViewData();
         });
     }
