@@ -3,7 +3,7 @@ display: flex;
 display: -webkit-flex;
 flex-direction: column;
 -webkit-flex-direction: column;
-height: 100%;
+height: 1000px;
 width: 100%;
 
 }
@@ -27,7 +27,7 @@ width: 100%;
     margin-left: 10px;
 }
 .list-view {
-    max-height: 270px;
+    max-height: 40%;
     overflow-y: scroll;
     border-style: solid;
     border-color: #666;
@@ -37,6 +37,7 @@ width: 100%;
     flex-direction: column;
     -webkit-flex-direction: column;
     margin-top: 8px;
+    position: relative;
 }
 .progress {
     height: 20px;
@@ -69,14 +70,19 @@ width: 100%;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
+    max-height: 65%;
+    position: relative;
+}
+.events-status-wrapper {
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
 }
 .event-view {
-    border-top-style: solid;
-    border-color: #666;
-    max-height: 100%;
-    overflow-y: scroll;
     margin: 5px;
     padding: 5px;
+    max-height: 550px;
+    overflow-y: scroll;
 
 }
 .select-view {
@@ -111,9 +117,7 @@ td {
     line-height: 1;
 }
 .status-view {
-    border-bottom-style: solid;
-    border-color: #666;
-    max-height: 100%;
+    max-height: 550px;
     overflow-y: scroll;
 }
 /*.status-view treecontrol {
@@ -154,10 +158,9 @@ td {
 }
 
 .edit-view {
-    height: 60%;
+    max-height: 340px;
     border-top-style: solid;
     border-color: #666;
-    max-height: 300px;
     overflow-y: scroll;
     margin: 5px;
     padding: 5px;
