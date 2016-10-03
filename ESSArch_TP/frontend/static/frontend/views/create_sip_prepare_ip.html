@@ -55,7 +55,7 @@
                         <button type="button" ng-click="toggleEventlogView()" class="btn btn-default">Show/hide sub eventlog view</button>
                     </div>-->
                 </div>
-                <div ng-if="select || subSelect || edit || eventlog || eventShow || statusShow" class="select-sub-edit-eventlog-wrapper">
+                <div ng-if="eventShow || statusShow" class="events-status-wrapper">
                     <div ng-if="eventShow" class="event-view">
                         <p>Events associated to: {{ip.Label}}</p>
                         <table st-table="eventRowCollection" st-safe-src="eventCollection" class="table table-striped">
@@ -74,23 +74,22 @@
                                 </tr>
                             </tbody>
                         </table>
-                <div class="events-footer">
-                <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
-                    <div class="form-group">
-                        <label>Event type</label>
-                        <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
-                            <option value="" selected="selected" disabled>select one</option>
-                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Signature</label>
-                        <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
+                    <div ng-if="eventShow" class="events-footer">
+                        <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
+                            <div class="form-group">
+                                <label>Event type</label>
+                                <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+                                    <option value="" selected="selected" disabled>select one</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Signature</label>
+                                <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
+                            </div>
+                            <button type="submit" class="btn btn-info submit-button">Add event</button>
+                        </form>
                     </div>
-                    <button type="submit" class="btn btn-info submit-button">Add event</button>
-                </form>
-                </div>
-                    </div>
-
                     <script type="text/ng-template" id="child_step_template.html">
                                         <div class="child-step-list">
                                         <tr ng-repeat="step in step.child_steps" ng-include="'child_step_template.html'">
@@ -157,6 +156,8 @@
 
                     <!-- END OF EXAMPLE-->
                     </div>
+                </div>
+                <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                     <div ng-if="select" class="select-view">
                         <p>{{ip.Label}}</p>
                         <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
