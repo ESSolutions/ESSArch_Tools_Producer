@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService){
+angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval){
     var vm = this;
     // List view
     $scope.changePath= function(path) {
@@ -73,14 +73,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.ip= row;
     };
     $scope.getTreeData = function(row) {
-        $http({
-            method: 'GET',
-            url: row.url,
-        }).then(function(response){
-            ip = response.data
-                $scope.tree_data = $scope.getStatusViewData(ip).steps;
+        listViewService.getTreeData(row).then(function(value) {
+            $scope.tree_data = value;
         });
-
     }
     $scope.statusViewUpdate = function(row){
         $scope.getTreeData(row);
@@ -101,6 +96,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 url: row.url
             }).then(function (response) {
                 $scope.ip = response.data;
+                $rootScope.ip = response.data;
                 getEventlogData();
                 $scope.getPackageInformation(response.data);
                 $scope.getPackageDependencies(response.data);
@@ -120,25 +116,16 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.eventShow = false;
         } else {
             $scope.eventShow = true;
-            $scope.eventCollection = [];
-            $http({
-                method: 'GET',
-                url: row.url+'events/'
-            })
-            .then(function successCallback(response) {
-                // console.log(JSON.stringify(response.data));
-                $scope.eventCollection = response.data;
+            listViewService.getEvents(row).then(function(value) {
+                $scope.eventCollection = value;
                 getEventlogData();
-            }), function errorCallback(response){
-                alert(response.status);
-            };
+            });
             $scope.eventShow = true;
+            $scope.statusShow = false;
         }
         $scope.select = false;
-        $scope.statusShow = false;
-
-
-
+        $scope.edit = false;
+        $scope.eventlog = false;
         $scope.ip= row;
     };
     $scope.addEvent = function(ip, eventType, eventDetail) {
@@ -148,74 +135,19 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //Getting data for list view
     $scope.getListViewData = function() {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+'information-packages/'
-        })
-        .then(function successCallback(response) {
-            //console.log(JSON.stringify(response.data));
-            var data = response.data;
-            $scope.ipRowCollection = data;
-        }), function errorCallback(response){
-            alert(response.status);
-        };
+        listViewService.getListViewData().then(function(value){
+            $scope.ipRowCollection = value;
+        });
     };
     $scope.getListViewData();
-    //updates every 5 seconds
-    $scope.listViewUpdate = function(){
-        $timeout(function() {
-            $scope.getListViewData();
-            $scope.listViewUpdate();
-        }, 5000)
-    };
-    $scope.listViewUpdate();
+    $interval(function(){$scope.getListViewData();}, 5000, false);
+
+    $scope.max = 100;
     //Getting data for status view
-    $scope.getStatusViewData = function(row) {
-
-        row.steps.forEach(function(step){
-            step.children = getChildSteps(step.child_steps);
-            step.tasks.forEach(function(task){
-                task.label = task.name;
-            });
-            step.children = step.children.concat(step.tasks);
-            step.isCollapsed = false;
-            step.tasksCollapsed = true;
-        });
-
-        return row;
-
-    };
-
-    //Helper functions for getStatusViewData
-    function getChildSteps(childSteps) {
-        childSteps.forEach(function(child){
-            child.child_steps = getChildSteps(child.child_steps);
-            child.tasks.forEach(function(task){
-                task.user = child.user;
-                task.time_created = task.time_started;
-            });
-
-            child.children = child.child_steps.concat(child.tasks);
-            if(child.children.length == 0){
-                child.icons = {
-                    iconLeaf: "glyphicon glyphicon-alert"
-                };
-            }
-            child.isCollapsed = false;
-            child.tasksCollapsed = true;
-        });
-        return childSteps;
-    };
     function getEventlogData() {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+'event-types/'
-        })
-        .then(function successCallback(response) {
-            $scope.statusNoteCollection = response.data;
-        }), function errorCallback(response){
-            alert(response.status);
-        };
+        listViewService.getEventlogData().then(function(value){
+            $scope.statusNoteCollection = value;
+        });
     };
 
     // Populate file list view
@@ -239,7 +171,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             var sa = response.data;
             $http({
                 method: 'GET',
-                url: sa.profile_transfer_project[0].url
+                url: sa.profile_transfer_project.active.url
             }).then(function(response) {
                 vm.dependencyModel= response.data.specification_data;
                 vm.dependencyFields = response.data.template;
@@ -445,22 +377,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
     };
     function getActiveProfile(profiles) {
-        /*if(profiles.length < 2) {
-            return profiles[0];
-        }*/
-        var activeProfile = profiles[0];
-        var bestStatus = 0;
-        profiles.forEach(function(profile) {
-            if(profile.status == 1){
-                activeProfile = profile;
-                bestStatus = 1;
-            }
-            else if(profile.status == 2 && bestStatus != 1){
-                activeProfile = profile;
-                bestStatus = 2;
-            }
-        });
-        return activeProfile;
+
+        return profiles.active;
     }
 
     $scope.statusShow = false;
