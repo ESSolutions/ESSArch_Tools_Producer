@@ -196,6 +196,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
 
     $scope.getSelectCollection = function (sa) {
+        $scope.selectRowCollapse = [];
         $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
         console.log($scope.selectRowCollapse);
     };
