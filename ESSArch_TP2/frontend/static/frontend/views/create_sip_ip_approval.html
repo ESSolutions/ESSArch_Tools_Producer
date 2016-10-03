@@ -96,7 +96,7 @@
             <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
             <div ng-if="select" class="select-view">
                 <p>{{ip.Label}}</p>
-                <table st-table="selectCollection" st-safe-src="selectRowCollapse" class="table table-striped">
+                <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
                     <thead>
                         <tr>
                             <th class="info-popover column-enabled"><p uib-popover="If checked, profile is enabled" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Enabled</p></th>
