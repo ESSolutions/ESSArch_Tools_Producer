@@ -13,7 +13,15 @@ body.modal-open {
 body.modal-open[style] {
     padding-right: 0px !important;
 }
+.st-sort-ascent:before {
+    content: '\25B2';
+    position: relative;
+}
 
+.st-sort-descent:before {
+    content: '\25BC';
+    position: relative;
+}
 .modal::-webkit-scrollbar {
     width: 0 !important; /*removes the scrollbar but still scrollable*/
     /* reference: http://stackoverflow.com/a/26500272/2259400 */
