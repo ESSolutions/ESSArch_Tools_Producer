@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'preingest.pagination.LinkHeaderPagination',
+    'PAGE_SIZE': 10
+}
+
 
 # Application definition
 

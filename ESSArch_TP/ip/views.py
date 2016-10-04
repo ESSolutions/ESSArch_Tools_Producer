@@ -132,11 +132,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def events(self, request, pk=None):
         ip = self.get_object()
         events = ip.events.all()
-        serializer = EventIPSerializer(
-            data=events, many=True, context={'request': request}
-        )
-        serializer.is_valid()
-        return Response(serializer.data)
+        page = self.paginate_queryset(events)
+        if page is not None:
+            serializers = EventIPSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializers.data)
+        serializers = EventIPSerializer(events, many=True, context={'request': request})
+        return Response(serializers.data)
 
     @detail_route()
     def steps(self, request, pk=None):
