@@ -55,7 +55,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
      };
      $scope.ipSelected = false;
      $scope.stateClicked = function(row){
-         if($scope.statusShow && $scope.ip== row){
+         if($scope.statusShow && $scope.ip == row){
              $scope.statusShow = false;
          } else {
              $scope.statusShow = true;
@@ -67,7 +67,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
          $scope.eventlog = false;
          $scope.select = false;
         $scope.eventShow = false;
-         $scope.ip= row;
+         $scope.ip = row;
      };
     $scope.getTreeData = function(row) {
         listViewService.getTreeData(row).then(function(value) {
@@ -106,21 +106,19 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         $scope.statusShow = false;
     };
     $scope.eventsClick = function (row) {
-        if($scope.eventShow && $scope.ip== row){
+        if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
         } else {
             $scope.eventShow = true;
-            listViewService.getEvents(row).then(function(value) {
-                $scope.eventCollection = value;
-                getEventlogData();
-            });
+            getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
         }
         $scope.select = false;
         $scope.edit = false;
         $scope.eventlog = false;
-        $scope.ip= row;
+        $scope.ip = row;
+        $rootScope.ip = row;
     };
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {

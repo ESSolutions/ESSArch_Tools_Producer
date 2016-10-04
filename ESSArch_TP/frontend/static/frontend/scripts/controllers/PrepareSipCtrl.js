@@ -57,7 +57,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
     };
     $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip== row){
+        if($scope.statusShow && $scope.ip == row){
             $scope.statusShow = false;
         } else {
             $scope.statusShow = true;
@@ -70,7 +70,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.eventlog = false;
         $scope.eventShow = false;
         $scope.select = false;
-        $scope.ip= row;
+        $scope.ip = row;
     };
     $scope.getTreeData = function(row) {
         listViewService.getTreeData(row).then(function(value) {
@@ -112,21 +112,19 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
 
     $scope.eventsClick = function (row) {
-        if($scope.eventShow && $scope.ip== row){
+        if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
         } else {
             $scope.eventShow = true;
-            listViewService.getEvents(row).then(function(value) {
-                $scope.eventCollection = value;
-                getEventlogData();
-            });
+            getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
         }
         $scope.select = false;
         $scope.edit = false;
         $scope.eventlog = false;
-        $scope.ip= row;
+        $scope.ip = row;
+        $rootScope.ip = row;
     };
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
