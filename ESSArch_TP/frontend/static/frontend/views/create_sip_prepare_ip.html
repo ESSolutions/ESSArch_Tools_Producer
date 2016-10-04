@@ -58,7 +58,8 @@
                 <div ng-if="eventShow || statusShow" class="events-status-wrapper">
                     <div ng-if="eventShow" class="event-view">
                         <p>Events associated to: {{ip.Label}}</p>
-                        <table st-table="eventRowCollection" st-safe-src="eventCollection" class="table table-striped">
+                        <div ng-controller="pipeCtrl as mc" class="table-container">
+                        <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="clickable" st-sort="id">Id</th>
@@ -67,13 +68,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="row in eventRowCollection">
+                                <tr ng-repeat="row in mc.displayed">
                                     <td>{{row.id}}</td>
                                     <td>{{row.eventDetail}}</td>
                                     <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="pagination.number" st-displayed-pages="7"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
+                        </div>
                     </div>
                     <div ng-if="eventShow" class="events-footer">
                         <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">

@@ -41,28 +41,36 @@
         <div ng-if="statusShow || eventShow" class="events-status-wrapper">
             <div ng-if="eventShow" class="event-view">
                 <p>Events associated to: {{ip.Label}}</p>
-                <table st-table="eventRowCollection" st-safe-src="eventCollection" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="clickable" st-sort="id">Id</th>
-                            <th class="clickable" st-sort="eventDetail">Event detail</th>
-                            <th class="clickable" st-sort="eventDateTime">Event Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in eventRowCollection">
-                            <td>{{row.id}}</td>
-                            <td>{{row.eventDetail}}</td>
-                            <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div ng-if="eventShow" class="events-footer">
-                <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
-                    <div class="form-group">
-                        <label>Event type</label>
-                        <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+                <div ng-controller="pipeCtrl as mc" class="table-container">
+                    <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="clickable" st-sort="id">Id</th>
+                                <th class="clickable" st-sort="eventDetail">Event detail</th>
+                                <th class="clickable" st-sort="eventDateTime">Event Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in mc.displayed">
+                                <td>{{row.id}}</td>
+                                <td>{{row.eventDetail}}</td>
+                                <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div st-pagination="" st-items-by-page="pagination.number" st-displayed-pages="7"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>            </div>
+                <div ng-if="eventShow" class="events-footer">
+                    <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
+                        <div class="form-group">
+                            <label>Event type</label>
+                            <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
                             <option value="" selected="selected" disabled>select one</option>
                         </select>
                     </div>
