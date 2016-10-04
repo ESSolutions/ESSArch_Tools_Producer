@@ -3,7 +3,7 @@ display: flex;
 display: -webkit-flex;
 flex-direction: column;
 -webkit-flex-direction: column;
-height: 1000px;
+height: 962px;
 width: 100%;
 
 }
@@ -27,7 +27,7 @@ width: 100%;
     margin-left: 10px;
 }
 .list-view {
-    max-height: 40%;
+    max-height: 330px;
     overflow-y: scroll;
     border-style: solid;
     border-color: #666;
