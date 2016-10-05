@@ -5,10 +5,10 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function 
     $scope.selected = [];
     this.displayed = [];
     $scope.eventClick = function(row) {
-        if(row.class === "selected"){
+        if(row.class == "selected"){
             row.class = "";
             for(i=0; i<$scope.selected.length; i++){
-                if($scope.selected[i] === row){
+                if($scope.selected[i].id === row.id){
                     $scope.selected.splice(i,1);
                 }
             }
