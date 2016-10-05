@@ -22,6 +22,9 @@ body.modal-open[style] {
     content: '\25BC';
     position: relative;
 }
+.selected {
+    background-color: #b2aae5 !important;
+}
 .modal::-webkit-scrollbar {
     width: 0 !important; /*removes the scrollbar but still scrollable*/
     /* reference: http://stackoverflow.com/a/26500272/2259400 */
