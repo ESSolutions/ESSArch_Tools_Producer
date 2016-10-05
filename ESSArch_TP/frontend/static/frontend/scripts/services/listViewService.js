@@ -66,11 +66,11 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return promise;
     }
     //Returns all events for one ip
-    function getEvents(ip, pageNumber) {
+    function getEvents(ip, pageNumber, pageSize) {
         var promise = $http({
             method: 'GET',
             url: ip.url+'events/',
-            params: {page: pageNumber}
+            params: {page: pageNumber, page_size: pageSize}
         })
         .then(function successCallback(response) {
             return {
