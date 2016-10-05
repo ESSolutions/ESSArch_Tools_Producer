@@ -3,7 +3,7 @@ display: flex;
 display: -webkit-flex;
 flex-direction: column;
 -webkit-flex-direction: column;
-height: 962px;
+max-height: 962px;
 width: 100%;
 position: relative;
 }
@@ -26,6 +26,7 @@ position: relative;
 .search-prepare-wrapper button {
     margin-left: 10px;
 }
+
 .list-view {
     max-height: 330px;
     overflow-y: scroll;
@@ -108,7 +109,9 @@ position: relative;
     padding: 5px;
     max-height: 550px;
     overflow-y: scroll;
-
+}
+.items-per-page {
+    width: 15%;
 }
 .select-view {
     max-height: 200px;
