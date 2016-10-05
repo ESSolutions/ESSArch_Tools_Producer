@@ -32,7 +32,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function 
         var number = pagination.number;  // Number of entries showed per page.
         var pageNumber = start/number+1;
 
-        service.getPage(start, number, pageNumber, tableState).then(function (result) {
+        service.getPage(start, number, pageNumber, tableState, $scope.selected).then(function (result) {
             ctrl.displayed = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             ctrl.isLoading = false;
