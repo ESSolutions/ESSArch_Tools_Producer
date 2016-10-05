@@ -102,12 +102,11 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 $scope.getPackageDependencies(response.data);
                 $scope.getPackageProfiles(response.data);
                 $scope.getFileList(response.data);
-                $scope.edit = true;
-                $scope.eventlog = true;
-                $scope.eventShow = false;
-                $scope.statusShow = false;
             });
+            $scope.edit = true;
+            $scope.eventlog = true;
         }
+        $scope.eventShow = false;
         $scope.statusShow = false;
     };
 
@@ -329,9 +328,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             getProfiles(sa.profile_workflow).then(function(profileValue){vm.profileModel.workflow = profileValue});
             getProfiles(sa.profile_preservation_metadata).then(function(profileValue){vm.profileModel.preservation_metadata = profileValue});
             getProfiles(sa.profile_event).then(function(profileValue){vm.profileModel.event = profileValue});
-            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-            console.log(vm.profileModel);
-            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         }, function(response){
             console.log(response.status);
         });
@@ -345,7 +341,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.ip.locks.forEach(function(lock) {
                 if(lock.profile == response.data.url){
                     returnVal = true;
-                    console.log("true");
                 }
             });
             return returnVal;

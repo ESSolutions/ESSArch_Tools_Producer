@@ -100,6 +100,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
                 $scope.getSaProfiles(response.data);
             });
          $scope.select = true;
+         $scope.eventlog = true;
 
         }
          $scope.eventShow = false;
