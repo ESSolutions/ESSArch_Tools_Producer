@@ -73,8 +73,12 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             params: {page: pageNumber, page_size: pageSize}
         })
         .then(function successCallback(response) {
+            count = response.headers('Count');
+            if (count == null) {
+                count = response.data.length;
+            }
             return {
-                count: response.headers('Count'),
+                count: count,
                 data: response.data
             };
         }, function errorCallback(response){
