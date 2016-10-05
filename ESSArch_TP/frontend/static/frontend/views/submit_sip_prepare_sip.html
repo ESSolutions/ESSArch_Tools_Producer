@@ -42,35 +42,7 @@
                 </table>
             </div>
             <div ng-if="eventShow || statusShow" class="events-status-wrapper">
-                <div ng-if="eventShow" class="event-view">
-                    <p>Events associated to: {{ip.Label}}</p>
-                    <div ng-controller="pipeCtrl as mc" class="table-container">
-                        <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="clickable" st-sort="id">Id</th>
-                                    <th class="clickable" st-sort="eventDetail">Event detail</th>
-                                    <th class="clickable" st-sort="eventDateTime">Event Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="row in mc.displayed">
-                                    <td>{{row.id}}</td>
-                                    <td>{{row.eventDetail}}</td>
-                                    <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5" class="text-center">
-                                        <div st-pagination="" st-items-by-page="pagination.number" st-displayed-pages="7"></div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                <div ng-include src="'static/frontend/views/event_table.html'"></div>
             <div ng-if="eventShow" class="events-footer">
                 <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
                     <div class="form-group">
@@ -87,32 +59,15 @@
                 </form>
             </div>
             <div ng-if="statusShow" class="status-view">
-                <p>{{ip.Label}}</p>
-                <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
-
-                <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="myTreeControl" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
-
-                <script type="text/ng-template" id="tree_template.html">
-<treecontrol class="tree-light"
-                                     tree-model="parentStepsRowCollection"
-                                     options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
-                        {{node.name}}, {{node.status}}, {{node.progress}}, {{node.user}}
-                        <a ng-click="node.tasksCollapsed = !node.tasksCollapsed">tasks: {{node.taskObjects.length}}</a>
-                        <ul uib-collapse="node.tasksCollapsed"ng-repeat="task in node.taskObjects">
-                            <li>{{task.name}}</li>
-                        </ul>
-                        </treecontrol>
-                    </script>
-                </div>
+                <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
             </div>
-            <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
+            </div>
+            <div ng-if="edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="edit" id="edit-veiw" class="edit-view" >
                     <div class="package-information">
                         <p> Package Information</p>
                         <form  novalidate>
-                        <formly-form model="vm.informationModel" fields="vm.informationFields" options="vm.options">
+                            <formly-form model="vm.informationModel" fields="vm.informationFields" options="vm.options">
                             </formly-form>
                         </form>
                     </div>
@@ -123,10 +78,10 @@
                             </formly-form>
                         </form>
                         <div class="static-form">
-                        <form  novalidate>
-                            <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
-                            </formly-form>
-                        </form>
+                            <form  novalidate>
+                                <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                                </formly-form>
+                            </form>
                         </div>
                     </div>
                     <div class="file-list">
