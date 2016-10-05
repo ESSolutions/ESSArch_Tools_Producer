@@ -1,10 +1,27 @@
-angular.module('myApp').controller('EventCtrl', ['Resource', function (service) {
+angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function (service, $scope) {
 
     var ctrl = this;
     this.itemsPerPage = 10;
-
+    $scope.selected = [];
     this.displayed = [];
-
+    $scope.eventClick = function(row) {
+        if(row.class === "selected"){
+            row.class = "";
+            for(i=0; i<$scope.selected.length; i++){
+                if($scope.selected[i] === row){
+                    $scope.selected.splice(i,1);
+                }
+            }
+            console.log($scope.selected);
+        } else {
+            row.class = "selected";
+            $scope.selected.push(row);
+            console.log($scope.selected);
+        }
+    };
+    $scope.printRow = function(row) {
+        console.log(row);
+    };
     this.callServer = function callServer(tableState) {
 
         ctrl.isLoading = true;

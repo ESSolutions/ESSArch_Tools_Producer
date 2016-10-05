@@ -11,7 +11,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="row in mc.displayed">
+                <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in mc.displayed">
                     <td>{{row.id}}</td>
                     <td>{{row.eventDetail}}</td>
                     <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
