@@ -39,38 +39,12 @@
             </table>
         </div>
         <div ng-if="statusShow || eventShow" class="events-status-wrapper">
-            <div ng-if="eventShow" class="event-view">
-                <p>Events associated to: {{ip.Label}}</p>
-                <div ng-controller="pipeCtrl as mc" class="table-container">
-                    <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th class="clickable" st-sort="id">Id</th>
-                                <th class="clickable" st-sort="eventDetail">Event detail</th>
-                                <th class="clickable" st-sort="eventDateTime">Event Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="row in mc.displayed">
-                                <td>{{row.id}}</td>
-                                <td>{{row.eventDetail}}</td>
-                                <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-center">
-                                    <div st-pagination="" st-items-by-page="pagination.number" st-displayed-pages="7"></div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>            </div>
-                <div ng-if="eventShow" class="events-footer">
-                    <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
-                        <div class="form-group">
-                            <label>Event type</label>
-                            <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+            <div ng-include src="'static/frontend/views/event_table.html'"></div>
+            <div ng-if="eventShow" class="events-footer">
+                <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
+                    <div class="form-group">
+                        <label>Event type</label>
+                        <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
                             <option value="" selected="selected" disabled>select one</option>
                         </select>
                     </div>
@@ -82,106 +56,88 @@
                 </form>
             </div>
             <div ng-if="statusShow" class="status-view">
-                <p>{{ip.Label}}</p>
-                <div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
-
-                <tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="myTreeControl" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
+                <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
             </div>
-            <script type="text/ng-template" id="tree_template.html">
-                <treecontrol class="tree-light"
-                                     tree-model="parentStepsRowCollection"
-                                     options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
-                        {{node.name}}, {{node.status}}, {{node.progress}}, {{node.user}}
-                        <a ng-click="node.tasksCollapsed = !node.tasksCollapsed">tasks: {{node.taskObjects.length}}</a>
-                        <ul uib-collapse="node.tasksCollapsed"ng-repeat="task in node.taskObjects">
-                            <li>{{task.name}}</li>
-                        </ul>
-                        </treecontrol>
-            </script>
         </div>
             <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
-            <div ng-if="select" class="select-view">
-                <p>{{ip.Label}}</p>
-                <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="info-popover column-enabled"><p uib-popover="If checked, profile is enabled" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Enabled</p></th>
-                            <th class="info-popover column-entity"><p uib-popover="Profile type" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Entity</p></th>
-                            <th class="info-popover column-profile"><p uib-popover="Select which profile to use" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Profile</p></th>
-                            <th class="info-popover column-state"><p uib-popover="State of current chosen profile" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">State</p></th>
+                <div ng-if="select" class="select-view">
+                    <p>{{ip.Label}}</p>
+                    <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="info-popover column-enabled"><p uib-popover="If checked, profile is enabled" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Enabled</p></th>
+                                <th class="info-popover column-entity"><p uib-popover="Profile type" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Entity</p></th>
+                                <th class="info-popover column-profile"><p uib-popover="Select which profile to use" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">Profile</p></th>
+                                <th class="info-popover column-state"><p uib-popover="State of current chosen profile" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500">State</p></th>
 
-                        </tr>
-                    </thead>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="checkbox table-col">
-                                    <label>
-                                        <input type="checkBox" ng-disabled="true" checked="checked"></input>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>
-                                <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
-                            </td>
-                            <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-change="getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
-                            <td><p class="table-col">{{}}</p></td>
-                            <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="checkbox table-col">
+                                        <label>
+                                            <input type="checkBox" ng-disabled="true" checked="checked"></input>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
+                                </td>
+                                <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-change="getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                <td><p class="table-col">{{}}</p></td>
+                                <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
+                            </tr>
 
-                        <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
-                            <td>
-                                <div class="checkbox table-col">
-                                    <label>
-                                        <input type="checkBox" ng-disabled="true" checked></input>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>
-                                <a class="table-col" ng-click="profileClick(row)">{{row.profile_label}}</a>
-                            </td>
+                            <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
+                                <td>
+                                    <div class="checkbox table-col">
+                                        <label>
+                                            <input type="checkBox" ng-disabled="true" checked></input>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="table-col" ng-click="profileClick(row)">{{row.profile_label}}</a>
+                                </td>
 
-                            <td><select ng-disabled="true" class="form-control table-col" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
-                            <td><p class="table-col" style="background-color: red; font-size: 14px;">{{row.locked?'Locked':''}}</p></td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <td><select ng-disabled="true" class="form-control table-col" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
+                                <td><p class="table-col" style="background-color: red; font-size: 14px;">{{row.locked?'Locked':''}}</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            </div>
-
-            <div ng-if="subSelect" class="sub-select-view">
-                {{selectProfile.entity}}
-                <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-            </div>
-            <div ng-if="edit" id="edit-veiw" class="edit-view" >
-                <form  novalidate>
-                    <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
-                    </formly-form>
-                      <button class="btn btn-danger" ng-click="unlockAndRedirect()">Unlock profile</button>
-                </form>
-
-                <div class="package-dependencies">
-                    <p> Package dependencies </p>
                 </div>
 
-            </div>
-            <div ng-if="eventlog" class="eventlog-view">
-                <form class="eventlog-form" ng-submit="createSip(ip)"> 
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
-                        </label>
+                <div ng-if="subSelect" class="sub-select-view">
+                    {{selectProfile.entity}}
+                    <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                    <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                    <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                </div>
+                <div ng-if="edit" id="edit-veiw" class="edit-view" >
+                    <form  novalidate>
+                        <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                        </formly-form>
+                    <button class="btn btn-danger" ng-click="unlockAndRedirect()">Unlock profile</button>
+                    </form>
+
+                    <div class="package-dependencies">
+                        <p> Package dependencies </p>
                     </div>
-                    <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create IP</button>
-                </form>
+
+                </div>
+                <div ng-if="eventlog" class="eventlog-view">
+                    <form class="eventlog-form" ng-submit="createSip(ip)">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
+                            </label>
+                        </div>
+                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create IP</button>
+                    </form>
+                </div>
             </div>
-
-
         </div>
-    </div>
 </body>

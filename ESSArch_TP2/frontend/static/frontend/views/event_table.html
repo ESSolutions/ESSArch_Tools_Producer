@@ -1,0 +1,29 @@
+<div ng-if="eventShow" class="event-view">
+    <p>Events associated to: {{ip.Label}}</p>
+    <div ng-controller="EventCtrl as mc" class="table-container">
+        <select class="form-control items-per-page"  ng-model="mc.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
+        <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="clickable" st-sort="id">Id</th>
+                    <th class="clickable" st-sort="eventDetail">Event detail</th>
+                    <th class="clickable" st-sort="eventDateTime">Event Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in mc.displayed">
+                    <td>{{row.id}}</td>
+                    <td>{{row.eventDetail}}</td>
+                    <td>{{row.eventDateTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div st-pagination="" st-items-by-page="mc.itemsPerPage" st-displayed-pages="7"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
