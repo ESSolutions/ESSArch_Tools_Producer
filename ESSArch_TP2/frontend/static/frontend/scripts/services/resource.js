@@ -12,7 +12,7 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
 
 	//fake call to the server, normally this service would serialize table state to send it to the server (with query parameters for example) and parse the response
 	//in our case, it actually performs the logic which would happened in the server
-	function getPage(start, number, pageNumber, params) {
+	function getPage(start, number, pageNumber, params, selected) {
         console.log("--getPage input variables--");
         console.log("start: ");
         console.log(start);
@@ -24,6 +24,13 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
         console.log($rootScope.ip);
         return listViewService.getEvents($rootScope.ip, pageNumber, number).then(function(value) {
             var eventCollection = value.data;
+            eventCollection.forEach(function(event) {
+                selected.forEach(function(item) {
+                    if(item.id == event.id) {
+                        event.class = "selected";
+                    }
+                });
+            });
             /*
             console.log("eventCollection: ");
             console.log(eventCollection);
