@@ -22,7 +22,7 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
         console.log(params);
         console.log("$rootScope.ip: ");
         console.log($rootScope.ip);
-        return listViewService.getEvents($rootScope.ip, pageNumber).then(function(value) {
+        return listViewService.getEvents($rootScope.ip, pageNumber, number).then(function(value) {
             var eventCollection = value.data;
             /*
             console.log("eventCollection: ");
