@@ -1,27 +1,7 @@
 angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, listViewService, $rootScope) {
 
-	//this would be the service to call your server, a standard bridge between your model an $http
-
-	// the database (normally on your server)
-    function getEvents(ip){
-        return listViewService.getEvents($rootScope.ip).then(function(value) {
-            return value;
-        });
-    }
-
-
-	//fake call to the server, normally this service would serialize table state to send it to the server (with query parameters for example) and parse the response
-	//in our case, it actually performs the logic which would happened in the server
-	function getPage(start, number, pageNumber, params, selected) {
-        console.log("--getPage input variables--");
-        console.log("start: ");
-        console.log(start);
-        console.log("number: ");
-        console.log(number);
-        console.log("params: ");
-        console.log(params);
-        console.log("$rootScope.ip: ");
-        console.log($rootScope.ip);
+    //Get data for Events table
+	function getEventPage(start, number, pageNumber, params, selected) {
         return listViewService.getEvents($rootScope.ip, pageNumber, number).then(function(value) {
             var eventCollection = value.data;
             eventCollection.forEach(function(event) {
@@ -50,9 +30,38 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
             };
         });
 	}
+    //Get data for IP table
+    function getIpPage(start, number, pageNumber, params, selected) {
+        return listViewService.getListViewData(pageNumber, number).then(function(value) {
+            var ipCollection = value.data;
+            ipCollection.forEach(function(ip) {
+                if(selected.id == ip.id) {
+                    ip.class = "selected";
+                }
+            });
+            /*
+            console.log("ipCollection: ");
+            console.log(ipCollection);
+
+            var filtered = params.search.predicateObject ? $filter('filter')(ipCollection, params.search.predicateObject) : ipCollection;
+
+            if (params.sort.predicate) {
+                filtered = $filter('orderBy')(filtered, params.sort.predicate, params.sort.reverse);
+            }
+
+            var result = filtered.slice(start, start + number);
+            */
+
+            return {
+                data: ipCollection,
+                numberOfPages: Math.ceil(value.count / number)
+            };
+        });
+	}
 
 	return {
-		getPage: getPage
+		getEventPage: getEventPage,
+        getIpPage: getIpPage,
 	};
 
 });
