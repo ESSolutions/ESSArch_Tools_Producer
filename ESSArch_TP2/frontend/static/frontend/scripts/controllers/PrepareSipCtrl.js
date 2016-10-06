@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval){
+angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource){
     var vm = this;
     // List view
     $scope.changePath= function(path) {
@@ -85,9 +85,54 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 $scope.statusViewUpdate(row);
             }, 5000)}
     };
+     /*******************************************/
+     /*Piping and Pagination for List-view table*/
+     /*******************************************/
+
+    var ctrl = this;
+    this.itemsPerPage = 10;
+    $scope.selectedIp = {id: "", class: ""};
+    this.displayedIps = [];
+    this.callServer = function callServer(tableState) {
+        ctrl.isLoading = true;
+
+        var pagination = tableState.pagination;
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number;  // Number of entries showed per page.
+        var pageNumber = start/number+1;
+
+        Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
+            ctrl.displayedIps = result.data;
+            tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+            $scope.tableState = tableState;
+            ctrl.isLoading = false;
+        });
+    };
+    $scope.selectIp = function(row) {
+        vm.displayedIps.forEach(function(ip) {
+            if(ip.id == $scope.selectedIp.id){
+                ip.class = "";
+            }
+        });
+        if(row.id == $scope.selectedIp.id){
+            $scope.selectedIp = {id: "", class: ""};
+        } else {
+            row.class = "selected";
+            $scope.selectedIp = row;
+        }
+    };
+    function removeIpSelection(row) {
+        vm.displayedIps.forEach(function(ip) {
+            if(ip.id == $scope.selectedIp.id){
+                ip.class = "";
+            }
+        });
+        $scope.selectedIp = {id: "", class: ""};
+    };
+
     $scope.ipTableClick = function(row) {
         console.log("ipobject clicked. row: "+row.Label);
-        if($scope.select && $scope.ip.id== row.id){
+        if($scope.edit && $scope.ip.id== row.id){
             $scope.edit = false;
             $scope.eventlog = false;
         } else {
@@ -132,12 +177,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //Getting data for list view
     $scope.getListViewData = function() {
-        listViewService.getListViewData().then(function(value){
-            $scope.ipRowCollection = value;
-        });
+        vm.callServer($scope.tableState);
     };
-    $scope.getListViewData();
-    $interval(function(){$scope.getListViewData();}, 5000, false);
+    //$scope.getListViewData();
+    //$interval(function(){$scope.getListViewData();}, 5000, false);
 
     $scope.max = 100;
     //Getting data for status view

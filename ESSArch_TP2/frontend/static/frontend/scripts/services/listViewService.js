@@ -4,13 +4,21 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         $state.go(state);
     }
     //Gets data for list view i.e information packages
-    function getListViewData() {
+    function getListViewData(pageNumber, pageSize) {
         var promise = $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'information-packages/'
+            url: appConfig.djangoUrl+'information-packages/',
+            params: {page: pageNumber, page_size: pageSize}
         })
         .then(function successCallback(response) {
-            return response.data;
+            count = response.headers('Count');
+            if (count == null) {
+                count = response.data.length;
+            }
+            return {
+                count: count,
+                data: response.data
+            };
         }, function errorCallback(response){
         });
         return promise;

@@ -97,8 +97,46 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.statusViewUpdate(row);
         }, 5000)}
     };
+
+     /*******************************************/
+     /*Piping and Pagination for List-view table*/
+     /*******************************************/
+
+    var ctrl = this;
+    this.itemsPerPage = 10;
+    $scope.selectedIp = {id: "", class: ""};
+    this.displayedIps = [];
+    this.callServer = function callServer(tableState) {
+    $scope.tableState = tableState;
+        ctrl.isLoading = true;
+
+        var pagination = tableState.pagination;
+        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+        var number = pagination.number;  // Number of entries showed per page.
+        var pageNumber = start/number+1;
+
+        Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
+            ctrl.displayedIps = result.data;
+            tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+            ctrl.isLoading = false;
+        });
+    };
+    $scope.selectIp = function(row) {
+        vm.displayedIps.forEach(function(ip) {
+            if(ip.id == $scope.selectedIp.id){
+                ip.class = "";
+            }
+        });
+        if(row.id == $scope.selectedIp.id){
+            $scope.selectedIp = {id: "", class: ""};
+        } else {
+            row.class = "selected";
+            $scope.selectedIp = row;
+        }
+    };
+
+    //Click function for Ip table
     $scope.ipTableClick = function(row) {
-        console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
              $scope.eventlog = false;
@@ -140,13 +178,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Getting data for list view
     $scope.getListViewData = function() {
-        listViewService.getListViewData().then(function(value){
-            $scope.ipRowCollection = value;
-        });
+        vm.callServer($scope.tableState);
     };
     //updates every 5 seconds
-    $scope.getListViewData();
-    $interval(function(){$scope.getListViewData();}, 5000, false);
+    //$scope.getListViewData();
+    //$interval(function(){$scope.getListViewData();}, 5000, false);
        //Getting data for status view
        //$scope.getStatusViewData();
 
@@ -263,6 +299,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         .success(function (response) {
             alert(response.status);
             $scope.getSelectCollection($scope.saProfile.profile);
+            $scope.getListViewData();
             $scope.edit = false;
             $scope.eventlog = false;
         })
@@ -400,11 +437,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             profileObject.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
+            $scope.getListViewData();
             });
     }
     $scope.prepareIp = function (label) {
         listViewService.prepareIp(label).then(function() {
-            $scope.getListViewData();
+            $scope.getListViewData(); 
         });
     }
     $scope.openModal = function(modalTemplate) {
