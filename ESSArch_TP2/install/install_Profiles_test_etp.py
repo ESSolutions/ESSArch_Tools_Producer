@@ -29,7 +29,6 @@ import json
 import os
 
 from django.conf import settings
-from django.utils import timezone
 
 # own models etc
 from configuration.models import (
@@ -48,6 +47,10 @@ from ip.models import (
 from preingest.models import (
     ProcessStep,
     ProcessTask,
+)
+
+from ip.steps import (
+    prepare_ip,
 )
 
 from profiles.models import (
@@ -98,17 +101,11 @@ def installIPs():
     installArchivistOrganization()              # Archivist Organization
     installArchivalType()                       # Archival Type
     installArchivalLocation()                   # Archival Location
-    installInformationPackages()                # Information Package
     installEventTypes()                         # Event Types
-    installEventIPs()                           # Events
+    installInformationPackages()                # Information Package
+    # installEventIPs()                           # Events
 
     return 0
-
-
-def installWorkflows():
-    installSteps()                              # Steps
-    installTasks()                              # Tasks
-
 
 def installSubmissionAgreement():
 
@@ -2431,97 +2428,22 @@ def installArchivalLocation():
 def installInformationPackages():
     lst = [
         {
-            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad1',
-            'Label': 'Arkiv 1',
-            'Content': 'ERMS',
-            'Responsible': 'Freddie Mercury',
-            'CreateDate': '2012-04-26T10:45:12.865096Z',
-            'State': 'hmm',
-            'ObjectSize': '123',
-            'ObjectNumItems': '10',
-            'ObjectPath': '/path1',
-            'Startdate': '2011-01-01T10:45:12.865096Z',
-            'Enddate': '2011-12-31T10:45:12.865096Z',
-            'OAIStype': 'SIP',
-            'SubmissionAgreement': SubmissionAgreement.objects.get(
-                pk="550e8400-e29b-41d4a716-446655440000"
-            ),
-            'ArchivalInstitution': ArchivalInstitution.objects.get(
-                pk="aa8e20d9-8794-4f26-9859-c3341a31f111"
-            ),
-            'ArchivistOrganization': ArchivistOrganization.objects.get(
-                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e1"
-            ),
-            'ArchivalType': ArchivalType.objects.get(
-                pk="fc3f23aa-203c-4aee-bb20-92373a5eba81"
-            ),
-            'ArchivalLocation': ArchivalLocation.objects.get(
-                pk="83f1f65d-7be0-4577-ade9-543c815417b1"
-            ),
+            'label': 'Arkiv 1',
+            'responsible': 'Freddie Mercury',
         },
         {
-            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad2',
-            'Label': 'Arkiv 2',
-            'Content': 'Personnel',
-            'Responsible': 'Roger Taylor',
-            'CreateDate': '2013-05-18T12:12:12.865096Z',
-            'State': 'hmm',
-            'ObjectSize': '456',
-            'ObjectNumItems': '20',
-            'ObjectPath': '/path2',
-            'Startdate': '2012-01-01T23:21:22.865096Z',
-            'Enddate': '2012-08-12T01:23:21.865096Z',
-            'OAIStype': 'SIP',
-            'SubmissionAgreement': SubmissionAgreement.objects.get(
-                pk="550e8400-e29b-41d4a716-446655440000"
-            ),
-            'ArchivalInstitution': ArchivalInstitution.objects.get(
-                pk="aa8e20d9-8794-4f26-9859-c3341a31f112"
-            ),
-            'ArchivistOrganization': ArchivistOrganization.objects.get(
-                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e2"
-            ),
-            'ArchivalType': ArchivalType.objects.get(
-                pk="fc3f23aa-203c-4aee-bb20-92373a5eba82"
-            ),
-            'ArchivalLocation': ArchivalLocation.objects.get(
-                pk="83f1f65d-7be0-4577-ade9-543c815417b2"
-            ),
+            'label': 'Arkiv 2',
+            'responsible': 'Roger Taylor',
         },
         {
-            'id': '25d58fe1-d5c9-40d1-92de-9707de9d9ad3',
-            'Label': 'Arkiv 3',
-            'Content': 'SFBS',
-            'Responsible': 'Brian May',
-            'CreateDate': '2014-01-20T09:39:15.865096Z',
-            'State': 'hmm',
-            'ObjectSize': '789',
-            'ObjectNumItems': '30',
-            'ObjectPath': '/path3',
-            'Startdate': '2013-02-18T14:28:46.865096Z',
-            'Enddate': '2013-12-21T08:03:21.865096Z',
-            'OAIStype': 'SIP',
-            'SubmissionAgreement': SubmissionAgreement.objects.get(
-                pk="550e8400-e29b-41d4a716-446655440000"
-            ),
-            'ArchivalInstitution': ArchivalInstitution.objects.get(
-                pk="aa8e20d9-8794-4f26-9859-c3341a31f113"
-            ),
-            'ArchivistOrganization': ArchivistOrganization.objects.get(
-                pk="2fe86f14-9b09-46e3-b272-a6e971b9d4e3"
-            ),
-            'ArchivalType': ArchivalType.objects.get(
-                pk="fc3f23aa-203c-4aee-bb20-92373a5eba83"
-            ),
-            'ArchivalLocation': ArchivalLocation.objects.get(
-                pk="83f1f65d-7be0-4577-ade9-543c815417b3"
-            ),
+            'label': 'Arkiv 3',
+            'responsible': 'Brian May',
         },
     ]
 
     # create according to model with many fields
     for dct in lst:
-        InformationPackage.objects.create(**dct)
+        prepare_ip(**dct).run()
 
     print 'Installed information packages'
 
@@ -2555,251 +2477,6 @@ def installEventTypes():
 
     return 0
 
-
-def installEventIPs():
-    lst = [
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Preparing the IP',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Adding files to XML',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Creating METS file',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Creating directory structure from JSON',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c1'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Preparing the IP',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Adding files to XML',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c2'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Creating PREMIS file',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
-            ),
-        },
-        {
-            'eventType': EventType.objects.get(
-                pk='9ddbcb6d-955a-4a4d-a462-bf52a708f8c3'
-            ),
-            'eventDateTime': timezone.now(),
-            'eventDetail': 'Creating directory structure from JSON',
-            'eventApplication': '',
-            'eventVersion': '',
-            'eventOutcome': '',
-            'eventOutcomeDetailNote': '',
-            'linkingAgentIdentifierValue': '',
-            'linkingObjectIdentifierValue': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad2'
-            ),
-        },
-    ]
-
-    # create according to model with many fields
-    for dct in lst:
-        EventIP.objects.create(**dct)
-
-    print 'Installed events'
-
-    return 0
-
-
-def installSteps():
-    lst = [
-        {
-            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e1',
-            'name': 'Prepare IP',
-            'type': 10,
-            'user': 'Edsger W. Dijkstra',
-            'information_package': InformationPackage.objects.get(
-                pk='25d58fe1-d5c9-40d1-92de-9707de9d9ad1'
-            )
-        },
-        {
-            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e2',
-            'name': 'Create directory structure',
-            'type': 10,
-            'user': 'Lester Randolph Ford Jr.',
-        },
-        {
-            'id': '7d8efe1e-2d65-45e2-8c39-63f0609131e3',
-            'name': 'Generate metadata',
-            'type': 10,
-            'user': 'Delbert Ray Fulkerson',
-        },
-    ]
-
-    for dct in lst:
-        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e2':
-            dct['parent_step'] = ProcessStep.objects.get(
-                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
-            )
-            dct['parent_step_pos'] = 1
-
-        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e3':
-            dct['parent_step'] = ProcessStep.objects.get(
-                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
-            )
-            dct['parent_step_pos'] = 2
-
-        ProcessStep.objects.create(**dct)
-
-    print 'Installed steps'
-
-    return 0
-
-
-def installTasks():
-    lst = [
-        {
-            'id': '14319c7d-f65f-40cf-b1ec-2350666136b1',
-            'name': 'Create physical model',
-            'params': {
-                'structure': {
-                    'representations': {
-                        'documentation': {}
-                    },
-                    'rep01': {},
-                    'metadata': {}
-                }
-            },
-            'progress': 100,
-            'status': 'SUCCESS',
-            'processstep': ProcessStep.objects.get(
-                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e2'
-            ),
-            'processstep_pos': 1,
-        },
-        {
-            'id': '14319c7d-f65f-40cf-b1ec-2350666136b2',
-            'name': 'Generate checksums',
-            'params': {
-                'files': [
-                    '/path/to/first/file.ext',
-                    '/path/to/second/file.ext',
-                    '/path/to/third/file.ext',
-                ],
-                'algorithm': 'sha256',
-            },
-            'result': [
-                {
-                    'file': '/path/to/first/file.ext',
-                    'checksum': '688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6'
-                },
-                {
-                    'file': '/path/to/second/file.ext',
-                    'checksum': 'c81ebd1b4c490ff605a7cb94561646c0c344170862e15c4f5b94721073f23a38'
-                },
-            ],
-            'progress': 66,
-            'status': 'STARTED',
-            'processstep': ProcessStep.objects.get(
-                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e3'
-            ),
-            'processstep_pos': 1,
-        }
-    ]
-
-    for dct in lst:
-        """
-        if dct['id'] == '7d8efe1e-2d65-45e2-8c39-63f0609131e2':
-            dct['parent_step'] = ProcessTask.objects.get(
-                pk='7d8efe1e-2d65-45e2-8c39-63f0609131e1'
-            )
-            dct['parent_step_pos'] = 1
-        """
-
-        ProcessTask.objects.create(**dct)
-    print 'Installed tasks'
-
-    return 0
-
 if __name__ == '__main__':
     installProfiles()
     installIPs()
-    installWorkflows()
