@@ -15,11 +15,6 @@ from ip.models import (
     EventIP
 )
 
-from preingest.models import (
-    ProcessStep,
-    ProcessTask,
-)
-
 from ip.serializers import (
     ArchivalInstitutionSerializer,
     ArchivistOrganizationSerializer,
@@ -32,6 +27,10 @@ from ip.serializers import (
 
 from preingest.serializers import (
     ProcessStepSerializer,
+)
+
+from ip.steps import (
+    prepare_ip,
 )
 
 from rest_framework import viewsets
@@ -95,37 +94,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             None
         """
 
+
         label = request.data.get('label', None)
         responsible = self.request.user.username or "Anonymous user"
 
-        step = ProcessStep.objects.create(
-            name="Prepare IP",
-        )
-
-        t1 = ProcessTask.objects.create(
-            name="preingest.tasks.PrepareIP",
-            params={
-                "label": label,
-                "responsible": responsible,
-                "step": str(step.pk),
-            },
-            processstep_pos=0,
-        )
-
-        t2 = ProcessTask.objects.create(
-            name="preingest.tasks.CreateIPRootDir",
-            params={
-            },
-            result_params={
-                "information_package": t1.pk
-            },
-            processstep_pos=1,
-        )
-
-        step.tasks = [t1, t2]
-        step.save()
-        step.run()
-
+        prepare_ip(label, responsible).run()
         return Response({"status": "Prepared IP"})
 
     @detail_route()
