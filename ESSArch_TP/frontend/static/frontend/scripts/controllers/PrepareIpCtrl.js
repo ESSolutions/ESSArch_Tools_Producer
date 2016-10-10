@@ -161,7 +161,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
         } else {
-            $scope.eventShow = true;
             getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
