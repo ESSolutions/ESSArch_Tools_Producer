@@ -11,10 +11,6 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         link: ''
     },
     {
-        label: 'Settings',
-        link: ''
-    },
-    {
         label: 'Log in',
         link: 'login'
     }
@@ -22,10 +18,6 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     var optionsAuth = [
     {
         label: 'Edit profile',
-        link: ''
-    },
-    {
-        label: 'Settings',
         link: ''
     },
     {
