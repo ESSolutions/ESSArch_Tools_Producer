@@ -1,5 +1,4 @@
 <div ng-if="eventShow" class="event-view">
-    <p>Events associated to: {{ip.Label}}</p>
     <div ng-controller="EventCtrl as mc" class="table-container">
         <select class="form-control items-per-page"  ng-model="mc.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
         <table st-table="mc.displayed" st-pipe="mc.callServer" class="table table-striped">

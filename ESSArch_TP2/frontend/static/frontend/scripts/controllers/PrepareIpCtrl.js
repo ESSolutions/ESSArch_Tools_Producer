@@ -470,9 +470,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.getListViewData();
             });
     }
+    //Create and initialize new ip
     $scope.prepareIp = function (label) {
         listViewService.prepareIp(label).then(function() {
-            $scope.getListViewData(); 
+            $scope.getListViewData();
         });
     }
     $scope.openModal = function(modalTemplate) {
