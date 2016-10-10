@@ -29,6 +29,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     ];
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
+    //Undo step/task
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {
         $http({
             method: 'POST',
@@ -39,6 +40,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             console.log("error");
         });
     };
+    //Redo step/task
      $scope.myTreeControl.scope.taskStepRedo = function(branch){
         $http({
             method: 'POST',
@@ -49,7 +51,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             console.log("error");
         });
     };
-     // List view
+     //Change state
      $scope.changePath= function(path) {
          myService.changePath(path);
      };
@@ -69,11 +71,14 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         $scope.eventShow = false;
          $scope.ip = row;
      };
+     //Get data for status view
     $scope.getTreeData = function(row) {
         listViewService.getTreeData(row).then(function(value) {
             $scope.tree_data = value;
         });
     }
+    //Update status view data
+    //currently not updating every n'th second
      $scope.statusViewUpdate = function(row){
          $scope.getTreeData(row);
          if($scope.statusShow && false){
@@ -91,6 +96,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
+
+    //Update ip table with configuration from table paginetion etc
     this.callServer = function callServer(tableState) {
     $scope.tableState = tableState;
         ctrl.isLoading = true;
@@ -120,7 +127,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         }
     };
 
-     //Getting data for status view
+     //Click function for ip table objects
      $scope.ipTableClick = function(row) {
          console.log("ipobject clicked. row: "+row.Label);
          if($scope.select && $scope.ip.id== row.id){
@@ -143,6 +150,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
          $scope.eventShow = false;
         $scope.statusShow = false;
     };
+     //Click funciton for event table objects
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
@@ -167,6 +175,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
 //funcitons for select view
     vm.profileModel = {};
     vm.profileFields=[];
+    //Click function for profile pbject
     $scope.profileClick = function(row){
         $scope.profileToSave = row.profile;
         console.log(row);
@@ -187,6 +196,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         console.log("selected profile: ");
         console.log($scope.selectProfile);
     };
+    //Get eventlog data
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
             $scope.statusNoteCollection = value;
@@ -196,6 +206,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     //populating select view
     $scope.selectRowCollection = [];
     $scope.selectRowCollapse = [];
+    //Get All sa profiles and set default according to ip
     $scope.getSaProfiles = function(ip) {
         console.log("current sa: ");
         console.log($scope.saProfile);
@@ -216,7 +227,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     //$scope.getListViewData();
     //$interval(function(){$scope.getListViewData();}, 5000, false);
 
-
+    //toggle visibility on profiles in select view
     $scope.showHideAllProfiles = function() {
         if($scope.selectRowCollection.length == 0){
             for(i = 0; i < $scope.selectRowCollapse.length; i++){
@@ -227,22 +238,31 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         }
         $scope.profilesCollapse = !$scope.profilesCollapse;
     };
+    //Executes Create sip on an ip
     $scope.createSip = function (ip) {
         $http({
             method: 'POST',
             url: ip.url+"create/"
         })
             .then(function successCallback(response) {
+                $state.reload();
             }), function errorCallback(response){
                 alert(response.status);
             };
     };
+    //Visibility of status view
     $scope.statusShow = false;
+    //Visibility of select view
     $scope.select = false;
+    //Visibility of sub-select view
     $scope.subSelect = false;
+    //Visibility of edit view
     $scope.edit = false;
+    //Visibility of status view
     $scope.eventlog = false;
+    //Visibility of status view
     $scope.eventShow = false;
+    //Toggle visibility of select view
    $scope.toggleSelectView = function () {
         if($scope.select == false){
             $scope.select = true;
@@ -250,6 +270,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.select = false;
         }
     };
+   //Toggle visibility of sub select view
     $scope.toggleSubSelectView = function () {
         if($scope.subSelect == false){
             $scope.subSelect = true;
@@ -257,6 +278,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.subSelect = false;
         }
     };
+    //toggle visibility of edit view
     $scope.toggleEditView = function () {
         if($scope.edit == false){
             $('.edit-view').show();
@@ -268,6 +290,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.eventlog = false;
         }
     };
+    //Toggle visibility of eventlog view
     $scope.toggleEventlogView = function() {
         if($scope.eventlog == false){
             $scope.eventlog = true;
@@ -275,6 +298,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.eventlog = false;
         }
     }
+    //Unlock profile and redirect to Prepare-ip
     $scope.unlockAndRedirect = function() {
         console.log($scope.ip)
         $http({
@@ -293,6 +317,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         });
         });
     }
+    //Change state to prepare-ip
     $scope.goToPrepareIp = function() {
         $state.go('home.createSip.prepareIp');
     }

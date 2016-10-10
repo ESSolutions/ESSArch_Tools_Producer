@@ -24,50 +24,45 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress active\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
         },
         {
-            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" style=\"color: #a00\">Undo</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\"style=\"color: #0a0\">Redo</a>"
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">Undo</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">Redo</a>"
         }
     ];
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
+    //Undo step/task
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {
         $http({
             method: 'POST',
             url: branch.url+"undo/"
         }).then(function(response) {
             console.log("UNDO");
+            console.log(branch);
         }, function() {
             console.log("error");
         });
     };
+    //Redo step/task
      $scope.myTreeControl.scope.taskStepRedo = function(branch){
         $http({
             method: 'POST',
             url: branch.url+"retry/"
         }).then(function(response) {
             console.log("REDO");
+            console.log(branch);
         }, function() {
             console.log("error");
         });
     };
-
+    //Redirect to admin page
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
     }
-    $scope.isCollapsed = true;
-    $scope.toggleCollapse = function (step) {
-        if(step.isCollapsed) {
-            step.isCollapsed = false;
-        } else {
-            step.isCollapsed = true;
-        }
-        console.log(step.isCollapsed);
-        console.log(step);
-    };
 
-    // List view
+    //Go to another state
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
+    //Click function for status view
     $scope.stateClicked = function(row){
         if($scope.statusShow && $scope.ip == row){
             $scope.statusShow = false;
@@ -84,11 +79,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.ip = row;
         $rootScope.ip = row;
     };
+    //Get data for status view
     $scope.getTreeData = function(row) {
         listViewService.getTreeData(row).then(function(value) {
             $scope.tree_data = value;
         });
     }
+    //Update status view data
+    //Currently not up updating the value every n'th second.
     $scope.statusViewUpdate = function(row){
             $scope.getTreeData(row);
         if($scope.statusShow && false){
@@ -106,6 +104,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
+
+    //Get data according to ip table settings and populates ip table
     this.callServer = function callServer(tableState) {
     $scope.tableState = tableState;
         ctrl.isLoading = true;
@@ -155,7 +155,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-
+    //Click funciton for event view
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
@@ -171,12 +171,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.ip = row;
         $rootScope.ip = row;
     };
+    //Adds a new event to the database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
             console.log(value);
         });
     }
-    //Getting data for list view
+    //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
     };
@@ -186,9 +187,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
        //Getting data for status view
        //$scope.getStatusViewData();
 
-    // Progress bar handler
+    // Progress bar max value
     $scope.max = 100;
     //funcitons for select view
+    //Condition for profile click. it the profile is locked it is not shown in the edit view
     $scope.profileClickCondition = function(row){
         if(!row.locked){
             $scope.profileClick(row);
@@ -196,6 +198,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     vm.profileModel = {};
     vm.profileFields=[];
+    //Click funciton for profile view
     $scope.profileClick = function(row){
         $scope.profileToSave = row;
         console.log(row);
@@ -214,6 +217,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         console.log("selected profile: ");
         console.log($scope.selectProfile);
     };
+    //GET data for eventlog view
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
             $scope.statusNoteCollection = value;
@@ -222,6 +226,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //populating select view
     $scope.selectRowCollection = [];
     $scope.selectRowCollapse = [];
+    //Gets all submission agreement profiles
     $scope.getSaProfiles = function(ip) {
         console.log("current sa: ");
         console.log($scope.saProfile);
@@ -247,6 +252,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }
     }
+    //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.saProfile.profile.url+"change-profile/";
@@ -263,6 +269,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
 
     };
+    //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa) {
         $http({
             method: 'PATCH',
@@ -274,6 +281,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             console.log(response);
         });
     }
+    //Toggle visibility of profiles in select view
     $scope.showHideAllProfiles = function() {
         if($scope.selectRowCollection.length == 0){
             for(i = 0; i < $scope.selectRowCollapse.length; i++){
@@ -285,8 +293,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.profilesCollapse = !$scope.profilesCollapse;
     };
     //Populating edit view fields
-    // onSubmit function
 
+    //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
         var uri = $scope.profileToSave.profile.url+"save/";
         var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
@@ -307,17 +315,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
-    $scope.saveProfileEnabled = false;
+    //Decides visibility of status view
     $scope.statusShow = false;
+    //Decides visibility of events view
     $scope.eventShow = false;
+    //Decides visibility of select view
     $scope.select = false;
+    //Decides visibility of sub-select view
     $scope.subSelect = false;
+    //Decides visibility of edit view
     $scope.edit = false;
+    //Decides visibility of eventlog view
     $scope.eventlog = false;
+    //Html popover template for currently disabled
     $scope.htmlPopover = $sce.trustAsHtml('<font size="3" color="red">Currently disabled</font>');
-    $scope.pages = ['Info', 'Prepare Ip', 'Selection', 'Extraction', 'Manage Data', 'IP Approval', 'IP Management'];
-    $scope.selectedPage = $scope.pages[0];
 
+    //Toggle visibility of select view
     $scope.toggleSelectView = function () {
         if($scope.select == false){
             $scope.select = true;
@@ -325,6 +338,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.select = false;
         }
     };
+    //Toggle visibility of sub-select view
     $scope.toggleSubSelectView = function () {
         if($scope.subSelect == false){
             $scope.subSelect = true;
@@ -332,6 +346,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.subSelect = false;
         }
     };
+    //Toggle visibility of edit view
     $scope.toggleEditView = function () {
         if($scope.edit == false){
             $('.edit-view').show();
@@ -343,6 +358,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
         }
     };
+    //Toggle visibility of eventlog view
     $scope.toggleEventlogView = function() {
         if($scope.eventlog == false){
             $scope.eventlog = true;
@@ -350,7 +366,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
         }
     }
-    // Handle modal
+    //Create and show modal when saving a profile
     $scope.saveModal = function(){
         var modalInstance = $uibModal.open({
             animation: true,
@@ -366,7 +382,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-
+    //Create and show modal for creating new ip
     $scope.newIpModal = function () {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -382,6 +398,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    //Create and show modal for remove ip
     $scope.removeIpModal = function (ipObject) {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -397,16 +414,23 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    //Remove and ip
     $scope.removeIp = function (ipObject) {
         $http({
             method: 'DELETE',
             url: ipObject.url
         }).then(function() {
             console.log("ip removed");
-            $scope.ipRowCollection.splice($scope.ipRowCollection.indexOf(ipObject), 1);
+            vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
+            $scope.edit = false;
+            $scope.select = false;
+            $scope.eventlog = false;
+            $scope.eventShow = false;
+            $scope.statusShow = false;
 
         });
     }
+    //Creates and shows modal for profile lock.
     $scope.lockProfileModal = function () {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -422,6 +446,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    //Lock a profile
     $scope.lockProfile = function (profileObject) {
         console.log(profileObject);
         $http({
@@ -460,6 +485,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     };
+    //Reload current view
     $scope.reloadPage = function (){
         $state.reload();
     }

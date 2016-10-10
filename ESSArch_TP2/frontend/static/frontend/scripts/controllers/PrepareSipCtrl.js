@@ -1,9 +1,11 @@
 angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource){
     var vm = this;
     // List view
+    //Go to give state
     $scope.changePath= function(path) {
         myService.changePath(path);
     };
+    //Redirect to django admin page
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
     }
@@ -36,6 +38,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     ];
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
+    //Undo steps/tasks
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {
         $http({
             method: 'POST',
@@ -46,6 +49,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log("error");
         });
     };
+    //Redo steps/tasks
     $scope.myTreeControl.scope.taskStepRedo = function(branch){
         $http({
             method: 'POST',
@@ -56,6 +60,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log("error");
         });
     };
+    //click function forstatus view
     $scope.stateClicked = function(row){
         if($scope.statusShow && $scope.ip == row){
             $scope.statusShow = false;
@@ -72,11 +77,14 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.select = false;
         $scope.ip = row;
     };
+    //Get status view data
     $scope.getTreeData = function(row) {
         listViewService.getTreeData(row).then(function(value) {
             $scope.tree_data = value;
         });
     }
+    //Update status view
+    //currently not updating every n'th second
     $scope.statusViewUpdate = function(row){
         $scope.getTreeData(row);
         if($scope.statusShow && false){
@@ -93,6 +101,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
+    //Get data for ip table from rest api
     this.callServer = function callServer(tableState) {
         ctrl.isLoading = true;
 
@@ -129,7 +138,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
         $scope.selectedIp = {id: "", class: ""};
     };
-
+    //Click function for ip table
     $scope.ipTableClick = function(row) {
         console.log("ipobject clicked. row: "+row.Label);
         if($scope.edit && $scope.ip.id== row.id){
@@ -154,7 +163,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-
+    //click funtion or event
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
@@ -170,12 +179,13 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.ip = row;
         $rootScope.ip = row;
     };
+    //Add event to database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
             console.log(value);
         });
     }
-    //Getting data for list view
+    //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
     };
@@ -183,7 +193,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //$interval(function(){$scope.getListViewData();}, 5000, false);
 
     $scope.max = 100;
-    //Getting data for status view
+    //Get data for eventlog view
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
             $scope.statusNoteCollection = value;
@@ -195,6 +205,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         formState: {
         }
     };
+    //Get list of files in ip
     $scope.getFileList = function(ip) {
         var tempElement = {
             filename: ip.ObjectPath,
@@ -203,6 +214,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         };
         $scope.fileListCollection = [tempElement];
     };
+    //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {
         $http({
             method: 'GET',
@@ -349,7 +361,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     ];
     vm.profileModel = {
     };
-
+    //Get lock-status from profiles
     $scope.getPackageProfiles = function(ip) {
         $http({
             method: 'GET',
@@ -375,6 +387,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log(response.status);
         });
     }
+    //Get profiles in given profile type
     function getProfiles(profiles){
         var promise = $http({
             method: 'GET',
@@ -392,7 +405,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
         return promise;
     }
-
+    //Get package information(submit-description)
     $scope.getPackageInformation = function(ip) {
         $http({
             method: 'GET',
@@ -412,17 +425,21 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log(response.status);
         });
     };
+    //Get active profile
     function getActiveProfile(profiles) {
 
         return profiles.active;
     }
-
+    //visibility of status view
     $scope.statusShow = false;
+    //visibility of event view
     $scope.eventShow = false;
+    //visibility of select view
     $scope.select = false;
+    //visibility of sub-select view
     $scope.subSelect = false;
+    //visibility of edit view
     $scope.edit = false;
+    //visibility of eventlog view
     $scope.eventlog = false;
-
-
 });
