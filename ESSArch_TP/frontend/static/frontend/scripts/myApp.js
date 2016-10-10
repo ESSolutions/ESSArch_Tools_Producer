@@ -209,31 +209,31 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }).then(function(response) {
                     PermRoleStore.defineRole(response.data.name, myService.getPermissions(response.data));
                 }, function() {
-                    console.log("erroe");
+                    console.log("error");
                 });
             });
             console.log(PermRoleStore.getStore());
             console.log(PermPermissionStore.getStore());
         }, function() {
-                $state.go('login');
-            });
-
-            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-                if (toState.name === 'login' ){
-                    return;
-                }
-                if(djangoAuth.authenticated !== true){
-                    event.preventDefault();
-                    $state.go('login'); // go to login
-                }
-
-                // now, redirect only not authenticated
-
-
-            });
-        }, function(status) {
-            console.log("when not logged in");
-            console.log(status);
+            $state.go('login');
         });
 
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
+            if (toState.name === 'login' ){
+                return;
+            }
+            if(djangoAuth.authenticated !== true){
+                event.preventDefault();
+                $state.go('login'); // go to login
+            }
+
+            // now, redirect only not authenticated
+
+
+        });
+    }, function(status) {
+        console.log("when not logged in");
+        console.log(status);
     });
+
+});
