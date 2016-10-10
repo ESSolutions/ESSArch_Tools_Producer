@@ -172,6 +172,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.ip = row;
         $rootScope.ip = row;
     };
+
     //Adds a new event to the database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {

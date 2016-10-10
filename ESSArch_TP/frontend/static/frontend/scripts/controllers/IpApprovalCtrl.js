@@ -190,8 +190,16 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
             $scope.selectProfile = row;
             vm.profileModel = row.profile.specification_data;
             vm.profileFields = row.profile.template;
-            vm.profileFields.forEach(function (field) {
-                field.templateOptions.disabled = true;
+            vm.profileFields.forEach(function(field) {
+                if(field.fieldGroup != null){
+                    field.fieldGroup.forEach(function(subGroup) {
+                        subGroup.fieldGroup.forEach(function(item) {
+                            item.templateOptions.disabled = true;
+                        });
+                    });
+                } else {
+                    field.templateOptions.disabled = true;
+                }
             });
         }
         console.log("selected profile: ");
