@@ -75,7 +75,6 @@
         </div>
             <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="select" class="select-view">
-                    <p>{{ip.Label}}</p>
                     <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
                         <thead>
                             <tr>
@@ -149,7 +148,7 @@
                                 <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
                             </label>
                         </div>
-                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create IP</button>
+                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create SIP</button>
                     </form>
                 </div>
             </div>
