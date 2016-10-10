@@ -236,12 +236,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.getSelectCollection(value.profile);
         });
     };
-
+    //Get All profiles and populates the select view table array
     $scope.getSelectCollection = function (sa) {
         $scope.selectRowCollapse = [];
-        $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
-        console.log($scope.selectRowCollapse);
+        if($scope.saProfile != null){
+            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
+            console.log($scope.selectRowCollapse);
+        }
     };
+    //Updates the included profiles for an ip
+    //Currently has no back end support
     $scope.updateIncludedProfiles = function(profile){
         if(profile.checked){
             $scope.saProfile.profile.includedProfiles.push(profile.profile_type);
