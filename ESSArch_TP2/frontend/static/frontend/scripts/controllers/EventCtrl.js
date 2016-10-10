@@ -34,6 +34,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function 
             ctrl.displayed = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             ctrl.isLoading = false;
+            $scope.tableState = tableState;
         });
     };
 

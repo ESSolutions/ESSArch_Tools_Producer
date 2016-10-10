@@ -121,13 +121,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             ctrl.isLoading = false;
         });
     };
+    //Make ip selected and add class to visualize
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id){
+        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.statusShow && !$scope.eventShow){
             $scope.selectedIp = {id: "", class: ""};
         } else {
             row.class = "selected";

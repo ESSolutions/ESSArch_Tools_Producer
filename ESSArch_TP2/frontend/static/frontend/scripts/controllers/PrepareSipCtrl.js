@@ -117,19 +117,21 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             ctrl.isLoading = false;
         });
     };
+    //Add ip to selected
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id){
+        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.statusShow && !$scope.eventShow){
             $scope.selectedIp = {id: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
         }
     };
+    //Remove selection of ip
     function removeIpSelection(row) {
         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
