@@ -145,46 +145,48 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Returns an array consisting of profile objects for an SA
     function getSelectCollection(sa, ip) {
-        var selectRowCollapse = [];
-        getProfiles("transfer_project", sa.profile_transfer_project, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-            console.log(value);
-        });
-        getProfiles("content_type", sa.profile_content_type, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("data_selection", sa.profile_data_selection, selectRowCollapse ,sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("classification", sa.profile_classification, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("import", sa.profile_import, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("submit_description", sa.profile_submit_description, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("sip", sa.profile_sip, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("aip", sa.profile_aip, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("dip", sa.profile_dip, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("workflow", sa.profile_workflow, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("preservation_metadata", sa.profile_preservation_metadata, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        getProfiles("event", sa.profile_event, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowCollapse = value;
-        });
-        console.log(selectRowCollapse);
-        return selectRowCollapse;
+        if(sa.id != null) {
+            var selectRowCollapse = [];
+            getProfiles("transfer_project", sa.profile_transfer_project, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+                console.log(value);
+            });
+            getProfiles("content_type", sa.profile_content_type, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("data_selection", sa.profile_data_selection, selectRowCollapse ,sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("classification", sa.profile_classification, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("import", sa.profile_import, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("submit_description", sa.profile_submit_description, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("sip", sa.profile_sip, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("aip", sa.profile_aip, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("dip", sa.profile_dip, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("workflow", sa.profile_workflow, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("preservation_metadata", sa.profile_preservation_metadata, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            getProfiles("event", sa.profile_event, selectRowCollapse, sa, ip).then(function(value) {
+                selectRowCollapse = value;
+            });
+            console.log(selectRowCollapse);
+            return selectRowCollapse;
+        }
     };
     //Execute prepare ip, which creates a new IP
     function prepareIp(label){

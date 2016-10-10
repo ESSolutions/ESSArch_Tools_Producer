@@ -239,10 +239,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Get All profiles and populates the select view table array
     $scope.getSelectCollection = function (sa) {
         $scope.selectRowCollapse = [];
-        if($scope.saProfile != null){
             $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
             console.log($scope.selectRowCollapse);
-        }
     };
     //Updates the included profiles for an ip
     //Currently has no back end support
