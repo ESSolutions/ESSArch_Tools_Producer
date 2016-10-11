@@ -282,7 +282,7 @@ profile_types = [
     "AIP",
     "DIP",
     "Workflow",
-    "Preservation Description",
+    "Preservation Metadata",
     "Event",
 ]
 
