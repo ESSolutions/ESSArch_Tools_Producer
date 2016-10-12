@@ -60,6 +60,25 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log("error");
         });
     };
+     $scope.currentStepTask = {id: ""}
+     $scope.stepTaskClick = function(branch) {
+        if(branch.isTask){
+            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
+                $scope.stepTaskInfoShow = false;
+            }else {
+                $scope.stepTaskInfoShow = true;
+                $http({
+                    method: 'GET',
+                    url: branch.url
+                }).then(function(response){
+                    console.log(response.data);
+                $scope.currentStepTask = response.data;
+                }, function(response) {
+                    response.status;
+                });
+            }
+        }
+     };
     //click function forstatus view
     $scope.stateClicked = function(row){
         if($scope.statusShow && $scope.ip == row){

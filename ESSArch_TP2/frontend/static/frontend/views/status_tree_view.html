@@ -1,17 +1,25 @@
-<div ng-if="ip.steps.length != 0" class="child-tree" ng-include="'tree_template.html'"></div>
-
-<tree-grid col-defs="col_defs" tree-data="tree_data" tree-control="myTreeControl" expand-on="expanding_property" icon-leaf="glyphicon glyphicon-flash" icon-expand="glyphicon glyphicon-plus" icon-collapse="glyphicon glyphicon-minus"></tree-grid>
-
-<script type="text/ng-template" id="tree_template.html">
-<treecontrol class="tree-light"
-    tree-model="parentStepsRowCollection"
-    options="treeOptions"
-    on-selection="showSelected(node)"
-    selected-node="node1">
-    {{node.name}}, {{node.status}}, {{node.progress}}, {{node.user}}
-    <a ng-click="node.tasksCollapsed = !node.tasksCollapsed">tasks: {{node.taskObjects.length}}</a>
-    <ul uib-collapse="node.tasksCollapsed"ng-repeat="task in node.taskObjects">
-        <li>{{task.name}}</li>
-    </ul>
-/treecontrol>
-</script>
+<div class="status-tree-grid">
+<tree-grid
+    col-defs="col_defs"
+    tree-data="tree_data"
+    tree-control="myTreeControl"
+    expand-on="expanding_property"
+    icon-leaf="glyphicon glyphicon-flash"
+    icon-expand="glyphicon glyphicon-plus"
+    on-click="stepTaskClick(branch)"
+    icon-collapse="glyphicon glyphicon-minus">
+</tree-grid>
+</div>
+<div ng-if="stepTaskInfoShow" class="step-task-info" style="width: 600px;border-style: solid;border-color: #666;margin: 5px; padding: 5px;">
+    <p>Task report for {{currentStepTask.name}}</p>
+    <table class="table">
+        <tr>
+            <td>Params: </td>
+            <td>Step: {{currentStepTask.params.step}}, Responsible: {{currentStepTask.params.responsible}}, Label: {{currentStepTask.params.label}}</td>
+        </tr>
+        <tr>
+            <td>Result:</td>
+            <td>{{currentStepTask.result}}</td>
+        </tr>
+    </table>
+</div>
