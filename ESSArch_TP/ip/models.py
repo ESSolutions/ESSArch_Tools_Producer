@@ -362,7 +362,7 @@ class InformationPackage(models.Model):
 
     def __unicode__(self):
         # create a unicode representation of this object
-        return '%s' % self.id
+        return '%s - %s' % (self.Label, self.pk)
 
     def get_value_array(self):
         # make an associative array of all fields  mapping the field
