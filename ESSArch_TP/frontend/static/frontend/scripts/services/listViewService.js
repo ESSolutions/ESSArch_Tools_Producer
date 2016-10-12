@@ -35,10 +35,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.tasks.forEach(function(task){
                     task.label = task.name;
                     task.time_created = task.time_started;
+                    task.isTask = true;
                 });
                 step.children = step.children.concat(step.tasks);
-                step.isCollapsed = false;
-                step.tasksCollapsed = true;
             });
             return steps;
         });
@@ -306,6 +305,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             child.tasks.forEach(function(task){
                 task.user = child.user;
                 task.time_created = task.time_started;
+                task.isTask = true;
             });
 
             child.children = child.child_steps.concat(child.tasks);

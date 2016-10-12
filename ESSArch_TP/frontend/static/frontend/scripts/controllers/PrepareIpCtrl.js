@@ -53,6 +53,25 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             console.log("error");
         });
     };
+     $scope.currentStepTask = {id: ""}
+     $scope.stepTaskClick = function(branch) {
+        if(branch.isTask){
+            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
+                $scope.stepTaskInfoShow = false;
+            }else {
+                $scope.stepTaskInfoShow = true;
+                $http({
+                    method: 'GET',
+                    url: branch.url
+                }).then(function(response){
+                    console.log(response.data);
+                $scope.currentStepTask = response.data;
+                }, function(response) {
+                    response.status;
+                });
+            }
+        }
+     };
     //Redirect to admin page
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
@@ -318,6 +337,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
+    //Decides visibility of stepTask info page
+    $scope.stepTaskInfoShow = false;
     //Decides visibility of status view
     $scope.statusShow = false;
     //Decides visibility of events view
