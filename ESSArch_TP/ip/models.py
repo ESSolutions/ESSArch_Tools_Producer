@@ -314,38 +314,6 @@ class InformationPackage(models.Model):
             )
         )
 
-        """
-        metsdoc = etree.ElementTree(file=mets_path)
-
-        for f in metsdoc.findall('.//file'):
-            filename = f.get("xlink:href")
-            fileformat = f.get("ext:FILEFORMATNAME")
-            checksum = f.get("CHECKSUM")
-
-            validate_step.tasks.add(
-                ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateFileFormat",
-                    params={
-                        "filename": filename,
-                        "fileformat": fileformat,
-                    },
-                    processstep_pos=0,
-                    information_package=self
-                )
-            )
-
-            validate_step.tasks.add(
-                ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateIntegrity",
-                    params={
-                        "filename": filename,
-                        "checksum": checksum,
-                    },
-                    processstep_pos=0,
-                    information_package=self
-                )
-            )
-        """
         validate_step.save()
 
         t6 = ProcessTask.objects.create(
