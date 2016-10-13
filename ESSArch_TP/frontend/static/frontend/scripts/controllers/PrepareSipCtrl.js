@@ -61,6 +61,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
     };
      $scope.currentStepTask = {id: ""}
+    //Click funciton for steps and tasks
      $scope.stepTaskClick = function(branch) {
         if(branch.isTask){
             if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
