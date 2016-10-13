@@ -10,16 +10,3 @@
     icon-collapse="glyphicon glyphicon-minus">
 </tree-grid>
 </div>
-<div ng-if="stepTaskInfoShow" class="step-task-info" style="width: 600px;border-style: solid;border-color: #666;margin: 5px; padding: 5px;">
-    <p>Task report for {{currentStepTask.name}}</p>
-    <table class="table">
-        <tr>
-            <td>Params: </td>
-            <td>Step: {{currentStepTask.params.step}}, Responsible: {{currentStepTask.params.responsible}}, Label: {{currentStepTask.params.label}}</td>
-        </tr>
-        <tr>
-            <td>Result:</td>
-            <td>{{currentStepTask.result}}</td>
-        </tr>
-    </table>
-</div>
