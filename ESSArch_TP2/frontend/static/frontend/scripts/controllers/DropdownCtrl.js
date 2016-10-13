@@ -1,4 +1,4 @@
-angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth) {
+angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window) {
     $scope.items = [
         'Shortcut 1',
         'Shortcut 2',
@@ -7,8 +7,8 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
 
     var options = [
     {
-        label: 'Edit profile',
-        link: ''
+        label: 'Change Password',
+        link: '/accounts/changepassword/'
     },
     {
         label: 'Log in',
@@ -17,8 +17,8 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     ];
     var optionsAuth = [
     {
-        label: 'Edit profile',
-        link: ''
+        label: 'Change Password',
+        link: '/accounts/changepassword/'
     },
     {
         label: 'Log out',
@@ -37,7 +37,7 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     }, true);
     $scope.name = "";
     $scope.gotoLink = function(choice) {
-        $state.go(choice.link)
+        $window.location.href = choice.link;
     };
     $scope.status = {
         isopen: false

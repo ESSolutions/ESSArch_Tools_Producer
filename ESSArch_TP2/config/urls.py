@@ -73,6 +73,7 @@ urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
+    url(r'^accounts/changepassword', auth_views.password_change, {'post_change_redirect': '/'} ),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^template/', include('templateMaker.urls')),
     url(r'^demo/', include('demo.urls')),
