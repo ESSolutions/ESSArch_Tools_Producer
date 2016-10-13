@@ -363,6 +363,57 @@ class InformationPackage(models.Model):
         main_step.save()
         main_step.run()
 
+    def submit(self):
+        step = ProcessStep.objects.create(
+            name="Submit SIP",
+            information_package = self
+        )
+
+        sa = self.SubmissionAgreement
+
+        sip_profile = sa.profile_sip_rel.active()
+        info = sip_profile.specification_data
+        info['agents'] = info['agents'].values()
+
+        prepare = Path.objects.get(entity="path_preingest_prepare").value
+        infoxml = os.path.join(prepare, str(self.pk) + ".xml")
+
+        filesToCreate = {
+            infoxml: sip_profile.specification
+        }
+
+        folderToParse = self.ObjectPath + ".tar"
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+                "folderToParse": folderToParse
+            },
+            information_package=self
+        ))
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.SubmitSIP",
+            params={
+                "ip": self
+            },
+            information_package=self
+        ))
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.UpdateIPStatus",
+            params={
+                "ip": self,
+                "status": "SUBMITTED"
+            },
+            information_package=self
+        ))
+
+        step.save()
+        step.run()
+
     def status(self):
         steps = self.steps.all()
 

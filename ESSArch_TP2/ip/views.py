@@ -142,6 +142,21 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+    @detail_route(methods=['post'], url_path='submit')
+    def submit(self, request, pk=None):
+        """
+        Submits the specified information package
+
+        Args:
+            pk: The primary key (id) of the information package to submit
+
+        Returns:
+            None
+        """
+
+        self.get_object().submit()
+        return Response({'status': 'submitting ip'})
+
 
 class EventIPViewSet(viewsets.ModelViewSet):
     """
