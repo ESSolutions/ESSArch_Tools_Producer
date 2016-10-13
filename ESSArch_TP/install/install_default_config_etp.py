@@ -206,7 +206,7 @@ def installDefaultEventTypes(): # default events
       'Download from %s to %s': '10250',
       'Validate file format for %s against %s': '10260',
       'Validate XML file %s': '10261',
-      'Validate logical representation %s against physical representation %s': '10262',
+      'Validate logical representation in %s against physical representation at %s': '10262',
       'Validate checksum for %s using %s against %s': '10263',
       'Create TAR file %s from %s': '10270',
       'Create ZIP file %s from %s': '10271',
