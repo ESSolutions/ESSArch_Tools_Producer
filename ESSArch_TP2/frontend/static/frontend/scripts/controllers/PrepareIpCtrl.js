@@ -454,6 +454,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
         });
     }
+    //Creates and shows modal with task information
     $scope.taskInfoModal = function () {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -463,7 +464,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             scope: $scope,
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
-        })
+        });
         modalInstance.result.then(function (data, $ctrl) {
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
@@ -529,36 +530,4 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.reloadPage = function (){
         $state.reload();
     }
-});
-angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
-  var $ctrl = this;
-
-  $ctrl.save = function () {
-      $ctrl.data = {
-        name: $ctrl.profileName
-      };
-        $uibModalInstance.close($ctrl.data);
-  };
-  $ctrl.prepare = function () {
-      $ctrl.data = {
-        label: $ctrl.label
-      };
-        $uibModalInstance.close($ctrl.data);
-  };
-  $ctrl.lock = function () {
-      $ctrl.data = {
-          status: "locked"
-      }
-      $uibModalInstance.close($ctrl.data);
-  };
-  $ctrl.remove = function () {
-    $ctrl.data = {
-        status: "removed"
-    }
-    $uibModalInstance.close($ctrl.data);
-  };
-
-  $ctrl.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
 });

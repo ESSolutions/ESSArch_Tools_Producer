@@ -72,7 +72,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                     url: branch.url
                 }).then(function(response){
                     console.log(response.data);
-                $scope.currentStepTask = response.data;
+                    $scope.currentStepTask = response.data;
+                    $scope.taskInfoModal();
                 }, function(response) {
                     response.status;
                 });
@@ -216,6 +217,22 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //$scope.getListViewData();
     //$interval(function(){$scope.getListViewData();}, 5000, false);
 
+    //Creates and shows modal with task information
+    $scope.taskInfoModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/task_info_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data, $ctrl) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
     $scope.max = 100;
     //Get data for eventlog view
     function getEventlogData() {

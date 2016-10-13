@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal){
     var vm = this;
     $scope.tree_data = [];
      $scope.expanding_property = {
@@ -50,42 +50,26 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         }, function() {
             console.log("error");
         });
-    };
+     };
      $scope.currentStepTask = {id: ""}
+     //Click funciton for steps and tasks
      $scope.stepTaskClick = function(branch) {
-        if(branch.isTask){
-            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
-                $scope.stepTaskInfoShow = false;
-            }else {
-                $scope.stepTaskInfoShow = true;
-                $http({
-                    method: 'GET',
-                    url: branch.url
-                }).then(function(response){
-                    console.log(response.data);
-                $scope.currentStepTask = response.data;
-                }, function(response) {
-                    response.status;
-                });
-            }
-        }
-     };    $scope.currentStepTask = {id: ""}
-     $scope.stepTaskClick = function(branch) {
-        if(branch.isTask){
-            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
-                $scope.stepTaskInfoShow = false;
-            }else {
-                $scope.stepTaskInfoShow = true;
-                $http({
-                    method: 'GET',
-                    url: branch.url
-                }).then(function(response){
-                    console.log(response.data);
-                $scope.currentStepTask = response.data;
-                }, function(response) {
-                    response.status;
-                });
-            }
+         if(branch.isTask){
+             if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
+                 $scope.stepTaskInfoShow = false;
+             }else {
+                 $scope.stepTaskInfoShow = true;
+                 $http({
+                     method: 'GET',
+                     url: branch.url
+                 }).then(function(response){
+                     console.log(response.data);
+                     $scope.currentStepTask = response.data;
+                     $scope.taskInfoModal();
+                 }, function(response) {
+                     response.status;
+                 });
+             }
         }
      };
      //Change state
@@ -290,6 +274,23 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
         }
         $scope.profilesCollapse = !$scope.profilesCollapse;
     };
+    //Creates and shows modal with task information
+    $scope.taskInfoModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/task_info_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        });
+        modalInstance.result.then(function (data, $ctrl) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+
     //Executes Create sip on an ip
     $scope.createSip = function (ip) {
         $http({
