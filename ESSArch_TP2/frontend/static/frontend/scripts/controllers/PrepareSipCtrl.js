@@ -188,8 +188,11 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
+            $rootScope.stCtrl = null;
         } else {
-            $scope.eventShow = true;
+            if($rootScope.stCtrl) {
+                $rootScope.stCtrl.pipe();
+            }
             getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;

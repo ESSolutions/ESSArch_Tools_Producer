@@ -175,7 +175,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
+            $rootScope.stCtrl = null;
         } else {
+            if($rootScope.stCtrl) {
+                $rootScope.stCtrl.pipe();
+            }
             getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
