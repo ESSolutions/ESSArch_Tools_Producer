@@ -1,9 +1,6 @@
-angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function (service, $scope) {
-
-    var ctrl = this;
-    this.itemsPerPage = 10;
+angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', function (service, $scope, $rootScope) {
     $scope.selected = [];
-    this.displayed = [];
+    $scope.displayed = [];
     //Event click funciton
     $scope.eventClick = function(row) {
         if(row.class == "selected"){
@@ -21,19 +18,16 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', function 
         }
     };
     //Get data from rest api for event table
-    this.callServer = function callServer(tableState) {
-
-        ctrl.isLoading = true;
-
+    $scope.eventPipe = function(tableState, ctrl) {
+        $rootScope.stCtrl = ctrl;
         var pagination = tableState.pagination;
         var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number;  // Number of entries showed per page.
+        var number = pagination.number || 10;  // Number of entries showed per page.
         var pageNumber = start/number+1;
 
         service.getEventPage(start, number, pageNumber, tableState, $scope.selected).then(function (result) {
-            ctrl.displayed = result.data;
+            $scope.displayed = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-            ctrl.isLoading = false;
             $scope.tableState = tableState;
         });
     };

@@ -192,7 +192,11 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($scope, myService
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
+            $rootScope.stCtrl = null;
         } else {
+            if($rootScope.stCtrl) {
+                $rootScope.stCtrl.pipe();
+            }
             $scope.eventShow = true;
             getEventlogData();
             $scope.eventShow = true;
