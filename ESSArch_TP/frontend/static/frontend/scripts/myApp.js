@@ -196,7 +196,11 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             return permissions;
         }
 })
-.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService){
+.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig){
+    formlyConfig.setType({
+        name: 'input',
+        templateUrl: 'static/frontend/views/form_template_input.html',
+    });
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
         djangoAuth.profile().then(function(data) {
