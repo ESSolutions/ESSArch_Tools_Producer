@@ -1,0 +1,13 @@
+<div class="form-group">
+    <label for="{{::id}}"
+           uib-popover="{{options.templateOptions.desc}}"
+           popover-trigger="mouseenter"
+           popover-placement="top-left"
+           popover-popup-delay="500"
+           popover-append-to-body="true">{{options.templateOptions.label}}</label>
+    <input class="form-control"
+           id="{{::id}}"
+           name="{{::id}}"
+           class="form-control"
+           ng-model="model[options.key]" />
+</div>
