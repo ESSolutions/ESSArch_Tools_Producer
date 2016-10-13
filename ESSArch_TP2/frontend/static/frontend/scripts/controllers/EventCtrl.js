@@ -1,4 +1,4 @@
-angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', function (service, $scope, $rootScope) {
+angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', 'listViewService', function (service, $scope, $rootScope, listViewService) {
     $scope.selected = [];
     $scope.displayed = [];
     //Event click funciton
@@ -17,6 +17,12 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
             console.log($scope.selected);
         }
     };
+    $scope.addEvent = function(ip, eventType, eventDetail) {
+        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+            $rootScope.stCtrl.pipe();
+            console.log(value);
+        });
+    }
     //Get data from rest api for event table
     $scope.eventPipe = function(tableState, ctrl) {
         $rootScope.stCtrl = ctrl;
