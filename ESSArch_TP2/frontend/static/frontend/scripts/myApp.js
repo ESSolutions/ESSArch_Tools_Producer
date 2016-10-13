@@ -200,6 +200,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     formlyConfig.setType({
         name: 'input',
         templateUrl: 'static/frontend/views/form_template_input.html',
+        overwriteOk: true
     });
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
