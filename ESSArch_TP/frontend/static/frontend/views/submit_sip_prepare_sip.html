@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
-                    <form class="submit-sip-eventlog-form" ng-submit="saveModal()">
+                    <form class="submit-sip-eventlog-form" ng-submit="submitSip(ip)">
                         <div class="form-group">
                             <label>Status note</label>
                             <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
