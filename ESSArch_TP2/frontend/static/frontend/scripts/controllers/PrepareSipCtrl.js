@@ -472,6 +472,16 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
 
         return profiles.active;
     }
+    $scope.submitSip = function(ip) {
+        $http({
+            method: 'POST',
+            url: ip.url+'submit/'
+        }).then(function(response) {
+            console.log(response.status);
+        }, function(response) {
+            console.log(response.status);
+        });
+    }
     //visibility of status view
     $scope.statusShow = false;
     //visibility of event view
