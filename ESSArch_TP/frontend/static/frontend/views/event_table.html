@@ -24,5 +24,20 @@
                 </tr>
             </tfoot>
         </table>
+        <div class="events-footer">
+            <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
+                <div class="form-group">
+                    <label>Event type</label>
+                    <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+                        <option value="" selected="selected" disabled>select one</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Comment</label>
+                    <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
+                </div>
+                <button type="submit" class="btn btn-info submit-button">Add event</button>
+            </form>
+        </div>
     </div>
 </div>
