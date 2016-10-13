@@ -27,7 +27,7 @@ from django.conf import settings
 from django.db import models
 
 from configuration.models import (
-    Path,
+    EventType, Path,
 )
 
 from preingest.models import (
@@ -149,9 +149,9 @@ class InformationPackage(models.Model):
     )
 
     def create(self):
-        create_event(
-            10200, "Creating IP", "System", self
-        )
+        event_type = EventType.objects.get(eventType=10200)
+
+        create_event(event_type, [], "System", self)
 
         prepare_path = Path.objects.get(
             entity="path_preingest_prepare"
@@ -162,29 +162,33 @@ class InformationPackage(models.Model):
 
         schemas = sa.profile_transfer_project_rel.active().schemas
         structure = sa.profile_sip_rel.active().structure
-        t1 = ProcessTask.objects.create(
-            name="preingest.tasks.CopySchemas",
-            params={
-                "schemas": schemas,
-                "root": ip_prepare_path,
-                "structure": structure,
-            },
-            processstep_pos=0,
-            information_package=self
-        )
 
         copy_schemas_step = ProcessStep.objects.create(
             name="Copy schemas",
         )
-        copy_schemas_step.tasks = [t1]
+
+        for schema in schemas:
+            copy_schemas_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.CopySchemas",
+                    params={
+                        "schema": schema,
+                        "root": ip_prepare_path,
+                        "structure": structure,
+                    },
+                    processstep_pos=0,
+                    information_package=self
+                )
+            )
+
         copy_schemas_step.save()
 
-        info = sa.profile_sip_rel.active().specification_data
+        info = sa.profile_event_rel.active().specification_data
         info['agents'] = info['agents'].values()
 
         events_path = os.path.join(ip_prepare_path, "ipevents.xml")
         filesToCreate = OrderedDict()
-        filesToCreate[events_path] = sa.profile_preservation_metadata_rel.active().specification
+        filesToCreate[events_path] = sa.profile_event_rel.active().specification
 
         t0 = ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
@@ -205,6 +209,9 @@ class InformationPackage(models.Model):
             processstep_pos=0,
             information_package=self
         )
+
+        info = sa.profile_sip_rel.active().specification_data
+        info['agents'] = info['agents'].values()
 
         # ensure premis is created before mets
         filesToCreate = OrderedDict()
@@ -245,50 +252,100 @@ class InformationPackage(models.Model):
         tarname = os.path.join(ip_prepare_path) + '.tar'
         zipname = os.path.join(ip_prepare_path) + '.zip'
 
-        t2 = ProcessTask.objects.create(
-            name="preingest.tasks.ValidateFileFormat",
-            params={
-                "filename": filename,
-                "fileformat": fileformat,
-            },
-            processstep_pos=0,
-            information_package=self
-        )
-
-        t3 = ProcessTask.objects.create(
-            name="preingest.tasks.ValidateXMLFile",
-            params={
-                "xml_filename": xmlfile,
-                "schema_filename": schemafile,
-            },
-            processstep_pos=0,
-            information_package=self
-        )
-
-        t4 = ProcessTask.objects.create(
-            name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
-            params={
-                "logical": logical,
-                "physical": physical,
-            },
-            processstep_pos=0,
-            information_package=self
-        )
-
-        t5 = ProcessTask.objects.create(
-            name="preingest.tasks.ValidateIntegrity",
-            params={
-                "filename": filename,
-                "checksum": checksum,
-            },
-            processstep_pos=0,
-            information_package=self
-        )
-
         validate_step = ProcessStep.objects.create(
             name="Validation",
         )
-        validate_step.tasks = [t2, t3, t4, t5]
+
+        validate_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.ValidateXMLFile",
+                params={
+                    "xml_filename": events_path,
+                },
+                processstep_pos=0,
+                information_package=self
+            )
+        )
+
+        validate_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.ValidateXMLFile",
+                params={
+                    "xml_filename": mets_path,
+                },
+                processstep_pos=0,
+                information_package=self
+            )
+        )
+
+        if premis_profile.locked(sa, self):
+            validate_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateXMLFile",
+                    params={
+                        "xml_filename": premis_path,
+                    },
+                    processstep_pos=0,
+                    information_package=self
+                )
+            )
+
+        validate_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                params={
+                    "logical": logical,
+                    "physical": physical,
+                },
+                processstep_pos=0,
+                information_package=self
+            )
+        )
+
+        validate_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.ValidateFiles",
+                params={
+                    "ip": self,
+                    "mets_path": mets_path,
+                },
+                processstep_pos=0,
+                information_package=self
+            )
+        )
+
+        """
+        metsdoc = etree.ElementTree(file=mets_path)
+
+        for f in metsdoc.findall('.//file'):
+            filename = f.get("xlink:href")
+            fileformat = f.get("ext:FILEFORMATNAME")
+            checksum = f.get("CHECKSUM")
+
+            validate_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateFileFormat",
+                    params={
+                        "filename": filename,
+                        "fileformat": fileformat,
+                    },
+                    processstep_pos=0,
+                    information_package=self
+                )
+            )
+
+            validate_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateIntegrity",
+                    params={
+                        "filename": filename,
+                        "checksum": checksum,
+                    },
+                    processstep_pos=0,
+                    information_package=self
+                )
+            )
+        """
         validate_step.save()
 
         t6 = ProcessTask.objects.create(
