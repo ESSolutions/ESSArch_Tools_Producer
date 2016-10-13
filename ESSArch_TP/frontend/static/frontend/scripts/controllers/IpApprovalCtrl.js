@@ -370,7 +370,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         });
         });
     }
-    //Change state to prepare-ip
+        //Change state to prepare-ip
     $scope.goToPrepareIp = function() {
         $state.go('home.createSip.prepareIp');
     }
