@@ -1,0 +1,27 @@
+<div class="enter-profile-name">
+    <h3 class="modal-title" id="modal-title" style="margin: 5px;">Task report for {{currentStepTask.name}}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="step-task-info">
+        <table class="table" style="margin: 5px;">
+            <tr>
+                <td><p>Params: </p></td>
+                <td>
+                    <table class="table">
+                        <tr><td>Step</td> <td>{{currentStepTask.params.step}}</td></tr>
+                        <tr><td>Responsible</td><td>{{currentStepTask.params.responsible}}</td></tr>
+                        <tr><td>Label</td><td>{{currentStepTask.params.label}}</td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Result:</td>
+                <td>{{currentStepTask.result}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+</div>
+

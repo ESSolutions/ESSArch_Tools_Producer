@@ -55,22 +55,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
      $scope.currentStepTask = {id: ""}
      $scope.stepTaskClick = function(branch) {
-        if(branch.isTask){
-            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
-                $scope.stepTaskInfoShow = false;
-            }else {
-                $scope.stepTaskInfoShow = true;
-                $http({
-                    method: 'GET',
-                    url: branch.url
-                }).then(function(response){
-                    console.log(response.data);
-                $scope.currentStepTask = response.data;
-                }, function(response) {
-                    response.status;
-                });
-            }
-        }
+         if(branch.isTask){
+             $http({
+                 method: 'GET',
+                 url: branch.url
+             }).then(function(response){
+                 console.log(response.data);
+                 $scope.currentStepTask = response.data;
+                 $scope.taskInfoModal();
+             }, function(response) {
+                 response.status;
+             });
+         }
      };
     //Redirect to admin page
     $scope.redirectAdmin = function () {
@@ -452,6 +448,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventShow = false;
             $scope.statusShow = false;
 
+        });
+    }
+    $scope.taskInfoModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/task_info_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data, $ctrl) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
         });
     }
     //Creates and shows modal for profile lock.
