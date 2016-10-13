@@ -195,10 +195,24 @@ def installDefaultEventTypes(): # default events
 
     # create events dictionaries
     dct = {
-          'Prepare IP':'10100',
-          'Create SIP':'10200',
-          'Submit SIP':'10300',
-          }
+      'Prepare IP':'10100',
+      'Create IP root directory': '10110',
+      'Create physical model': '10115',
+      'Create SIP':'10200',
+      'Calculate checksum for %s': '10210',
+      'Identify format of %s': '10220',
+      'Generate XML files: %s': '10230',
+      'Append events to %s': '10240',
+      'Download from %s to %s': '10250',
+      'Validate file format for %s against %s': '10260',
+      'Validate XML file %s': '10261',
+      'Validate logical representation %s against physical representation %s': '10262',
+      'Validate checksum for %s using %s against %s': '10263',
+      'Create TAR file %s from %s': '10270',
+      'Create ZIP file %s from %s': '10271',
+      'Update IP status of %s': '10280',
+      'Submit SIP':'10300',
+    }
 
     # create according to model with two fields
     for key in dct :

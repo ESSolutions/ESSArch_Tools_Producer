@@ -436,13 +436,17 @@ class Profile(models.Model):
                 str(information_package.pk)
             )
 
-            step = ProcessStep.objects.create(name="Create Physical Model")
+            step = ProcessStep.objects.create(
+                name="Create Physical Model",
+                information_package=information_package
+            )
             task = ProcessTask.objects.create(
                 name="preingest.tasks.CreatePhysicalModel",
                 params={
                     "structure": self.structure,
                     "root": root
-                }
+                },
+                information_package=information_package
             )
 
             step.tasks = [task]
