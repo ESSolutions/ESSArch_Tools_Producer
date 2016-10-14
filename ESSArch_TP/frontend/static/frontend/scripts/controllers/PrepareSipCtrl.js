@@ -145,21 +145,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.statusShow && !$scope.eventShow){
+        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.edit && !$scope.eventlog && !$scope.eventShow){
             $scope.selectedIp = {id: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
         }
-    };
-    //Remove selection of ip
-    function removeIpSelection(row) {
-        vm.displayedIps.forEach(function(ip) {
-            if(ip.id == $scope.selectedIp.id){
-                ip.class = "";
-            }
-        });
-        $scope.selectedIp = {id: "", class: ""};
     };
     //Click function for ip table
     $scope.ipTableClick = function(row) {
