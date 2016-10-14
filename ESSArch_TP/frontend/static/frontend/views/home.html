@@ -20,6 +20,9 @@
                     </div>
 
                 </div>
+                <div ng-controller="LanguageCtrl" style="width: 10%; position: relative;">
+                    <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x for x in availableLanguages" style="width: 100%;"></select>
+                </div>
             </div>
             <div class="menu-task-wrapper">
                 <div class="menu" ng-controller="TabsCtrl">

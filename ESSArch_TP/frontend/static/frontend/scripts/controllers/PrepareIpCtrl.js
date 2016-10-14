@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore){
     var vm = this;
     $scope.tree_data = [];
      $scope.expanding_property = {
@@ -69,22 +69,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
              });
          }
      };
-    //Redirect to admin page
-    $scope.redirectAdmin = function () {
-        $window.location.href="/admin/";
-    }
+     //Redirect to admin page
+     $scope.redirectAdmin = function () {
+         $window.location.href="/admin/";
+     }
 
-    //Go to another state
-    $scope.changePath= function(path) {
-        myService.changePath(path);
-    };
-    //Click function for status view
-    $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip == row){
-            $scope.statusShow = false;
-        } else {
-            $scope.statusShow = true;
-            $scope.edit = false;
+     //Go to another state
+     $scope.changePath= function(path) {
+         myService.changePath(path);
+     };
+     //Click function for status view
+     $scope.stateClicked = function(row){
+         if($scope.statusShow && $scope.ip == row){
+             $scope.statusShow = false;
+         } else {
+             $scope.statusShow = true;
+             $scope.edit = false;
 
            $scope.statusViewUpdate(row);
         }
