@@ -2324,8 +2324,55 @@ def installProfileEvent(): # Profile Event
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Event profile for SIP xxyyzz',
-        'specification': {},
-        'specification_data': {},
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONPremisTemplate.json')).read()),
+        'specification_data': {
+            "xmlns:mets": "http://www.loc.gov/METS/",
+            "xmlns:premis": "http://www.loc.gov/premis/v3",
+            "xmlns:ext": "ExtensionMETS",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
+            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
+            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
+            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+            "LABEL": "Test of SIP 1",
+            "TYPE": "Personnel",
+            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+            "CREATEDATE": "2016-06-08T10:44:00+02:00",
+            "RECORDSTATUS": "NEW",
+            "ext:OAISTYPE": "SIP",
+            "agentName": "name",
+            "agentNote": "note",
+            "REFERENCECODE": "SE/RA/123456/24/F",
+            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+            "MetsIdentifier": "sip.xml",
+            "filename": "sip.txt",
+            "SMLabel": "Profilestructmap",
+            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
+            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+            "LOCTYPE": "URL",
+            "MDTYPE": "PREMIS",
+            "xlink:href": "file:///metadata/premis.xml",
+            "xlink:type": "simple",
+            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "agents": {
+                "agent_1": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "ORGANIZATION",
+                    "OTHERTYPE": "",
+                    "name": "Arkivbildar namn",
+                    "note": "VAT:SE201345098701"
+                },
+                "agent_2": {
+                    "ROLE": "ARCHIVIST",
+                    "TYPE": "OTHER",
+                    "OTHERTYPE": "SOFTWARE",
+                    "name": "By hand Systems",
+                    "note": "1.0.0"
+                }
+            }
+        }
     }
 
     # create according to model with many fields
