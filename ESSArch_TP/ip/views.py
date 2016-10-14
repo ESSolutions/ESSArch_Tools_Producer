@@ -128,7 +128,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         Creates the specified information package
 
         Args:
-            pk: The primary key (id) of the information package to prepare
+            pk: The primary key (id) of the information package to create
 
         Returns:
             None
