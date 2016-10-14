@@ -39,28 +39,24 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
                 method: 'GET',
                 url: appConfig.djangoUrl+"archival-institutions/"
             }).then(function(response) {
-                console.log(response.data);
                 $scope.ArchivalInstitution[0].children = response.data;
             });
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+"archivist-organizations/"
             }).then(function(response) {
-                console.log(response.data);
                 $scope.ArchivistOrganization[0].children = response.data;
             });
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+"archival-types/"
             }).then(function(response) {
-                console.log(response.data);
                 $scope.ArchivalType[0].children = response.data;
             });
             $http({
                 method: 'GET',
                 url: appConfig.djangoUrl+"archival-locations/"
             }).then(function(response) {
-                console.log(response.data);
                 $scope.ArchivalLocation[0].children = response.data;
             });
         }
