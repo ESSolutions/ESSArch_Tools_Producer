@@ -554,7 +554,6 @@
         {
           "-containsFiles": [
               {
-                  "-sortby": {"FName":".*(.csv)"},
                   "file": {
                     "-min": 1,
                     "-attr": [
