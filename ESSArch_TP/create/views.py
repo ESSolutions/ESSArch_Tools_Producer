@@ -23,7 +23,7 @@
 # Create your views here.
 from django.template import Context, loader, RequestContext 
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django import forms
 #from django.core.context_processors import csrf
 from django.middleware import csrf
@@ -247,6 +247,31 @@ class CreateIP(View):
             context['zone'] = zone
             context['ip'] = ip
             return render(request, self.template_name, context)
+
+class CreateLevente(View):
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+
+        ip = get_object_or_404(InformationPackage, pk=id)
+        xmlfile = os.path.join(ip.directory, ip.uuid, "metadata/descriptive/ead.xml")
+
+        with open(xmlfile) as f:
+            s = f.read()
+            return JsonResponse({"data": s})
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+        content = request.POST.get("content")
+
+        ip = get_object_or_404(InformationPackage, pk=id)
+        xmlfile = os.path.join(ip.directory, ip.uuid, "metadata/descriptive/ead.xml")
+
+        with open(xmlfile, "w") as f:
+            f.write(str(content))
+            return HttpResponse("Content written to %s" % xmlfile)
 
 '''
 "View IPs and prepare new IPs"

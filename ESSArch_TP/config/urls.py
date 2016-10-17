@@ -23,6 +23,7 @@
 '''
 
 from django.conf.urls import include, url, handler404
+from django.conf.urls.static import static
 from django.views.generic import DetailView, ListView
 from django.conf import settings
 

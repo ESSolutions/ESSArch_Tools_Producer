@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="http://ead3.archivists.org/schema/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ead3.archivists.org/schema/ ../../schemas/ead3.xsd">
+  <control>
+    <recordid>Sample 1111</recordid>
+    <filedesc>
+      <titlestmt>
+        <titleproper>s:/PROJEKTI_ARS/e-ARH.si/E-ARK/Izvajanje projekta/WP2/GeoPaketi/ARSO_GeoIP</titleproper>
+      </titlestmt>
+    </filedesc>
+    <maintenancestatus value="new" />
+    <maintenanceagency>
+      <agencyname>Name of the producer</agencyname>
+    </maintenanceagency>
+    <maintenancehistory>
+      <maintenanceevent>
+        <eventtype value="created" />
+        <eventdatetime standarddatetime="2016-10-05T09:59:06.854+02:00">2016-10-05</eventdatetime>
+        <agenttype value="machine" />
+        <agent>agent name</agent>
+        <eventdescription>Creation of EAD record based on folder structure</eventdescription>
+      </maintenanceevent>
+    </maintenancehistory>
+  </control>
+  <archdesc level="subgrp">
+    <did>
+      <unitid>1</unitid>
+      <unittitle>Geo data</unittitle>
+    </did>
+    <accessrestrict>
+      <p>Define access restriction</p>
+    </accessrestrict>
+    <dsc dsctype="combined">
+      <c level="subseries">
+        <did>
+          <unitid>1/1</unitid>
+          <unittitle>documentation</unittitle>
+          <daoset label="Digital Objects" coverage="part">
+            <dao identifier="473e92b1-04cd-4250-a48c-5b55e7df8364" daotype="derived" coverage="part" linktitle="Natura2K_2004_poizvedbe.JPG" href="../../documentation/Common queries and outputs/Natura2K_2004_poizvedbe.JPG" />
+            <dao identifier="ee3776b5-5b6b-4045-b60d-a2f3ef587921" daotype="unknown" coverage="part" linktitle="Thumbs.db" href="../../documentation/Common queries and outputs/Thumbs.db" />
+            <dao identifier="974a39b5-b0ba-445a-8367-be35a82b00f6" daotype="derived" coverage="part" linktitle="Natura2K_2004_StrukturaTabele.JPG" href="../../documentation/Logical structure/Natura2K_2004_StrukturaTabele.JPG" />
+            <dao identifier="f45425cd-12b7-4dbf-a4c4-424b80daf39b" daotype="derived" coverage="part" linktitle="Thumbs.db" href="../../documentation/Logical structure/Thumbs.db" />
+            <dao identifier="a30e5402-6ba8-4ddf-8645-0335c3a87a8c" daotype="derived" coverage="part" linktitle="NATURA2K_2004_ISOmetadata.xml" href="../../documentation/Metadata/NATURA2K_2004_ISOmetadata.xml" />
+            <dao identifier="569d5c78-e9cd-4612-b55e-035d87ad9258" daotype="derived" coverage="part" linktitle="E_Brosura_N2000_LIFE2015.pdf" href="../../documentation/Other documentation/E_Brosura_N2000_LIFE2015.pdf" />
+            <dao identifier="ee69bca4-5d88-4a03-a1dc-69b5fa351e10" daotype="derived" coverage="part" linktitle="NATURA_SLO_2008.pdf" href="../../documentation/Other documentation/NATURA_SLO_2008.pdf" />
+            <dao identifier="894a7abe-0dd3-4615-a20c-c1713cc6a0bb" daotype="derived" coverage="part" linktitle="Toman_Proteus_september_2013.pdf" href="../../documentation/Other documentation/Toman_Proteus_september_2013.pdf" />
+            <dao identifier="07441a3b-9244-4d63-b54c-72aa9e1badd8" daotype="derived" coverage="part" linktitle="Natura2K_2004_kartografija.JPG" href="../../documentation/Visualisation/Natura2K_2004_kartografija.JPG" />
+            <dao identifier="01b21c93-1b20-4481-b9c3-e646718406fc" daotype="derived" coverage="part" linktitle="Thumbs.db" href="../../documentation/Visualisation/Thumbs.db" />
+          </daoset>
+        </did>
+      </c>
+      <c level="subseries">
+        <did>
+          <unitid>1/2</unitid>
+          <unittitle>representations</unittitle>
+          <daoset label="Digital Objects" coverage="part">
+            <dao identifier="7acdf52d-472d-4c8e-80d4-eb12b69be217" daotype="derived" coverage="part" linktitle="NATURA2K_2004.gml" href="../../documentation/rep1/data/NATURA2K_2004.gml" />
+            <dao identifier="d87e95db-1779-49f5-92e5-6baf64e408b2" daotype="derived" coverage="part" linktitle="NATURA2K_2004.xsd" href="../../documentation/rep1/data/NATURA2K_2004.xsd" />
+            <dao identifier="aada12c1-6725-413c-86e5-f307a42c3ed0" daotype="derived" coverage="part" linktitle="NATURA2K_2004.cpg" href="../../documentation/rep2/data/NATURA2K_2004.cpg" />
+            <dao identifier="b54d007d-fceb-4915-8b8c-715fcce25b5b" daotype="unknown" coverage="part" linktitle="NATURA2K_2004.dbf" href="../../documentation/rep2/data/NATURA2K_2004.dbf" />
+            <dao identifier="1751c903-5912-40b4-814a-b54927afdaa4" daotype="derived" coverage="part" linktitle="NATURA2K_2004.prj" href="../../documentation/rep2/data/NATURA2K_2004.prj" />
+            <dao identifier="4d7b4066-c426-4515-a9d9-13c9e1e1b77e" daotype="derived" coverage="part" linktitle="NATURA2K_2004.sbn" href="../../documentation/rep2/data/NATURA2K_2004.sbn" />
+            <dao identifier="f585361a-ddf8-415b-a689-81f3c051394d" daotype="derived" coverage="part" linktitle="NATURA2K_2004.sbx" href="../../documentation/rep2/data/NATURA2K_2004.sbx" />
+            <dao identifier="6028ed03-5633-4a79-b2cb-aff9c857226c" daotype="derived" coverage="part" linktitle="NATURA2K_2004.shp" href="../../documentation/rep2/data/NATURA2K_2004.shp" />
+            <dao identifier="0452a048-a972-4d46-837d-8d814630dd49" daotype="derived" coverage="part" linktitle="NATURA2K_2004.shp.xml" href="../../documentation/rep2/data/NATURA2K_2004.shp.xml" />
+            <dao identifier="573943ae-f12d-405c-a726-7d1da18c9fc8" daotype="derived" coverage="part" linktitle="NATURA2K_2004.shx" href="../../documentation/rep2/data/NATURA2K_2004.shx" />
+          </daoset>
+        </did>
+      </c>
+    </dsc>
+  </archdesc>
+</ead>

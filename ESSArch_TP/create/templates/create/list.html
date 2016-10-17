@@ -27,6 +27,7 @@
 			<th>IP (UUID)</th>
 			<th>IP state</th>
 			<th>Events</th>
+			<th>Editor</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -42,6 +43,7 @@
 				<td>{{ ip.uuid }}</td>
 				<td>{{ ip.state }}</td>
 				<td><a href="/logevents/view/{{ip.uuid}}/{{ ip.archivist_organization }}/{{ ip.label }}/{{ ip.iptype }}/{{ ip.createdate }}">***</a></td>
+                <td><a href="/static/edead/filledForm.html?id={{ip.id}}">Editor</a></td>
 	      </tr>
 	      {% endfor %}
 	    </tbody>
