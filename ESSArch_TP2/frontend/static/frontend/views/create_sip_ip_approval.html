@@ -16,16 +16,17 @@
                             <div class="search-prepare-wrapper">
                                 <label for items-per-page></label>
                                 <select id="items-per-page" style="margin-right: 10px;" class="form-control items-per-page" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
-                                <input st-search="" class="form-control" placeholder="global search ..." type="text"/>
+                                <input st-search="" class="form-control" placeholder="{{'GLOBALSEARCH' | translate}}" type="text"/>
                             </div>
                         </th>
                     </tr>
                     <tr>
-                        <th class="clickable" st-sort="label" class="column-label">Label</th>
-                        <th class="clickable" st-sort="responsible" class="column-label">Responsible</th>
-                        <th class="clickable" st-sort="date" class="column-label">Date</th>
-                        <th class="clickable" st-sort="status" class="column-label">Status</th>
-                        <th class="clickable" st-sort="state" class="column-label">Events</th>
+                        <th class="clickable" st-sort="label" class="column-label">{{'LABEL' | translate}}</th>
+                        <th class="clickable" st-sort="responsible" class="column-label">{{'RESPONSIBLE' | translate}}</th>
+                        <th class="clickable" st-sort="date" class="column-label">{{'DATE' | translate}}</th>
+                        <th class="clickable" st-sort="state" class="column-label">{{'STATE' | translate}}</th>
+                        <th class="clickable" st-sort="state" class="column-label">{{'EVENTS' | translate}}</th>
+                        <th class="clickable" st-sort="status" class="column-label">{{'STATUS' | translate}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,8 +35,7 @@
                         <td>{{row.Responsible}}</td>
                         <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                         <td class="clickable" ng-click="stateClicked(row);selectIp(row)"><a href="">{{row.State}}</a></td>
-                        <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'Events'}}</a></td>
-
+                        <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'EVENTS' | translate}}</a></td>
                         <td>
                             <uib-progressbar class="progress active" value="row.status" type="success"><b>{{row.status}}</b></uib-progressbar>
 
@@ -63,10 +63,10 @@
                     <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="info-popover column-enabled"><p uib-popover="If checked, profile is enabled" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">Enabled</p></th>
-                                <th class="info-popover column-entity"><p uib-popover="Profile type" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">Entity</p></th>
-                                <th class="info-popover column-profile"><p uib-popover="Select which profile to use" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">Profile</p></th>
-                                <th class="info-popover column-state"><p uib-popover="Profile state" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">State</p></th>
+                                <th class="info-popover column-enabled"><p uib-popover="{{'ENABLEDDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENABLED' | translate}}</p></th>
+                                <th class="info-popover column-entity"><p uib-popover="{{'ENTITYDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENTITY' | translate}}</p></th>
+                                <th class="info-popover column-profile"><p uib-popover="{{'PROFILEDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PROFILE' | translate}}</p></th>
+                                <th class="info-popover column-state"><p uib-popover="{{'STATEDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'STATE' | translate}}</p></th>
 
                             </tr>
                         </thead>
@@ -85,7 +85,7 @@
                                 </td>
                                 <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-change="getSelectCollection(saProfile.profile)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                 <td><p class="table-col">{{}}</p></td>
-                                <a ng-click="showHideAllProfiles()">Show/hide profiles</a>
+                                <a ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                             </tr>
 
                             <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
@@ -101,7 +101,7 @@
                                 </td>
 
                                 <td><select ng-disabled="true" class="form-control table-col" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
-                                <td><p class="table-col" style="background-color: red; font-size: 14px;">{{row.locked?'Locked':''}}</p></td>
+                                <td><p class="table-col" style="background-color: red; font-size: 14px;">{{row.locked?('LOCKED' | translate):''}}</p></td>
                             </tr>
                         </tbody>
                     </table>
@@ -118,11 +118,11 @@
                     <form  novalidate>
                         <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                         </formly-form>
-                    <button class="btn btn-danger" ng-click="unlockAndRedirect()">Unlock profile</button>
+                    <button class="btn btn-danger" ng-click="unlockAndRedirect()">{{'UNLOCKPROFILE' | translate}}</button>
                     </form>
 
                     <div class="package-dependencies">
-                        <p> Package dependencies </p>
+                        <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
                     </div>
 
                 </div>
@@ -130,10 +130,10 @@
                     <form class="eventlog-form" ng-submit="createSip(ip)">
                         <div class="checkbox">
                             <label>
-                                <input type="checkBox" ng-model="approvedToCreate">Approved to create</input>
+                                <input type="checkBox" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
                             </label>
                         </div>
-                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">Create SIP</button>
+                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
                     </form>
                 </div>
             </div>
