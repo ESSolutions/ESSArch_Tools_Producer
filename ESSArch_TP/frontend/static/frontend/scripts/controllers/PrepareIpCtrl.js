@@ -24,9 +24,78 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress active\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
         },
         {
-            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">Undo</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">Redo</a>"
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
         }
     ];
+    $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
+        $scope.responsible = translations.RESPONSIBLE;
+        $scope.label = translations.LABEL;
+        $scope.date = translations.DATE;
+        $scope.state = translations.STATE;
+        $scope.status = translations.STATUS;
+        $scope.expanding_property = {
+            field: "name",
+            displayName: $scope.label,
+        };
+        $scope.col_defs = [
+        {
+            field: "user",
+            displayName: $scope.responsible,
+        },
+        {
+            field: "time_created",
+            displayName: $scope.date,
+        },
+        {
+            field: "status",
+            displayName: $scope.state,
+        },
+        {
+            field: "progress",
+            displayName: $scope.status,
+            cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress active\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+        },
+        {
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
+        }
+        ];
+    });
+    $rootScope.$on('$translateChangeSuccess', function () {
+        $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
+        $scope.responsible = translations.RESPONSIBLE;
+        $scope.label = translations.LABEL;
+        $scope.date = translations.DATE;
+        $scope.state = translations.STATE;
+        $scope.status = translations.STATUS;
+        $scope.expanding_property = {
+            field: "name",
+            displayName: $scope.label,
+        };
+        $scope.col_defs = [
+        {
+            field: "user",
+            displayName: $scope.responsible,
+        },
+        {
+            field: "time_created",
+            displayName: $scope.date,
+        },
+        {
+            field: "status",
+            displayName: $scope.state,
+        },
+        {
+            field: "progress",
+            displayName: $scope.status,
+            cellTemplate: "<uib-progressbar ng-click=\"taskStepUndo(row.branch)\" class=\"progress active\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+        },
+        {
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
+        }
+        ];
+        });
+    });
+
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
     //Undo step/task

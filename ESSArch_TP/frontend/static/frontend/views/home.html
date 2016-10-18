@@ -20,9 +20,7 @@
                     </div>
 
                 </div>
-                <div ng-controller="LanguageCtrl" style="width: 10%; position: relative;">
-                    <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x for x in availableLanguages" style="width: 100%;"></select>
-                </div>
+
             </div>
             <div class="menu-task-wrapper">
                 <div class="menu" ng-controller="TabsCtrl">
@@ -39,11 +37,12 @@
                 </div>
                 <div ng-controller="PrepareIpCtrl" class="tasks-icons">
                     <span ng-click="reloadPage()" class="glyphicon glyphicon-refresh"></span>
-                    <span class="glyphicon glyphicon-print"></span>
                     <span ng-click="redirectAdmin()" class="glyphicon glyphicon-cog"></span>
-                    <span class="glyphicon glyphicon-envelope"></span>
                     <span class="glyphicon glyphicon-question-sign"></span>
 
+                    <div ng-controller="LanguageCtrl" style="width: 100px; margin-left: 10px;">
+                        <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x for x in availableLanguages" style="width: 100%;"></select>
+                    </div>
                 </div>
             </div>
             <div class="nav-dynamic-wrapper">

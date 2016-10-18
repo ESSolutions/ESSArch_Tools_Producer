@@ -16,16 +16,16 @@
                                     <div class="search-prepare-wrapper">
                                         <label for items-per-page></label>
                                         <select id="items-per-page" style="margin-right: 10px;" class="form-control items-per-page" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
-                                        <input st-search="" class="form-control" placeholder="global search ..." type="text"/>
+                                        <input st-search="" class="form-control" placeholder="{{'GLOBALSEARCH' | translate}}" type="text"/>
                                     </div>
                                 </th>
                             </tr>
-                            <th class="clickable" st-sort="label" class="column-label">Label</th>
-                            <th class="clickable" st-sort="responsible" class="column-label">Responsible</th>
-                            <th class="clickable" st-sort="date" class="column-label">Date</th>
-                            <th class="clickable" st-sort="state" class="column-label">State</th>
-                            <th class="clickable"st-sort="state" class="column-label">Events</th>
-                            <th class="clickable" st-sort="status" class="column-label">Status</th>
+                            <th class="clickable" st-sort="label" class="column-label">{{'LABEL' | translate}}</th>
+                            <th class="clickable" st-sort="responsible" class="column-label">{{'RESPONSIBLE' | translate}}</th>
+                            <th class="clickable" st-sort="date" class="column-label">{{'DATE' | translate}}</th>
+                            <th class="clickable" st-sort="state" class="column-label">{{'STATE' | translate}}</th>
+                            <th class="clickable" st-sort="state" class="column-label">{{'EVENTS' | translate}}</th>
+                            <th class="clickable" st-sort="status" class="column-label">{{'STATUS' | translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                             <td>{{row.Responsible}}</td>
                             <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                             <td class="clickable" ng-click="stateClicked(row);selectIp(row)"><a href="">{{row.State}}</a></td>
-                            <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'Events'}}</a></td>
+                            <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'EVENTS' | translate}}</a></td>
                             <td>
                                 <uib-progressbar class="progress active" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
 
@@ -59,14 +59,14 @@
             <div ng-if="edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="edit" id="edit-veiw" class="edit-view" >
                     <div class="package-information">
-                        <p> Package Information</p>
+                        <p>{{'PACKAGEINFORMATION'| translate}}</p>
                         <form  novalidate>
                             <formly-form model="vm.informationModel" fields="vm.informationFields" options="vm.options">
                             </formly-form>
                         </form>
                     </div>
                     <div class="package-dependencies">
-                        <p> Package dependencies</p>
+                        <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
                         <form  novalidate>
                             <formly-form model="vm.dependencyModel" fields="vm.dependencyFields" options="vm.options">
                             </formly-form>
@@ -82,9 +82,9 @@
                         <table st-table="fileListRowCollection" st-safe-src="fileListCollection" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="clickable" st-sort="filename">File name</th>
-                                    <th class="clickable" st-sort="created">Created</th>
-                                    <th class="clickable" st-sort="size">Size</th>
+                                    <th class="clickable" st-sort="filename">{{'FILENAME' | translate}}</th>
+                                    <th class="clickable" st-sort="created">{{'CREATED' | translate}}</th>
+                                    <th class="clickable" st-sort="size">{{'SIZE' | translate}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,19 +102,19 @@
                         <div class="form-group">
                             <label>Status note</label>
                             <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
-                                <option value="" selected="selected" disabled>select one</option>
+                                <option value="" selected="selected" disabled>{{'SELECTONE' | translate}}</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Signature</label>
+                            <label>{{'COMMENT' | translate}}</label>
                             <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-model="approvedToSubmit">Approved to Submit</input>
+                                <input type="checkbox" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
                             </label>
                         </div>
-                        <button ng-disabled="!approvedToSubmit"type="submit" class="btn btn-info submit-button">Submit SIP</button>
+                        <button ng-disabled="!approvedToSubmit"type="submit" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
                     </form>
                 </div>
             </div>
