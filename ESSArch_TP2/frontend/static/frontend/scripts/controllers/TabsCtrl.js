@@ -24,6 +24,7 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
             }
         });
     };
+
     $scope.update_tabs();
     // Get active tab from localStorage
     $scope.getActiveTab = function () {

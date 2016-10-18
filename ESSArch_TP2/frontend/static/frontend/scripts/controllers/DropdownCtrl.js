@@ -37,7 +37,11 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     }, true);
     $scope.name = "";
     $scope.gotoLink = function(choice) {
-        $window.location.href = choice.link;
+        if(choice.link != 'logout') {
+            $window.location.href = choice.link;
+        } else {
+            $state.go(choice.link);
+        }
     };
     $scope.status = {
         isopen: false
