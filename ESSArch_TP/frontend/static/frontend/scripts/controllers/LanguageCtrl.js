@@ -10,9 +10,8 @@ angular.module('myApp').controller('LanguageCtrl', function($scope, $rootScope, 
     $scope.getCurrentLanguage();
 
     $scope.loadLanguages = function() {
-        console.log($translate.getAvailableLanguageKeys());
         $scope.availableLanguages = $translate.getAvailableLanguageKeys();
+        console.log($scope.availableLanguages);
     }
     $scope.loadLanguages();
-
 });
