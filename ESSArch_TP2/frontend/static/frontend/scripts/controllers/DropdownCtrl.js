@@ -1,31 +1,55 @@
-angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window) {
+angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window, $translate) {
     $scope.items = [
         'Shortcut 1',
         'Shortcut 2',
         'Shortcut 3'
     ];
+    var options, optionsAuth;
+    $translate(['LOGIN', 'CHANGEPASSWORD', 'LOGOUT']).then(function(translations) {
+        $scope.logIn = translations.LOGIN;
+        $scope.changePassword = translations.CHANGEPASSWORD;
+        $scope.logOut = translations.LOGOUT;
+        options = [
+        {
+            label: $scope.logIn,
+            link: 'login'
+        }
+        ];
+        optionsAuth = [
+        {
+            label: $scope.changePassword,
+            link: '/accounts/changepassword/'
+        },
+        {
+            label: $scope.logOut,
+            link: 'logout'
+        }
+        ];
+    });
+    $rootScope.$on('$translateChangeSuccess', function () {
+        $translate(['LOGIN', 'CHANGEPASSWORD', 'LOGOUT']).then(function(translations) {
+            $scope.logIn = translations.LOGIN;
+            $scope.changePassword = translations.CHANGEPASSWORD;
+            $scope.logOut = translations.LOGOUT;
+            options = [
+            {
+                label: $scope.logIn,
+                link: 'login'
+            }
+            ];
+            optionsAuth = [
+            {
+                label: $scope.changePassword,
+                link: '/accounts/changepassword/'
+            },
+            {
+                label: $scope.logOut,
+                link: 'logout'
+            }
+            ];
+        });
 
-    var options = [
-    {
-        label: 'Change Password',
-        link: '/accounts/changepassword/'
-    },
-    {
-        label: 'Log in',
-        link: 'login'
-    }
-    ];
-    var optionsAuth = [
-    {
-        label: 'Change Password',
-        link: '/accounts/changepassword/'
-    },
-    {
-        label: 'Log out',
-        link: 'logout'
-    }
-    ];
-
+    });
     $scope.$watch(function() {
         return djangoAuth.authenticated;
     }, function() {
@@ -37,7 +61,11 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
     }, true);
     $scope.name = "";
     $scope.gotoLink = function(choice) {
-        $window.location.href = choice.link;
+        if(choice.link != 'logout') {
+            $window.location.href = choice.link;
+        } else {
+            $state.go(choice.link);
+        }
     };
     $scope.status = {
         isopen: false

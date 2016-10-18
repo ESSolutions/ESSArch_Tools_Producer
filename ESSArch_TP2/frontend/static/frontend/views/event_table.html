@@ -4,9 +4,9 @@
         <table st-table="displayed" st-pipe="eventPipe" class="table table-striped">
             <thead>
                 <tr>
-                    <th class="clickable" st-sort="id">Id</th>
-                    <th class="clickable" st-sort="eventDetail">Event detail</th>
-                    <th class="clickable" st-sort="eventDateTime">Event Time</th>
+                    <th class="clickable" st-sort="id">{{'ID' | translate}}</th>
+                    <th class="clickable" st-sort="eventDetail">{{'EVENTDETAIL' | translate}}</th>
+                    <th class="clickable" st-sort="eventDateTime">{{'EVENTTIME' | translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,16 +27,16 @@
         <div class="events-footer">
             <form class="events-form" ng-submit="addEvent(ip, statusNote, signature)">
                 <div class="form-group">
-                    <label>Event type</label>
+                    <label>{{'EVENTTYPE' | translate}}</label>
                     <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
-                        <option value="" selected="selected" disabled>select one</option>
+                        <option value="" selected="selected" disabled>{{'SELECTONE' | translate}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Comment</label>
+                    <label>{{'COMMENT' | translate}}</label>
                     <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                 </div>
-                <button type="submit" class="btn btn-info submit-button">Add event</button>
+                <button type="submit" class="btn btn-info submit-button">{{'ADDEVENT' | translate}}</button>
             </form>
         </div>
     </div>

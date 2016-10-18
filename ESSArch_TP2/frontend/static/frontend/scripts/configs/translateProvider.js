@@ -1,14 +1,15 @@
 angular.module('myApp').config(['$translateProvider', function ($translateProvider) {
-    $translateProvider.translations('English', {
-        'TITLE': 'Hello',
-        'FOO': 'This is a paragraph'
-    });
-
-    $translateProvider.translations('Svenska', {
-        'TITLE': 'Hallå',
-        'FOO': 'Detta är en paragraf'
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'static/lang/',
+        suffix: '.json'
     });
     $translateProvider.useCookieStorage();
-    $translateProvider.preferredLanguage('English');
-    $translateProvider.registerAvailableLanguageKeys(['English', 'Swedish']);
+    $translateProvider.useSanitizeValueStrategy("escape");
+    $translateProvider.registerAvailableLanguageKeys(['English', 'Svenska', 'Slovenski'], {
+        'en*': 'English',
+        'sv*': 'Svenska',
+        'sl*': 'Slovenski',
+    })
+    .fallbackLanguage('English')
+    .determinePreferredLanguage().preferredLanguage();
 }]);
