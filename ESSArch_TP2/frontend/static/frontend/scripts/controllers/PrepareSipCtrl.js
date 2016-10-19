@@ -81,6 +81,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             }
         }
      };
+     // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {
          $scope.selectIp(row);
          if($scope.ip == row){
@@ -256,12 +257,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get list of files in ip
     $scope.getFileList = function(ip) {
-        var tempElement = {
-            filename: ip.ObjectPath,
-            created: ip.CreateDate,
-            size: ip.ObjectSize
-        };
-        $scope.fileListCollection = [tempElement];
+        $scope.fileListCollection = listViewService.getFileList(ip);;
     };
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {

@@ -85,6 +85,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
      $scope.changePath= function(path) {
          myService.changePath(path);
      };
+     // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {
          $scope.selectIp(row);
          if($scope.ip == row){
@@ -277,13 +278,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         console.log($scope.saProfile);
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile);
+            $scope.getSelectCollection(value.profile, ip);
         });
     };
     //Get All profiles and populates the select view table array
-    $scope.getSelectCollection = function (sa) {
+    $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
-            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
+            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, ip);
             console.log($scope.selectRowCollapse);
     };
     //Updates the included profiles for an ip

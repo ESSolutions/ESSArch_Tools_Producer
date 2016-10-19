@@ -14,14 +14,8 @@
     </head>
     <body>
         <div>
-            <div class="sub-menu">
-                <button type="button" class="btn-primary btn-lg">Reception</button>
-                <button type="button" class="btn-primary btn-lg">Finalize</button>
-                <button type="button" class="btn-primary btn-lg">Catalogue</button>
-                <button type="button" class="btn-primary btn-lg">Transfer SIP</button>
-            </div>
-            </br>
-            Recieve sip section
+            <div ng-include src="'static/frontend/views/recieve_sip_sub_menu.html'"></div>
+            <div ui-view></div>
         </div>
     </body>
 </html>
