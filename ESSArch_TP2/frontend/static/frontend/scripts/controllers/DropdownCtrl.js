@@ -26,30 +26,6 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         }
         ];
     });
-    $rootScope.$on('$translateChangeSuccess', function () {
-        $translate(['LOGIN', 'CHANGEPASSWORD', 'LOGOUT']).then(function(translations) {
-            $scope.logIn = translations.LOGIN;
-            $scope.changePassword = translations.CHANGEPASSWORD;
-            $scope.logOut = translations.LOGOUT;
-            options = [
-            {
-                label: $scope.logIn,
-                link: 'login'
-            }
-            ];
-            optionsAuth = [
-            {
-                label: $scope.changePassword,
-                link: '/accounts/changepassword/'
-            },
-            {
-                label: $scope.logOut,
-                link: 'logout'
-            }
-            ];
-        });
-
-    });
     $scope.$watch(function() {
         return djangoAuth.authenticated;
     }, function() {
