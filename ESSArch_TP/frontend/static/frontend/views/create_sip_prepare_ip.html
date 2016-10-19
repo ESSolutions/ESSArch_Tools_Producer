@@ -36,15 +36,15 @@
                         <tbody>
                             <tr ng-class="row.class" ng-repeat="row in vm.displayedIps" class="table-item">
                                 <td class="clickable" ng-click="ipTableClick(row);selectIp(row)">{{row.Label}}</td>
-                                <td>{{row.Responsible}}</td>
-                                <td>{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                                <td class="clickable" ng-click="ipRowClick(row)">{{row.Responsible}}</td>
+                                <td class="clickable" ng-click="ipRowClick(row)">{{row.CreateDate | date:"yyyy-MM-dd hh:mm:ss"}}</td>
                                 <td class="clickable" ng-click="stateClicked(row);selectIp(row)"><a href="">{{row.State}}</a></td>
                                 <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'EVENTS' | translate}}</a></td>
                                 <td>
                                     <uib-progressbar class="progress active" value="row.status" type="success"><b>{{row.status}}%</b></uib-progressbar>
 
                                 </td>
-                                <td>
+                                <td ng-click="ipRowClick(row)">
                                     <button ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
                                 </td>
                             </tr>

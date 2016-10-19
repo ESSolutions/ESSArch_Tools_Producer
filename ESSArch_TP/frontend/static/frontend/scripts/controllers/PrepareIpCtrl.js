@@ -85,6 +85,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
      $scope.changePath= function(path) {
          myService.changePath(path);
      };
+     $scope.ipRowClick = function(row) {
+         $scope.selectIp(row);
+         if($scope.ip == row){
+             row.class = "";
+             $scope.selectedIp = {id: "", class: ""};
+         }
+         if($scope.eventShow) {
+             $scope.eventsClick(row);
+         }
+         if($scope.statusShow) {
+             $scope.stateClicked(row);
+         }
+         if ($scope.select || $scope.edit || $scope.eventlog) {
+             $scope.ipTableClick(row);
+         }
+     }
      //Click function for status view
      $scope.stateClicked = function(row){
          if($scope.statusShow && $scope.ip == row){
@@ -139,6 +155,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         var pageNumber = start/number+1;
 
         Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
+            console.log(tableState);
             ctrl.displayedIps = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             ctrl.isLoading = false;
@@ -170,11 +187,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 method: 'GET',
                 url: row.url
             }).then(function (response) {
-                $scope.ip = response.data;
-                $rootScope.ip = response.data;
                 $scope.getSaProfiles(response.data);
             });
             $scope.select = true;
+            $scope.ip = row;
+            $rootScope.ip = row;
         }
         $scope.eventShow = false;
         $scope.statusShow = false;
