@@ -24,13 +24,10 @@
             </div>
             <div class="menu-task-wrapper">
                 <div class="menu" ng-controller="TabsCtrl">
-                    <uib-tabset
-                                  active="tabs.active"
-                        >
+                    <uib-tabset active="activeTab">
                         <uib-tab
                                   ng-repeat="t in tabs"
                                   heading="{{t.label}}"
-                                  select="setActiveTab(t.label)"
                                   ng-click="go(t)">
                         </uib-tab>
                     </uib-tabset>
