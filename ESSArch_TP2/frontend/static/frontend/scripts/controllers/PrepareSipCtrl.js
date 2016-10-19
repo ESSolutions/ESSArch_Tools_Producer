@@ -81,6 +81,22 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             }
         }
      };
+     $scope.ipRowClick = function(row) {
+         $scope.selectIp(row);
+         if($scope.ip == row){
+             row.class = "";
+             $scope.selectedIp = {id: "", class: ""};
+         }
+         if($scope.eventShow) {
+             $scope.eventsClick(row);
+         }
+         if($scope.statusShow) {
+             $scope.stateClicked(row);
+         }
+         if ($scope.select || $scope.edit || $scope.eventlog) {
+             $scope.ipTableClick(row);
+         }
+     }
     //click function forstatus view
     $scope.stateClicked = function(row){
         if($scope.statusShow && $scope.ip == row){
@@ -163,8 +179,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 method: 'GET',
                 url: row.url
             }).then(function (response) {
-                $scope.ip = response.data;
-                $rootScope.ip = response.data;
                 getEventlogData();
                 $scope.getPackageInformation(response.data);
                 $scope.getPackageDependencies(response.data);
@@ -173,6 +187,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             });
             $scope.edit = true;
             $scope.eventlog = true;
+            $scope.ip = row;
+            $rootScope.ip = row;
         }
         $scope.eventShow = false;
         $scope.statusShow = false;
