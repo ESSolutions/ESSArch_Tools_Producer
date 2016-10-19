@@ -148,7 +148,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             var selectRowCollapse = [];
             getProfiles("transfer_project", sa.profile_transfer_project, selectRowCollapse, sa, ip).then(function(value) {
                 selectRowCollapse = value;
-                console.log(value);
             });
             getProfiles("content_type", sa.profile_content_type, selectRowCollapse, sa, ip).then(function(value) {
                 selectRowCollapse = value;
@@ -198,6 +197,37 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             return "created";
         });
 
+    }
+    //Returns IP
+    function getIp(url) {
+        return $http({
+            method: 'GET',
+            url: url
+        }).then(function(response) {
+            return response.data;
+        }, function(response) {
+        });
+    }
+    //Returns SA
+    function getSa(url) {
+        return $http({
+            method: 'GET',
+            url: url
+        }).then(function(response) {
+            return response.data;
+        }, function(response) {
+        });
+    }
+    //Get list of files in Ip
+    function getFileList(ip) {
+        var array = [];
+        var tempElement = {
+            filename: ip.ObjectPath,
+            created: ip.CreateDate,
+            size: ip.ObjectSize
+        };
+         array.push(tempElement);
+         return array;
     }
     /*******************/
     /*HELPER FUNCTIONS*/
@@ -275,7 +305,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     checked: true,
                 };
                 if(defaultProfile){
-                    console.log("DENKOMMERHITJAAAEEEEEE")
                         response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
@@ -330,6 +359,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getSaProfiles: getSaProfiles,
         getSelectCollection: getSelectCollection,
         prepareIp: prepareIp,
+        getIp: getIp,
+        getSa: getSa,
+        getFileList, getFileList,
     };
 
 });
