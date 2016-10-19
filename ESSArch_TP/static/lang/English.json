@@ -2,7 +2,7 @@
     "MYPAGE": "My page",
     "CREATESIP": "Create SIP",
     "SUBMITSIP": "Submit SIP",
-    "RECIEVESIP": "Recieve SIP",
+    "RECEIVESIP": "Receive SIP",
     "INFOPAGE": "Info Page",
     "PREPAREIP": "Prepare SIP",
     "DATASELECTION": "Data selection",
@@ -63,5 +63,9 @@
     "ENABLEDDESC": "If checked, profile is enabled",
     "ENTITYDESC": "Profile type",
     "PROFILEDESC": "Select profile",
-    "STATEDESC": "Profile state"
+    "STATEDESC": "Profile state",
+    "RECEPTION": "Reception",
+    "FINALIZE": "Finalize",
+    "CATALOGUE": "Catalogue",
+    "TRANSFERSIP": "Transfer SIP"
 }

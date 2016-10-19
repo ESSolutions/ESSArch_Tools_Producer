@@ -2,7 +2,7 @@
         "MYPAGE": "Mina sidor",
         "CREATESIP": "Skapa SIP",
         "SUBMITSIP": "Skicka SIP",
-        "RECIEVESIP": "Ta emot SIP",
+        "RECEIVESIP": "Ta emot SIP",
         "INFOPAGE": "Infosida",
         "PREPAREIP": "Förbered IP",
         "DATASELECTION": "Dataurval",
@@ -63,5 +63,9 @@
         "ENABLEDDESC": "Profilen är aktiverad om den är checkad",
         "ENTITYDESC": "Profiltyp",
         "PROFILEDESC": "Välj profil",
-        "STATEDESC": "profiltillstånd"
+        "STATEDESC": "profiltillstånd",
+        "RECEPTION": "Reception",
+        "FINALIZE": "Fastställ",
+        "CATALOGUE": "Katalog",
+        "TRANSFERSIP": "Överför SIP"
 }
