@@ -37,7 +37,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         .state('home.createSip', {
             url: 'create-SIP',
             templateUrl: '/static/frontend/views/create_sip.html',
-            redirectTo: 'info',
+            redirectTo: 'home.createSip.info',
             controller: 'CreateSipCtrl as vm',
             resolve: {
                 authenticated: ['djangoAuth', function(djangoAuth){
@@ -277,6 +277,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     }, function(status) {
         console.log("when not logged in");
         console.log(status);
+    });
+    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+      if (to.redirectTo) {
+        evt.preventDefault();
+        $state.go(to.redirectTo, params, {location: 'replace'})
+      }
     });
 
 });
