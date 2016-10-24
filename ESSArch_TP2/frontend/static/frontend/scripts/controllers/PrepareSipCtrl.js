@@ -404,6 +404,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get lock-status from profiles
     $scope.getPackageProfiles = function(ip) {
+        listViewService.getIp(ip.url).then(function(value) {
+            ip = value;
         $http({
             method: 'GET',
             url: ip.SubmissionAgreement
@@ -412,30 +414,31 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             };
 
             var sa = response.data;
-            getProfiles(sa.profile_transfer_project).then(function(profileValue){vm.profileModel.transfer_project = profileValue});
-            getProfiles(sa.profile_content_type).then(function(profileValue){vm.profileModel.content_type = profileValue});
-            getProfiles(sa.profile_data_selection).then(function(profileValue){vm.profileModel.data_selection = profileValue});
-            getProfiles(sa.profile_classification).then(function(profileValue){vm.profileModel.classification = profileValue});
-            getProfiles(sa.profile_import).then(function(profileValue){vm.profileModel.import = profileValue});
-            getProfiles(sa.profile_submit_description).then(function(profileValue){vm.profileModel.submit_description = profileValue});
-            getProfiles(sa.profile_sip).then(function(profileValue){vm.profileModel.sip = profileValue});
-            getProfiles(sa.profile_aip).then(function(profileValue){vm.profileModel.aip = profileValue});
-            getProfiles(sa.profile_dip).then(function(profileValue){vm.profileModel.dip = profileValue});
-            getProfiles(sa.profile_workflow).then(function(profileValue){vm.profileModel.workflow = profileValue});
-            getProfiles(sa.profile_preservation_metadata).then(function(profileValue){vm.profileModel.preservation_metadata = profileValue});
-            getProfiles(sa.profile_event).then(function(profileValue){vm.profileModel.event = profileValue});
+            getProfiles(sa.profile_transfer_project, ip).then(function(profileValue){vm.profileModel.transfer_project = profileValue});
+            getProfiles(sa.profile_content_type, ip).then(function(profileValue){vm.profileModel.content_type = profileValue});
+            getProfiles(sa.profile_data_selection, ip).then(function(profileValue){vm.profileModel.data_selection = profileValue});
+            getProfiles(sa.profile_classification, ip).then(function(profileValue){vm.profileModel.classification = profileValue});
+            getProfiles(sa.profile_import, ip).then(function(profileValue){vm.profileModel.import = profileValue});
+            getProfiles(sa.profile_submit_description, ip).then(function(profileValue){vm.profileModel.submit_description = profileValue});
+            getProfiles(sa.profile_sip, ip).then(function(profileValue){vm.profileModel.sip = profileValue});
+            getProfiles(sa.profile_aip, ip).then(function(profileValue){vm.profileModel.aip = profileValue});
+            getProfiles(sa.profile_dip, ip).then(function(profileValue){vm.profileModel.dip = profileValue});
+            getProfiles(sa.profile_workflow, ip).then(function(profileValue){vm.profileModel.workflow = profileValue});
+            getProfiles(sa.profile_preservation_metadata, ip).then(function(profileValue){vm.profileModel.preservation_metadata = profileValue});
+            getProfiles(sa.profile_event, ip).then(function(profileValue){vm.profileModel.event = profileValue});
         }, function(response){
             console.log(response.status);
         });
+        });
     }
     //Get profiles in given profile type
-    function getProfiles(profiles){
+    function getProfiles(profiles, ip){
         var promise = $http({
             method: 'GET',
             url: getActiveProfile(profiles).url
         }).then(function(response) {
             var returnVal = false;
-            $scope.ip.locks.forEach(function(lock) {
+            ip.locks.forEach(function(lock) {
                 if(lock.profile == response.data.url){
                     returnVal = true;
                 }
