@@ -5,11 +5,11 @@ angular.module('myApp').config(['$translateProvider', function ($translateProvid
     });
     $translateProvider.useCookieStorage();
     $translateProvider.useSanitizeValueStrategy("escape");
-    $translateProvider.registerAvailableLanguageKeys(['English', 'Svenska', 'Slovenski'], {
-        'en*': 'English',
-        'sv*': 'Svenska',
-        'sl*': 'Slovenski',
+    $translateProvider.registerAvailableLanguageKeys(['en', 'sv', 'sl'], {
+        'en*': 'en',
+        'sv*': 'sv',
+        'sl*': 'sl',
     })
-    .fallbackLanguage('English')
+    .fallbackLanguage('en')
     .determinePreferredLanguage().preferredLanguage();
 }]);
