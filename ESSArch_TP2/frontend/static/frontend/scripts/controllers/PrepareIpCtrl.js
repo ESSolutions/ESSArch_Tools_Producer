@@ -98,7 +98,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
          if($scope.statusShow) {
              $scope.stateClicked(row);
          }
-         if ($scope.select || $scope.edit || $scope.eventlog) {
+         if ($scope.select) {
              $scope.ipTableClick(row);
          }
      }
@@ -184,6 +184,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
              $scope.eventlog = false;
             $scope.edit = false;
         } else {
+            $scope.ip = row;
+            $rootScope.ip = row;
             $http({
                 method: 'GET',
                 url: row.url
@@ -191,8 +193,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 $scope.getSaProfiles(response.data);
             });
             $scope.select = true;
-            $scope.ip = row;
-            $rootScope.ip = row;
         }
         $scope.eventShow = false;
         $scope.statusShow = false;
@@ -284,8 +284,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Get All profiles and populates the select view table array
     $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
-            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, ip);
+        $http({
+            method: 'GET',
+            url: ip.url
+        }).then(function(response) {
+            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, response.data);
             console.log($scope.selectRowCollapse);
+        });
     };
     //Updates the included profiles for an ip
     //Currently has no back end support
@@ -318,10 +323,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     };
     //Changes SA profile for selected ip
-    $scope.changeSaProfile = function (sa) {
+    $scope.changeSaProfile = function (sa, ip) {
         $http({
             method: 'PATCH',
-            url: $scope.ip.url,
+            url: ip.url,
             data: {
                 'SubmissionAgreement': sa.url
             }
