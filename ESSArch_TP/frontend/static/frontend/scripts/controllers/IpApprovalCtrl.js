@@ -63,7 +63,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                     method: 'GET',
                     url: branch.url
                 }).then(function(response){
-                    console.log(response.data);
                     $scope.currentStepTask = response.data;
                     $scope.taskInfoModal();
                 }, function(response) {
@@ -167,7 +166,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     };
     //Click function for ip table objects
     $scope.ipTableClick = function(row) {
-        console.log("ipobject clicked. row: "+row.Label);
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
             $scope.eventlog = false;
@@ -210,7 +208,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     };
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
-            console.log(value);
         });
     }
 
@@ -220,7 +217,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Click function for profile pbject
     $scope.profileClick = function(row){
         $scope.profileToSave = row.profile;
-        console.log(row);
         if ($scope.selectProfile == row && $scope.subSelect){
             $scope.eventlog = false;
             $scope.edit = false;
@@ -243,8 +239,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 }
             });
         }
-        console.log("selected profile: ");
-        console.log($scope.selectProfile);
     };
     //Get eventlog data
     function getEventlogData() {
@@ -258,8 +252,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.selectRowCollapse = [];
     //Get All sa profiles and set default according to ip
     $scope.getSaProfiles = function(ip) {
-        console.log("current sa: ");
-        console.log($scope.saProfile);
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
             $scope.getSelectCollection(value.profile);
@@ -269,7 +261,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.getSelectCollection = function (sa) {
         if($scope.saProfile != null){
             $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
-            console.log($scope.selectRowCollapse);
         }
     };
     //Getting data for list view
@@ -369,7 +360,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     }
     //Unlock profile and redirect to Prepare-ip
     $scope.unlockAndRedirect = function() {
-        console.log($scope.ip)
             $http({
                 method: 'GET',
                 url: $scope.ip.url

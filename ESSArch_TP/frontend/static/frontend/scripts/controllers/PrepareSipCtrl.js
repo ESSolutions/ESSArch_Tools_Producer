@@ -72,7 +72,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                     method: 'GET',
                     url: branch.url
                 }).then(function(response){
-                    console.log(response.data);
                     $scope.currentStepTask = response.data;
                     $scope.taskInfoModal();
                 }, function(response) {
@@ -171,7 +170,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Click function for ip table
     $scope.ipTableClick = function(row) {
-        console.log("ipobject clicked. row: "+row.Label);
         if($scope.edit && $scope.ip.id== row.id){
             $scope.edit = false;
             $scope.eventlog = false;
@@ -216,7 +214,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Add event to database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
-            console.log(value);
         });
     }
     //Get data for list view
@@ -273,7 +270,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 vm.dependencyModel= response.data.specification_data;
                 vm.dependencyFields = response.data.template;
             }, function(response) {
-                console.log(response.status);
             });
         }, function(response){
             console.log(response.status);
@@ -480,7 +476,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             method: 'POST',
             url: ip.url+'submit/'
         }).then(function(response) {
-            console.log(response.status);
         }, function(response) {
             console.log(response.status);
         });
