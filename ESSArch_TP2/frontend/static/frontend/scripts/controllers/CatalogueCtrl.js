@@ -18,7 +18,6 @@ angular.module('myApp').controller('CatalogueCtrl', function($http, $scope, $roo
         var pageNumber = start/number+1;
 
         Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
-            console.log(tableState);
             ctrl.displayedIps = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
         });
@@ -41,10 +40,8 @@ angular.module('myApp').controller('CatalogueCtrl', function($http, $scope, $roo
 
     $scope.ipTableClick = function(row) {
         $scope.ip = row;
-        console.log(row);
         listViewService.getSa(row.SubmissionAgreement).then(function(sa) {
             $scope.currentSa = sa;
-            console.log($scope.currentSa);
         });
     }
     $scope.package = $translate.instant('PACKAGE');

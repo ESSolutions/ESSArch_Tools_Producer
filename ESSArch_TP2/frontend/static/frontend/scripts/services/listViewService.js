@@ -182,7 +182,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             getProfiles("event", sa.profile_event, selectRowCollapse, sa, ip).then(function(value) {
                 selectRowCollapse = value;
             });
-            console.log(selectRowCollapse);
             return selectRowCollapse;
         }
     };
@@ -193,7 +192,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             url: appConfig.djangoUrl+"information-packages/",
             data: {label: label}
         }).then(function (response){
-            console.log("new ip created, with label: " + label);
             return "created";
         });
 
@@ -293,7 +291,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     newProfileType = true;
                 }
             }
-            // console.log("newProfileType = " + newProfileType);
             if(newProfileType){
                 var tempProfileObject = {
                     profile_label: response.data.profile_type.toUpperCase(),

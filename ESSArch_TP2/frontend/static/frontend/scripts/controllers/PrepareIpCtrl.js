@@ -68,7 +68,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                  method: 'GET',
                  url: branch.url
              }).then(function(response){
-                 console.log(response.data);
                  $scope.currentStepTask = response.data;
                  $scope.taskInfoModal();
              }, function(response) {
@@ -156,7 +155,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         var pageNumber = start/number+1;
 
         Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
-            console.log(tableState);
             ctrl.displayedIps = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             ctrl.isLoading = false;
@@ -220,7 +218,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Adds a new event to the database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
-            console.log(value);
         });
     }
     //Get data for list view
@@ -247,7 +244,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Click funciton for profile view
     $scope.profileClick = function(row){
         $scope.profileToSave = row;
-        console.log(row);
         if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
@@ -260,8 +256,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             vm.profileFields = row.profile.template;
             $scope.subSelectProfile = "profile";
         }
-        console.log("selected profile: ");
-        console.log($scope.selectProfile);
     };
     //GET data for eventlog view
     function getEventlogData() {
@@ -274,8 +268,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.selectRowCollapse = [];
     //Gets all submission agreement profiles
     $scope.getSaProfiles = function(ip) {
-        console.log("current sa: ");
-        console.log($scope.saProfile);
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
             $scope.getSelectCollection(value.profile, ip);
@@ -289,7 +281,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             url: ip.url
         }).then(function(response) {
             $scope.selectRowCollapse = listViewService.getSelectCollection(sa, response.data);
-            console.log($scope.selectRowCollapse);
         });
     };
     //Updates the included profiles for an ip
@@ -315,7 +306,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
         .success(function (response) {
-            console.log("sa updated with"+profile.id);
         })
         .error(function (response) {
             alert(response.status);
@@ -331,7 +321,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 'SubmissionAgreement': sa.url
             }
         }).then(function(response){
-            console.log(response);
         });
     }
     //Toggle visibility of profiles in select view
@@ -351,7 +340,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.onSubmit = function(new_name) {
         var uri = $scope.profileToSave.profile.url+"save/";
         var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
-        console.log(sendData);
         $http({
             method: 'POST',
             url: uri,
@@ -519,7 +507,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Lock a profile
     $scope.lockProfile = function (profileObject) {
-        console.log(profileObject);
         $http({
             method: 'POST',
             url: profileObject.profile.url+"lock/",
