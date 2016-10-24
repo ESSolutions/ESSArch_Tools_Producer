@@ -147,7 +147,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         })
         .state('home.receiveSip', {
             url: 'receive-SIP',
-            templateUrl: '/static/frontend/views/recieve_sip.html',
+            templateUrl: '/static/frontend/views/receive_sip.html',
             controller: 'IpApprovalCtrl as vm',
             resolve: {
                 authenticated: ['djangoAuth', function(djangoAuth){
