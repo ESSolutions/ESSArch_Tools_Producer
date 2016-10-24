@@ -1,4 +1,4 @@
-angular.module('myApp').controller('FinalizeCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource) {
+angular.module('myApp').controller('FinalizeCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource, $translate) {
     /*******************************************/
     /*Piping and Pagination for List-view table*/
     /*******************************************/
@@ -48,25 +48,31 @@ angular.module('myApp').controller('FinalizeCtrl', function($http, $scope, $root
         });
     }
 
+            $scope.packageDescription = $translate.instant('PACKAGEDESCRIPTION');
+            $scope.contentDescription = $translate.instant('CONTENTDESCRIPTION');
+            $scope.authorityInformation = $translate.instant('AUTHORITYINFORMATION');
+            $scope.archivalDescription = $translate.instant('ARCHIVALDESCRIPTION');
+            $scope.manageContent = $translate.instant('MANAGECONTENT');
+
     $scope.tabsEditView = [
         {
-            label: "Package description",
+            label: $scope.packageDescription,
             templateUrl: 'static/frontend/views/reception_delivery_description.html'
         },
         {
-            label: "Content description",
+            label: $scope.contentDescription,
             templateUrl: "static/frontend/views/reception_package.html"
         },
         {
-            label: "Authority information",
+            label: $scope.authorityInformation,
             templateUrl: "static/frontend/views/reception_package.html"
         },
         {
-            label: "Archival description",
+            label: $scope.archivalDescription,
             templateUrl: "static/frontend/views/reception_package.html"
         },
         {
-            label: "Manage content",
+            label: $scope.managecontent,
             templateUrl: "static/frontend/views/reception_package.html"
         }
     ];
