@@ -254,14 +254,16 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.getSaProfiles = function(ip) {
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile);
+            $scope.getSelectCollection(value.profile, ip);
         });
     };
     //Get all profiles and populate select view array
-    $scope.getSelectCollection = function (sa) {
-        if($scope.saProfile != null){
-            $scope.selectRowCollapse = listViewService.getSelectCollection(sa, $scope.ip);
-        }
+    $scope.getSelectCollection = function (sa, ip) {
+        $scope.selectRowCollapse = [];
+
+        listViewService.getSelectCollection(sa, ip).then( function(value){
+            $scope.selectRowCollapse = value;
+        });
     };
     //Getting data for list view
     $scope.getListViewData = function() {
