@@ -77,6 +77,8 @@
     "CONTENTDESCRIPTION": "Content description",
     "AUTHORITYINFORMATION": "Authority information",
     "ARCHIVALDESCRIPTION": "Archival description",
-    "MANAGACONTENT": "Manage content"
+    "MANAGACONTENT": "Manage content",
+    "QUALITYCONTORL": "Quality control",
+    "SUBMITDESCRIPTION": "Submit description"
 
 }
