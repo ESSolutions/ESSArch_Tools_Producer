@@ -1,4 +1,4 @@
-angular.module('myApp').controller('FinalizeCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource, $translate) {
+angular.module('myApp').controller('QualityControlCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource, $translate) {
     /*******************************************/
     /*Piping and Pagination for List-view table*/
     /*******************************************/

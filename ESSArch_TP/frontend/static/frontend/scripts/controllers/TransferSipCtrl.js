@@ -48,10 +48,11 @@ angular.module('myApp').controller('TransferSipCtrl', function($http, $scope, $r
         });
     }
     $scope.deliveryDescription = $translate.instant('DELIVERYDESCRIPTION');
+    $scope.submitDescription = $translate.instant('SUBMITDESCRIPTION');
     $scope.package = $translate.instant('PACKAGE');
     $scope.tabsEditView = [
         {
-            label: $scope.deliveryDescription,
+            label: $scope.submitDescription,
             templateUrl: "static/frontend/views/reception_delivery_description.html"
         },
         {

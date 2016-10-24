@@ -165,10 +165,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         })
-        .state('home.receiveSip.finalize', {
-            url: '/finalize',
-            templateUrl: '/static/frontend/views/receive_sip_finalize.html',
-            controller: 'FinalizeCtrl as vm',
+        .state('home.receiveSip.qualityControl', {
+            url: '/quality-control',
+            templateUrl: '/static/frontend/views/receive_sip_quality_control.html',
+            controller: 'QualityControlCtrl as vm',
             resolve: {
                 authenticated: ['djangoAuth', function(djangoAuth){
                     return djangoAuth.authenticationStatus();

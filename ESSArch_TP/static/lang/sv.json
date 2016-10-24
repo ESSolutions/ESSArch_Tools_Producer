@@ -77,6 +77,8 @@
     "CONTENTDESCRIPTION": "Innehållsbeskrivning",
     "AUTHORITYINFORMATION": "Myndighetsinformation",
     "ARCHIVALDESCRIPTION": "Arkivbeskrivning",
-    "MANAGACONTENT": "Hantera innehåll"
+    "MANAGACONTENT": "Hantera innehåll",
+    "QUALITYCONTORL": "Kvalitétskontroll",
+    "SUBMITDESCRIPTION": "???Submit description???"
 
 }
