@@ -1,4 +1,7 @@
 {
+    "en": "English",
+    "sv": "Svenska",
+    "sl": "Slovenščina",
     "MYPAGE": "Mina sidor",
     "CREATESIP": "Skapa SIP",
     "SUBMITSIP": "Skicka SIP",
@@ -68,7 +71,12 @@
     "FINALIZE": "Fastställ",
     "CATALOGUE": "Katalog",
     "TRANSFERSIP": "Överför SIP",
-    "en": "English",
-    "sv": "Svenska",
-    "sl": "Slovenščina"
+    "DELIVERYDESCRIPTION":"Leveransbeskrivning",
+    "PACKAGE": "Paket",
+    "PACKAGEDESCRIPTION": "Paketbeskrivning",
+    "CONTENTDESCRIPTION": "Innehållsbeskrivning",
+    "AUTHORITYINFORMATION": "Myndighetsinformation",
+    "ARCHIVALDESCRIPTION": "Arkivbeskrivning",
+    "MANAGACONTENT": "Hantera innehåll"
+
 }
