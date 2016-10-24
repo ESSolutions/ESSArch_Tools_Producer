@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CatalogueCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource) {
+angular.module('myApp').controller('CatalogueCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource, $translate) {
     /*******************************************/
     /*Piping and Pagination for List-view table*/
     /*******************************************/
@@ -47,10 +47,10 @@ angular.module('myApp').controller('CatalogueCtrl', function($http, $scope, $roo
             console.log($scope.currentSa);
         });
     }
-
+    $scope.package = $translate.instant('PACKAGE');
     $scope.tabsEditView = [
         {
-            label: "Package",
+            label: $scope.package,
             templateUrl: "static/frontend/views/reception_delivery_description.html"
         },
     ];

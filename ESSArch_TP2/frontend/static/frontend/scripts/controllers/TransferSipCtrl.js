@@ -1,4 +1,7 @@
-angular.module('myApp').controller('TransferSipCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource) {
+angular.module('myApp').controller('TransferSipCtrl', function($http, $scope, $rootScope, $state, $log, listViewService, Resource, $translate) {
+    $rootScope.$on('$translateChangeSuccess', function () {
+        $state.reload()
+    });
     /*******************************************/
     /*Piping and Pagination for List-view table*/
     /*******************************************/
@@ -47,14 +50,15 @@ angular.module('myApp').controller('TransferSipCtrl', function($http, $scope, $r
             console.log($scope.currentSa);
         });
     }
-
+    $scope.deliveryDescription = $translate.instant('DELIVERYDESCRIPTION');
+    $scope.package = $translate.instant('PACKAGE');
     $scope.tabsEditView = [
         {
-            label: "Delivery description",
+            label: $scope.deliveryDescription,
             templateUrl: "static/frontend/views/reception_delivery_description.html"
         },
         {
-            label: "Package",
+            label: $scope.package,
             templateUrl: "static/frontend/views/reception_delivery_description.html"
         },
     ];

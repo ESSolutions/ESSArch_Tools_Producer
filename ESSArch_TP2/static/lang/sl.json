@@ -1,4 +1,7 @@
 {
+    "en": "English",
+    "sv": "Svenska",
+    "sl": "Slovenščina",
     "MYPAGE": "My page",
     "CREATESIP": "Create SIP",
     "SUBMITSIP": "Submit SIP",
@@ -67,5 +70,12 @@
     "RECEPTION": "Reception",
     "FINALIZE": "Finalize",
     "CATALOGUE": "Catalogue",
-    "TRANSFERSIP": "Transfer SIP"
+    "TRANSFERSIP": "Transfer SIP",
+    "DELIVERYDESCRIPTION":"Delivery Description",
+    "PACKAGE": "Package",
+    "PACKAGEDESCRIPTION": "Package description",
+    "CONTENTDESCRIPTION": "Content description",
+    "AUTHORITYINFORMATION": "Authority information",
+    "ARCHIVALDESCRIPTION": "Archival description",
+    "MANAGACONTENT": "Manage content"
 }
