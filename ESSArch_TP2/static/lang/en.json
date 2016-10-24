@@ -2,7 +2,7 @@
     "MYPAGE": "My page",
     "CREATESIP": "Create SIP",
     "SUBMITSIP": "Submit SIP",
-    "RECEIVESIP": "Recrive SIP",
+    "RECEIVESIP": "Receive SIP",
     "INFOPAGE": "Info Page",
     "PREPAREIP": "Prepare SIP",
     "DATASELECTION": "Data selection",
@@ -67,5 +67,8 @@
     "RECEPTION": "Reception",
     "FINALIZE": "Finalize",
     "CATALOGUE": "Catalogue",
-    "TRANSFERSIP": "Transfer SIP"
+    "TRANSFERSIP": "Transfer SIP",
+    "en": "English",
+    "sv": "Svenska",
+    "sl": "Slovenščina"
 }
