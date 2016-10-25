@@ -236,7 +236,11 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     //Gets all profiles of a specific profile type for an IP
     function getProfiles(type, profileArray, selectRowCollapse, sa, ip){
         var bestStatus = 0;
-        var returnArray = [];
+        if(profileArray.active == null || angular.isUndefined(profileArray)){
+            var deferred = $q.defer();
+            deferred.resolve([]);
+            return deferred.promise;
+        }
         getProfile(profileArray.active.id, true, selectRowCollapse, sa, ip).then(function(value) {
             selectRowcollapse = value;
         });
