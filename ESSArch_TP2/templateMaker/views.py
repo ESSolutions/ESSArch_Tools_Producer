@@ -87,8 +87,10 @@ def generateElement(elements, currentUuid, takenNames=[], containsFiles=False, n
     el = OrderedDict()
     forms = []
     data = {}
+    el['-name'] = element['name']
     el['-min'] = element['min']
     el['-max'] = element['max']
+    el['-containsFiles'] = element.get('containsFiles')
     if 'namespace' in element:
         if element['namespace'] != namespace:
             namespace = element['namespace']
@@ -101,13 +103,11 @@ def generateElement(elements, currentUuid, takenNames=[], containsFiles=False, n
         el['#content'] = []
 
     for attrib in attributes:
-        att = OrderedDict()
-        att['-name'] = attrib['key']
-        att['-req'] = 1 if attrib['templateOptions'].get('required') else 0
-
         trail = getTrail(elements, element, [])
         trailstr = '.'.join(trail)
-        var = trailstr + '.' + att['-name']
+        var = trailstr + '.' + attrib['key']
+
+        att = OrderedDict()
 
         if attrib['key'] in element['formData']: # if custom value has been entered
             content = constructContent(element['formData'][attrib['key']])
@@ -117,68 +117,48 @@ def generateElement(elements, currentUuid, takenNames=[], containsFiles=False, n
                 'var': var
             }]
 
-        to = {
-            'label': var,
-            'type': 'text',
-        }
-
-        if 'desc' in attrib:
-            to['desc'] = attrib['desc']
-
-        if 'readonly' in attrib:
-            to['readonly'] = attrib['readonly']
-
-        field = {
-            'key': var,
-            'type': 'input',
-            'templateOptions': to,
-        }
-
-        if 'hideExpression' in attrib:
-            field['hideExpression'] = str(attrib['hideExpression']).lower()
-
-        forms.append(field)
-        data[field['key']] = ''
-
-        attributeList.append(att)
-    el['-attr'] = attributeList
-    for child in element['children']:
-        if not elements[child['uuid']]['containsFiles']:
-            e, f, d = generateElement(elements, child['uuid'], takenNames, containsFiles=containsFiles, namespace=namespace)
-            if e is not None:
-                if child['name'] in el:
-                    # cerate array
-                    if isinstance(el[child['name']], list):
-                        el[child['name']].append(e)
-                    else:
-                        temp = el[child['name']]
-                        el[child['name']] = []
-                        el[child['name']].append(temp)
-                        el[child['name']].append(e)
-                else:
-                    el[child['name']] = e
-                for field in f:
-                    forms.append(field)
-                data.update(d)
+        if attrib['key'] == '#content':
+            el['#content'] = att['#content']
         else:
-            #containsFiles
-            cf = []
-            elDict = OrderedDict()
-            e, f, d = generateElement(elements, child['uuid'], takenNames, containsFiles=True, namespace=namespace)
-            if e is not None:
-                if child['name'] in elDict:
-                    # cerate array
-                    if isinstance(elDict[child['name']], list):
-                        elDict[child['name']].append(e)
-                    else:
-                        temp = elDict[child['name']]
-                        elDict[child['name']] = []
-                        elDict[child['name']].append(temp)
-                        elDict[child['name']].append(e)
-                else:
-                    elDict[child['name']] = e
-            cf.append(elDict)
-            el['-containsFiles'] = cf
+            att['-name'] = attrib['key']
+            att['-req'] = 1 if attrib['templateOptions'].get('required') else 0
+
+            to = {
+                'label': var,
+                'type': 'text',
+            }
+
+            if 'desc' in attrib:
+                to['desc'] = attrib['desc']
+
+            if 'readonly' in attrib:
+                to['readonly'] = attrib['readonly']
+
+            field = {
+                'key': var,
+                'type': 'input',
+                'templateOptions': to,
+            }
+
+            if 'hideExpression' in attrib:
+                field['hideExpression'] = str(attrib['hideExpression']).lower()
+
+            forms.append(field)
+            data[field['key']] = ''
+
+            attributeList.append(att)
+    el['-attr'] = attributeList
+
+    el['-children'] = []
+
+    for child in element['children']:
+        e, f, d = generateElement(elements, child['uuid'], takenNames, containsFiles=containsFiles, namespace=namespace)
+        if e:
+            el['-children'].append(e)
+            for field in f:
+                forms.append(field)
+            data.update(d)
+
     return (el, forms, data)
 
 def getExistingElements(request, name):
@@ -213,10 +193,40 @@ def removeChild(request, name, uuid):
 
     parent = existingElements[oldElement['parent']]
     index = 0
+    copy_idx = None
+    deleted_name = None
     for child in parent['children']:
+
         if child['uuid'] == uuid:
+            try:
+                name = child['name'].split('#')[0]
+            except:
+                name = child['name']
+
+            deleted_name = name
             del parent['children'][index]
+            break;
+
         index += 1
+
+    if deleted_name:
+        for child in parent['children'][index:]:
+            try:
+                name, copy_idx = child['name'].split('#')
+                copy_idx = int(copy_idx)
+            except:
+                name = child['name']
+
+            if deleted_name == name:
+                if copy_idx and copy_idx == 1:
+                    child['name'] = name
+                else:
+                    child['name'] = name + "#" + str(copy_idx-1)
+
+                existingElements[child["uuid"]]["name"] = child["name"]
+
+
+
     removeChildren(existingElements, oldElement)
     del existingElements[uuid]
     obj.save()
@@ -308,11 +318,25 @@ def addChild(request, name, newElementName, elementUuid):
     cb = calculateChildrenBefore(existingElements[elementUuid]['availableChildren'], newElementName)
 
     index = 0
-    for child in existingElements[elementUuid]['children']:
-        if child['name'] not in cb:
-            break
-        else:
-            index += 1
+
+    for idx, child in enumerate(existingElements[elementUuid]['children']):
+        try:
+            name = child['name'].split('#')[0]
+        except:
+            name = child['name']
+
+        if name == newElementName:
+            index = idx+1
+
+    if index > 0:
+        newElementName += "#" + str(index)
+        newElement['name'] = newElementName
+    else:
+        for child in existingElements[elementUuid]['children']:
+            if child['name'] not in cb:
+                break
+            else:
+                index += 1
 
     e = {}
     e['name'] = newElementName
@@ -387,10 +411,10 @@ class index(View):
     template_name = 'templateMaker/index.html'
 
     def get(self, request, *args, **kwargs):
-        context = {}
-        context['label'] = 'hello World'
         objs = templatePackage.objects.all()#.values('name')
-        context['templates'] = objs
+        context = {
+            'templates': objs
+        }
 
         return render(request, self.template_name, context)
 
