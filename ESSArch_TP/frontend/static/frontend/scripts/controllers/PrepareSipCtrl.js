@@ -275,131 +275,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log(response.status);
         });
     }
-    vm.profileFields = [{
-        templateOptions: {
-            label: "transfer_project",
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-        },
-        type: "select",
-        key: "transfer_project"
-    },
-    {
-        templateOptions: {
-            label: "content_type",
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-        },
-        type: "select",
-        key: "content_type"
-    },
-    {
-        templateOptions: {
-            label: "data_selection",
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-        },
-        type: "select",
-        key: "data_selection"
-    },
-    {
-        templateOptions: {
-            label: "classification",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "classification"
-    },
-    {
-        templateOptions: {
-            label: "import",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "import"
-    },
-    {
-        templateOptions: {
-            label: "submit_description",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "submit_description"
-    },
-    {
-        templateOptions: {
-            label: "sip",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "sip"
-    },
-    {
-        templateOptions: {
-            label: "aip",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "aip"
-    },
-    {
-        templateOptions: {
-            label: "dip",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "dip"
-    },
-    {
-        templateOptions: {
-            label: "workflow",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "workflow"
-    },
-    {
-        templateOptions: {
-            label: "preservation_metadata",
-
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-        },
-        type: "select",
-        key: "preservation_metadata"
-    },
-    {
-        templateOptions: {
-            label: "event",
-            options: [{name: "OK", value: true},{name: "", value: false}]
-
-        },
-        type: "select",
-        key: "event"
-    }
-    ];
+    vm.profileFields = [];
     vm.profileModel = {
     };
     //Get lock-status from profiles
@@ -414,18 +290,201 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             };
 
             var sa = response.data;
-            getProfiles(sa.profile_transfer_project, ip).then(function(profileValue){vm.profileModel.transfer_project = profileValue});
-            getProfiles(sa.profile_content_type, ip).then(function(profileValue){vm.profileModel.content_type = profileValue});
-            getProfiles(sa.profile_data_selection, ip).then(function(profileValue){vm.profileModel.data_selection = profileValue});
-            getProfiles(sa.profile_classification, ip).then(function(profileValue){vm.profileModel.classification = profileValue});
-            getProfiles(sa.profile_import, ip).then(function(profileValue){vm.profileModel.import = profileValue});
-            getProfiles(sa.profile_submit_description, ip).then(function(profileValue){vm.profileModel.submit_description = profileValue});
-            getProfiles(sa.profile_sip, ip).then(function(profileValue){vm.profileModel.sip = profileValue});
-            getProfiles(sa.profile_aip, ip).then(function(profileValue){vm.profileModel.aip = profileValue});
-            getProfiles(sa.profile_dip, ip).then(function(profileValue){vm.profileModel.dip = profileValue});
-            getProfiles(sa.profile_workflow, ip).then(function(profileValue){vm.profileModel.workflow = profileValue});
-            getProfiles(sa.profile_preservation_metadata, ip).then(function(profileValue){vm.profileModel.preservation_metadata = profileValue});
-            getProfiles(sa.profile_event, ip).then(function(profileValue){vm.profileModel.event = profileValue});
+            getProfiles(sa.profile_transfer_project, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.transfer_project = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "transfer_project",
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+                        },
+                        type: "select",
+                        key: "transfer_project"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_content_type, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.content_type = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "content_type",
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+                        },
+                        type: "select",
+                        key: "content_type"
+                    }
+                    vm.profileFields.push(field);
+                };
+            });
+            getProfiles(sa.profile_data_selection, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.data_selection = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "data_selection",
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+                        },
+                        type: "select",
+                        key: "data_selection"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_classification, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.classification = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "classification",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "classification"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_import, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.import = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "import",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "import"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_submit_description, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.submit_description = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "submit_description",
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "submit_description"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_sip, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.sip = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "sip",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "sip"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_aip, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.aip = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "aip",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "aip"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_dip, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.dip = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "dip",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "dip"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_workflow, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.workflow = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "workflow",
+
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                        },
+                        type: "select",
+                        key: "workflow"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_preservation_metadata, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.preservation_metadata = profileValue
+                        var field = {
+                            templateOptions: {
+                                label: "preservation_metadata",
+
+                                options: [{name: "OK", value: true},{name: "", value: false}]
+
+
+                            },
+                            type: "select",
+                            key: "preservation_metadata"
+                        };
+                    vm.profileFields.push(field);
+                }
+            });
+            getProfiles(sa.profile_event, ip).then(function(profileValue){
+                if(profileValue != null){
+                    vm.profileModel.event = profileValue;
+                    var field = {
+                        templateOptions: {
+                            label: "event",
+                            options: [{name: "OK", value: true},{name: "", value: false}]
+
+                        },
+                        type: "select",
+                        key: "event"
+                    };
+                    vm.profileFields.push(field);
+                }
+            });
         }, function(response){
             console.log(response.status);
         });
@@ -433,6 +492,11 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //Get profiles in given profile type
     function getProfiles(profiles, ip){
+        if(profiles.active == null || angular.isUndefined(profiles)){
+            var deferred = $q.defer();
+            deferred.resolve(null);
+            return deferred.promise;
+        }
         var promise = $http({
             method: 'GET',
             url: getActiveProfile(profiles).url
