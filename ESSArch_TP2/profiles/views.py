@@ -66,15 +66,20 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def save(self, request, pk=None):
         profile = Profile.objects.get(pk=pk)
         new_data = request.data.get("specification_data", {})
+        new_structure = request.data.get("structure", {})
 
-        if (profile.specification_data.keys().sort() == new_data.keys().sort() and
-                profile.specification_data != new_data):
+        changed_data = (profile.specification_data.keys().sort() == new_data.keys().sort() and
+                        profile.specification_data != new_data)
 
+        changed_structure = profile.structure != new_structure
+
+        if (changed_data or changed_structure):
             profile.copy_and_switch(
                 submission_agreement=SubmissionAgreement.objects.get(
                     pk=request.data["submission_agreement"]
                 ),
                 specification_data=new_data,
+                structure=new_structure,
                 new_name=request.data["new_name"],
             )
             return Response({'status': 'saving profile'})
