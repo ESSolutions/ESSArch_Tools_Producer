@@ -79,6 +79,14 @@
     "ARCHIVALDESCRIPTION": "Archival description",
     "MANAGACONTENT": "Manage content",
     "QUALITYCONTORL": "Quality control",
-    "SUBMITDESCRIPTION": "Submit description"
+    "SUBMITDESCRIPTION": "Submit description",
+    "ROOT": "Root",
+    "ADD": "Add",
+    "UPDATE": "Update",
+    "MAPSTRUCTURE": "Map structure",
+    "REMOVE": "Remove",
+    "NAME": "Name",
+    "TYPE": "Type",
+    "USE": "Use"
 
 }

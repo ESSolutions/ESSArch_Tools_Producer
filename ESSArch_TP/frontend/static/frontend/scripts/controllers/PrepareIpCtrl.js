@@ -254,6 +254,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.selectProfile = row;
             vm.profileModel = row.profile.specification_data;
             vm.profileFields = row.profile.template;
+            getStructure(row.profile.url);
             $scope.subSelectProfile = "profile";
         }
     };
@@ -337,7 +338,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
         var uri = $scope.profileToSave.profile.url+"save/";
-        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name};
+        console.log(angular.toJson($scope.treeElements[0].children));
+        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name, "structure": $scope.treeElements};
         $http({
             method: 'POST',
             url: uri,
@@ -345,7 +347,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         })
         .success(function (response) {
             alert(response.status);
-            $scope.getSelectCollection($scope.saProfile.profile);
+            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip);
             $scope.getListViewData();
             $scope.edit = false;
             $scope.eventlog = false;
@@ -527,6 +529,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.getListViewData();
         });
     }
+    //Opens a new instance of a modal window
     $scope.openModal = function(modalTemplate) {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -546,4 +549,245 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.reloadPage = function (){
         $state.reload();
     }
+    /*
+     * Edit view map structure tree
+     */
+
+    /*
+     * Formly form  structure
+     */
+    vm.treeEditModel = {
+    };
+    vm.treeEditFields = [
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('NAME'),
+            "required": true
+        },
+        "type": "input",
+        "key": "name"
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('TYPE'),
+            "options": [{name: "folder", value: "folder"},{name: "file", value: "file"}],
+            "required": true
+        },
+        "type": "select",
+        "key": "type",
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('USE'),
+            "options": [{name: "1", value: "1"},{name: "2", value: "2"}],
+        },
+        "hideExpression": function($viewValue, $modelValue, scope){
+            return scope.model.type != "file";
+        },
+        "expressionProperties": {
+            "templateOptions.required": function($viewValue, $modelValue, scope) {
+                return scope.model.type == "file";
+            }
+        },
+        "type": "select-tree-edit",
+        "key": "use",
+        "defaultValue": "Pick one",
+    }
+
+    ];
+
+    $scope.treeOptions = {
+        nodeChildren: "children",
+        dirSelectable: true,
+        injectClasses: {
+            ul: "a1",
+            li: "a2",
+            liSelected: "a7",
+            iExpanded: "a3",
+            iCollapsed: "a4",
+            iLeaf: "a5",
+            label: "a6",
+            labelSelected: "a8"
+        },
+        isLeaf: function(node) {
+            return node.type == "file";
+        },
+        equality: function(node1, node2) {
+            return node1 === node2;
+        },
+        isSelectable: function(node) {
+            return !$scope.updateMode.active && !$scope.addMode.active;
+        }
+    };
+    //Generates test data for map structure tree
+    function createSubTreeExampleData(level, width, prefix) {
+        if (level > 0) {
+            var res = [];
+            // if (!parent) parent = res;
+            for (var i = 1; i <= width; i++) {
+                res.push({
+                    "name": "Node " + prefix + i,
+                    "type": "folder",
+                    "children": createSubTreeExampleData(level - 1, width, prefix + i + ".")
+                });
+            }
+
+            return res;
+        }
+        else return [];
+    }
+    //Populate map structure tree view given tree width and amount of levels
+    function getStructure(profileUrl) {
+        listViewService.getStructure(profileUrl).then(function(value) {
+           $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: value}];
+           $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+        });
+    }
+    $scope.treeElements = [];//[{name: "Root", type: "Folder", children: createSubTree(3, 4, "")}];
+    $scope.currentNode = null;
+    $scope.selectedNode = null;
+    //Add node to map structure tree view
+    $scope.addNode = function(node) {
+        console.log($scope.selectedNode);
+        var dir = {
+            "name": vm.treeEditModel.name,
+            "type": vm.treeEditModel.type,
+        };
+        if(vm.treeEditModel.type == "folder") {
+            dir.children = [];
+        }
+        if(vm.treeEditModel.type == "file"){
+            dir.use = vm.treeEditModel.use;
+        }
+        if(node == null){
+            $scope.treeElements[0].children.push(dir);
+        } else {
+            node.node.children.push(dir);
+        }
+        $scope.addMode.active = false;
+    };
+    //Remove node from map structure tree view
+    $scope.removeNode = function(node) {
+        if(node.parentNode == null){
+            //$scope.treeElements.splice($scope.treeElements.indexOf(node.node), 1);
+            return;
+        }
+        node.parentNode.children.forEach(function(element) {
+            if(element.name == node.node.name) {
+                node.parentNode.children.splice(node.parentNode.children.indexOf(element), 1);
+            }
+        });
+    };
+    $scope.treeItemClass = "";
+    $scope.addMode = {
+        active: false
+    };
+    $scope.enterAddMode = function(node) {
+        $scope.addMode.active = true;
+        $('.tree-edit-item').draggable('disable');
+    };
+    $scope.exitAddMode = function() {
+        $scope.addMode.active = false;
+        $scope.treeItemClass = "";
+        $('.tree-edit-item').draggable('enable');
+    };
+    $scope.updateMode = {
+        node: null,
+        active: false
+    };
+
+    $scope.enterUpdateMode = function(node, parentNode) {
+        if(parentNode == null) {
+            alert("Root directory can not be updated");
+            return;
+        }
+        if($scope.updateMode.active && $scope.updateMode.node === node) {
+            $scope.exitUpdateMode();
+        } else {
+            $scope.updateMode.active = true;
+            vm.treeEditModel.name = node.name;
+            vm.treeEditModel.type = node.type;
+            vm.treeEditModel.use = node.use;
+            $scope.updateMode.node = node;
+            $('.tree-edit-item').draggable('disable');
+        }
+    };
+
+    $scope.exitUpdateMode = function() {
+        $scope.updateMode.active = false;
+        $scope.updateMode.node = null;
+        $scope.selectedNode = null;
+        $scope.currentNode = null;
+        resetFormVariables();
+        $('.tree-edit-item').draggable('enable');
+    };
+
+    function resetFormVariables() {
+                vm.treeEditModel.name = "";
+                vm.treeEditModel.type = "";
+                vm.treeEditModel.use = "";
+    };
+    //Update current node variable with selected node in map structure tree view
+    $scope.updateCurrentNode = function(node, selected, parentNode) {
+        if(selected) {
+            $scope.currentNode = {"node": node, "parentNode": parentNode};
+        } else {
+            $scope.currentNode = null;
+        }
+    };
+    //Update node values
+    $scope.updateNode = function(node) {
+        if(vm.treeEditModel.name != ""){
+            node.node.name = vm.treeEditModel.name;
+        }
+        if(vm.treeEditModel.type != ""){
+            node.node.type = vm.treeEditModel.type;
+        }
+        if(vm.treeEditModel.use != ""){
+            node.node.use = vm.treeEditModel.use;
+        }
+    };
+    $scope.showSelected = function(node, parentNode) {
+        $scope.selectedNode = node;
+        $scope.updateCurrentNode(node, $scope.selectedNode, parentNode);
+        if($scope.updateMode.active){
+            $scope.enterUpdateMode(node, parentNode);
+        }
+    };
+    $scope.treeEditSubmit = function(node) {
+        if($scope.addMode.active) {
+            $scope.addNode(node);
+        } else if($scope.updateMode.active) {
+            $scope.updateNode(node);
+        } else {
+            return;
+        }
+    }
+    //context menu data
+    $scope.menuOptions = function(item) {
+        if($scope.addMode.active || $scope.updateMode.active){
+            return [];
+        }
+        return [
+            [$translate.instant('ADD'), function ($itemScope, $event, modelValue, text, $li) {
+                $scope.showSelected($itemScope.node, $itemScope.$parentNode);
+                $scope.enterAddMode($itemScope.node);
+                console.log($event.target);
+            }],
+
+            [$translate.instant('REMOVE'), function ($itemScope, $event, modelValue, text, $li) {
+                $scope.updateCurrentNode($itemScope.node, true, $itemScope.$parentNode);
+                $scope.removeNode($scope.currentNode);
+                $scope.selectedNode = null;
+            }],
+            [$translate.instant('UPDATE'), function ($itemScope, $event, modelValue, text, $li) {
+                $scope.showSelected($itemScope.node, $itemScope.$parentNode);
+                $scope.enterUpdateMode($itemScope.node, $itemScope.$parentNode);
+                console.log($event.target);
+            }]
+        ];
+    };
 });

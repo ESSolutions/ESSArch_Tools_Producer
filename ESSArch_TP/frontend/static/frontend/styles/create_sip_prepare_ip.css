@@ -1,11 +1,28 @@
 .content-wrapper {
-display: flex;
-display: -webkit-flex;
-flex-direction: column;
--webkit-flex-direction: column;
-max-height: 962px;
-width: 100%;
-position: relative;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    max-height: 962px;
+    width: 100%;
+    position: relative;
+}
+.helper {
+    background: white;
+    border: 1px solid black;
+    padding: 3px;
+}
+.hover {
+    background-color: #ddddff;
+}
+.hover-up {
+    border-top: 1px solid red;
+}
+.hover-down {
+    border-bottom: 1px solid red;
+}
+.hover-middle {
+    text-decoration: line-through;
 }
 .glyphicon-triangle-bottom {
     cursor: pointer;
@@ -273,4 +290,29 @@ input[type="checkbox"] {
 }
 .submit-button {
     margin-left: 5px;
+}
+.edit-view-tree {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    width 100%;
+}
+.edit-view-tree .formly {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+    width 100%;
+}
+.edit-view-tree .formly-field {
+    width: 75%;
+    margin-left: 0;
+}
+
+.tree {
+    width: 30%;
+}
+.add-node-form-wrapper {
+    height: 50%;
 }

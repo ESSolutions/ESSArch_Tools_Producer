@@ -79,6 +79,13 @@
     "ARCHIVALDESCRIPTION": "Arkivbeskrivning",
     "MANAGACONTENT": "Hantera innehåll",
     "QUALITYCONTORL": "Kvalitétskontroll",
-    "SUBMITDESCRIPTION": "???Submit description???"
-
+    "SUBMITDESCRIPTION": "???Submit description???",
+    "ROOT": "rot",
+    "ADD": "Lägg till",
+    "UPDATE": "Uppdatera",
+    "MAPSTRUCTURE": "Mappstruktur",
+    "REMOVE": "Ta bort",
+    "NAME": "Namn",
+    "TYPE": "Typ",
+    "USE": "Använd"
 }

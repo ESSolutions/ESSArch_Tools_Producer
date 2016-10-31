@@ -107,6 +107,18 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return promise;
 
     }
+    //Returns map structure for a profile
+    function getStructure(profileUrl) {
+        console.log(profileUrl)
+        return $http({
+            method: 'GET',
+            url: profileUrl
+        }).then(function(response) {
+            console.log(response.data.structure);
+            return response.data.structure;
+        }, function(response) {
+        });
+    }
     //returns all SA-profiles and current as an object
     function getSaProfiles(ip) {
         var sas = [];
@@ -365,6 +377,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getIp: getIp,
         getSa: getSa,
         getFileList, getFileList,
+        getStructure: getStructure,
     };
 
 });
