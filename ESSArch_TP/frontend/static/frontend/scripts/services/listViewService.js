@@ -125,7 +125,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         var saProfile =
         {
             entity: "PROFILE_SUBMISSION_AGREEMENT",
-            profile: {},
+            profile: null,
             profiles: [
 
             ],
@@ -156,6 +156,11 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Returns an array consisting of profile objects for an SA
     function getSelectCollection(sa, ip) {
+        if(sa == null) {
+            var deferred = $q.defer();
+            deferred.resolve([]);
+            return deferred.promise;
+        }
         return getIp(ip.url).then(function(value) {
             ip = value;
             if(sa.id != null) {

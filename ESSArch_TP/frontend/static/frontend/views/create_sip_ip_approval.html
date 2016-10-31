@@ -85,7 +85,7 @@
                                 </td>
                                 <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                 <td><p class="table-col">{{}}</p></td>
-                                <a ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
+                                <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                             </tr>
 
                             <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
