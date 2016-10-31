@@ -87,6 +87,12 @@
     "REMOVE": "Remove",
     "NAME": "Name",
     "TYPE": "Type",
-    "USE": "Use"
+    "USE": "Use",
+    "VALIDATORCHOICES": "Validator choices",
+    "VALIDATEFILES": "Validate files",
+    "VALIDATEFILEFORMAT": "Validate file format",
+    "VALIDATEXMLFILE": "Validate XML file",
+    "VALIDATELOGICALPHYSICALREPRESENTATION": "Validate logical physical representation",
+    "VALIDATEINTEGRITY": "Validate Integrity"
 
 }

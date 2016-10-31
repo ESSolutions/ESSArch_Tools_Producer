@@ -124,7 +124,7 @@
                     <div class="package-dependencies">
                         <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
                     </div>
-
+                    <div ng-include src="'static/frontend/views/validator_choices.html'"></div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form class="eventlog-form" ng-submit="createSip(ip)">

@@ -87,5 +87,11 @@
     "REMOVE": "Ta bort",
     "NAME": "Namn",
     "TYPE": "Typ",
-    "USE": "Använd"
+    "USE": "Använd",
+    "VALIDATORCHOICES": "Validatorval",
+    "VALIDATEFILES": "Validera filer",
+    "VALIDATEFILEFORMAT": "Validera filformat",
+    "VALIDATEXMLFILE": "Validera XML-fil",
+    "VALIDATELOGICALPHYSICALREPRESENTATION": "Validate logisk fysisk representation",
+    "VALIDATEINTEGRITY": "Validera Integritet"
 }

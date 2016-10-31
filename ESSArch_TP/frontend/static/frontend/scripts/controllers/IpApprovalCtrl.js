@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate){
     var vm = this;
     $scope.tree_data = [];
     $scope.expanding_property = {
@@ -304,7 +304,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.createSip = function (ip) {
         $http({
             method: 'POST',
-            url: ip.url+"create/"
+            url: ip.url+"create/",
+            data: {validators: vm.validatorModel}
         })
         .then(function successCallback(response) {
             $state.reload();
@@ -382,5 +383,60 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.goToPrepareIp = function() {
         $state.go('home.createSip.prepareIp');
     }
+    vm.validatorModel = {
+
+    };
+    vm.validatorFields = [
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('VALIDATEFILES'),
+            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+        },
+        "defaultValue": 1,
+        "type": "select",
+        "key": "validate_files",
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('VALIDATEFILEFORMAT'),
+            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+        },
+        "defaultValue": 1,
+        "type": "select",
+        "key": "validate_file_format",
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('VALIDATEXMLFILE'),
+            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+        },
+        "defaultValue": 1,
+        "type": "select",
+        "key": "validate_xml_file",
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
+            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+        },
+        "defaultValue": 1,
+        "type": "select",
+        "key": "validate_logical_physical_representation",
+    },
+    {
+        "templateOptions": {
+            "type": "text",
+            "label": $translate.instant('VALIDATEINTEGRITY'),
+            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+        },
+        "defaultValue": 1,
+        "type": "select",
+        "key": "validate_integrity",
+    }
+    ];
 });
 
