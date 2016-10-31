@@ -79,8 +79,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     pk=request.data["submission_agreement"]
                 ),
                 specification_data=new_data,
-                structure=new_structure,
                 new_name=request.data["new_name"],
+                structure=new_structure,
             )
             return Response({'status': 'saving profile'})
 

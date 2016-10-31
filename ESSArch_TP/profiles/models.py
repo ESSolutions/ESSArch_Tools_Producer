@@ -365,7 +365,7 @@ class Profile(models.Model):
             submission_agreement=submission_agreement.pk
         ).update(status=status)
 
-    def copy_and_switch(self, submission_agreement, specification_data, new_name):
+    def copy_and_switch(self, submission_agreement, specification_data, new_name, structure={}):
         """
         Copies the profile and updates the name and specification_data of the
         copy.  If the old profile has a status of 1 (enabled) in it's
@@ -390,6 +390,7 @@ class Profile(models.Model):
         copy.id = None
         copy.name = new_name
         copy.specification_data = specification_data
+        copy.structure = structure
         copy.save()
 
         ProfileRel.objects.create(
