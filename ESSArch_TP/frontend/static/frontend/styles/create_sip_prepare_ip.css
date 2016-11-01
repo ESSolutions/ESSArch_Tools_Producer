@@ -46,7 +46,6 @@
 
 .list-view {
     max-height: 330px;
-    overflow-y: scroll;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
@@ -163,7 +162,6 @@ td {
 }
 .status-view {
     max-height: 550px;
-    overflow-y: scroll;
 }
 /*.status-view treecontrol {
     font-size: 20px;

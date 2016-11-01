@@ -232,3 +232,14 @@ body.modal-open[style] {
 .glyphicon.glyphicon-question-sign {
     font-size: 20px;
 }
+.status-tree-grid {
+    max-height: 550px;
+    overflow-y: scroll;
+    padding: 5px;
+    margin: 5px;
+}
+.list-view-table {
+    max-height: 330px;
+    overflow-y: scroll;
+    margin: 5px;
+}

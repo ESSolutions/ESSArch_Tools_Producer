@@ -313,6 +313,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             alert(response.status);
         };
     };
+
+    $scope.colspan = 6;
     //Visibility of status view
     $scope.statusShow = false;
     //Visibility of select view

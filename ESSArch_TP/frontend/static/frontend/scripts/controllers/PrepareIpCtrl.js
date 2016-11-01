@@ -356,6 +356,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
+    $scope.colspan = 7;
     //Decides visibility of stepTask info page
     $scope.stepTaskInfoShow = false;
     //Decides visibility of status view

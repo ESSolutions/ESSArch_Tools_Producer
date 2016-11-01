@@ -61,4 +61,5 @@ angular.module('myApp').controller('ReceptionCtrl', function($http, $scope, $roo
             templateUrl: "static/frontend/views/reception_package.html"
         }
     ];
+    $scope.colspan = 6;
 });

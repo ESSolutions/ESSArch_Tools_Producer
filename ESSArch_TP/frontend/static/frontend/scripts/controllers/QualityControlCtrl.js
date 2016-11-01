@@ -73,4 +73,5 @@ angular.module('myApp').controller('QualityControlCtrl', function($http, $scope,
             templateUrl: "static/frontend/views/reception_package.html"
         }
     ];
+    $scope.colspan = 6;
 });

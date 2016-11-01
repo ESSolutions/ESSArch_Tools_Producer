@@ -547,6 +547,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log(response.status);
         });
     }
+    $scope.colspan = 6;
     //visibility of status view
     $scope.statusShow = false;
     //visibility of event view
