@@ -339,7 +339,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.onSubmit = function(new_name) {
         var uri = $scope.profileToSave.profile.url+"save/";
         console.log(angular.toJson($scope.treeElements[0].children));
-        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name, "structure": $scope.treeElements};
+        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name, "structure": $scope.treeElements[0].children};
         $http({
             method: 'POST',
             url: uri,
@@ -749,6 +749,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         if(vm.treeEditModel.use != ""){
             node.node.use = vm.treeEditModel.use;
         }
+        $scope.updateMode.active = false;
     };
     $scope.showSelected = function(node, parentNode) {
         $scope.selectedNode = node;
