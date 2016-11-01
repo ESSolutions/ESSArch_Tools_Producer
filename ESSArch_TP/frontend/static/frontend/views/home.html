@@ -65,36 +65,36 @@
                         <treecontrol class="tree-light"
                                      tree-model="ArchivalInstitution"
                                      options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
+                                     on-selection="showSelectedInstitution(node)"
+                                     selected-node="nodeInst">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
                                      tree-model="ArchivistOrganization"
                                      options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
+                                     on-selection="showSelectedOrganization(node)"
+                                     selected-node="nodeOrg">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
                                      tree-model="ArchivalType"
                                      options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
+                                     on-selection="showSelectedType(node)"
+                                     selected-node="nodeType">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
                                      tree-model="ArchivalLocation"
                                      options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
+                                     on-selection="showSelectedLocation(node)"
+                                     selected-node="nodeLoc">
                         {{node.name}}
                         </treecontrol>
                         <treecontrol class="tree-light"
                                      tree-model="other"
                                      options="treeOptions"
-                                     on-selection="showSelected(node)"
-                                     selected-node="node1">
+                                     on-selection="showSelectedOther(node)"
+                                     selected-node="nodeOther">
                         {{node.name}}
                         </treecontrol>
                         </p>

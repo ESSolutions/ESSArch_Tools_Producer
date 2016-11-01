@@ -61,5 +61,46 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             });
         }
         $scope.loadNavigation();
-
+        $rootScope.navigationFilter = {
+            institution: null,
+            organization: null,
+            type: null,
+            location: null,
+            other: null
+        };
+        $scope.showSelectedInstitution = function(node) {
+            if(angular.isUndefined(node.id)){
+                return;
+            }
+            $rootScope.navigationFilter.institution = node;
+            console.log($rootScope.navigationFilter);
+        }
+        $scope.showSelectedOrganization = function(node) {
+            if(angular.isUndefined(node.id)){
+                return;
+            }
+            $rootScope.navigationFilter.organization = node;
+            console.log($rootScope.navigationFilter);
+        }
+        $scope.showSelectedType = function(node) {
+            if(angular.isUndefined(node.id)){
+                return;
+            }
+            $rootScope.navigationFilter.type = node;
+            console.log($rootScope.navigationFilter);
+        }
+        $scope.showSelectedLocation = function(node) {
+           if(angular.isUndefined(node.id)){
+                return;
+            }
+            $rootScope.navigationFilter.location = node;
+            console.log($rootScope.navigationFilter);
+        }
+        $scope.showSelectedOther = function(node) {
+            if(angular.isUndefined(node.id)){
+                return;
+            }
+            $rootScope.navigationFilter.other = node;
+            console.log($rootScope.navigationFilter);
+        }
 });
