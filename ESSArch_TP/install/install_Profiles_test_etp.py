@@ -27,6 +27,7 @@ django.setup()
 
 import json
 import os
+import uuid
 
 from django.conf import settings
 
@@ -438,888 +439,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
             }
         ],
         'specification': {
-            "mets": {
-                "dmdSec": {
-                    "mdWrap": {
-                        "-max": 1,
-                        "xmlData": {
-                            "-max": 1,
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "binData": {
-                            "-max": 1,
-                            "#content": [],
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MDTYPE",
-                            "#content": [],
-                            "-req": 1
-                        }, {
-                            "-name": "OTHERMDTYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MDTYPEVERSION",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MIMETYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "SIZE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CREATED",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CHECKSUM",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CHECKSUMTYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "LABEL",
-                            "#content": [],
-                            "-req": 0
-                        }],
-                        "-min": 0
-                    },
-                    "-max": -1,
-                    "mdRef": {
-                        "-max": 1,
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "LOCTYPE",
-                            "#content": [],
-                            "-req": 1
-                        }, {
-                            "-name": "OTHERLOCTYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MDTYPE",
-                            "#content": [],
-                            "-req": 1
-                        }, {
-                            "-name": "OTHERMDTYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MDTYPEVERSION",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "MIMETYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "SIZE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CREATED",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CHECKSUM",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "CHECKSUMTYPE",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "LABEL",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                            "-name": "XPTR",
-                            "#content": [],
-                            "-req": 0
-                        }],
-                        "-min": 0
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 1
-                    }, {
-                        "-name": "GROUPID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "ADMID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "CREATED",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "STATUS",
-                        "#content": [],
-                        "-req": 0
-                    }],
-                    "-min": 0
-                },
-                "-attr": [{
-                    "-name": "ID",
-                    "#content": [{
-                        "var": "ID"
-                    }],
-                    "-req": 0
-                }, {
-                    "-name": "OBJID",
-                    "#content": [
-                        {
-                        "var": "OBJID"
-                        }, {
-                            "text": "asd"
-                        }
-                    ],
-                    "-req": 1
-                }, {
-                    "-name": "LABEL",
-                    "#content": [
-                        {
-                            "var": "LABEL"
-                        }
-                    ],
-                    "-req": 0
-                }, {
-                    "-name": "TYPE",
-                    "#content": [
-                        {
-                            "text": "Medical record"
-                        }
-                    ],
-                    "-req": 1
-                }, {
-                    "-name": "PROFILE",
-                    "#content": [
-                        {
-                            "var": "PROFILE"
-                        }
-                    ],
-                    "-req": 1
-                }],
-                "metsHdr": {
-                    "-max": 1,
-                    "metsDocumentID": {
-                        "-max": 1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "ADMID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "CREATEDATE",
-                        "#content": [],
-                        "-req": 1
-                    }, {
-                        "-name": "LASTMODDATE",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "RECORDSTATUS",
-                        "#content": [],
-                        "-req": 0
-                    }],
-                    "altRecordID": {
-                        "-max": -1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 1
-                    },
-                    "agent": [{
-                        "note": {
-                            "-max": -1,
-                            "#content": [],
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "-max": -1,
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                        "-name": "ROLE",
-                        "#content": [],
-                        "-req": 1
-                        }, {
-                        "-name": "OTHERROLE",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "TYPE",
-                        "#content": [],
-                        "-req": 1
-                        }, {
-                        "-name": "OTHERTYPE",
-                        "#content": [],
-                        "-req": 0
-                        }],
-                        "name": {
-                            "-max": 1,
-                            "#content": [],
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "-min": 3
-                    }, {
-                    "note": {
-                        "-max": -1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-max": -1,
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "ROLE",
-                        "#content": [],
-                        "-req": 1
-                    }, {
-                        "-name": "OTHERROLE",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                        "-name": "TYPE",
-                        "#content": [],
-                        "-req": 1
-                    }, {
-                        "-name": "OTHERTYPE",
-                        "#content": [],
-                        "-req": 0
-                    }],
-                    "name": {
-                        "-max": 1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-min": 3
-                    }, {
-                    "note": {
-                        "-max": -1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-max": -1,
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                    "-name": "ROLE",
-                    "#content": [],
-                    "-req": 1
-                    }, {
-                    "-name": "OTHERROLE",
-                    "#content": [],
-                    "-req": 0
-                    }, {
-                    "-name": "TYPE",
-                    "#content": [],
-                    "-req": 1
-                    }, {
-                    "-name": "OTHERTYPE",
-                    "#content": [],
-                    "-req": 0
-                    }],
-                    "name": {
-                        "-max": 1,
-                        "#content": [],
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-min": 3
-                    }],
-                    "-min": 0
-                },
-                "amdSec": {
-                    "-max": -1,
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 1
-                    }],
-                    "rightsMD": {
-                        "-max": -1,
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-min": 0,
-                    "sourceMD": {
-                        "-max": -1,
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "techMD": {
-                        "-max": -1,
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "digiprovMD": {
-                        "-max": -1,
-                        "-attr": [],
-                        "-min": 0
-                    }
-                },
-                "behaviorSec": {
-                    "-max": -1,
-                    "behaviorSec": {
-                        "-max": -1,
-                        "-attr": [],
-                        "-min": 0
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                    "-name": "CREATED",
-                    "#content": [],
-                    "-req": 0
-                    }, {
-                    "-name": "LABEL",
-                    "#content": [],
-                    "-req": 0
-                    }],
-                    "behavior": {
-                        "-max": -1,
-                        "interfaceDef": {
-                            "-max": 1,
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 0
-                            }, {
-                            "-name": "LABEL",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "LOCTYPE",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "OTHERLOCTYPE",
-                            "#content": [],
-                            "-req": 0
-                            }],
-                            "-min": 0
-                        },
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                        "-name": "STRUCTID",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "BTYPE",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "CREATED",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "LABEL",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "GROUPID",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "ADMID",
-                        "#content": [],
-                        "-req": 0
-                        }],
-                        "mechanism": {
-                            "-max": 1,
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "-min": 0
-                    },
-                    "-min": 0
-                },
-                "structLink": {
-                    "smLinkGrp": {
-                        "-max": 1,
-                        "smArcLink": {
-                            "-max": -1,
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 0
-                            }, {
-                            "-name": "ARCTYPE",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "ADMID",
-                            "#content": [],
-                            "-req": 0
-                            }],
-                            "-min": 1
-                        },
-                        "smLocatorLink": [{
-                            "-max": -1,
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 0
-                            }],
-                            "-min": 2
-                        }, {
-                        "-max": -1,
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }],
-                        "-min": 2
-                        }],
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                        "-name": "ARCLINKORDER",
-                        "#content": [],
-                        "-req": 0
-                        }],
-                        "-min": 0
-                    },
-                    "-max": 1,
-                    "smLink": {
-                        "-max": 1,
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }],
-                        "-min": 0
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }],
-                    "-min": 0
-                },
-                "fileSec": {
-                    "-max": 1,
-                    "fileGrp": {
-                        "-max": -1,
-                        "fileGrp": {
-                            "-max": -1,
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                        "-name": "VERSDATE",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "ADMID",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "USE",
-                        "#content": [],
-                        "-req": 0
-                        }],
-                        "file": {
-                            "-max": -1,
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 1
-                            }, {
-                            "-name": "SEQ",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "MIMETYPE",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "SIZE",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "CREATED",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "CHECKSUM",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "CHECKSUMTYPE",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "OWNERID",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "ADMID",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "DMDID",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "GROUPID",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "USE",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "BEGIN",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "END",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "BETYPE",
-                            "#content": [],
-                            "-req": 0
-                            }],
-                            "stream": {
-                                "-max": -1,
-                                "-attr": [],
-                                "-min": 0
-                            },
-                            "FLocat": {
-                                "-max": 1,
-                                "-attr": [{
-                                    "-name": "ID",
-                                    "#content": [],
-                                    "-req": 0
-                                }, {
-                                "-name": "LOCTYPE",
-                                "#content": [],
-                                "-req": 1
-                                }, {
-                                "-name": "OTHERLOCTYPE",
-                                "#content": [],
-                                "-req": 0
-                                }, {
-                                "-name": "USE",
-                                "#content": [],
-                                "-req": 0
-                                }],
-                                "-min": 0
-                            },
-                            "-min": 0,
-                            "FContent": {
-                                "-max": 1,
-                                "xmlData": {
-                                    "-max": 1,
-                                    "-attr": [],
-                                    "-min": 0
-                                },
-                                "binData": {
-                                    "-max": 1,
-                                    "#content": [],
-                                    "-attr": [],
-                                    "-min": 0
-                                },
-                                "-attr": [{
-                                    "-name": "ID",
-                                    "#content": [],
-                                    "-req": 0
-                                }, {
-                                "-name": "USE",
-                                "#content": [],
-                                "-req": 0
-                                }],
-                                "-min": 0
-                            },
-                            "transformFile": {
-                                "-max": -1,
-                                "-attr": [],
-                                "-min": 0
-                            },
-                            "file": {
-                                "-max": -1,
-                                "-attr": [],
-                                "-min": 0
-                            }
-                        },
-                        "-min": 0
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }],
-                    "-min": 0
-                },
-                "structMap": {
-                    "-max": -1,
-                    "div": {
-                        "fptr": {
-                            "-max": -1,
-                            "par": {
-                                "-max": 1,
-                                "area": {
-                                    "-max": 1,
-                                    "-attr": [{
-                                        "-name": "ID",
-                                        "#content": [],
-                                        "-req": 0
-                                    }, {
-                                    "-name": "FILEID",
-                                    "#content": [],
-                                    "-req": 1
-                                    }, {
-                                    "-name": "SHAPE",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "COORDS",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "BEGIN",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "END",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "BETYPE",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "EXTENT",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "EXTTYPE",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "ADMID",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "CONTENTIDS",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "ORDER",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "ORDERLABEL",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "LABEL",
-                                    "#content": [],
-                                    "-req": 0
-                                    }],
-                                    "-min": 0
-                                },
-                                "-attr": [{
-                                    "-name": "ID",
-                                    "#content": [],
-                                    "-req": 0
-                                }, {
-                                "-name": "ORDER",
-                                "#content": [],
-                                "-req": 0
-                                }, {
-                                "-name": "ORDERLABEL",
-                                "#content": [],
-                                "-req": 0
-                                }, {
-                                "-name": "LABEL",
-                                "#content": [],
-                                "-req": 0
-                                }],
-                                "seq": {
-                                    "-max": 1,
-                                    "par": {
-                                        "-max": 1,
-                                        "-attr": [],
-                                        "-min": 0
-                                    },
-                                    "area": {
-                                        "-max": 1,
-                                        "-attr": [],
-                                        "-min": 0
-                                    },
-                                    "-attr": [{
-                                        "-name": "ID",
-                                        "#content": [],
-                                        "-req": 0
-                                    }, {
-                                    "-name": "ORDER",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "ORDERLABEL",
-                                    "#content": [],
-                                    "-req": 0
-                                    }, {
-                                    "-name": "LABEL",
-                                    "#content": [],
-                                    "-req": 0
-                                    }],
-                                    "-min": 0
-                                },
-                                "-min": 0
-                            },
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 0
-                            }, {
-                            "-name": "FILEID",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "CONTENTIDS",
-                            "#content": [],
-                            "-req": 0
-                            }],
-                            "seq": {
-                                "-max": 1,
-                                "-attr": [],
-                                "-min": 0
-                            },
-                            "area": {
-                                "-max": 1,
-                                "-attr": [],
-                                "-min": 0
-                            },
-                            "-min": 0
-                        },
-                        "-max": 1,
-                        "-attr": [{
-                            "-name": "ID",
-                            "#content": [],
-                            "-req": 0
-                        }, {
-                        "-name": "ORDER",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "ORDERLABEL",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "LABEL",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "DMDID",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "ADMID",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "TYPE",
-                        "#content": [],
-                        "-req": 0
-                        }, {
-                        "-name": "CONTENTIDS",
-                        "#content": [],
-                        "-req": 0
-                        }],
-                        "-min": 0,
-                        "div": {
-                            "-max": -1,
-                            "-attr": [],
-                            "-min": 0
-                        },
-                        "mptr": {
-                            "-max": -1,
-                            "-attr": [{
-                                "-name": "ID",
-                                "#content": [],
-                                "-req": 0
-                            }, {
-                            "-name": "LOCTYPE",
-                            "#content": [],
-                            "-req": 1
-                            }, {
-                            "-name": "OTHERLOCTYPE",
-                            "#content": [],
-                            "-req": 0
-                            }, {
-                            "-name": "CONTENTIDS",
-                            "#content": [],
-                            "-req": 0
-                            }],
-                            "-min": 0
-                        }
-                    },
-                    "-attr": [{
-                        "-name": "ID",
-                        "#content": [],
-                        "-req": 0
-                    }, {
-                    "-name": "TYPE",
-                    "#content": [],
-                    "-req": 0
-                    }, {
-                    "-name": "LABEL",
-                    "#content": [],
-                    "-req": 0
-                    }],
-                    "-min": 0
-                }
-            }
+            
         },
         'specification_data': {
             "PROFILE": "your default profile",
@@ -1358,373 +478,920 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': {
-            'representations': {
-                'type': 'dir',
-                'children': {
-                    'rep01': {}
-                },
-            },
-            'documentation': {
-                'type': 'dir',
-                'children': {},
-            },
-            'metadata': {
-                'type': 'dir',
-                'children': {
-                    'mets_grp': {
-                        'type': 'group',
+        'structure': [
+            {
+                'type': 'folder',
+                'name': 'content',
+                'children': [
+                    {
+                        'type': 'file',
+                        'name': 'mets_grp',
+                        'use': 'mets_grp',
                     },
-                    'descriptive': {
-                        'type': 'dir',
-                        'children': {
-                            '_ARCHIVAL_DESCRIPTION_FILE': {
-                                'type': 'file',
-                                'use': 'archival_description_file'
-                            },
-                            '_AUTHORITIVE_INFORMATION_FILE': {
-                                'type': 'file',
-                                'use': 'authoritive_information_file'
-                            }
-                        }
+                    {
+                        'type': 'folder',
+                        'name': 'data',
+                        'children': [],
                     },
-                    'administrative': {
-                        'type': 'dir',
-                        'children': {
-                            'premis.xml': {
-                                'type': 'file',
-                                'use': 'preservation_description_file'
-                            }
-                        }
-                    }
-                },
+                    {
+                        'type': 'folder',
+                        'name': 'metadata',
+                        'children': [],
+                    },
+                ]
             },
-            'schemas': {
-                'type': 'dir',
-                'children': {
-                    'xsd_files': {
-                        'type': 'group',
-                    }
-                }
-            }
-        },
+            {
+                'type': 'folder',
+                'name': 'metadata',
+                'children': [
+                    {
+                        'type': 'file',
+                        'use': 'xsd_files',
+                        'name': 'xsd_files'
+                    },
+                    {
+                        'type': 'file',
+                        'name': 'premis.xml',
+                        'use': 'preservation_description_file',
+                    },
+                    {
+                        'type': 'file',
+                        'name': '_ARCHIVAL_DESCRIPTION_FILE',
+                        'use': 'archival_description_file',
+                    },
+                    {
+                        'type': 'file',
+                        'name': '_AUTHORITIVE_INFORMATION_FILE',
+                        'use': 'authoritive_information_file',
+                    },
+                ]
+            },
+        ],
         'template': [
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xmlns:mets",
-                    'disabled': True,
+                    "label": "mets.ID"
                 },
                 "type": "input",
-                "key": "xmlns:mets",
+                "key": "mets.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xmlns:ext",
-                    'disabled': True,
+                    "label": "mets.OBJID"
                 },
                 "type": "input",
-                "key": "xmlns:ext",
+                "key": "mets.OBJID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xmlns:xlink",
-                    'disabled': True,
+                    "label": "mets.LABEL"
                 },
                 "type": "input",
-                "key": "xmlns:xlink",
+                "key": "mets.LABEL"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xmlns:xsi",
-                    'disabled': True,
+                    "label": "mets.TYPE"
                 },
                 "type": "input",
-                "key": "xmlns:xsi",
+                "key": "mets.TYPE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xsi:schemaLocation",
-                    'disabled': True,
+                    "label": "mets.PROFILE"
                 },
                 "type": "input",
-                "key": "xsi:schemaLocation"
+                "key": "mets.PROFILE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xsi:schemaLocationPremis"
+                    "label": "mets.metsHdr.ID"
                 },
                 "type": "input",
-                "key": "xsi:schemaLocationPremis",
+                "key": "mets.metsHdr.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "PROFILE"
+                    "label": "mets.metsHdr.ADMID"
                 },
                 "type": "input",
-                "key": "PROFILE",
+                "key": "mets.metsHdr.ADMID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "LABEL"
+                    "label": "mets.metsHdr.CREATEDATE"
                 },
                 "type": "input",
-                "key": "LABEL",
+                "key": "mets.metsHdr.CREATEDATE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "TYPE"
+                    "label": "mets.metsHdr.LASTMODDATE"
                 },
                 "type": "input",
-                "key": "TYPE",
+                "key": "mets.metsHdr.LASTMODDATE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "OBJID"
+                    "label": "mets.metsHdr.RECORDSTATUS"
                 },
                 "type": "input",
-                "key": "OBJID",
+                "key": "mets.metsHdr.RECORDSTATUS"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "ext:CONTENTTYPESPECIFICATION"
+                    "label": "mets.metsHdr.agent.ID"
                 },
                 "type": "input",
-                "key": "ext:CONTENTTYPESPECIFICATION",
+                "key": "mets.metsHdr.agent.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "CREATEDATE"
+                    "label": "mets.metsHdr.agent.ROLE"
                 },
                 "type": "input",
-                "key": "CREATEDATE",
+                "key": "mets.metsHdr.agent.ROLE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "RECORDSTATUS"
+                    "label": "mets.metsHdr.agent.OTHERROLE"
                 },
                 "type": "input",
-                "key": "RECORDSTATUS",
+                "key": "mets.metsHdr.agent.OTHERROLE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "ext:OAISTYPE"
+                    "label": "mets.metsHdr.agent.TYPE"
                 },
                 "type": "input",
-                "key": "ext:OAISTYPE",
+                "key": "mets.metsHdr.agent.TYPE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "agentName"
+                    "label": "mets.metsHdr.agent.OTHERTYPE"
                 },
                 "type": "input",
-                "key": "agentName",
+                "key": "mets.metsHdr.agent.OTHERTYPE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "agentNote"
+                    "label": "mets.metsHdr.agent.name.content"
                 },
                 "type": "input",
-                "key": "agentNote",
+                "key": "mets.metsHdr.agent.name.content"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "REFERENCECODE"
+                    "label": "mets.metsHdr.agent.note.content"
                 },
                 "type": "input",
-                "key": "REFERENCECODE",
+                "key": "mets.metsHdr.agent.note.content"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "SUBMISSIONAGREEMENT"
+                    "label": "mets.metsHdr.altRecordID.content"
                 },
                 "type": "input",
-                "key": "SUBMISSIONAGREEMENT",
+                "key": "mets.metsHdr.altRecordID.content"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "MetsIdentifier"
+                    "label": "mets.metsHdr.altRecordID.ID"
                 },
                 "type": "input",
-                "key": "MetsIdentifier",
+                "key": "mets.metsHdr.altRecordID.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "filename"
+                    "label": "mets.metsHdr.altRecordID.TYPE"
                 },
                 "type": "input",
-                "key": "filename",
+                "key": "mets.metsHdr.altRecordID.TYPE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "SMLabel"
+                    "label": "mets.metsHdr.metsDocumentID.content"
                 },
                 "type": "input",
-                "key": "SMLabel",
+                "key": "mets.metsHdr.metsDocumentID.content"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "amdLink"
+                    "label": "mets.metsHdr.metsDocumentID.ID"
                 },
                 "type": "input",
-                "key": "amdLink",
+                "key": "mets.metsHdr.metsDocumentID.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "digiprovLink"
+                    "label": "mets.metsHdr.metsDocumentID.TYPE"
                 },
                 "type": "input",
-                "key": "digiprovLink",
+                "key": "mets.metsHdr.metsDocumentID.TYPE"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "LOCTYPE"
+                    "label": "mets.dmdSec.ID"
                 },
                 "type": "input",
-                "key": "LOCTYPE",
+                "key": "mets.dmdSec.ID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "MDTYPE"
+                    "label": "mets.dmdSec.GROUPID"
                 },
                 "type": "input",
-                "key": "MDTYPE",
+                "key": "mets.dmdSec.GROUPID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xlink:href"
+                    "label": "mets.dmdSec.ADMID"
                 },
                 "type": "input",
-                "key": "xlink:href",
+                "key": "mets.dmdSec.ADMID"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "xlink:type"
+                    "label": "mets.dmdSec.CREATED"
                 },
                 "type": "input",
-                "key": "xlink:type",
+                "key": "mets.dmdSec.CREATED"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "ID"
+                    "label": "mets.dmdSec.STATUS"
                 },
                 "type": "input",
-                "key": "ID",
+                "key": "mets.dmdSec.STATUS"
             },
             {
-                "key": "agents",
-                "fieldGroup": [
-                    {
-                        "key": "agent_1",
-                        #"className": "display-flex",
-                        "fieldGroup": [
-                            {
-                                "type": "input",
-                                "key": "ROLE",
-                                "templateOptions": {
-                                    "label": "ROLE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "TYPE",
-                                "templateOptions": {
-                                    "label": "TYPE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "OTHERTYPE",
-                                "templateOptions": {
-                                    "label": "OTHERTYPE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "name",
-                                "templateOptions": {
-                                    "label": "name"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "note",
-                                "templateOptions": {
-                                    "label": "note"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "key": "agent_2",
-                        #"className": "display-flex",
-                        "fieldGroup": [
-                            {
-                                "type": "input",
-                                "key": "ROLE",
-                                "templateOptions": {
-                                    "label": "ROLE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "TYPE",
-                                "templateOptions": {
-                                    "label": "TYPE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "OTHERTYPE",
-                                "templateOptions": {
-                                    "label": "OTHERTYPE"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "name",
-                                "templateOptions": {
-                                    "label": "name"
-                                }
-                            },
-                            {
-                                "type": "input",
-                                "key": "note",
-                                "templateOptions": {
-                                    "label": "note"
-                                }
-                            }
-                        ]
-                    }
-                ]
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.ID"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.ID"
             },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.LOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.LOCTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.OTHERLOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.OTHERLOCTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.MDTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.MDTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.OTHERMDTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.OTHERMDTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.MDTYPEVERSION"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.MDTYPEVERSION"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.MIMETYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.MIMETYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.SIZE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.SIZE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.CREATED"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.CHECKSUM"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.CHECKSUM"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.CHECKSUMTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.CHECKSUMTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.LABEL"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdRef.XPTR"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdRef.XPTR"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.ID"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.MDTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.MDTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.OTHERMDTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.OTHERMDTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.MDTYPEVERSION"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.MDTYPEVERSION"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.MIMETYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.MIMETYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.SIZE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.SIZE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.CREATED"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.CHECKSUM"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.CHECKSUM"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.CHECKSUMTYPE"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.CHECKSUMTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.dmdSec.mdWrap.LABEL"
+                },
+                "type": "input",
+                "key": "mets.dmdSec.mdWrap.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.ID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.techMD.ID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.techMD.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.techMD.GROUPID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.techMD.GROUPID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.techMD.ADMID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.techMD.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.techMD.CREATED"
+                },
+                "type": "input",
+                "key": "mets.amdSec.techMD.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.techMD.STATUS"
+                },
+                "type": "input",
+                "key": "mets.amdSec.techMD.STATUS"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.rightsMD.ID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.rightsMD.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.rightsMD.GROUPID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.rightsMD.GROUPID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.rightsMD.ADMID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.rightsMD.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.rightsMD.CREATED"
+                },
+                "type": "input",
+                "key": "mets.amdSec.rightsMD.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.rightsMD.STATUS"
+                },
+                "type": "input",
+                "key": "mets.amdSec.rightsMD.STATUS"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.sourceMD.ID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.sourceMD.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.sourceMD.GROUPID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.sourceMD.GROUPID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.sourceMD.ADMID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.sourceMD.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.sourceMD.CREATED"
+                },
+                "type": "input",
+                "key": "mets.amdSec.sourceMD.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.sourceMD.STATUS"
+                },
+                "type": "input",
+                "key": "mets.amdSec.sourceMD.STATUS"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.digiprovMD.ID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.digiprovMD.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.digiprovMD.GROUPID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.digiprovMD.GROUPID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.digiprovMD.ADMID"
+                },
+                "type": "input",
+                "key": "mets.amdSec.digiprovMD.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.digiprovMD.CREATED"
+                },
+                "type": "input",
+                "key": "mets.amdSec.digiprovMD.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.amdSec.digiprovMD.STATUS"
+                },
+                "type": "input",
+                "key": "mets.amdSec.digiprovMD.STATUS"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.fileSec.ID"
+                },
+                "type": "input",
+                "key": "mets.fileSec.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.fileSec.fileGrp.ID"
+                },
+                "type": "input",
+                "key": "mets.fileSec.fileGrp.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.fileSec.fileGrp.VERSDATE"
+                },
+                "type": "input",
+                "key": "mets.fileSec.fileGrp.VERSDATE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.fileSec.fileGrp.ADMID"
+                },
+                "type": "input",
+                "key": "mets.fileSec.fileGrp.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.fileSec.fileGrp.USE"
+                },
+                "type": "input",
+                "key": "mets.fileSec.fileGrp.USE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.ID"
+                },
+                "type": "input",
+                "key": "mets.structMap.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.TYPE"
+                },
+                "type": "input",
+                "key": "mets.structMap.TYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.LABEL"
+                },
+                "type": "input",
+                "key": "mets.structMap.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.ID"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.ORDER"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.ORDER"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.ORDERLABEL"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.ORDERLABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.LABEL"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.DMDID"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.DMDID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.ADMID"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.TYPE"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.TYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structMap.div.CONTENTIDS"
+                },
+                "type": "input",
+                "key": "mets.structMap.div.CONTENTIDS"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structLink.ID"
+                },
+                "type": "input",
+                "key": "mets.structLink.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.structLink.smLink.ID"
+                },
+                "type": "input",
+                "key": "mets.structLink.smLink.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.ID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.CREATED"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.LABEL"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.ID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.STRUCTID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.STRUCTID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.BTYPE"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.BTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.CREATED"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.CREATED"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.LABEL"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.GROUPID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.GROUPID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.ADMID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.ADMID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.interfaceDef.ID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.interfaceDef.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.interfaceDef.LABEL"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.interfaceDef.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.interfaceDef.LOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.interfaceDef.LOCTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.interfaceDef.OTHERLOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.interfaceDef.OTHERLOCTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.mechanism.ID"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.mechanism.ID"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.mechanism.LABEL"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.mechanism.LABEL"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.mechanism.LOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.mechanism.LOCTYPE"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "mets.behaviorSec.behavior.mechanism.OTHERLOCTYPE"
+                },
+                "type": "input",
+                "key": "mets.behaviorSec.behavior.mechanism.OTHERLOCTYPE"
+            }
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
         'specification_data': {
@@ -1735,18 +1402,21 @@ def installProfileSIP(): # Profile Submission Information Package
             "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
             "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
             "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
-            "LABEL": "Test of SIP 1",
-            "TYPE": "Personnel",
-            "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
+            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
+            "mets.LABEL": "Test of SIP 1",
+            "mets.TYPE": "Personnel",
+            "mets.OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
             "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "CREATEDATE": "2016-06-08T10:44:00+02:00",
-            "RECORDSTATUS": "NEW",
+            "mets.metsHdr.CREATEDATE": "2016-06-08T10:44:00+02:00",
+            "mets.ID": "ID" + str(uuid.uuid4()),
+            "mets.metsHdr.ID": "ID" + str(uuid.uuid4()),
+            "mets.metsHdr.LASTMODDATE": "2016-06-08T10:44:00+02:00",
+            "mets.metsHdr.RECORDSTATUS": "NEW",
             "ext:OAISTYPE": "SIP",
             "agentName": "name",
             "agentNote": "note",
             "REFERENCECODE": "SE/RA/123456/24/F",
-            "SUBMISSIONAGREEMENT": "RA 13-2011/5329, 2012-04-12",
+            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
             "MetsIdentifier": "sip.xml",
             "filename": "sip.txt",
             "SMLabel": "Profilestructmap",
@@ -1757,22 +1427,12 @@ def installProfileSIP(): # Profile Submission Information Package
             "xlink:href": "file:///metadata/premis.xml",
             "xlink:type": "simple",
             "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
-            "agents": {
-                "agent_1": {
-                    "ROLE": "ARCHIVIST",
-                    "TYPE": "ORGANIZATION",
-                    "OTHERTYPE": "",
-                    "name": "Arkivbildar namn",
-                    "note": "VAT:SE201345098701"
-                },
-                "agent_2": {
-                    "ROLE": "ARCHIVIST",
-                    "TYPE": "OTHER",
-                    "OTHERTYPE": "SOFTWARE",
-                    "name": "By hand Systems",
-                    "note": "1.0.0"
-                }
-            }
+            "agentname1": "Government X",
+            "agentnote1": "ORG:2010340930",
+            "agentname2": "Government X:DEP Y",
+            "agentnote2": "ORG:2010340920",
+            "agentname3": "HR Employed",
+            "agentnote3": "5.0.34",
         }
     }
 
@@ -2324,7 +1984,7 @@ def installProfileEvent(): # Profile Event
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Event profile for SIP xxyyzz',
-        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONPremisTemplate.json')).read()),
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONPremisEventTemplate.json')).read()),
         'specification_data': {
             "xmlns:mets": "http://www.loc.gov/METS/",
             "xmlns:premis": "http://www.loc.gov/premis/v3",
@@ -2337,9 +1997,9 @@ def installProfileEvent(): # Profile Event
             "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
             "LABEL": "Test of SIP 1",
             "TYPE": "Personnel",
+            "premis.version": "3.0",
             "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
             "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "CREATEDATE": "2016-06-08T10:44:00+02:00",
             "RECORDSTATUS": "NEW",
             "ext:OAISTYPE": "SIP",
             "agentName": "name",
