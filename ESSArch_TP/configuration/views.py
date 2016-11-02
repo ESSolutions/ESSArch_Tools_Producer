@@ -1,4 +1,4 @@
-from configuration.models import (
+from ESSArch_Core.configuration.models import (
     Agent,
     EventType,
     Parameter,

@@ -2,8 +2,8 @@ from django.contrib.auth.models import User, Group, Permission
 
 from rest_framework import serializers
 
-from preingest.models import ProcessStep, ProcessTask
-from preingest.util import available_tasks
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
+from ESSArch_Core.util import available_tasks
 
 import jsonpickle
 import json

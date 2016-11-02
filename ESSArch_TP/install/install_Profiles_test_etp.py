@@ -31,11 +31,11 @@ import os
 from django.conf import settings
 
 # own models etc
-from configuration.models import (
+from ESSArch_Core.configuration.models import (
     EventType
 )
 
-from ip.models import (
+from ESSArch_Core.ip.models import (
     EventIP,
     InformationPackage,
     ArchivalInstitution,
@@ -44,7 +44,7 @@ from ip.models import (
     ArchivalLocation,
 )
 
-from preingest.models import (
+from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep,
     ProcessTask,
 )
@@ -53,7 +53,7 @@ from ip.steps import (
     prepare_ip,
 )
 
-from profiles.models import (
+from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
     ProfileRel,

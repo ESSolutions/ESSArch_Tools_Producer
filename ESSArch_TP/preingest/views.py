@@ -1,7 +1,7 @@
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from preingest.models import (
+from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep,
     ProcessTask,
 )

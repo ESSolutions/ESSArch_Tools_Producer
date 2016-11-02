@@ -1,4 +1,4 @@
-from preingest.models import ProcessStep, ProcessTask
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
 
 def prepare_ip(label, responsible):

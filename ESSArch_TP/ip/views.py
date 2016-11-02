@@ -2,11 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from configuration.models import (
+from ESSArch_Core.configuration.models import (
     EventType,
 )
 
-from ip.models import (
+from ESSArch_Core.ip.models import (
     ArchivalInstitution,
     ArchivistOrganization,
     ArchivalType,

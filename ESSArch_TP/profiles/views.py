@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ip.models import (
+from ESSArch_Core.ip.models import (
     InformationPackage,
 )
 
@@ -14,7 +14,7 @@ from profiles.serializers import (
     SubmissionAgreementSerializer
 )
 
-from profiles.models import (
+from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
     ProfileLock,

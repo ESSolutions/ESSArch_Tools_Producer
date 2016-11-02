@@ -4,18 +4,18 @@ import hashlib, os, shutil, tarfile, urllib, zipfile
 
 from django.conf import settings
 
-from demo.xmlGenerator import XMLGenerator
+from ESSArch_Core.xml.Generator.xmlGenerator import XMLGenerator
 
 from fido.fido import Fido
 
 from lxml import etree
 
-from configuration.models import Path
-from preingest.dbtask import DBTask
-from ip.models import InformationPackage
-from preingest.models import ProcessStep, ProcessTask
+from ESSArch_Core.configuration.models import Path
+from ESSArch_Core.WorkflowEngine.dbtask import DBTask
+from ESSArch_Core.ip.models import InformationPackage
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
-from preingest.util import getSchemas
+from ESSArch_Core.util import getSchemas
 
 class PrepareIP(DBTask):
     event_type = 10100

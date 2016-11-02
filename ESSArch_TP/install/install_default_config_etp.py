@@ -27,7 +27,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from configuration.models import Parameter, Path, EventType, Agent
+from ESSArch_Core.configuration.models import Parameter, Path, EventType, Agent
 
 # settings
 site_profile = "SE" # SE_NEW, SE, NO, EC

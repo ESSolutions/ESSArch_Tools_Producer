@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 """
 
-from configuration.models import Parameter, Path, EventType, Agent
+from ESSArch_Core.configuration.models import Parameter, Path, EventType, Agent
 from django.contrib import admin
 
 

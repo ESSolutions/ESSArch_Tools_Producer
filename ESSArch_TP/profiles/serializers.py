@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from profiles.models import (
+from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
     ProfileLock,

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ip.models import (
+from ESSArch_Core.ip.models import (
     ArchivalInstitution,
     ArchivistOrganization,
     ArchivalType,
