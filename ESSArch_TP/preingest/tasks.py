@@ -258,56 +258,57 @@ class AppendEvents(DBTask):
     """
 
     def run(self, filename="", events={}):
-        for event in events:
-            inputD = {
-                "path": filename,
-                "elementToAppendTo": "premis",
-                "template": {
-                    "-name": "event",
+        generator = XMLGenerator()
+        template = {
+            "-name": "event",
+            "-min": 1,
+            "-max": 1,
+            "-allowEmpty": 1,
+            "-namespace": "premis",
+            "-children": [
+                {
+                    "-name": "eventIdentifier",
                     "-min": 1,
                     "-max": 1,
                     "-allowEmpty": 1,
                     "-namespace": "premis",
                     "-children": [
                         {
-                            "-name": "eventIdentifier",
+                            "-name": "eventIdentifierType",
+                            "-min": 1,
+                            "-max": 1,
+                            "-namespace": "premis",
+                            "#content": [{"var":"eventIdentifierType"}]
+                        },{
+                            "-name": "eventIdentifierValue",
                             "-min": 1,
                             "-max": 1,
                             "-allowEmpty": 1,
                             "-namespace": "premis",
-                            "-children": [
-                                {
-                                    "-name": "eventIdentifierType",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var":"eventIdentifierType"}]
-                                },{
-                                    "-name": "eventIdentifierValue",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-allowEmpty": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var": "eventIdentifierValue"}]
-                                },
-                            ]
+                            "#content": [{"var": "eventIdentifierValue"}]
                         },
-                        {
-                            "-name": "eventType",
-                            "-min": 1,
-                            "-max": 1,
-                            "-allowEmpty": 1,
-                            "-namespace": "premis",
-                            "#content": [{"var": "eventType"}]
-                        },
-                        {
-                            "-name": "eventDateTime",
-                            "-min": 1,
-                            "-max": 1,
-                            "-allowEmpty": 1,
-                            "-namespace": "premis",
-                            "#content": [{"var": "eventDateTime"}]
-                        },
+                    ]
+                },
+                {
+                    "-name": "eventType",
+                    "-min": 1,
+                    "-max": 1,
+                    "-allowEmpty": 1,
+                    "-namespace": "premis",
+                    "#content": [{"var": "eventType"}]
+                },
+                {
+                    "-name": "eventDateTime",
+                    "-min": 1,
+                    "-max": 1,
+                    "-allowEmpty": 1,
+                    "-namespace": "premis",
+                    "#content": [{"var": "eventDateTime"}]
+                },
+                {
+                    "-name": "eventDetailInformation",
+                    "-namespace": "premis",
+                    "-children": [
                         {
                             "-name": "eventDetail",
                             "-min": 1,
@@ -316,106 +317,111 @@ class AppendEvents(DBTask):
                             "-namespace": "premis",
                             "#content": [{"var": "eventDetail"}]
                         },
+                    ]
+                },
+                {
+                    "-name": "eventOutcomeInformation",
+                    "-min": 1,
+                    "-max": 1,
+                    "-allowEmpty": 1,
+                    "-namespace": "premis",
+                    "-children": [
                         {
-                            "-name": "eventOutcomeInformation",
+                            "-name": "eventOutcome",
                             "-min": 1,
                             "-max": 1,
                             "-allowEmpty": 1,
                             "-namespace": "premis",
-                            "-children": [
-                                {
-                                    "-name": "eventOutcome",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-allowEmpty": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var":"eventOutcome"}]
-                                },
-                                {
-                                    "-name": "eventOutcomeDetail",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-allowEmpty": 1,
-                                    "-namespace": "premis",
-                                    "-children": [
-                                        {
-                                            "-name": "eventOutcomeDetailNote",
-                                            "-min": 1,
-                                            "-max": 1,
-                                            "-allowEmpty": 1,
-                                            "-namespace": "premis",
-                                            "#content": [{"var":"eventOutcomeDetailNote"}]
-                                        },
-                                    ]
-                                },
-                            ]
+                            "#content": [{"var":"eventOutcome"}]
                         },
                         {
-                            "-name": "linkingAgentIdentifier",
+                            "-name": "eventOutcomeDetail",
                             "-min": 1,
                             "-max": 1,
                             "-allowEmpty": 1,
                             "-namespace": "premis",
                             "-children": [
                                 {
-                                    "-name": "linkingAgentIdentifierType",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var":"linkingAgentIdentifierType"}]
-                                },
-                                {
-                                    "-name": "linkingAgentIdentifierValue",
+                                    "-name": "eventOutcomeDetailNote",
                                     "-min": 1,
                                     "-max": 1,
                                     "-allowEmpty": 1,
                                     "-namespace": "premis",
-                                    "#content": [{"var": "linkingAgentIdentifierValue"}]
-                                },
-                            ]
-                        },
-                        {
-                            "-name": "linkingObjectIdentifier",
-                            "-min": 1,
-                            "-max": 1,
-                            "-allowEmpty": 1,
-                            "-namespace": "premis",
-                            "-children": [
-                                {
-                                    "-name": "linkingObjectIdentifierType",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var":"linkingObjectIdentifierType"}]
-                                },
-                                {
-                                    "-name": "linkingObjectIdentifierValue",
-                                    "-min": 1,
-                                    "-max": 1,
-                                    "-allowEmpty": 1,
-                                    "-namespace": "premis",
-                                    "#content": [{"var": "linkingObjectIdentifierValue"}]
+                                    "#content": [{"var":"eventOutcomeDetailNote"}]
                                 },
                             ]
                         },
                     ]
                 },
-                "data": {
-                    "eventIdentifierType": "SE/RA",
-                    "eventIdentifierValue": str(event.id),
-                    "eventType": str(event.eventType.eventType),
-                    "eventDateTime": str(event.eventDateTime),
-                    "eventDetail": event.eventDetail,
-                    "eventOutcome": event.eventOutcome,
-                    "eventOutcomeDetailNote": event.eventOutcomeDetailNote,
-                    "linkingAgentIdentifierType": "SE/RA",
-                    "linkingAgentIdentifierValue": "admin",
-                    "linkingObjectIdentifierType": "SE/RA",
-                    "linkingObjectIdentifierValue": str(event.linkingObjectIdentifierValue.id),
-                }
+                {
+                    "-name": "linkingAgentIdentifier",
+                    "-min": 1,
+                    "-max": 1,
+                    "-allowEmpty": 1,
+                    "-namespace": "premis",
+                    "-children": [
+                        {
+                            "-name": "linkingAgentIdentifierType",
+                            "-min": 1,
+                            "-max": 1,
+                            "-namespace": "premis",
+                            "#content": [{"var":"linkingAgentIdentifierType"}]
+                        },
+                        {
+                            "-name": "linkingAgentIdentifierValue",
+                            "-min": 1,
+                            "-max": 1,
+                            "-allowEmpty": 1,
+                            "-namespace": "premis",
+                            "#content": [{"var": "linkingAgentIdentifierValue"}]
+                        },
+                    ]
+                },
+                {
+                    "-name": "linkingObjectIdentifier",
+                    "-min": 1,
+                    "-max": 1,
+                    "-allowEmpty": 1,
+                    "-namespace": "premis",
+                    "-children": [
+                        {
+                            "-name": "linkingObjectIdentifierType",
+                            "-min": 1,
+                            "-max": 1,
+                            "-namespace": "premis",
+                            "#content": [{"var":"linkingObjectIdentifierType"}]
+                        },
+                        {
+                            "-name": "linkingObjectIdentifierValue",
+                            "-min": 1,
+                            "-max": 1,
+                            "-allowEmpty": 1,
+                            "-namespace": "premis",
+                            "#content": [{"var": "linkingObjectIdentifierValue"}]
+                        },
+                    ]
+                },
+            ]
+        }
+
+        for event in events:
+
+            data = {
+                "eventIdentifierType": "SE/RA",
+                "eventIdentifierValue": str(event.id),
+                "eventType": str(event.eventType.eventType),
+                "eventDateTime": str(event.eventDateTime),
+                "eventDetail": event.eventDetail,
+                "eventOutcome": event.eventOutcome,
+                "eventOutcomeDetailNote": event.eventOutcomeDetailNote,
+                "linkingAgentIdentifierType": "SE/RA",
+                "linkingAgentIdentifierValue": "admin",
+                "linkingObjectIdentifierType": "SE/RA",
+                "linkingObjectIdentifierValue": str(event.linkingObjectIdentifierValue.id),
             }
 
-            appendXML(inputD)
+            generator.insert(filename, "premis", template, data)
+
         self.set_progress(100, total=100)
 
     def undo(self, filename="", events={}):
@@ -491,14 +497,15 @@ class ValidateFiles(DBTask):
             fileformat = f.get("{%s}FILEFORMATNAME" % nsmap['ext'])
             checksum = f.get("CHECKSUM")
 
-            step.tasks.add(ProcessTask.objects.create(
-                name="preingest.tasks.ValidateFileFormat",
-                params={
-                    "filename": filename,
-                    "fileformat": fileformat,
-                },
-                information_package=ip
-            ))
+            if fileformat is not None:
+                step.tasks.add(ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateFileFormat",
+                    params={
+                        "filename": filename,
+                        "fileformat": fileformat,
+                    },
+                    information_package=ip
+                ))
 
             step.tasks.add(ProcessTask.objects.create(
                 name="preingest.tasks.ValidateIntegrity",
