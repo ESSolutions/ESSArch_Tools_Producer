@@ -68,39 +68,64 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             location: null,
             other: null
         };
+
         $scope.showSelectedInstitution = function(node) {
             if(angular.isUndefined(node.id)){
+                $rootScope.navigationFilter.institution = null;
                 return;
             }
-            $rootScope.navigationFilter.institution = node;
-            console.log($rootScope.navigationFilter);
+            if($rootScope.navigationFilter.institution == node.id){
+                $rootScope.navigationFilter.institution = null;
+            } else {
+                $rootScope.navigationFilter.institution = node.id;
+            }
         }
+
         $scope.showSelectedOrganization = function(node) {
             if(angular.isUndefined(node.id)){
+                $rootScope.navigationFilter.organization = null;
                 return;
             }
-            $rootScope.navigationFilter.organization = node;
-            console.log($rootScope.navigationFilter);
+            if($rootScope.navigationFilter.organization == node.id) {
+                $rootScope.navigationFilter.organization = null;
+            } else {
+                $rootScope.navigationFilter.organization = node.id;
+            }
         }
+
         $scope.showSelectedType = function(node) {
             if(angular.isUndefined(node.id)){
+                $rootScope.navigationFilter.type = null;
                 return;
             }
-            $rootScope.navigationFilter.type = node;
-            console.log($rootScope.navigationFilter);
+            if($rootScope.navigationFilter.type == node.id) {
+                $rootScope.navigationFilter.type = null;
+            } else {
+                $rootScope.navigationFilter.type = node.id;
+            }
         }
+
         $scope.showSelectedLocation = function(node) {
            if(angular.isUndefined(node.id)){
+                $rootScope.navigationFilter.location = null;
                 return;
             }
-            $rootScope.navigationFilter.location = node;
-            console.log($rootScope.navigationFilter);
+           if($rootScope.navigationFilter.location == node.id) {
+                $rootScope.navigationFilter.location = null;
+           } else {
+                $rootScope.navigationFilter.location = node.id;
+           }
         }
+
         $scope.showSelectedOther = function(node) {
             if(angular.isUndefined(node.id)){
+                $rootScope.navigationFilter.other == null;
                 return;
             }
-            $rootScope.navigationFilter.other = node;
-            console.log($rootScope.navigationFilter);
+            if($rootScope.navigationFilter.other == node.id) {
+                $rootScope.navigationFilter.other == null;
+            } else {
+                $rootScope.navigationFilter.other = node.id;
+            }
         }
 });
