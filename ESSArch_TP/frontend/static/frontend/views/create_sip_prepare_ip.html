@@ -50,7 +50,10 @@
                                         <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
                                     </td>
                                     <td><select class="form-control table-col" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
-                                    <td><p class="table-col">{{}}</p></td>
+                                    <td>
+                                            <button ng-if="!row.locked" class="btn btn-success btn-sm" ng-click="lockSa(saProfile)">{{'LOCKPROFILE' | translate}}</button>
+                                            <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
+                                        <p class="table-col">{{}}</p></td>
                                     <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                                 </tr>
 
@@ -66,7 +69,10 @@
                                         <a class="table-col" ng-disabled="row.locked" ng-click="profileClickCondition(row)">{{row.profile_label}}</a>
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="row.locked" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
-                                    <td><p class="table-col" style="background-color: red; font-size: 14px;">{{row.locked?('LOCKED' | translate):''}}</p></td>
+                                    <td>
+                                        <button ng-if="!row.locked" class="btn btn-success btn-sm" ng-click="lockProfileModal(row)">{{'LOCKPROFILE' | translate}}</button>
+                                        <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -98,7 +104,6 @@
                                 <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                             </div>-->
                             <button type="submit" class="btn btn-info submit-button">{{'SAVEPROFILE' | translate}}</button>
-                            <button type="button" ng-click="lockProfileModal()" class="btn btn-info submit-button">{{'LOCKPROFILE' | translate}}</button>
                         </form>
                     </div>
                 </div>

@@ -364,18 +364,18 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         }
     }
     //Unlock profile and redirect to Prepare-ip
-    $scope.unlockAndRedirect = function() {
+    $scope.unlockAndRedirect = function(profileObject) {
             $http({
                 method: 'GET',
                 url: $scope.ip.url
             }).then(function(response) {
                 response.data.locks.forEach(function(lock) {
-                    if(lock.information_package == $scope.ip.url && lock.submission_agreement == $scope.saProfile.profile.url && lock.profile == $scope.profileToSave.url){
+                    if(lock.information_package == $scope.ip.url && lock.submission_agreement == $scope.saProfile.profile.url && lock.profile == profileObject.profile.url){
                         $http({
                             method: 'DELETE',
                             url: lock.url
                         }).then(function() {
-                            $scope.goToPrepareIp();
+                            profileObject.locked = false;
                         });
                     }
                 });

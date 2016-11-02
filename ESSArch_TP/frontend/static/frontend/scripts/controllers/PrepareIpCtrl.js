@@ -491,12 +491,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     //Creates and shows modal for profile lock.
-    $scope.lockProfileModal = function () {
+    $scope.lockProfileModal = function (profileObject) {
+            $scope.profileToSave = profileObject;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/lock-profile-modal.html',
+            scope: $scope,
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
         })
@@ -517,12 +519,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }).then(function (response) {
             console.log("locked");
-            $scope.profileToSave.locked = true;
             profileObject.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
             });
+    }
+    $scope.lockSa = function(sa) {
+        console.log("Sa to be locked");
+        console.log(sa);
     }
     //Create and initialize new ip
     $scope.prepareIp = function (label) {
