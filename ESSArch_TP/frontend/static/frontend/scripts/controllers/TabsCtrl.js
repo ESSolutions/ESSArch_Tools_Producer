@@ -5,12 +5,10 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
     $scope.myPage = $translate.instant('MYPAGE');
     $scope.createSip = $translate.instant('CREATESIP');
     $scope.submitSip = $translate.instant('SUBMITSIP');
-    $scope.receiveSip = $translate.instant('RECEIVESIP');
     $scope.tabs = [
     { link: 'home.myPage', label: $scope.myPage },
     { link: 'home.createSip', label: $scope.createSip },
     { link: 'home.submitSip', label: $scope.submitSip },
-    { link: 'home.receiveSip', label : $scope.receiveSip },
     ];
     $scope.is_active = function(tab) {
         var isAncestorOfCurrentRoute = $state.includes(tab.link);
