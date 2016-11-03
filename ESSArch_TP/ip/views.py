@@ -1,3 +1,5 @@
+import shutil
+
 from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -100,6 +102,26 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         prepare_ip(label, responsible).run()
         return Response({"status": "Prepared IP"})
+
+    def destroy(self, request, pk=None):
+        ip = InformationPackage.objects.get(pk=pk)
+
+        try:
+            shutil.rmtree(ip.ObjectPath)
+        except:
+            pass
+
+        try:
+            shutil.rmtree(ip.ObjectPath + ".tar")
+        except:
+            pass
+
+        try:
+            shutil.rmtree(ip.ObjectPath + ".zip")
+        except:
+            pass
+
+        return super(InformationPackageViewSet, self).destroy(request, pk=pk)
 
     @detail_route()
     def events(self, request, pk=None):
