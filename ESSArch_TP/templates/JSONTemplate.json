@@ -838,5 +838,10 @@
         "xsi": "http://www.w3.org/2001/XMLSchema-instance",
         "xlink": "http://www.w3.org/1999/xlink",
         "ext": "ExtensionMETS"
-    }
+    },
+    "-schemasToPreserve": [
+        "http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd",
+        "http://xml.ra.se/e-arkiv/METS/version10/CSPackageExtensionMETS.xsd"
+    ],
+    "-schemaPreservationLocation": "xsd_files"
 }
