@@ -256,40 +256,7 @@ def installProfileTransferProject(): # Profile Transfer Project
         'type': 'Implementation',
         'status': 'Agreed',
         'label': 'Example of SIP for delivery of SE ERMS',
-        'schemas': [
-            {
-                'type': 'mets',
-                'namespace': 'http://www.loc.gov/METS/',
-                'location': 'http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd',
-                'version': '1.11',
-                'preserve': True,
-                'preservation_location': 'metadata'
-            },
-            {
-                'type': 'mets_ext',
-                'namespace': 'EXTMETS',
-                'location': 'http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd',
-                'preserve': True,
-                'preservation_location': 'metadata'
-            },
-            {
-                'type': 'mets',
-                'namespace': 'http://www.loc.gov/METS/',
-                'location': 'http://schema.arkivverket.no/METS/info.xsd',
-                'version': '1.91',
-                'preserve': True,
-                'preservation_location': 'metadata'
-            },
-            {
-                'type': 'premis',
-                'namespace': 'http://xml.ra.se/PREMIS',
-                'location': 'http://xml.ra.se/PREMIS/ESS/RA_PREMIS_PreVersion.xsd',
-                'version': '2.0',
-                'preserve': True,
-                'preservation_location': 'metadata'
-            },
-
-        ],
+        'schemas': {},
         'specification': {},
         'specification_data': {},
     }
