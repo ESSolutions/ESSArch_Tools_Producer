@@ -68,7 +68,6 @@ site_profile = "SE" # SE_NEW, SE, NO, EC
 def installProfiles(): # Install all different profiles
     # First remove all existing data
     EventIP.objects.all().delete()
-    EventType.objects.all().delete()
     ArchivalInstitution.objects.all().delete()
     ArchivistOrganization.objects.all().delete()
     ArchivalType.objects.all().delete()
@@ -102,7 +101,6 @@ def installIPs():
     installArchivistOrganization()              # Archivist Organization
     installArchivalType()                       # Archival Type
     installArchivalLocation()                   # Archival Location
-    installEventTypes()                         # Event Types
     installInformationPackages()                # Information Package
     # installEventIPs()                           # Events
 
@@ -2153,34 +2151,6 @@ def installInformationPackages():
         prepare_ip(**dct).run()
 
     print 'Installed information packages'
-
-    return 0
-
-
-def installEventTypes():
-    lst = [
-        {
-            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c1',
-            'eventType': 10100,
-            'eventDetail': 'Prepare IP',
-        },
-        {
-            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c2',
-            'eventType': 10200,
-            'eventDetail': 'Create SIP',
-        },
-        {
-            'id': '9ddbcb6d-955a-4a4d-a462-bf52a708f8c3',
-            'eventType': 10300,
-            'eventDetail': 'Create directory strucutre',
-        },
-    ]
-
-    # create according to model with many fields
-    for dct in lst:
-        EventType.objects.create(**dct)
-
-    print 'Installed event types'
 
     return 0
 
