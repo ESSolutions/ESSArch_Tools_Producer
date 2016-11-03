@@ -1392,6 +1392,8 @@ def installProfileSIP(): # Profile Submission Information Package
             "xlink:href": "file:///metadata/premis.xml",
             "xlink:type": "simple",
             "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "mets.amdSec.ID": "ID" + str(uuid.uuid4()),
+            "mets.amdSec.digiprovMD.ID": "ID" + str(uuid.uuid4()),
             "agentname1": "Government X",
             "agentnote1": "ORG:2010340930",
             "agentname2": "Government X:DEP Y",
