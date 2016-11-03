@@ -247,6 +247,122 @@
             "-namespace": "mets"
         },
         {
+            "-max": 1,
+            "-min": 0,
+            "-name": "amdSec",
+            "-namespace": "mets",
+            "-attr": [
+                {
+                    "-name": "ID",
+                    "#content": [
+                        {
+                            "var": "mets.amdSec.ID"
+                        }
+                    ]
+                }
+            ],
+            "-children": [
+                {
+                    "-name": "digiprovMD",
+                    "-namespace": "mets",
+                    "-attr": [
+                        {
+                            "-name": "ID",
+                            "#content": [
+                                {
+                                    "var": "mets.amdSec.digiprovMD.ID"
+                                }
+                            ]
+                        }
+                    ],
+                    "-children": [
+                        {
+                            "-name": "mdRef",
+                            "-namespace": "mets",
+                            "-containsFiles": true,
+                            "-filters": {"href": "metadata/premis.xml"},
+                            "-attr": [
+                                {
+                                    "-name": "MIMETYPE",
+                                    "#content": [
+                                        {
+                                            "var": "FMimetype"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "href",
+                                    "-namespace": "xlink",
+                                    "#content": [
+                                        {
+                                            "var": "href"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "LOCTYPE",
+                                    "#content": [
+                                        {
+                                            "var": "FLoctype"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "CREATED",
+                                    "#content": [
+                                        {
+                                            "var": "FCreated"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "CHECKSUM",
+                                    "#content": [
+                                        {
+                                            "var": "FChecksum"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "type",
+                                    "-namespace": "xlink",
+                                    "#content": [
+                                        {
+                                            "text": "simple"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "ID",
+                                    "#content": [
+                                        {
+                                            "var": "FID"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "MDTYPE",
+                                    "#content": [
+                                        {
+                                            "text": "PREMIS"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-name": "CHECKSUMTYPE",
+                                    "#content": [
+                                        {
+                                            "var": "FChecksumType"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "-attr": [
                 {
                     "#content": [
@@ -301,6 +417,7 @@
                     "-children": [
                         {
                             "-containsFiles": true,
+                            "-filters": {"href":"^((?!metadata/premis.xml).)*$"},
                             "-attr": [
                                 {
                                     "#content": [
@@ -440,123 +557,270 @@
             ],
             "-children": [
                 {
+                    "-max": 1,
+                    "-min": 0,
+                    "-name": "div",
+                    "-namespace": "mets",
                     "-attr": [
                         {
                             "#content": [
                                 {
-                                    "var": "mets.structMap.div.ID"
-                                }
-                            ],
-                            "-name": "ID",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.ORDER"
-                                }
-                            ],
-                            "-name": "ORDER",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.ORDERLABEL"
-                                }
-                            ],
-                            "-name": "ORDERLABEL",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.LABEL"
+                                    "text": "ID OF IP"
                                 }
                             ],
                             "-name": "LABEL",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.DMDID"
-                                }
-                            ],
-                            "-name": "DMDID",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.ADMID"
-                                }
-                            ],
-                            "-name": "ADMID",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.TYPE"
-                                }
-                            ],
-                            "-name": "TYPE",
-                            "-req": 0
-                        },
-                        {
-                            "#content": [
-                                {
-                                    "var": "mets.structMap.div.CONTENTIDS"
-                                }
-                            ],
-                            "-name": "CONTENTIDS",
                             "-req": 0
                         }
                     ],
                     "-children": [
                         {
-                            "-containsFiles": true,
+                            "-max": 1,
+                            "-min": 0,
+                            "-name": "div",
+                            "-namespace": "mets",
                             "-attr": [
                                 {
                                     "#content": [
                                         {
-                                            "var": "mets.structMap.div.fptr.ID"
+                                            "text": "content"
                                         }
                                     ],
-                                    "-name": "ID",
-                                    "-req": 0
-                                },
-                                {
-                                    "#content": [
-                                        {
-                                            "var": "FID"
-                                        }
-                                    ],
-                                    "-name": "FILEID",
-                                    "-req": 1
-                                },
-                                {
-                                    "#content": [
-                                        {
-                                            "var": "mets.structMap.div.fptr.CONTENTIDS"
-                                        }
-                                    ],
-                                    "-name": "CONTENTIDS",
+                                    "-name": "LABEL",
                                     "-req": 0
                                 }
                             ],
-                            "-children": [],
-                            "-max": -1,
+                            "-children": [
+                                {
+                                    "-containsFiles": true,
+                                    "-filters": {"href":"^(?!.*(metadata/premis.xml|.*(.xsd))).*$"},
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "mets.structMap.div.div.fptr.ID"
+                                                }
+                                            ],
+                                            "-name": "ID",
+                                            "-req": 0
+                                        },
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "FID"
+                                                }
+                                            ],
+                                            "-name": "FILEID",
+                                            "-req": 1
+                                        },
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "mets.structMap.div.div.fptr.CONTENTIDS"
+                                                }
+                                            ],
+                                            "-name": "CONTENTIDS",
+                                            "-req": 0
+                                        }
+                                    ],
+                                    "-children": [],
+                                    "-max": -1,
+                                    "-min": 0,
+                                    "-name": "fptr",
+                                    "-namespace": "mets"
+                                }
+                            ]
+                        },
+                        {
+                            "-max": 1,
                             "-min": 0,
-                            "-name": "fptr",
-                            "-namespace": "mets"
+                            "-name": "div",
+                            "-namespace": "mets",
+                            "-attr": [
+                                {
+                                    "#content": [
+                                        {
+                                            "text": "metadata"
+                                        }
+                                    ],
+                                    "-name": "LABEL",
+                                    "-req": 0
+                                }
+                            ],
+                            "-children": [
+                                {
+                                    "-max": 1,
+                                    "-min": 0,
+                                    "-name": "div",
+                                    "-namespace": "mets",
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "text": "preservation"
+                                                }
+                                            ],
+                                            "-name": "LABEL",
+                                            "-req": 0
+                                        }
+                                    ],
+                                    "-children": [
+                                        {
+                                            "-containsFiles": true,
+                                            "-filters": {"href": "metadata/premis.xml"},
+                                            "-attr": [
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "mets.structMap.div.div.fptr.ID"
+                                                        }
+                                                    ],
+                                                    "-name": "ID",
+                                                    "-req": 0
+                                                },
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "FID"
+                                                        }
+                                                    ],
+                                                    "-name": "FILEID",
+                                                    "-req": 1
+                                                },
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "mets.structMap.div.div.fptr.CONTENTIDS"
+                                                        }
+                                                    ],
+                                                    "-name": "CONTENTIDS",
+                                                    "-req": 0
+                                                }
+                                            ],
+                                            "-children": [],
+                                            "-max": -1,
+                                            "-min": 0,
+                                            "-name": "fptr",
+                                            "-namespace": "mets"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "-max": 1,
+                                    "-min": 0,
+                                    "-name": "div",
+                                    "-namespace": "mets",
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "text": "descriptive"
+                                                }
+                                            ],
+                                            "-name": "LABEL",
+                                            "-req": 0
+                                        }
+                                    ],
+                                    "-children": [
+                                        {
+                                            "-containsFiles": true,
+                                            "-filters": {"href":"metadata/ead.xml"},
+                                            "-attr": [
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "mets.structMap.div.div.fptr.ID"
+                                                        }
+                                                    ],
+                                                    "-name": "ID",
+                                                    "-req": 0
+                                                },
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "FID"
+                                                        }
+                                                    ],
+                                                    "-name": "FILEID",
+                                                    "-req": 1
+                                                },
+                                                {
+                                                    "#content": [
+                                                        {
+                                                            "var": "mets.structMap.div.div.fptr.CONTENTIDS"
+                                                        }
+                                                    ],
+                                                    "-name": "CONTENTIDS",
+                                                    "-req": 0
+                                                }
+                                            ],
+                                            "-children": [],
+                                            "-max": -1,
+                                            "-min": 0,
+                                            "-name": "fptr",
+                                            "-namespace": "mets"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "-max": 1,
+                            "-min": 0,
+                            "-name": "div",
+                            "-namespace": "mets",
+                            "-attr": [
+                                {
+                                    "#content": [
+                                        {
+                                            "text": "schemas"
+                                        }
+                                    ],
+                                    "-name": "LABEL",
+                                    "-req": 0
+                                }
+                            ],
+                            "-children": [
+                                {
+                                    "-containsFiles": true,
+                                    "-filters": {"href":".*(.xsd)"},
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "mets.structMap.div.div.fptr.ID"
+                                                }
+                                            ],
+                                            "-name": "ID",
+                                            "-req": 0
+                                        },
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "FID"
+                                                }
+                                            ],
+                                            "-name": "FILEID",
+                                            "-req": 1
+                                        },
+                                        {
+                                            "#content": [
+                                                {
+                                                    "var": "mets.structMap.div.div.fptr.CONTENTIDS"
+                                                }
+                                            ],
+                                            "-name": "CONTENTIDS",
+                                            "-req": 0
+                                        }
+                                    ],
+                                    "-children": [],
+                                    "-max": -1,
+                                    "-min": 0,
+                                    "-name": "fptr",
+                                    "-namespace": "mets"
+                                }
+                            ]
                         }
-                    ],
-                    "-max": 1,
-                    "-min": 0,
-                    "-name": "div",
-                    "-namespace": "mets"
+                    ]
                 }
             ],
             "-max": -1,
