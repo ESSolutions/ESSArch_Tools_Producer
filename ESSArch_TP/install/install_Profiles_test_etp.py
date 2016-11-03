@@ -445,6 +445,11 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_data_inventory': 'According to submit description',
         'structure': [
             {
+                'type': 'file',
+                'name': 'mets.xml',
+                'use': 'mets_file',
+            },
+            {
                 'type': 'folder',
                 'name': 'content',
                 'children': [
