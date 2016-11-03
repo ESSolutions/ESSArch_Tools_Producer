@@ -2,6 +2,8 @@ from __future__ import absolute_import
 
 import hashlib, os, shutil, tarfile, urllib, zipfile
 
+from collections import Counter
+
 from django.conf import settings
 
 from ESSArch_Core.xml.Generator.xmlGenerator import XMLGenerator
@@ -581,7 +583,12 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
     event_type = 10262
 
     """
-    Validates the logical and physical representation of objects
+    Validates the logical and physical representation of objects.
+
+    The comparison checks if the lists contains the same elements (though not
+    the order of the elements).
+
+    See http://stackoverflow.com/a/7829388/1523238
     """
 
     def run(self, ip=None, mets_path=None):
@@ -616,7 +623,7 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
         print "physical: %s" % physical_files
 
         self.set_progress(100, total=100)
-        assert logical_files == physical_files, "the physical representation is not valid"
+        assert Counter(logical_files) == Counter(physical_files), "the physical representation is not valid"
 
     def undo(self, ip=None, mets_path=None):
         pass
