@@ -533,6 +533,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.prepareIp = function (label) {
         listViewService.prepareIp(label).then(function() {
             $scope.getListViewData();
+            $timeout(function(){
+                $state.reload();
+            }, 3000);
         });
     }
     //Opens a new instance of a modal window
