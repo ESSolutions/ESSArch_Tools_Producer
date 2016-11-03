@@ -92,42 +92,59 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
              $scope.ipTableClick(row);
          }
      }
-    $scope.ipSelected = false;
-    $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip == row){
-            $scope.statusShow = false;
-        } else {
-            $scope.statusShow = true;
-            $scope.edit = false;
-
-            $scope.statusViewUpdate(row);
-        }
-        $scope.subSelect = false;
-        $scope.eventlog = false;
-        $scope.select = false;
-        $scope.eventShow = false;
-        $scope.ip = row;
-    };
-    //Get data for status view
-    $scope.getTreeData = function(row) {
-        listViewService.getTreeData(row).then(function(value) {
-            $scope.tree_data = value;
-        });
-    }
-    //Update status view data
-    //currently not updating every n'th second
-    $scope.statusViewUpdate = function(row){
-        $scope.getTreeData(row);
-        if($scope.statusShow && false){
-            $timeout(function() {
-                $scope.getTreeData(row);
-                $scope.statusViewUpdate(row);
-            }, 5000)}
-    };
-
-    /*******************************************/
-    /*Piping and Pagination for List-view table*/
-    /*******************************************/
+     $scope.ipSelected = false;
+     var stateInterval;
+     $scope.stateClicked = function(row){
+         if($scope.statusShow && $scope.ip == row){
+             $scope.statusShow = false;
+         } else {
+             $scope.statusShow = true;
+             $scope.edit = false;
+             $scope.statusViewUpdate(row);
+         }
+         $scope.subSelect = false;
+         $scope.eventlog = false;
+         $scope.select = false;
+         $scope.eventShow = false;
+         $scope.ip = row;
+     };
+     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+         if(newValue) {
+             $interval.cancel(stateInterval);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 4000);
+         } else {
+             $interval.cancel(stateInterval);
+         }
+     });
+     $rootScope.$on('$stateChangeStart', function() {
+         $interval.cancel(stateInterval);
+     });
+     //Get data for status view
+     function checkExpanded(nodes) {
+         var ret = [];
+         nodes.forEach(function(node) {
+             if(node.expanded == true) {
+                 ret.push({id: node.id, name: node.name});
+             }
+             if(node.children && node.children.length > 0) {
+                 ret = ret.concat(checkExpanded(node.children));
+             }
+         });
+         return ret;
+     }
+     //Update status view data
+     $scope.statusViewUpdate = function(row){
+         var expandedNodes = [];
+         if($scope.tree_data != []) {
+             expandedNodes = checkExpanded($scope.tree_data);
+         }
+         listViewService.getTreeData(row, expandedNodes).then(function(value) {
+             $scope.tree_data = value;
+         });
+     };
+     /*******************************************/
+     /*Piping and Pagination for List-view table*/
+     /*******************************************/
 
     var ctrl = this;
     this.itemsPerPage = 10;

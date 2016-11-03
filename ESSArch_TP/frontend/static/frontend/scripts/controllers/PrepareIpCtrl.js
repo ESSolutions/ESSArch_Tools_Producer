@@ -102,37 +102,55 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
          }
      }
      //Click function for status view
+     var stateInterval;
      $scope.stateClicked = function(row){
          if($scope.statusShow && $scope.ip == row){
              $scope.statusShow = false;
          } else {
              $scope.statusShow = true;
              $scope.edit = false;
-
-           $scope.statusViewUpdate(row);
+             $scope.statusViewUpdate(row);
+         }
+         $scope.subSelect = false;
+         $scope.eventlog = false;
+         $scope.select = false;
+         $scope.eventShow = false;
+         $scope.ip = row;
+         $rootScope.ip = row;
+     };
+     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+         if(newValue) {
+             $interval.cancel(stateInterval);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 4000);
+        } else {
+             $interval.cancel(stateInterval);
         }
-        $scope.subSelect = false;
-        $scope.eventlog = false;
-        $scope.select = false;
-        $scope.eventShow = false;
-        $scope.ip = row;
-        $rootScope.ip = row;
-    };
+     });
+     $rootScope.$on('$stateChangeStart', function() {
+        $interval.cancel(stateInterval);
+     });
     //Get data for status view
-    $scope.getTreeData = function(row) {
-        listViewService.getTreeData(row).then(function(value) {
-            $scope.tree_data = value;
+    function checkExpanded(nodes) {
+        var ret = [];
+        nodes.forEach(function(node) {
+            if(node.expanded == true) {
+                ret.push({id: node.id, name: node.name});
+            }
+            if(node.children && node.children.length > 0) {
+                ret = ret.concat(checkExpanded(node.children));
+            }
         });
+        return ret;
     }
     //Update status view data
-    //Currently not up updating the value every n'th second.
     $scope.statusViewUpdate = function(row){
-            $scope.getTreeData(row);
-        if($scope.statusShow && false){
-        $timeout(function() {
-            $scope.getTreeData(row);
-            $scope.statusViewUpdate(row);
-        }, 5000)}
+        var expandedNodes = [];
+        if($scope.tree_data != []) {
+            expandedNodes = checkExpanded($scope.tree_data);
+        }
+        listViewService.getTreeData(row, expandedNodes).then(function(value) {
+            $scope.tree_data = value;
+        });
     };
 
      /*******************************************/
@@ -147,7 +165,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Get data according to ip table settings and populates ip table
     this.callServer = function callServer(tableState) {
     $scope.tableState = tableState;
-        ctrl.isLoading = true;
 
         var pagination = tableState.pagination;
         var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
@@ -157,7 +174,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
             ctrl.displayedIps = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-            ctrl.isLoading = false;
         });
     };
     //Make ip selected and add class to visualize

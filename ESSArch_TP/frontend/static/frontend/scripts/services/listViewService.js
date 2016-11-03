@@ -24,7 +24,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return promise;
     }
     //Get data for status view. child steps and tasks
-    function getStatusViewData(ip){
+    function getStatusViewData(ip, expandedNodes){
         var promise = $http({
             method: 'GET',
             url: ip.url + 'steps',
@@ -39,18 +39,19 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 });
                 step.children = step.children.concat(step.tasks);
             });
+            steps = setExpanded(steps, expandedNodes);
             return steps;
         });
         return promise;
     }
     //Prepare the data for tree view in status view
-    function getTreeData(row) {
+    function getTreeData(row, expandedNodes) {
         var promise = $http({
             method: 'GET',
             url: row.url,
         }).then(function(response){
             ip = response.data;
-            return getStatusViewData(ip);
+            return getStatusViewData(ip, expandedNodes);
         });
         return promise;
     }
@@ -250,6 +251,22 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     /*******************/
     /*HELPER FUNCTIONS*/
     /*****************/
+    function setExpanded(steps, expandedNodes) {
+        expandedNodes.forEach(function(node) {
+            steps.forEach(function(step) {
+                if(step.id == node.id) {
+                    step.expanded = true;
+                }
+                if(step.children != null){
+                    if(step.children.length > 0){
+                        setExpanded(step.children, expandedNodes);
+                    }
+                }
+            });
+        });
+        return steps;
+
+    }
     //Gets all profiles of a specific profile type for an IP
     function getProfiles(type, profileArray, selectRowCollapse, sa, ip){
         if(profileArray.active == null || angular.isUndefined(profileArray)){

@@ -98,38 +98,57 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
          }
      }
     //click function forstatus view
-    $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip == row){
-            $scope.statusShow = false;
-        } else {
-            $scope.statusShow = true;
-            $scope.edit = false;
-
-            $scope.statusViewUpdate(row);
-            //$scope.tree_data = $scope.parentStepsRowCollection;
+     var stateInterval;
+     $scope.stateClicked = function(row){
+         if($scope.statusShow && $scope.ip == row){
+             $scope.statusShow = false;
+         } else {
+             $scope.statusShow = true;
+             $scope.edit = false;
+             $scope.statusViewUpdate(row);
+         }
+         $scope.subSelect = false;
+         $scope.eventlog = false;
+         $scope.eventShow = false;
+         $scope.select = false;
+         $scope.ip = row;
+         $rootScope.ip = row;
+     };
+     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+         if(newValue) {
+             $interval.cancel(stateInterval);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 4000);
+         } else {
+             $interval.cancel(stateInterval);
+         }
+     });
+     $rootScope.$on('$stateChangeStart', function() {
+         $interval.cancel(stateInterval);
+     });
+     //Get data for status view
+     function checkExpanded(nodes) {
+         var ret = [];
+         nodes.forEach(function(node) {
+             if(node.expanded == true) {
+                 ret.push({id: node.id, name: node.name});
+             }
+             if(node.children && node.children.length > 0) {
+                 ret = ret.concat(checkExpanded(node.children));
+             }
+         });
+         return ret;
+     }
+     //Update status view data
+     $scope.statusViewUpdate = function(row){
+        var expandedNodes = [];
+        if($scope.tree_data != []) {
+            expandedNodes = checkExpanded($scope.tree_data);
         }
-        $scope.subSelect = false;
-        $scope.eventlog = false;
-        $scope.eventShow = false;
-        $scope.select = false;
-        $scope.ip = row;
-    };
-    //Get status view data
-    $scope.getTreeData = function(row) {
-        listViewService.getTreeData(row).then(function(value) {
+        listViewService.getTreeData(row, expandedNodes).then(function(value) {
             $scope.tree_data = value;
         });
-    }
-    //Update status view
-    //currently not updating every n'th second
-    $scope.statusViewUpdate = function(row){
-        $scope.getTreeData(row);
-        if($scope.statusShow && false){
-            $timeout(function() {
-                $scope.getTreeData(row);
-                $scope.statusViewUpdate(row);
-            }, 5000)}
     };
+
      /*******************************************/
      /*Piping and Pagination for List-view table*/
      /*******************************************/
@@ -174,6 +193,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.edit = false;
             $scope.eventlog = false;
         } else {
+            $scope.ip = row;
+            $rootScope.ip = row;
             $http({
                 method: 'GET',
                 url: row.url
@@ -186,8 +207,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             });
             $scope.edit = true;
             $scope.eventlog = true;
-            $scope.ip = row;
-            $rootScope.ip = row;
+
         }
         $scope.eventShow = false;
         $scope.statusShow = false;
