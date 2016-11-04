@@ -71,6 +71,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
 
         $scope.showSelectedInstitution = function(node) {
             $scope.nodeOther = null;
+            $rootScope.navigationFilter.other = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.institution = null;
                 return;
@@ -84,6 +85,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
 
         $scope.showSelectedOrganization = function(node) {
             $scope.nodeOther = null;
+            $rootScope.navigationFilter.other = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.organization = null;
                 return;
@@ -97,6 +99,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
 
         $scope.showSelectedType = function(node) {
             $scope.nodeOther = null;
+            $rootScope.navigationFilter.other = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.type = null;
                 return;
@@ -110,6 +113,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
 
         $scope.showSelectedLocation = function(node) {
             $scope.nodeOther = null;
+            $rootScope.navigationFilter.other = null;
            if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.location = null;
                 return;
@@ -126,12 +130,22 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             $scope.nodeOrg = null;
             $scope.nodeType = null;
             $scope.nodeLoc = null;
-            $rootScope.navigationFilter = {
-                institution: null,
-                organization: null,
-                type: null,
-                location: null,
-                other: null
-            };
+            if($rootScope.navigationFilter.other) {
+                $rootScope.navigationFilter = {
+                    institution: null,
+                    organization: null,
+                    type: null,
+                    location: null,
+                    other: null
+                };
+            } else {
+                $rootScope.navigationFilter = {
+                    institution: null,
+                    organization: null,
+                    type: null,
+                    location: null,
+                    other: true
+                };
+            }
         }
 });

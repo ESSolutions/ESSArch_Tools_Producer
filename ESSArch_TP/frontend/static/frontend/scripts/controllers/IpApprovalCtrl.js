@@ -161,7 +161,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             var number = pagination.number;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting).then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "PREPARING").then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             });
