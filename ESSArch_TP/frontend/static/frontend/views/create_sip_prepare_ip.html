@@ -87,7 +87,7 @@
                             <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                             </formly-form>
                         </form>
-                        <div ng-include src="'static/frontend/views/map_structure_tree.html'"></div>
+                        <div ng-if="profileToSave.profile_type == 'sip' || profileToSave.profile_type == 'aip' || profileToSave.profile_type == 'dip'" ng-include src="'static/frontend/views/map_structure_tree.html'"></div>
                     </div>
                     <div ng-if="eventlog" class="eventlog-view">
                         <form class="eventlog-form" ng-submit="saveModal()">
