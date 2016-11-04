@@ -41,13 +41,10 @@
                                 <tr>
                                     <td>
                                         <div class="checkbox table-col">
-                                            <label>
-                                                <input type="checkBox" ng-disabled="true" checked="checked"></input>
-                                            </label>
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="table-col"><p>{{'SUBMISSION_AGREEMENT'}}</p></a>
+                                        <p class="table-col">{{'SUBMISSION_AGREEMENT'}}</p>
                                     </td>
                                     <td><select class="form-control table-col" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>
