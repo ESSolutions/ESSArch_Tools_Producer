@@ -75,7 +75,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State',)
 
     def get_queryset(self):
-        queryset = InformationPackage.objects.all()
+        queryset = self.queryset
 
         state = self.request.query_params.get('state')
         other = self.request.query_params.get('other')
