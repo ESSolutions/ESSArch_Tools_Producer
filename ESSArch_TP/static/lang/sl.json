@@ -94,5 +94,9 @@
     "VALIDATEFILEFORMAT": "Validate file format",
     "VALIDATEXMLFILE": "Validate XML file",
     "VALIDATELOGICALPHYSICALREPRESENTATION": "Validate logical physical representation",
-    "VALIDATEINTEGRITY": "Validate Integrity"
+    "VALIDATEINTEGRITY": "Validate Integrity",
+    "PATH": "Path",
+    "YES": "Yes",
+    "NO": "No"
+
 }

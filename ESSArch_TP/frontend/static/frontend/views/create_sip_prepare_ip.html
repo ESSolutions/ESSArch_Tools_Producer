@@ -54,6 +54,7 @@
                                             <button ng-if="!row.locked" class="btn btn-success btn-sm" ng-click="lockSa(saProfile)">{{'LOCKPROFILE' | translate}}</button>
                                             <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                         <p class="table-col">{{}}</p></td>
+                                    <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                                     <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                                 </tr>
 

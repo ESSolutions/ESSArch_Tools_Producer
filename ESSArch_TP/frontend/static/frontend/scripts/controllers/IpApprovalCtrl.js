@@ -111,7 +111,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
              $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 4000);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 10000);
          } else {
              $interval.cancel(stateInterval);
          }
@@ -153,19 +153,19 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
 
     //Update ip table with configuration from table paginetion etc
     this.callServer = function callServer(tableState) {
-        $scope.tableState = tableState;
-        ctrl.isLoading = true;
+        if(!angular.isUndefined(tableState)){
+            $scope.tableState = tableState;
+            var sorting = tableState.sort;
+            var pagination = tableState.pagination;
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number;  // Number of entries showed per page.
+            var pageNumber = start/number+1;
 
-        var pagination = tableState.pagination;
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number;  // Number of entries showed per page.
-        var pageNumber = start/number+1;
-
-        Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
-            ctrl.displayedIps = result.data;
-            tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-            ctrl.isLoading = false;
-        });
+            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting).then(function (result) {
+                ctrl.displayedIps = result.data;
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+            });
+        }
     };
     //Make ip selected and add class to visualize
     $scope.selectIp = function(row) {
@@ -203,6 +203,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
+     $rootScope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+         $scope.getListViewData();
+     }, true);
     //Click funciton for event table objects
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
@@ -402,6 +405,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.goToPrepareIp = function() {
         $state.go('home.createSip.prepareIp');
     }
+    $scope.yes = $translate.instant('YES');
+    $scope.no = $translate.instant('NO');
     vm.validatorModel = {
 
     };
@@ -410,7 +415,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEFILES'),
-            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
         },
         "defaultValue": 1,
         "type": "select",
@@ -420,7 +425,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEFILEFORMAT'),
-            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
         },
         "defaultValue": 1,
         "type": "select",
@@ -430,7 +435,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEXMLFILE'),
-            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
         },
         "defaultValue": 1,
         "type": "select",
@@ -440,7 +445,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
         },
         "defaultValue": 1,
         "type": "select",
@@ -450,7 +455,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEINTEGRITY'),
-            "options": [{name: "Yes", value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: 1},{name: "No", value: 0}],
         },
         "defaultValue": 1,
         "type": "select",

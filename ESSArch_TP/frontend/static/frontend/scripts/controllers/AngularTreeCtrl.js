@@ -70,6 +70,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         };
 
         $scope.showSelectedInstitution = function(node) {
+            $scope.nodeOther = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.institution = null;
                 return;
@@ -82,6 +83,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
 
         $scope.showSelectedOrganization = function(node) {
+            $scope.nodeOther = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.organization = null;
                 return;
@@ -94,6 +96,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
 
         $scope.showSelectedType = function(node) {
+            $scope.nodeOther = null;
             if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.type = null;
                 return;
@@ -106,6 +109,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
 
         $scope.showSelectedLocation = function(node) {
+            $scope.nodeOther = null;
            if(angular.isUndefined(node.id)){
                 $rootScope.navigationFilter.location = null;
                 return;
@@ -118,14 +122,16 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
 
         $scope.showSelectedOther = function(node) {
-            if(angular.isUndefined(node.id)){
-                $rootScope.navigationFilter.other == null;
-                return;
-            }
-            if($rootScope.navigationFilter.other == node.id) {
-                $rootScope.navigationFilter.other == null;
-            } else {
-                $rootScope.navigationFilter.other = node.id;
-            }
+            $scope.nodeInst = null;
+            $scope.nodeOrg = null;
+            $scope.nodeType = null;
+            $scope.nodeLoc = null;
+            $rootScope.navigationFilter = {
+                institution: null,
+                organization: null,
+                type: null,
+                location: null,
+                other: null
+            };
         }
 });

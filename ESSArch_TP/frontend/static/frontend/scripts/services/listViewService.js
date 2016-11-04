@@ -1,14 +1,22 @@
-angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig) {
+angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig, $rootScope) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
     }
     //Gets data for list view i.e information packages
-    function getListViewData(pageNumber, pageSize) {
+    function getListViewData(pageNumber, pageSize, filters, sortString) {
         var promise = $http({
             method: 'GET',
             url: appConfig.djangoUrl+'information-packages/',
-            params: {page: pageNumber, page_size: pageSize}
+            params: {
+                page: pageNumber,
+                page_size: pageSize,
+                archival_institution: filters.institution,
+                archivist_organization: filters.organization,
+                archival_type: filters.type,
+                archival_location: filters.location,
+                ordering: sortString
+            }
         })
         .then(function successCallback(response) {
             count = response.headers('Count');

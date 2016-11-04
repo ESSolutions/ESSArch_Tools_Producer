@@ -153,27 +153,26 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      /*Piping and Pagination for List-view table*/
      /*******************************************/
 
-    var ctrl = this;
-    this.itemsPerPage = 10;
-    $scope.selectedIp = {id: "", class: ""};
-    this.displayedIps = [];
-    //Get data for ip table from rest api
-    this.callServer = function callServer(tableState) {
-        ctrl.isLoading = true;
+     var ctrl = this;
+     this.itemsPerPage = 10;
+     $scope.selectedIp = {id: "", class: ""};
+     this.displayedIps = [];
+     //Get data for ip table from rest api
+     this.callServer = function callServer(tableState) {
+         if(!angular.isUndefined(tableState)) {
+             $scope.tableState = tableState;
+             var sorting = tableState.sort;
+             var pagination = tableState.pagination;
+             var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+             var number = pagination.number;  // Number of entries showed per page.
+             var pageNumber = start/number+1;
 
-        var pagination = tableState.pagination;
-        var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-        var number = pagination.number;  // Number of entries showed per page.
-        var pageNumber = start/number+1;
-
-        Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp).then(function (result) {
-            ctrl.displayedIps = result.data;
-            tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-            $scope.tableState = tableState;
-            ctrl.isLoading = false;
-        });
-    };
-    //Add ip to selected
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting).then(function (result) {
+                 ctrl.displayedIps = result.data;
+                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+             });
+         }
+     };    //Add ip to selected
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
@@ -212,6 +211,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
+    $rootScope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+        $scope.getListViewData();
+    }, true);
+
     //click funtion or event
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){

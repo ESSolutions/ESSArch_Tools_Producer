@@ -45,6 +45,7 @@
                                 <td><p class="table-col">{{}}</p>
                                     <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                 </td>
+                                <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                                 <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                             </tr>
 
@@ -70,6 +71,7 @@
                         </tbody>
                     </table>
 
+                    <div ng-include src="'static/frontend/views/validator_choices.html'"></div>
                 </div>
 
                 <div ng-if="subSelect" class="sub-select-view">
@@ -86,7 +88,6 @@
                     <div class="package-dependencies">
                         <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
                     </div>
-                    <div ng-include src="'static/frontend/views/validator_choices.html'"></div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form class="eventlog-form" ng-submit="createSip(ip)">

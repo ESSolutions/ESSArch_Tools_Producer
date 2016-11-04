@@ -105,13 +105,6 @@ width: 100%;
     padding-bottom: 0;
     font-size: 13px;
 }
-td {
-    margin: 0;
-    height: 40px;
-    padding-top: 3px;
-    padding-bottom: 8px;
-}
-
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     padding-top: 4px;
     padding-bottom: 8px;
@@ -274,10 +267,10 @@ input[type="checkbox"] {
 .validator-choices .formly {
     display: flex;
     display: -webkit-flex;
-    flex-direction: column;
-    -webkit-flex-direction: column;
+    flex-direction: row;
+    -webkit-flex-direction: row;
 
 }
 .validator-choices .formly select {
-    width: 30%;
+    width: 170px;
 }
