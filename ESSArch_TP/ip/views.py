@@ -1,6 +1,6 @@
 import os, shutil
 
-from rest_framework import status
+from rest_framework import filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -71,6 +71,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     queryset = InformationPackage.objects.all()
     serializer_class = InformationPackageSerializer
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State',)
 
     def get_queryset(self):
         queryset = InformationPackage.objects.all()
