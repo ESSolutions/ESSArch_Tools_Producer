@@ -76,10 +76,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = InformationPackage.objects.all()
+
+        state = self.request.query_params.get('state')
         archival_institution = self.request.query_params.get('archival_institution')
         archivist_organization = self.request.query_params.get('archivist_organization')
         archival_type = self.request.query_params.get('archival_type')
         archival_location = self.request.query_params.get('archival_location')
+
+        if state is not None:
+            queryset = queryset.filter(State=state)
 
         if archival_institution is not None:
             try:
