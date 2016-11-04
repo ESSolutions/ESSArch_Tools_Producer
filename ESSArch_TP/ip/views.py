@@ -1,4 +1,4 @@
-import shutil
+import os, shutil
 
 from rest_framework import status
 from rest_framework.decorators import detail_route
@@ -112,12 +112,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             pass
 
         try:
-            shutil.rmtree(ip.ObjectPath + ".tar")
+            os.remove(ip.ObjectPath + ".tar")
         except:
             pass
 
         try:
-            shutil.rmtree(ip.ObjectPath + ".zip")
+            os.remove(ip.ObjectPath + ".zip")
         except:
             pass
 
