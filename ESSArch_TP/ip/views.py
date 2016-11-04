@@ -72,6 +72,43 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     queryset = InformationPackage.objects.all()
     serializer_class = InformationPackageSerializer
 
+    def get_queryset(self):
+        queryset = InformationPackage.objects.all()
+        archival_institution = self.request.query_params.get('archival_institution')
+        archivist_organization = self.request.query_params.get('archivist_organization')
+        archival_type = self.request.query_params.get('archival_type')
+        archival_location = self.request.query_params.get('archival_location')
+
+        if archival_institution is not None:
+            try:
+                arch = ArchivalInstitution.objects.get(pk=archival_institution)
+                queryset = queryset.filter(ArchivalInstitution=arch)
+            except:
+                queryset = InformationPackage.objects.none()
+
+        if archivist_organization is not None:
+            try:
+                arch = ArchivistOrganization.objects.get(pk=archivist_organization)
+                queryset = queryset.filter(ArchivistOrganization=arch)
+            except:
+                queryset = InformationPackage.objects.none()
+
+        if archival_type is not None:
+            try:
+                arch = ArchivalType.objects.get(pk=archival_type)
+                queryset = queryset.filter(ArchivalType=arch)
+            except ArchivalType.DoesNotExist:
+                queryset = InformationPackage.objects.none()
+
+        if archival_location is not None:
+            try:
+                arch = ArchivalLocation.objects.get(pk=archival_location)
+                queryset = queryset.filter(ArchivalLocation=arch)
+            except ArchivalLocation.DoesNotExist:
+                queryset = InformationPackage.objects.none()
+
+        return queryset
+
     def get_serializer_class(self):
         if self.action == 'list':
             return InformationPackageSerializer
