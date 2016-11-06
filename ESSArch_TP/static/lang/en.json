@@ -97,6 +97,8 @@
     "VALIDATEINTEGRITY": "Validate Integrity",
     "PATH": "Path",
     "YES": "Yes",
-    "NO": "No"
+    "NO": "No",
+    "DOYOUWANTTOLOCKSA": "Do you want to lock sa",
+    "TOIP": "to ip"
 
 }

@@ -97,6 +97,7 @@
     "VALIDATEINTEGRITY": "Validera Integritet",
     "PATH": "Sökväg",
     "YES": "Ja",
-    "NO": "Nej"
-
+    "NO": "Nej",
+    "DOYOUWANTTOLOCKSA": "Vill du låsa sa",
+    "TOIP": "till ip"
 }
