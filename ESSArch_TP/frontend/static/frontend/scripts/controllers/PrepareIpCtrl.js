@@ -579,6 +579,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
+            updateListViewConditional();
             });
     }
     $scope.lockSa = function(sa) {
@@ -589,11 +590,27 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.prepareIp = function (label) {
         listViewService.prepareIp(label).then(function() {
             $scope.getListViewData();
-            $timeout(function(){
-                $state.reload();
-            }, 3000);
+            updateListViewConditional();
         });
     }
+    var listViewInterval;
+    function updateListViewConditional() {
+        console.log("Running updateListViewConditional");
+        listViewInterval = $interval(function() {
+            var updateVar = false;
+            vm.displayedIps.forEach(function(ip, idx) {
+                if(ip.status < 100) {
+                    if(ip.step_state != "FAILURE") {
+                        updateVar = true;
+                    }
+                }
+                if(updateVar) {
+                    $scope.getListViewData();
+                }
+            });
+        }, 4000);
+    };
+
     //Opens a new instance of a modal window
     $scope.openModal = function(modalTemplate) {
         var modalInstance = $uibModal.open({
@@ -647,7 +664,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('USE'),
-            "options": [{name: "premis", value: "premis"}, {name: "mets", value: "mets"}, {name: "XML", value: "XML"}],
+            "options": [
+                {name: "preservation_description_file", value: "preservation_description_file"},
+                {name: "mets_file", value: "mets_file"},
+                {name: "archival_description_file", value: "archival_description_file"},
+                {name: "authoritive_information_file", value: "authoritive_information_file"}
+            ],
         },
         "hideExpression": function($viewValue, $modelValue, scope){
             return scope.model.type != "file";

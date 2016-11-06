@@ -328,10 +328,30 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             data: {validators: vm.validatorModel}
         })
         .then(function successCallback(response) {
-            $state.reload();
+            $scope.select = false;
+            $scope.edit = false;
+            $scope.eventlog = false;
+            $scope.getListViewData();
+            updateListViewConditional();
         }), function errorCallback(response){
             alert(response.status);
         };
+    };
+    function updateListViewConditional() {
+        console.log("Running updateListViewConditional");
+        listViewInterval = $interval(function() {
+            var updateVar = false;
+            vm.displayedIps.forEach(function(ip, idx) {
+                if(ip.status < 100) {
+                    if(ip.step_state != "FAILURE") {
+                        updateVar = true;
+                    }
+                }
+                if(updateVar) {
+                    $scope.getListViewData();
+                }
+            });
+        }, 4000);
     };
 
     $scope.colspan = 6;

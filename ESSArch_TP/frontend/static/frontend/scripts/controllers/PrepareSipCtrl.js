@@ -566,10 +566,31 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             method: 'POST',
             url: ip.url+'submit/'
         }).then(function(response) {
+            $scope.eventlog = false;
+            $scope.edit = false;
+            $scope.getListViewData();
+            updateListViewConditional();
         }, function(response) {
             console.log(response.status);
         });
     }
+    function updateListViewConditional() {
+        console.log("Running updateListViewConditional");
+        listViewInterval = $interval(function() {
+            var updateVar = false;
+            vm.displayedIps.forEach(function(ip, idx) {
+                if(ip.status < 100) {
+                    if(ip.step_state != "FAILURE") {
+                        updateVar = true;
+                    }
+                }
+                if(updateVar) {
+                    $scope.getListViewData();
+                }
+            });
+        }, 4000);
+    };
+
     $scope.colspan = 6;
     //visibility of status view
     $scope.statusShow = false;
