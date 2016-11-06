@@ -307,15 +307,50 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Currently has no back end support
     $scope.updateIncludedProfiles = function(profile){
         if(profile.checked){
-            $scope.saProfile.profile.includedProfiles.push(profile.profile_type);
+            $scope.includeProfileType(profile.profile_type);
         } else {
-            for(i=0;i<$scope.saProfile.profile.includedProfiles.length;i++) {
-                if($scope.saProfile.profile.includedProfiles[i] == profile.profile_type){
-                    $scope.saProfile.profile.includedProfiles.splice(i,1);
-                }
-            }
+            $scope.excludeProfileType(profile.profile_type);
         }
     }
+
+    //Include the given profile type in the SA
+    $scope.includeProfileType = function(type){
+        var sendData = {
+            "type": type
+        };
+
+        var uri = $scope.saProfile.profile.url+"include-type/";
+         $http({
+            method: 'POST',
+            url: uri,
+            data: sendData
+        })
+        .success(function (response) {
+        })
+        .error(function (response) {
+            alert(response.status);
+        });
+    };
+
+    //Exclude the given profile type in the SA
+    $scope.excludeProfileType = function(type){
+        var sendData = {
+            "type": type
+        };
+
+        var uri = $scope.saProfile.profile.url+"exclude-type/";
+         $http({
+            method: 'POST',
+            url: uri,
+            data: sendData
+        })
+        .success(function (response) {
+        })
+        .error(function (response) {
+            alert(response.status);
+        });
+    };
+
     //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};

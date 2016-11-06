@@ -154,7 +154,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 sa.information_packages.forEach(function (informationPackage) {
                     if(informationPackage == ip.url){
                         saProfile.profile = sa;
-                        saProfile.profile.includedProfiles = [];
                     }
                 });
             });
@@ -349,7 +348,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     profiles: [
                         response.data
                     ],
-                    checked: true,
+                    checked: saProfile['include_profile_' + response.data.profile_type],
                 };
                 if(defaultProfile){
                         response.data.defaultProfile = true;

@@ -42,6 +42,31 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             )
         })
 
+
+    @detail_route(methods=['post'], url_path='include-type')
+    def include_type(self, request, pk=None):
+        sa = SubmissionAgreement.objects.get(pk=pk)
+        ptype = request.data["type"]
+
+        setattr(sa, "include_profile_%s" % ptype, True)
+        sa.save()
+
+        return Response({
+            'status': 'Including profile type %s in SA %s' % (ptype, sa)
+        })
+
+    @detail_route(methods=['post'], url_path='exclude-type')
+    def exclude_type(self, request, pk=None):
+        sa = SubmissionAgreement.objects.get(pk=pk)
+        ptype = request.data["type"]
+
+        setattr(sa, "include_profile_%s" % ptype, False)
+        sa.save()
+
+        return Response({
+            'status': 'Excluding profile type %s in SA %s' % (ptype, sa)
+        })
+
 class ProfileLockViewSet(viewsets.ModelViewSet):
     queryset = ProfileLock.objects.all()
     serializer_class = ProfileLockSerializer
