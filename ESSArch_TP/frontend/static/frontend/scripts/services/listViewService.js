@@ -388,7 +388,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Return child steps list and corresponding tasks on all levels of child steps
     function getChildSteps(childSteps) {
-        childSteps.forEach(function(child){
+        var stepsToRemove = [];
+        childSteps.forEach(function(child, idx){
             child.child_steps = getChildSteps(child.child_steps);
             child.tasks.forEach(function(task){
                 task.user = child.user;
@@ -398,12 +399,13 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
 
             child.children = child.child_steps.concat(child.tasks);
             if(child.children.length == 0){
-                child.icons = {
-                    iconLeaf: "glyphicon glyphicon-alert"
-                };
+                stepsToRemove.push(idx);
             }
             child.isCollapsed = false;
             child.tasksCollapsed = true;
+        });
+        stepsToRemove.forEach(function(idx){
+            childSteps.splice(idx, 1);
         });
         return childSteps;
     }
