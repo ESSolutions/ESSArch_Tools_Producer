@@ -164,7 +164,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'url', 'id', 'profile_type', 'name', 'type', 'status', 'label',
             'schemas', 'representation_info', 'preservation_descriptive_info',
             'supplemental', 'access_constraints', 'datamodel_reference',
-            'additional', 'submission_method', 'submission_schedule',
+            'cm_release_date', 'cm_change_authority', 'cm_change_description',
+            'cm_sections_affected','cm_version', 'additional',
+            'submission_method', 'submission_schedule',
             'submission_data_inventory', 'structure', 'template',
-            'specification_data', 'submission_agreements',
-        )
+            'specification_data', 'submission_agreements',)
