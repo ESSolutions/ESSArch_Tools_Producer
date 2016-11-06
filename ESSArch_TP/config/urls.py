@@ -45,7 +45,8 @@ from preingest.views import (
 
 from profiles.views import (
     ProfileViewSet,
-    ProfileLockViewSet,
+    ProfileSALockViewSet,
+    SAIPLockViewSet,
     SubmissionAgreementViewSet,
 )
 
@@ -64,7 +65,8 @@ router.register(r'events', EventIPViewSet)
 router.register(r'event-types', EventTypeViewSet)
 router.register(r'submission-agreements', SubmissionAgreementViewSet)
 router.register(r'profiles', ProfileViewSet)
-router.register(r'profile-locks', ProfileLockViewSet)
+router.register(r'profile-locks', ProfileSALockViewSet)
+router.register(r'sa-locks', SAIPLockViewSet)
 router.register(r'agents', AgentViewSet)
 router.register(r'parameters', ParameterViewSet)
 router.register(r'paths', PathViewSet)

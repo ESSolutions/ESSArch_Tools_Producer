@@ -3,17 +3,25 @@ from rest_framework import serializers
 from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileLock,
+    ProfileSALock,
     ProfileRel,
+    SAIPLock
 )
 
-class ProfileLockSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileSALockSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = ProfileLock
+        model = ProfileSALock
         fields = (
             'url', 'id', 'submission_agreement', 'profile',
-            'information_package',
+        )
+
+class SAIPLockSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = SAIPLock
+        fields = (
+            'url', 'id', 'submission_agreement', 'information_package',
         )
 
 
@@ -101,6 +109,9 @@ class SubmissionAgreementSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
     )
 
+    profile_locks = ProfileSALockSerializer(many=True, read_only=True)
+    ip_locks = SAIPLockSerializer(many=True, read_only=True)
+
     class Meta:
         model = SubmissionAgreement
         fields = (
@@ -141,8 +152,9 @@ class SubmissionAgreementSerializer(serializers.HyperlinkedModelSerializer):
                 'profile_import', 'profile_submit_description', 'profile_sip',
                 'profile_aip', 'profile_dip', 'profile_workflow',
                 'profile_preservation_metadata', 'profile_event',
-                'information_packages',
+                'information_packages', 'profile_locks', 'ip_locks',
         )
+
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
 
@@ -154,5 +166,5 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'supplemental', 'access_constraints', 'datamodel_reference',
             'additional', 'submission_method', 'submission_schedule',
             'submission_data_inventory', 'structure', 'template',
-            'specification', 'specification_data', 'submission_agreements',
+            'specification_data', 'submission_agreements',
         )

@@ -153,7 +153,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 tempProfiles.push(sa);
                 sa.information_packages.forEach(function (informationPackage) {
                     if(informationPackage == ip.url){
+                        saProfile.locked = saLocked(sa, ip)
                         saProfile.profile = sa;
+                        saProfile.profile.locked = saLocked(sa, ip)
                     }
                 });
             });
@@ -354,7 +356,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                         response.data.defaultProfile = true;
                     tempProfileObject.profile = response.data;
                 }
-                tempProfileObject = profileLocked(tempProfileObject, saProfile.url, ip.locks);
+                tempProfileObject = profileLocked(tempProfileObject, saProfile.url, saProfile.profile_locks);
                 selectRowCollapse.push(tempProfileObject);
                 return selectRowCollapse;;
             }
@@ -363,6 +365,17 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         });
         return promise;
     };
+    //Checks if a given sa is locked to a given ip
+    function saLocked(sa, ip) {
+        locked = false;
+        ip.locks.forEach(function (lock) {
+            if(lock.submission_agreement == sa.url){
+                locked = true;
+            }
+        });
+        return locked;
+    }
+
     //Checks if a profile is locked
     function profileLocked(profileObject, sa, locks) {
         profileObject.locked = false;

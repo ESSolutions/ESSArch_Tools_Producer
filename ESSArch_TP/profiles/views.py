@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.decorators import detail_route
@@ -10,14 +11,16 @@ from ESSArch_Core.ip.models import (
 
 from profiles.serializers import (
     ProfileSerializer,
-    ProfileLockSerializer,
+    ProfileSALockSerializer,
+    SAIPLockSerializer,
     SubmissionAgreementSerializer
 )
 
 from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileLock,
+    ProfileSALock,
+    SAIPLock,
 )
 
 from rest_framework import viewsets
@@ -67,9 +70,45 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             'status': 'Excluding profile type %s in SA %s' % (ptype, sa)
         })
 
-class ProfileLockViewSet(viewsets.ModelViewSet):
-    queryset = ProfileLock.objects.all()
-    serializer_class = ProfileLockSerializer
+    @detail_route(methods=["post"])
+    def lock(self, request, pk=None):
+        sa = get_object_or_404(SubmissionAgreement, pk=pk)
+
+        ip_id = request.data.get("ip", {})
+
+        try:
+            ip = InformationPackage.objects.get(
+                pk=ip_id
+            )
+        except InformationPackage.DoesNotExist:
+            return Response(
+                {'status': 'Information Package with id %s does not exist' % ip_id},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            sa.lock(ip)
+        except IntegrityError:
+            exists = SAIPLock.objects.filter(
+                submission_agreement=sa, information_package=ip,
+            ).exists
+
+            if exists:
+                return Response(
+                    {'status': 'Lock already exists'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+
+        return Response({'status': 'locking submission_agreement'})
+
+class ProfileSALockViewSet(viewsets.ModelViewSet):
+    queryset = ProfileSALock.objects.all()
+    serializer_class = ProfileSALockSerializer
+
+class SAIPLockViewSet(viewsets.ModelViewSet):
+    queryset = SAIPLock.objects.all()
+    serializer_class = SAIPLockSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """
@@ -118,9 +157,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         submission_agreement_id = request.data.get(
             "submission_agreement", {}
         )
-        information_package_id = request.data.get(
-            "information_package", {}
-        )
 
         try:
             submission_agreement = SubmissionAgreement.objects.get(
@@ -133,22 +169,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
             )
 
         try:
-            information_package = InformationPackage.objects.get(
-                pk=information_package_id
-            )
-        except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Submission Agreement with id %s does not exist' % pk},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        try:
-            profile.lock(submission_agreement, information_package)
+            profile.lock(submission_agreement)
         except IntegrityError:
-            exists = ProfileLock.objects.filter(
-                submission_agreement=submission_agreement,
-                information_package=information_package,
-                profile=profile,
+            exists = ProfileSALock.objects.filter(
+                submission_agreement=submission_agreement, profile=profile,
             ).exists
 
             if exists:

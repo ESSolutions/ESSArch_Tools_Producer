@@ -570,7 +570,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: profileObject.profile.url+"lock/",
             data: {
-                information_package: $scope.ip.id,
                 submission_agreement: $scope.saProfile.profile.id
             }
         }).then(function (response) {
@@ -583,8 +582,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
     }
     $scope.lockSa = function(sa) {
-        console.log("Sa to be locked");
-        console.log(sa);
+        ip = $scope.ip;
+
+        $http({
+            method: 'POST',
+            url: sa.profile.url+"lock/",
+            data: {
+                ip: ip.id
+            }
+        }).then(function (response) {
+            console.log("locked");
+            profileObject.locked = true;
+            $scope.edit = false;
+            $scope.eventlog = false;
+            $scope.getListViewData();
+        });
     }
     //Create and initialize new ip
     $scope.prepareIp = function (label) {

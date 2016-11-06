@@ -12,7 +12,7 @@ from ESSArch_Core.ip.models import (
 from preingest.serializers import ProcessStepSerializer
 
 from profiles.serializers import (
-    ProfileLockSerializer,
+    SAIPLockSerializer,
 )
 
 class ArchivalInstitutionSerializer(serializers.HyperlinkedModelSerializer):
@@ -48,7 +48,7 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class InformationPackageDetailSerializer(InformationPackageSerializer):
-    locks = ProfileLockSerializer(many=True, read_only=True)
+    locks = SAIPLockSerializer(many=True)
 
     class Meta:
         model = InformationPackageSerializer.Meta.model
