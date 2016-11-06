@@ -1,3 +1,5 @@
+import os
+
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 
@@ -5,8 +7,17 @@ from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
+from ESSArch_Core.configuration.models import (
+    Path,
+)
+
 from ESSArch_Core.ip.models import (
     InformationPackage,
+)
+
+from ESSArch_Core.WorkflowEngine.models import (
+    ProcessStep,
+    ProcessTask,
 )
 
 from profiles.serializers import (
@@ -170,6 +181,46 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
         try:
             profile.lock(submission_agreement)
+
+            if profile.profile_type == "sip":
+                ip_id = request.data.get(
+                    "information_package", {}
+                )
+                try:
+                    ip = InformationPackage.objects.get(
+                        pk=ip_id
+                    )
+                except InformationPackage.DoesNotExist:
+                    return Response(
+                        {'status': 'Information Package with id %s does not exist' % ip_id},
+                        status=status.HTTP_404_NOT_FOUND
+                    )
+
+                submission_agreement.lock(ip)
+
+                root = os.path.join(
+                    Path.objects.get(
+                        entity="path_preingest_prepare"
+                    ).value,
+                    str(ip.pk)
+                )
+
+                step = ProcessStep.objects.create(
+                    name="Create Physical Model",
+                    information_package=ip
+                )
+                task = ProcessTask.objects.create(
+                    name="preingest.tasks.CreatePhysicalModel",
+                    params={
+                        "structure": profile.structure,
+                        "root": root
+                    },
+                    information_package=ip
+                )
+
+                step.tasks = [task]
+                step.save()
+                step.run()
         except IntegrityError:
             exists = ProfileSALock.objects.filter(
                 submission_agreement=submission_agreement, profile=profile,

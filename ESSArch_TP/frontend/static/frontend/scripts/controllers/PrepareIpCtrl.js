@@ -570,6 +570,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: profileObject.profile.url+"lock/",
             data: {
+                information_package: $scope.ip.id,
                 submission_agreement: $scope.saProfile.profile.id
             }
         }).then(function (response) {
