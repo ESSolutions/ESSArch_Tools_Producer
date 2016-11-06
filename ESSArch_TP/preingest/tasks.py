@@ -476,7 +476,7 @@ class CopySchemas(DBTask):
 
 
 class ValidateFiles(DBTask):
-    def run(self, ip, mets_path):
+    def run(self, ip, mets_path, validate_fileformat=True, validate_integrity=True):
         metsdoc = etree.ElementTree(file=mets_path)
 
         root = metsdoc.getroot()
@@ -493,37 +493,39 @@ class ValidateFiles(DBTask):
             parent_step=self.taskobj.processstep
         )
 
-        for f in metsdoc.findall('.//mets:file', nsmap):
-            filename = f.find('mets:FLocat', nsmap).get('{%s}href' % nsmap['xlink'])
-            filename = os.path.join(ip_prepare_path, filename)
-            fileformat = f.get("{%s}FILEFORMATNAME" % nsmap['ext'])
-            checksum = f.get("CHECKSUM")
+        if any([validate_fileformat, validate_integrity]):
+            for f in metsdoc.findall('.//mets:file', nsmap):
+                filename = f.find('mets:FLocat', nsmap).get('{%s}href' % nsmap['xlink'])
+                filename = os.path.join(ip_prepare_path, filename)
+                fileformat = f.get("{%s}FILEFORMATNAME" % nsmap['ext'])
+                checksum = f.get("CHECKSUM")
 
-            if fileformat is not None:
-                step.tasks.add(ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateFileFormat",
-                    params={
-                        "filename": filename,
-                        "fileformat": fileformat,
-                    },
-                    information_package=ip
-                ))
+                if validate_fileformat and fileformat is not None:
+                    step.tasks.add(ProcessTask.objects.create(
+                        name="preingest.tasks.ValidateFileFormat",
+                        params={
+                            "filename": filename,
+                            "fileformat": fileformat,
+                        },
+                        information_package=ip
+                    ))
 
-            step.tasks.add(ProcessTask.objects.create(
-                name="preingest.tasks.ValidateIntegrity",
-                params={
-                    "filename": filename,
-                    "checksum": checksum,
-                },
-                information_package=ip
-            ))
+                if validate_integrity:
+                    step.tasks.add(ProcessTask.objects.create(
+                        name="preingest.tasks.ValidateIntegrity",
+                        params={
+                            "filename": filename,
+                            "checksum": checksum,
+                        },
+                        information_package=ip
+                    ))
 
 
         self.set_progress(100, total=100)
 
         step.run()
 
-    def undo(self, ip, mets_path):
+    def undo(self, ip, mets_path, validate_fileformat=True, validate_integrity=True):
         pass
 
 class ValidateFileFormat(DBTask):

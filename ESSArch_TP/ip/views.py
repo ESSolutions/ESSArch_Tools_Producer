@@ -180,8 +180,17 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         Returns:
             None
         """
+
+        validators = request.data.get('validators', {})
+
         try:
-            InformationPackage.objects.get(pk=pk).create()
+            InformationPackage.objects.get(pk=pk).create(
+                validate_xml_file=validators.get('validate_xml_file', False),
+                validate_file_format=validators.get('validate_file_format', False),
+                validate_integrity=validators.get('validate_integrity', False),
+                validate_logical_physical_representation=validators.get('validate_logical_physical_representation', False),
+            )
+
             return Response({'status': 'creating ip'})
         except InformationPackage.DoesNotExist:
             return Response(

@@ -434,20 +434,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     {
         "templateOptions": {
             "type": "text",
-            "label": $translate.instant('VALIDATEFILES'),
-            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
-        },
-        "defaultValue": 1,
-        "type": "select",
-        "key": "validate_files",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
             "label": $translate.instant('VALIDATEFILEFORMAT'),
-            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
+            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
         },
-        "defaultValue": 1,
+        "defaultValue": true,
         "type": "select",
         "key": "validate_file_format",
     },
@@ -455,9 +445,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEXMLFILE'),
-            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
+            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
         },
-        "defaultValue": 1,
+        "defaultValue": true,
         "type": "select",
         "key": "validate_xml_file",
     },
@@ -465,9 +455,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-            "options": [{name: $scope.yes, value: 1},{name: $scope.no, value: 0}],
+            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
         },
-        "defaultValue": 1,
+        "defaultValue": true,
         "type": "select",
         "key": "validate_logical_physical_representation",
     },
@@ -475,9 +465,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         "templateOptions": {
             "type": "text",
             "label": $translate.instant('VALIDATEINTEGRITY'),
-            "options": [{name: $scope.yes, value: 1},{name: "No", value: 0}],
+            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
         },
-        "defaultValue": 1,
+        "defaultValue": true,
         "type": "select",
         "key": "validate_integrity",
     }
