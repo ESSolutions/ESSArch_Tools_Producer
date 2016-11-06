@@ -740,13 +740,14 @@ class SubmitSIP(DBTask):
     event_type = 10300
 
     def run(self, ip=None):
+        srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
 
-        src = ip.ObjectPath + ".tar"
+        src = os.path.join(srcdir, str(ip.pk) + ".tar")
         dst = os.path.join(reception, str(ip.pk) + ".tar")
         shutil.copyfile(src, dst)
 
-        src = ip.ObjectPath + ".xml"
+        src = os.path.join(srcdir, str(ip.pk) + ".xml")
         dst = os.path.join(reception, str(ip.pk) + ".xml")
         shutil.copyfile(src, dst)
 
