@@ -1,5 +1,7 @@
 import os, shutil
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -16,6 +18,8 @@ from ESSArch_Core.ip.models import (
     InformationPackage,
     EventIP
 )
+
+from ip.filters import InformationPackageFilter
 
 from ip.serializers import (
     ArchivalInstitutionSerializer,
@@ -65,27 +69,23 @@ class ArchivalLocationViewSet(viewsets.ModelViewSet):
     queryset = ArchivalLocation.objects.all()
     serializer_class = ArchivalLocationSerializer
 
+
 class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows information packages to be viewed or edited.
     """
     queryset = InformationPackage.objects.all()
     serializer_class = InformationPackageSerializer
-    filter_backends = (filters.OrderingFilter,)
+    filter_backends = (
+        filters.OrderingFilter, DjangoFilterBackend,
+    )
     ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State',)
+    filter_class = InformationPackageFilter
 
     def get_queryset(self):
         queryset = self.queryset
 
-        state = self.request.query_params.get('state')
         other = self.request.query_params.get('other')
-        archival_institution = self.request.query_params.get('archival_institution')
-        archivist_organization = self.request.query_params.get('archivist_organization')
-        archival_type = self.request.query_params.get('archival_type')
-        archival_location = self.request.query_params.get('archival_location')
-
-        if state is not None:
-            queryset = queryset.filter(State=state)
 
         if other is not None:
             queryset = queryset.filter(
@@ -94,34 +94,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 ArchivalType=None,
                 ArchivalLocation=None
             )
-
-        if archival_institution is not None:
-            try:
-                arch = ArchivalInstitution.objects.get(pk=archival_institution)
-                queryset = queryset.filter(ArchivalInstitution=arch)
-            except:
-                queryset = InformationPackage.objects.none()
-
-        if archivist_organization is not None:
-            try:
-                arch = ArchivistOrganization.objects.get(pk=archivist_organization)
-                queryset = queryset.filter(ArchivistOrganization=arch)
-            except:
-                queryset = InformationPackage.objects.none()
-
-        if archival_type is not None:
-            try:
-                arch = ArchivalType.objects.get(pk=archival_type)
-                queryset = queryset.filter(ArchivalType=arch)
-            except ArchivalType.DoesNotExist:
-                queryset = InformationPackage.objects.none()
-
-        if archival_location is not None:
-            try:
-                arch = ArchivalLocation.objects.get(pk=archival_location)
-                queryset = queryset.filter(ArchivalLocation=arch)
-            except ArchivalLocation.DoesNotExist:
-                queryset = InformationPackage.objects.none()
 
         return queryset
 

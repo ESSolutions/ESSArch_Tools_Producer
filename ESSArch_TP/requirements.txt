@@ -1,5 +1,6 @@
 celery==3.1.23
 Django==1.10
+django_filter==0.15.2
 django-picklefield==0.3.2
 djangorestframework==3.4.6
 django-cors-headers==1.1.0
