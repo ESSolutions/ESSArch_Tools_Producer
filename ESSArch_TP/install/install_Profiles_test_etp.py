@@ -57,7 +57,7 @@ from ip.steps import (
 from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileRel,
+    ProfileSA,
 )
 
 # settings
@@ -153,90 +153,78 @@ def installSubmissionAgreement():
     # create according to model with many fields
     sa = SubmissionAgreement.objects.create(**dct)
 
-    ProfileRel.objects.bulk_create([
-        ProfileRel(
+    ProfileSA.objects.bulk_create([
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440002"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440003"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440004"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440005"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440006"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440008"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440009"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440010"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440011"
             ),
             submission_agreement=sa,
-            status=2
         ),
-        ProfileRel(
+        ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440012"
             ),
             submission_agreement=sa,
-            status=2
         ),
     ])
 
