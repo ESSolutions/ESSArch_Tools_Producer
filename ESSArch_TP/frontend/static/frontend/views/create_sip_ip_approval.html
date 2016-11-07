@@ -93,7 +93,7 @@
                                 <input type="checkBox" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
                             </label>
                         </div>
-                        <button type="submit" ng-disabled="!approvedToCreate" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
+                        <button type="submit" ng-disabled="!approvedToCreate || !ip.SubmissionAgreementLocked" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
                     </form>
                 </div>
             </div>
