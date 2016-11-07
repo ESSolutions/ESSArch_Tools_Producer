@@ -48,7 +48,7 @@
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="saProfile.locked" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>
-                                        <button ng-if="!saProfile.locked" ng-disabled="!canLockSa()" class="btn btn-success btn-sm" ng-click="lockSaModal(saProfile)">{{'LOCKPROFILE' | translate}}</button>
+                                        <button ng-if="!saProfile.locked" ng-disabled="!canLockSa() || !saProfile.profile" class="btn btn-success btn-sm" ng-click="lockSaModal(saProfile)">{{'LOCKPROFILE' | translate}}</button>
                                         <button ng-if="saProfile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                         <p class="table-col">{{}}</p></td>
                                     <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
