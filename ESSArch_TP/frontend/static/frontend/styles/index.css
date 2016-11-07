@@ -48,7 +48,7 @@ body.modal-open[style] {
 }
 .logo-search-user-admin-wrapper {
     display: flex;
-    display: -webkit-flex
+    display: -webkit-flex;
     width: 100%;
     height: 50px;
 }
@@ -61,6 +61,10 @@ body.modal-open[style] {
 .logo h2 {
     font-size: 28pt;
     line-height: 0;
+}
+.logo h3 {
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 .search {
     display: flex;
@@ -241,4 +245,7 @@ body.modal-open[style] {
     max-height: 330px;
     overflow-y: scroll;
     margin: 5px;
+}
+.well-sm {
+    padding: 0px;
 }
