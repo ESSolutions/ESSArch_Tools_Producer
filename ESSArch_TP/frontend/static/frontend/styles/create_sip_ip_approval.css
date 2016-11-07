@@ -15,7 +15,7 @@ width: 100%;
 }
 .content-wrapper > div {
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 .search-prepare-wrapper {
     display: flex;
@@ -27,7 +27,7 @@ width: 100%;
     margin-left: 10px;
 }
 .list-view {
-    max-height: 330px;
+    max-height: 300px;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
@@ -35,7 +35,7 @@ width: 100%;
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
-    margin-top: 8px;
+    margin-top: 0px;
     position: relative;
 }
 .progress {
