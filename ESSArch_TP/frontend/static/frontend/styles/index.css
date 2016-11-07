@@ -250,6 +250,6 @@ body.modal-open[style] {
     padding: 0px;
 }
 .info-wrapper {
-    width: 80%;
-    margin: 0 auto;
+    width: 75%;
+    margin-left: 10px;
 }

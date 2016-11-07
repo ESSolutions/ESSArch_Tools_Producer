@@ -638,10 +638,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                         updateVar = true;
                     }
                 }
-                if(updateVar) {
-                    $scope.getListViewData();
-                }
             });
+            if(updateVar) {
+                $scope.getListViewData();
+            }
         }, 4000);
     };
 

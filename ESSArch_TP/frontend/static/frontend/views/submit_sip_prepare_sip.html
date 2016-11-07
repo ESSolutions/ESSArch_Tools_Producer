@@ -58,6 +58,7 @@
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form class="submit-sip-eventlog-form" ng-submit="submitSip(ip)">
+                        <!--
                         <div class="form-group">
                             <label>Status note</label>
                             <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
@@ -68,6 +69,7 @@
                             <label>{{'COMMENT' | translate}}</label>
                             <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                         </div>
+                        -->
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
