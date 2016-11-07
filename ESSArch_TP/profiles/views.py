@@ -12,6 +12,10 @@ from ESSArch_Core.configuration.models import (
 )
 
 from ESSArch_Core.ip.models import (
+    ArchivalInstitution,
+    ArchivistOrganization,
+    ArchivalLocation,
+    ArchivalType,
     InformationPackage,
 )
 
@@ -181,5 +185,38 @@ class ProfileViewSet(viewsets.ModelViewSet):
             step.tasks = [task]
             step.save()
             step.run()
+        elif profile.profile_type == "transfer_project":
+            data = profile.specification_data
+
+            archival_institution = data.get("archival_institution")
+            archivist_organization = data.get("archivist_organization")
+            archival_type = data.get("archival_type")
+            archival_location = data.get("archival_location")
+
+            if archival_institution:
+                (arch, _) = ArchivalInstitution.objects.get_or_create(
+                    name = archival_institution
+                )
+                ip.ArchivalInstitution = arch
+
+            if archivist_organization:
+                (arch, _) = ArchivistOrganization.objects.get_or_create(
+                    name = archivist_organization
+                )
+                ip.ArchivistOrganization = arch
+
+            if archival_type:
+                (arch, _) = ArchivalType.objects.get_or_create(
+                    name = archival_type
+                )
+                ip.ArchivalType = arch
+
+            if archival_location:
+                (arch, _) = ArchivalLocation.objects.get_or_create(
+                    name = archival_location
+                )
+                ip.ArchivalLocation = arch
+
+            ip.save()
 
         return Response({'status': 'locking profile'})
