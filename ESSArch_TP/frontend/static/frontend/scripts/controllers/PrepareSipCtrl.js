@@ -167,7 +167,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
              var number = pagination.number;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
-             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "CREATED").then(function (result) {
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Created").then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
              });
