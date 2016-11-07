@@ -303,6 +303,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get lock-status from profiles
     $scope.getPackageProfiles = function(ip) {
+        vm.profileFields = [];
         listViewService.getIp(ip.url).then(function(value) {
             ip = value;
         $http({
