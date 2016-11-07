@@ -6,7 +6,7 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
     $scope.createSip = $translate.instant('CREATESIP');
     $scope.submitSip = $translate.instant('SUBMITSIP');
     $scope.tabs = [
-    { link: 'home.myPage', label: $scope.myPage },
+    //{ link: 'home.myPage', label: $scope.myPage },
     { link: 'home.createSip', label: $scope.createSip },
     { link: 'home.submitSip', label: $scope.submitSip },
     ];
