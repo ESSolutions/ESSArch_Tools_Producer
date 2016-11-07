@@ -343,6 +343,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     };
 
+    $scope.canLockSa = function(sa){
+        var canLock = true;
+        for (var type in $scope.selectRowCollapse){
+            var profile = $scope.selectRowCollapse[type];
+            if (profile.checked && !profile.locked){
+                canLock = false;
+            }
+        }
+        return canLock;
+    };
+
     //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};

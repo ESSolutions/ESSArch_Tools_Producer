@@ -278,7 +278,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                         selectRowCollapse[type] = createProfileObj(
                             type, profiles, sa, ip
                         );
-                        console.log(selectRowCollapse[type])
                         return selectRowCollapse
                     });
                 }).then(function(selectRowCollapse){
