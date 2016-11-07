@@ -27,7 +27,7 @@
                 </div>
                 <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                     <div ng-if="select" class="select-view">
-                        <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
+                        <table st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th class="info-popover column-enabled"><p uib-popover="{{'ENABLEDDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENABLED' | translate}}</p></th>
@@ -46,29 +46,29 @@
                                     <td>
                                         <p class="table-col">{{'SUBMISSION_AGREEMENT'}}</p>
                                     </td>
-                                    <td><select class="form-control table-col" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                    <td><select class="form-control table-col" ng-disabled="saProfile.locked" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>
-                                        <button ng-if="!saProfile.locked" class="btn btn-success btn-sm" ng-click="lockSaModal(saProfile)">{{'LOCKPROFILE' | translate}}</button>
+                                        <button ng-if="!saProfile.locked" ng-disabled="canLockSa(saProfile)" class="btn btn-success btn-sm" ng-click="lockSaModal(saProfile)">{{'LOCKPROFILE' | translate}}</button>
                                         <button ng-if="saProfile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                         <p class="table-col">{{}}</p></td>
                                     <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                                     <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                                 </tr>
-                                <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
+                                <tr uib-collapse="!profilesCollapse" ng-repeat="(type, profile) in selectRowCollection">
                                     <td>
                                         <div class="checkbox table-col">
                                             <label>
-                                                <input type="checkBox" ng-disabled="row.locked" ng-model="row.checked" ng-change="updateIncludedProfiles(row)"></input>
+                                                <input type="checkBox" ng-disabled="profile.required || profile.locked" ng-model="profile.checked"></input>
                                             </label>
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="table-col" ng-disabled="row.locked" ng-click="profileClickCondition(row)">{{row.profile_label}}</a>
+                                        <a class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{type}}</a>
                                     </td>
-                                    <td><select class="form-control table-col" ng-disabled="row.locked" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
+                                    <td><select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles" ng-change="changeProfile(profile.active)"></select></td>
                                     <td>
-                                        <button ng-if="!row.locked" class="btn btn-success btn-sm" ng-click="lockProfileModal(row)">{{'LOCKPROFILE' | translate}}</button>
-                                        <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
+                                        <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active" class="btn btn-success btn-sm" ng-click="lockProfileModal(profile)">{{'LOCKPROFILE' | translate}}</button>
+                                        <button ng-if="profile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                     </td>
                                 </tr>
                             </tbody>

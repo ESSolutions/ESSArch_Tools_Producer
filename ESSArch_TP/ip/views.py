@@ -19,6 +19,10 @@ from ESSArch_Core.ip.models import (
     EventIP
 )
 
+from ESSArch_Core.profiles.models import (
+    Profile,
+)
+
 from ip.filters import InformationPackageFilter
 
 from ip.serializers import (
@@ -212,6 +216,19 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         self.get_object().submit()
         return Response({'status': 'submitting ip'})
+
+    @detail_route(methods=['put'], url_path='change-profile')
+    def change_profile(self, request, pk=None):
+        ip = self.get_object()
+        new_profile = Profile.objects.get(pk=request.data["new_profile"])
+
+        ip.change_profile(new_profile)
+
+        return Response({
+            'status': 'updating IP (%s) with new profile (%s)' % (
+                ip.pk, new_profile
+            )
+        })
 
 
 class EventIPViewSet(viewsets.ModelViewSet):

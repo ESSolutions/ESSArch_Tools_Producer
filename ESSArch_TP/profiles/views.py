@@ -22,16 +22,16 @@ from ESSArch_Core.WorkflowEngine.models import (
 
 from profiles.serializers import (
     ProfileSerializer,
-    ProfileSALockSerializer,
-    SAIPLockSerializer,
+    ProfileSASerializer,
+    ProfileIPSerializer,
     SubmissionAgreementSerializer
 )
 
 from ESSArch_Core.profiles.models import (
     SubmissionAgreement,
     Profile,
-    ProfileSALock,
-    SAIPLock,
+    ProfileSA,
+    ProfileIP,
 )
 
 from rest_framework import viewsets
@@ -42,20 +42,6 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
     """
     queryset = SubmissionAgreement.objects.all()
     serializer_class = SubmissionAgreementSerializer
-
-    @detail_route(methods=['put'], url_path='change-profile')
-    def change_profile(self, request, pk=None):
-        sa = SubmissionAgreement.objects.get(pk=pk)
-        new_profile = Profile.objects.get(pk=request.data["new_profile"])
-
-        sa.change_profile(new_profile=new_profile)
-
-        return Response({
-            'status': 'updating SA (%s) with new profile (%s)' % (
-                sa, new_profile
-            )
-        })
-
 
     @detail_route(methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
@@ -83,8 +69,6 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
-        sa = get_object_or_404(SubmissionAgreement, pk=pk)
-
         ip_id = request.data.get("ip", {})
 
         try:
@@ -97,29 +81,18 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        try:
-            sa.lock(ip)
-        except IntegrityError:
-            exists = SAIPLock.objects.filter(
-                submission_agreement=sa, information_package=ip,
-            ).exists
-
-            if exists:
-                return Response(
-                    {'status': 'Lock already exists'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
+        ip.SubmissionAgreementLocked = True
+        ip.save()
 
         return Response({'status': 'locking submission_agreement'})
 
-class ProfileSALockViewSet(viewsets.ModelViewSet):
-    queryset = ProfileSALock.objects.all()
-    serializer_class = ProfileSALockSerializer
+class ProfileSAViewSet(viewsets.ModelViewSet):
+    queryset = ProfileSA.objects.all()
+    serializer_class = ProfileSASerializer
 
-class SAIPLockViewSet(viewsets.ModelViewSet):
-    queryset = SAIPLock.objects.all()
-    serializer_class = SAIPLockSerializer
+class ProfileIPViewSet(viewsets.ModelViewSet):
+    queryset = ProfileIP.objects.all()
+    serializer_class = ProfileIPSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """
@@ -150,8 +123,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
         if (changed_data or changed_structure):
             profile.copy_and_switch(
-                submission_agreement=SubmissionAgreement.objects.get(
-                    pk=request.data["submission_agreement"]
+                ip=InformationPackage.objects.get(
+                    pk=request.data["information_package"]
                 ),
                 specification_data=new_data,
                 new_name=request.data["new_name"],
@@ -163,74 +136,50 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
-        profile = Profile.objects.get(pk=pk)
+        profile = self.get_object()
 
-        submission_agreement_id = request.data.get(
-            "submission_agreement", {}
+        ip_id = request.data.get(
+            "information_package", {}
         )
 
         try:
-            submission_agreement = SubmissionAgreement.objects.get(
-                pk=submission_agreement_id
+            ip = InformationPackage.objects.get(
+                pk=ip_id
             )
-        except SubmissionAgreement.DoesNotExist:
+        except InformationPackage.DoesNotExist:
             return Response(
-                {'status': 'Submission Agreement with id %s does not exist' % pk},
+                {'status': 'Information Package with id %s does not exist' % ip_id},
                 status=status.HTTP_404_NOT_FOUND
             )
 
         try:
-            profile.lock(submission_agreement)
+            ProfileIP.objects.get(profile=profile, ip=ip).lock(request.user)
+        except ProfileIP.DoesNotExist:
+            ProfileIP.objects.create(profile=profile, ip=ip).lock(request.user)
 
-            if profile.profile_type == "sip":
-                ip_id = request.data.get(
-                    "information_package", {}
-                )
-                try:
-                    ip = InformationPackage.objects.get(
-                        pk=ip_id
-                    )
-                except InformationPackage.DoesNotExist:
-                    return Response(
-                        {'status': 'Information Package with id %s does not exist' % ip_id},
-                        status=status.HTTP_404_NOT_FOUND
-                    )
+        if profile.profile_type == "sip":
+            root = os.path.join(
+                Path.objects.get(
+                    entity="path_preingest_prepare"
+                ).value,
+                str(ip.pk)
+            )
 
-                submission_agreement.lock(ip)
+            step = ProcessStep.objects.create(
+                name="Create Physical Model",
+                information_package=ip
+            )
+            task = ProcessTask.objects.create(
+                name="preingest.tasks.CreatePhysicalModel",
+                params={
+                    "structure": profile.structure,
+                    "root": root
+                },
+                information_package=ip
+            )
 
-                root = os.path.join(
-                    Path.objects.get(
-                        entity="path_preingest_prepare"
-                    ).value,
-                    str(ip.pk)
-                )
-
-                step = ProcessStep.objects.create(
-                    name="Create Physical Model",
-                    information_package=ip
-                )
-                task = ProcessTask.objects.create(
-                    name="preingest.tasks.CreatePhysicalModel",
-                    params={
-                        "structure": profile.structure,
-                        "root": root
-                    },
-                    information_package=ip
-                )
-
-                step.tasks = [task]
-                step.save()
-                step.run()
-        except IntegrityError:
-            exists = ProfileSALock.objects.filter(
-                submission_agreement=submission_agreement, profile=profile,
-            ).exists
-
-            if exists:
-                return Response(
-                    {'status': 'Lock already exists'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
+            step.tasks = [task]
+            step.save()
+            step.run()
 
         return Response({'status': 'locking profile'})

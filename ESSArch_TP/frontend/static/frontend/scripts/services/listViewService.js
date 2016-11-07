@@ -148,25 +148,72 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         })
         .then(function successCallback(response) {
             sas = response.data;
-            var tempProfiles = [];
+            saProfile.profiles = [];
             saProfile.profileObjects = sas;
             sas.forEach(function (sa) {
-                tempProfiles.push(sa);
-                sa.information_packages.forEach(function (informationPackage) {
-                    if(informationPackage == ip.url){
-                        saProfile.locked = saLocked(sa, ip)
-                        saProfile.profile = sa;
-                        saProfile.profile.locked = saLocked(sa, ip)
-                    }
-                });
+                saProfile.profiles.push(sa);
+                if (ip.SubmissionAgreement == sa.url){
+                    saProfile.profile = sa;
+                    saProfile.locked = ip.SubmissionAgreementLocked;
+                }
             });
-            saProfile.profiles = tempProfiles;
             return saProfile;
         }, function errorCallback(response){
             alert(response.status);
         });
         return promise;
     }
+
+    function getProfileByTypeFromSA(sa, type){
+        return sa['profile_' + type];
+    }
+
+    function getProfileByTypeFromIP(ip, type){
+        return ip['profile_' + type];
+    }
+
+    function findProfileByUrl(url, profiles){
+        var p = null;
+
+        profiles.forEach(function(profile){
+            if (profile.url == url){
+                p = profile;
+            }
+        });
+
+        return p;
+    }
+
+    function createProfileObj(type, profiles, sa, ip){
+        var required = false;
+        var locked = false;
+        var url = null;
+
+        p = getProfileByTypeFromIP(ip, type);
+        if (p) {
+            url_from_ip = p.profile;
+            url = url_from_ip;
+            locked = p.LockedBy ? true : false;
+        }
+        p = getProfileByTypeFromSA(sa, type);
+        if (p){
+            required = true;
+            if (url == null) {
+                url = p.profile;
+            }
+        }
+        active = findProfileByUrl(url, profiles);
+        checked = active == null ? false : true
+
+        return {
+            active: active,
+            checked: checked,
+            required: required,
+            profiles: profiles,
+            locked: locked
+        };
+    }
+
     //Returns an array consisting of profile objects for an SA
     function getSelectCollection(sa, ip) {
         if(sa == null) {
@@ -177,44 +224,104 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return getIp(ip.url).then(function(value) {
             ip = value;
             if(sa.id != null) {
-                var selectRowCollapse = [];
-                getProfiles("transfer_project", sa.profile_transfer_project, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
+                var selectRowCollapse = {};
+                var type = 'transfer_project';
+
+                return getProfiles(type).then(function(profiles) {
+                    selectRowCollapse[type] = createProfileObj(
+                        type, profiles, sa, ip
+                    );
+                    return selectRowCollapse
+                }).then(function(selectRowCollapse){
+                    type = 'content_type';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'data_selection';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'classification';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'import';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'submit_description';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'sip';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        console.log(selectRowCollapse[type])
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'aip';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'dip';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'workflow';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'preservation_metadata';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'event';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
                 });
-                getProfiles("content_type", sa.profile_content_type, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("data_selection", sa.profile_data_selection, selectRowCollapse ,sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("classification", sa.profile_classification, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("import", sa.profile_import, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("submit_description", sa.profile_submit_description, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("sip", sa.profile_sip, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("aip", sa.profile_aip, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("dip", sa.profile_dip, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("workflow", sa.profile_workflow, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("preservation_metadata", sa.profile_preservation_metadata, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                getProfiles("event", sa.profile_event, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollapse = value;
-                });
-                return selectRowCollapse;
             }
         })
     };
@@ -280,92 +387,20 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
 
     }
     //Gets all profiles of a specific profile type for an IP
-    function getProfiles(type, profileArray, selectRowCollapse, sa, ip){
-        if(profileArray.active == null || angular.isUndefined(profileArray)){
-            var deferred = $q.defer();
-            deferred.resolve([]);
-            return deferred.promise;
-        }
-        getProfile(profileArray.active.id, true, selectRowCollapse, sa, ip).then(function(value) {
-            selectRowcollapse = value;
-        });
-        profileArray.profiles.forEach(function(profile) {
-            if(profile.id != profileArray.active.id){
-                getProfile(profile.id, false, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowcollapse = value;
-                });
-            }
-
-        });
+    function getProfiles(type){
         var promise = $http({
             method: 'GET',
             url: appConfig.djangoUrl+"profiles",
             params: {type: type}
         })
         .then(function successCallback(response) {
-            var tempProfileArray = response.data;
-            for(i=0;i<profileArray.profiles.length;i++){
-                for(j=0;j<tempProfileArray.length;j++){
-                    if(tempProfileArray[j].id == profileArray.profiles[i].id){
-                        tempProfileArray.splice(j,1);
-                    }
-                }
-            }
-            for(i=0;i<tempProfileArray.length;i++){
-                getProfile(response.data[i].id, false, selectRowCollapse, sa, ip).then(function(value) {
-                    selectRowCollection = value;
-                });
-            }
-            return selectRowCollapse;
+            return response.data;
         }, function errorCallback(response){
             alert(response.status);
         });
         return promise;
     };
-    //Returns profile given profile id
-    function getProfile(profile_id, defaultProfile, selectRowCollapse, saProfile, ip) {
-        var promise = $http({
-            method: 'GET',
-            url: appConfig.djangoUrl + "profiles/" + profile_id
-        })
-        .then(function successCallback(response) {
-            var newProfileType = true;
-            for(i=0; i<selectRowCollapse.length;i++){
-                if(selectRowCollapse[i].profile_type == response.data.profile_type){
-                    newProfileType = false;
-                    selectRowCollapse[i].profiles.push(response.data);
-                    if(defaultProfile){
-                        response.data.defaultProfile = true;
-                        selectRowCollapse[i].profile = response.data;
-                    }
-                    break;
-                } else {
-                    newProfileType = true;
-                }
-            }
-            if(newProfileType){
-                var tempProfileObject = {
-                    profile_label: response.data.profile_type.toUpperCase(),
-                    profile_type: response.data.profile_type,
-                    profile: {},
-                    profiles: [
-                        response.data
-                    ],
-                    checked: saProfile['include_profile_' + response.data.profile_type],
-                };
-                if(defaultProfile){
-                        response.data.defaultProfile = true;
-                    tempProfileObject.profile = response.data;
-                }
-                tempProfileObject = profileLocked(tempProfileObject, saProfile.url, saProfile.profile_locks);
-                selectRowCollapse.push(tempProfileObject);
-                return selectRowCollapse;;
-            }
-        }, function errorCallback(response){
-            alert(response.status);
-        });
-        return promise;
-    };
+
     //Checks if a given sa is locked to a given ip
     function saLocked(sa, ip) {
         locked = false;

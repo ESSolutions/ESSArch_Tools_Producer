@@ -256,7 +256,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //funcitons for select view
     //Condition for profile click. it the profile is locked it is not shown in the edit view
     $scope.profileClickCondition = function(row){
-        if(!row.locked){
+        if(!row.locked && row.active != null){
             $scope.profileClick(row);
         }
     }
@@ -264,7 +264,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.profileFields=[];
     //Click funciton for profile view
     $scope.profileClick = function(row){
-        $scope.profileToSave = row;
+        $scope.profileToSave = row.active;
         if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
@@ -272,10 +272,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = true;
             getEventlogData();
             $scope.edit = true;
-            $scope.selectProfile = row;
-            vm.profileModel = row.profile.specification_data;
-            vm.profileFields = row.profile.template;
-            getStructure(row.profile.url);
+            $scope.selectProfile = row.active;
+            vm.profileModel = row.active.specification_data;
+            vm.profileFields = row.active.template;
+            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: row.active.structure}];
+            $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
             $scope.subSelectProfile = "profile";
         }
     };
@@ -303,15 +304,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.selectRowCollapse = value;
         });
     };
-    //Updates the included profiles for an ip
-    //Currently has no back end support
-    $scope.updateIncludedProfiles = function(profile){
-        if(profile.checked){
-            $scope.includeProfileType(profile.profile_type);
-        } else {
-            $scope.excludeProfileType(profile.profile_type);
-        }
-    }
 
     //Include the given profile type in the SA
     $scope.includeProfileType = function(type){
@@ -354,7 +346,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
-        var uri = $scope.saProfile.profile.url+"change-profile/";
+        var uri = $scope.ip.url+"change-profile/";
          $http({
             method: 'PUT',
             url: uri,
@@ -381,11 +373,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Toggle visibility of profiles in select view
     $scope.showHideAllProfiles = function() {
         if($scope.selectRowCollection.length == 0){
-            for(i = 0; i < $scope.selectRowCollapse.length; i++){
-                $scope.selectRowCollection.push($scope.selectRowCollapse[i]);
-            }
+            $scope.selectRowCollection = $scope.selectRowCollapse;
         } else {
-            $scope.selectRowCollection = [];
+            $scope.selectRowCollection = {};
         }
         $scope.profilesCollapse = !$scope.profilesCollapse;
     };
@@ -393,17 +383,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
-        var uri = $scope.profileToSave.profile.url+"save/";
+        var uri = $scope.profileToSave.url+"save/";
         console.log(angular.toJson($scope.treeElements[0].children));
-        var sendData = {"specification_data": vm.profileModel, "submission_agreement": $scope.saProfile.profile.id, "new_name": new_name, "structure": $scope.treeElements[0].children};
+        var sendData = {
+            "specification_data": vm.profileModel,
+            "information_package": $scope.ip.id,
+            "new_name": new_name,
+            "structure": $scope.treeElements[0].children
+        };
+
         $http({
             method: 'POST',
             url: uri,
             data: sendData
         })
         .success(function (response) {
-            alert(response.status);
-            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip);
+            $scope.getSaProfiles($scope.ip);
             $scope.getListViewData();
             $scope.edit = false;
             $scope.eventlog = false;
@@ -547,11 +542,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     //Creates and shows modal for profile lock.
-    $scope.lockProfileModal = function (profileObject) {
-        if(!profileObject.checked) {
-            return;
-        }
-            $scope.profileToSave = profileObject;
+    $scope.lockProfileModal = function (profiles) {
+        $scope.profileToSave = profiles;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -568,22 +560,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     //Lock a profile
-    $scope.lockProfile = function (profileObject) {
+    $scope.lockProfile = function (profiles) {
         $http({
             method: 'POST',
-            url: profileObject.profile.url+"lock/",
+            url: profiles.active.url+"lock/",
             data: {
                 information_package: $scope.ip.id,
-                submission_agreement: $scope.saProfile.profile.id
             }
         }).then(function (response) {
-            console.log("locked");
-            profileObject.locked = true;
+            profiles.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
             updateListViewConditional();
-            });
+        });
     }
     $scope.lockSaModal = function(sa) {
         $scope.saProfile = sa;

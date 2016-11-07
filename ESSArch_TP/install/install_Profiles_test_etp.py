@@ -581,10 +581,10 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.agent.ID"
+                    "label": "Agent Organization"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.agent.ID"
+                "key": "agentname1"
             },
             {
                 "templateOptions": {
@@ -1424,22 +1424,60 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': {
-            'content': {
-                'type': 'dir',
-                'children': {
-                    'data': {
-                        'type': 'dir',
-                        'children': {}
-                    }
-                },
+        'structure': [
+            {
+                'type': 'file',
+                'name': 'mets.xml',
+                'use': 'mets_file',
             },
-            'metadata': {
-                'type': 'dir',
-                'children': {
-                },
+            {
+                'type': 'folder',
+                'name': 'content',
+                'children': [
+                    {
+                        'type': 'file',
+                        'name': 'mets_grp',
+                        'use': 'mets_grp',
+                    },
+                    {
+                        'type': 'folder',
+                        'name': 'data',
+                        'children': [],
+                    },
+                    {
+                        'type': 'folder',
+                        'name': 'metadata',
+                        'children': [],
+                    },
+                ]
             },
-        },
+            {
+                'type': 'folder',
+                'name': 'metadata',
+                'children': [
+                    {
+                        'type': 'file',
+                        'use': 'xsd_files',
+                        'name': 'xsd_files'
+                    },
+                    {
+                        'type': 'file',
+                        'name': 'premis.xml',
+                        'use': 'preservation_description_file',
+                    },
+                    {
+                        'type': 'file',
+                        'name': '_ARCHIVAL_DESCRIPTION_FILE',
+                        'use': 'archival_description_file',
+                    },
+                    {
+                        'type': 'file',
+                        'name': '_AUTHORITIVE_INFORMATION_FILE',
+                        'use': 'authoritive_information_file',
+                    },
+                ]
+            },
+        ],
         'template': [
             {
                 "templateOptions": {
@@ -1988,6 +2026,7 @@ def installProfileEvent(): # Profile Event
             "xlink:href": "file:///metadata/premis.xml",
             "xlink:type": "simple",
             "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
+            "archival_institution"
             "agents": {
                 "agent_1": {
                     "ROLE": "ARCHIVIST",
