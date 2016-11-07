@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter){
     var vm = this;
     $scope.tree_data = [];
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
@@ -18,7 +18,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         },
         {
             field: "time_created",
-            displayName: $scope.date,
+            displayName: $scope.date
         },
         {
             field: "status",

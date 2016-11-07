@@ -1,4 +1,4 @@
-angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig, $rootScope) {
+angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig, $rootScope, $filter) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
@@ -42,9 +42,10 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps = response.data;
             steps.forEach(function(step){
                 step.children = getChildSteps(step.child_steps);
+                step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
                 step.tasks.forEach(function(task){
                     task.label = task.name;
-                    task.time_created = task.time_started;
+                    task.time_created = $filter('date')(task.time_started, "yyyy-MM-dd HH:mm:ss");
                     task.isTask = true;
                 });
                 step.children = step.children.concat(step.tasks);
