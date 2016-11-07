@@ -39,7 +39,7 @@ class PrepareIP(DBTask):
         ip = InformationPackage.objects.create(
             Label=label,
             Responsible=responsible,
-            State="PREPARING",
+            State="Preparing",
             OAIStype="SIP",
         )
 
