@@ -34,6 +34,15 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         })
+        .state('home.versionInfo', {
+            url: 'version',
+            templateUrl: '/static/frontend/views/version_info.html',
+            resolve: {
+                authenticated: ['djangoAuth', function(djangoAuth){
+                    return djangoAuth.authenticationStatus();
+                }],
+            }
+        })
         .state('home.createSip', {
             url: 'create-SIP',
             templateUrl: '/static/frontend/views/create_sip.html',
@@ -107,8 +116,19 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         })
         .state('home.submitSip', {
             url: 'submit-SIP',
+            redirectTo: 'home.submitSip.info',
             templateUrl: '/static/frontend/views/submit_sip.html',
             controller: 'IpApprovalCtrl as vm',
+            resolve: {
+                authenticated: ['djangoAuth', function(djangoAuth){
+                    return djangoAuth.authenticationStatus();
+                }],
+            }
+        })
+        .state('home.submitSip.info', {
+            url: '/info',
+            templateUrl: '/static/frontend/views/submit_sip_info_page.html',
+            controller: 'PrepareSipCtrl as vm',
             resolve: {
                 authenticated: ['djangoAuth', function(djangoAuth){
                     return djangoAuth.authenticationStatus();
@@ -165,7 +185,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         });
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/create-SIP/info');
     })
 .config(['$httpProvider', function($httpProvider, $rootScope) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';

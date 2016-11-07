@@ -249,3 +249,7 @@ body.modal-open[style] {
 .well-sm {
     padding: 0px;
 }
+.info-wrapper {
+    width: 80%;
+    margin: 0 auto;
+}

@@ -35,7 +35,7 @@
                 <div ng-controller="UtilCtrl" class="tasks-icons">
                     <span ng-click="reloadPage()" class="glyphicon glyphicon-refresh"></span>
                     <span ng-click="redirectAdmin()" class="glyphicon glyphicon-cog"></span>
-                    <span class="glyphicon glyphicon-question-sign"></span>
+                    <span ui-sref="home.versionInfo" class="glyphicon glyphicon-question-sign"></span>
 
                     <div ng-controller="LanguageCtrl" style="width: 100px; margin-left: 10px;">
                         <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" style="width: 100%;"></select>
