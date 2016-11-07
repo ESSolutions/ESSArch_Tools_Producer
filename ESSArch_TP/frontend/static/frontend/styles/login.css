@@ -34,3 +34,6 @@ p {
     margin: auto;
     margin-top: 10px;
 }
+.login-box h2 {
+    margin-left: 40px;
+}
