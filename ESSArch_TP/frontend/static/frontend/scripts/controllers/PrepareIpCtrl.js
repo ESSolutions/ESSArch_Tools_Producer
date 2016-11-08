@@ -1,6 +1,7 @@
 angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter){
     var vm = this;
     $scope.tree_data = [];
+    $scope.angular = angular;
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
         $scope.responsible = translations.RESPONSIBLE;
         $scope.label = translations.LABEL;
@@ -286,7 +287,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             getEventlogData();
             $scope.edit = true;
             $scope.selectProfile = row;
-            vm.profileModel = row.active.specification_data;
+            vm.profileModel = angular.copy(row.active.specification_data);
             vm.profileFields = row.active.template;
             $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: row.active.structure}];
             $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);

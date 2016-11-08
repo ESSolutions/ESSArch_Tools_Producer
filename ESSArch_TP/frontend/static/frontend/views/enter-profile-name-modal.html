@@ -5,7 +5,7 @@
     <input class="form-control" ng-model="$ctrl.profileName"></input>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$ctrl.save()">{{'OK' | translate}}</button>
+    <button ng-disabled="!$ctrl.profileName" class="btn btn-primary" type="button" ng-click="$ctrl.save()">{{'OK' | translate}}</button>
     <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">{{'CANCEL' | translate}}</button>
 </div>
 
