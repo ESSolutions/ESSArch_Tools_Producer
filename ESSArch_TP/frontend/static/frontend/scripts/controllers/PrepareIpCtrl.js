@@ -645,8 +645,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Create and initialize new ip
     $scope.prepareIp = function (label) {
         listViewService.prepareIp(label).then(function() {
-            $scope.getListViewData();
-            updateListViewConditional();
+            $timeout(function(){
+                $scope.getListViewData();
+                updateListViewConditional();
+            }, 1000);
         });
     }
     var listViewInterval;
