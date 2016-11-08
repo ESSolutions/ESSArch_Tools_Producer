@@ -681,7 +681,7 @@
                                     "-children": [
                                         {
                                             "-containsFiles": true,
-                                            "-filters": {"href": "metadata/premis.xml"},
+                                            "-filters": {"href": "(metadata/premis.xml|metadata/administrative/premis.xml)"},
                                             "-attr": [
                                                 {
                                                     "#content": [
