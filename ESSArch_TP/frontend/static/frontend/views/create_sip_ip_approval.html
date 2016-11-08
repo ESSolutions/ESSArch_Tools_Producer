@@ -46,23 +46,22 @@
                                 <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
                             </tr>
 
-                            <tr uib-collapse="!profilesCollapse" ng-repeat="row in selectCollection">
+                            <tr uib-collapse="!profilesCollapse" ng-repeat="(type, profile) in selectRowCollection">
                                 <td>
                                     <div class="checkbox table-col">
                                         <label>
-                                            <input type="checkBox" ng-disabled="true" checked></input>
+                                            <input type="checkBox" ng-disabled="true" ng-model="profile.checked"></input>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <a class="table-col" ng-click="profileClick(row)">{{row.profile_label}}</a>
+                                    <a class="table-col" ng-click="profileClick(profile)">{{type}}</a>
                                 </td>
 
-                                <td><select ng-disabled="true" class="form-control table-col" ng-init="row.profile" ng-model="row.profile" ng-options="x as x.name for x in row.profiles" ng-change="changeProfile(row.profile)"></select></td>
-
+                                <td><select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select></td>
 
                                 <td>
-                                    <button ng-if="row.locked" class="btn btn-danger btn-sm" ng-click="unlockAndRedirect(row)">{{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked" class="btn btn-danger btn-sm" ng-click="unlockAndRedirect(profile)">{{'UNLOCKPROFILE' | translate}}</button>
                                 </td>
                             </tr>
                         </tbody>

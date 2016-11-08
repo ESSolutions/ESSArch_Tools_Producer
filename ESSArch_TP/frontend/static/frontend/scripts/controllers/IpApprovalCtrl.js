@@ -249,8 +249,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     vm.profileFields=[];
     //Click function for profile pbject
     $scope.profileClick = function(row){
-        $scope.profileToSave = row.profile;
-        if ($scope.selectProfile == row && $scope.subSelect){
+        $scope.profileToSave = row.active;
+        if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
@@ -258,8 +258,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             getEventlogData();
             $scope.edit = true;
             $scope.selectProfile = row;
-            vm.profileModel = row.profile.specification_data;
-            vm.profileFields = row.profile.template;
+            vm.profileModel = row.active.specification_data;
+            vm.profileFields = row.active.template;
             vm.profileFields.forEach(function(field) {
                 if(field.fieldGroup != null){
                     field.fieldGroup.forEach(function(subGroup) {
@@ -287,14 +287,16 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.getSaProfiles = function(ip) {
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip);
+            $scope.getSelectCollection(value.profile, ip).then(function(value){
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
         });
     };
     //Get all profiles and populate select view array
     $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
 
-        listViewService.getSelectCollection(sa, ip).then( function(value){
+        return listViewService.getSelectCollection(sa, ip).then( function(value){
             $scope.selectRowCollapse = value;
         });
     };
@@ -307,14 +309,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
 
     //toggle visibility on profiles in select view
     $scope.showHideAllProfiles = function() {
-        if($scope.selectRowCollection.length == 0){
-            for(i = 0; i < $scope.selectRowCollapse.length; i++){
-                $scope.selectRowCollection.push($scope.selectRowCollapse[i]);
-            }
-        } else {
-            $scope.selectRowCollection = [];
+        console.log($scope.selectRowCollection)
+        if($scope.selectRowCollection == {} || $scope.profilesCollapse){
+            $scope.profilesCollapse = false;
+        } else{
+            $scope.profilesCollapse = true;
         }
-        $scope.profilesCollapse = !$scope.profilesCollapse;
     };
     //Creates and shows modal with task information
     $scope.taskInfoModal = function () {
