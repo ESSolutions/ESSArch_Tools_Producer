@@ -426,8 +426,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
         .success(function (response) {
-            $scope.getSaProfiles($scope.ip);
-            $scope.getListViewData();
+            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip).then(function(value){
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
             $scope.edit = false;
             $scope.eventlog = false;
         })
