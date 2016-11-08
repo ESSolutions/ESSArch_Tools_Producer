@@ -308,7 +308,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
 
-        listViewService.getSelectCollection(sa, ip).then( function(value){
+        return listViewService.getSelectCollection(sa, ip).then( function(value){
             $scope.selectRowCollapse = value;
         });
     };
@@ -387,6 +387,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 'SubmissionAgreement': sa.url
             }
         }).then(function(response){
+            $scope.getSelectCollection(sa, ip).then(function(value){
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
         });
     }
     //Toggle visibility of profiles in select view
