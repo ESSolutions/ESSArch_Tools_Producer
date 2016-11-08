@@ -8,9 +8,9 @@
                 <td><p>{{('PARAMS' | translate)+':'}}</p></td>
                 <td>
                     <table class="table">
-                        <tr><td>{{'STEP' | translate}}</td> <td>{{currentStepTask.params.step}}</td></tr>
-                        <tr><td>{{'RESPONSIBLE' | translate}}</td><td>{{currentStepTask.params.responsible}}</td></tr>
-                        <tr><td>{{'LABEL' | translate}}</td><td>{{currentStepTask.params.label}}</td></tr>
+                        <tr ng-repeat="(key, value) in currentStepTask.params">
+                            <td>{{key}}</td> <td>{{value}}</td>
+                        </tr>
                     </table>
                 </td>
             </tr>
