@@ -223,6 +223,20 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
         })
 
+    @detail_route(methods=['post'], url_path='unlock-profile')
+    def unlock_profile(self, request, pk=None):
+        ip = self.get_object()
+        ptype = request.data.get("type")
+
+        if ptype:
+            ip.unlock_profile(ptype)
+            return Response({
+                'status': 'unlocking profile with type "%s" in IP "%s"' % (
+                    ptype, ip.pk
+                )
+            })
+
+        return Response()
 
 class EventIPViewSet(viewsets.ModelViewSet):
     """

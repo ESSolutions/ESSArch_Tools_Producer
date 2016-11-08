@@ -61,7 +61,7 @@
                                 <td><select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select></td>
 
                                 <td>
-                                    <button ng-if="profile.locked" class="btn btn-danger btn-sm" ng-click="unlockAndRedirect(profile)">{{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked" class="btn btn-danger btn-sm" ng-click="unlock(profile)">{{'UNLOCKPROFILE' | translate}}</button>
                                 </td>
                             </tr>
                         </tbody>

@@ -418,28 +418,19 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
         }
     }
-    //Unlock profile and redirect to Prepare-ip
-    $scope.unlockAndRedirect = function(profileObject) {
-            $http({
-                method: 'GET',
-                url: $scope.ip.url
-            }).then(function(response) {
-                response.data.locks.forEach(function(lock) {
-                    if(lock.information_package == $scope.ip.url && lock.submission_agreement == $scope.saProfile.profile.url && lock.profile == profileObject.profile.url){
-                        $http({
-                            method: 'DELETE',
-                            url: lock.url
-                        }).then(function() {
-                            profileObject.locked = false;
-                        });
-                    }
-                });
-            });
+    //Unlock profile from current IP
+    $scope.unlock = function(profile) {
+        $http({
+            method: 'POST',
+            url: $scope.ip.url + "unlock-profile/",
+            data: {
+                type: profile.active.profile_type
+            }
+        }).then(function(response){
+            profile.locked = false;
+        });
     }
     //Change state to prepare-ip
-    $scope.goToPrepareIp = function() {
-        $state.go('home.createSip.prepareIp');
-    }
     $scope.yes = $translate.instant('YES');
     $scope.no = $translate.instant('NO');
     vm.validatorModel = {
