@@ -36,17 +36,6 @@ class ArchivalLocationSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'name', 'information_packages',)
 
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = InformationPackage
-        fields = (
-            'url', 'id', 'Label', 'Content', 'Responsible', 'CreateDate',
-            'State', 'status', 'step_state', 'ObjectSize', 'ObjectNumItems', 'ObjectPath',
-            'Startdate', 'Enddate', 'OAIStype', 'SubmissionAgreement',
-            'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
-            'ArchivalLocation', 'SubmissionAgreementLocked',
-        )
-
-class InformationPackageDetailSerializer(InformationPackageSerializer):
     profile_transfer_project = ProfileIPSerializer(
         source="profile_transfer_project_rel",
         read_only=True,
@@ -97,15 +86,19 @@ class InformationPackageDetailSerializer(InformationPackageSerializer):
     )
 
     class Meta:
-        model = InformationPackageSerializer.Meta.model
-        fields = InformationPackageSerializer.Meta.fields + (
+        model = InformationPackage
+        fields = (
+            'url', 'id', 'Label', 'Content', 'Responsible', 'CreateDate',
+            'State', 'status', 'step_state', 'ObjectSize', 'ObjectNumItems', 'ObjectPath',
+            'Startdate', 'Enddate', 'OAIStype', 'SubmissionAgreement',
+            'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
+            'ArchivalLocation', 'SubmissionAgreementLocked',
             'profile_transfer_project', 'profile_content_type',
             'profile_data_selection', 'profile_classification',
             'profile_import', 'profile_submit_description', 'profile_sip',
             'profile_aip', 'profile_dip', 'profile_workflow',
             'profile_preservation_metadata', 'profile_event',
         )
-
 
 class EventIPSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

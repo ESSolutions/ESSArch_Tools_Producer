@@ -31,7 +31,6 @@ from ip.serializers import (
     ArchivalTypeSerializer,
     ArchivalLocationSerializer,
     InformationPackageSerializer,
-    InformationPackageDetailSerializer,
     EventIPSerializer,
 )
 
@@ -100,12 +99,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
 
         return queryset
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return InformationPackageSerializer
-
-        return InformationPackageDetailSerializer
 
     def create(self, request):
         """
