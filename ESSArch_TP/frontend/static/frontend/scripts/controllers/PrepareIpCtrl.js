@@ -176,12 +176,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 ctrl.displayedIps.forEach(function(ip) {
-                        if(ip.State == "Preparing"){
+                    if(ip.State == "Preparing"){
+                        ip.status = 0;
+                        if(ip.profile_sip) {
+                            if(ip.profile_sip.LockedBy) {
                                 ip.status = 50;
-                            if(ip.SubmissionAgreementLocked){
-                                ip.status = 100;
                             }
                         }
+                        if(ip.SubmissionAgreementLocked){
+                            ip.status = 100;
+                        }
+                    }
                 });
             });
         }
@@ -301,7 +306,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSaProfiles = function(ip) {
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip);
+            $scope.getSelectCollection(value.profile, ip).then(function(value){
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
         });
     };
     //Get All profiles and populates the select view table array
