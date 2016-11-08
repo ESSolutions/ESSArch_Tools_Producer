@@ -616,7 +616,7 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
 
         for root, dirs, files in os.walk(objpath):
             for f in files:
-                filename = os.path.join(root, str(f))
+                filename = os.path.join(root, f)
 
                 if filename != mets_path:
                     physical_files.append(filename)
