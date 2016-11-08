@@ -301,7 +301,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSaProfiles = function(ip) {
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip);
+            $scope.getSelectCollection(value.profile, ip).then(function(value){
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
         });
     };
     //Get All profiles and populates the select view table array
