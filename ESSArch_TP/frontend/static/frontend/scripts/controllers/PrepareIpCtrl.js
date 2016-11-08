@@ -179,7 +179,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 ctrl.displayedIps.forEach(function(ip) {
                     if(ip.State == "Preparing"){
-                        ip.status = 0;
+                        if(ip.step_state == "SUCCESS") {
+                            ip.status = 25;
+                        }
                         if(ip.profile_sip) {
                             if(ip.profile_sip.LockedBy) {
                                 ip.status = 50;
