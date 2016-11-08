@@ -377,59 +377,78 @@ def installProfileSIP(): # Profile Submission Information Package
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': [
+        "structure": [
             {
-                'type': 'file',
-                'name': 'mets.xml',
-                'use': 'mets_file',
+                "use": "mets_file",
+                "type": "file",
+                "name": "mets.xml"
             },
             {
-                'type': 'folder',
-                'name': 'content',
-                'children': [
+                "type": "folder",
+                "name": "metadata",
+                "children": [
                     {
-                        'type': 'file',
-                        'name': 'mets_grp',
-                        'use': 'mets_grp',
+                        "type": "folder",
+                        "name": "administrative",
+                        "children": [
+                            {
+                                "use": "preservation_description_file",
+                                "type": "file",
+                                "name": "premis.xml"
+                            }
+                        ]
                     },
                     {
-                        'type': 'folder',
-                        'name': 'data',
-                        'children': [],
-                    },
-                    {
-                        'type': 'folder',
-                        'name': 'metadata',
-                        'children': [],
-                    },
+                        "type": "folder",
+                        "name": "descriptive",
+                        "children": [
+                            {
+                                "use": "archival_description_file",
+                                "type": "file",
+                                "name": "_ARCHIVAL_DESCRIPTION_FILE"
+                            },
+                            {
+                                "use": "authoritive_information_file",
+                                "type": "file",
+                                "name": "_AUTHORITIVE_INFORMATION_FILE"
+                            }
+                        ]
+                    }
                 ]
             },
             {
-                'type': 'folder',
-                'name': 'metadata',
-                'children': [
+                "type": "folder",
+                "name": "representations",
+                "children": [
                     {
-                        'type': 'file',
-                        'use': 'xsd_files',
-                        'name': 'xsd_files'
-                    },
-                    {
-                        'type': 'file',
-                        'name': 'premis.xml',
-                        'use': 'preservation_description_file',
-                    },
-                    {
-                        'type': 'file',
-                        'name': '_ARCHIVAL_DESCRIPTION_FILE',
-                        'use': 'archival_description_file',
-                    },
-                    {
-                        'type': 'file',
-                        'name': '_AUTHORITIVE_INFORMATION_FILE',
-                        'use': 'authoritive_information_file',
-                    },
+                        "type": "folder",
+                        "name": "rep-001",
+                        "children": [
+                            {
+                                "type": "folder",
+                                "name": "data",
+                                "children": []
+                            }
+                        ]
+                    }
                 ]
             },
+            {
+                "type": "folder",
+                "name": "schemas",
+                "children": [
+                    {
+                        "use": "xsd_files",
+                        "type": "file",
+                        "name": "xsd_files"
+                    }
+                ]
+            },
+            {
+                "type": "folder",
+                "name": "documents",
+                "children": []
+            }
         ],
         'template': [
             {
