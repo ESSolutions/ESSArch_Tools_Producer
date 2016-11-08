@@ -580,7 +580,7 @@
                         {
                             "#content": [
                                 {
-                                    "text": "ID OF IP"
+                                    "var": "_OBJID"
                                 }
                             ],
                             "-name": "LABEL",
