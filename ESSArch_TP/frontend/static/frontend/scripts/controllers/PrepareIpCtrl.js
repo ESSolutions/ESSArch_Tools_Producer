@@ -401,12 +401,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Toggle visibility of profiles in select view
     $scope.showHideAllProfiles = function() {
-        if($scope.selectRowCollection.length == 0){
-            $scope.selectRowCollection = $scope.selectRowCollapse;
-        } else {
-            $scope.selectRowCollection = {};
+        if($scope.selectRowCollection == {} || $scope.profilesCollapse){
+            $scope.profilesCollapse = false;
+        } else{
+            $scope.profilesCollapse = true;
         }
-        $scope.profilesCollapse = !$scope.profilesCollapse;
     };
     //Populating edit view fields
 
