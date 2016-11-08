@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource){
+angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q){
     var vm = this;
     // List view
     //Go to give state
@@ -167,7 +167,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
              var number = pagination.number;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
-             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Created").then(function (result) {
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Created,Submitted").then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
              });
@@ -288,7 +288,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             var sa = response.data;
             $http({
                 method: 'GET',
-                url: sa.profile_transfer_project.active.url
+                url: sa.profile_transfer_project.profile
             }).then(function(response) {
                 vm.dependencyModel= response.data.specification_data;
                 vm.dependencyFields = response.data.template;
