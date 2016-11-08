@@ -116,7 +116,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         })
         .state('home.submitSip', {
             url: 'submit-SIP',
-            redirectTo: 'home.submitSip.info',
+            redirectTo: 'home.submitSip.prepareSip',
             templateUrl: '/static/frontend/views/submit_sip.html',
             controller: 'IpApprovalCtrl as vm',
             resolve: {
