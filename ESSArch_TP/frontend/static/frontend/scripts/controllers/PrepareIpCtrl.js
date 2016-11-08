@@ -175,6 +175,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Preparing").then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                ctrl.displayedIps.forEach(function(ip) {
+                        if(ip.State == "Preparing"){
+                                ip.status = 50;
+                            if(ip.SubmissionAgreementLocked){
+                                ip.status = 100;
+                            }
+                        }
+                });
             });
         }
     };
