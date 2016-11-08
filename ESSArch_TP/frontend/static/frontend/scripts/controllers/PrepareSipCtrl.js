@@ -124,6 +124,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      });
      $rootScope.$on('$stateChangeStart', function() {
          $interval.cancel(stateInterval);
+         $interval.cancel(listViewInterval);
      });
      //Get data for status view
      function checkExpanded(nodes) {
@@ -593,6 +594,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             }
         }, 4000);
     };
+    updateListViewConditional();
 
     $scope.colspan = 6;
     //visibility of status view

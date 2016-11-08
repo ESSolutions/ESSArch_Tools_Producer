@@ -118,6 +118,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      });
      $rootScope.$on('$stateChangeStart', function() {
          $interval.cancel(stateInterval);
+         $interval.cancel(listViewInterval);
      });
      //Get data for status view
      function checkExpanded(nodes) {
@@ -366,6 +367,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             }
         }, 4000);
     };
+    updateListViewConditional();
 
     $scope.colspan = 6;
     //Visibility of status view

@@ -124,17 +124,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
              $interval.cancel(stateInterval);
              stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 10000);
         } else {
-             $interval.cancel(stateInterval);
+            $interval.cancel(stateInterval);
         }
      });
      $rootScope.$on('$stateChangeStart', function() {
-        $interval.cancel(stateInterval);
+         $interval.cancel(stateInterval);
+         $interval.cancel(listViewInterval);
      });
-    //Get data for status view
-    function checkExpanded(nodes) {
-        var ret = [];
-        nodes.forEach(function(node) {
-            if(node.expanded == true) {
+     //Get data for status view
+     function checkExpanded(nodes) {
+         var ret = [];
+         nodes.forEach(function(node) {
+             if(node.expanded == true) {
                 ret.push({id: node.id, name: node.name});
             }
             if(node.children && node.children.length > 0) {
@@ -663,6 +664,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }, 4000);
     };
+    updateListViewConditional();
 
     //Opens a new instance of a modal window
     $scope.openModal = function(modalTemplate) {
