@@ -649,7 +649,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     var listViewInterval;
     function updateListViewConditional() {
-        console.log("Running updateListViewConditional");
+            $interval.cancel(listViewInterval);
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {

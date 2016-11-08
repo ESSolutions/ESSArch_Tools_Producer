@@ -578,8 +578,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             console.log(response.status);
         });
     }
+    var listViewInterval;
     function updateListViewConditional() {
-        console.log("Running updateListViewConditional");
+            $interval.cancel(listViewInterval);
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
