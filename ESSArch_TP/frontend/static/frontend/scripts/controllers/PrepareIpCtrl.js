@@ -713,7 +713,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 {name: "preservation_description_file", value: "preservation_description_file"},
                 {name: "mets_file", value: "mets_file"},
                 {name: "archival_description_file", value: "archival_description_file"},
-                {name: "authoritive_information_file", value: "authoritive_information_file"}
+                {name: "authoritive_information_file", value: "authoritive_information_file"},
+                {name: "xsd_files", value: "xsd_files"}
+
             ],
         },
         "hideExpression": function($viewValue, $modelValue, scope){
