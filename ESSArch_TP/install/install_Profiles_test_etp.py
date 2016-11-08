@@ -191,8 +191,272 @@ def installProfileTransferProject(): # Profile Transfer Project
         'status': 'Agreed',
         'label': 'Example of SIP for delivery of SE ERMS',
         'schemas': {},
+        'template': [
+            {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archival institution",
+		            "desc": "xxx",
+               },
+               "type": "input",
+               "key": "archival_institution" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist organization",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archivist_organization" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archival type",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archival_type" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archival location",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archival_location" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archive Policy",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archive_policy" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Container format",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "container_format" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Container format compression",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "container_format_compression" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Checksum algorithm",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "checksum_algorithm" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission reception validation",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_reception_validation" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission reception exception handling",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_reception_exception_handling" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission reception receipt confirmation",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_reception_receipt_confirmation" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission risk",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_risk" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission mitigation",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_mitigation" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Information package file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "information_package_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submission information package file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submission_information_package_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archival information package file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archival_information_package_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Dissemination information package file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "dissemination_information_package_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submit description file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "submit_description_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Content type specification file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "content_type_specification_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archival description file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "archival_description_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Authority information file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "authority_information_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation description file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "preservation_description_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "IP event description file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "ip_event_description_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Mimetypes definition file",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "mimetypes_definition_file" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation organization receiver email",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "preservation_organization_receiver_email" # Responds to specification data
+            }, {
+                "hideExpression": "False",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation organization receiver url",
+                    "desc": "xxx",
+                },
+                "type": "input",
+                "key": "preservation_organization_receiver_url" # Responds to specification data
+            }
+        ],
         'specification': {},
-        'specification_data': {},
+        'specification_data': {
+            "archival_institution": "Riksarkivet",
+            "archivist_organization": "Skatteverket",
+            "archival_type": "document",
+            "archival_location": "sweden-stockholm-nacka",
+            "archive_policy": "archive policy 1",
+            "container_format":	"tar",
+            "container_format_compression": "none",
+            "checksum_algorithm": "md5",
+            "submission_reception_validation": "yes",
+            "submission_reception_exception_handling": "none",
+            "submission_reception_receipt_confirmation": "none",
+            "submission_risk": "none",
+            "submission_mitigation": "none",
+            "information_package_file": "ip.xml",
+            "submission_information_package_file": "sip.xml",
+            "archival_information_package_file": "aip.xml",
+            "dissemination_information_package_file": "dip.xml",
+            "submit_description_file": "info.xml", # ip_uuid
+            "content_type_specification_file": "erms.xml", # siard.xml etc
+            "archival_description_file": "ead.xml",
+            "authority_information_file": "eac_cpf.xml",
+            "preservation_description_file": "premis.xml",
+            "ip_event_description_file": "ipevents.xml",
+            "mimetypes_definition_file": "mime.types",
+            "preservation_organization_receiver_email": "receiver@archive.xxx",
+            "preservation_organization_receiver_url": "https://eta-demo.essarch.org,reta,reta",
+        },
     }
 
     # create according to model with many fields
