@@ -360,10 +360,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                         updateVar = true;
                     }
                 }
-                if(updateVar) {
-                    $scope.getListViewData();
-                }
             });
+            if(updateVar) {
+                $scope.getListViewData();
+            }
         }, 4000);
     };
 

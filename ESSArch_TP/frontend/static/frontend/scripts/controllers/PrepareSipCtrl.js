@@ -288,10 +288,13 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             var sa = response.data;
             $http({
                 method: 'GET',
-                url: sa.profile_transfer_project.profile
+                url: ip.profile_transfer_project.profile
             }).then(function(response) {
                 vm.dependencyModel= response.data.specification_data;
                 vm.dependencyFields = response.data.template;
+                vm.dependencyFields.forEach(function(field) {
+                    field.templateOptions.disabled = true;
+                });
             }, function(response) {
             });
         }, function(response){
@@ -516,21 +519,19 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //Get profiles in given profile type
     function getProfiles(profiles, ip){
-        if(profiles.active == null || angular.isUndefined(profiles)){
+        if(profiles == null || angular.isUndefined(profiles)){
             var deferred = $q.defer();
             deferred.resolve(null);
             return deferred.promise;
         }
         var promise = $http({
             method: 'GET',
-            url: getActiveProfile(profiles).url
+            url: profiles.profile
         }).then(function(response) {
             var returnVal = false;
-            ip.locks.forEach(function(lock) {
-                if(lock.profile == response.data.url){
-                    returnVal = true;
-                }
-            });
+            if(response){
+                returnVal = true;
+            }
             return returnVal;
         }, function(response) {
             console.log(response.status);
@@ -543,16 +544,17 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             method: 'GET',
             url: ip.SubmissionAgreement
         }).then(function(response) {
-            var sa = response.data;
-            $http({
-                method: 'GET',
-                url: getActiveProfile(sa.profile_submit_description).url
-            }).then(function(response) {
-                vm.informationModel= response.data.specification_data;
-                vm.informationFields = response.data.template;
-            }, function(response) {
-              console.log(response.status);
-            });
+            if (ip.profile_submit_description) {
+                $http({
+                    method: 'GET',
+                    url: ip.profile_submit_description.profile
+                }).then(function(response) {
+                    vm.informationModel= response.data.specification_data;
+                    vm.informationFields = response.data.template;
+                }, function(response) {
+                  console.log(response.status);
+                });
+            }
         }, function(response){
             console.log(response.status);
         });
@@ -585,10 +587,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                         updateVar = true;
                     }
                 }
-                if(updateVar) {
-                    $scope.getListViewData();
-                }
             });
+            if(updateVar) {
+                $scope.getListViewData();
+            }
         }, 4000);
     };
 
