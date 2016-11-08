@@ -285,7 +285,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = true;
             getEventlogData();
             $scope.edit = true;
-            $scope.selectProfile = row.active;
+            $scope.selectProfile = row;
             vm.profileModel = row.active.specification_data;
             vm.profileFields = row.active.template;
             $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: row.active.structure}];
