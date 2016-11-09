@@ -239,7 +239,7 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.metsHdr.metsDocumentID.#content"
+                            "var": "_XML_FILENAME"
                         }
                     ],
                     "-attr": [],
