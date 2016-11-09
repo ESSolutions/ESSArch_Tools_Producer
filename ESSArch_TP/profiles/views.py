@@ -86,6 +86,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             )
 
         ip.SubmissionAgreementLocked = True
+        ip.State = "Prepared"
         ip.save()
 
         return Response({'status': 'locking submission_agreement'})
