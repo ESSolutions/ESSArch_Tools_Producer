@@ -1,8 +1,12 @@
 angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, listViewService, $rootScope) {
 
     //Get data for Events table
-	function getEventPage(start, number, pageNumber, params, selected) {
-        return listViewService.getEvents($rootScope.ip, pageNumber, number).then(function(value) {
+	function getEventPage(start, number, pageNumber, params, selected, sort) {
+        var sortString = sort.predicate;
+        if(sort.reverse) {
+            sortString = "-"+sortString;
+        }
+        return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString).then(function(value) {
             var eventCollection = value.data;
             eventCollection.forEach(function(event) {
                 selected.forEach(function(item) {

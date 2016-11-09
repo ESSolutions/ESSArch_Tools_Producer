@@ -26,12 +26,13 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     //Get data from rest api for event table
     $scope.eventPipe = function(tableState, ctrl) {
         $rootScope.stCtrl = ctrl;
+        var sorting = tableState.sort;
         var pagination = tableState.pagination;
         var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
         var number = pagination.number || 10;  // Number of entries showed per page.
         var pageNumber = start/number+1;
 
-        service.getEventPage(start, number, pageNumber, tableState, $scope.selected).then(function (result) {
+        service.getEventPage(start, number, pageNumber, tableState, $scope.selected, sorting).then(function (result) {
             $scope.displayed = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             $scope.tableState = tableState;
