@@ -82,7 +82,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend,
     )
-    ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State',)
+    ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State', 'eventDateTime', 'eventDetail', 'id')
     filter_class = InformationPackageFilter
 
     def get_queryset(self):
@@ -148,7 +148,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route()
     def events(self, request, pk=None):
         ip = self.get_object()
-        events = ip.events.all()
+        events = filters.OrderingFilter().filter_queryset(request, ip.events.all(), self)
         page = self.paginate_queryset(events)
         if page is not None:
             serializers = EventIPSerializer(page, many=True, context={'request': request})
