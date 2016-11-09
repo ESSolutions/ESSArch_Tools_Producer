@@ -20,6 +20,7 @@ class EventTypeViewSet(viewsets.ModelViewSet):
     """
     queryset = EventType.objects.all()
     serializer_class = EventTypeSerializer
+    pagination_class = None
 
 class AgentViewSet(viewsets.ModelViewSet):
     """
