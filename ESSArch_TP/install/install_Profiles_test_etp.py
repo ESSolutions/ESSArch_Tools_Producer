@@ -162,6 +162,12 @@ def installSubmissionAgreement():
         ),
         ProfileSA(
             profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440006"
+            ),
+            submission_agreement=sa,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
             ),
             submission_agreement=sa,
@@ -601,14 +607,30 @@ def installProfileSubmitDescription(): # Profile Submit Description
                 "key": "PROFILE"
             }
         ],
-        'specification': {
-            
-        },
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/SDTemplate.json')).read()),
         'specification_data': {
-            "PROFILE": "your default profile",
-            "LABEL": "my default label",
-            "OBJID": "a default obj id",
-            "ID": "the default id"
+            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
+            "mets.TYPE": "Personnel",
+            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
+            "mets.metsHdr.LASTMODDATE": "2016-06-08T10:44:00+02:00",
+            "mets.metsHdr.RECORDSTATUS": "NEW",
+            "ext:OAISTYPE": "SIP",
+            "agentName": "name",
+            "agentNote": "note",
+            "REFERENCECODE": "SE/RA/123456/24/F",
+            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
+            "MetsIdentifier": "sip.xml",
+            "filename": "sip.txt",
+            "SMLabel": "Profilestructmap",
+            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
+            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
+            "LOCTYPE": "URL",
+            "agentname1": "Government X",
+            "agentnote1": "ORG:2010340930",
+            "agentname2": "Government X:DEP Y",
+            "agentnote2": "ORG:2010340920",
+            "agentname3": "HR Employed",
+            "agentnote3": "5.0.34",
         },
     }
 
@@ -1078,21 +1100,9 @@ def installProfileSIP(): # Profile Submission Information Package
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
         'specification_data': {
-            "xmlns:mets": "http://www.loc.gov/METS/",
-            "xmlns:ext": "ExtensionMETS",
-            "xmlns:xlink": "http://www.w3.org/1999/xlink",
-            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-            "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
-            "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
-            "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
-            "mets.LABEL": "Test of SIP 1",
+            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
             "mets.TYPE": "Personnel",
-            "mets.OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
             "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "mets.metsHdr.CREATEDATE": "2016-06-08T10:44:00+02:00",
-            "mets.ID": "ID" + str(uuid.uuid4()),
-            "mets.metsHdr.ID": "ID" + str(uuid.uuid4()),
             "mets.metsHdr.LASTMODDATE": "2016-06-08T10:44:00+02:00",
             "mets.metsHdr.RECORDSTATUS": "NEW",
             "ext:OAISTYPE": "SIP",
@@ -1106,12 +1116,6 @@ def installProfileSIP(): # Profile Submission Information Package
             "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
             "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
             "LOCTYPE": "URL",
-            "MDTYPE": "PREMIS",
-            "xlink:href": "file:///metadata/premis.xml",
-            "xlink:type": "simple",
-            "ID": "ID31e51159-9280-44d1-b26c-014077f8eeb5",
-            "mets.amdSec.ID": "ID" + str(uuid.uuid4()),
-            "mets.amdSec.digiprovMD.ID": "ID" + str(uuid.uuid4()),
             "agentname1": "Government X",
             "agentnote1": "ORG:2010340930",
             "agentname2": "Government X:DEP Y",
