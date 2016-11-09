@@ -244,6 +244,10 @@ class EventIPViewSet(viewsets.ModelViewSet):
     """
     queryset = EventIP.objects.all()
     serializer_class = EventIPSerializer
+    filter_backends = (
+        filters.OrderingFilter, DjangoFilterBackend,
+    )
+    ordering_fields = ('id', 'eventDetail', 'eventDateTime')
 
     def create(self, request):
         """
