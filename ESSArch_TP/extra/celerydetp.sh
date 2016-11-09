@@ -48,8 +48,9 @@ else
 fi
 
 export ETP=/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP
-export LD_LIBRARY_PATH=/ESSArch/pd/python/lib:/ESSArch/pd/libxslt/lib:/ESSArch/pd/libxml/lib:/ESSArch/pd/libmpeg2/lib:/usr/local/lib
-export PYTHONPATH=${ETP}:/ESSArch/config
+#export ETP=/ESSArch/alpha/ESSArch_Tools_Producer/ESSArch_TP
+#export LD_LIBRARY_PATH=/ESSArch/pd/python/lib:/ESSArch/pd/libxslt/lib:/ESSArch/pd/libxml/lib:/ESSArch/pd/libmpeg2/lib:/usr/local/lib
+#export PYTHONPATH=${ETP}:/ESSArch/config
 
 SCRIPT_NAME="$(basename "$SCRIPT_FILE")"
 
@@ -231,7 +232,7 @@ _get_pids() {
 
 
 _chuid () {
-    su "$CELERYD_USER" -c "$CELERYD_MULTI $*"
+    su - "$CELERYD_USER" -c "$CELERYD_MULTI $*"
 }
 
 

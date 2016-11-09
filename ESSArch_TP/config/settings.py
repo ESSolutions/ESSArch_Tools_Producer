@@ -168,6 +168,6 @@ CELERY_RESULT_BACKEND = 'amqp://'
 CELERY_IMPORTS = ('preingest.tasks', 'preingest.tests.tasks',)
 
 try:
-    from local_etp2_settings import *
+    from local_etp_settings import *
 except ImportError, exp:
     pass
