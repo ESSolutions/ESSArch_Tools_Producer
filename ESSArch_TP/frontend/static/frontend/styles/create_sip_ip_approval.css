@@ -205,8 +205,7 @@ input[type="checkbox"] {
     -webkit-flex-direction: row;
     flex-wrap: wrap;
     -webkit-flex-wrap: wrap;
-    justify-content: space-between;
-    -webkit-justify-content: space-between;
+    padding: 5px;
     width: 100%;
 }
 .eventlog-form {
@@ -258,8 +257,8 @@ input[type="checkbox"] {
     font-size: 10px;
 }
 .formly-field {
-    width: 20%;
-    margin-left: 5px;
+    width: 24%;
+    margin: 5px;
 }
 .submit-button {
     margin-left: 5px;
