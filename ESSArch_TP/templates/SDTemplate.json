@@ -310,13 +310,13 @@
                             "#content": [{"var":"systemname" }]
                         },
                         {
-                            "-name": "name",
+                            "-name": "note",
                             "-namespace": "mets",
                             "-min": 1,
                             "#content": [{"var":"systemversion" }]
                         },
                         {
-                            "-name": "name",
+                            "-name": "note",
                             "-namespace": "mets",
                             "-min": 1,
                             "#content": [{"var":"systemtype" }]
