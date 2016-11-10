@@ -187,6 +187,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     function createProfileObj(type, profiles, sa, ip){
         var required = false;
         var locked = false;
+        var checked = false;
         var url = null;
 
         p = getProfileByTypeFromIP(ip, type);
@@ -194,16 +195,17 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             url_from_ip = p.profile;
             url = url_from_ip;
             locked = p.LockedBy ? true : false;
+            checked = p.included
         }
         p = getProfileByTypeFromSA(sa, type);
         if (p){
+            checked = true
             required = true;
             if (url == null) {
                 url = p.profile;
             }
         }
         active = findProfileByUrl(url, profiles);
-        checked = active == null ? false : true
 
         return {
             active: active,

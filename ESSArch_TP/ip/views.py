@@ -21,6 +21,7 @@ from ESSArch_Core.ip.models import (
 
 from ESSArch_Core.profiles.models import (
     Profile,
+    ProfileIP,
 )
 
 from ip.filters import InformationPackageFilter
@@ -209,6 +210,23 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         self.get_object().submit()
         return Response({'status': 'submitting ip'})
+
+    @detail_route(methods=['put'], url_path='check-profile')
+    def check_profile(self, request, pk=None):
+        ip = self.get_object()
+        ptype = request.data.get("type")
+
+        try:
+            pip = ProfileIP.objects.get(ip=ip, profile__profile_type=ptype)
+
+            if not pip.LockedBy:
+                pip.included = request.data.get('checked', not pip.included)
+                pip.save()
+        except ProfileIP.DoesNotExist:
+            print "pip does not exist"
+            pass
+
+        return Response()
 
     @detail_route(methods=['put'], url_path='change-profile')
     def change_profile(self, request, pk=None):

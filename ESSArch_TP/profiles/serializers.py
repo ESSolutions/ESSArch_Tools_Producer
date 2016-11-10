@@ -28,7 +28,7 @@ class ProfileIPSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProfileIP
         fields = (
-            'url', 'id', 'profile', 'ip', 'profile_type', 'LockedBy', 'Unlockable',
+            'url', 'id', 'profile', 'ip', 'profile_type', 'included', 'LockedBy', 'Unlockable',
         )
 
 

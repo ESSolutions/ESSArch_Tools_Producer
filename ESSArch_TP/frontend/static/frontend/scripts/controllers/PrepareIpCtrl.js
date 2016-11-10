@@ -376,6 +376,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         return canLock;
     };
 
+    $scope.setCheckedProfile = function(type, checked){
+        var uri = $scope.ip.url+"check-profile/";
+         $http({
+            method: 'PUT',
+            url: uri,
+            data: {
+                type: type,
+                checked: checked
+            }
+        })
+        .success(function (response) {
+        })
+    };
+
     //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile){
         var sendData = {"new_profile": profile.id};
