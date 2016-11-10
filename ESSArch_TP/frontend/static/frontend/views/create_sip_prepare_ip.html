@@ -58,7 +58,7 @@
                                     <td>
                                         <div class="checkbox table-col">
                                             <label>
-                                                <input type="checkBox" ng-disabled="profile.required || profile.locked" ng-change="setCheckedProfile(type, profile.checked)" ng-model="profile.checked"></input>
+                                                <input type="checkBox" ng-disabled="profile.required || profile.locked || !profile.active" ng-change="setCheckedProfile(type, profile.checked)" ng-model="profile.checked"></input>
                                             </label>
                                         </div>
                                     </td>
