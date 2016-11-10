@@ -412,6 +412,9 @@
                 {
                     "#content": [
                         {
+                            "text": "ID"
+                        },
+                        {
                             "var": "_UUID"
                         }
                     ],
@@ -424,6 +427,9 @@
                     "-attr": [
                         {
                             "#content": [
+                                {
+                                    "text": "ID"
+                                },
                                 {
                                     "var": "_UUID"
                                 }
