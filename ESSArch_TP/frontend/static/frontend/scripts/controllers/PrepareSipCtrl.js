@@ -552,6 +552,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 }).then(function(response) {
                     vm.informationModel= response.data.specification_data;
                     vm.informationFields = response.data.template;
+                    vm.informationFields.forEach(function(field) {
+                        field.templateOptions.disabled = true;
+                    });
                 }, function(response) {
                   console.log(response.status);
                 });
