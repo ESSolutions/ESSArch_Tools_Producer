@@ -455,6 +455,9 @@
                                 {
                                     "#content": [
                                         {
+                                            "text": "ID"
+                                        },
+                                        {
                                             "var": "FID"
                                         }
                                     ],
