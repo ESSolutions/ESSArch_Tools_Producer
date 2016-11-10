@@ -260,6 +260,7 @@
             "-min": 0,
             "-name": "amdSec",
             "-namespace": "mets",
+            "-skipIfNoChildren": true,
             "-attr": [
                 {
                     "-name": "ID",
@@ -277,6 +278,7 @@
                 {
                     "-name": "digiprovMD",
                     "-namespace": "mets",
+                    "-skipIfNoChildren": true,
                     "-attr": [
                         {
                             "-name": "ID",
