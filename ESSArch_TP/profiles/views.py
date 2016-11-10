@@ -92,7 +92,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         if not ip_profiles.exists() and ip.SubmissionAgreement:
             sa_profiles = ProfileSA.objects.filter(
                 submission_agreement=ip.SubmissionAgreement,
-            ).exclude(profile__in=ProfileIP.objects.filter(ip=ip).values('profile'))
+            ).exclude(
+                profile__profile_type__in=ProfileIP.objects.filter(ip=ip).values('profile__profile_type')
+            )
 
             if not sa_profiles.exists():
                 ip.SubmissionAgreementLocked = True
