@@ -73,7 +73,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
-        ip_id = request.data.get("ip", {})
+        ip_id = request.data.get("ip")
 
         try:
             ip = InformationPackage.objects.get(
@@ -85,11 +85,24 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        ip.SubmissionAgreementLocked = True
-        ip.State = "Prepared"
-        ip.save()
+        ip_profiles = ProfileIP.objects.filter(
+            ip=ip, included=True, LockedBy=None
+        )
 
-        return Response({'status': 'locking submission_agreement'})
+        if not ip_profiles.exists() and ip.SubmissionAgreement:
+            sa_profiles = ProfileSA.objects.filter(
+                submission_agreement=ip.SubmissionAgreement,
+            ).exclude(profile__in=ProfileIP.objects.filter(ip=ip).values('profile'))
+
+            if not sa_profiles.exists():
+                ip.SubmissionAgreementLocked = True
+                ip.State = "Prepared"
+                ip.save()
+
+                return Response({'status': 'locking submission_agreement'})
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileSAViewSet(viewsets.ModelViewSet):
     queryset = ProfileSA.objects.all()
