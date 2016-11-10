@@ -569,6 +569,90 @@
             "-min": 0,
             "-name": "fileSec",
             "-namespace": "mets"
+        },
+        {
+            "-max": -1,
+            "-min": 0,
+            "-name": "structMap",
+            "-namespace": "mets",
+            "-children": [
+                {
+                    "-max": 1,
+                    "-min": 0,
+                    "-name": "div",
+                    "-namespace": "mets",
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "Package"
+                                }
+                            ],
+                            "-name": "LABEL",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": [
+                        {
+                            "-max": 1,
+                            "-min": 0,
+                            "-name": "div",
+                            "-namespace": "mets",
+                            "-allowEmpty": true,
+                            "-attr": [
+                                {
+                                    "#content": [
+                                        {
+                                            "text": "Content Description"
+                                        }
+                                    ],
+                                    "-name": "LABEL",
+                                    "-req": 0
+                                }
+                            ]
+                        },
+                        {
+                            "-max": 1,
+                            "-min": 0,
+                            "-name": "div",
+                            "-namespace": "mets",
+                            "-allowEmpty": true,
+                            "-attr": [
+                                {
+                                    "#content": [
+                                        {
+                                            "text": "Datafiles"
+                                        }
+                                    ],
+                                    "-name": "LABEL",
+                                    "-req": 0
+                                }
+                            ],
+                            "-children": [
+                                {
+                                    "-name": "fptr",
+                                    "-namespace": "mets",
+                                    "-containsFiles": true,
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "text": "ID"
+                                                },
+                                                {
+                                                    "var": "FID"
+                                                }
+                                            ],
+                                            "-name": "FILEID",
+                                            "-req": 0
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
