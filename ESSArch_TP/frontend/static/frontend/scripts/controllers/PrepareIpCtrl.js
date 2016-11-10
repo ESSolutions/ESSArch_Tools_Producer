@@ -363,6 +363,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
 
     $scope.canLockSa = function(sa){
+        if(!$scope.selectRowCollapse || $scope.selectRowCollapse == {}) {
+            return false;
+        }
         var canLock = true;
         for (var type in $scope.selectRowCollapse){
             var profile = $scope.selectRowCollapse[type];
