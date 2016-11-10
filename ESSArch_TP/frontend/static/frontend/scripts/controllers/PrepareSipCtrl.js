@@ -278,7 +278,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get list of files in ip
     $scope.getFileList = function(ip) {
-        $scope.fileListCollection = listViewService.getFileList(ip);;
+        $scope.fileListCollection = listViewService.getFileList(ip);
     };
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {
@@ -308,214 +308,174 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get lock-status from profiles
     $scope.getPackageProfiles = function(ip) {
         vm.profileFields = [];
-        listViewService.getIp(ip.url).then(function(value) {
-            ip = value;
-        $http({
-            method: 'GET',
-            url: ip.SubmissionAgreement
-        }).then(function(response) {
-            vm.profileModel = {
-            };
-
-            var sa = response.data;
-            getProfiles(sa.profile_transfer_project, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.transfer_project = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "transfer_project",
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-                        },
-                        type: "select",
-                        key: "transfer_project"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_content_type, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.content_type = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "content_type",
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-                        },
-                        type: "select",
-                        key: "content_type"
-                    }
-                    vm.profileFields.push(field);
+        vm.profileModel = {};
+        getProfiles(ip.profile_transfer_project, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.transfer_project = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "transfer_project",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "transfer_project"
                 };
-            });
-            getProfiles(sa.profile_data_selection, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.data_selection = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "data_selection",
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-                        },
-                        type: "select",
-                        key: "data_selection"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_classification, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.classification = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "classification",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "classification"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_import, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.import = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "import",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "import"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_submit_description, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.submit_description = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "submit_description",
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "submit_description"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_sip, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.sip = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "sip",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "sip"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_aip, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.aip = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "aip",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "aip"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_dip, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.dip = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "dip",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "dip"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_workflow, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.workflow = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "workflow",
-
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                        },
-                        type: "select",
-                        key: "workflow"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_preservation_metadata, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.preservation_metadata = profileValue
-                        var field = {
-                            templateOptions: {
-                                label: "preservation_metadata",
-
-                                options: [{name: "OK", value: true},{name: "", value: false}]
-
-
-                            },
-                            type: "select",
-                            key: "preservation_metadata"
-                        };
-                    vm.profileFields.push(field);
-                }
-            });
-            getProfiles(sa.profile_event, ip).then(function(profileValue){
-                if(profileValue != null){
-                    vm.profileModel.event = profileValue;
-                    var field = {
-                        templateOptions: {
-                            label: "event",
-                            options: [{name: "OK", value: true},{name: "", value: false}]
-
-                        },
-                        type: "select",
-                        key: "event"
-                    };
-                    vm.profileFields.push(field);
-                }
-            });
-        }, function(response){
-            console.log(response.status);
+                vm.profileFields.push(field);
+            }
         });
+        getProfiles(ip.profile_content_type, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.content_type = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "content_type",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "content_type"
+                }
+                vm.profileFields.push(field);
+            };
+        });
+        getProfiles(ip.profile_data_selection, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.data_selection = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "data_selection",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "data_selection"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_classification, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.classification = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "classification",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "classification"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_import, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.import = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "import",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "import"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_submit_description, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.submit_description = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "submit_description",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "submit_description"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_sip, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.sip = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "sip",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "sip"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_aip, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.aip = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "aip",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "aip"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_dip, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.dip = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "dip",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "dip"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_workflow, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.workflow = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "workflow",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "workflow"
+                };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_preservation_metadata, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.preservation_metadata = profileValue
+                    var field = {
+                        templateOptions: {
+                            label: "preservation_metadata",
+                            disabled: true
+                        },
+                        type: "checkbox",
+                        key: "preservation_metadata"
+                    };
+                vm.profileFields.push(field);
+            }
+        });
+        getProfiles(ip.profile_event, ip).then(function(profileValue){
+            if(profileValue != null){
+                vm.profileModel.event = profileValue;
+                var field = {
+                    templateOptions: {
+                        label: "event",
+                        disabled: true
+                    },
+                    type: "checkbox",
+                    key: "event"
+                };
+                vm.profileFields.push(field);
+            }
         });
     }
     //Get profiles in given profile type

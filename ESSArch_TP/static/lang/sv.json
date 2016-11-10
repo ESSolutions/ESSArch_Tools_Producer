@@ -100,5 +100,6 @@
     "NO": "Nej",
     "DOYOUWANTTOLOCKSA": "Vill du låsa sa",
     "TOIP": "till ip",
-    "LOCKSA": "Lås SA"
+    "LOCKSA": "Lås SA",
+    "INCLUDEDPROFILES": "Inkluderade profiler"
 }

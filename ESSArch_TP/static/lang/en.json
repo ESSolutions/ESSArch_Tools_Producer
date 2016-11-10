@@ -100,5 +100,6 @@
     "NO": "No",
     "DOYOUWANTTOLOCKSA": "Do you want to lock sa",
     "TOIP": "to ip",
-    "LOCKSA": "Lock SA"
+    "LOCKSA": "Lock SA",
+    "INCLUDEDPROFILES": "Included profiles"
 }
