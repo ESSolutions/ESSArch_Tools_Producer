@@ -40,7 +40,7 @@
                                 </td>
                                 <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                 <td><p class="table-col">{{}}</p>
-                                    <button ng-if="row.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
+                                    <button ng-if="saProfile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
                                 </td>
                                 <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                                 <a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
