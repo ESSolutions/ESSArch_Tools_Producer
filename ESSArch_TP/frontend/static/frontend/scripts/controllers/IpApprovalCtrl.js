@@ -359,7 +359,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100) {
+                if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
                     if(ip.step_state != "FAILURE") {
                         updateVar = true;
                     }
