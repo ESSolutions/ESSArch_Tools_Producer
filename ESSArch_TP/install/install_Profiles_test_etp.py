@@ -580,57 +580,132 @@ def installProfileSubmitDescription(): # Profile Submit Description
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "ID"
-                },
-                "type": "input",
-                "key": "ID"
-            }, {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "OBJID"
-                },
-                "type": "input",
-                "key": "OBJID"
-            }, {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "LABEL"
-                },
-                "type": "input",
-                "key": "LABEL"
-            }, {
-                "templateOptions": {
-                    "type": "text",
                     "label": "PROFILE"
                 },
                 "type": "input",
-                "key": "PROFILE"
-            }
+                "key": "profile"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Start Date"
+                },
+                "type": "input",
+                "key": "startdate"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "End Date"
+                },
+                "type": "input",
+                "key": "enddate"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist"
+                },
+                "type": "input",
+                "key": "archivist"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator"
+                },
+                "type": "input",
+                "key": "creator"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submitter Organization"
+                },
+                "type": "input",
+                "key": "submitter_organization"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Submitter Individual"
+                },
+                "type": "input",
+                "key": "submitter_individual"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Producer Organization"
+                },
+                "type": "input",
+                "key": "producer_organization"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Producer Individual"
+                },
+                "type": "input",
+                "key": "producer_individual"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "IP Owner"
+                },
+                "type": "input",
+                "key": "ipowner"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization"
+                },
+                "type": "input",
+                "key": "preservation_organization"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "System Name"
+                },
+                "type": "input",
+                "key": "systemname"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "System Version"
+                },
+                "type": "input",
+                "key": "systemversion"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "System Type"
+                },
+                "type": "input",
+                "key": "systemtype"
+            },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/SDTemplate.json')).read()),
         'specification_data': {
-            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
-            "mets.TYPE": "Personnel",
-            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "mets.metsHdr.LASTMODDATE": "2016-06-08T10:44:00+02:00",
-            "mets.metsHdr.RECORDSTATUS": "NEW",
-            "ext:OAISTYPE": "SIP",
-            "agentName": "name",
-            "agentNote": "note",
-            "REFERENCECODE": "SE/RA/123456/24/F",
-            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
-            "MetsIdentifier": "sip.xml",
-            "filename": "sip.txt",
-            "SMLabel": "Profilestructmap",
-            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
-            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
-            "LOCTYPE": "URL",
-            "agentname1": "Government X",
-            "agentnote1": "ORG:2010340930",
-            "agentname2": "Government X:DEP Y",
-            "agentnote2": "ORG:2010340920",
-            "agentname3": "HR Employed",
-            "agentnote3": "5.0.34",
+            "profile": "my profile",
+            "startdate": "161110",
+            "enddate": "161220",
+            "archivist": "the archivist",
+            "creator": "the creator",
+            "submitter_organization": "the submitter organization",
+            "submitter_individual": "the submitter individual",
+            "producer_organization": "the submitter organization",
+            "producer_individual": "the producer individual",
+            "ipowner": "the ip owner",
+            "preservation_organization": "the preservation organization",
+            "systemname": "the system name",
+            "systemversion": "the system version",
+            "systemtype": "the system type",
         },
     }
 
