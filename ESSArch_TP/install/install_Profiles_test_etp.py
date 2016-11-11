@@ -815,30 +815,6 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.ID"
-                },
-                "type": "input",
-                "key": "mets.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.OBJID"
-                },
-                "type": "input",
-                "key": "mets.OBJID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.LABEL"
-                },
-                "type": "input",
-                "key": "mets.LABEL"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
                     "label": "mets.TYPE"
                 },
                 "type": "input",
@@ -855,26 +831,10 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.ID"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
                     "label": "mets.metsHdr.ADMID"
                 },
                 "type": "input",
                 "key": "mets.metsHdr.ADMID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.CREATEDATE"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.CREATEDATE"
             },
             {
                 "templateOptions": {
@@ -951,114 +911,10 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.altRecordID.content"
+                    "label": "mets.metsHdr.altRecordID.#content"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.altRecordID.content"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.altRecordID.ID"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.altRecordID.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.altRecordID.TYPE"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.altRecordID.TYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.metsDocumentID.content"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.metsDocumentID.content"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.metsDocumentID.ID"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.metsDocumentID.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.metsDocumentID.TYPE"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.metsDocumentID.TYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.ID"
-                },
-                "type": "input",
-                "key": "mets.amdSec.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.digiprovMD.ID"
-                },
-                "type": "input",
-                "key": "mets.amdSec.digiprovMD.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.digiprovMD.GROUPID"
-                },
-                "type": "input",
-                "key": "mets.amdSec.digiprovMD.GROUPID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.digiprovMD.ADMID"
-                },
-                "type": "input",
-                "key": "mets.amdSec.digiprovMD.ADMID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.digiprovMD.CREATED"
-                },
-                "type": "input",
-                "key": "mets.amdSec.digiprovMD.CREATED"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.amdSec.digiprovMD.STATUS"
-                },
-                "type": "input",
-                "key": "mets.amdSec.digiprovMD.STATUS"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.fileSec.ID"
-                },
-                "type": "input",
-                "key": "mets.fileSec.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.fileSec.fileGrp.ID"
-                },
-                "type": "input",
-                "key": "mets.fileSec.fileGrp.ID"
+                "key": "mets.metsHdr.altRecordID.#content"
             },
             {
                 "templateOptions": {
@@ -1087,14 +943,6 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.structMap.ID"
-                },
-                "type": "input",
-                "key": "mets.structMap.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
                     "label": "mets.structMap.TYPE"
                 },
                 "type": "input",
@@ -1111,66 +959,10 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.structMap.div.ID"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.ID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.ORDER"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.ORDER"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.ORDERLABEL"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.ORDERLABEL"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
                     "label": "mets.structMap.div.LABEL"
                 },
                 "type": "input",
                 "key": "mets.structMap.div.LABEL"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.DMDID"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.DMDID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.ADMID"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.ADMID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.TYPE"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.TYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.CONTENTIDS"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.CONTENTIDS"
             },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
@@ -1184,7 +976,7 @@ def installProfileSIP(): # Profile Submission Information Package
             "agentName": "name",
             "agentNote": "note",
             "REFERENCECODE": "SE/RA/123456/24/F",
-            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
+            "mets.metsHdr.altRecordID.#content": "RA 13-2011/5329, 2012-04-12",
             "MetsIdentifier": "sip.xml",
             "filename": "sip.txt",
             "SMLabel": "Profilestructmap",

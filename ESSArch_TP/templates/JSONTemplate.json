@@ -387,7 +387,10 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.fileSec.ID"
+                            "text": "ID"
+                        },
+                        {
+                            "var": "_UUID"
                         }
                     ],
                     "-name": "ID",
@@ -403,7 +406,7 @@
                                     "text": "ID"
                                 },
                                 {
-                                    "var": "FID"
+                                    "var": "_UUID"
                                 }
                             ],
                             "-name": "ID",
@@ -421,7 +424,7 @@
                         {
                             "#content": [
                                 {
-                                    "var": "FADMID"
+                                    "var": "mets.fileSec.fileGrp.ADMID"
                                 }
                             ],
                             "-name": "ADMID",
@@ -430,7 +433,7 @@
                         {
                             "#content": [
                                 {
-                                    "var": "FUse"
+                                    "var": "mets.fileSec.fileGrp.USE"
                                 }
                             ],
                             "-name": "USE",
@@ -556,7 +559,10 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.structMap.ID"
+                            "var": "ID"
+                        },
+                        {
+                            "var": "_UUID"
                         }
                     ],
                     "-name": "ID",
@@ -623,15 +629,6 @@
                                         {
                                             "#content": [
                                                 {
-                                                    "var": "mets.structMap.div.div.fptr.ID"
-                                                }
-                                            ],
-                                            "-name": "ID",
-                                            "-req": 0
-                                        },
-                                        {
-                                            "#content": [
-                                                {
                                                     "text": "ID"
                                                 },
                                                 {
@@ -640,15 +637,6 @@
                                             ],
                                             "-name": "FILEID",
                                             "-req": 1
-                                        },
-                                        {
-                                            "#content": [
-                                                {
-                                                    "var": "mets.structMap.div.div.fptr.CONTENTIDS"
-                                                }
-                                            ],
-                                            "-name": "CONTENTIDS",
-                                            "-req": 0
                                         }
                                     ],
                                     "-children": [],
@@ -717,15 +705,6 @@
                                                     ],
                                                     "-name": "FILEID",
                                                     "-req": 1
-                                                },
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "var": "mets.structMap.div.div.fptr.CONTENTIDS"
-                                                        }
-                                                    ],
-                                                    "-name": "CONTENTIDS",
-                                                    "-req": 0
                                                 }
                                             ],
                                             "-children": [],
