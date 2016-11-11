@@ -693,8 +693,8 @@ def installProfileSubmitDescription(): # Profile Submit Description
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/SDTemplate.json')).read()),
         'specification_data': {
             "profile": "my profile",
-            "startdate": "161110",
-            "enddate": "161220",
+            "startdate": "2016-11-10",
+            "enddate": "2016-12-20",
             "archivist": "the archivist",
             "creator": "the creator",
             "submitter_organization": "the submitter organization",

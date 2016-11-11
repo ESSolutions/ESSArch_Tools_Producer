@@ -559,7 +559,7 @@
                 {
                     "#content": [
                         {
-                            "var": "ID"
+                            "text": "ID"
                         },
                         {
                             "var": "_UUID"
