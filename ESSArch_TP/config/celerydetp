@@ -10,7 +10,7 @@ CELERY_APP="config"
 
 # Where to chdir at start.
 CELERYD_CHDIR="/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP"
-#CELERYD_CHDIR="/ESSArch/alpha/ESSArch_Tools_Producer/ESSArch_TP2"
+#CELERYD_CHDIR="/ESSArch/alpha/ESSArch_Tools_Producer/ESSArch_TP"
 
 # Extra command-line arguments to the worker
 CELERYD_OPTS="-Q:workeretp celery -c:workeretp 4 --time-limit=300 --broker=amqp://guest:guest@localhost:5672/etp -Ofair --autoreload"
