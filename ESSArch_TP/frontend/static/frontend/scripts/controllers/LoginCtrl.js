@@ -14,7 +14,7 @@ angular.module('myApp').controller('LoginCtrl', function ($scope, $location, myS
                     djangoAuth.profile().then(function(data){
                         $rootScope.auth = data;
                     });
-                    $state.go('home.createSip.info');
+                    $state.go('home.info');
                 },function(data){
                     // error case
                     $scope.errors = data;

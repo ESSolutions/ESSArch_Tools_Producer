@@ -46,7 +46,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         .state('home.createSip', {
             url: 'create-SIP',
             templateUrl: '/static/frontend/views/create_sip.html',
-            redirectTo: 'home.createSip.info',
+            redirectTo: 'home.createSip.prepareIp',
             controller: 'CreateSipCtrl as vm',
             resolve: {
                 authenticated: ['djangoAuth', function(djangoAuth){
@@ -54,8 +54,8 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         })
-        .state('home.createSip.info', {
-            url: '/info',
+        .state('home.info', {
+            url: 'info',
             templateUrl: '/static/frontend/views/create_sip_info.html',
             controller: 'InfoCtrl as vm',
             resolve: {
@@ -185,7 +185,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         });
-        $urlRouterProvider.otherwise('/create-SIP/info');
+        $urlRouterProvider.otherwise('info');
     })
 .config(['$httpProvider', function($httpProvider, $rootScope) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -195,10 +195,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     djangoUrl: "/api/"
 })
 .service('myService', function($location, PermPermissionStore) {
-        this.changePath = function(state) {
-            $state.go(state);
-        };
-        this.getPermissions = function(group){
+    this.changePath = function(state) {
+        $state.go(state);
+    };
+    this.getPermissions = function(group){
             var permissions = group.permissions.map(function(currentValue){return currentValue.codename});
             PermPermissionStore.defineManyPermissions(permissions, function(permissionName) {
                 return_.contains(permissions, permissionName);

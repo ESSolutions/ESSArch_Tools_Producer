@@ -2,6 +2,13 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
     $rootScope.$on('$translateChangeSuccess', function () {
         $state.reload()
     });
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
+        if(toState.name == "home.info") {
+            console.log($scope.activeTab);
+            $scope.activeTab = null;
+        }
+    });
+    $scope.activeTab = null;
     $scope.myPage = $translate.instant('MYPAGE');
     $scope.createSip = $translate.instant('CREATESIP');
     $scope.submitSip = $translate.instant('SUBMITSIP');
