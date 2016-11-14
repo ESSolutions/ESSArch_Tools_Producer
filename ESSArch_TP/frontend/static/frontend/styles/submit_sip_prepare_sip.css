@@ -12,3 +12,19 @@
 .items-per-page {
     width: 15%;
 }
+.package-information {
+    border-bottom-style: solid;
+    margin: 5px;
+}
+.package-dependencies {
+    border-bottom-style: solid;
+    margin: 5px;
+}
+.static-form {
+    border-bottom-style: solid;
+    margin: 5px;
+}
+.validators {
+    border-bottom-style: solid;
+    margin: 5px;
+}
