@@ -273,3 +273,6 @@ input[type="checkbox"] {
 .validator-choices .formly select {
     width: 170px;
 }
+.validator-choices {
+    border-top-style: solid;
+}

@@ -305,3 +305,6 @@ input[type="checkbox"] {
 .add-node-form-wrapper {
     height: 50%;
 }
+.map-structure-editor {
+    border-top-style: solid;
+}
