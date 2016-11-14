@@ -235,38 +235,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     );
                     return selectRowCollapse
                 }).then(function(selectRowCollapse){
-                    type = 'content_type';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'data_selection';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'classification';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'import';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
                     type = 'submit_description';
                     return getProfiles(type).then(function(profiles) {
                         selectRowCollapse[type] = createProfileObj(
@@ -299,7 +267,15 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                         return selectRowCollapse
                     });
                 }).then(function(selectRowCollapse){
-                    type = 'workflow';
+                    type = 'content_type';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'classification';
                     return getProfiles(type).then(function(profiles) {
                         selectRowCollapse[type] = createProfileObj(
                             type, profiles, sa, ip
@@ -316,6 +292,30 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     });
                 }).then(function(selectRowCollapse){
                     type = 'event';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'data_selection';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'import';
+                    return getProfiles(type).then(function(profiles) {
+                        selectRowCollapse[type] = createProfileObj(
+                            type, profiles, sa, ip
+                        );
+                        return selectRowCollapse
+                    });
+                }).then(function(selectRowCollapse){
+                    type = 'workflow';
                     return getProfiles(type).then(function(profiles) {
                         selectRowCollapse[type] = createProfileObj(
                             type, profiles, sa, ip
