@@ -54,8 +54,8 @@ INSTALLED_APPS = [
     'ESSArch_Core.configuration',
     'ESSArch_Core.ip',
     'ESSArch_Core.profiles',
-    'ESSArch_Core.xml.Generator',
-    'ESSArch_Core.xml.ProfileMaker',
+    'ESSArch_Core.essxml.Generator',
+    'ESSArch_Core.essxml.ProfileMaker',
     'ESSArch_Core.WorkflowEngine',
 ]
 

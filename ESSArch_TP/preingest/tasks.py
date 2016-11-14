@@ -7,7 +7,7 @@ from collections import Counter
 from django.conf import settings
 from django.core import serializers
 
-from ESSArch_Core.xml.Generator.xmlGenerator import XMLGenerator
+from ESSArch_Core.essxml.Generator.xmlGenerator import XMLGenerator
 
 from fido.fido import Fido
 
