@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="nav-dynamic-wrapper">
-                <div class="shortcut-nav-calendar-wrapper">
+                <div ng-if="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)" class="shortcut-nav-calendar-wrapper">
                     <div class="shortcut-list" ng-controller="DropdownCtrl">
                         <!--
                         <div class="btn-group" uib-dropdown is-open="status.isopen">
