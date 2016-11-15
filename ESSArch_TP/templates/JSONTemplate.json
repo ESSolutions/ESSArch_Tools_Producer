@@ -312,6 +312,9 @@
                                     "-namespace": "xlink",
                                     "#content": [
                                         {
+                                            "text": "file:///"
+                                        },
+                                        {
                                             "var": "href"
                                         }
                                     ]
@@ -520,6 +523,9 @@
                                             "-name": "href",
                                             "-namespace": "xlink",
                                             "#content": [
+                                                {
+                                                    "text": "file:///"
+                                                },
                                                 {
                                                     "var": "href"
                                                 }
