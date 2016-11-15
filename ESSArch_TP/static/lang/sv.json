@@ -101,5 +101,6 @@
     "DOYOUWANTTOLOCKSA": "Vill du låsa sa",
     "TOIP": "till ip",
     "LOCKSA": "Lås SA",
-    "INCLUDEDPROFILES": "Inkluderade profiler"
+    "INCLUDEDPROFILES": "Inkluderade profiler",
+    "TRACEBACK": "Traceback"
 }

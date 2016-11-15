@@ -3,7 +3,6 @@
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
-    max-height: 962px;
     width: 100%;
     position: relative;
 }
@@ -44,7 +43,6 @@
     margin-left: 10px;
 }
 .list-view {
-    max-height: 300px;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
@@ -65,6 +63,11 @@
     height: 60px;
     margin: 5px;
     padding: 5px;
+}
+.events-footer .signature {
+    width: 250px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .events-form {
     display: flex;
@@ -111,7 +114,6 @@
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
-    max-height: 65%;
     position: relative;
 }
 .events-status-wrapper {
@@ -122,15 +124,11 @@
 .event-view {
     margin: 5px;
     padding: 5px;
-    max-height: 550px;
-    overflow-y: scroll;
 }
 .items-per-page {
     width: 15%;
 }
 .select-view {
-    max-height: 200px;
-    overflow-y: scroll;
     margin: 5px;
     padding: 5px;
 }
@@ -153,7 +151,6 @@
     line-height: 1;
 }
 .status-view {
-    max-height: 550px;
 }
 /*.status-view treecontrol {
     font-size: 20px;
@@ -193,10 +190,8 @@
 }
 
 .edit-view {
-    max-height: 340px;
     border-top-style: solid;
     border-color: #666;
-    overflow-y: scroll;
     margin: 5px;
     padding: 5px;
     position: relative;

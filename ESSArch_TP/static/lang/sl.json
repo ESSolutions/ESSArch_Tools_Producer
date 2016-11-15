@@ -101,5 +101,6 @@
     "DOYOUWANTTOLOCKSA": "Do you want to lock sa",
     "TOIP": "to ip",
     "LOCKSA": "Lock SA",
-    "INCLUDEDPROFILES": "Included profiles"
+    "INCLUDEDPROFILES": "Included profiles",
+    "TRACEBACK": "Traceback"
 }

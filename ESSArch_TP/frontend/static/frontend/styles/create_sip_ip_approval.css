@@ -3,7 +3,6 @@ display: flex;
 display: -webkit-flex;
 flex-direction: column;
 -webkit-flex-direction: column;
-max-height: 962px;
 width: 100%;
 
 }
@@ -27,7 +26,6 @@ width: 100%;
     margin-left: 10px;
 }
 .list-view {
-    max-height: 300px;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
@@ -69,7 +67,6 @@ width: 100%;
     border-style: solid;
     border-color: #666;
     border-radius: 15px;
-    max-height: 65%;
     position: relative;
 }
 .events-status-wrapper {
@@ -80,15 +77,11 @@ width: 100%;
 .event-view {
     margin: 5px;
     padding: 5px;
-    max-height: 550px;
-    overflow-y: scroll;
 }
 .items-per-page {
     width: 15%;
 }
 .select-view {
-    max-height: 200px;
-    overflow-y: scroll;
     margin: 5px;
     padding: 5px;
 }
@@ -111,7 +104,6 @@ width: 100%;
     line-height: 1;
 }
 .status-view {
-    max-height: 550px;
 }
 /*.status-view treecontrol {
     font-size: 20px;
@@ -151,10 +143,8 @@ width: 100%;
 }
 
 .edit-view {
-    max-height: 340px;
     border-top-style: solid;
     border-color: #666;
-    overflow-y: scroll;
     margin: 5px;
     padding: 5px;
 }
@@ -239,6 +229,11 @@ input[type="checkbox"] {
     margin: 5px;
     padding: 5px;
 }
+.events-footer .signature {
+    width: 250px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .events-form {
     display: flex;
     display: -webkit-flex;
@@ -268,11 +263,7 @@ input[type="checkbox"] {
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
-
 }
 .validator-choices .formly select {
     width: 170px;
-}
-.validator-choices {
-    border-top-style: solid;
 }
