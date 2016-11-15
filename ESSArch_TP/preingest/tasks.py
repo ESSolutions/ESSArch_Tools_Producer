@@ -546,8 +546,8 @@ class ValidateFileFormat(DBTask):
 
         res = t.run_eagerly()
 
-        self.set_progress(100, total=100)
         assert res == fileformat, "fileformat for %s is not valid" % filename
+        self.set_progress(100, total=100)
 
     def undo(self, filename=None, fileformat=None):
         pass
@@ -625,8 +625,8 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
         print "logical: %s" % logical_files
         print "physical: %s" % physical_files
 
-        self.set_progress(100, total=100)
         assert Counter(logical_files) == Counter(physical_files), "the physical representation is not valid"
+        self.set_progress(100, total=100)
 
     def undo(self, ip=None, mets_path=None):
         pass
@@ -655,9 +655,8 @@ class ValidateIntegrity(DBTask):
 
         digest = t.run_eagerly()
 
-        self.set_progress(100, total=100)
-
         assert digest == checksum, "checksum for %s is not valid" % filename
+        self.set_progress(100, total=100)
 
     def undo(self, filename=None,checksum=None,  block_size=65536, algorithm=hashlib.sha256):
         pass
