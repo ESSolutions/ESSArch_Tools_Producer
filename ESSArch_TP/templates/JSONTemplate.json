@@ -216,7 +216,7 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.metsHdr.altRecordID.#content"
+                            "var": "mets.metsHdr.altRecordID.content"
                         }
                     ],
                     "-attr": [
