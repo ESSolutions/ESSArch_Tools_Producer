@@ -79,7 +79,7 @@ class CreateIPRootDir(DBTask):
 
         return os.path.join(
             prepare_path,
-            str(information_package_id)
+            unicode(information_package_id)
         )
 
     def run(self, information_package=None):
