@@ -2,8 +2,6 @@ from __future__ import absolute_import
 
 import hashlib, os, shutil, tarfile, urllib, zipfile
 
-from collections import Counter
-
 from django.conf import settings
 from django.core import serializers
 
@@ -18,7 +16,7 @@ from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
-from ESSArch_Core.util import getSchemas
+from ESSArch_Core.util import getSchemas, get_value_from_path, remove_prefix
 
 class PrepareIP(DBTask):
     event_type = 10100
@@ -477,16 +475,9 @@ class CopySchemas(DBTask):
 
 
 class ValidateFiles(DBTask):
-    def run(self, ip, mets_path, validate_fileformat=True, validate_integrity=True):
-        metsdoc = etree.ElementTree(file=mets_path)
 
-        root = metsdoc.getroot()
-        nsmap = {k:v for k,v in root.nsmap.iteritems() if k}
-
-        prepare_path = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-        ip_prepare_path = os.path.join(prepare_path, str(ip.pk))
+    def run(self, ip, xmlfile, validate_fileformat=True, validate_integrity=True):
+        doc = etree.ElementTree(file=xmlfile)
 
         step = ProcessStep.objects.create(
             name="Validate Files",
@@ -495,38 +486,41 @@ class ValidateFiles(DBTask):
         )
 
         if any([validate_fileformat, validate_integrity]):
-            for f in metsdoc.findall('.//mets:file', nsmap):
-                filename = f.find('mets:FLocat', nsmap).get('{%s}href' % nsmap['xlink'])
-                filename = os.path.join(ip_prepare_path, filename)
-                fileformat = f.get("{%s}FILEFORMATNAME" % nsmap['ext'])
-                checksum = f.get("CHECKSUM")
+            for elname, props in settings.FILE_ELEMENTS.iteritems():
+                for f in doc.xpath('.//*[local-name()="%s"]' % elname):
+                    fpath = get_value_from_path(f, props["path"])
 
-                if validate_fileformat and fileformat is not None:
-                    step.tasks.add(ProcessTask.objects.create(
-                        name="preingest.tasks.ValidateFileFormat",
-                        params={
-                            "filename": filename,
-                            "fileformat": fileformat,
-                        },
-                        information_package=ip
-                    ))
+                    if fpath:
+                        fpath = remove_prefix(fpath, props.get("pathprefix", ""))
 
-                if validate_integrity:
-                    step.tasks.add(ProcessTask.objects.create(
-                        name="preingest.tasks.ValidateIntegrity",
-                        params={
-                            "filename": filename,
-                            "checksum": checksum,
-                        },
-                        information_package=ip
-                    ))
+                    fformat = get_value_from_path(f, props.get("format"))
+                    checksum = get_value_from_path(f, props.get("checksum"))
 
+                    if validate_fileformat and fformat is not None:
+                        step.tasks.add(ProcessTask.objects.create(
+                            name="preingest.tasks.ValidateFileFormat",
+                            params={
+                                "filename": os.path.join(ip.ObjectPath, fpath),
+                                "fileformat": fformat,
+                            },
+                            information_package=ip
+                        ))
+
+                    if validate_integrity and checksum is not None:
+                        step.tasks.add(ProcessTask.objects.create(
+                            name="preingest.tasks.ValidateIntegrity",
+                            params={
+                                "filename": os.path.join(ip.ObjectPath, fpath),
+                                "checksum": checksum,
+                            },
+                            information_package=ip
+                        ))
 
         self.set_progress(100, total=100)
 
-        step.run()
+        return step.run()
 
-    def undo(self, ip, mets_path, validate_fileformat=True, validate_integrity=True):
+    def undo(self, ip, xmlfile, validate_fileformat=True, validate_integrity=True):
         pass
 
 class ValidateFileFormat(DBTask):
@@ -594,45 +588,46 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
     See http://stackoverflow.com/a/7829388/1523238
     """
 
-    def run(self, ip=None, mets_path=None):
+    def run(self, ip=None, xmlfile=None):
         objpath = ip.ObjectPath
+        xmlrelpath = os.path.relpath(xmlfile, objpath)
+        xmlrelpath = remove_prefix(xmlrelpath, "./")
 
-        metsdoc = etree.ElementTree(file=mets_path)
+        doc = etree.ElementTree(file=xmlfile)
 
-        root = metsdoc.getroot()
-        nsmap = {k:v for k,v in root.nsmap.iteritems() if k}
+        root = doc.getroot()
 
-        logical_files = []
-        physical_files = []
+        logical_files = set()
+        physical_files = set()
 
-        for f in metsdoc.xpath('.//mets:file | .//mets:mdRef', namespaces=nsmap):
-            if f.tag == "{%s}mdRef" % nsmap['mets']:
-                filename = f.get('{%s}href' % nsmap['xlink'])
-            else:
-                filename = f.find('mets:FLocat', nsmap).get('{%s}href' % nsmap['xlink'])
+        for elname, props in settings.FILE_ELEMENTS.iteritems():
+            for f in doc.xpath('.//*[local-name()="%s"]' % elname):
+                filename = get_value_from_path(f, props["path"])
 
-            if filename:
-                filename = os.path.join(objpath, filename)
-                logical_files.append(filename)
+                if filename:
+                    filename = remove_prefix(filename, props.get("pathprefix", ""))
+                    logical_files.add(filename)
 
         for root, dirs, files in os.walk(objpath):
             for f in files:
-                filename = os.path.join(root, f)
+                if f != xmlrelpath:
+                    reldir = os.path.relpath(root, objpath)
+                    relfile = os.path.join(reldir, f)
+                    relfile = remove_prefix(relfile, "./")
 
-                if filename != mets_path:
-                    physical_files.append(filename)
+                    physical_files.add(relfile)
 
         print "logical: %s" % logical_files
         print "physical: %s" % physical_files
 
-        assert Counter(logical_files) == Counter(physical_files), "the physical representation is not valid"
+        assert logical_files == physical_files, "the logical representation differs from the physical"
         self.set_progress(100, total=100)
 
-    def undo(self, ip=None, mets_path=None):
+    def undo(self, ip=None, xmlfile=None):
         pass
 
-    def get_event_args(self, ip=None, mets_path=None):
-        return [mets_path, ip.ObjectPath]
+    def get_event_args(self, ip=None, xmlfile=None):
+        return [xmlfile, ip.ObjectPath]
 
 
 class ValidateIntegrity(DBTask):

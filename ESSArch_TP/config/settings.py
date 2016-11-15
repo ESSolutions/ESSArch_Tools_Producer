@@ -134,6 +134,26 @@ REST_AUTH_SERIALIZERS = {
 }
 
 
+# File elements in different metadata standards
+
+FILE_ELEMENTS = {
+    "file": {
+        "path": "FLocat@href",
+        "pathprefix": "file:///",
+        "checksum": "@CHECKSUM",
+    },
+    "mdRef": {
+        "path": "@href",
+        "pathprefix": "file:///",
+        "checksum": "@CHECKSUM",
+    },
+    "object": {
+        "path": "storage/contentLocation/contentLocationValue",
+        "pathprefix": "file:///",
+        "checksum": "objectCharacteristics/fixity/messageDigest",
+        "format": "objectCharacteristics/format/formatDesignation/formatName",
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
