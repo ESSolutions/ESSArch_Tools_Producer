@@ -911,10 +911,10 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.altRecordID.#content"
+                    "label": "mets.metsHdr.altRecordID.content"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.altRecordID.#content"
+                "key": "mets.metsHdr.altRecordID.content"
             },
             {
                 "templateOptions": {
@@ -976,7 +976,7 @@ def installProfileSIP(): # Profile Submission Information Package
             "agentName": "name",
             "agentNote": "note",
             "REFERENCECODE": "SE/RA/123456/24/F",
-            "mets.metsHdr.altRecordID.#content": "RA 13-2011/5329, 2012-04-12",
+            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
             "MetsIdentifier": "sip.xml",
             "filename": "sip.txt",
             "SMLabel": "Profilestructmap",

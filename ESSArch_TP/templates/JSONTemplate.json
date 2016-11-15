@@ -216,7 +216,7 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.metsHdr.altRecordID.#content"
+                            "var": "mets.metsHdr.altRecordID.content"
                         }
                     ],
                     "-attr": [
@@ -311,6 +311,9 @@
                                     "-name": "href",
                                     "-namespace": "xlink",
                                     "#content": [
+                                        {
+                                            "text": "file:///"
+                                        },
                                         {
                                             "var": "href"
                                         }
@@ -520,6 +523,9 @@
                                             "-name": "href",
                                             "-namespace": "xlink",
                                             "#content": [
+                                                {
+                                                    "text": "file:///"
+                                                },
                                                 {
                                                     "var": "href"
                                                 }

@@ -123,7 +123,7 @@
                                 {
                                     "-name": "contentLocationValue",
                                     "-namespace": "premis",
-                                    "#content": [{"text": "file:///"},{"var": "FName"}]
+                                    "#content": [{"text": "file:///"},{"var": "href"}]
                                 }
                             ]
                         }
