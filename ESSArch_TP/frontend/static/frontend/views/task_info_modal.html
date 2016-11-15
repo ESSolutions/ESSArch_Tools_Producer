@@ -9,7 +9,7 @@
                 <td>
                     <table class="table">
                         <tr ng-repeat="(key, value) in currentStepTask.params">
-                            <td>{{key}}</td> <td>{{value}}</td>
+                            <td>{{key}}</td> <td class="param-value">{{value}}</td>
                         </tr>
                     </table>
                 </td>
@@ -17,6 +17,10 @@
             <tr>
                 <td>{{('RESULT' | translate)+':'}}</td>
                 <td>{{currentStepTask.result}}</td>
+            </tr>
+            <tr>
+                <td>{{('TRACEBACK' | translate)+ ':'}}</td>
+                <td>{{currentStepTask.traceback}}</td>
             </tr>
         </table>
     </div>

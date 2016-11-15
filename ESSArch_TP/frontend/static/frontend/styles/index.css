@@ -256,3 +256,6 @@ body.modal-open[style] {
     width: 75%;
     margin-left: 10px;
 }
+.param-value {
+    word-break: break-word;
+}
