@@ -212,7 +212,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-    $rootScope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
         $scope.getListViewData();
     }, true);
 

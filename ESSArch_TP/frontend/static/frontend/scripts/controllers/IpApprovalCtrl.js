@@ -219,7 +219,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-     $rootScope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
          $scope.getListViewData();
      }, true);
     //Click funciton for event table objects
