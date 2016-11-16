@@ -27,6 +27,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
     ];
 
+    /*
     $scope.ArchivalType = [
         {
             "name": "Archival type",
@@ -40,6 +41,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
            "children": []
         }
     ];
+    */
 
     $scope.other = [
         {
