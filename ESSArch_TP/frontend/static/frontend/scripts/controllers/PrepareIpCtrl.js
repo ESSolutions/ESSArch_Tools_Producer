@@ -817,7 +817,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             node.node.children.push(dir);
         }
-        $scope.addMode.active = false;
+        $scope.exitAddMode();
     };
     //Remove node from map structure tree view
     $scope.removeNode = function(node) {
@@ -899,7 +899,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         if(vm.treeEditModel.use != ""){
             node.node.use = vm.treeEditModel.use;
         }
-        $scope.updateMode.active = false;
+        $scope.exitUpdateMode();
     };
     $scope.showSelected = function(node, parentNode) {
         $scope.selectedNode = node;

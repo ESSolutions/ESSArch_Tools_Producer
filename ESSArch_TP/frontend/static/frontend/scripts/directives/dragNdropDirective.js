@@ -62,16 +62,14 @@ angular.module('myApp').directive('treednd', function () {
                             }
                         }
                         if (position === 'middle') {
-                            if (toNode.children) {
-                                // inside
-                                if(toNode.type === 'file'){
-                                    if (toParent) {
-                                        idx = toParent.indexOf(toNode);
-                                        toParent.splice(idx + 1, 0, fromNode);
-                                    }
-                                } else {
-                                    toNode.children.push(fromNode);
+                            if(toNode.type === 'file'){
+                                console.log(toNode)
+                                if (toParent) {
+                                    idx = toParent.indexOf(toNode);
+                                    toParent.splice(idx + 1, 0, fromNode);
                                 }
+                            } else {
+                                toNode.children.push(fromNode);
                             }
                         } else if (position === 'up') {
                             if (toParent) {
