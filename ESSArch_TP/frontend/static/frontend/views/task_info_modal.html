@@ -3,6 +3,7 @@
 </div>
 <div class="modal-body" id="modal-body">
     <div class="step-task-info">
+        <p style="margin: 5px;">Status: {{currentStepTask.status}}</p>
         <table class="table" style="margin: 5px;">
             <tr>
                 <td><p>{{('PARAMS' | translate)+':'}}</p></td>
@@ -14,11 +15,11 @@
                     </table>
                 </td>
             </tr>
-            <tr>
+            <tr ng-if="currentStepTask.status == 'SUCCESS'">
                 <td>{{('RESULT' | translate)+':'}}</td>
                 <td>{{currentStepTask.result}}</td>
             </tr>
-            <tr>
+            <tr ng-if="currentStepTask.status == 'FAILURE'">
                 <td>{{('TRACEBACK' | translate)+':'}}</td>
                 <td>{{currentStepTask.traceback}}</td>
             </tr>
