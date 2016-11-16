@@ -18,7 +18,7 @@
                 <th class="clickable" st-sort="State" class="column-label">{{'STATE' | translate}}</th>
                 <th class="clickable" class="column-label">{{'EVENTS' | translate}}</th>
                 <th class="clickable" class="column-label">{{'STATUS' | translate}}</th>
-                <th ng-if="'home.createSip.prepareIp' | isState" class="clickable" st-sort="Delete" class="column-label">{{'DELETE' | translate}}</th>
+                <th class="clickable" st-sort="Delete" class="column-label">{{'DELETE' | translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
                     <uib-progressbar class="progress" value="row.status" type="success"><b>{{row.status | number : 0}}%</b></uib-progressbar>
                 </td>
                 <td ng-click="ipRowClick(row)">
-                    <button ng-if="'home.createSip.prepareIp' | isState" ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
+                    <button ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
                 </td>
             </tr>
         </tbody>
