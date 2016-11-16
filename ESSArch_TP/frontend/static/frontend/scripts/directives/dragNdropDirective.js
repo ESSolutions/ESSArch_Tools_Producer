@@ -1,4 +1,4 @@
-angular.module('myApp').directive('treednd', function () {
+angular.module('myApp').directive('treednd', function (myService) {
     return {
         restrict: 'EA',
         link: function (scope, elt, attrs) {
@@ -55,31 +55,32 @@ angular.module('myApp').directive('treednd', function () {
 
                     scope.$apply(function () {
                         var idx;
-                        if (fromParentNode) {
-                            idx = fromParentNode.children.indexOf(fromNode);
-                            if (idx != -1) {
-                                fromParentNode.children.splice(idx, 1);
+                        if(!myService.hasChild(toNode, fromNode)) {
+                            if (fromParentNode) {
+                                idx = fromParentNode.children.indexOf(fromNode);
+                                if (idx != -1) {
+                                    fromParentNode.children.splice(idx, 1);
+                                }
                             }
-                        }
-                        if (position === 'middle') {
-                            if(toNode.type === 'file'){
-                                console.log(toNode)
+                            if (position === 'middle') {
+                                if(toNode.type === 'file'){
+                                    if (toParent) {
+                                        idx = toParent.indexOf(toNode);
+                                        toParent.splice(idx + 1, 0, fromNode);
+                                    }
+                                } else {
+                                    toNode.children.push(fromNode);
+                                }
+                            } else if (position === 'up') {
+                                if (toParent) {
+                                    idx = toParent.indexOf(toNode);
+                                    toParent.splice(idx, 0, fromNode);
+                                }
+                            } else if (position === 'down') {
                                 if (toParent) {
                                     idx = toParent.indexOf(toNode);
                                     toParent.splice(idx + 1, 0, fromNode);
                                 }
-                            } else {
-                                toNode.children.push(fromNode);
-                            }
-                        } else if (position === 'up') {
-                            if (toParent) {
-                                idx = toParent.indexOf(toNode);
-                                toParent.splice(idx, 0, fromNode);
-                            }
-                        } else if (position === 'down') {
-                            if (toParent) {
-                                idx = toParent.indexOf(toNode);
-                                toParent.splice(idx + 1, 0, fromNode);
                             }
                         }
                     });
