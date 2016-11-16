@@ -63,7 +63,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }).then(function(response) {
             $scope.ArchivistOrganization[0].children = response.data;
         });
-        $http({
+       /* $http({
             method: 'GET',
             url: appConfig.djangoUrl+"archival-types/"
         }).then(function(response) {
@@ -74,7 +74,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             url: appConfig.djangoUrl+"archival-locations/"
         }).then(function(response) {
             $scope.ArchivalLocation[0].children = response.data;
-        });
+        });*/
     }
     $scope.loadNavigation();
     $rootScope.navigationFilter = {
