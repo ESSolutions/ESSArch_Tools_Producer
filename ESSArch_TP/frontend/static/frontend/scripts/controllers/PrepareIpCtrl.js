@@ -277,7 +277,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.selectProfile = row;
             vm.profileModel = angular.copy(row.active.specification_data);
             vm.profileFields = row.active.template;
-            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: row.active.structure}];
+            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
             $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
             $scope.subSelectProfile = "profile";
         }

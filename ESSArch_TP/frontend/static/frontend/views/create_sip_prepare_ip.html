@@ -100,7 +100,7 @@
                                 <label>Signature</label>
                                 <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                                 </div>-->
-                                <button ng-disabled="angular.equals(profileToSave.specification_data, vm.profileModel)" type="submit" class="btn btn-info submit-button">{{'SAVEPROFILE' | translate}}</button>
+                                <button ng-disabled="angular.equals(profileToSave.specification_data, vm.profileModel) && angular.equals(profileToSave.structure, treeElements[0].children)" type="submit" class="btn btn-info submit-button">{{'SAVEPROFILE' | translate}}</button>
                         </form>
                     </div>
                 </div>
