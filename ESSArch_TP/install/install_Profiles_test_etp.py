@@ -97,10 +97,12 @@ def installProfiles(): # Install all different profiles
 
 
 def installIPs():
+    """
     installArchivalInstitution()                # Archival Institution
     installArchivistOrganization()              # Archivist Organization
     installArchivalType()                       # Archival Type
     installArchivalLocation()                   # Archival Location
+    """
     installInformationPackages()                # Information Package
     # installEventIPs()                           # Events
 
