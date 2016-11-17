@@ -16,7 +16,7 @@ from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
-from ESSArch_Core.util import getSchemas, get_value_from_path, remove_prefix
+from ESSArch_Core.util import getSchemas, get_value_from_path, remove_prefix, win_to_posix
 
 class PrepareIP(DBTask):
     event_type = 10100
@@ -613,6 +613,7 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
                 if f != xmlrelpath:
                     reldir = os.path.relpath(root, objpath)
                     relfile = os.path.join(reldir, f)
+                    relfile = win_to_posix(relfile)
                     relfile = remove_prefix(relfile, "./")
 
                     physical_files.add(relfile)
