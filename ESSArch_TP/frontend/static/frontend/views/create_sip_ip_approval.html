@@ -57,7 +57,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a class="table-col" ng-click="profileClick(profile)">{{type}}</a>
+                                    <a class="table-col" ng-click="profileClick(profile)">{{profile.type_label}}</a>
                                 </td>
 
                                 <td><select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select></td>
