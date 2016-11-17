@@ -817,180 +817,78 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.TYPE"
+                    "label": "Type"
                 },
                 "type": "input",
-                "key": "mets.TYPE"
+                "key": "mets_type"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.PROFILE"
+                    "label": "Profile"
                 },
                 "type": "input",
-                "key": "mets.PROFILE"
+                "key": "mets_profile"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.ADMID"
+                    "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.ADMID"
+                "key": "archivist_organization_name"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.LASTMODDATE"
+                    "label": "Archivist Organization Note"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.LASTMODDATE"
+                "key": "archivist_organization_note"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.RECORDSTATUS"
+                    "label": "Creator Organization"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.RECORDSTATUS"
+                "key": "creator_organization_name"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Agent Organization"
+                    "label": "Creator Organization Note"
                 },
                 "type": "input",
-                "key": "agentname1"
+                "key": "creator_organization_note"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.agent.ROLE"
+                    "label": "Archivist Software"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.agent.ROLE"
+                "key": "archivist_software_name"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "mets.metsHdr.agent.OTHERROLE"
+                    "label": "Archivist Software Note"
                 },
                 "type": "input",
-                "key": "mets.metsHdr.agent.OTHERROLE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.agent.TYPE"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.agent.TYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.agent.OTHERTYPE"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.agent.OTHERTYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.agent.name.content"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.agent.name.content"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.agent.note.content"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.agent.note.content"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.metsHdr.altRecordID.content"
-                },
-                "type": "input",
-                "key": "mets.metsHdr.altRecordID.content"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.fileSec.fileGrp.VERSDATE"
-                },
-                "type": "input",
-                "key": "mets.fileSec.fileGrp.VERSDATE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.fileSec.fileGrp.ADMID"
-                },
-                "type": "input",
-                "key": "mets.fileSec.fileGrp.ADMID"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.fileSec.fileGrp.USE"
-                },
-                "type": "input",
-                "key": "mets.fileSec.fileGrp.USE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.TYPE"
-                },
-                "type": "input",
-                "key": "mets.structMap.TYPE"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.LABEL"
-                },
-                "type": "input",
-                "key": "mets.structMap.LABEL"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "mets.structMap.div.LABEL"
-                },
-                "type": "input",
-                "key": "mets.structMap.div.LABEL"
+                "key": "archivist_software_note"
             },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
         'specification_data': {
-            "mets.PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
-            "mets.TYPE": "Personnel",
-            "ext:CONTENTTYPESPECIFICATION": "FGS Personal, version 1",
-            "mets.metsHdr.LASTMODDATE": "2016-06-08T10:44:00+02:00",
-            "mets.metsHdr.RECORDSTATUS": "NEW",
-            "ext:OAISTYPE": "SIP",
-            "agentName": "name",
-            "agentNote": "note",
-            "REFERENCECODE": "SE/RA/123456/24/F",
-            "mets.metsHdr.altRecordID.content": "RA 13-2011/5329, 2012-04-12",
-            "MetsIdentifier": "sip.xml",
-            "filename": "sip.txt",
-            "SMLabel": "Profilestructmap",
-            "amdLink": "IDce745fec-cfdd-4d14-bece-d49e867a2487",
-            "digiprovLink": "IDa32a20cb-5ff8-4d36-8202-f96519154de2",
-            "LOCTYPE": "URL",
-            "agentname1": "Government X",
-            "agentnote1": "ORG:2010340930",
-            "agentname2": "Government X:DEP Y",
-            "agentnote2": "ORG:2010340920",
-            "agentname3": "HR Employed",
-            "agentnote3": "5.0.34",
+            "mets_type": "Personnel",
+            "mets_profile": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
+            "archivist_organization_name": "Archivist Organization 1",
+            "archivist_organization_note": "Archivist Organization 1 Note",
+            "creator_organization_name": "Creator Organization 1",
+            "creator_organization_note": "Creator Organization 1 Note",
+            "archivist_software_name": "Archivist Software 1",
+            "archivist_software_note": "Archivist Software 1 Note",
         }
     }
 
