@@ -557,6 +557,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
+            $rootScope.loadNavigation();
 
         });
     }
@@ -608,6 +609,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.getListViewData();
             updateListViewConditional();
+            $rootScope.loadNavigation();
         });
     }
     $scope.lockSaModal = function(sa) {

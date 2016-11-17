@@ -50,7 +50,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
     ];
 
-    $scope.loadNavigation = function() {
+    $rootScope.loadNavigation = function() {
         $http({
             method: 'GET',
             url: appConfig.djangoUrl+"archival-institutions/"
@@ -76,7 +76,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             $scope.ArchivalLocation[0].children = response.data;
         });*/
     }
-    $scope.loadNavigation();
+    $rootScope.loadNavigation();
     $rootScope.navigationFilter = {
         institution: null,
         organization: null,
