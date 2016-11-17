@@ -156,30 +156,20 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     this.callServer = function callServer(tableState) {
         if(!angular.isUndefined(tableState)){
             $scope.tableState = tableState;
+            var search = "";
+            if(tableState.search.predicateObject) {
+                var search = tableState.search.predicateObject["$"];
+            }
+
             var sorting = tableState.sort;
             var pagination = tableState.pagination;
             var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
             var number = pagination.number;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Prepared,Creating,Created").then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared,Creating,Created").then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                ctrl.displayedIps.forEach(function(ip) {
-                    if(ip.State == "Preparing"){
-                        if(ip.step_state == "SUCCESS") {
-                            ip.status = 25;
-                        }
-                        if(ip.profile_sip) {
-                            if(ip.profile_sip.LockedBy) {
-                                ip.status = 50;
-                            }
-                        }
-                        if(ip.SubmissionAgreementLocked){
-                            ip.status = 100;
-                        }
-                    }
-                });
             });
         }
     };

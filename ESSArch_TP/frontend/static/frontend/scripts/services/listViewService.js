@@ -4,7 +4,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         $state.go(state);
     }
     //Gets data for list view i.e information packages
-    function getListViewData(pageNumber, pageSize, filters, sortString, state) {
+    function getListViewData(pageNumber, pageSize, filters, sortString, searchString, state) {
         var promise = $http({
             method: 'GET',
             url: appConfig.djangoUrl+'information-packages/',
@@ -17,7 +17,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 archival_location: filters.location,
                 other: filters.other,
                 ordering: sortString,
-                state: state
+                state: state,
+                search: searchString
             }
         })
         .then(function successCallback(response) {
