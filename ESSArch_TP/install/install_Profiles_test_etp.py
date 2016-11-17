@@ -112,8 +112,7 @@ def installSubmissionAgreement():
 
     # create submission agreement dictionaries
     dct = {
-	  'id': '550e8400-e29b-41d4a716-446655440000',
-	  'sa_name': 'SA National Archive xx and Government x',
+	  'sa_name': 'SA National Archive and Government 1',
 	  'sa_type': 'Standard',
 	  'sa_status': 'Agreed',
 	  'sa_label': 'Submission Agreement Naxx and Government x',
@@ -153,32 +152,84 @@ def installSubmissionAgreement():
     }
 
     # create according to model with many fields
-    sa = SubmissionAgreement.objects.create(**dct)
+    sa1 = SubmissionAgreement.objects.create(**dct)
+    dct['sa_name'] = "SA National Archive and Government 2"
+    sa2 = SubmissionAgreement.objects.create(**dct)
+    dct['sa_name'] = "SA National Archive and Government 3"
+    sa3 = SubmissionAgreement.objects.create(**dct)
 
     ProfileSA.objects.bulk_create([
         ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
-            submission_agreement=sa,
+            submission_agreement=sa1,
         ),
         ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440006"
             ),
-            submission_agreement=sa,
+            submission_agreement=sa1,
         ),
         ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
             ),
-            submission_agreement=sa,
+            submission_agreement=sa1,
         ),
         ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440012"
             ),
-            submission_agreement=sa,
+            submission_agreement=sa1,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440001"
+            ),
+            submission_agreement=sa2,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440006"
+            ),
+            submission_agreement=sa2,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440007"
+            ),
+            submission_agreement=sa2,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440012"
+            ),
+            submission_agreement=sa2,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440001"
+            ),
+            submission_agreement=sa3,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440006"
+            ),
+            submission_agreement=sa3,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440007"
+            ),
+            submission_agreement=sa3,
+        ),
+        ProfileSA(
+            profile=Profile.objects.get(
+                id="550e8400-e29b-41d4a716-446655440012"
+            ),
+            submission_agreement=sa3,
         ),
     ])
 
