@@ -231,8 +231,10 @@ input[type="checkbox"] {
 }
 .events-footer .signature {
     width: 250px;
+    height: 35px;
     margin-left: 5px;
     margin-right: 5px;
+    resize: none;
 }
 .events-form {
     display: flex;
@@ -245,8 +247,8 @@ input[type="checkbox"] {
     margin-left: 10px;
 }
 .events-form .submit-button {
-    height: 40px;
-    margin-top: 10px;
+    height: 35px;
+    margin-top: 25px;
 }
 .control-label {
     font-size: 10px;
