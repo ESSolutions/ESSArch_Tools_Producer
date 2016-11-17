@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll){
     var vm = this;
     //Status tree view structure
     $scope.tree_data = [];
@@ -828,6 +828,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             node.node.children.push(dir);
         }
         $scope.exitAddMode();
+        $location.hash('edit-tree');
+        $anchorScroll();
     };
     //Remove node from map structure tree view
     $scope.removeNode = function(node) {
