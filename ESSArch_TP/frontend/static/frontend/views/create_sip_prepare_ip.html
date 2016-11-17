@@ -65,7 +65,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{type}}</a>
+                                        <a class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{profile.type_label}}</a>
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles" ng-change="changeProfile(profile.active)"></select></td>
                                     <td>

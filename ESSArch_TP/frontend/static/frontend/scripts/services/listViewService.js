@@ -206,14 +206,31 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             }
         }
         active = findProfileByUrl(url, profiles);
-
         return {
+            type_label: getProfileTypeLabel(type),
             active: active,
             checked: checked,
             required: required,
             profiles: profiles,
             locked: locked
         };
+    }
+    function getProfileTypeLabel(type) {
+        var typeMap = {
+            "transfer_project": "Transfer project",
+            "submit_description": "Submit description",
+            "sip": "SIP",
+            "aip": "AIP",
+            "dip": "DIP",
+            "content_type": "Content type",
+            "classification": "Classification",
+            "preservation_metadata": "Preservation metadata",
+            "event": "Event",
+            "data_selection": "Data selection",
+            "import": "Import",
+            "workflow": "Workflow"
+        };
+        return typeMap[type];
     }
 
     //Returns an array consisting of profile objects for an SA
@@ -397,7 +414,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         .then(function successCallback(response) {
             return response.data;
         }, function errorCallback(response){
-            alert(response.status);
+            console.log(response.status);
         });
         return promise;
     };
