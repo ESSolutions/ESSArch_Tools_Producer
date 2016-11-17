@@ -297,14 +297,15 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "archive_policy" # Responds to specification data
             }, {
-                "hideExpression": "False",
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Container format",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "container_format" # Responds to specification data
+                'key': 'container_format',
+                'type': 'select',
+                'templateOptions': {
+                  'label': 'Container format',
+                  'options': [
+                    {'name': 'TAR', 'value': 'tar'},
+                    {'name': 'ZIP', 'value': 'zip'},
+                  ]
+                }
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
@@ -315,14 +316,15 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "container_format_compression" # Responds to specification data
             }, {
-                "hideExpression": "False",
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Checksum algorithm",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "checksum_algorithm" # Responds to specification data
+                'key': 'checksum_algorithm',
+                'type': 'select',
+                'templateOptions': {
+                  'label': 'Checksum algorithm',
+                  'options': [
+                    {'name': 'MD5', 'value': 'md5'},
+                    {'name': 'SHA-256', 'value': 'sha256'},
+                  ]
+                }
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
