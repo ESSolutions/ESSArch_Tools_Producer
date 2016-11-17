@@ -85,6 +85,22 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
     )
 
+    ObjectSize = serializers.SerializerMethodField()
+    ObjectNumItems = serializers.SerializerMethodField()
+
+    def _get_object_size_and_num(self, obj):
+        if not hasattr(self, '_object_size_and_num'):
+            self._object_size_and_num = obj.ObjectSizeAndNum
+        return self._object_size_and_num
+
+    def get_ObjectSize(self, obj):
+        foo, _ = self._get_object_size_and_num(obj)
+        return foo
+
+    def get_ObjectNumItems(self, obj):
+        _, bar = self._get_object_size_and_num(obj)
+        return bar
+
     class Meta:
         model = InformationPackage
         fields = (
