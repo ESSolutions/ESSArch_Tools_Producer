@@ -193,7 +193,7 @@ def installProfileTransferProject(): # Profile Transfer Project
 
     dct = {
         'id': '550e8400-e29b-41d4a716-446655440001',
-        'name': 'SE ERMS Delivery',
+        'name': 'Transfer Project Profile 1',
         'profile_type': 'transfer_project',
         'type': 'Implementation',
         'status': 'Agreed',
