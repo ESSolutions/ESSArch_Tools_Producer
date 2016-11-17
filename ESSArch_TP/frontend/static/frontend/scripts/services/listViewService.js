@@ -388,6 +388,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     /*******************/
     /*HELPER FUNCTIONS*/
     /*****************/
+
+    //Set expanded nodes in array of steps
     function setExpanded(steps, expandedNodes) {
         expandedNodes.forEach(function(node) {
             steps.forEach(function(step) {

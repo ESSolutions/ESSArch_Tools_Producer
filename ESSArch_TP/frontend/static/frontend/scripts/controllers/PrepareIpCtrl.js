@@ -1,5 +1,6 @@
 angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter){
     var vm = this;
+    //Status tree view structure
     $scope.tree_data = [];
     $scope.angular = angular;
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
@@ -119,6 +120,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
          $scope.ip = row;
          $rootScope.ip = row;
      };
+     //If status view is visible, start update interval
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
              $interval.cancel(stateInterval);
@@ -127,11 +129,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $interval.cancel(stateInterval);
         }
      });
+     //Cancel update intervals on state change
      $rootScope.$on('$stateChangeStart', function() {
          $interval.cancel(stateInterval);
          $interval.cancel(listViewInterval);
      });
      //Get data for status view
+
+     //checks expanded rows in tree structure
      function checkExpanded(nodes) {
          var ret = [];
          nodes.forEach(function(node) {
@@ -282,7 +287,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.subSelectProfile = "profile";
         }
     };
-    //GET data for eventlog view
+    //Get data for eventlog view
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
             $scope.statusNoteCollection = value;
@@ -346,7 +351,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
-
+    //Check if SA can be locked
     $scope.canLockSa = function(sa){
         if(!$scope.selectRowCollapse || $scope.selectRowCollapse == {}) {
             return false;
@@ -360,7 +365,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
         return canLock;
     };
-
+    //Make a profile "Checked"
     $scope.setCheckedProfile = function(type, checked){
         var uri = $scope.ip.url+"check-profile/";
          $http({
@@ -413,7 +418,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.profilesCollapse = true;
         }
     };
-    //Populating edit view fields
 
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
@@ -544,7 +548,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-    //Remove and ip
+    //Remove ip
     $scope.removeIp = function (ipObject) {
         $http({
             method: 'DELETE',
@@ -612,6 +616,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $rootScope.loadNavigation();
         });
     }
+    //Creates modal for lock SA
     $scope.lockSaModal = function(sa) {
         $scope.saProfile = sa;
         var modalInstance = $uibModal.open({
@@ -629,6 +634,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    //Lock a SA
     $scope.lockSa = function(sa) {
         ip = $scope.ip;
 
@@ -655,6 +661,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }, 1000);
         });
     }
+    //Update ip list view with an interval
+    //Update only if status < 100 and no step has failed in any IP
     var listViewInterval;
     function updateListViewConditional() {
             $interval.cancel(listViewInterval);
@@ -837,10 +845,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.addMode = {
         active: false
     };
+    //Enter "Add-mode" which shows a form
+    //for adding a node to the map structure
     $scope.enterAddMode = function(node) {
         $scope.addMode.active = true;
         $('.tree-edit-item').draggable('disable');
     };
+    //Exit add mode and return to default
+    //map structure edit view
     $scope.exitAddMode = function() {
         $scope.addMode.active = false;
         $scope.treeItemClass = "";
@@ -851,6 +863,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         active: false
     };
 
+    //Enter update mode which shows form for updating a node
     $scope.enterUpdateMode = function(node, parentNode) {
         if(parentNode == null) {
             alert("Root directory can not be updated");
@@ -868,6 +881,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     };
 
+    //Exit update mode and return to default map-structure editor
     $scope.exitUpdateMode = function() {
         $scope.updateMode.active = false;
         $scope.updateMode.node = null;
@@ -876,7 +890,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         resetFormVariables();
         $('.tree-edit-item').draggable('enable');
     };
-
+    //Resets add/update form fields
     function resetFormVariables() {
                 vm.treeEditModel.name = "";
                 vm.treeEditModel.type = "";
@@ -903,6 +917,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
         $scope.exitUpdateMode();
     };
+    //Select function for clicking a node
     $scope.showSelected = function(node, parentNode) {
         $scope.selectedNode = node;
         $scope.updateCurrentNode(node, $scope.selectedNode, parentNode);
@@ -910,6 +925,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.enterUpdateMode(node, parentNode);
         }
     };
+    //Submit function for either Add or update
     $scope.treeEditSubmit = function(node) {
         if($scope.addMode.active) {
             $scope.addNode(node);
