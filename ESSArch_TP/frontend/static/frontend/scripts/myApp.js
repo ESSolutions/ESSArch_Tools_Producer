@@ -194,6 +194,9 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .constant('appConfig', {
     djangoUrl: "/api/"
 })
+.config(function(stConfig) {
+  stConfig.sort.delay = -1;
+})
 .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig){
     formlyConfig.setType({
         name: 'input',
