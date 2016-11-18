@@ -162,13 +162,17 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      this.callServer = function callServer(tableState) {
          if(!angular.isUndefined(tableState)) {
              $scope.tableState = tableState;
+             var search = "";
+             if(tableState.search.predicateObject) {
+                 var search = tableState.search.predicateObject["$"];
+             }
              var sorting = tableState.sort;
              var pagination = tableState.pagination;
              var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
              var number = pagination.number;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
-             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, "Created,Submitting,Submitted").then(function (result) {
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Created,Submitting,Submitted").then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
              });

@@ -35,12 +35,12 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
         });
 	}
     //Get data for IP table
-    function getIpPage(start, number, pageNumber, params, selected, sort, state) {
+    function getIpPage(start, number, pageNumber, params, selected, sort, search, state) {
         var sortString = sort.predicate;
         if(sort.reverse) {
             sortString = "-"+sortString;
         }
-        return listViewService.getListViewData(pageNumber, number, $rootScope.navigationFilter, sortString, state).then(function(value) {
+        return listViewService.getListViewData(pageNumber, number, $rootScope.navigationFilter, sortString, search, state).then(function(value) {
             var ipCollection = value.data;
             ipCollection.forEach(function(ip) {
                 if(selected.id == ip.id) {
