@@ -81,7 +81,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     API endpoint that allows information packages to be viewed or edited.
     """
     queryset = InformationPackage.objects.all().prefetch_related(
-        Prefetch('profileip_set', to_attr='profiles')
+        Prefetch('profileip_set', to_attr='profiles'), 'steps__child_steps',
     )
     serializer_class = InformationPackageSerializer
     filter_backends = (
