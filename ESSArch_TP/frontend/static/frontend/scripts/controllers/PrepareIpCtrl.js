@@ -212,8 +212,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
-             $scope.eventlog = false;
-            $scope.edit = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
@@ -225,6 +223,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
             $scope.select = true;
         }
+        $scope.eventlog = false;
+        $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
@@ -422,6 +422,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.showHideAllProfiles = function() {
         if($scope.selectRowCollection == {} || $scope.profilesCollapse){
             $scope.profilesCollapse = false;
+            $scope.edit = false;
+            $scope.eventlog = false
         } else{
             $scope.profilesCollapse = true;
         }

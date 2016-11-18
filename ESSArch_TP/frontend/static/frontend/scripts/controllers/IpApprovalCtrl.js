@@ -208,6 +208,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $rootScope.ip = row;
 
         }
+        $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
