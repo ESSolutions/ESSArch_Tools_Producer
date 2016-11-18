@@ -1,6 +1,7 @@
 import os
 
 from django.db import IntegrityError
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
@@ -44,7 +45,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows submission agreements to be viewed or edited.
     """
-    queryset = SubmissionAgreement.objects.all()
+    queryset = SubmissionAgreement.objects.all().prefetch_related(
+        Prefetch('profilesa_set', to_attr='profiles')
+    )
     serializer_class = SubmissionAgreementSerializer
 
     @detail_route(methods=['post'], url_path='include-type')
