@@ -124,7 +124,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
              $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 10000);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
         } else {
             $interval.cancel(stateInterval);
         }
@@ -151,12 +151,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Update status view data
     $scope.statusViewUpdate = function(row){
+        $scope.statusLoading = true;
         var expandedNodes = [];
         if($scope.tree_data != []) {
             expandedNodes = checkExpanded($scope.tree_data);
         }
         listViewService.getTreeData(row, expandedNodes).then(function(value) {
             $scope.tree_data = value;
+            $scope.statusLoading = false;
         });
     };
 
@@ -171,6 +173,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     //Get data according to ip table settings and populates ip table
     this.callServer = function callServer(tableState) {
+        $scope.ipLoading = true;
         if(!angular.isUndefined(tableState)) {
             $scope.tableState = tableState;
             var search = "";
@@ -186,6 +189,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Preparing,Prepared").then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.ipLoading = false;
             });
         }
     };
@@ -669,7 +673,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Update only if status < 100 and no step has failed in any IP
     var listViewInterval;
     function updateListViewConditional() {
-            $interval.cancel(listViewInterval);
+        $interval.cancel(listViewInterval);
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
@@ -682,7 +686,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             if(updateVar) {
                 $scope.getListViewData();
             }
-        }, 4000);
+        }, appConfig.ipInterval);
     };
     updateListViewConditional();
 

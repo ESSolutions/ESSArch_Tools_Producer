@@ -35,7 +35,7 @@
                     </tr>
                     </table>
                     <a style="margin-top: 10px;" ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>
-                    <table ng-show="profilesCollapse" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
+                    <table ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
                         <thead>
                             <tr>
                                 <th class="info-popover column-enabled"><p uib-popover="{{'ENABLEDDESC' | translate}}" popover-trigger="mouseenter" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENABLED' | translate}}</p></th>

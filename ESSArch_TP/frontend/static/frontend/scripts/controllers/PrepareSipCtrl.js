@@ -117,7 +117,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
              $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 4000);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
          } else {
              $interval.cancel(stateInterval);
          }
@@ -141,14 +141,16 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      }
      //Update status view data
      $scope.statusViewUpdate = function(row){
-        var expandedNodes = [];
-        if($scope.tree_data != []) {
-            expandedNodes = checkExpanded($scope.tree_data);
-        }
-        listViewService.getTreeData(row, expandedNodes).then(function(value) {
-            $scope.tree_data = value;
-        });
-    };
+         $scope.statusLoading = true;
+         var expandedNodes = [];
+         if($scope.tree_data != []) {
+             expandedNodes = checkExpanded($scope.tree_data);
+         }
+         listViewService.getTreeData(row, expandedNodes).then(function(value) {
+             $scope.tree_data = value;
+             $scope.statusLoading = false;
+         });
+     };
 
      /*******************************************/
      /*Piping and Pagination for List-view table*/
@@ -160,6 +162,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      this.displayedIps = [];
      //Get data for ip table from rest api
      this.callServer = function callServer(tableState) {
+         $scope.ipLoading = true;
          if(!angular.isUndefined(tableState)) {
              $scope.tableState = tableState;
              var search = "";
@@ -175,6 +178,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
              Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Created,Submitting,Submitted").then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                 $scope.ipLoading = false;
              });
          }
      };    //Add ip to selected
@@ -560,7 +564,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             if(updateVar) {
                 $scope.getListViewData();
             }
-        }, 4000);
+        }, appConfig.ipInterval);
     };
     updateListViewConditional();
 

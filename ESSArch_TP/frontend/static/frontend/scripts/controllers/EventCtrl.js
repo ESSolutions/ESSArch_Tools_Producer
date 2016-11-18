@@ -1,4 +1,4 @@
-angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', 'listViewService', function (service, $scope, $rootScope, listViewService) {
+angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', 'listViewService', '$interval', 'appConfig', function (service, $scope, $rootScope, listViewService, $interval, appConfig) {
     $scope.selected = [];
     $scope.displayed = [];
     //Event click funciton
@@ -23,8 +23,17 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
             console.log(value);
         });
     }
+    var eventInterval;
+    function updateEvents() {
+        $interval.cancel(eventInterval);
+        eventInterval = $interval(function() {
+            $rootScope.stCtrl.pipe();
+        }, appConfig.eventInterval);
+    }
+    updateEvents();
     //Get data from rest api for event table
     $scope.eventPipe = function(tableState, ctrl) {
+        $scope.eventLoading = true;
         $rootScope.stCtrl = ctrl;
         var sorting = tableState.sort;
         var pagination = tableState.pagination;
@@ -36,6 +45,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
             $scope.displayed = result.data;
             tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
             $scope.tableState = tableState;
+        $scope.eventLoading = false;
         });
     };
 

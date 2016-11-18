@@ -111,7 +111,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
              $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, 10000);
+             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
          } else {
              $interval.cancel(stateInterval);
          }
@@ -135,12 +135,14 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      }
      //Update status view data
      $scope.statusViewUpdate = function(row){
+        $scope.statusLoading = true;
          var expandedNodes = [];
          if($scope.tree_data != []) {
              expandedNodes = checkExpanded($scope.tree_data);
          }
          listViewService.getTreeData(row, expandedNodes).then(function(value) {
              $scope.tree_data = value;
+        $scope.statusLoading = false;
          });
      };
      /*******************************************/
@@ -154,6 +156,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
 
     //Update ip table with configuration from table paginetion etc
     this.callServer = function callServer(tableState) {
+        $scope.ipLoading = true;
         if(!angular.isUndefined(tableState)){
             $scope.tableState = tableState;
             var search = "";
@@ -170,6 +173,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared,Creating,Created").then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.ipLoading = false;
             });
         }
     };
@@ -191,8 +195,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
-            $scope.eventlog = false;
-            $scope.edit = false;
         } else {
             $http({
                 method: 'GET',
@@ -358,7 +360,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             if(updateVar) {
                 $scope.getListViewData();
             }
-        }, 4000);
+        }, appConfig.ipInterval);
     };
     updateListViewConditional();
 

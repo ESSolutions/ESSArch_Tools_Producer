@@ -1,5 +1,6 @@
 <div ng-if="eventShow" class="event-view">
     <div ng-controller="EventCtrl" class="table-container">
+        <span style="float: right; margin-bottom: 5px;" ng-click="stCtrl.pipe()" class="clickable glyphicon glyphicon-refresh" ng-class="{'glyphicon-refresh-animate': eventLoading }"></span>
         <select class="form-control items-per-page"  ng-model="itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
         <table st-table="displayed" st-pipe="eventPipe" class="table table-striped">
             <thead>
