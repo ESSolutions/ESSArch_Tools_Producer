@@ -1,5 +1,6 @@
 import os, shutil
 
+from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import filters, status
@@ -79,7 +80,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows information packages to be viewed or edited.
     """
-    queryset = InformationPackage.objects.all()
+    queryset = InformationPackage.objects.all().prefetch_related(
+        Prefetch('profileip_set', to_attr='profiles')
+    )
     serializer_class = InformationPackageSerializer
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,

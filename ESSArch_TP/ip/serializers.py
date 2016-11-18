@@ -36,54 +36,28 @@ class ArchivalLocationSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'name', 'information_packages',)
 
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
-    profile_transfer_project = ProfileIPSerializer(
-        source="profile_transfer_project_rel",
-        read_only=True,
-    )
-    profile_content_type = ProfileIPSerializer(
-        source="profile_content_type_rel",
-        read_only=True,
-    )
-    profile_data_selection = ProfileIPSerializer(
-        source="profile_data_selection_rel",
-        read_only=True,
-    )
-    profile_classification = ProfileIPSerializer(
-        source="profile_classification_rel",
-        read_only=True,
-    )
-    profile_import = ProfileIPSerializer(
-        source="profile_import_rel",
-        read_only=True,
-    )
-    profile_submit_description = ProfileIPSerializer(
-        source="profile_submit_description_rel",
-        read_only=True,
-    )
-    profile_sip = ProfileIPSerializer(
-        source="profile_sip_rel",
-        read_only=True,
-    )
-    profile_aip = ProfileIPSerializer(
-        source="profile_aip_rel",
-        read_only=True,
-    )
-    profile_dip = ProfileIPSerializer(
-        source="profile_dip_rel",
-        read_only=True,
-    )
-    profile_workflow = ProfileIPSerializer(
-        source="profile_workflow_rel",
-        read_only=True,
-    )
-    profile_preservation_metadata = ProfileIPSerializer(
-        source="profile_preservation_metadata_rel",
-        read_only=True,
-    )
-    profile_event = ProfileIPSerializer(
-        source="profile_event_rel",
-        read_only=True,
-    )
+    profiles = ProfileIPSerializer(many=True)
+
+    def to_representation(self, obj):
+        data = super(InformationPackageSerializer, self).to_representation(obj)
+        profiles = data['profiles']
+        data['profiles'] = {}
+
+        types = [
+            'transfer_project', 'content_type', 'data_selection',
+            'classification', 'import', 'submit_description', 'sip', 'aip',
+            'dip', 'workflow', 'preservation_metadata', 'event',
+        ]
+
+        for ptype in types:
+            data['profile_%s' % ptype] = None
+
+        for p in profiles:
+            data['profile_%s' % p['profile_type']] = p
+
+        data.pop('profiles', None)
+
+        return data
 
     class Meta:
         model = InformationPackage
@@ -92,12 +66,7 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'State', 'status', 'step_state', 'ObjectPath',
             'Startdate', 'Enddate', 'OAIStype', 'SubmissionAgreement',
             'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
-            'ArchivalLocation', 'SubmissionAgreementLocked',
-            'profile_transfer_project', 'profile_content_type',
-            'profile_data_selection', 'profile_classification',
-            'profile_import', 'profile_submit_description', 'profile_sip',
-            'profile_aip', 'profile_dip', 'profile_workflow',
-            'profile_preservation_metadata', 'profile_event',
+            'ArchivalLocation', 'SubmissionAgreementLocked', 'profiles',
         )
 
 class InformationPackageDetailSerializer(InformationPackageSerializer):
