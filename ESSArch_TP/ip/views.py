@@ -32,6 +32,7 @@ from ip.serializers import (
     ArchivalTypeSerializer,
     ArchivalLocationSerializer,
     InformationPackageSerializer,
+    InformationPackageDetailSerializer,
     EventIPSerializer,
 )
 
@@ -86,6 +87,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State', 'eventDateTime', 'eventDetail', 'id')
     search_fields = ('Label', 'Responsible', 'State', 'SubmissionAgreement__sa_name')
     filter_class = InformationPackageFilter
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return InformationPackageSerializer
+
+        return InformationPackageDetailSerializer
 
     def get_queryset(self):
         queryset = self.queryset

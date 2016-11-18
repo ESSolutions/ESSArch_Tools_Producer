@@ -85,27 +85,11 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
     )
 
-    ObjectSize = serializers.SerializerMethodField()
-    ObjectNumItems = serializers.SerializerMethodField()
-
-    def _get_object_size_and_num(self, obj):
-        if not hasattr(self, '_object_size_and_num'):
-            self._object_size_and_num = obj.ObjectSizeAndNum
-        return self._object_size_and_num
-
-    def get_ObjectSize(self, obj):
-        foo, _ = self._get_object_size_and_num(obj)
-        return foo
-
-    def get_ObjectNumItems(self, obj):
-        _, bar = self._get_object_size_and_num(obj)
-        return bar
-
     class Meta:
         model = InformationPackage
         fields = (
             'url', 'id', 'Label', 'Content', 'Responsible', 'CreateDate',
-            'State', 'status', 'step_state', 'ObjectSize', 'ObjectNumItems', 'ObjectPath',
+            'State', 'status', 'step_state', 'ObjectPath',
             'Startdate', 'Enddate', 'OAIStype', 'SubmissionAgreement',
             'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
             'ArchivalLocation', 'SubmissionAgreementLocked',
@@ -115,6 +99,30 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'profile_aip', 'profile_dip', 'profile_workflow',
             'profile_preservation_metadata', 'profile_event',
         )
+
+class InformationPackageDetailSerializer(InformationPackageSerializer):
+    ObjectSize = serializers.SerializerMethodField()
+    ObjectNumItems = serializers.SerializerMethodField()
+
+    def _get_object_size_and_num(self, obj):
+        if not hasattr(self, '_object_size_and_num'):
+            self._object_size_and_num = obj.ObjectSizeAndNum
+        return self._object_size_and_num
+
+    def get_ObjectSize(self, obj):
+        size, _ = self._get_object_size_and_num(obj)
+        return size
+
+    def get_ObjectNumItems(self, obj):
+        _, num = self._get_object_size_and_num(obj)
+        return num
+
+    class Meta:
+        model = InformationPackageSerializer.Meta.model
+        fields = InformationPackageSerializer.Meta.fields + (
+            'ObjectSize', 'ObjectNumItems',
+        )
+
 
 class EventIPSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
