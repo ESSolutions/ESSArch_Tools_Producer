@@ -411,7 +411,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     function getProfiles(type){
         var promise = $http({
             method: 'GET',
-            url: appConfig.djangoUrl+"profiles",
+            url: appConfig.djangoUrl+"profiles/",
             params: {type: type}
         })
         .then(function successCallback(response) {
