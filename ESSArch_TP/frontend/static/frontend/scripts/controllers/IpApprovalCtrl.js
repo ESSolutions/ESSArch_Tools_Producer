@@ -348,7 +348,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     };
     var listViewInterval;
     function updateListViewConditional() {
-            $interval.cancel(listViewInterval);
+        $interval.cancel(listViewInterval);
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
@@ -360,6 +360,24 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             });
             if(updateVar) {
                 $scope.getListViewData();
+            } else {
+                $interval.cancel(listViewInterval);
+                listViewInterval = $interval(function() {
+                    var updateVar = false;
+                    vm.displayedIps.forEach(function(ip, idx) {
+                        if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
+                            if(ip.step_state != "FAILURE") {
+                                updateVar = true;
+                            }
+                        }
+                    });
+                    if(!updateVar) {
+                        $scope.getListViewData();
+                    } else {
+                        updateListViewConditional();
+                    }
+
+                }, appConfig.ipIdleInterval);
             }
         }, appConfig.ipInterval);
     };

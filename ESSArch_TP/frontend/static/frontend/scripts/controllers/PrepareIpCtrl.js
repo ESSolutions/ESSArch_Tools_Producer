@@ -687,6 +687,24 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
             if(updateVar) {
                 $scope.getListViewData();
+            } else {
+                $interval.cancel(listViewInterval);
+                listViewInterval = $interval(function() {
+                    var updateVar = false;
+                    vm.displayedIps.forEach(function(ip, idx) {
+                        if(ip.status < 100) {
+                            if(ip.step_state != "FAILURE") {
+                                updateVar = true;
+                            }
+                        }
+                    });
+                    if(!updateVar) {
+                        $scope.getListViewData();
+                    } else {
+                        updateListViewConditional();
+                    }
+
+                }, appConfig.ipIdleInterval);
             }
         }, appConfig.ipInterval);
     };
