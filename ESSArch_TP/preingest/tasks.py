@@ -16,7 +16,7 @@ from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
-from ESSArch_Core.util import getSchemas, get_value_from_path, remove_prefix, win_to_posix
+from ESSArch_Core.util import alg_from_str, getSchemas, get_value_from_path, remove_prefix, win_to_posix
 
 class PrepareIP(DBTask):
     event_type = 10100
@@ -149,7 +149,7 @@ class CreatePhysicalModel(DBTask):
 class CalculateChecksum(DBTask):
     event_type = 10210
 
-    def run(self, filename=None, block_size=65536, algorithm=hashlib.sha256):
+    def run(self, filename=None, block_size=65536, algorithm='SHA-256'):
         """
         Calculates the checksum for the given file, one chunk at a time
 
@@ -162,7 +162,7 @@ class CalculateChecksum(DBTask):
             The hexadecimal digest of the checksum
         """
 
-        hash_val = algorithm()
+        hash_val = alg_from_str(algorithm)()
 
         with open(filename, 'r') as f:
             while True:
@@ -175,10 +175,10 @@ class CalculateChecksum(DBTask):
         self.set_progress(100, total=100)
         return hash_val.hexdigest()
 
-    def undo(self, filename=None, block_size=65536, algorithm=hashlib.sha256):
+    def undo(self, filename=None, block_size=65536, algorithm='SHA-256'):
         pass
 
-    def get_event_args(self, filename=None, block_size=65536, algorithm=hashlib.sha256):
+    def get_event_args(self, filename=None, block_size=65536, algorithm='SHA-256'):
         return [filename]
 
 class IdentifyFileFormat(DBTask):
@@ -221,20 +221,22 @@ class GenerateXML(DBTask):
     the specified files
     """
 
-    def run(self, info={}, filesToCreate={}, folderToParse=None):
+    def run(self, info={}, filesToCreate={}, folderToParse=None, algorithm='SHA-256'):
         generator = XMLGenerator(
             filesToCreate, info
         )
 
-        generator.generate(folderToParse=folderToParse)
+        generator.generate(
+            folderToParse=folderToParse, algorithm=algorithm
+        )
 
         self.set_progress(100, total=100)
 
-    def undo(self, info={}, filesToCreate={}, folderToParse=None):
+    def undo(self, info={}, filesToCreate={}, folderToParse=None, algorithm='SHA-256'):
         for f, template in filesToCreate.iteritems():
             os.remove(f)
 
-    def get_event_args(self, info={}, filesToCreate={}, folderToParse=None):
+    def get_event_args(self, info={}, filesToCreate={}, folderToParse=None, algorithm='SHA-256'):
         return [", ".join(filesToCreate.keys())]
 
 class InsertXML(DBTask):
@@ -495,6 +497,7 @@ class ValidateFiles(DBTask):
 
                     fformat = get_value_from_path(f, props.get("format"))
                     checksum = get_value_from_path(f, props.get("checksum"))
+                    algorithm = get_value_from_path(f, props.get("checksumtype"))
 
                     if validate_fileformat and fformat is not None:
                         step.tasks.add(ProcessTask.objects.create(
@@ -512,6 +515,7 @@ class ValidateFiles(DBTask):
                             params={
                                 "filename": os.path.join(ip.ObjectPath, fpath),
                                 "checksum": checksum,
+                                "algorithm": algorithm,
                             },
                             information_package=ip
                         ))
@@ -631,7 +635,7 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
 class ValidateIntegrity(DBTask):
     event_type = 10263
 
-    def run(self, filename=None, checksum=None, block_size=65536, algorithm=hashlib.sha256):
+    def run(self, filename=None, checksum=None, block_size=65536, algorithm='SHA-256'):
         """
         Validates the integrity(checksum) for the given file
         """
@@ -651,10 +655,10 @@ class ValidateIntegrity(DBTask):
         assert digest == checksum, "checksum for %s is not valid" % filename
         self.set_progress(100, total=100)
 
-    def undo(self, filename=None,checksum=None,  block_size=65536, algorithm=hashlib.sha256):
+    def undo(self, filename=None,checksum=None,  block_size=65536, algorithm='SHA-256'):
         pass
 
-    def get_event_args(self, filename=None,checksum=None,  block_size=65536, algorithm=hashlib.sha256):
+    def get_event_args(self, filename=None,checksum=None,  block_size=65536, algorithm='SHA-256'):
         return [filename, algorithm, checksum]
 
 

@@ -321,8 +321,8 @@ def installProfileTransferProject(): # Profile Transfer Project
                 'templateOptions': {
                   'label': 'Checksum algorithm',
                   'options': [
-                    {'name': 'MD5', 'value': 'md5'},
-                    {'name': 'SHA-256', 'value': 'sha256'},
+                    {'name': 'MD5', 'value': 'MD5'},
+                    {'name': 'SHA-256', 'value': 'SHA-256'},
                   ]
                 }
             }, {
@@ -498,7 +498,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             "archive_policy": "archive policy 1",
             "container_format":	"tar",
             "container_format_compression": "none",
-            "checksum_algorithm": "md5",
+            "checksum_algorithm": "MD5",
             "submission_reception_validation": "yes",
             "submission_reception_exception_handling": "none",
             "submission_reception_receipt_confirmation": "none",

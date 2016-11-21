@@ -141,16 +141,19 @@ FILE_ELEMENTS = {
         "path": "FLocat@href",
         "pathprefix": "file:///",
         "checksum": "@CHECKSUM",
+        "checksumtype": "@CHECKSUMTYPE",
     },
     "mdRef": {
         "path": "@href",
         "pathprefix": "file:///",
         "checksum": "@CHECKSUM",
+        "checksumtype": "@CHECKSUMTYPE",
     },
     "object": {
         "path": "storage/contentLocation/contentLocationValue",
         "pathprefix": "file:///",
         "checksum": "objectCharacteristics/fixity/messageDigest",
+        "checksumtype": "objectCharacteristics/fixity/messageDigestAlgorithm",
         "format": "objectCharacteristics/format/formatDesignation/formatName",
     },
 }
