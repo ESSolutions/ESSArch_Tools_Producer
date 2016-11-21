@@ -227,7 +227,8 @@ class GenerateXML(DBTask):
         )
 
         generator.generate(
-            folderToParse=folderToParse, algorithm=algorithm
+            folderToParse=folderToParse, algorithm=algorithm,
+            ip=self.taskobj.information_package
         )
 
         self.set_progress(100, total=100)
@@ -540,6 +541,7 @@ class ValidateFileFormat(DBTask):
             params={
                 "filename": filename,
             },
+            information_package=self.taskobj.information_package
         )
 
         res = t.run_eagerly()
