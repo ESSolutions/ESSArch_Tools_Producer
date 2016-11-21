@@ -1,6 +1,9 @@
 angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootScope', 'listViewService', '$interval', 'appConfig', function (service, $scope, $rootScope, listViewService, $interval, appConfig) {
     $scope.selected = [];
     $scope.displayed = [];
+    $rootScope.$on('$stateChangeStart', function() {
+        $interval.cancel(eventInterval);
+    });
     //Event click funciton
     $scope.eventClick = function(row) {
         if(row.class == "selected"){
