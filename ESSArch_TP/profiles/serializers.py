@@ -8,27 +8,23 @@ from ESSArch_Core.profiles.models import (
 )
 
 class ProfileSASerializer(serializers.HyperlinkedModelSerializer):
-    profile_type = serializers.SerializerMethodField()
-
-    def get_profile_type(self, obj):
-        return obj.profile.profile_type
+    profile_type = serializers.SlugRelatedField(slug_field='profile_type', source='profile', read_only=True)
+    profile_name = serializers.SlugRelatedField(slug_field='name', source='profile', read_only=True)
 
     class Meta:
         model = ProfileSA
         fields = (
-            'url', 'id', 'profile', 'submission_agreement', 'profile_type', 'LockedBy', 'Unlockable'
+            'url', 'id', 'profile', 'submission_agreement', 'profile_name', 'profile_type', 'LockedBy', 'Unlockable'
         )
 
 class ProfileIPSerializer(serializers.HyperlinkedModelSerializer):
-    profile_type = serializers.SerializerMethodField()
-
-    def get_profile_type(self, obj):
-        return obj.profile.profile_type
+    profile_type = serializers.SlugRelatedField(slug_field='profile_type', source='profile', read_only=True)
+    profile_name = serializers.SlugRelatedField(slug_field='name', source='profile', read_only=True)
 
     class Meta:
         model = ProfileIP
         fields = (
-            'url', 'id', 'profile', 'ip', 'profile_type', 'included', 'LockedBy', 'Unlockable',
+            'url', 'id', 'profile', 'ip', 'profile_name', 'profile_type', 'included', 'LockedBy', 'Unlockable',
         )
 
 
