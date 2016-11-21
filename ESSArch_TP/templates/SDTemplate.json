@@ -84,7 +84,7 @@
                 {
                     "#content": [
                         {
-                            "var": "_TAR_CREATEDATE"
+                            "var": "_IP_CREATEDATE"
                         }
                     ],
                     "-name": "CREATEDATE",
