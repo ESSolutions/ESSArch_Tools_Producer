@@ -95,6 +95,8 @@ class InformationPackageDetailSerializer(InformationPackageSerializer):
 
 
 class EventIPSerializer(serializers.HyperlinkedModelSerializer):
+    eventDetail = serializers.SlugRelatedField(slug_field='eventDetail', source='eventType', read_only=True)
+
     class Meta:
         model = EventIP
         fields = (
