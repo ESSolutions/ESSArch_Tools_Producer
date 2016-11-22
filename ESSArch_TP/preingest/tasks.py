@@ -408,6 +408,9 @@ class AppendEvents(DBTask):
             ]
         }
 
+        if not events:
+            events = self.taskobj.information_package.events.all()
+
         for event in events:
 
             data = {
