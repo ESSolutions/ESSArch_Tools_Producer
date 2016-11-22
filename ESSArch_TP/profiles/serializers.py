@@ -40,7 +40,8 @@ class SubmissionAgreementSerializer(serializers.HyperlinkedModelSerializer):
 
         types = [
             'transfer_project', 'content_type', 'data_selection',
-            'classification', 'import', 'submit_description', 'sip', 'aip',
+            'authority_information', 'archival_description',
+            'import', 'submit_description', 'sip', 'aip',
             'dip', 'workflow', 'preservation_metadata', 'event',
         ]
 
@@ -84,7 +85,8 @@ class SubmissionAgreementSerializer(serializers.HyperlinkedModelSerializer):
                 'include_profile_transfer_project',
                 'include_profile_content_type',
                 'include_profile_data_selection',
-                'include_profile_classification', 'include_profile_import',
+                'include_profile_authority_information',
+                'include_profile_archival_description', 'include_profile_import',
                 'include_profile_submit_description', 'include_profile_sip',
                 'include_profile_aip', 'include_profile_dip',
                 'include_profile_workflow',

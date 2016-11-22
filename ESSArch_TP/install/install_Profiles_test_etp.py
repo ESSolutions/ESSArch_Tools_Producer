@@ -82,7 +82,8 @@ def installProfiles(): # Install all different profiles
     installProfileTransferProject()   		# Profile Transfer Project
     installProfileContentType()         	# Profile Content Type
     installProfileDataSelection()       	# Profile Data Selection
-    installProfileClassification()      	# Profile Classification
+    installProfileAuthorityInformation()      	# Profile Authority Information
+    installProfileArchivalDescription()      	# Profile Archival Description
     installProfileImport()              	# Profile Import
     installProfileSubmitDescription()   	# Profile Submit Description
     installProfileSIP()				# Profile Submission Information Package
@@ -574,17 +575,17 @@ def installProfileDataSelection(): # Profile Data Selection
 
     return 0
 
-def installProfileClassification(): # Profile Classification
+def installProfileAuthorityInformation(): # Profile Authority Information
 
-    # create profile classification dictionaries
+    # create profile authority information dictionaries
 
     dct = {
         'id': '550e8400-e29b-41d4a716-446655440004',
-        'name': 'Classification of archived objects',
-        'profile_type': 'classification',
+        'name': 'Authority Information 1',
+        'profile_type': 'authority_information',
         'type': 'Implementation',
         'status': 'Draft',
-        'label': 'Classification of archived content',
+        'label': 'Authority Information 1',
         'specification': {},
         'specification_data': {},
     }
@@ -592,8 +593,29 @@ def installProfileClassification(): # Profile Classification
     # create according to model with many fields
     Profile.objects.create(**dct)
 
-    #logger.info('Installed Profile Classification')
-    print 'Installed profile classification'
+    print 'Installed profile authority information'
+
+    return 0
+
+def installProfileArchivalDescription(): # Profile Archival Description
+
+    # create profile authority information dictionaries
+
+    dct = {
+        'id': '550e8400-e29b-41d4a716-446655440104',
+        'name': 'Archival Description 1',
+        'profile_type': 'archival_description',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'Archival Description 1',
+        'specification': {},
+        'specification_data': {},
+    }
+
+    # create according to model with many fields
+    Profile.objects.create(**dct)
+
+    print 'Installed profile archival description'
 
     return 0
 

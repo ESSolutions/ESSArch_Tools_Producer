@@ -45,7 +45,8 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
 
         types = [
             'transfer_project', 'content_type', 'data_selection',
-            'classification', 'import', 'submit_description', 'sip', 'aip',
+            'authority_information', 'archival_description',
+            'import', 'submit_description', 'sip', 'aip',
             'dip', 'workflow', 'preservation_metadata', 'event',
         ]
 
