@@ -324,6 +324,10 @@
                     ]
                 },
                 {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
                     "#content": [
                         {
                             "var": "_SA_ID"
@@ -340,11 +344,306 @@
                             "-req": 0
                         }
                     ],
-                    "-children": [],
+                    "-children": []
+                },
+                {
                     "-max": -1,
                     "-min": 1,
                     "-name": "altRecordID",
-                    "-namespace": "mets"
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_TRANSFER_PROJECT_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_TRANSFER_PROJECT"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_SUBMIT_DESCRIPTION_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_SUBMIT_DESCRIPTION"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_SIP_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_SIP"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_AIP_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_AIP"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_DIP_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_DIP"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_CONTENT_TYPE_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_CONTENT_TYPE"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_AUTHORITY_INFORMATION_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_AUTHORITY_INFORMATION"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_ARCHIVAL_DESCRIPTION_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_ARCHIVAL_DESCRIPTION"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_PRESERVATION_METADATA_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_PRESERVATION_METADATA"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_EVENT_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_EVENT"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_DATA_SELECTION_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_DATA_SELECTION"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_IMPORT_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_IMPORT"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
+                },
+                {
+                    "-max": -1,
+                    "-min": 1,
+                    "-name": "altRecordID",
+                    "-namespace": "mets",
+                    "#content": [
+                        {
+                            "var": "_PROFILE_WORKFLOW_ID"
+                        }
+                    ],
+                    "-attr": [
+                        {
+                            "#content": [
+                                {
+                                    "text": "PROFILE_WORKFLOW"
+                                }
+                            ],
+                            "-name": "TYPE",
+                            "-req": 0
+                        }
+                    ],
+                    "-children": []
                 },
                 {
                     "#content": [
