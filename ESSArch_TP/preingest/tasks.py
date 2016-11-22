@@ -411,6 +411,10 @@ class AppendEvents(DBTask):
         if not events:
             events = self.taskobj.information_package.events.all()
 
+        events = events.order_by(
+            'eventDateTime'
+        )
+
         for event in events:
 
             data = {
