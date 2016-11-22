@@ -32,6 +32,9 @@
     "angular-translate-loader-static-files": "^2.12.1",
     "angular-sanitize": "^1.5.8",
     "jquery-ui": "^1.12.1",
-    "angular-bootstrap-contextmenu": "^0.9.9"
+    "angular-bootstrap-contextmenu": "^0.9.9",
+    "angular-ui-select": "^0.19.6",
+    "select2": "^4.0.3",
+    "selectize": "^0.12.4"
   }
 }

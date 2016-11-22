@@ -44,7 +44,7 @@
                             <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                         </tr>
                         </table>
-                        <!--<a ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>-->
+                        <!--<a ng-click="getProfilesFromIp(ip, saProfile.profile)">{{'SHOWHIDEPROFILES' | translate}}</a>-->
                         <table style="margin-top: 10px;" ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
                             <thead>
                                 <tr>
@@ -67,7 +67,14 @@
                                     <td>
                                         <a class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{profile.type_label}}</a>
                                     </td>
-                                    <td><select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles" ng-change="changeProfile(profile.active)"></select></td>
+                                    <td><!--<select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.profile_name for x in profile.profiles" ng-change="changeProfile(profile.active)" ng-focus="getProfiles(profile)" data-ng-attr-size="{{profile.profiles.length}}"></select>-->
+                                    <ui-select ng-click="getProfiles(profile)" ng-model="profile.active" theme="bootstrap" ng-disabled="profile.locked" style="min-width: 300px;">
+                                        <ui-select-match placeholder="Select a {{profile.type_label}} profile">{{$select.selected.profile_name}}</ui-select-match>
+                                         <ui-select-choices repeat="x in profile.profiles track by x.id | filter: $select.search">
+                                             <span ng-bind-html="x.profile_name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    </td>
                                     <td>
                                         <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active" class="btn btn-success btn-sm" ng-click="lockProfileModal(profile)">{{'LOCKPROFILE' | translate}}</button>
                                         <button ng-if="profile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>

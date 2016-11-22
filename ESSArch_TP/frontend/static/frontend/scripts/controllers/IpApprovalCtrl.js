@@ -250,31 +250,38 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
-            $scope.eventlog = true;
-            getEventlogData();
-            $scope.edit = true;
-            $scope.selectProfile = row;
-            vm.profileModel = row.active.specification_data;
-            vm.profileFields = row.active.template;
-            vm.profileFields.forEach(function(field) {
-                if(field.fieldGroup != null){
-                    field.fieldGroup.forEach(function(subGroup) {
-                        subGroup.fieldGroup.forEach(function(item) {
-                            item.templateOptions.disabled = true;
-                        });
+            if(row.active) {
+                $http({
+                    method: 'GET',
+                    url: row.active.profile
+                }).then(function(response) {
+                    $scope.selectProfile = row;
+                    vm.profileModel = response.data.specification_data;
+                    vm.profileFields = response.data.template;
+                    vm.profileFields.forEach(function(field) {
+                        if(field.fieldGroup != null){
+                            field.fieldGroup.forEach(function(subGroup) {
+                                subGroup.fieldGroup.forEach(function(item) {
+                                    item.templateOptions.disabled = true;
+                                });
+                            });
+                        } else {
+                            field.templateOptions.disabled = true;
+                        }
                     });
-                } else {
-                    field.templateOptions.disabled = true;
-                }
-            });
+                    $scope.eventlog = true;
+                    getEventlogData();
+                    $scope.edit = true;
+                });
+            }
         }
     };
     //Get eventlog data
-    function getEventlogData() {
-        listViewService.getEventlogData().then(function(value){
-            $scope.statusNoteCollection = value;
-        });
-    };
+                function getEventlogData() {
+                    listViewService.getEventlogData().then(function(value){
+                        $scope.statusNoteCollection = value;
+                    });
+                };
 
     //populating select view
     $scope.selectRowCollection = [];
@@ -292,7 +299,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
 
-        return listViewService.getSelectCollection(sa, ip).then( function(value){
+        return listViewService.getProfilesFromIp(sa, ip).then( function(value){
             $scope.selectRowCollapse = value;
         });
     };

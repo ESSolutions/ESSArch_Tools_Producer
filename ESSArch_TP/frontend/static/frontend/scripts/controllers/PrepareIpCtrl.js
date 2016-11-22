@@ -284,15 +284,35 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
-            $scope.eventlog = true;
-            getEventlogData();
-            $scope.edit = true;
-            $scope.selectProfile = row;
-            vm.profileModel = angular.copy(row.active.specification_data);
-            vm.profileFields = row.active.template;
-            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
-            $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
-            $scope.subSelectProfile = "profile";
+            if(!angular.isUndefined(row.active.name)) {
+                $scope.selectProfile = row;
+                vm.profileModel = angular.copy(row.active.specification_data);
+                vm.profileFields = row.active.template;
+                $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
+                $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+                $scope.subSelectProfile = "profile";
+                $scope.eventlog = true;
+                getEventlogData();
+                $scope.edit = true;
+            } else {
+                $http({
+                    method: 'GET',
+                    url: row.active.profile
+                }).then(function(response) {
+                    response.data.profile_name = response.data.name;
+                    row.active = response.data;
+                    row.profiles = [response.data];
+                    $scope.selectProfile = row;
+                    vm.profileModel = angular.copy(row.active.specification_data);
+                    vm.profileFields = row.active.template;
+                    $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
+                    $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+                    $scope.subSelectProfile = "profile";
+                    $scope.eventlog = true;
+                    getEventlogData();
+                    $scope.edit = true;
+                });
+            }
         }
     };
     //Get data for eventlog view
@@ -317,7 +337,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSelectCollection = function (sa, ip) {
         $scope.selectRowCollapse = [];
 
-        return listViewService.getSelectCollection(sa, ip).then( function(value){
+        return listViewService.getProfilesFromIp(sa, ip).then( function(value){
             $scope.selectRowCollapse = value;
         });
     };
@@ -611,9 +631,15 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Lock a profile
     $scope.lockProfile = function (profiles) {
+        var profileUrl;
+        if(profiles.active.profile) {
+            profileUrl = profiles.active.profile;
+        } else {
+            profileUrl = profiles.active.url;
+        }
         $http({
             method: 'POST',
-            url: profiles.active.url+"lock/",
+            url: profileUrl+"lock/",
             data: {
                 information_package: $scope.ip.id,
             }
@@ -989,4 +1015,28 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }]
         ];
     };
+    $scope.getProfilesFromIp = function(ip, sa) {
+        listViewService.getProfilesFromIp(ip, sa).then(function(result) {
+            //$scope.selectCollapse = result;
+            console.log(result);
+        });
+    }
+    $scope.getProfiles = function(profile) {
+        listViewService.getProfilesMin(profile.type).then(function(result) {
+            if(profile.active != null) {
+            result.forEach(function(prof) {
+                if(angular.isUndefined(profile.active.profile)) {
+                    if(prof.url == profile.active.url) {
+                        profile.active = prof;
+                }
+                }
+                if(prof.url == profile.active.profile) {
+                    profile.active = prof;
+                }
+            });
+        }
+            profile.profiles = result;
+        })
+    }
+
 });

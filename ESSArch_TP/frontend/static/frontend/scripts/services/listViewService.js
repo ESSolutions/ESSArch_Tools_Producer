@@ -216,6 +216,118 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             locked: locked
         };
     }
+
+    //Ligher fetching of profiles start
+    function createProfileObjMinified(type, profiles, ip, sa){
+        var required = false;
+        var locked = false;
+        var checked = false;
+        var profile = null;
+
+        p = getProfileByTypeFromIP(ip, type);
+        if (p) {
+            profile_from_ip = p;
+            profile = profile_from_ip;
+            locked = p.LockedBy ? true : false;
+            checked = p.included
+        }
+        p = getProfileByTypeFromSA(sa, type);
+        if (p){
+            checked = true;
+            required = true;
+            if (profile == null) {
+                profile = p;
+            }
+        }
+        active = profile;
+        if(profile) {
+            profiles = [profile];
+        }
+        return {
+            type_label: getProfileTypeLabel(type),
+            type: type,
+            active: active,
+            checked: checked,
+            required: required,
+            profiles: profiles,
+            locked: locked
+        };
+    }
+
+    function getProfilesFromIp(sa, ip) {
+        var selectCollapse = [];
+        return getIp(ip.url).then(function(result) {
+            if(sa.id != null){
+                if(result.profile_transfer_project) {
+                    selectCollapse.push(createProfileObjMinified("transfer_project", [result.profile_transfer_project], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("transfer_project", [], result, sa));
+                }
+                if(result.profile_submit_description) {
+                    selectCollapse.push(createProfileObjMinified("submit_description", [result.profile_submit_description], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("submit_description", [], result, sa));
+                }
+                if(result.profile_sip) {
+                    selectCollapse.push(createProfileObjMinified("sip", [result.profile_sip], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("sip", [], result, sa));
+                }
+                if(result.profile_aip) {
+                    selectCollapse.push(createProfileObjMinified("aip", [result.profile_aip], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("aip", [], result, sa));
+                }
+                if(result.profile_dip) {
+                    selectCollapse.push(createProfileObjMinified("dip", [result.profile_dip], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("dip", [], result, sa));
+                }
+                if(result.profile_content_type) {
+                    selectCollapse.push(createProfileObjMinified("content_type", [result.profile_content_type], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("content_type", [], result, sa));
+                }
+                if(result.profile_authority_information) {
+                    selectCollapse.push(createProfileObjMinified("authority_information", [result.profile_authority_information], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("authority_information", [], result, sa));
+                }
+                if(result.profile_archival_description) {
+                    selectCollapse.push(createProfileObjMinified("archival_description", [result.profile_archival_description], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("archival_description", [], result, sa));
+                }
+                if(result.profile_preservation_metadata) {
+                    selectCollapse.push(createProfileObjMinified("preservation_metadata", [result.profile_preservation_metadata], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("preservation_metadata", [], result, sa));
+                }
+                if(result.profile_event) {
+                    selectCollapse.push(createProfileObjMinified("event", [result.profile_event], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("event", [], result, sa));
+                }
+                if(result.profile_data_selection) {
+                    selectCollapse.push(createProfileObjMinified("data_selection", [result.profile_data_selection], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("data_selection", [], result, sa));
+                }
+                if(result.profile_import) {
+                    selectCollapse.push(createProfileObjMinified("import", [result.profile_import], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("import", [], result, sa));
+                }
+                if(result.profile_workflow) {
+                    selectCollapse.push(createProfileObjMinified("workflow", [result.profile_workflow], result, sa));
+                } else {
+                    selectCollapse.push(createProfileObjMinified("workflow", [], result, sa));
+                }
+                return selectCollapse;
+            }
+        });
+    }
+    //Lighter fetching of profiles end
     function getProfileTypeLabel(type) {
         var typeMap = {
             "transfer_project": "Transfer project",
@@ -224,7 +336,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             "aip": "AIP",
             "dip": "DIP",
             "content_type": "Content type",
-            "classification": "Classification",
+            "authority_information": "Authority information",
+            "archival_description": "Archival description",
             "preservation_metadata": "Preservation metadata",
             "event": "Event",
             "data_selection": "Data selection",
@@ -344,6 +457,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             }
         })
     };
+
     //Execute prepare ip, which creates a new IP
     function prepareIp(label){
         return $http({
@@ -383,8 +497,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             created: ip.CreateDate,
             size: ip.ObjectSize
         };
-         array.push(tempElement);
-         return array;
+        array.push(tempElement);
+        return array;
     }
     /*******************/
     /*HELPER FUNCTIONS*/
@@ -415,6 +529,22 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             params: {type: type}
         })
         .then(function successCallback(response) {
+            return response.data;
+        }, function errorCallback(response){
+            console.log(response.status);
+        });
+        return promise;
+    };
+    function getProfilesMin(type){
+        var promise = $http({
+            method: 'GET',
+            url: appConfig.djangoUrl+"profiles/",
+            params: {type: type}
+        })
+        .then(function successCallback(response) {
+            response.data.forEach(function(profileObj) {
+                profileObj.profile_name = profileObj.name;
+            });
             return response.data;
         }, function errorCallback(response){
             console.log(response.status);
@@ -482,6 +612,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getSa: getSa,
         getFileList, getFileList,
         getStructure: getStructure,
+        getProfilesFromIp: getProfilesFromIp,
+        getProfiles: getProfiles,
+        getProfilesMin: getProfilesMin,
     };
 
 });
