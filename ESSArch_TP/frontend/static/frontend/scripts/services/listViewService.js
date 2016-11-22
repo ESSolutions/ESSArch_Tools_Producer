@@ -102,7 +102,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 data: response.data
             };
         }, function errorCallback(response){
-            alert(response.status);
         });
         return promise;
     }
@@ -115,7 +114,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         .then(function successCallback(response) {
             return response.data;
         }, function errorCallback(response){
-            alert(response.status);
         });
         return promise;
 
@@ -160,7 +158,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             });
             return saProfile;
         }, function errorCallback(response){
-            alert(response.status);
         });
         return promise;
     }

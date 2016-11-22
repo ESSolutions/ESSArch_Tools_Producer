@@ -106,7 +106,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
                 return Response({'status': 'locking submission_agreement'})
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'status': 'Not allowed to lock SA'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileSAViewSet(viewsets.ModelViewSet):

@@ -7,6 +7,8 @@
                 <tr>
                     <th class="clickable" st-sort="id">{{'ID' | translate}}</th>
                     <th class="clickable" st-sort="eventDetail">{{'EVENTDETAIL' | translate}}</th>
+                    <th class="clickable" st-sort="eventOutcome">{{'EVENTOUTCOME' | translate}}</th>
+                    <th class="clickable" st-sort="eventOutcomeDetailNote">{{'EVENTOUTCOMEDETAILNOTE' | translate}}</th>
                     <th class="clickable" st-sort-default="reverse" st-sort="eventDateTime">{{'EVENTTIME' | translate}}</th>
                 </tr>
             </thead>
@@ -14,6 +16,8 @@
                 <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in displayed">
                     <td>{{row.id}}</td>
                     <td>{{row.eventDetail}}</td>
+                    <td>{{row.eventOutcome}}</td>
+                    <td>{{row.eventOutcomeDetailNote}}</td>
                     <td>{{row.eventDateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
                 </tr>
             </tbody>
