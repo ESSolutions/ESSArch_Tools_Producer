@@ -424,11 +424,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
 
     };
-    $scope.changeActive = function(profile, selected){
-        console.log(profile);
-        profile.active = selected;
-        console.log(profile.active);
-    }
     //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa, ip) {
         $http({
@@ -1027,8 +1022,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     $scope.getProfiles = function(profile) {
-        //profile.profiles =  [{id: 1, profile_name: 'first'}, {id: 2, profile_name: 'second'}]
-          //  return;
         listViewService.getProfilesMin(profile.profile_type).then(function(result) {
             if(profile.active != null) {
             result.forEach(function(prof) {
