@@ -9,7 +9,7 @@
         "xlink": "http://www.w3.org/1999/xlink"
     },
     "-schemasToPreserve": [
-        "http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd"
+        "http://xml.essarch.org/METS/info.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files",
     "-attr": [
@@ -17,7 +17,7 @@
             "-name": "schemaLocation",
             "#content": [
                 {
-                    "text": "http://www.loc.gov/METS/ http://schema.arkivverket.no/METS/info.xsd"
+                    "text": "http://www.loc.gov/METS/ http://xml.essarch.org/METS/info.xsd"
                 }
             ],
             "-namespace": "xsi"
