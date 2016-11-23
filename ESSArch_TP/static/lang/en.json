@@ -102,5 +102,7 @@
     "TOIP": "to IP",
     "LOCKSA": "Lock SA",
     "INCLUDEDPROFILES": "Included profiles",
-    "TRACEBACK": "Traceback"
+    "TRACEBACK": "Traceback",
+    "STARTED": "Started",
+    "DONE": "Done"
 }

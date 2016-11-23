@@ -102,5 +102,7 @@
     "TOIP": "till IP",
     "LOCKSA": "Lås SA",
     "INCLUDEDPROFILES": "Inkluderade profiler",
-    "TRACEBACK": "Traceback"
+    "TRACEBACK": "Traceback",
+    "STARTED": "Startade",
+    "DONE": "Färdig"
 }
