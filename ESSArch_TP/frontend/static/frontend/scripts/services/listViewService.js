@@ -242,7 +242,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         }
         return {
             type_label: getProfileTypeLabel(type),
-            type: type,
+            profile_type: type,
             active: active,
             checked: checked,
             required: required,

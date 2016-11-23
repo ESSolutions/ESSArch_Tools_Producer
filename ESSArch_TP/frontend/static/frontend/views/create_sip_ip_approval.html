@@ -1,10 +1,5 @@
 <head>
-    <link rel="stylesheet" type"text/css" href="static/frontend/scripts/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/frontend/styles/create_sip_ip_approval.css">
-    <link rel="stylesheet" type="text/css" href="static/frontend/styles/index.css">
-    <!--Angular Scripts -->
-    <!--App -->
-    <!--Controllers-->
 </head>
 <body>
     <div class="content-wrapper">
@@ -29,7 +24,7 @@
                         </td>
                         <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                         <td><p class="table-col">{{}}</p>
-                            <button ng-if="saProfile.locked" class="btn btn-danger btn-sm">{{'LOCKED' | translate}}</button>
+                            <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa">{{'LOCKED' | translate}}</button>
                         </td>
                         <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                     </tr>
@@ -57,7 +52,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a class="table-col" ng-click="profileClick(profile)">{{profile.type_label}}</a>
+                                    <a ng-if="profile.checked" class="table-col" ng-click="profileClick(profile)">{{profile.type_label}}</a>
+                                    <p ng-if="!profile.checked"class="table-col">{{profile.type_label}}</p>
                                 </td>
 
                                 <td><!--<select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select>-->
@@ -69,7 +65,7 @@
                                     </ui-select>
                                 </td>
                                 <td>
-                                    <button ng-if="profile.locked" class="btn btn-danger btn-sm" ng-click="unlock(profile)">{{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)">{{'UNLOCKPROFILE' | translate}}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -89,9 +85,9 @@
                         <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                         </formly-form>
                     </form>
-                    <div class="package-dependencies">
+                    <!--<div class="package-dependencies">
                         <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
-                    </div>
+                    </div>-->
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form class="eventlog-form" ng-submit="createSip(ip)">
