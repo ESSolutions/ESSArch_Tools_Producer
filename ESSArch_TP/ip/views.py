@@ -283,6 +283,7 @@ class EventIPViewSet(viewsets.ModelViewSet):
         """
 
         outcomeDetailNote = request.data.get('eventOutcomeDetailNote', None)
+        outcome = request.data.get('eventOutcome', 0)
         type_id = request.data.get('eventType', None)
         ip_id = request.data.get('information_package', None)
 
@@ -290,7 +291,7 @@ class EventIPViewSet(viewsets.ModelViewSet):
         ip = InformationPackage.objects.get(pk=ip_id)
 
         EventIP.objects.create(
-            eventOutcomeDetailNote=outcomeDetailNote, eventType=eventType,
-            linkingObjectIdentifierValue=ip
+            eventOutcome=outcome, eventOutcomeDetailNote=outcomeDetailNote,
+            eventType=eventType, linkingObjectIdentifierValue=ip
         )
         return Response({"status": "Created event"})
