@@ -312,4 +312,10 @@ input[type="checkbox"] {
 }
 .map-structure-editor {
     border-top-style: solid;
+    border-color: #666;
+}
+.sa-table {
+    padding-bottom: 10px;
+    border-bottom-style: solid;
+    border-color: #666;
 }

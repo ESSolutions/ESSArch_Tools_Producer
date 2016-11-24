@@ -281,3 +281,8 @@ input[type="checkbox"] {
 .validator-choices .formly select {
     width: 170px;
 }
+.sa-table {
+    padding-bottom: 10px;
+    border-bottom-style: solid;
+    border-color: #666;
+}
