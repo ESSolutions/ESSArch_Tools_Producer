@@ -70,6 +70,15 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tfoot  ng-if="!canLockSa() && saProfile.profile">
+                                <tr>
+                                    <td colspan="3">
+                                    </td>
+                                    <td colspan="1">
+                                        <button class="btn btn-success btn-sm" style="width: 95px" ng-click="lockAllIncludedModal(profile)">{{'Lock all'}}</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
 
                     </div>

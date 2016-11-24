@@ -1038,5 +1038,28 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             profile.profiles = result;
         })
     }
-
+    $scope.lockAllIncludedModal = function (profiles) {
+        $scope.profileToSave = profiles;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/lock_all_included_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.lockAllIncluded();
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    $scope.lockAllIncluded = function() {
+        $scope.selectRowCollection.forEach(function(profile) {
+            if(profile.checked && !profile.locked) {
+                $scope.lockProfile(profile);
+            }
+        });
+    }
 });

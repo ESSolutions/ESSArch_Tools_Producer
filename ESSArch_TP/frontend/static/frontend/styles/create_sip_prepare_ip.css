@@ -50,7 +50,7 @@
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
-    margin-top: 0px;
+    margin-top: 10px;
     position: relative;
 }
 .events-footer {
@@ -143,7 +143,7 @@
 }
 .lock-button  {
     padding: 0px 16px;
-    width: 82.7px;
+    width: 95px;
 }
 .table-col {
     margin: 0;

@@ -33,7 +33,7 @@ width: 100%;
     display: -webkit-flex;
     flex-direction: column;
     -webkit-flex-direction: column;
-    margin-top: 0px;
+    margin-top: 10px;
     position: relative;
 }
 .progress {

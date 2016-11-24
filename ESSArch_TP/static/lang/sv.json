@@ -104,5 +104,6 @@
     "INCLUDEDPROFILES": "Inkluderade profiler",
     "TRACEBACK": "Traceback",
     "STARTED": "Startade",
-    "DONE": "Färdig"
+    "DONE": "Färdig",
+    "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler"
 }

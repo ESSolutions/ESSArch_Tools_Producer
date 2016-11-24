@@ -104,5 +104,6 @@
     "INCLUDEDPROFILES": "Included profiles",
     "TRACEBACK": "Traceback",
     "STARTED": "Started",
-    "DONE": "Done"
+    "DONE": "Done",
+    "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles"
 }
