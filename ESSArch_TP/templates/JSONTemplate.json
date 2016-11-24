@@ -630,7 +630,7 @@
                             "-children": [
                                 {
                                     "-containsFiles": true,
-                                    "-filters": {"href":"^(?!.*(metadata/premis.xml|metadata/administrative/premis.xml|.*(.xsd))).*$"},
+                                    "-filters": {"href":"^(?!.*(metadata/premis.xml|metadata/administrative/premis.xml|schemas/*)).*$"},
                                     "-attr": [
                                         {
                                             "#content": [
@@ -802,7 +802,7 @@
                             "-children": [
                                 {
                                     "-containsFiles": true,
-                                    "-filters": {"href":".*(.xsd)"},
+                                    "-filters": {"href":"schemas/*"},
                                     "-attr": [
                                         {
                                             "#content": [
