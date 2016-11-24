@@ -44,22 +44,12 @@ class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
 class ProcessTaskDetailSerializer(serializers.HyperlinkedModelSerializer):
     params = serializers.SerializerMethodField()
     result = serializers.SerializerMethodField()
-    traceback = serializers.SerializerMethodField()
-    exception = serializers.SerializerMethodField()
 
     def get_params(self, obj):
         return dict((str(k), str(v)) for k,v in obj.params.iteritems())
 
     def get_result(self, obj):
         return str(obj.result)
-
-    def get_traceback(self, obj):
-        if obj.einfo:
-            return obj.einfo.traceback
-
-    def get_exception(self, obj):
-        if obj.einfo:
-            return "%s: %s" % (obj.einfo.type.__name__, obj.einfo.exception)
 
     class Meta:
         model = ProcessTaskSerializer.Meta.model

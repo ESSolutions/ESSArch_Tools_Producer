@@ -195,6 +195,7 @@ def installDefaultEventTypes(): # default events
 
     # create events dictionaries
     dct = {
+      'Other': '10000',
       'Prepare IP':'10100',
       'Create IP root directory': '10110',
       'Create physical model': '10115',
