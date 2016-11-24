@@ -149,7 +149,8 @@ body.modal-open[style] {
     flex-direction: column;
     display: -webkit-flex;
     -webkit-flex-direction: column;
-    width: 20%;
+    width: 280px;
+    min-width: 280px;
     margin: 5px;
     height: 1000px;
 }
@@ -184,8 +185,11 @@ body.modal-open[style] {
 
 }
 .datepicker {
-    max-width: 100%;
-    position: absolute;
+    width: 100%;
+    position: relative;
+}
+.uib-daypicker {
+    margin: auto;
 }
 .datepicker .form-control {
     height: 15px;
