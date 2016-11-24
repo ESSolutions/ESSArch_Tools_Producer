@@ -292,6 +292,7 @@ class EventIPViewSet(viewsets.ModelViewSet):
 
         EventIP.objects.create(
             eventOutcome=outcome, eventOutcomeDetailNote=outcomeDetailNote,
-            eventType=eventType, linkingObjectIdentifierValue=ip
+            eventType=eventType, linkingObjectIdentifierValue=ip,
+            linkingAgentIdentifierValue="System"
         )
         return Response({"status": "Created event"})
