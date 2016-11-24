@@ -107,5 +107,6 @@
     "DONE": "Färdig",
     "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler",
     "ARCHIVISTORGANIZATION": "Arkivorganisation",
-    "OUTCOME": "Resultat"
+    "OUTCOME": "Resultat",
+    "LOCKALL": "Lås alla"
 }

@@ -496,8 +496,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         }).then(function(response) {
             $scope.eventlog = false;
             $scope.edit = false;
-            $scope.getListViewData();
-            updateListViewConditional();
+            $timeout(function() {
+                $scope.getListViewData();
+                updateListViewConditional();
+            }, 1000);
         }, function(response) {
             console.log(response.status);
         });

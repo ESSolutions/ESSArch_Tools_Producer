@@ -26,7 +26,7 @@
             </tfoot>
         </table>
         <div class="events-footer">
-            <form class="events-form" ng-submit="addEvent(ip, statusNote, signature, eventOutcome)">
+            <form ng-if="ip.State != 'Created' && ip.State != 'Creating' && ip.State != 'Submitting' && ip.State != 'Submitted'" class="events-form" ng-submit="addEvent(ip, statusNote, signature, eventOutcome)">
 
                 <div class="form-group" style="margin-right: 5px;">
                     <label>{{'EVENTTYPE' | translate}}</label>

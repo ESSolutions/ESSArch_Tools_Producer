@@ -107,5 +107,6 @@
     "DONE": "Done",
     "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles",
     "ARCHIVISTORGANIZATION": "Archivist organization",
-    "OUTCOME": "Outcome"
+    "OUTCOME": "Outcome",
+    "LOCKALL": "Lock all"
 }
