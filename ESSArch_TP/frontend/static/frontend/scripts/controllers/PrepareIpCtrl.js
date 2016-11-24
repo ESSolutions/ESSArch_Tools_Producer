@@ -416,8 +416,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'PUT',
             url: uri,
             data: sendData
-        })
-        .success(function (response) {
+         })
+         .success(function (response) {
+             if($scope.edit) {
+                 $scope.profileClick({active: profile});
+             }
         })
         .error(function (response) {
             alert(response.status);
