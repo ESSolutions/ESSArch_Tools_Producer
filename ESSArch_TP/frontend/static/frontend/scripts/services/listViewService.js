@@ -38,7 +38,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     function getStatusViewData(ip, expandedNodes){
         var promise = $http({
             method: 'GET',
-            url: ip.url + 'steps',
+            url: ip.url + 'steps/',
         }).then(function(response){
             steps = response.data;
             steps.forEach(function(step){
