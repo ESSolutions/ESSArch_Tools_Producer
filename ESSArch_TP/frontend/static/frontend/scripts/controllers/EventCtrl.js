@@ -4,6 +4,17 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(eventInterval);
     });
+    $scope.eventOutcomes = [
+    {
+        name: "Success",
+        value: 0
+    },
+    {
+        name: "Failure",
+        value: 1
+    }
+
+    ]
     //Event click funciton
     $scope.eventClick = function(row) {
         if(row.class == "selected"){
@@ -20,8 +31,8 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
             console.log($scope.selected);
         }
     };
-    $scope.addEvent = function(ip, eventType, eventDetail) {
-        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+    $scope.addEvent = function(ip, eventType, eventDetail, eventOutcome) {
+        listViewService.addEvent(ip, eventType, eventDetail, eventOutcome).then(function(value) {
             $rootScope.stCtrl.pipe();
             console.log(value);
         });

@@ -105,5 +105,7 @@
     "TRACEBACK": "Traceback",
     "STARTED": "Started",
     "DONE": "Done",
-    "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles"
+    "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles",
+    "ARCHIVISTORGANIZATION": "Archivist organization",
+    "OUTCOME": "Outcome"
 }

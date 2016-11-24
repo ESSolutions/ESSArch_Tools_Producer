@@ -68,13 +68,14 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return promise;
     }
     //Add a new event
-    function addEvent(ip, eventType, eventDetail) {
+    function addEvent(ip, eventType, eventDetail, outcome) {
         var promise = $http({
             method: 'POST',
             url: appConfig.djangoUrl+"events/",
             data: {
                 "eventType": eventType.id,
                 "eventOutcomeDetailNote": eventDetail,
+                "eventOutcome": outcome.value,
                 "information_package": ip.id
             }
 

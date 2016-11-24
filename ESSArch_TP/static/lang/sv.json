@@ -105,5 +105,7 @@
     "TRACEBACK": "Traceback",
     "STARTED": "Startade",
     "DONE": "Färdig",
-    "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler"
+    "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler",
+    "ARCHIVISTORGANIZATION": "Arkivorganisation",
+    "OUTCOME": "Resultat"
 }

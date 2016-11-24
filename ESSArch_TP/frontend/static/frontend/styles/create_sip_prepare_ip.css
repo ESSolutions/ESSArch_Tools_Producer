@@ -64,6 +64,7 @@
     margin: 5px;
     padding: 5px;
 }
+
 .events-footer .signature {
     width: 250px;
     height: 35px;
@@ -76,9 +77,9 @@
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
-    justify-content: space-between;
-    -webkit-justify-content: space-between;
-    width: 50%;
+    justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    width: 100%;
     margin-left: 10px;
 }
 .events-form .submit-button {
