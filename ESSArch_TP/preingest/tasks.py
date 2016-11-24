@@ -223,6 +223,7 @@ class ValidateLogicalPhysicalRepresentation(DBTask):
 
         assert logical_files == physical_files, "the logical representation differs from the physical"
         self.set_progress(100, total=100)
+        return "Success"
 
     def undo(self, ip=None, xmlfile=None):
         pass
