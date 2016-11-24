@@ -207,7 +207,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 method: 'GET',
                 url: row.url
             }).then(function (response) {
-                getEventlogData();
                 $scope.getPackageInformation(response.data);
                 $scope.getPackageDependencies(response.data);
                 $scope.getPackageProfiles(response.data);
@@ -290,11 +289,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {
-        $http({
-            method: 'GET',
-            url: ip.SubmissionAgreement
-        }).then(function(response) {
-            var sa = response.data;
+        if(ip.profile_transfer_project) {
             $http({
                 method: 'GET',
                 url: ip.profile_transfer_project.profile
@@ -304,11 +299,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 vm.dependencyFields.forEach(function(field) {
                     field.templateOptions.disabled = true;
                 });
-            }, function(response) {
             });
-        }, function(response){
-            console.log(response.status);
-        });
+        }
     }
     vm.profileFields = [];
     vm.profileModel = {
@@ -317,219 +309,180 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     $scope.getPackageProfiles = function(ip) {
         vm.profileFields = [];
         vm.profileModel = {};
-        getProfiles(ip.profile_transfer_project, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.transfer_project = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "transfer_project",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "transfer_project"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_content_type, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.content_type = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "content_type",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "content_type"
-                }
-                vm.profileFields.push(field);
+        if(ip.profile_transfer_project){
+            vm.profileModel.transfer_project = ip.profile_transfer_project.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "transfer_project",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "transfer_project"
             };
-        });
-        getProfiles(ip.profile_data_selection, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.data_selection = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "data_selection",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "data_selection"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_classification, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.classification = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "classification",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "classification"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_import, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.import = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "import",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "import"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_submit_description, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.submit_description = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "submit_description",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "submit_description"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_sip, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.sip = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "sip",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "sip"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_aip, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.aip = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "aip",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "aip"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_dip, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.dip = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "dip",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "dip"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_workflow, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.workflow = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "workflow",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "workflow"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_preservation_metadata, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.preservation_metadata = profileValue
-                    var field = {
-                        templateOptions: {
-                            label: "preservation_metadata",
-                            disabled: true
-                        },
-                        type: "checkbox",
-                        key: "preservation_metadata"
-                    };
-                vm.profileFields.push(field);
-            }
-        });
-        getProfiles(ip.profile_event, ip).then(function(profileValue){
-            if(profileValue != null){
-                vm.profileModel.event = profileValue;
-                var field = {
-                    templateOptions: {
-                        label: "event",
-                        disabled: true
-                    },
-                    type: "checkbox",
-                    key: "event"
-                };
-                vm.profileFields.push(field);
-            }
-        });
-    }
-    //Get profiles in given profile type
-    function getProfiles(profiles, ip){
-        if(profiles == null || angular.isUndefined(profiles)){
-            var deferred = $q.defer();
-            deferred.resolve(null);
-            return deferred.promise;
+            vm.profileFields.push(field);
         }
-        var promise = $http({
-            method: 'GET',
-            url: profiles.profile
-        }).then(function(response) {
-            var returnVal = false;
-            if(response){
-                returnVal = true;
+        if(ip.profile_submit_description){
+            vm.profileModel.submit_description = ip.profile_submit_description.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "submit_description",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "submit_description"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_sip){
+            vm.profileModel.sip = ip.profile_sip.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "sip",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "sip"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_aip){
+            vm.profileModel.aip = ip.profile_aip.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "aip",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "aip"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_dip){
+            vm.profileModel.dip = ip.profile_dip.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "dip",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "dip"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_content_type){
+            vm.profileModel.content_type = ip.profile_content_type.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "content_type",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "content_type"
             }
-            return returnVal;
-        }, function(response) {
-            console.log(response.status);
-        });
-        return promise;
+            vm.profileFields.push(field);
+        };
+
+        if(ip.profile_authority_information){
+            vm.profileModel.authority_information = ip.profile_authority_information.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "authority_information",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "authority_information"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_archival_description){
+            vm.profileModel.archival_description = ip.profile_archival_description.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "archival_description",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "archival_description"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_preservation_metadata){
+            vm.profileModel.preservation_metadata = ip.profile_preservation_metadata.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "preservation_metadata",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "preservation_metadata"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_event){
+            vm.profileModel.event = ip.profile_event.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "event",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "event"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_data_selection){
+            vm.profileModel.data_selection = ip.profile_data_selection.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "data_selection",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "data_selection"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_import){
+            vm.profileModel.import = ip.profile_import.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "import",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "import"
+            };
+            vm.profileFields.push(field);
+        }
+        if(ip.profile_workflow){
+            vm.profileModel.workflow = ip.profile_workflow.LockedBy != null;
+            var field = {
+                templateOptions: {
+                    label: "workflow",
+                    disabled: true
+                },
+                type: "checkbox",
+                key: "workflow"
+            };
+            vm.profileFields.push(field);
+        }
     }
     //Get package information(submit-description)
     $scope.getPackageInformation = function(ip) {
-        $http({
-            method: 'GET',
-            url: ip.SubmissionAgreement
-        }).then(function(response) {
-            if (ip.profile_submit_description) {
-                $http({
-                    method: 'GET',
-                    url: ip.profile_submit_description.profile
-                }).then(function(response) {
-                    vm.informationModel= response.data.specification_data;
-                    vm.informationFields = response.data.template;
-                    vm.informationFields.forEach(function(field) {
-                        field.templateOptions.disabled = true;
-                    });
-                }, function(response) {
-                  console.log(response.status);
+        if (ip.profile_submit_description) {
+            $http({
+                method: 'GET',
+                url: ip.profile_submit_description.profile
+            }).then(function(response) {
+                vm.informationModel= response.data.specification_data;
+                vm.informationFields = response.data.template;
+                vm.informationFields.forEach(function(field) {
+                    field.templateOptions.disabled = true;
                 });
-            }
-        }, function(response){
-            console.log(response.status);
-        });
+            }, function(response) {
+                console.log(response.status);
+            });
+        }
     };
     //Get active profile
     function getActiveProfile(profiles) {
