@@ -202,35 +202,50 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
   stConfig.sort.delay = -1;
 })
 .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig){
+    function _defineProperty(obj, key, value) {
+        if (key in obj) {
+            Object.defineProperty(obj, key, {
+                value: value,
+                enumerable: true,
+                configurable: true,
+                writable: true
+            });
+        } else {
+            obj[key] = value;
+        }
+        return obj;
+    }
+
     formlyConfig.setType({
-        name: 'input',
-        templateUrl: 'static/frontend/views/form_template_input.html',
-        overwriteOk: true
+      name: 'input',
+      templateUrl: 'static/frontend/views/form_template_input.html',
+      overwriteOk: true
     });
     formlyConfig.setType({
       name: 'select-tree-edit',
-      template: `<select class="form-control" ng-model="model[options.key]"><option value="" disabled hidden>Choose here</option></select>`,
+      template: '<select class="form-control" ng-model="model[options.key]"><option value="" disabled hidden>Choose here</option></select>',
       wrapper: ['bootstrapLabel', 'bootstrapHasError'],
-      defaultOptions(options) {
+      defaultOptions: function defaultOptions(options) {
         /* jshint maxlen:195 */
-        let ngOptions = options.templateOptions.ngOptions || `option[to.valueProp || 'value'] as option[to.labelProp || 'name'] group by option[to.groupProp || 'group'] for option in to.options`;
+        var ngOptions = options.templateOptions.ngOptions || "option[to.valueProp || 'value'] as option[to.labelProp || 'name'] group by option[to.groupProp || 'group'] for option in to.options";
         return {
-          ngModelAttrs: {
-            [ngOptions]: {
-              value: options.templateOptions.optionsAttr || 'ng-options'
-            }
-          }
+          ngModelAttrs: _defineProperty({}, ngOptions, {
+            value: options.templateOptions.optionsAttr || 'ng-options'
+          })
         };
       },
-      apiCheck: check => ({
-        templateOptions: {
-          options: check.arrayOf(check.object),
-          optionsAttr: check.string.optional,
-          labelProp: check.string.optional,
-          valueProp: check.string.optional,
-          groupProp: check.string.optional
-        }
-      })
+
+      apiCheck: function apiCheck(check) {
+        return {
+          templateOptions: {
+            options: check.arrayOf(check.object),
+            optionsAttr: check.string.optional,
+            labelProp: check.string.optional,
+            valueProp: check.string.optional,
+            groupProp: check.string.optional
+          }
+        };
+      }
     });
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
