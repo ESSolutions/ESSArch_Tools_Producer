@@ -37,7 +37,7 @@
     "CREATED": "Skapad",
     "SIZE": "Storlek",
     "STATUSNOTE": "Statusanteckning",
-    "COMMENT": "kommentar",
+    "COMMENT": "Kommentar",
     "APPROVEDTOSUBMIT": "godkänd för att skicka",
     "SELECTONE": "Välj en",
     "LOCKED": "Låst",
@@ -107,6 +107,11 @@
     "DONE": "Färdig",
     "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler",
     "ARCHIVISTORGANIZATION": "Arkivorganisation",
+    "ARCHIVALINSTITUTION": "Arkivinstitution",
     "OUTCOME": "Resultat",
-    "LOCKALL": "Lås alla"
+    "LOCKALL": "Lås alla",
+    "AGENT": "Agent",
+    "SUCCESS": "Slutförd",
+    "FAILURE": "Fel",
+    "INPROGRESS": "Evalueras"
 }

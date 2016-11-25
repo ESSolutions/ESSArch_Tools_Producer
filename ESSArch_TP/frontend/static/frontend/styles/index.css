@@ -299,3 +299,27 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
+.step-state-success {
+    display: inline;
+    color: white;
+    background-color: #4fc388;
+    padding: 3px 10px;
+    font-size: 9px;
+    border-radius: 5px;
+}
+.step-state-failure {
+    display: inline;
+    color: white;
+    background-color: #f44242;
+    padding: 3px 10px;
+    font-size: 9px;
+    border-radius: 5px;
+}
+.step-state-in-progress {
+    display: inline;
+    color: white;
+    background-color: #4d94f2;
+    padding: 3px 10px;
+    font-size: 9px;
+    border-radius: 5px;
+}

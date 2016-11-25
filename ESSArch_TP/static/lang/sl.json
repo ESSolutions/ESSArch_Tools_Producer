@@ -107,6 +107,11 @@
     "DONE": "Done",
     "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles",
     "ARCHIVISTORGANIZATION": "Archivist organization",
+    "ARCHIVALINSTITUTION": "Archival institution",
     "OUTCOME": "Outcome",
-    "LOCKALL": "Lock all"
+    "LOCKALL": "Lock all",
+    "AGENT": "Agent",
+    "SUCCESS": "Success",
+    "FAILURE": "Failure",
+    "INPROGRESS": "In progress"
 }
