@@ -299,6 +299,9 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
+.step-state {
+    padding-top: 0 !important;
+}
 .step-state-success {
     display: inline;
     color: white;
