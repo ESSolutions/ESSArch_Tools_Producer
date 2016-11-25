@@ -9,34 +9,48 @@ from ESSArch_Core.ip.models import (
     InformationPackage
 )
 
+from ESSArch_Core.serializers import DynamicHyperlinkedModelSerializer
+
 from preingest.serializers import ProcessStepSerializer
 
 from profiles.serializers import (
     ProfileIPSerializer,
 )
 
-class ArchivalInstitutionSerializer(serializers.HyperlinkedModelSerializer):
+class ArchivalInstitutionSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalInstitution
         fields = ('url', 'id', 'name', 'information_packages',)
 
-class ArchivistOrganizationSerializer(serializers.HyperlinkedModelSerializer):
+class ArchivistOrganizationSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivistOrganization
         fields = ('url', 'id', 'name', 'information_packages',)
 
-class ArchivalTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ArchivalTypeSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalType
         fields = ('url', 'id', 'name', 'information_packages',)
 
-class ArchivalLocationSerializer(serializers.HyperlinkedModelSerializer):
+class ArchivalLocationSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalLocation
         fields = ('url', 'id', 'name', 'information_packages',)
 
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     profiles = ProfileIPSerializer(many=True)
+    ArchivalInstitution = ArchivalInstitutionSerializer(
+        fields=['url', 'id', 'name']
+    )
+    ArchivistOrganization = ArchivistOrganizationSerializer(
+        fields=['url', 'id', 'name']
+    )
+    ArchivalType = ArchivalTypeSerializer(
+        fields=['url', 'id', 'name']
+    )
+    ArchivalLocation = ArchivalLocationSerializer(
+        fields=['url', 'id', 'name']
+    )
 
     def to_representation(self, obj):
         data = super(InformationPackageSerializer, self).to_representation(obj)
