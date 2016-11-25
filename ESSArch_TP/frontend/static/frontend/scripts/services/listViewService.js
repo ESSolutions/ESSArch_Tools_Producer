@@ -255,6 +255,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     function getProfilesFromIp(sa, ip) {
         var selectCollapse = [];
         return getIp(ip.url).then(function(result) {
+            if(sa == null) {
+                return [];
+            }
             if(sa.id != null){
                 if(result.profile_transfer_project) {
                     selectCollapse.push(createProfileObjMinified("transfer_project", [result.profile_transfer_project], result, sa));

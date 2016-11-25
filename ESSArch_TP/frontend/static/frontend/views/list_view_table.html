@@ -21,15 +21,17 @@
 
                     </div>
                 </th>
-                <th colspan="3">
+                <th colspan="5">
                     <span style="float: right; margin-bottom: 5px;" ng-click="getListViewData()" class="clickable glyphicon glyphicon-refresh" ng-class="{'glyphicon-refresh-animate': ipLoading }"></span>
                 </th>
             </tr>
             <tr>
                 <th class="clickable" st-sort="Label" class="column-label">{{'LABEL' | translate}}</th>
                 <th class="clickable" st-sort="Responsible" class="column-label">{{'RESPONSIBLE' | translate}}</th>
+                <th class="clickable" st-sort="Responsible" class="column-label">{{'ARCHIVISTORGANIZATION' | translate}}</th>
                 <th class="clickable" st-sort="CreateDate" st-sort-default="reverse" class="column-label">{{'DATE' | translate}}</th>
                 <th class="clickable" st-sort="State" class="column-label">{{'STATE' | translate}}</th>
+                <th class="clickable" class="column-label"></th>
                 <th class="clickable" class="column-label">{{'EVENTS' | translate}}</th>
                 <th class="clickable" class="column-label">{{'STATUS' | translate}}</th>
                 <th class="clickable" class="column-label">{{'DELETE' | translate}}</th>
@@ -39,14 +41,20 @@
             <tr ng-class="row.class" ng-repeat="row in vm.displayedIps" class="table-item">
                 <td class="clickable" ng-click="ipTableClick(row);selectIp(row)">{{row.Label}}</td>
                 <td class="clickable" ng-click="ipRowClick(row)">{{row.Responsible}}</td>
+                <td class="clickable">{{row.ArchivistOrganization.name}}</td>
                 <td class="clickable" ng-click="ipRowClick(row)">{{row.CreateDate | date:"yyyy-MM-dd HH:mm:ss"}}</td>
                 <td class="clickable" ng-click="stateClicked(row);selectIp(row)"><a href="">{{row.State}}</a></td>
+                <td>
+                    <div ng-if="row.step_state == 'SUCCESS'" class="step-state-success"><b>{{'SUCCESS' | translate}}</b></div>
+                    <div ng-if="row.step_state == 'FAILURE'" class="step-state-failure"><b>{{'FAILURE' | translate}}</b></div>
+                    <div ng-if="row.step_state != 'SUCCESS' && row.step_state !='FAILURE'" class="step-state-in-progress"><b>{{'INPROGRESS' | translate}}</b></div>
+                </td>
                 <td class="clickable" ng-click="eventsClick(row);selectIp(row)"><a href="">{{'EVENTS' | translate}}</a></td>
                 <td>
                     <uib-progressbar class="progress" value="row.status" type="success"><b>{{row.status | number : 0}}%</b></uib-progressbar>
                 </td>
                 <td ng-click="ipRowClick(row)">
-                    <button ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
+                    <button ng-hide="row.State == 'Creating' || row.State == 'Submitting'" ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
                 </td>
             </tr>
         </tbody>
