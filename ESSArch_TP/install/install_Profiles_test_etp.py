@@ -657,14 +657,6 @@ def installProfileSubmitDescription(): # Profile Submit Description
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "PROFILE"
-                },
-                "type": "input",
-                "key": "profile"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
                     "label": "Start Date"
                 },
                 "type": "input",
@@ -681,7 +673,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist"
+                    "label": "Archivist Organization"
                 },
                 "type": "input",
                 "key": "archivist"
@@ -772,7 +764,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
             "profile": "my profile",
             "startdate": "2016-11-10",
             "enddate": "2016-12-20",
-            "archivist": "the archivist",
+            "archivist": "the archivist organization",
             "creator": "the creator",
             "submitter_organization": "the submitter organization",
             "submitter_individual": "the submitter individual",
@@ -896,14 +888,6 @@ def installProfileSIP(): # Profile Submission Information Package
                 },
                 "type": "input",
                 "key": "mets_type"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Profile"
-                },
-                "type": "input",
-                "key": "mets_profile"
             },
             {
                 "templateOptions": {
