@@ -212,6 +212,7 @@ def installDefaultEventTypes(): # default events
       'Create TAR': '10270',
       'Create ZIP': '10271',
       'Update IP status': '10280',
+      'Update IP path': '10285',
       'Submit SIP':'10300',
     }
 

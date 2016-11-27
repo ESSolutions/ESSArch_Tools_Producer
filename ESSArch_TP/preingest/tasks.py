@@ -288,6 +288,8 @@ class CreateZIP(DBTask):
 class UpdateIPStatus(tasks.UpdateIPStatus):
     event_type = 10280
 
+class UpdateIPPath(tasks.UpdateIPPath):
+    event_type = 10285
 
 class SubmitSIP(DBTask):
     event_type = 10300
