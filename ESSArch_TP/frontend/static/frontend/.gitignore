@@ -2,3 +2,5 @@ node_modules
 scripts/bower_components/
 scripts/scripts.js
 scripts/scripts.min.js
+scripts/vendors.js
+scripts/vendors.min.js
