@@ -32,8 +32,30 @@ var vendorFiles = [
     ],
     jsDest = 'scripts';
 
+gulp.task('default', function() {
+    gulp.src(jsFiles)
+        .pipe(ngAnnotate())
+        .pipe(concat('scripts.js'))
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('scripts.min.js'))
+        .pipe(uglify().on('error', function(e){
+            console.log(e);
+         }))
+        .pipe(gulp.dest(jsDest));
+
+    gulp.src(vendorFiles)
+        .pipe(ngAnnotate())
+        .pipe(concat('vendors.js'))
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('vendors.min.js'))
+        .pipe(uglify().on('error', function(e){
+            console.log(e);
+         }))
+        .pipe(gulp.dest(jsDest));
+});
+
 gulp.task('scripts', function() {
-    return gulp.src(vendorFiles.concat(jsFiles))
+    return gulp.src(jsFiles)
         .pipe(ngAnnotate())
         .pipe(concat('scripts.js'))
         .pipe(gulp.dest(jsDest))
@@ -43,3 +65,20 @@ gulp.task('scripts', function() {
          }))
         .pipe(gulp.dest(jsDest));
 });
+
+gulp.task('vendors', function() {
+    return gulp.src(vendorFiles)
+        .pipe(ngAnnotate())
+        .pipe(concat('vendors.js'))
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('vendors.min.js'))
+        .pipe(uglify().on('error', function(e){
+            console.log(e);
+         }))
+        .pipe(gulp.dest(jsDest));
+});
+
+gulp.task('watch', function(){
+    gulp.watch(jsFiles, ['scripts']);
+    gulp.watch(vendorFiles, ['scripts']);
+})
