@@ -40,16 +40,6 @@ class PrepareIP(DBTask):
             OAIStype="SIP",
         )
 
-        prepare_path = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-
-        ip.objectPath = os.path.join(
-            prepare_path,
-            str(ip.pk)
-        )
-        ip.save()
-
         self.taskobj.information_package = ip
         self.taskobj.save()
 
