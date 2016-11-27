@@ -244,6 +244,7 @@ class CreateTAR(DBTask):
             new_tar.add(dirname, base_dir)
 
         self.set_progress(100, total=100)
+        return tarname
 
     def undo(self, dirname=None, tarname=None):
         pass
@@ -276,6 +277,7 @@ class CreateZIP(DBTask):
                     new_zip.write(filepath, arcname)
 
         self.set_progress(100, total=100)
+        return zipname
 
     def undo(self, dirname=None, zipname=None):
         pass
