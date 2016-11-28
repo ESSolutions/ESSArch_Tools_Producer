@@ -36,5 +36,8 @@
     "angular-ui-select": "^0.19.6",
     "select2": "^4.0.3",
     "selectize": "^0.12.4"
+  },
+  "resolutions": {
+    "angular": "1.5.9"
   }
 }
