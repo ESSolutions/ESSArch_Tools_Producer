@@ -326,3 +326,6 @@ body.modal-open[style] {
     font-size: 9px;
     border-radius: 5px;
 }
+.pagination {
+    margin: 5px 0;
+}
