@@ -113,5 +113,6 @@
     "AGENT": "Agent",
     "SUCCESS": "Slutförd",
     "FAILURE": "Fel",
-    "INPROGRESS": "Evalueras"
+    "INPROGRESS": "Evalueras",
+    "EXCEPTION": "Undantag"
 }

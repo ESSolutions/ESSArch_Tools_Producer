@@ -113,5 +113,6 @@
     "AGENT": "Agent",
     "SUCCESS": "Success",
     "FAILURE": "Failure",
-    "INPROGRESS": "In progress"
+    "INPROGRESS": "In progress",
+    "EXCEPTION": "Exception"
 }
