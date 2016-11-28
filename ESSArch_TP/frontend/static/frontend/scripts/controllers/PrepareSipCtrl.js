@@ -492,7 +492,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     $scope.submitSip = function(ip) {
         $http({
             method: 'POST',
-            url: ip.url+'submit/'
+            url: ip.url+'submit/',
+            data: {validators: vm.validatorModel}
         }).then(function(response) {
             $scope.eventlog = false;
             $scope.edit = false;
