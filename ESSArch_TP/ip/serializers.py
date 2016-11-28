@@ -13,7 +13,7 @@ from ESSArch_Core.serializers import DynamicHyperlinkedModelSerializer
 
 from preingest.serializers import ProcessStepSerializer
 
-from profiles.serializers import (
+from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,
 )
 

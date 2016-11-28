@@ -25,7 +25,7 @@ from ESSArch_Core.WorkflowEngine.models import (
     ProcessTask,
 )
 
-from profiles.serializers import (
+from ESSArch_Core.profiles.serializers import (
     ProfileSerializer,
     ProfileSASerializer,
     ProfileIPSerializer,

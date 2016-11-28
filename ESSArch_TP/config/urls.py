@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
 
-from configuration.views import (
+from ESSArch_Core.configuration.views import (
     AgentViewSet,
     EventTypeViewSet,
     ParameterViewSet,
