@@ -255,7 +255,7 @@ body.modal-open[style] {
     padding: 0px;
 }
 .info-wrapper {
-    width: 75%;
+    width: 100%;
     margin-left: 10px;
 }
 .param-value {
