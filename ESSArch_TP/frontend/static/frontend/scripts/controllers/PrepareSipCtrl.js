@@ -542,7 +542,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     updateListViewConditional();
 
-    $scope.colspan = 8;
+    $scope.colspan = 9;
     //visibility of status view
     $scope.statusShow = false;
     //visibility of event view
