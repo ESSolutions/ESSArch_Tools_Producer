@@ -220,6 +220,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         container_format = ip.get_container_format()
 
+        main_step = ProcessStep.objects.create(
+            name="Create SIP",
+        )
+
         t0 = ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
@@ -298,63 +302,64 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         #dirname = os.path.join(ip_prepare_path, "data")
 
-        validate_step = ProcessStep.objects.create(
-            name="Validation",
-            parent_step_pos=2
-        )
-
-        if validate_xml_file:
-            validate_step.tasks.add(
-                ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateXMLFile",
-                    params={
-                        "xml_filename": mets_path,
-                    },
-                    processstep_pos=1,
-                    information_package=ip
-                )
+        if any(validators.itervalues()):
+            validate_step = ProcessStep.objects.create(
+                name="Validation", parent_step=main_step,
+                parent_step_pos=2,
             )
 
-            if ip.profile_locked("preservation_metadata"):
+            if validate_xml_file:
                 validate_step.tasks.add(
                     ProcessTask.objects.create(
                         name="preingest.tasks.ValidateXMLFile",
                         params={
-                            "xml_filename": premis_path,
+                            "xml_filename": mets_path,
                         },
-                        processstep_pos=2,
+                        processstep_pos=1,
                         information_package=ip
                     )
                 )
 
-        if validate_logical_physical_representation:
+                if ip.profile_locked("preservation_metadata"):
+                    validate_step.tasks.add(
+                        ProcessTask.objects.create(
+                            name="preingest.tasks.ValidateXMLFile",
+                            params={
+                                "xml_filename": premis_path,
+                            },
+                            processstep_pos=2,
+                            information_package=ip
+                        )
+                    )
+
+            if validate_logical_physical_representation:
+                validate_step.tasks.add(
+                    ProcessTask.objects.create(
+                        name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                        params={
+                            "dirname": ip.ObjectPath,
+                            "xmlfile": mets_path,
+                        },
+                        processstep_pos=3,
+                        information_package=ip
+                    )
+                )
+
             validate_step.tasks.add(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                    name="ESSArch_Core.tasks.ValidateFiles",
                     params={
-                        "dirname": ip.ObjectPath,
+                        "ip": ip,
                         "xmlfile": mets_path,
+                        "validate_fileformat": validate_file_format,
+                        "validate_integrity": validate_integrity,
                     },
-                    processstep_pos=3,
+                    processstep_pos=4,
                     information_package=ip
                 )
             )
 
-        validate_step.tasks.add(
-            ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.ValidateFiles",
-                params={
-                    "ip": ip,
-                    "xmlfile": mets_path,
-                    "validate_fileformat": validate_file_format,
-                    "validate_integrity": validate_integrity,
-                },
-                processstep_pos=4,
-                information_package=ip
-            )
-        )
-
-        validate_step.save()
+            validate_step.save()
 
         info = ip.get_profile('event').specification_data
         info["_OBJID"] = str(ip.pk)
@@ -563,12 +568,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.save()
 
-        main_step = ProcessStep.objects.create(
-            name="Create SIP",
-        )
         main_step.child_steps = [
-            start_create_sip_step, generate_xml_step, validate_step,
-            create_sip_step
+            start_create_sip_step, generate_xml_step, create_sip_step
         ]
         main_step.information_package = ip
         main_step.save()
@@ -589,6 +590,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         """
 
         ip = self.get_object()
+
+        validators = request.data.get('validators', {})
+
+        validate_xml_file = validators.get('validate_xml_file', False)
+        validate_file_format = validators.get('validate_file_format', False)
+        validate_integrity = validators.get('validate_integrity', False)
+        validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
 
         step = ProcessStep.objects.create(
             name="Submit SIP",
@@ -700,16 +708,57 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "folderToParse": container_file,
                 "algorithm": ip.get_checksum_algorithm(),
             },
-            processstep_pos=1,
+            processstep_pos=10,
             information_package=ip
         ))
+
+        if validate_xml_file:
+            step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateXMLFile",
+                    params={
+                        "xml_filename": infoxml
+                    },
+                    processstep_pos=14,
+                    information_package=ip
+                )
+            )
+
+        if validate_file_format or validate_integrity:
+            step.tasks.add(
+                ProcessTask.objects.create(
+                    name="ESSArch_Core.tasks.ValidateFiles",
+                    params={
+                        "ip": ip,
+                        "rootdir": reception,
+                        "xmlfile": infoxml,
+                        "validate_fileformat": validate_file_format,
+                        "validate_integrity": validate_integrity,
+                    },
+                    processstep_pos=15,
+                    information_package=ip
+                )
+            )
+
+        if validate_logical_physical_representation:
+            step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                    params={
+                        "files": [ip.ObjectPath],
+                        "xmlfile": infoxml,
+                    },
+                    processstep_pos=16,
+                    information_package=ip
+                )
+            )
 
         step.tasks.add(ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
                 "ip": ip
             },
-            processstep_pos=2,
+            processstep_pos=20,
             information_package=ip
         ))
 
@@ -719,7 +768,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "ip": ip,
                 "status": "Submitted"
             },
-            processstep_pos=3,
+            processstep_pos=30,
             information_package=ip
         ))
 
