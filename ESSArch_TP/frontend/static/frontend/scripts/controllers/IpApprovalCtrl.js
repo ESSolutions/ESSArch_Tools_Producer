@@ -390,7 +390,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     };
     updateListViewConditional();
 
-    $scope.colspan = 7;
+    $scope.colspan = 8;
     //Visibility of status view
     $scope.statusShow = false;
     //Visibility of select view
