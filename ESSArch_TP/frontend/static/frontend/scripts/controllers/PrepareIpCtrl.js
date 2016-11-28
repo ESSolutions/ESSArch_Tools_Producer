@@ -309,7 +309,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
                     $scope.subSelectProfile = "profile";
                     $scope.eventlog = true;
-                    getEventlogData();
                     $scope.edit = true;
                 });
             }
@@ -479,7 +478,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
-    $scope.colspan = 7;
+    $scope.colspan = 8;
     //Decides visibility of stepTask info page
     $scope.stepTaskInfoShow = false;
     //Decides visibility of status view
@@ -885,8 +884,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             node.node.children.push(dir);
         }
         $scope.exitAddMode();
-        $location.hash('edit-tree');
-        $anchorScroll();
+        $anchorScroll('edit-tree');
     };
     //Remove node from map structure tree view
     $scope.removeNode = function(node) {

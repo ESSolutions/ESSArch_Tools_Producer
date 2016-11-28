@@ -90,7 +90,7 @@
                         <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                         <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
-                    <div ng-if="edit" id="edit-veiw" class="edit-view" >
+                    <div ng-if="edit" id="edit-view" class="edit-view" >
                         <form  novalidate>
                             <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                             </formly-form>

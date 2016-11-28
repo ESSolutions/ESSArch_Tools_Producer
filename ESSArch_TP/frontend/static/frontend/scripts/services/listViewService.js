@@ -58,14 +58,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Prepare the data for tree view in status view
     function getTreeData(row, expandedNodes) {
-        var promise = $http({
-            method: 'GET',
-            url: row.url,
-        }).then(function(response){
-            ip = response.data;
-            return getStatusViewData(ip, expandedNodes);
-        });
-        return promise;
+        return getStatusViewData(row, expandedNodes);
     }
     //Add a new event
     function addEvent(ip, eventType, eventDetail, outcome) {
