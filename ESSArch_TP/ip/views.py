@@ -1,3 +1,7 @@
+from _version import get_versions
+
+from collections import OrderedDict
+
 import os, shutil
 
 from django.db.models import Prefetch
@@ -9,6 +13,11 @@ from rest_framework.response import Response
 
 from ESSArch_Core.configuration.models import (
     EventType,
+    Path,
+)
+
+from ESSArch_Core.essxml.Generator.xmlGenerator import (
+    downloadSchemas, find_destination
 )
 
 from ESSArch_Core.ip.models import (
@@ -23,6 +32,16 @@ from ESSArch_Core.ip.models import (
 from ESSArch_Core.profiles.models import (
     Profile,
     ProfileIP,
+)
+
+from ESSArch_Core.util import (
+    create_event,
+    creation_date,
+    timestamp_to_datetime,
+)
+
+from ESSArch_Core.WorkflowEngine.models import (
+    ProcessStep, ProcessTask,
 )
 
 from ip.filters import InformationPackageFilter
@@ -190,22 +209,372 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             None
         """
 
+        ip = self.get_object()
+
         validators = request.data.get('validators', {})
 
-        try:
-            InformationPackage.objects.get(pk=pk).create(
-                validate_xml_file=validators.get('validate_xml_file', False),
-                validate_file_format=validators.get('validate_file_format', False),
-                validate_integrity=validators.get('validate_integrity', False),
-                validate_logical_physical_representation=validators.get('validate_logical_physical_representation', False),
+        validate_xml_file = validators.get('validate_xml_file', False)
+        validate_file_format = validators.get('validate_file_format', False)
+        validate_integrity = validators.get('validate_integrity', False)
+        validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
+
+        container_format = ip.get_container_format()
+
+        t0 = ProcessTask.objects.create(
+            name="preingest.tasks.UpdateIPStatus",
+            params={
+                "ip": ip,
+                "status": "Creating",
+            },
+            processstep_pos=0,
+            information_package=ip
+        )
+        start_create_sip_step = ProcessStep.objects.create(
+            name="Update IP Status",
+            parent_step_pos=0
+        )
+
+        start_create_sip_step.tasks.add(t0)
+
+        event_type = EventType.objects.get(eventType=10200)
+
+        create_event(event_type, 0, "Created SIP", get_versions()['version'], "System", ip=ip)
+
+        prepare_path = Path.objects.get(
+            entity="path_preingest_prepare"
+        ).value
+
+        reception_path = Path.objects.get(
+            entity="path_preingest_reception"
+        ).value
+
+        ip_prepare_path = os.path.join(prepare_path, str(ip.pk))
+        ip_reception_path = os.path.join(reception_path, str(ip.pk))
+        events_path = os.path.join(ip_prepare_path, "ipevents.xml")
+
+        structure = ip.get_profile('sip').structure
+
+        info = ip.get_profile('sip').specification_data
+        info["_OBJID"] = str(ip.pk)
+        info["_OBJLABEL"] = ip.Label
+
+        # ensure premis is created before mets
+        filesToCreate = OrderedDict()
+
+        if ip.profile_locked('preservation_metadata'):
+            premis_profile = ip.get_profile('preservation_metadata')
+            premis_dir, premis_name = find_destination("preservation_description_file", structure)
+            premis_path = os.path.join(ip.ObjectPath, premis_dir, premis_name)
+            filesToCreate[premis_path] = premis_profile.specification
+
+        mets_dir, mets_name = find_destination("mets_file", structure)
+        mets_path = os.path.join(ip.ObjectPath, mets_dir, mets_name)
+        filesToCreate[mets_path] = ip.get_profile('sip').specification
+
+        for fname, template in filesToCreate.iteritems():
+            dirname = os.path.dirname(fname)
+            downloadSchemas(
+                template, dirname, structure=structure, root=ip.ObjectPath
             )
 
-            return Response({'status': 'creating ip'})
-        except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Information package with id %s does not exist' % pk},
-                status=status.HTTP_404_NOT_FOUND
+        t1 = ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+                "folderToParse": ip_prepare_path,
+                "algorithm": ip.get_checksum_algorithm(),
+            },
+            processstep_pos=3,
+            information_package=ip
+        )
+
+        generate_xml_step = ProcessStep.objects.create(
+            name="Generate XML",
+            parent_step_pos=1
+        )
+        generate_xml_step.tasks = [t1]
+        generate_xml_step.save()
+
+        #dirname = os.path.join(ip_prepare_path, "data")
+
+        validate_step = ProcessStep.objects.create(
+            name="Validation",
+            parent_step_pos=2
+        )
+
+        if validate_xml_file:
+            validate_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateXMLFile",
+                    params={
+                        "xml_filename": mets_path,
+                    },
+                    processstep_pos=1,
+                    information_package=ip
+                )
             )
+
+            if ip.profile_locked("preservation_metadata"):
+                validate_step.tasks.add(
+                    ProcessTask.objects.create(
+                        name="preingest.tasks.ValidateXMLFile",
+                        params={
+                            "xml_filename": premis_path,
+                        },
+                        processstep_pos=2,
+                        information_package=ip
+                    )
+                )
+
+        if validate_logical_physical_representation:
+            validate_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                    params={
+                        "dirname": ip.ObjectPath,
+                        "xmlfile": mets_path,
+                    },
+                    processstep_pos=3,
+                    information_package=ip
+                )
+            )
+
+        validate_step.tasks.add(
+            ProcessTask.objects.create(
+                name="ESSArch_Core.tasks.ValidateFiles",
+                params={
+                    "ip": ip,
+                    "xmlfile": mets_path,
+                    "validate_fileformat": validate_file_format,
+                    "validate_integrity": validate_integrity,
+                },
+                processstep_pos=4,
+                information_package=ip
+            )
+        )
+
+        validate_step.save()
+
+        info = ip.get_profile('event').specification_data
+        info["_OBJID"] = str(ip.pk)
+        info["_OBJLABEL"] = ip.Label
+
+        filesToCreate = OrderedDict()
+        filesToCreate[events_path] = ip.get_profile('event').specification
+
+        for fname, template in filesToCreate.iteritems():
+            dirname = os.path.dirname(fname)
+            downloadSchemas(
+                template, dirname, structure=structure, root=ip.ObjectPath
+            )
+
+        create_sip_step = ProcessStep.objects.create(
+                name="Create SIP",
+                parent_step_pos=3
+        )
+
+        create_sip_step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+                "algorithm": ip.get_checksum_algorithm(),
+            },
+            processstep_pos=0,
+            information_package=ip
+        ))
+
+        create_sip_step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.AppendEvents",
+            params={
+                "filename": events_path,
+            },
+            processstep_pos=1,
+            information_package=ip
+        ))
+
+        spec = {
+            "-name": "object",
+            "-namespace": "premis",
+            "-children": [
+                {
+                    "-name": "objectIdentifier",
+                    "-namespace": "premis",
+                    "-children": [
+                        {
+                            "-name": "objectIdentifierType",
+                            "-namespace": "premis",
+                            "#content": [{"var": "FIDType"}],
+                            "-children": []
+                        },
+                        {
+                            "-name": "objectIdentifierValue",
+                            "-namespace": "premis",
+                            "#content": [{"var": "FID"}],
+                            "-children": []
+                        }
+                    ]
+                },
+                {
+                    "-name": "objectCharacteristics",
+                    "-namespace": "premis",
+                    "-children": [
+                        {
+                            "-name": "format",
+                            "-namespace": "premis",
+                            "-children": [
+                                {
+                                    "-name": "formatDesignation",
+                                    "-namespace": "premis",
+                                    "-children": [
+                                        {
+                                            "-name": "formatName",
+                                            "-namespace": "premis",
+                                            "#content": [{"var": "FFormatName"}],
+                                            "-children": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "-name": "storage",
+                    "-namespace": "premis",
+                    "-children": [
+                        {
+                            "-name": "contentLocation",
+                            "-namespace": "premis",
+                            "-children": [
+                                {
+                                    "-name": "contentLocationType",
+                                    "-namespace": "premis",
+                                    "#content": [{"var": "FLocationType"}],
+                                    "-children": []
+                                },
+                                {
+                                    "-name": "contentLocationValue",
+                                    "-namespace": "premis",
+                                    "#content": [{"text": "file:///%s.%s" % (ip.pk, container_format.lower())}],
+                                    "-children": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "-attr": [
+                {
+                  "-name": "type",
+                  '-namespace': 'xsi',
+                  "-req": "1",
+                  "#content": [{"text":"premis:file"}]
+                }
+            ],
+        }
+
+        info = {
+            'FIDType': "UUID",
+            'FID': ip.ObjectIdentifierValue,
+            'FFormatName': container_format.upper(),
+            'FLocationType': 'URI',
+            'FName': ip.ObjectPath,
+        }
+
+        create_sip_step.tasks.add(ProcessTask.objects.create(
+            name="ESSArch_Core.tasks.InsertXML",
+            params={
+                "filename": events_path,
+                "elementToAppendTo": "premis",
+                "spec": spec,
+                "info": info,
+                "index": 0
+            },
+            processstep_pos=2,
+            information_package=ip
+        ))
+
+        if validate_xml_file:
+            create_sip_step.tasks.add(
+                ProcessTask.objects.create(
+                    name="preingest.tasks.ValidateXMLFile",
+                    params={
+                        "xml_filename": events_path,
+                    },
+                    processstep_pos=3,
+                    information_package=ip
+                )
+            )
+
+
+        if container_format.lower() == 'zip':
+            zipname = os.path.join(ip_reception_path) + '.zip'
+            container_task = ProcessTask.objects.create(
+                name="preingest.tasks.CreateZIP",
+                params={
+                    "dirname": ip_prepare_path,
+                    "zipname": zipname,
+                },
+                processstep_pos=4,
+                information_package=ip
+            )
+
+        else:
+            tarname = os.path.join(ip_reception_path) + '.tar'
+            container_task = ProcessTask.objects.create(
+                name="preingest.tasks.CreateTAR",
+                params={
+                    "dirname": ip_prepare_path,
+                    "tarname": tarname,
+                },
+                processstep_pos=4,
+                information_package=ip
+            )
+
+        create_sip_step.tasks.add(container_task)
+
+        create_sip_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.UpdateIPPath",
+                params={
+                    "ip": ip,
+                },
+                result_params={
+                    "path": container_task.pk
+                },
+                processstep_pos=5,
+                information_package=ip
+            )
+        )
+
+        create_sip_step.tasks.add(
+            ProcessTask.objects.create(
+                name="preingest.tasks.UpdateIPStatus",
+                params={
+                    "ip": ip,
+                    "status": "Created",
+                },
+                processstep_pos=6,
+                information_package=ip
+            )
+        )
+
+        create_sip_step.save()
+
+        main_step = ProcessStep.objects.create(
+            name="Create SIP",
+        )
+        main_step.child_steps = [
+            start_create_sip_step, generate_xml_step, validate_step,
+            create_sip_step
+        ]
+        main_step.information_package = ip
+        main_step.save()
+        main_step.run()
+
+        return Response({'status': 'creating ip'})
 
     @detail_route(methods=['post'], url_path='submit')
     def submit(self, request, pk=None):
@@ -219,7 +588,144 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             None
         """
 
-        self.get_object().submit()
+        ip = self.get_object()
+
+        step = ProcessStep.objects.create(
+            name="Submit SIP",
+            information_package = ip
+        )
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.UpdateIPStatus",
+            params={
+                "ip": ip,
+                "status": "Submitting",
+            },
+            processstep_pos=0,
+            information_package=ip
+        ))
+
+        reception = Path.objects.get(entity="path_preingest_reception").value
+
+        sd_profile = ip.get_profile('submit_description')
+
+        container_format = ip.get_container_format()
+        container_file = os.path.join(reception, str(ip.pk) + ".%s" % container_format.lower())
+
+        sa = ip.SubmissionAgreement
+
+        info = sd_profile.specification_data
+        info["_OBJID"] = str(ip.pk)
+        info["_OBJLABEL"] = str(ip.Label)
+        info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
+        info["_SA_ID"] = str(sa.pk)
+
+        try:
+            info["_PROFILE_TRANSFER_PROJECT_ID"] = str(ip.get_profile('transfer_project').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_SUBMIT_DESCRIPTION_ID"] = str(ip.get_profile('submit_description').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_SIP_ID"] = str(ip.get_profile('sip').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_AIP_ID"] = str(ip.get_profile('aip').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_DIP_ID"] = str(ip.get_profile('dip').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_CONTENT_TYPE_ID"] = str(ip.get_profile('content_type').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_AUTHORITY_INFORMATION_ID"] = str(ip.get_profile('authority_information').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_ARCHIVAL_DESCRIPTION_ID"] = str(ip.get_profile('archival_description').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_PRESERVATION_METADATA_ID"] = str(ip.get_profile('preservation_metadata').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_EVENT_ID"] = str(ip.get_profile('event').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_DATA_SELECTION_ID"] = str(ip.get_profile('data_selection').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_IMPORT_ID"] = str(ip.get_profile('import').pk)
+        except AttributeError:
+            pass
+
+        try:
+            info["_PROFILE_WORKFLOW_ID"] = str(ip.get_profile('workflow').pk)
+        except AttributeError:
+            pass
+
+
+        infoxml = os.path.join(reception, str(ip.pk) + ".xml")
+
+        filesToCreate = {
+            infoxml: sd_profile.specification
+        }
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.GenerateXML",
+            params={
+                "info": info,
+                "filesToCreate": filesToCreate,
+                "folderToParse": container_file,
+                "algorithm": ip.get_checksum_algorithm(),
+            },
+            processstep_pos=1,
+            information_package=ip
+        ))
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.SubmitSIP",
+            params={
+                "ip": ip
+            },
+            processstep_pos=2,
+            information_package=ip
+        ))
+
+        step.tasks.add(ProcessTask.objects.create(
+            name="preingest.tasks.UpdateIPStatus",
+            params={
+                "ip": ip,
+                "status": "Submitted"
+            },
+            processstep_pos=3,
+            information_package=ip
+        ))
+
+        step.save()
+        step.run()
+
         return Response({'status': 'submitting ip'})
 
     @detail_route(methods=['put'], url_path='check-profile')
