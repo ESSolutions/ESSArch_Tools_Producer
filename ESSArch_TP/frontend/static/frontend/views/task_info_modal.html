@@ -8,7 +8,7 @@
         <p style="margin: 5px;"><b>{{'ID' | translate}}:</b> {{currentStepTask.id}}</p>
         <table class="table" style="margin: 5px;">
             <tr>
-                <td><p>{{('PARAMS' | translate)+':'}}</p></td>
+                <td><b>{{('PARAMS' | translate)+':'}}</b></td>
                 <td>
                     <table class="table">
                         <tr ng-repeat="(key, value) in currentStepTask.params">
@@ -18,14 +18,15 @@
                 </td>
             </tr>
             <tr ng-if="currentStepTask.status == 'SUCCESS'">
-                <td>{{('RESULT' | translate)+':'}}</td>
+                <td><b>{{('RESULT' | translate)+':'}}</b></td>
                 <td>{{currentStepTask.result}}</td>
             </tr>
             <tr ng-if="currentStepTask.status == 'FAILURE'">
-                <td>{{('TRACEBACK' | translate)+':'}}</td>
-                <td>{{currentStepTask.traceback}}</td>
+                <td><b>{{('EXCEPTION' | translate)+':'}}</b></td>
+                <td>{{currentStepTask.exception}}</td>
             </tr>
         </table>
+        <button ng-if="currentStepTask.status == 'FAILURE'" class="btn btn-default" ng-click="tracebackModal(currentStepTask)">{{'SEETRACEBACK' | translate}}</button>
     </div>
 </div>
 <div class="modal-footer">

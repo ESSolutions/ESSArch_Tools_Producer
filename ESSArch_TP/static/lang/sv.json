@@ -114,5 +114,6 @@
     "SUCCESS": "Slutförd",
     "FAILURE": "Fel",
     "INPROGRESS": "Evalueras",
+    "SEETRACEBACK": "Se traceback",
     "EXCEPTION": "Undantag"
 }
