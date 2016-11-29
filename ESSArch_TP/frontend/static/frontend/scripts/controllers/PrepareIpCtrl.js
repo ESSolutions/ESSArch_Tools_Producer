@@ -398,7 +398,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
 
     //Change the standard profile of the same type as given profile for an sa
-    $scope.changeProfile = function(profile){
+    $scope.changeProfile = function(profile, row){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.ip.url+"change-profile/";
          $http({
@@ -408,7 +408,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
          })
          .success(function (response) {
              if($scope.edit) {
-                 $scope.profileClick({active: profile});
+                 $scope.profileClick(row);
              }
         })
         .error(function (response) {
@@ -442,7 +442,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
-        var uri = $scope.profileToSave.url+"save/";
+        profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
+        var uri = profileUrl+"save/";
         console.log(angular.toJson($scope.treeElements[0].children));
         var sendData = {
             "specification_data": vm.profileModel,

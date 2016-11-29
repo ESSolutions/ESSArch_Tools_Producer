@@ -176,38 +176,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return p;
     }
 
-    function createProfileObj(type, profiles, sa, ip){
-        var required = false;
-        var locked = false;
-        var checked = false;
-        var url = null;
-
-        p = getProfileByTypeFromIP(ip, type);
-        if (p) {
-            url_from_ip = p.profile;
-            url = url_from_ip;
-            locked = p.LockedBy ? true : false;
-            checked = p.included
-        }
-        p = getProfileByTypeFromSA(sa, type);
-        if (p){
-            checked = true
-            required = true;
-            if (url == null) {
-                url = p.profile;
-            }
-        }
-        active = findProfileByUrl(url, profiles);
-        return {
-            type_label: getProfileTypeLabel(type),
-            active: active,
-            checked: checked,
-            required: required,
-            profiles: profiles,
-            locked: locked
-        };
-    }
-
     //Ligher fetching of profiles start
     function createProfileObjMinified(type, profiles, ip, sa){
         var required = false;

@@ -59,7 +59,7 @@
                                         <p ng-if="profile.locked || !profile.checked" class="table-col">{{profile.type_label}}</p>
                                     </td>
                                     <td><!--<select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.profile_name for x in profile.profiles" ng-change="changeProfile(profile.active)" ng-focus="getProfiles(profile)" data-ng-attr-size="{{profile.profiles.length}}"></select>-->
-                                        <ui-select ng-change="changeProfile($select.selected)" ng-click="getProfiles(profile)" ng-model="profile.active" theme="bootstrap" ng-disabled="profile.locked" style="min-width: 300px;">
+                                        <ui-select ng-change="changeProfile($select.selected, profile)" ng-click="getProfiles(profile)" ng-model="profile.active" theme="bootstrap" ng-disabled="profile.locked" style="min-width: 300px;">
                                         <ui-select-match placeholder="Select a {{profile.type_label}} profile">{{profile.active.profile_name}}</ui-select-match>
                                         <ui-select-choices repeat="x in profile.profiles | propsFilter:{profile_name: $select.search}">
                                              <span ng-bind-html="x.profile_name"></span>
