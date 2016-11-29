@@ -196,12 +196,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
         } else {
-            $http({
-                method: 'GET',
-                url: row.url
-            }).then(function (response) {
-                $scope.getSaProfiles(response.data);
-            });
+            $scope.getSaProfiles(row);
             $scope.select = true;
             $scope.eventlog = true;
             $scope.ip = row;

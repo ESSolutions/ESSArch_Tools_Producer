@@ -247,79 +247,77 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
 
     function getProfilesFromIp(sa, ip) {
         var selectCollapse = [];
-        return getIp(ip.url).then(function(result) {
-            if(sa == null) {
-                return [];
+        if(sa == null) {
+            return [];
+        }
+        if(sa.id != null){
+            if(ip.profile_transfer_project) {
+                selectCollapse.push(createProfileObjMinified("transfer_project", [ip.profile_transfer_project], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("transfer_project", [], ip, sa));
             }
-            if(sa.id != null){
-                if(result.profile_transfer_project) {
-                    selectCollapse.push(createProfileObjMinified("transfer_project", [result.profile_transfer_project], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("transfer_project", [], result, sa));
-                }
-                if(result.profile_submit_description) {
-                    selectCollapse.push(createProfileObjMinified("submit_description", [result.profile_submit_description], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("submit_description", [], result, sa));
-                }
-                if(result.profile_sip) {
-                    selectCollapse.push(createProfileObjMinified("sip", [result.profile_sip], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("sip", [], result, sa));
-                }
-                if(result.profile_aip) {
-                    selectCollapse.push(createProfileObjMinified("aip", [result.profile_aip], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("aip", [], result, sa));
-                }
-                if(result.profile_dip) {
-                    selectCollapse.push(createProfileObjMinified("dip", [result.profile_dip], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("dip", [], result, sa));
-                }
-                if(result.profile_content_type) {
-                    selectCollapse.push(createProfileObjMinified("content_type", [result.profile_content_type], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("content_type", [], result, sa));
-                }
-                if(result.profile_authority_information) {
-                    selectCollapse.push(createProfileObjMinified("authority_information", [result.profile_authority_information], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("authority_information", [], result, sa));
-                }
-                if(result.profile_archival_description) {
-                    selectCollapse.push(createProfileObjMinified("archival_description", [result.profile_archival_description], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("archival_description", [], result, sa));
-                }
-                if(result.profile_preservation_metadata) {
-                    selectCollapse.push(createProfileObjMinified("preservation_metadata", [result.profile_preservation_metadata], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("preservation_metadata", [], result, sa));
-                }
-                if(result.profile_event) {
-                    selectCollapse.push(createProfileObjMinified("event", [result.profile_event], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("event", [], result, sa));
-                }
-                if(result.profile_data_selection) {
-                    selectCollapse.push(createProfileObjMinified("data_selection", [result.profile_data_selection], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("data_selection", [], result, sa));
-                }
-                if(result.profile_import) {
-                    selectCollapse.push(createProfileObjMinified("import", [result.profile_import], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("import", [], result, sa));
-                }
-                if(result.profile_workflow) {
-                    selectCollapse.push(createProfileObjMinified("workflow", [result.profile_workflow], result, sa));
-                } else {
-                    selectCollapse.push(createProfileObjMinified("workflow", [], result, sa));
-                }
-                return selectCollapse;
+            if(ip.profile_submit_description) {
+                selectCollapse.push(createProfileObjMinified("submit_description", [ip.profile_submit_description], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("submit_description", [], ip, sa));
             }
-        });
+            if(ip.profile_sip) {
+                selectCollapse.push(createProfileObjMinified("sip", [ip.profile_sip], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("sip", [], ip, sa));
+            }
+            if(ip.profile_aip) {
+                selectCollapse.push(createProfileObjMinified("aip", [ip.profile_aip], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("aip", [], ip, sa));
+            }
+            if(ip.profile_dip) {
+                selectCollapse.push(createProfileObjMinified("dip", [ip.profile_dip], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("dip", [], ip, sa));
+            }
+            if(ip.profile_content_type) {
+                selectCollapse.push(createProfileObjMinified("content_type", [ip.profile_content_type], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("content_type", [], ip, sa));
+            }
+            if(ip.profile_authority_information) {
+                selectCollapse.push(createProfileObjMinified("authority_information", [ip.profile_authority_information], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("authority_information", [], ip, sa));
+            }
+            if(ip.profile_archival_description) {
+                selectCollapse.push(createProfileObjMinified("archival_description", [ip.profile_archival_description], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("archival_description", [], ip, sa));
+            }
+            if(ip.profile_preservation_metadata) {
+                selectCollapse.push(createProfileObjMinified("preservation_metadata", [ip.profile_preservation_metadata], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("preservation_metadata", [], ip, sa));
+            }
+            if(ip.profile_event) {
+                selectCollapse.push(createProfileObjMinified("event", [ip.profile_event], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("event", [], ip, sa));
+            }
+            if(ip.profile_data_selection) {
+                selectCollapse.push(createProfileObjMinified("data_selection", [ip.profile_data_selection], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("data_selection", [], ip, sa));
+            }
+            if(ip.profile_import) {
+                selectCollapse.push(createProfileObjMinified("import", [ip.profile_import], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("import", [], ip, sa));
+            }
+            if(ip.profile_workflow) {
+                selectCollapse.push(createProfileObjMinified("workflow", [ip.profile_workflow], ip, sa));
+            } else {
+                selectCollapse.push(createProfileObjMinified("workflow", [], ip, sa));
+            }
+            return selectCollapse;
+        }
     }
     //Lighter fetching of profiles end
     function getProfileTypeLabel(type) {
@@ -340,117 +338,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         };
         return typeMap[type];
     }
-
-    //Returns an array consisting of profile objects for an SA
-    function getSelectCollection(sa, ip) {
-        if(sa == null) {
-            var deferred = $q.defer();
-            deferred.resolve([]);
-            return deferred.promise;
-        }
-        return getIp(ip.url).then(function(value) {
-            ip = value;
-            if(sa.id != null) {
-                var selectRowCollapse = {};
-                var type = 'transfer_project';
-
-                return getProfiles(type).then(function(profiles) {
-                    selectRowCollapse[type] = createProfileObj(
-                        type, profiles, sa, ip
-                    );
-                    return selectRowCollapse
-                }).then(function(selectRowCollapse){
-                    type = 'submit_description';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'sip';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'aip';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'dip';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'content_type';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'classification';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'preservation_metadata';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'event';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'data_selection';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'import';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                }).then(function(selectRowCollapse){
-                    type = 'workflow';
-                    return getProfiles(type).then(function(profiles) {
-                        selectRowCollapse[type] = createProfileObj(
-                            type, profiles, sa, ip
-                        );
-                        return selectRowCollapse
-                    });
-                });
-            }
-        })
-    };
 
     //Execute prepare ip, which creates a new IP
     function prepareIp(label){
@@ -600,7 +487,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         changePath: changePath,
         getEventlogData: getEventlogData,
         getSaProfiles: getSaProfiles,
-        getSelectCollection: getSelectCollection,
         prepareIp: prepareIp,
         getIp: getIp,
         getSa: getSa,

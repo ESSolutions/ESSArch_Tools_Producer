@@ -214,13 +214,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.select = false;
         } else {
             $scope.ip = row;
-            $rootScope.ip = row;
-            $http({
-                method: 'GET',
-                url: row.url
-            }).then(function (response) {
-                $scope.getSaProfiles(response.data);
-            });
+            $rootScope.ip = $scope.ip;
+            $scope.getSaProfiles($scope.ip);
             $scope.select = true;
         }
         $scope.eventlog = false;
@@ -327,18 +322,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getSaProfiles = function(ip) {
         listViewService.getSaProfiles(ip).then(function(value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip).then(function(value){
-                $scope.selectRowCollection = $scope.selectRowCollapse;
-            })
+            $scope.getSelectCollection(value.profile, ip)
+            $scope.selectRowCollection = $scope.selectRowCollapse;
         });
     };
     //Get All profiles and populates the select view table array
     $scope.getSelectCollection = function (sa, ip) {
-        $scope.selectRowCollapse = [];
-
-        return listViewService.getProfilesFromIp(sa, ip).then( function(value){
-            $scope.selectRowCollapse = value;
-        });
+        $scope.selectRowCollapse = listViewService.getProfilesFromIp(sa, ip)
     };
 
     //Include the given profile type in the SA
@@ -435,9 +425,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 'SubmissionAgreement': sa.url
             }
         }).then(function(response){
-            $scope.getSelectCollection(sa, ip).then(function(value){
-                $scope.selectRowCollection = $scope.selectRowCollapse;
-            })
+            $scope.getSelectCollection(sa, ip);
+            $scope.selectRowCollection = $scope.selectRowCollapse;
         });
     }
     //Toggle visibility of profiles in select view
@@ -468,9 +457,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
         .success(function (response) {
-            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip).then(function(value){
-                $scope.selectRowCollection = $scope.selectRowCollapse;
-            })
+            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip);
+            $scope.selectRowCollection = $scope.selectRowCollapse;
             $scope.edit = false;
             $scope.eventlog = false;
         })

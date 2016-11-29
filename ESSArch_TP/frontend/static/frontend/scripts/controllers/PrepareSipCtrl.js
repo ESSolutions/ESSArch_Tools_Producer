@@ -203,15 +203,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
-            $http({
-                method: 'GET',
-                url: row.url
-            }).then(function (response) {
-                $scope.getPackageInformation(response.data);
-                $scope.getPackageDependencies(response.data);
-                $scope.getPackageProfiles(response.data);
-                $scope.getFileList(response.data);
-            });
+            $scope.getPackageInformation(row);
+            $scope.getPackageDependencies(row);
+            $scope.getPackageProfiles(row);
+            $scope.getFileList(row);
             $scope.edit = true;
             $scope.eventlog = true;
 
