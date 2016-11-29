@@ -272,11 +272,11 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         }
     };
     //Get eventlog data
-                function getEventlogData() {
-                    listViewService.getEventlogData().then(function(value){
-                        $scope.statusNoteCollection = value;
-                    });
-                };
+    function getEventlogData() {
+        listViewService.getEventlogData().then(function(value){
+            $scope.statusNoteCollection = value;
+        });
+    };
 
     //populating select view
     $scope.selectRowCollection = [];
