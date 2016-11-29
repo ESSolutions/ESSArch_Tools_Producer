@@ -337,8 +337,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.select = false;
             $scope.edit = false;
             $scope.eventlog = false;
-            $scope.getListViewData();
-            updateListViewConditional();
+            $timeout(function(){
+                $scope.getListViewData();
+                updateListViewConditional();
+            }, 1000);
         }), function errorCallback(response){
             alert(response.status);
         };
