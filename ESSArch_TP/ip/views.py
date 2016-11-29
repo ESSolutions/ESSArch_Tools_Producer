@@ -542,6 +542,17 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.tasks.add(
             ProcessTask.objects.create(
+                name="preingest.tasks.DeleteFiles",
+                params={
+                    "path": ip.ObjectPath
+                },
+                processstep_pos=45,
+                information_package=ip
+            )
+        )
+
+        create_sip_step.tasks.add(
+            ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPPath",
                 params={
                     "ip": ip,
@@ -549,7 +560,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 result_params={
                     "path": container_task.pk
                 },
-                processstep_pos=5,
+                processstep_pos=50,
                 information_package=ip
             )
         )
@@ -561,7 +572,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "ip": ip,
                     "status": "Created",
                 },
-                processstep_pos=6,
+                processstep_pos=60,
                 information_package=ip
             )
         )

@@ -211,6 +211,7 @@ def installDefaultEventTypes(): # default events
       'Validate checksum': '10263',
       'Create TAR': '10270',
       'Create ZIP': '10271',
+      'Delete files': '10275',
       'Update IP status': '10280',
       'Update IP path': '10285',
       'Submit SIP':'10300',

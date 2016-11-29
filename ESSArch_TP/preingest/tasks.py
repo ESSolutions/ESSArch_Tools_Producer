@@ -236,6 +236,11 @@ class CreateZIP(DBTask):
     def event_outcome_success(self, dirname=None, zipname=None):
         return "Created %s from %s" % (zipname, dirname)
 
+
+class DeleteFiles(tasks.DeleteFiles):
+    event_type = 10275
+
+
 class UpdateIPStatus(tasks.UpdateIPStatus):
     event_type = 10280
 
