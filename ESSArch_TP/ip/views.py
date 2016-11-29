@@ -579,9 +579,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.save()
 
-        main_step.child_steps = [
+        main_step.child_steps.add(
             start_create_sip_step, generate_xml_step, create_sip_step
-        ]
+        )
         main_step.information_package = ip
         main_step.save()
         main_step.run()
