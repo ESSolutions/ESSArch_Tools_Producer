@@ -145,7 +145,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         changed_structure = profile.structure != new_structure
 
         if (changed_data or changed_structure):
-            profile.copy_and_switch(
+            new_profile = profile.copy_and_switch(
                 ip=InformationPackage.objects.get(
                     pk=request.data["information_package"]
                 ),
@@ -153,7 +153,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 new_name=request.data["new_name"],
                 structure=new_structure,
             )
-            return Response({'status': 'saving profile'})
+            serializer = ProfileSerializer(
+                new_profile, context={'request': request}
+            )
+            return Response(serializer.data)
 
         return Response({'status': 'no changes, not saving'}, status=status.HTTP_400_BAD_REQUEST)
 
