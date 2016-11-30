@@ -2,7 +2,7 @@ from _version import get_versions
 
 from collections import OrderedDict
 
-import os, shutil
+import errno, glob, os, shutil
 
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
@@ -158,6 +158,19 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         ip = InformationPackage.objects.get(pk=pk)
+        path = ip.ObjectPath
+
+        try:
+            shutil.rmtree(path)
+        except OSError as e:
+            if e.errno == errno.ENOTDIR:
+                no_ext = os.path.splitext(path)[0]
+
+                for fl in glob.glob(no_ext + "*"):
+                    try:
+                        os.remove(fl)
+                    except:
+                        raise
 
         try:
             shutil.rmtree(ip.ObjectPath)
