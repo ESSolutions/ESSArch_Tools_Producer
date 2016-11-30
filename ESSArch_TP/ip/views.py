@@ -224,6 +224,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
 
+        if ip.State != "Prepared":
+            raise ValueError(
+                "The IP (%s) is in the state '%s' but should be 'Prepared'" % (pk, ip.State)
+            )
+
         validators = request.data.get('validators', {})
 
         validate_xml_file = validators.get('validate_xml_file', False)
@@ -614,6 +619,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         """
 
         ip = self.get_object()
+
+        if ip.State != "Created":
+            raise ValueError(
+                "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.State)
+            )
 
         validators = request.data.get('validators', {})
 
