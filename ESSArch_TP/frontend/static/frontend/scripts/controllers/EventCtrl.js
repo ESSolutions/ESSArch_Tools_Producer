@@ -4,6 +4,9 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(eventInterval);
     });
+    $scope.$on("$destroy", function() {
+        $interval.cancel(eventInterval);
+    });
     $scope.getEventOutcome = function(outcome) {
         if(outcome == 0) {
             return "Success";
