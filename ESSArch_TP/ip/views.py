@@ -249,6 +249,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "status": "Creating",
             },
             processstep_pos=0,
+            log=EventIP,
             information_package=ip
         )
         start_create_sip_step = ProcessStep.objects.create(
@@ -308,6 +309,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "algorithm": ip.get_checksum_algorithm(),
             },
             processstep_pos=3,
+            log=EventIP,
             information_package=ip
         )
 
@@ -334,6 +336,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             "xml_filename": mets_path,
                         },
                         processstep_pos=1,
+                        log=EventIP,
                         information_package=ip
                     )
                 )
@@ -346,6 +349,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 "xml_filename": premis_path,
                             },
                             processstep_pos=2,
+                            log=EventIP,
                             information_package=ip
                         )
                     )
@@ -359,13 +363,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             "xmlfile": mets_path,
                         },
                         processstep_pos=3,
+                        log=EventIP,
                         information_package=ip
                     )
                 )
 
             validate_step.tasks.add(
                 ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateFiles",
+                    name="preingest.tasks.ValidateFiles",
                     params={
                         "ip": ip,
                         "xmlfile": mets_path,
@@ -373,6 +378,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "validate_integrity": validate_integrity,
                     },
                     processstep_pos=4,
+                    log=EventIP,
                     information_package=ip
                 )
             )
@@ -405,6 +411,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "algorithm": ip.get_checksum_algorithm(),
             },
             processstep_pos=0,
+            log=EventIP,
             information_package=ip
         ))
 
@@ -414,6 +421,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "filename": events_path,
             },
             processstep_pos=1,
+            log=EventIP,
             information_package=ip
         ))
 
@@ -527,6 +535,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "xml_filename": events_path,
                     },
                     processstep_pos=3,
+                    log=EventIP,
                     information_package=ip
                 )
             )
@@ -541,6 +550,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "zipname": zipname,
                 },
                 processstep_pos=4,
+                log=EventIP,
                 information_package=ip
             )
 
@@ -553,6 +563,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "tarname": tarname,
                 },
                 processstep_pos=4,
+                log=EventIP,
                 information_package=ip
             )
 
@@ -565,6 +576,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "path": ip.ObjectPath
                 },
                 processstep_pos=45,
+                log=EventIP,
                 information_package=ip
             )
         )
@@ -579,6 +591,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "path": container_task.pk
                 },
                 processstep_pos=50,
+                log=EventIP,
                 information_package=ip
             )
         )
@@ -591,6 +604,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "status": "Created",
                 },
                 processstep_pos=60,
+                log=EventIP,
                 information_package=ip
             )
         )
@@ -644,6 +658,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "status": "Submitting",
             },
             processstep_pos=0,
+            log=EventIP,
             information_package=ip
         ))
 
@@ -743,6 +758,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "algorithm": ip.get_checksum_algorithm(),
             },
             processstep_pos=10,
+            log=EventIP,
             information_package=ip
         ))
 
@@ -754,6 +770,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "xml_filename": infoxml
                     },
                     processstep_pos=14,
+                    log=EventIP,
                     information_package=ip
                 )
             )
@@ -761,7 +778,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if validate_file_format or validate_integrity:
             step.tasks.add(
                 ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateFiles",
+                    name="preingest.tasks.ValidateFiles",
                     params={
                         "ip": ip,
                         "rootdir": reception,
@@ -770,6 +787,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "validate_integrity": validate_integrity,
                     },
                     processstep_pos=15,
+                    log=EventIP,
                     information_package=ip
                 )
             )
@@ -783,6 +801,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "xmlfile": infoxml,
                     },
                     processstep_pos=16,
+                    log=EventIP,
                     information_package=ip
                 )
             )
@@ -793,6 +812,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "ip": ip
             },
             processstep_pos=20,
+            log=EventIP,
             information_package=ip
         ))
 
@@ -803,6 +823,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "status": "Submitted"
             },
             processstep_pos=30,
+            log=EventIP,
             information_package=ip
         ))
 

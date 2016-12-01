@@ -177,6 +177,11 @@ class ValidateIntegrity(tasks.ValidateIntegrity):
     event_type = 10263
 
 
+class ValidateFiles(tasks.ValidateFiles):
+    fileformat_task = "preingest.tasks.ValidateFileFormat"
+    checksum_task = "preingest.tasks.ValidateIntegrity"
+
+
 class CreateTAR(DBTask):
     event_type = 10270
 

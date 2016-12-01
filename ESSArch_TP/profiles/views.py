@@ -17,6 +17,7 @@ from ESSArch_Core.ip.models import (
     ArchivistOrganization,
     ArchivalLocation,
     ArchivalType,
+    EventIP,
     InformationPackage,
 )
 
@@ -201,7 +202,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     "structure": profile.structure,
                     "root": root
                 },
-                information_package=ip
+                log=EventIP,
+                information_package=ip,
             )
 
             step.tasks = [task]
