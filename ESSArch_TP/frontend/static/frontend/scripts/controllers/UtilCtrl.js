@@ -1,4 +1,4 @@
-angular.module('myApp').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope $timeout) {
+angular.module('myApp').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope, $timeout) {
     $scope.reloadPage = function (){
         $state.reload();
     }
