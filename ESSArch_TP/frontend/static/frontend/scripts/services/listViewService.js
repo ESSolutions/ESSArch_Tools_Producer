@@ -440,6 +440,15 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             }
             child.isCollapsed = false;
             child.tasksCollapsed = true;
+
+            child.children.sort(function(a, b){
+                var a = new Date(a.time_created),
+                    b = new Date(b.time_created);
+
+                if(a < b) return -1;
+                if(a > b) return 1;
+                return 0;
+            });
         });
         stepsToRemove.forEach(function(idx){
             childSteps.splice(idx, 1);
