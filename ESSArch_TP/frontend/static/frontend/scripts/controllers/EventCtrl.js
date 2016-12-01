@@ -7,6 +7,11 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     $scope.$on("$destroy", function() {
         $interval.cancel(eventInterval);
     });
+    $scope.newEventForm = {
+        eventType: "",
+        eventOutcome: "",
+        comment: ""
+    };
     $scope.getEventOutcome = function(outcome) {
         if(outcome == 0) {
             return "Success";
@@ -34,17 +39,19 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
                     $scope.selected.splice(i,1);
                 }
             }
-            console.log($scope.selected);
         } else {
             row.class = "selected";
             $scope.selected.push(row);
-            console.log($scope.selected);
         }
     };
     $scope.addEvent = function(ip, eventType, eventDetail, eventOutcome) {
         listViewService.addEvent(ip, eventType, eventDetail, eventOutcome).then(function(value) {
             $rootScope.stCtrl.pipe();
-            console.log(value);
+            $scope.newEventForm = {
+                eventType: "",
+                eventOutcome: "",
+                comment: ""
+    };
         });
     }
     var eventInterval;

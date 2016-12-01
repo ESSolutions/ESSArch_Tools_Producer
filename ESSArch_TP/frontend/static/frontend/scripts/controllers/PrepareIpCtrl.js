@@ -312,7 +312,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Get data for eventlog view
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
-            $scope.statusNoteCollection = value;
+            $scope.eventTypeCollection = value;
         });
     };
     //populating select view
@@ -444,7 +444,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.onSubmit = function(new_name) {
         profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
         var uri = profileUrl+"save/";
-        console.log(angular.toJson($scope.treeElements[0].children));
         var sendData = {
             "specification_data": vm.profileModel,
             "information_package": $scope.ip.id,

@@ -269,7 +269,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get data for eventlog view
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
-            $scope.statusNoteCollection = value;
+            $scope.eventTypeCollection = value;
         });
     };
 

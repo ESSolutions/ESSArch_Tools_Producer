@@ -274,7 +274,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Get eventlog data
     function getEventlogData() {
         listViewService.getEventlogData().then(function(value){
-            $scope.statusNoteCollection = value;
+            $scope.eventTypeCollection = value;
         });
     };
 
