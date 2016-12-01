@@ -276,7 +276,12 @@ body.modal-open[style] {
     -webkit-animation: spinw 0.7s infinite linear;
     -moz-animation: spinm 0.7s infinite linear;
 }
-
+.glyphicon-refresh-animate-once {
+    -animation: spin 0.7s;
+    -ms-animation: spin 0.7s;
+    -webkit-animation: spinw 0.7s;
+    -moz-animation: spinm 0.7s;
+}
 @keyframes spin {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
