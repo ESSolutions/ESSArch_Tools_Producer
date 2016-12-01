@@ -46,10 +46,22 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
                 step.tasks.forEach(function(task){
                     task.label = task.name;
-                    task.time_created = $filter('date')(task.time_started, "yyyy-MM-dd HH:mm:ss");
+                    task.time_created = task.time_started;
                     task.isTask = true;
                 });
                 step.children = step.children.concat(step.tasks);
+                step.children.sort(function(a, b){
+                    var a = new Date(a.time_created),
+                        b = new Date(b.time_created);
+
+                    if(a < b) return -1;
+                    if(a > b) return 1;
+                    return 0;
+                });
+                step.children = step.children.map(function(c){
+                    c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
+                    return c
+                });
             });
             steps = setExpanded(steps, expandedNodes);
             return steps;
@@ -427,10 +439,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         var stepsToRemove = [];
         childSteps.forEach(function(child, idx){
             child.child_steps = getChildSteps(child.child_steps);
-            child.time_created = $filter('date')(child.time_created, "yyyy-MM-dd HH:mm:ss");
             child.tasks.forEach(function(task){
                 task.user = child.user;
-                task.time_created = $filter('date')(task.time_started, "yyyy-MM-dd HH:mm:ss");
+                task.time_created = task.time_started;
                 task.isTask = true;
             });
 
@@ -448,6 +459,11 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 if(a < b) return -1;
                 if(a > b) return 1;
                 return 0;
+            });
+
+            child.children = child.children.map(function(c){
+                c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
+                return c
             });
         });
         stepsToRemove.forEach(function(idx){
