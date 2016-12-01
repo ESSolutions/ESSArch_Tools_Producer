@@ -901,6 +901,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.exitAddMode = function() {
         $scope.addMode.active = false;
         $scope.treeItemClass = "";
+        resetFormVariables();
         $('.tree-edit-item').draggable('enable');
     };
     $scope.updateMode = {
@@ -937,9 +938,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     //Resets add/update form fields
     function resetFormVariables() {
-                vm.treeEditModel.name = "";
-                vm.treeEditModel.type = "";
-                vm.treeEditModel.use = "";
+                vm.treeEditModel = {};
     };
     //Update current node variable with selected node in map structure tree view
     $scope.updateCurrentNode = function(node, selected, parentNode) {
