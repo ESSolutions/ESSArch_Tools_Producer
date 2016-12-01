@@ -51,7 +51,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
                 eventType: "",
                 eventOutcome: "",
                 comment: ""
-    };
+            };
         });
     }
     var eventInterval;
