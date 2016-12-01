@@ -443,26 +443,27 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
         profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
-        var uri = profileUrl+"save/";
         var sendData = {
             "specification_data": vm.profileModel,
             "information_package": $scope.ip.id,
             "new_name": new_name,
             "structure": $scope.treeElements[0].children
         };
-
         $http({
             method: 'POST',
-            url: uri,
+            url: profileUrl+"save/",
             data: sendData
         })
-        .success(function (response) {
+        .then(function(response) {
+            var profileType = 'profile_' + $scope.profileToSave.profile_type;
+            var newProfile = response.data;
+            newProfile.profile_name = newProfile.name;
+            $scope.ip[profileType] = newProfile;
             $scope.getSelectCollection($scope.saProfile.profile, $scope.ip);
             $scope.selectRowCollection = $scope.selectRowCollapse;
             $scope.edit = false;
             $scope.eventlog = false;
-        })
-        .error(function(response) {
+        }, function(response) {
             alert(response.status);
         });
     };
