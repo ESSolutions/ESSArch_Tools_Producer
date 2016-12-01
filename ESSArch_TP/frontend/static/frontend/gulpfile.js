@@ -1,4 +1,5 @@
 var gulp = require('gulp')
+var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var ngAnnotate = require('gulp-ng-annotate');
 var rename = require('gulp-rename');
@@ -34,6 +35,7 @@ var vendorFiles = [
 
 gulp.task('default', function() {
     gulp.src(jsFiles)
+        .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(concat('scripts.js'))
         .pipe(gulp.dest(jsDest))
@@ -41,9 +43,11 @@ gulp.task('default', function() {
         .pipe(uglify().on('error', function(e){
             console.log(e);
          }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(jsDest));
 
     gulp.src(vendorFiles)
+        .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(concat('vendors.js'))
         .pipe(gulp.dest(jsDest))
@@ -51,11 +55,13 @@ gulp.task('default', function() {
         .pipe(uglify().on('error', function(e){
             console.log(e);
          }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(jsDest));
 });
 
 gulp.task('scripts', function() {
     return gulp.src(jsFiles)
+        .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(concat('scripts.js'))
         .pipe(gulp.dest(jsDest))
@@ -63,11 +69,13 @@ gulp.task('scripts', function() {
         .pipe(uglify().on('error', function(e){
             console.log(e);
          }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(jsDest));
 });
 
 gulp.task('vendors', function() {
     return gulp.src(vendorFiles)
+        .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
         .pipe(concat('vendors.js'))
         .pipe(gulp.dest(jsDest))
@@ -75,6 +83,7 @@ gulp.task('vendors', function() {
         .pipe(uglify().on('error', function(e){
             console.log(e);
          }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(jsDest));
 });
 
