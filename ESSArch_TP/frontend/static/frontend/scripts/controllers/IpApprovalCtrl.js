@@ -204,6 +204,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
+            $scope.eventlog = false;
         } else {
             $scope.getSaProfiles(row);
             $scope.select = true;
