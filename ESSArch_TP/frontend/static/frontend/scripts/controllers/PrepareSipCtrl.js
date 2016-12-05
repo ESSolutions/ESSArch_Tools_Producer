@@ -10,32 +10,43 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $window.location.href="/admin/";
     }
     $scope.tree_data = [];
-    $scope.expanding_property = {
-        field: "name",
-        displayName: "Label",
-    };
-    $scope.col_defs = [
-    {
-        field: "user",
-        displayName: "Responsible",
-    },
-    {
-        field: "time_created",
-        displayName: "Date"
-    },
-    {
-        field: "status",
-        displayName: "State",
-    },
-    {
-        field: "progress",
-        displayName: "Status",
-        cellTemplate: "<uib-progressbar class=\"progress\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
-    },
-    {
-        cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
-    }
-    ];
+    $scope.angular = angular;
+    $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
+        $scope.responsible = translations.RESPONSIBLE;
+        $scope.label = translations.LABEL;
+        $scope.date = translations.DATE;
+        $scope.state = translations.STATE;
+        $scope.status = translations.STATUS;
+        $scope.expanding_property = {
+            field: "name",
+            displayName: $scope.label,
+        };
+        $scope.col_defs = [
+        {
+            field: "user",
+            displayName: $scope.responsible,
+        },
+        {
+            field: "time_created",
+            displayName: $scope.date
+        },
+        {
+            field: "status",
+            displayName: $scope.state,
+            cellTemplate: "<div ng-if=\"row.branch[col.field] == 'SUCCESS'\" class=\"step-state-success\"><b>{{'SUCCESS' | translate}}</b></div><div ng-if=\"row.branch[col.field] == 'FAILURE'\" class=\"step-state-failure\"><b>{{'FAILURE' | translate}}</b></div><div ng-if=\"row.branch[col.field] != 'SUCCESS' && row.branch[col.field] !='FAILURE'\" class=\"step-state-in-progress\"><b>{{'INPROGRESS' | translate}}</b></div>"
+
+        },
+        {
+            field: "progress",
+            displayName: $scope.status,
+            cellTemplate: "<uib-progressbar class=\"progress\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
+        },
+        {
+            cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
+        }
+        ];
+    });
+
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
     //Undo steps/tasks
