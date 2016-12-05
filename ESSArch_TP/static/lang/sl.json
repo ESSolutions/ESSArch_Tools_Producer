@@ -115,5 +115,6 @@
     "FAILURE": "Failure",
     "INPROGRESS": "In progress",
     "SEETRACEBACK": "See traceback",
+    "CLOSE": "Close",
     "EXCEPTION": "Exception"
 }
