@@ -205,7 +205,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
               angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
                 $cookies = _$cookies_;
               }]);
-            console.log($cookies);
             return {
                 'X-CSRFToken': $cookies.get("csrftoken")// call func for getting a cookie
             }
