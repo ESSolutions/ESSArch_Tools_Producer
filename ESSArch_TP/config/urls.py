@@ -50,6 +50,9 @@ from profiles.views import (
     SubmissionAgreementViewSet,
 )
 
+admin.site.site_header = 'ESSArch Tools Producer Administration'
+admin.site.site_title = 'ESSArch Tools Producer Administration'
+
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
