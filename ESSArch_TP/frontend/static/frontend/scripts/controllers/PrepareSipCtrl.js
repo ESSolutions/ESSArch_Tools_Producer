@@ -291,7 +291,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     };
     //Get list of files in ip
     $scope.getFileList = function(ip) {
-        $scope.fileListCollection = listViewService.getFileList(ip);
+        listViewService.getFileList(ip).then(function(result) {
+            $scope.fileListCollection = result;
+        });
     };
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {

@@ -352,14 +352,16 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Get list of files in Ip
     function getFileList(ip) {
-        var array = [];
-        var tempElement = {
-            filename: ip.ObjectPath,
-            created: ip.CreateDate,
-            size: ip.ObjectSize
-        };
-        array.push(tempElement);
-        return array;
+        return getIp(ip.url).then(function(result) {
+            var array = [];
+            var tempElement = {
+                filename: result.ObjectPath,
+                created: result.CreateDate,
+                size: result.ObjectSize
+            };
+            array.push(tempElement);
+            return array;
+        });
     }
     /*******************/
     /*HELPER FUNCTIONS*/
