@@ -881,25 +881,42 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get', 'post'], url_path='upload')
     def upload(self, request, pk=None):
+        ip = self.get_object()
+
         if request.method == 'GET':
+            path = request.GET.get('flowRelativePath')
+            chunk_nr = request.GET.get('flowChunkNumber')
+            chunk_path = "%s_%s" % (path, chunk_nr)
+
+            if os.path.exists(os.path.join(ip.ObjectPath, chunk_path)):
+                return HttpResponse(status=200)
             return HttpResponse(status=204)
 
         if request.method == 'POST':
-            ip = self.get_object()
-            f = request.FILES['file']
             path = request.data.get('flowRelativePath')
-            path = os.path.join(ip.ObjectPath, path)
+            chunk_nr = request.data.get('flowChunkNumber')
+            chunk_path = "%s_%s" % (path, chunk_nr)
+            chunk_path = os.path.join(ip.ObjectPath, chunk_path)
 
-            print path
+            chunk = request.FILES['file']
 
-            if not os.path.exists(os.path.dirname(path)):
-                mkdir_p(os.path.dirname(path))
+            if not os.path.exists(os.path.dirname(chunk_path)):
+                mkdir_p(os.path.dirname(chunk_path))
 
-            with open(path, 'wb+') as dst:
-                for chunk in f.chunks():
-                    dst.write(chunk)
+            with open(chunk_path, 'wb+') as dst:
+                for c in chunk.chunks():
+                    dst.write(c)
+
+            if chunk_nr == request.data.get('flowTotalChunks'):
+                path = os.path.join(ip.ObjectPath, path)
+
+                with open(path, 'wb') as f:
+                    for chunk_file in glob.glob('%s_*' % path):
+                        f.write(open(chunk_file).read())
+                        os.remove(chunk_file)
 
             return Response("Uploaded files")
+
 
 class EventIPViewSet(viewsets.ModelViewSet):
     """
