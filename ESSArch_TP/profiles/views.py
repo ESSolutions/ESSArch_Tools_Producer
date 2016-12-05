@@ -218,27 +218,47 @@ class ProfileViewSet(viewsets.ModelViewSet):
             archival_location = data.get("archival_location")
 
             if archival_institution:
-                (arch, _) = ArchivalInstitution.objects.get_or_create(
-                    name = archival_institution
-                )
+                try:
+                    (arch, _) = ArchivalInstitution.objects.get_or_create(
+                        name = archival_institution
+                    )
+                except IntegrityError:
+                    arch = ArchivalInstitution.objects.get(
+                        name = archival_institution
+                    )
                 ip.ArchivalInstitution = arch
 
             if archivist_organization:
-                (arch, _) = ArchivistOrganization.objects.get_or_create(
-                    name = archivist_organization
-                )
+                try:
+                    (arch, _) = ArchivistOrganization.objects.get_or_create(
+                        name = archivist_organization
+                    )
+                except IntegrityError:
+                    arch = ArchivistOrganization.objects.get(
+                        name = archivist_organization
+                    )
                 ip.ArchivistOrganization = arch
 
             if archival_type:
-                (arch, _) = ArchivalType.objects.get_or_create(
-                    name = archival_type
-                )
+                try:
+                    (arch, _) = ArchivalType.objects.get_or_create(
+                        name = archival_type
+                    )
+                except IntegrityError:
+                    arch = ArchivalType.objects.get(
+                        name = archival_type
+                    )
                 ip.ArchivalType = arch
 
             if archival_location:
-                (arch, _) = ArchivalLocation.objects.get_or_create(
-                    name = archival_location
-                )
+                try:
+                    (arch, _) = ArchivalLocation.objects.get_or_create(
+                        name = archival_location
+                    )
+                except IntegrityError:
+                    arch = ArchivalLocation.objects.get(
+                        name = archival_location
+                    )
                 ip.ArchivalLocation = arch
 
             ip.save()
