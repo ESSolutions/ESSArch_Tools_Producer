@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select'])
+angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow'])
     .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider) {
         $stateProvider
             .state('home', {
@@ -190,6 +190,30 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .config(['$httpProvider', function($httpProvider, $rootScope) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}])
+.config(['flowFactoryProvider', function (flowFactoryProvider, $cookies) {
+    flowFactoryProvider.defaults = {
+        target: 'upload.php',
+        permanentErrors: [404, 500, 501],
+        maxChunkRetries: 1,
+        chunkRetryInterval: 5000,
+        simultaneousUploads: 4,
+        testMethod: 'GET',
+        uploadMethod: 'POST',
+        headers: function (file, chunk, isTest) {
+            var $cookies;
+              angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+                $cookies = _$cookies_;
+              }]);
+            console.log($cookies);
+            return {
+                'X-CSRFToken': $cookies.get("csrftoken")// call func for getting a cookie
+            }
+        }
+    };
+    flowFactoryProvider.on('catchAll', function (event) {
+        console.log('catchAll', arguments);
+    });
 }])
 .constant('appConfig', {
     djangoUrl: "/api/",

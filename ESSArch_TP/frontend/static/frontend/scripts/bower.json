@@ -35,7 +35,8 @@
     "angular-bootstrap-contextmenu": "^0.9.9",
     "angular-ui-select": "^0.19.6",
     "select2": "^4.0.3",
-    "selectize": "^0.12.4"
+    "selectize": "^0.12.4",
+    "ng-flow": "https://github.com/OskarPersson/ng-flow.git"
   },
   "resolutions": {
     "angular": "1.5.9"

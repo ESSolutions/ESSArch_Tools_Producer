@@ -7,6 +7,7 @@ import errno, glob, os, shutil
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
+from django.http import HttpResponse
 from rest_framework import filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -37,6 +38,7 @@ from ESSArch_Core.profiles.models import (
 from ESSArch_Core.util import (
     create_event,
     creation_date,
+    mkdir_p,
     timestamp_to_datetime,
 )
 
@@ -876,6 +878,28 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             })
 
         return Response()
+
+    @detail_route(methods=['get', 'post'], url_path='upload')
+    def upload(self, request, pk=None):
+        if request.method == 'GET':
+            return HttpResponse(status=204)
+
+        if request.method == 'POST':
+            ip = self.get_object()
+            f = request.FILES['file']
+            path = request.data.get('flowRelativePath')
+            path = os.path.join(ip.ObjectPath, path)
+
+            print path
+
+            if not os.path.exists(os.path.dirname(path)):
+                mkdir_p(os.path.dirname(path))
+
+            with open(path, 'wb+') as dst:
+                for chunk in f.chunks():
+                    dst.write(chunk)
+
+            return Response("Uploaded files")
 
 class EventIPViewSet(viewsets.ModelViewSet):
     """

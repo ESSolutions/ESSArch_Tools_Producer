@@ -550,5 +550,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    $scope.getFlowTarget = function() {
+        return $scope.ip.url + 'upload/';
+    }
 });
 
