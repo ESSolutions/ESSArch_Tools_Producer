@@ -46,6 +46,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
                 step.tasks.forEach(function(task){
                     task.label = task.name;
+                    task.user = task.responsible;
                     task.time_created = task.time_started;
                     task.isTask = true;
                 });
@@ -442,7 +443,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         childSteps.forEach(function(child, idx){
             child.child_steps = getChildSteps(child.child_steps);
             child.tasks.forEach(function(task){
-                task.user = child.user;
+                task.user = task.responsible;
                 task.time_created = task.time_started;
                 task.isTask = true;
             });

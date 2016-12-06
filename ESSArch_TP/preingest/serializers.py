@@ -26,6 +26,9 @@ class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
     name =  serializers.ChoiceField(
         choices=available_tasks(),
     )
+    responsible = serializers.SlugRelatedField(
+        slug_field='username', read_only=True
+    )
 
     class Meta:
         model = ProcessTask
@@ -33,6 +36,7 @@ class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
             'url', 'id', 'name', 'status', 'progress',
             'processstep', 'processstep_pos', 'time_started',
             'time_done', 'undone', 'undo_type', 'retried',
+            'responsible',
         )
 
         read_only_fields = (
@@ -41,7 +45,7 @@ class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class ProcessTaskDetailSerializer(serializers.HyperlinkedModelSerializer):
+class ProcessTaskDetailSerializer(ProcessTaskSerializer):
     params = serializers.SerializerMethodField()
     result = serializers.SerializerMethodField()
 

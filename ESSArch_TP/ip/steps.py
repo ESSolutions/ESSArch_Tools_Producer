@@ -11,11 +11,12 @@ def prepare_ip(label, responsible):
         name="preingest.tasks.PrepareIP",
         params={
             "label": label,
-            "responsible": responsible,
+            "responsible": responsible.username or "Anonymous user",
             "step": str(step.pk),
         },
         log=EventIP,
         processstep_pos=0,
+        responsible=responsible,
     )
 
     t2 = ProcessTask.objects.create(
@@ -27,6 +28,7 @@ def prepare_ip(label, responsible):
         },
         log=EventIP,
         processstep_pos=1,
+        responsible=responsible,
     )
 
     step.tasks = [t1, t2]

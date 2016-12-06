@@ -204,6 +204,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 },
                 log=EventIP,
                 information_package=ip,
+                responsible=self.request.user,
             )
 
             step.tasks = [task]

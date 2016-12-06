@@ -153,7 +153,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
 
         label = request.data.get('label', None)
-        responsible = self.request.user.username or "Anonymous user"
+        responsible = self.request.user
 
         prepare_ip(label, responsible).run()
         return Response({"status": "Prepared IP"})
@@ -252,7 +252,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=0,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         )
         start_create_sip_step = ProcessStep.objects.create(
             name="Update IP Status",
@@ -312,7 +313,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=3,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         )
 
         generate_xml_step = ProcessStep.objects.create(
@@ -339,7 +341,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         },
                         processstep_pos=1,
                         log=EventIP,
-                        information_package=ip
+                        information_package=ip,
+                        responsible=self.request.user,
                     )
                 )
 
@@ -352,7 +355,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             },
                             processstep_pos=2,
                             log=EventIP,
-                            information_package=ip
+                            information_package=ip,
+                            responsible=self.request.user,
                         )
                     )
 
@@ -366,7 +370,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         },
                         processstep_pos=3,
                         log=EventIP,
-                        information_package=ip
+                        information_package=ip,
+                        responsible=self.request.user,
                     )
                 )
 
@@ -381,7 +386,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     },
                     processstep_pos=4,
                     log=EventIP,
-                    information_package=ip
+                    information_package=ip,
+                    responsible=self.request.user,
                 )
             )
 
@@ -414,7 +420,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=0,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         create_sip_step.tasks.add(ProcessTask.objects.create(
@@ -424,7 +431,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=1,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         spec = {
@@ -526,7 +534,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "index": 0
             },
             processstep_pos=2,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         if validate_xml_file:
@@ -538,7 +547,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     },
                     processstep_pos=3,
                     log=EventIP,
-                    information_package=ip
+                    information_package=ip,
+                    responsible=self.request.user,
                 )
             )
 
@@ -553,7 +563,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 },
                 processstep_pos=4,
                 log=EventIP,
-                information_package=ip
+                information_package=ip,
+                responsible=self.request.user,
             )
 
         else:
@@ -566,7 +577,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 },
                 processstep_pos=4,
                 log=EventIP,
-                information_package=ip
+                information_package=ip,
+                responsible=self.request.user,
             )
 
         create_sip_step.tasks.add(container_task)
@@ -579,7 +591,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 },
                 processstep_pos=45,
                 log=EventIP,
-                information_package=ip
+                information_package=ip,
+                responsible=self.request.user,
             )
         )
 
@@ -594,7 +607,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 },
                 processstep_pos=50,
                 log=EventIP,
-                information_package=ip
+                information_package=ip,
+                responsible=self.request.user,
             )
         )
 
@@ -607,7 +621,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 },
                 processstep_pos=60,
                 log=EventIP,
-                information_package=ip
+                information_package=ip,
+                responsible=self.request.user,
             )
         )
 
@@ -661,7 +676,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=0,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         reception = Path.objects.get(entity="path_preingest_reception").value
@@ -761,7 +777,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=10,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         if validate_xml_file:
@@ -773,7 +790,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     },
                     processstep_pos=14,
                     log=EventIP,
-                    information_package=ip
+                    information_package=ip,
+                    responsible=self.request.user,
                 )
             )
 
@@ -790,7 +808,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     },
                     processstep_pos=15,
                     log=EventIP,
-                    information_package=ip
+                    information_package=ip,
+                    responsible=self.request.user,
                 )
             )
 
@@ -804,7 +823,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     },
                     processstep_pos=16,
                     log=EventIP,
-                    information_package=ip
+                    information_package=ip,
+                    responsible=self.request.user,
                 )
             )
 
@@ -815,7 +835,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=20,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         step.tasks.add(ProcessTask.objects.create(
@@ -826,7 +847,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             },
             processstep_pos=30,
             log=EventIP,
-            information_package=ip
+            information_package=ip,
+            responsible=self.request.user,
         ))
 
         step.save()
