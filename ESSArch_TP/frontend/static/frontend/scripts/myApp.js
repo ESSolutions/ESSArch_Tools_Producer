@@ -74,6 +74,16 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }],
             }
         })
+        .state('home.createSip.collectContent', {
+            url: '/collect-content',
+            templateUrl: '/static/frontend/views/create_sip_collect_content.html',
+            controller: 'CollectContentCtrl as vm',
+            resolve: {
+                authenticated: ['djangoAuth', function(djangoAuth){
+                    return djangoAuth.authenticationStatus();
+                }],
+            }
+        })
         .state('home.createSip.dataSelection', {
             url: '/data-selection',
             templateUrl: '/static/frontend/views/create_sip_data_selection.html',

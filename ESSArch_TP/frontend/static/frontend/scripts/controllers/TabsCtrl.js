@@ -13,9 +13,11 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
     $scope.prepareIp = $translate.instant('PREPAREIP');
     $scope.createSip = $translate.instant('CREATESIP');
     $scope.submitSip = $translate.instant('SUBMITSIP');
+    $scope.collectContent = $translate.instant('COLLECTCONTENT');
     $scope.tabs = [
     //{ link: 'home.myPage', label: $scope.myPage },
     { link: 'home.createSip.prepareIp', label: $scope.prepareIp },
+    { link: 'home.createSip.collectContent', label: $scope.collectContent },
     { link: 'home.createSip.ipApproval', label: $scope.createSip },
     { link: 'home.submitSip.prepareSip', label: $scope.submitSip },
     ];

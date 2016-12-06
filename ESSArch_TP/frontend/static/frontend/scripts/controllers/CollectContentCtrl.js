@@ -1,5 +1,14 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate){
+angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate) {
     var vm = this;
+    // List view
+    //Go to give state
+    $scope.changePath= function(path) {
+        myService.changePath(path);
+    };
+    //Redirect to django admin page
+    $scope.redirectAdmin = function () {
+        $window.location.href="/admin/";
+    }
     $scope.tree_data = [];
     $scope.angular = angular;
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
@@ -36,9 +45,11 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
         }
         ];
-    });    $scope.myTreeControl = {};
+    });
+
+    $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
-    //Undo step/task
+    //Undo steps/tasks
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {
         $http({
             method: 'POST',
@@ -49,7 +60,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             console.log("error");
         });
     };
-    //Redo step/task
+    //Redo steps/tasks
     $scope.myTreeControl.scope.taskStepRedo = function(branch){
         $http({
             method: 'POST',
@@ -60,9 +71,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             console.log("error");
         });
     };
-    $scope.currentStepTask = {id: ""}
+     $scope.currentStepTask = {id: ""}
     //Click funciton for steps and tasks
-    $scope.stepTaskClick = function(branch) {
+     $scope.stepTaskClick = function(branch) {
         if(branch.isTask){
             if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
                 $scope.stepTaskInfoShow = false;
@@ -79,11 +90,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 });
             }
         }
-    };
-    //Change state
-    $scope.changePath= function(path) {
-        myService.changePath(path);
-    };
+     };
      // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {
          $scope.selectIp(row);
@@ -101,7 +108,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
              $scope.ipTableClick(row);
          }
      }
-     $scope.ipSelected = false;
+    //click function forstatus view
      var stateInterval;
      $scope.stateClicked = function(row){
          if($scope.statusShow && $scope.ip == row){
@@ -113,9 +120,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
          }
          $scope.subSelect = false;
          $scope.eventlog = false;
-         $scope.select = false;
          $scope.eventShow = false;
+         $scope.select = false;
          $scope.ip = row;
+         $rootScope.ip = row;
      };
      $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
          if(newValue) {
@@ -144,83 +152,78 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      }
      //Update status view data
      $scope.statusViewUpdate = function(row){
-        $scope.statusLoading = true;
+         $scope.statusLoading = true;
          var expandedNodes = [];
          if($scope.tree_data != []) {
              expandedNodes = checkExpanded($scope.tree_data);
          }
          listViewService.getTreeData(row, expandedNodes).then(function(value) {
              $scope.tree_data = value;
-        $scope.statusLoading = false;
+             $scope.statusLoading = false;
          });
      };
+
      /*******************************************/
      /*Piping and Pagination for List-view table*/
      /*******************************************/
 
-    var ctrl = this;
-    this.itemsPerPage = 10;
-    $scope.selectedIp = {id: "", class: ""};
-    this.displayedIps = [];
+     var ctrl = this;
+     this.itemsPerPage = 10;
+     $scope.selectedIp = {id: "", class: ""};
+     this.displayedIps = [];
+     //Get data for ip table from rest api
+     this.callServer = function callServer(tableState) {
+         $scope.ipLoading = true;
+         if(!angular.isUndefined(tableState)) {
+             $scope.tableState = tableState;
+             var search = "";
+             if(tableState.search.predicateObject) {
+                 var search = tableState.search.predicateObject["$"];
+             }
+             var sorting = tableState.sort;
+             var pagination = tableState.pagination;
+             var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+             var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
+             var pageNumber = start/number+1;
 
-    //Update ip table with configuration from table paginetion etc
-    this.callServer = function callServer(tableState) {
-        $scope.ipLoading = true;
-        if(!angular.isUndefined(tableState)){
-            $scope.tableState = tableState;
-            var search = "";
-            if(tableState.search.predicateObject) {
-                var search = tableState.search.predicateObject["$"];
-            }
-
-            var sorting = tableState.sort;
-            var pagination = tableState.pagination;
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
-            var pageNumber = start/number+1;
-
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared,Creating,Created").then(function (result) {
-                ctrl.displayedIps = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.ipLoading = false;
-            });
-        }
-    };
-    //Make ip selected and add class to visualize
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared").then(function (result) {
+                 ctrl.displayedIps = result.data;
+                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                 $scope.ipLoading = false;
+             });
+         }
+     };    //Add ip to selected
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.statusShow && !$scope.eventShow){
+        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.edit && !$scope.eventlog && !$scope.eventShow){
             $scope.selectedIp = {id: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
         }
     };
-    //Click function for ip table objects
+    //Click function for ip table
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
-            $scope.eventlog = false;
         } else {
-            $scope.getSaProfiles(row);
-            $scope.select = true;
-            $scope.eventlog = true;
             $scope.ip = row;
             $rootScope.ip = row;
+            $scope.select = true;
 
         }
-        $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-         $scope.getListViewData();
-     }, true);
-    //Click funciton for event table objects
+    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+        $scope.getListViewData();
+    }, true);
+
+    //click funtion or event
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
@@ -229,7 +232,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             if($rootScope.stCtrl) {
                 $rootScope.stCtrl.pipe();
             }
-            $scope.eventShow = true;
             getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
@@ -240,85 +242,18 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.ip = row;
         $rootScope.ip = row;
     };
+    //Add event to database
     $scope.addEvent = function(ip, eventType, eventDetail) {
         listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
         });
     }
-
-    //funcitons for select view
-    vm.profileModel = {};
-    vm.profileFields=[];
-    //Click function for profile pbject
-    $scope.profileClick = function(row){
-        $scope.profileToSave = row.active;
-        if ($scope.selectProfile == row && $scope.edit){
-            $scope.eventlog = false;
-            $scope.edit = false;
-        } else {
-            if(row.active) {
-                $http({
-                    method: 'GET',
-                    url: row.active.profile
-                }).then(function(response) {
-                    $scope.selectProfile = row;
-                    vm.profileModel = response.data.specification_data;
-                    vm.profileFields = response.data.template;
-                    vm.profileFields.forEach(function(field) {
-                        if(field.fieldGroup != null){
-                            field.fieldGroup.forEach(function(subGroup) {
-                                subGroup.fieldGroup.forEach(function(item) {
-                                    item.templateOptions.disabled = true;
-                                });
-                            });
-                        } else {
-                            field.templateOptions.disabled = true;
-                        }
-                    });
-                    $scope.eventlog = true;
-                    getEventlogData();
-                    $scope.edit = true;
-                });
-            }
-        }
-    };
-    //Get eventlog data
-    function getEventlogData() {
-        listViewService.getEventlogData().then(function(value){
-            $scope.eventTypeCollection = value;
-        });
-    };
-
-    //populating select view
-    $scope.selectRowCollection = [];
-    $scope.selectRowCollapse = [];
-    //Get All sa profiles and set default according to ip
-    $scope.getSaProfiles = function(ip) {
-        listViewService.getSaProfiles(ip).then(function(value) {
-            $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip);
-            $scope.selectRowCollection = $scope.selectRowCollapse;
-        });
-    };
-    //Get all profiles and populate select view array
-    $scope.getSelectCollection = function (sa, ip) {
-        $scope.selectRowCollapse = listViewService.getProfilesFromIp(sa, ip)
-    };
-    //Getting data for list view
+    //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
     };
     //$scope.getListViewData();
     //$interval(function(){$scope.getListViewData();}, 5000, false);
 
-    //toggle visibility on profiles in select view
-    $scope.showHideAllProfiles = function() {
-        console.log($scope.selectRowCollection)
-        if($scope.selectRowCollection == {} || $scope.profilesCollapse){
-            $scope.profilesCollapse = false;
-        } else{
-            $scope.profilesCollapse = true;
-        }
-    };
     //Creates and shows modal with task information
     $scope.taskInfoModal = function () {
         var modalInstance = $uibModal.open({
@@ -329,31 +264,18 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             scope: $scope,
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
-        });
+        })
         modalInstance.result.then(function (data, $ctrl) {
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-
-    //Executes Create sip on an ip
-    $scope.createSip = function (ip) {
-        $http({
-            method: 'POST',
-            url: ip.url+"create/",
-            data: {validators: vm.validatorModel}
-        })
-        .then(function successCallback(response) {
-            $scope.select = false;
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $timeout(function(){
-                $scope.getListViewData();
-                updateListViewConditional();
-            }, 1000);
-        }), function errorCallback(response){
-            alert(response.status);
-        };
+    $scope.max = 100;
+    //Get data for eventlog view
+    function getEventlogData() {
+        listViewService.getEventlogData().then(function(value){
+            $scope.eventTypeCollection = value;
+        });
     };
     var listViewInterval;
     function updateListViewConditional() {
@@ -361,7 +283,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
+                if(ip.status < 100) {
                     if(ip.step_state != "FAILURE") {
                         updateVar = true;
                     }
@@ -374,7 +296,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 listViewInterval = $interval(function() {
                     var updateVar = false;
                     vm.displayedIps.forEach(function(ip, idx) {
-                        if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
+                        if(ip.status < 100) {
                             if(ip.step_state != "FAILURE") {
                                 updateVar = true;
                             }
@@ -393,114 +315,20 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     updateListViewConditional();
 
     $scope.colspan = 9;
-    //Visibility of status view
+    //visibility of status view
     $scope.statusShow = false;
-    //Visibility of select view
-    $scope.select = false;
-    //Visibility of sub-select view
-    $scope.subSelect = false;
-    //Visibility of edit view
-    $scope.edit = false;
-    //Visibility of status view
-    $scope.eventlog = false;
-    //Visibility of status view
+    //visibility of event view
     $scope.eventShow = false;
-    //Toggle visibility of select view
-    $scope.toggleSelectView = function () {
-        if($scope.select == false){
-            $scope.select = true;
-        } else {
-            $scope.select = false;
-        }
-    };
-    //Toggle visibility of sub select view
-    $scope.toggleSubSelectView = function () {
-        if($scope.subSelect == false){
-            $scope.subSelect = true;
-        } else {
-            $scope.subSelect = false;
-        }
-    };
-    //toggle visibility of edit view
-    $scope.toggleEditView = function () {
-        if($scope.edit == false){
-            $('.edit-view').show();
-            $scope.edit = true;
-            $scope.eventlog = true;
-        } else {
-            $('.edit-view').hide();
-            $scope.edit = false;
-            $scope.eventlog = false;
-        }
-    };
-    //Toggle visibility of eventlog view
-    $scope.toggleEventlogView = function() {
-        if($scope.eventlog == false){
-            $scope.eventlog = true;
-        }else {
-            $scope.eventlog = false;
-        }
-    }
-    //Unlock profile from current IP
-    $scope.unlock = function(profile) {
-        $http({
-            method: 'POST',
-            url: $scope.ip.url + "unlock-profile/",
-            data: {
-                type: profile.active.profile_type
-            }
-        }).then(function(response){
-            profile.locked = false;
-        });
-    }
-    //Change state to prepare-ip
+    //visibility of select view
+    $scope.select = false;
+    //visibility of sub-select view
+    $scope.subSelect = false;
+    //visibility of edit view
+    $scope.edit = false;
+    //visibility of eventlog view
+    $scope.eventlog = false;
     $scope.yes = $translate.instant('YES');
     $scope.no = $translate.instant('NO');
-    vm.validatorModel = {
-
-    };
-    vm.validatorFields = [
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEFILEFORMAT'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
-        },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_file_format",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEXMLFILE'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
-        },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_xml_file",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
-        },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_logical_physical_representation",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEINTEGRITY'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
-        },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_integrity",
-    }
-    ];
     //Create and show modal for remove ip
     $scope.removeIpModal = function (ipObject) {
         var modalInstance = $uibModal.open({
@@ -550,5 +378,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    //UPLOAD
+    $scope.getFlowTarget = function() {
+        return $scope.ip.url + 'upload/';
+    }
 });
-

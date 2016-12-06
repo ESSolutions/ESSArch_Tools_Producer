@@ -116,5 +116,20 @@
     "INPROGRESS": "In progress",
     "SEETRACEBACK": "See traceback",
     "CLOSE": "Close",
-    "EXCEPTION": "Exception"
+    "COLLECTCONTENT": "Collect content",
+    "EXCEPTION": "Exception",
+    "UPLOADFILE": "Upload file",
+    "UPLOADFOLDER": "Upload folder",
+    "DRAGANDDROPFILEHERE": "Drag and drop your file here",
+    "UPLOAD": "Upload",
+    "PAUSE": "Pause",
+    "PROGRESS": "Progress",
+    "PAUSED": "Paused",
+    "UPLOADING": "Uploading",
+    "COMPLETED": "Completed",
+    "SETTINGS": "Settings",
+    "RESUME": "Resume",
+    "RETRY": "Retry",
+    "TOTALSIZE": "Total size",
+    "ISUPLOADING": "Is uploading"
 }

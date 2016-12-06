@@ -1,0 +1,20 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="static/frontend/styles/create_sip_ip_approval.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'"></div>
+        <div ng-if="statusShow || eventShow" class="events-status-wrapper">
+            <div ng-include src="'static/frontend/views/event_table.html'"></div>
+            <div ng-if="statusShow" class="status-view">
+                <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
+            </div>
+        </div>
+        <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
+            <div ng-if="select" class="select-view">
+                <b>Ip: </b>{{ip.Label}}
+                <div ng-include src="'static/frontend/views/file_upload.html'"></div>
+            </div>
+        </div>
+    </div>
+</body>
