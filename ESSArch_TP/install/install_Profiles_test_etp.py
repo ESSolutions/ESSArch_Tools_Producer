@@ -104,7 +104,7 @@ def installIPs():
     installArchivalType()                       # Archival Type
     installArchivalLocation()                   # Archival Location
     """
-    installInformationPackages()                # Information Package
+    # installInformationPackages()                # Information Package
     # installEventIPs()                           # Events
 
     return 0
