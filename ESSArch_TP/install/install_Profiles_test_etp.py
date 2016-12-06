@@ -30,6 +30,7 @@ import os
 import uuid
 
 from django.conf import settings
+from django.contrib.auth.models import User
 
 # own models etc
 from ESSArch_Core.configuration.models import (
@@ -179,12 +180,6 @@ def installSubmissionAgreement():
         ),
         ProfileSA(
             profile=Profile.objects.get(
-                id="550e8400-e29b-41d4a716-446655440012"
-            ),
-            submission_agreement=sa1,
-        ),
-        ProfileSA(
-            profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
             submission_agreement=sa2,
@@ -203,12 +198,6 @@ def installSubmissionAgreement():
         ),
         ProfileSA(
             profile=Profile.objects.get(
-                id="550e8400-e29b-41d4a716-446655440012"
-            ),
-            submission_agreement=sa2,
-        ),
-        ProfileSA(
-            profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440001"
             ),
             submission_agreement=sa3,
@@ -222,12 +211,6 @@ def installSubmissionAgreement():
         ProfileSA(
             profile=Profile.objects.get(
                 id="550e8400-e29b-41d4a716-446655440007"
-            ),
-            submission_agreement=sa3,
-        ),
-        ProfileSA(
-            profile=Profile.objects.get(
-                id="550e8400-e29b-41d4a716-446655440012"
             ),
             submission_agreement=sa3,
         ),
@@ -1617,15 +1600,21 @@ def installInformationPackages():
     lst = [
         {
             'label': 'Arkiv 1',
-            'responsible': 'Freddie Mercury',
+            'responsible': User.objects.get_or_create(
+                username='Freddie Mercury'
+            )[0],
         },
         {
             'label': 'Arkiv 2',
-            'responsible': 'Roger Taylor',
+            'responsible': User.objects.get_or_create(
+                username='Roger Taylor'
+            )[0],
         },
         {
             'label': 'Arkiv 3',
-            'responsible': 'Brian May',
+            'responsible': User.objects.get_or_create(
+                username='Brian May'
+            )[0],
         },
     ]
 
