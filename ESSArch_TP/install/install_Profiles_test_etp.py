@@ -247,11 +247,12 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archivist organization",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "archivist_organization" # Responds to specification data
+                "key": "_SA_ARCHIVIST_ORGANIZATION" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
@@ -475,7 +476,6 @@ def installProfileTransferProject(): # Profile Transfer Project
         'specification': {},
         'specification_data': {
             "archival_institution": "Riksarkivet",
-            "archivist_organization": "Skatteverket",
             "archival_type": "document",
             "archival_location": "sweden-stockholm-nacka",
             "archive_policy": "archive policy 1",
@@ -655,10 +655,11 @@ def installProfileSubmitDescription(): # Profile Submit Description
             {
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "archivist"
+                "key": "_SA_ARCHIVIST_ORGANIZATION"
             },
             {
                 "templateOptions": {
@@ -746,7 +747,6 @@ def installProfileSubmitDescription(): # Profile Submit Description
             "profile": "my profile",
             "startdate": "2016-11-10",
             "enddate": "2016-12-20",
-            "archivist": "the archivist organization",
             "creator": "the creator",
             "submitter_organization": "the submitter organization",
             "submitter_individual": "the submitter individual",
@@ -874,10 +874,11 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "archivist_organization_name"
+                "key": "_SA_ARCHIVIST_ORGANIZATION"
             },
             {
                 "templateOptions": {
@@ -924,7 +925,6 @@ def installProfileSIP(): # Profile Submission Information Package
         'specification_data': {
             "mets_type": "Personnel",
             "mets_profile": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
-            "archivist_organization_name": "Archivist Organization 1",
             "archivist_organization_note": "Archivist Organization 1 Note",
             "creator_organization_name": "Creator Organization 1",
             "creator_organization_note": "Creator Organization 1 Note",

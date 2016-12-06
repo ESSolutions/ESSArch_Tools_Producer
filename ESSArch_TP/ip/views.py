@@ -226,6 +226,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         """
 
         ip = self.get_object()
+        sa = ip.SubmissionAgreement
 
         if ip.State != "Prepared":
             raise ValueError(
@@ -281,9 +282,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         structure = ip.get_profile('sip').structure
 
-        info = ip.get_profile('sip').specification_data
-        info["_OBJID"] = str(ip.pk)
-        info["_OBJLABEL"] = ip.Label
+        info = ip.get_profile('sip').fill_specification_data(sa, ip)
 
         # ensure premis is created before mets
         filesToCreate = OrderedDict()
@@ -691,72 +690,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         sa = ip.SubmissionAgreement
 
-        info = sd_profile.specification_data
-        info["_OBJID"] = str(ip.pk)
-        info["_OBJLABEL"] = str(ip.Label)
+        info = sd_profile.fill_specification_data(sa, ip)
         info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
-        info["_SA_ID"] = str(sa.pk)
-
-        try:
-            info["_PROFILE_TRANSFER_PROJECT_ID"] = str(ip.get_profile('transfer_project').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_SUBMIT_DESCRIPTION_ID"] = str(ip.get_profile('submit_description').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_SIP_ID"] = str(ip.get_profile('sip').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_AIP_ID"] = str(ip.get_profile('aip').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_DIP_ID"] = str(ip.get_profile('dip').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_CONTENT_TYPE_ID"] = str(ip.get_profile('content_type').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_AUTHORITY_INFORMATION_ID"] = str(ip.get_profile('authority_information').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_ARCHIVAL_DESCRIPTION_ID"] = str(ip.get_profile('archival_description').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_PRESERVATION_METADATA_ID"] = str(ip.get_profile('preservation_metadata').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_DATA_SELECTION_ID"] = str(ip.get_profile('data_selection').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_IMPORT_ID"] = str(ip.get_profile('import').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_WORKFLOW_ID"] = str(ip.get_profile('workflow').pk)
-        except AttributeError:
-            pass
-
 
         infoxml = os.path.join(reception, str(ip.pk) + ".xml")
 

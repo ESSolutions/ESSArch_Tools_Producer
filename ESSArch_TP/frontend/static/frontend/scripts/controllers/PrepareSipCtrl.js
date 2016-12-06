@@ -300,7 +300,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         if(ip.profile_transfer_project) {
             $http({
                 method: 'GET',
-                url: ip.profile_transfer_project.profile
+                url: ip.profile_transfer_project.profile,
+                params: {
+                    'ip': ip.id
+                }
             }).then(function(response) {
                 vm.dependencyModel= response.data.specification_data;
                 vm.dependencyFields = response.data.template;
@@ -480,7 +483,10 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         if (ip.profile_submit_description) {
             $http({
                 method: 'GET',
-                url: ip.profile_submit_description.profile
+                url: ip.profile_submit_description.profile,
+                params: {
+                    'ip': ip.id
+                }
             }).then(function(response) {
                 vm.informationModel= response.data.specification_data;
                 vm.informationFields = response.data.template;

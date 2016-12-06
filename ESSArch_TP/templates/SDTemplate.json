@@ -111,7 +111,7 @@
                             "-name": "name",
                             "-namespace": "mets",
                             "-min": 1,
-                            "#content": [{"var":"archivist" }]
+                            "#content": [{"var":"_SA_ARCHIVIST_ORGANIZATION" }]
                         }
                     ]
                 },{

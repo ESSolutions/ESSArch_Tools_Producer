@@ -294,7 +294,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             } else {
                 $http({
                     method: 'GET',
-                    url: row.active.profile
+                    url: row.active.profile,
+                    params: {
+                        'sa': $scope.saProfile.profile.id
+                    }
                 }).then(function(response) {
                     response.data.profile_name = response.data.name;
                     row.active = response.data;
