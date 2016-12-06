@@ -268,13 +268,6 @@ class SubmitSIP(DBTask):
         dst = os.path.join(reception, str(ip.pk) + ".xml")
         shutil.copyfile(src, dst)
 
-        event_profile = ip.get_profile('event')
-        dst = os.path.join(reception, "%s_event_profile.json" % ip.pk)
-
-        with open(dst, "w") as f:
-            json = serializers.serialize('json', [event_profile])
-            f.write(json)
-
         self.set_progress(100, total=100)
 
     def undo(self, ip=None):

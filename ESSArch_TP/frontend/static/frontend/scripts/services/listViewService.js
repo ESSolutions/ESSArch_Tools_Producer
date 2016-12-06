@@ -277,11 +277,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             } else {
                 selectCollapse.push(createProfileObjMinified("preservation_metadata", [], ip, sa));
             }
-            if(ip.profile_event) {
-                selectCollapse.push(createProfileObjMinified("event", [ip.profile_event], ip, sa));
-            } else {
-                selectCollapse.push(createProfileObjMinified("event", [], ip, sa));
-            }
             if(ip.profile_data_selection) {
                 selectCollapse.push(createProfileObjMinified("data_selection", [ip.profile_data_selection], ip, sa));
             } else {
@@ -312,7 +307,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             "authority_information": "Authority information",
             "archival_description": "Archival description",
             "preservation_metadata": "Preservation metadata",
-            "event": "Event",
             "data_selection": "Data selection",
             "import": "Import",
             "workflow": "Workflow"

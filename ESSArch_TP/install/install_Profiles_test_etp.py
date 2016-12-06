@@ -91,7 +91,6 @@ def installProfiles(): # Install all different profiles
     installProfileDIP()				# Profile Dissemination Information Package
     installProfileWorkflow()			# Profile Workflow
     installProfilePreservationMetadata()		# Profile Preservation Metadata
-    installProfileEvent()		        # Profile Event
     installSubmissionAgreement()     		# Submission Agreement
 
     return 0
@@ -1522,61 +1521,6 @@ def installProfilePreservationMetadata(): # Profile Preservation Metadata
 
     #logger.info('Installed Profile PreservationMetadata')
     print 'Installed profile preservation metadata'
-
-    return 0
-
-
-def installProfileEvent(): # Profile Event
-
-    # create profile event dictionaries
-
-    dct = {
-        'id': '550e8400-e29b-41d4a716-446655440012',
-        'name': 'Event profile xx',
-        'profile_type': 'event',
-        'type': 'Implementation',
-        'status': 'Draft',
-        'label': 'Event profile for SIP xxyyzz',
-        'template': [
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Content Location Type"
-                },
-                "type": "input",
-                "key": "contentLocationType"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Event Identifier Type"
-                },
-                "type": "input",
-                "key": "eventIdentifierType"
-            },
-            {
-                "templateOptions": {
-                    "type": "text",
-                    "label": "Linking Agent Identifier Type"
-                },
-                "type": "input",
-                "key": "linkingAgentIdentifierType"
-            },
-        ],
-        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONPremisEventTemplate.json')).read()),
-        'specification_data': {
-            'premis.version': '3.0',
-            'contentLocationType': 'URI',
-            'eventIdentifierType': 'EC',
-            'linkingAgentIdentifierType': 'EC',
-        }
-    }
-
-    # create according to model with many fields
-    Profile.objects.create(**dct)
-
-    #logger.info('Installed Profile Event')
-    print 'Installed profile event'
 
     return 0
 

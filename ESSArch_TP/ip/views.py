@@ -38,6 +38,7 @@ from ESSArch_Core.profiles.models import (
 from ESSArch_Core.util import (
     create_event,
     creation_date,
+    get_event_spec,
     mkdir_p,
     timestamp_to_datetime,
 )
@@ -393,12 +394,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             validate_step.save()
 
-        info = ip.get_profile('event').specification_data
-        info["_OBJID"] = str(ip.pk)
-        info["_OBJLABEL"] = ip.Label
+        info = {
+            "_OBJID": str(ip.pk),
+            "_OBJLABEL": ip.Label
+        }
 
         filesToCreate = OrderedDict()
-        filesToCreate[events_path] = ip.get_profile('event').specification
+        filesToCreate[events_path] = get_event_spec()
 
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
@@ -737,11 +739,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         try:
             info["_PROFILE_PRESERVATION_METADATA_ID"] = str(ip.get_profile('preservation_metadata').pk)
-        except AttributeError:
-            pass
-
-        try:
-            info["_PROFILE_EVENT_ID"] = str(ip.get_profile('event').pk)
         except AttributeError:
             pass
 

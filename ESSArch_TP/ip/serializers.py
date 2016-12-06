@@ -61,7 +61,7 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'transfer_project', 'content_type', 'data_selection',
             'authority_information', 'archival_description',
             'import', 'submit_description', 'sip', 'aip',
-            'dip', 'workflow', 'preservation_metadata', 'event',
+            'dip', 'workflow', 'preservation_metadata',
         ]
 
         for ptype in types:
