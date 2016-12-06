@@ -560,29 +560,6 @@
                     "-namespace": "mets",
                     "#content": [
                         {
-                            "var": "_PROFILE_EVENT_ID"
-                        }
-                    ],
-                    "-attr": [
-                        {
-                            "#content": [
-                                {
-                                    "text": "PROFILE_EVENT"
-                                }
-                            ],
-                            "-name": "TYPE",
-                            "-req": 0
-                        }
-                    ],
-                    "-children": []
-                },
-                {
-                    "-max": -1,
-                    "-min": 1,
-                    "-name": "altRecordID",
-                    "-namespace": "mets",
-                    "#content": [
-                        {
                             "var": "_PROFILE_DATA_SELECTION_ID"
                         }
                     ],
