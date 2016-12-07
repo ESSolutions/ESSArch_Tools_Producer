@@ -77,6 +77,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
+        sa = self.get_object()
         ip_id = request.data.get("ip")
 
         try:
@@ -89,23 +90,11 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        ip_profiles = ProfileIP.objects.filter(
-            ip=ip, included=True, LockedBy=None
-        )
+        if ip.SubmissionAgreement == sa:
+            ip.SubmissionAgreementLocked = True
+            ip.save()
 
-        if not ip_profiles.exists() and ip.SubmissionAgreement:
-            sa_profiles = ProfileSA.objects.filter(
-                submission_agreement=ip.SubmissionAgreement,
-            ).exclude(
-                profile__profile_type__in=ProfileIP.objects.filter(ip=ip).values('profile__profile_type')
-            )
-
-            if not sa_profiles.exists():
-                ip.SubmissionAgreementLocked = True
-                ip.State = "Prepared"
-                ip.save()
-
-                return Response({'status': 'locking submission_agreement'})
+            return Response({'status': 'locking submission_agreement'})
 
         return Response({'status': 'Not allowed to lock SA'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -179,6 +168,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        if not (ip.SubmissionAgreement and ip.SubmissionAgreementLocked):
+            return Response(
+                {'status': 'IP needs a locked SA before locking profile'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         try:
             ProfileIP.objects.get(profile=profile, ip=ip).lock(request.user)
         except ProfileIP.DoesNotExist:
@@ -209,7 +204,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
             step.tasks = [task]
             step.save()
-            step.run()
+            step.run_eagerly()
         elif profile.profile_type == "transfer_project":
             data = profile.specification_data
 
@@ -263,5 +258,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 ip.ArchivalLocation = arch
 
             ip.save()
+
+        non_locked_sa_profiles = ProfileSA.objects.filter(
+            submission_agreement=ip.SubmissionAgreement,
+        ).exclude(
+            profile__profile_type__in=ProfileIP.objects.filter(
+                ip=ip, LockedBy__isnull=False
+            ).values('profile__profile_type')
+        ).exists()
+
+        if not non_locked_sa_profiles:
+            ip.State = "Prepared"
+            ip.save(update_fields=['State'])
 
         return Response({'status': 'locking profile'})

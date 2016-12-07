@@ -373,20 +373,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             alert(response.status);
         });
     };
-    //Check if SA can be locked
-    $scope.canLockSa = function(sa){
-        if(!$scope.selectRowCollapse || $scope.selectRowCollapse == {}) {
-            return false;
-        }
-        var canLock = true;
-        for (var type in $scope.selectRowCollapse){
-            var profile = $scope.selectRowCollapse[type];
-            if (profile.checked && !profile.locked){
-                canLock = false;
-            }
-        }
-        return canLock;
-    };
     //Make a profile "Checked"
     $scope.setCheckedProfile = function(type, checked){
         var uri = $scope.ip.url+"check-profile/";
@@ -1032,6 +1018,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             profile.profiles = result;
         })
     }
+    $scope.showLockAllButton = function(profiles){
+        return profiles.some(function(elem){
+            return elem.checked && !elem.locked;
+        });
+    };
     $scope.lockAllIncludedModal = function (profiles) {
         $scope.profileToSave = profiles;
         var modalInstance = $uibModal.open({

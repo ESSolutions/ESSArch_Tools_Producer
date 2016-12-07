@@ -27,7 +27,7 @@
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="saProfile.locked" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>
-                                        <button ng-if="!saProfile.locked" ng-disabled="!canLockSa() || !saProfile.profile" class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)">{{'LOCKSA' | translate}}</button>
+                                        <button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile" class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)">{{'LOCKSA' | translate}}</button>
                                         <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button">{{'LOCKED' | translate}}</button>
                                         <p class="table-col">{{}}</p></td>
                                     <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
@@ -67,17 +67,17 @@
                                     </ui-select>
                                     </td>
                                     <td>
-                                        <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active" class="btn btn-success btn-sm lock-button" ng-click="lockProfileModal(profile)">{{'LOCKPROFILE' | translate}}</button>
+                                        <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active || !saProfile.locked" class="btn btn-success btn-sm lock-button" ng-click="lockProfileModal(profile)">{{'LOCKPROFILE' | translate}}</button>
                                         <button ng-if="profile.locked" class="btn btn-danger btn-sm lock-button">{{'LOCKED' | translate}}</button>
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot  ng-if="!canLockSa() && saProfile.profile">
+                            <tfoot  ng-if="showLockAllButton(selectRowCollection)">
                                 <tr>
                                     <td colspan="3">
                                     </td>
                                     <td colspan="1">
-                                        <button class="btn btn-success btn-sm" style="width: 95px" ng-click="lockAllIncludedModal(profile)">{{'LOCKALL' | translate}}</button>
+                                        <button class="btn btn-success btn-sm" style="width: 95px" ng-disabled="!saProfile.locked" ng-click="lockAllIncludedModal(profile)">{{'LOCKALL' | translate}}</button>
                                     </td>
                                 </tr>
                             </tfoot>
