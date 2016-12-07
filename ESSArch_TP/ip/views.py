@@ -229,9 +229,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         sa = ip.SubmissionAgreement
         agent = request.user.username or "System"
 
-        if ip.State != "Prepared":
+        if ip.State != "Uploaded":
             raise ValueError(
-                "The IP (%s) is in the state '%s' but should be 'Prepared'" % (pk, ip.State)
+                "The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.State)
             )
 
         validators = request.data.get('validators', {})
