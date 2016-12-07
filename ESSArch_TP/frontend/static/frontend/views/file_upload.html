@@ -17,7 +17,7 @@
     <h4>Transfers:</h4>
 
     <p>
-    <a class="btn btn-small btn-success" ng-click="$flow.resume()">{{'UPLOAD' | translate}}</a>
+    <a class="btn btn-small btn-success" ng-click="$flow.resume();updateListViewTimeout(1000)">{{'UPLOAD' | translate}}</a>
     <a class="btn btn-small btn-danger" ng-click="$flow.pause()">{{'PAUSE' | translate}}</a>
     <a class="btn btn-small btn-info" ng-click="$flow.cancel()">{{'CANCEL' | translate}}</a>
     <div>

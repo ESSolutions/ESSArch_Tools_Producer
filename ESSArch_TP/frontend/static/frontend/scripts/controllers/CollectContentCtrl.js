@@ -389,11 +389,18 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         return {destination: vm.flowDestination};
     };
     $scope.setUploaded = function(ip) {
-        return $http({
+        $http({
             method: 'POST',
             url: ip.url + "set-uploaded/"
         }).then(function(response){
-            return response.data;
+            $timeout(function() {
+                $scope.getListViewData();
+            }, 1000);
         });
     }
+    $scope.updateListViewTimeout = function(timeout) {
+        $timeout(function(){
+            $scope.getListViewDAta();
+        }, timeout);
+    };
 });
