@@ -839,7 +839,13 @@ def installProfileSIP(): # Profile Submission Information Package
                             {
                                 "type": "folder",
                                 "name": "data",
-                                "children": []
+                                "children": [
+                                    {
+                                        "use": "content",
+                                        "type": "file",
+                                        "name": "content"
+                                    }
+                                ]
                             }
                         ]
                     }

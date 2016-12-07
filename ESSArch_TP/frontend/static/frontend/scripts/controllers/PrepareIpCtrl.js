@@ -774,6 +774,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             "type": "text",
             "label": $translate.instant('USE'),
             "options": [
+			    {name: "content", value: "content"},
                 {name: "preservation_description_file", value: "preservation_description_file"},
                 {name: "mets_file", value: "mets_file"},
                 {name: "archival_description_file", value: "archival_description_file"},

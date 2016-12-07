@@ -837,9 +837,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get', 'post'], url_path='upload')
     def upload(self, request, pk=None):
         ip = self.get_object()
+        dst, _ = find_destination('content', ip.get_profile('sip').structure)
+
+        if dst is None:
+            dst = ''
 
         if request.method == 'GET':
-            dst = request.GET.get('destination', '')
             path = os.path.join(dst, request.GET.get('flowRelativePath', ''))
             chunk_nr = request.GET.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
@@ -849,7 +852,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             return HttpResponse(status=204)
 
         if request.method == 'POST':
-            dst = request.data.get('destination', '')
             path = os.path.join(dst, request.data.get('flowRelativePath', ''))
             chunk_nr = request.data.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
