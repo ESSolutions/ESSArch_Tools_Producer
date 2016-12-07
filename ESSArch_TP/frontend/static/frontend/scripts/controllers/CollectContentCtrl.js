@@ -187,7 +187,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
              var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
-             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared").then(function (result) {
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Prepared, Uploading").then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                  $scope.ipLoading = false;
