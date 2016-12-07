@@ -656,13 +656,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Lock a SA
     $scope.lockSa = function(sa) {
         ip = $scope.ip;
-        data = vm.navigationMenuEntriesModel;
-        data.ip = ip.id;
 
         $http({
             method: 'POST',
             url: sa.profile.url+"lock/",
-            data: data
+            data: {
+                ip: ip.id
+            }
         }).then(function (response) {
             console.log("locked");
             sa.locked = true;
@@ -1065,39 +1065,4 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-
-
-    vm.navigationMenuEntriesModel = {
-    };
-    vm.navigationMenuEntriesFields = [
-        {
-            templateOptions: {
-                label: $translate.instant('ARCHIVALINSTITUTION'),
-            },
-            type: "input",
-            key: "archival_institution",
-        },
-        {
-            templateOptions: {
-                label: $translate.instant('ARCHIVISTORGANIZATION'),
-            },
-            type: "input",
-            key: "archivist_organization",
-        },
-        {
-            templateOptions: {
-                label: $translate.instant('ARCHIVALTYPE'),
-            },
-            type: "input",
-            key: "archival_type",
-        },
-        {
-            templateOptions: {
-                label: $translate.instant('ARCHIVALLOCATION'),
-            },
-            type: "input",
-            key: "archival_location",
-        }
-    ];
-
 });

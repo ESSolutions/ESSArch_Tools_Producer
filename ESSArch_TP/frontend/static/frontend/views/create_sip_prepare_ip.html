@@ -15,10 +15,6 @@
                 </div>
                 <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                     <div ng-if="select" class="select-view">
-                        <form ng-if="!saProfile.locked">
-                            <formly-form style="display: flex;" model="vm.navigationMenuEntriesModel" fields="vm.navigationMenuEntriesFields" options="vm.options">
-                            </formly-form>
-                        </form>
                         <div class="sa-table">
                             <table style="margin-top: 20px;" class="table table-striped">
                                 <tr>

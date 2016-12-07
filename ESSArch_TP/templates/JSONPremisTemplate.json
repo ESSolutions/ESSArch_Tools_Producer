@@ -154,7 +154,7 @@
                 {
                     "-name": "agentName",
                     "-namespace": "premis",
-                    "#content": [{"var": "agentname1"}]
+                    "#content": [{"var": "_IP_ARCHIVIST_ORGANIZATION"}]
                 },
                 {
                     "-name": "agentType",

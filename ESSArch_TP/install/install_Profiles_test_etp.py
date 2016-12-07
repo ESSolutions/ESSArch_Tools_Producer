@@ -238,42 +238,38 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
-                    "disabled": True,
                     "label": "Archival institution",
 		            "desc": "xxx",
                },
                "type": "input",
-               "key": "_IP_ARCHIVAL_INSTITUTION" # Responds to specification data
+               "key": "archival_institution" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
-                    "disabled": True,
                     "label": "Archivist organization",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "_SA_ARCHIVIST_ORGANIZATION" # Responds to specification data
+                "key": "archivist_organization" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
-                    "disabled": True,
                     "label": "Archival type",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "_IP_ARCHIVAL_TYPE" # Responds to specification data
+                "key": "archival_type" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
-                    "disabled": True,
                     "label": "Archival location",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "_IP_ARCHIVAL_LOCATION" # Responds to specification data
+                "key": "archival_location" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
@@ -478,6 +474,7 @@ def installProfileTransferProject(): # Profile Transfer Project
         ],
         'specification': {},
         'specification_data': {
+            "archivist_organization": "National Archive xx",
             "archival_institution": "Riksarkivet",
             "archival_type": "document",
             "archival_location": "sweden-stockholm-nacka",
@@ -662,7 +659,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
                     "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "_SA_ARCHIVIST_ORGANIZATION"
+                "key": "_IP_ARCHIVIST_ORGANIZATION"
             },
             {
                 "templateOptions": {
@@ -881,7 +878,7 @@ def installProfileSIP(): # Profile Submission Information Package
                     "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "_SA_ARCHIVIST_ORGANIZATION"
+                "key": "_IP_ARCHIVIST_ORGANIZATION"
             },
             {
                 "templateOptions": {
