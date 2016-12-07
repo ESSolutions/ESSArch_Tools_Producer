@@ -110,10 +110,6 @@ class InformationPackageDetailSerializer(InformationPackageSerializer):
 
 class EventIPSerializer(serializers.HyperlinkedModelSerializer):
     eventDetail = serializers.SlugRelatedField(slug_field='eventDetail', source='eventType', read_only=True)
-    eventOutcomeDetailNote = serializers.SerializerMethodField()
-
-    def get_eventOutcomeDetailNote(self, obj):
-        return obj.getEventOutcomeDetailNote()
 
     class Meta:
         model = EventIP
