@@ -211,10 +211,12 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
+            $scope.eventlog = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
             $scope.select = true;
+            $scope.eventlog = true;
 
         }
         $scope.eventShow = false;
@@ -386,4 +388,12 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
         return {destination: vm.flowDestination};
     };
+    $scope.setUploaded = function(ip) {
+        return $http({
+            method: 'POST',
+            url: ip.url + "set-uploaded/"
+        }).then(function(response){
+            return response.data;
+        });
+    }
 });

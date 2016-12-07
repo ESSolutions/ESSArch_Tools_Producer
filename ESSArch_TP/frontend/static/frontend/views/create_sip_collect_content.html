@@ -15,9 +15,11 @@
                 <b>IP: </b>{{ip.Label}}
                 <div ng-include src="'static/frontend/views/file_upload.html'"></div>
             </div>
+            <div ng-if="eventlog" class="eventlog-view">
+                <form class="eventlog-form" ng-submit="setUploaded(ip)">
+                    <button class="btn btn-info submit-button" type="submit" style="float: right;">Upload done</button>
+                </form>
+            </div>
         </div>
-    </div>
-    <div ng-if="eventlog" class="set-uploaded-wrapper">
-        <button class="btn btn-info btn-sm" ng-click="setUploaded(ip)">Upload done</button>
     </div>
 </body>
