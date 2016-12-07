@@ -281,7 +281,24 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
-            if(!angular.isUndefined(row.active.name)) {
+            if (row.active.name){
+                var profileUrl = row.active.url;
+            } else {
+                var profileUrl = row.active.profile;
+            }
+
+
+            $http({
+                method: 'GET',
+                url: profileUrl,
+                params: {
+                    'sa': $scope.saProfile.profile.id,
+                    'ip': $scope.ip.id
+                }
+            }).then(function(response) {
+                response.data.profile_name = response.data.name;
+                row.active = response.data;
+                row.profiles = [response.data];
                 $scope.selectProfile = row;
                 vm.profileModel = angular.copy(row.active.specification_data);
                 vm.profileFields = row.active.template;
@@ -289,30 +306,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
                 $scope.subSelectProfile = "profile";
                 $scope.eventlog = true;
-                getEventlogData();
                 $scope.edit = true;
-            } else {
-                $http({
-                    method: 'GET',
-                    url: row.active.profile,
-                    params: {
-                        'sa': $scope.saProfile.profile.id,
-                        'ip': $scope.ip.id
-                    }
-                }).then(function(response) {
-                    response.data.profile_name = response.data.name;
-                    row.active = response.data;
-                    row.profiles = [response.data];
-                    $scope.selectProfile = row;
-                    vm.profileModel = angular.copy(row.active.specification_data);
-                    vm.profileFields = row.active.template;
-                    $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
-                    $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
-                    $scope.subSelectProfile = "profile";
-                    $scope.eventlog = true;
-                    $scope.edit = true;
-                });
-            }
+            });
         }
     };
     //Get data for eventlog view
