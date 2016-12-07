@@ -838,7 +838,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
 
         if request.method == 'GET':
-            path = request.GET.get('flowRelativePath')
+            dst = request.GET.get('destination', '')
+            path = os.path.join(dst, request.GET.get('flowRelativePath', ''))
             chunk_nr = request.GET.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
 
@@ -847,7 +848,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             return HttpResponse(status=204)
 
         if request.method == 'POST':
-            path = request.data.get('flowRelativePath')
+            dst = request.data.get('destination', '')
+            path = os.path.join(dst, request.data.get('flowRelativePath', ''))
             chunk_nr = request.data.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
             chunk_path = os.path.join(ip.ObjectPath, chunk_path)

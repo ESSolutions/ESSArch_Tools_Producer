@@ -1,7 +1,7 @@
-<div flow-init="{target: getFlowTarget}">
+<div flow-init="{target: getFlowTarget, query: getQuery}">
     <div>
         <h4>Upload:</h4>
-
+        <input class="form-control" style="margin-bottom: 5px;" ng-model="vm.flowDestination" placeholder="Destination "type="text"></input>
         <span class="btn btn-default" flow-btn><i class="icon icon-file"></i>{{'UPLOADFILE' | translate}}</span>
         <span class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory"><i class="icon icon-folder-open"></i>
             {{'UPLOADFOLDER' | translate}}

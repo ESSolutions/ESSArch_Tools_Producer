@@ -1,5 +1,6 @@
 angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate) {
     var vm = this;
+    vm.flowDestination = null;
     // List view
     //Go to give state
     $scope.changePath= function(path) {
@@ -381,5 +382,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     //UPLOAD
     $scope.getFlowTarget = function() {
         return $scope.ip.url + 'upload/';
-    }
+    };
+    $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
+        return {destination: vm.flowDestination};
+    };
 });
