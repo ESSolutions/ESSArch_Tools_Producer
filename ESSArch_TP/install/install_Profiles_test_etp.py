@@ -644,7 +644,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
                     "type": "text",
                     "label": "Start Date"
                 },
-                "type": "input",
+                "type": "datepicker",
                 "key": "startdate"
             },
             {
@@ -652,7 +652,7 @@ def installProfileSubmitDescription(): # Profile Submit Description
                     "type": "text",
                     "label": "End Date"
                 },
-                "type": "input",
+                "type": "datepicker",
                 "key": "enddate"
             },
             {
