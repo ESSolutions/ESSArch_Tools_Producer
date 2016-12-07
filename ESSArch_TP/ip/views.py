@@ -227,6 +227,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
         sa = ip.SubmissionAgreement
+        agent = request.user.username or "System"
 
         if ip.State != "Prepared":
             raise ValueError(
@@ -266,7 +267,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         event_type = EventType.objects.get(eventType=10200)
 
-        create_event(event_type, 0, "Created SIP", get_versions()['version'], "System", ip=ip)
+        create_event(event_type, 0, "Created SIP", get_versions()['version'], agent, ip=ip)
 
         prepare_path = Path.objects.get(
             entity="path_preingest_prepare"
@@ -899,10 +900,11 @@ class EventIPViewSet(viewsets.ModelViewSet):
 
         eventType = EventType.objects.get(pk=type_id)
         ip = InformationPackage.objects.get(pk=ip_id)
+        agent = request.user.username or "System"
 
         EventIP.objects.create(
             eventOutcome=outcome, eventOutcomeDetailNote=outcomeDetailNote,
             eventType=eventType, linkingObjectIdentifierValue=ip,
-            linkingAgentIdentifierValue="System"
+            linkingAgentIdentifierValue=agent
         )
         return Response({"status": "Created event"})
