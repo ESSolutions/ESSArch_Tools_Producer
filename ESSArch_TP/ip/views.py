@@ -837,6 +837,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get', 'post'], url_path='upload')
     def upload(self, request, pk=None):
         ip = self.get_object()
+        ip.State = "Uploading"
+        ip.save()
         dst, _ = find_destination('content', ip.get_profile('sip').structure)
 
         if dst is None:
@@ -875,6 +877,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         os.remove(chunk_file)
 
             return Response("Uploaded files")
+
+    @detail_route(methods=['post'], url_path='set-uploaded')
+    def set_uploaded(self, request, pk=None):
+        ip = self.get_object()
+        ip.State = "Uploaded"
+        ip.save()
+        return Response()
 
 
 class EventIPViewSet(viewsets.ModelViewSet):
