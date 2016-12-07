@@ -160,8 +160,6 @@ width: 100%;
 .edit-view {
     border-top-style: solid;
     border-color: #666;
-    margin: 5px;
-    padding: 5px;
 }
 .edit-view .btn-danger {
     float: right;

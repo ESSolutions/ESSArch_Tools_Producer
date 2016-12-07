@@ -18,21 +18,21 @@
             <div ng-if="edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="edit" id="edit-veiw" class="edit-view" >
                     <div class="package-information">
-                        <h3>{{'PACKAGEINFORMATION'| translate}}</h3>
+                        <h4>{{'PACKAGEINFORMATION'| translate}}</h4>
                         <form  novalidate>
                             <formly-form model="vm.informationModel" fields="vm.informationFields" options="vm.options">
                             </formly-form>
                         </form>
                     </div>
                     <div class="package-dependencies">
-                        <h3>{{'PACKAGEDEPENDENCIES' | translate}}</h3>
+                        <h4>{{'PACKAGEDEPENDENCIES' | translate}}</h4>
                         <form  novalidate>
                             <formly-form model="vm.dependencyModel" fields="vm.dependencyFields" options="vm.options">
                             </formly-form>
                         </form>
                     </div>
                         <div class="static-form">
-                            <h3>{{'INCLUDEDPROFILES' | translate}}</h3>
+                            <h4>{{'INCLUDEDPROFILES' | translate}}</h4>
                             <form  novalidate>
                                 <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                                 </formly-form>
