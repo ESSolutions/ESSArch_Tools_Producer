@@ -278,6 +278,7 @@ input[type="checkbox"] {
     display: -webkit-flex;
     flex-direction: row;
     -webkit-flex-direction: row;
+    height: 70px;
 }
 .validator-choices .formly select {
     width: 170px;
