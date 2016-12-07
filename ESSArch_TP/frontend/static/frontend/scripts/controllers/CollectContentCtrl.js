@@ -400,7 +400,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     }
     $scope.updateListViewTimeout = function(timeout) {
         $timeout(function(){
-            $scope.getListViewDAta();
+            $scope.getListViewData();
         }, timeout);
     };
 });
