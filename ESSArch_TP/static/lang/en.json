@@ -108,6 +108,8 @@
     "DOYOUWANTTOLOCKINCLUDED": "Do you want to lock all included profiles",
     "ARCHIVISTORGANIZATION": "Archivist organization",
     "ARCHIVALINSTITUTION": "Archival institution",
+    "ARCHIVALTYPE": "Archival type",
+    "ARCHIVALLOCATION": "Archival location",
     "OUTCOME": "Outcome",
     "LOCKALL": "Lock all",
     "AGENT": "Agent",

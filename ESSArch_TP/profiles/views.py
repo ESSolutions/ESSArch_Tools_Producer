@@ -92,6 +92,58 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
         if ip.SubmissionAgreement == sa:
             ip.SubmissionAgreementLocked = True
+
+            archival_institution = request.data.get("archival_institution")
+            archivist_organization = request.data.get("archivist_organization")
+            archival_type = request.data.get("archival_type")
+            archival_location = request.data.get("archival_location")
+
+            if archival_institution:
+                try:
+                    (arch, _) = ArchivalInstitution.objects.get_or_create(
+                        name=archival_institution
+                    )
+                except IntegrityError:
+                    arch = ArchivalInstitution.objects.get(
+                        name=archival_institution
+                    )
+                ip.ArchivalInstitution = arch
+
+            if archivist_organization:
+                try:
+                    (arch, _) = ArchivistOrganization.objects.get_or_create(
+                        name=archivist_organization
+                    )
+                except IntegrityError:
+                    arch = ArchivistOrganization.objects.get(
+                        name=archivist_organization
+                    )
+                ip.ArchivistOrganization = arch
+                sa.sa_archivist_organization = arch.name
+                sa.save()
+
+            if archival_type:
+                try:
+                    (arch, _) = ArchivalType.objects.get_or_create(
+                        name=archival_type
+                    )
+                except IntegrityError:
+                    arch = ArchivalType.objects.get(
+                        name=archival_type
+                    )
+                ip.ArchivalType = arch
+
+            if archival_location:
+                try:
+                    (arch, _) = ArchivalLocation.objects.get_or_create(
+                        name=archival_location
+                    )
+                except IntegrityError:
+                    arch = ArchivalLocation.objects.get(
+                        name=archival_location
+                    )
+                ip.ArchivalLocation = arch
+
             ip.save()
 
             return Response({'status': 'locking submission_agreement'})
@@ -205,59 +257,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
             step.tasks = [task]
             step.save()
             step.run_eagerly()
-        elif profile.profile_type == "transfer_project":
-            data = profile.specification_data
-
-            archival_institution = data.get("archival_institution")
-            archivist_organization = data.get("archivist_organization")
-            archival_type = data.get("archival_type")
-            archival_location = data.get("archival_location")
-
-            if archival_institution:
-                try:
-                    (arch, _) = ArchivalInstitution.objects.get_or_create(
-                        name = archival_institution
-                    )
-                except IntegrityError:
-                    arch = ArchivalInstitution.objects.get(
-                        name = archival_institution
-                    )
-                ip.ArchivalInstitution = arch
-
-            if archivist_organization:
-                try:
-                    (arch, _) = ArchivistOrganization.objects.get_or_create(
-                        name = archivist_organization
-                    )
-                except IntegrityError:
-                    arch = ArchivistOrganization.objects.get(
-                        name = archivist_organization
-                    )
-                ip.ArchivistOrganization = arch
-
-            if archival_type:
-                try:
-                    (arch, _) = ArchivalType.objects.get_or_create(
-                        name = archival_type
-                    )
-                except IntegrityError:
-                    arch = ArchivalType.objects.get(
-                        name = archival_type
-                    )
-                ip.ArchivalType = arch
-
-            if archival_location:
-                try:
-                    (arch, _) = ArchivalLocation.objects.get_or_create(
-                        name = archival_location
-                    )
-                except IntegrityError:
-                    arch = ArchivalLocation.objects.get(
-                        name = archival_location
-                    )
-                ip.ArchivalLocation = arch
-
-            ip.save()
 
         non_locked_sa_profiles = ProfileSA.objects.filter(
             submission_agreement=ip.SubmissionAgreement,

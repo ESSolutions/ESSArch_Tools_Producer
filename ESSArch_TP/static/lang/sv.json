@@ -108,6 +108,8 @@
     "DOYOUWANTTOLOCKINCLUDED": "Vill du låsa alla inkluderade profiler",
     "ARCHIVISTORGANIZATION": "Arkivorganisation",
     "ARCHIVALINSTITUTION": "Arkivinstitution",
+    "ARCHIVALTYPE": "Arkivtyp",
+    "ARCHIVALLOCATION": "Arkivplats",
     "OUTCOME": "Resultat",
     "LOCKALL": "Lås alla",
     "AGENT": "Agent",

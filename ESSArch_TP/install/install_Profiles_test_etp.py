@@ -238,11 +238,12 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archival institution",
 		            "desc": "xxx",
                },
                "type": "input",
-               "key": "archival_institution" # Responds to specification data
+               "key": "_IP_ARCHIVAL_INSTITUTION" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
@@ -257,20 +258,22 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archival type",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "archival_type" # Responds to specification data
+                "key": "_IP_ARCHIVAL_TYPE" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
+                    "disabled": True,
                     "label": "Archival location",
                     "desc": "xxx",
                 },
                 "type": "input",
-                "key": "archival_location" # Responds to specification data
+                "key": "_IP_ARCHIVAL_LOCATION" # Responds to specification data
             }, {
                 "hideExpression": "False",
                 "templateOptions": {

@@ -15,6 +15,10 @@
                 </div>
                 <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
                     <div ng-if="select" class="select-view">
+                        <form ng-if="!saProfile.locked">
+                            <formly-form style="display: flex;" model="vm.navigationMenuEntriesModel" fields="vm.navigationMenuEntriesFields" options="vm.options">
+                            </formly-form>
+                        </form>
                         <div class="sa-table">
                             <table style="margin-top: 20px;" class="table table-striped">
                                 <tr>
@@ -55,8 +59,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a ng-if="!profile.locked && profile.active && profile.checked" class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{profile.type_label}}</a>
-                                        <p ng-if="profile.locked || !profile.checked" class="table-col">{{profile.type_label}}</p>
+                                        <a ng-if="!profile.locked && profile.active && profile.checked && saProfile.locked" class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{profile.type_label}}</a>
+                                        <p ng-if="profile.locked || !profile.checked || !saProfile.locked" class="table-col">{{profile.type_label}}</p>
                                     </td>
                                     <td><!--<select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.profile_name for x in profile.profiles" ng-change="changeProfile(profile.active)" ng-focus="getProfiles(profile)" data-ng-attr-size="{{profile.profiles.length}}"></select>-->
                                         <ui-select ng-change="changeProfile($select.selected, profile)" ng-click="getProfiles(profile)" ng-model="profile.active" theme="bootstrap" ng-disabled="profile.locked" style="min-width: 300px;">
