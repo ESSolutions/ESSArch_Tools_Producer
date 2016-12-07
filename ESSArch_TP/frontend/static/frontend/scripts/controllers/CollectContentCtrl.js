@@ -394,6 +394,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             url: ip.url + "set-uploaded/"
         }).then(function(response){
             $timeout(function() {
+                $scope.eventlog = false;
+                $scope.select = false;
                 $scope.getListViewData();
             }, 1000);
         });
