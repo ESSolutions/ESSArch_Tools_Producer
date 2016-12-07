@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow'])
+angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'moment-picker'])
     .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider) {
         $stateProvider
             .state('home', {
@@ -316,10 +316,102 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         console.log(status);
     });
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
-      if (to.redirectTo) {
-        evt.preventDefault();
-        $state.go(to.redirectTo, params, {location: 'replace'})
-      }
+        if (to.redirectTo) {
+            evt.preventDefault();
+            $state.go(to.redirectTo, params, {location: 'replace'})
+        }
     });
 
+}).run(function(formlyConfig){
+    var ngModelAttrs = {};
+
+    var attributes = [
+        'ng-model',
+        'min-date',
+        'max-date',
+        'date-disabled',
+        'day-format',
+        'month-format',
+        'year-format',
+        'year-range',
+        'day-header-format',
+        'day-title-format',
+        'month-title-format',
+        'date-format',
+        'date-options',
+        'hour-step',
+        'minute-step',
+        'show-meridian',
+        'meridians',
+        'readonly-time',
+        'readonly-date',
+        'hidden-time',
+        'hidden-date',
+        'mousewheel',
+        'show-spinners',
+        'current-text',
+        'clear-text',
+        'close-text'
+            ];
+
+    var bindings = [
+        'ng-model',
+        'min-date',
+        'max-date',
+        'date-disabled',
+        'day-format',
+        'month-format',
+        'year-format',
+        'year-range',
+        'day-header-format',
+        'day-title-format',
+        'month-title-format',
+        'date-format',
+        'date-options',
+        'hour-step',
+        'minute-step',
+        'show-meridian',
+        'readonly-time',
+        'readonly-date',
+        'hidden-time',
+        'hidden-date'
+            ];
+
+    angular.forEach(attributes, function(attr) {
+        ngModelAttrs[camelize(attr)] = {
+            attribute: attr
+        };
+    });
+
+    angular.forEach(bindings, function(binding) {
+        ngModelAttrs[camelize(binding)] = {
+            bound: binding
+        };
+    });
+
+    function camelize(string) {
+        string = string.replace(/[\-_\s]+(.)?/g,
+
+                function(match, chr) {
+                    return chr ? chr.toUpperCase() : '';
+                });
+        // Ensure 1st char is always lowercase
+        return string.replace(/^([A-Z])/, function(match, chr) {
+            return chr ? chr.toLowerCase() : '';
+        });
+    }
+
+    formlyConfig.setType({
+        name: 'datepicker',
+        //template: '<input class="form-control" ng-model="ctrl.input" ng-model-options="{ updateOn: \'blur\' }" placeholder="Select a date..." moment-picker="ctrl.input">',
+        templateUrl: "static/frontend/views/datepicker_template.html",// '<br><datetimepicker ng-model="model[options.key]" show-spinners="true" date-format="M/d/yyyy" date-options="dateOptions" show-meridian="false"></datetimepicker>',
+        wrapper: ['bootstrapLabel'],
+        defaultOptions: {
+            ngModelAttrs: ngModelAttrs,
+            templateOptions: {
+                label: 'Time'
+            }
+        }
+    });
+    moment.locale('sv');
 });

@@ -1,0 +1,13 @@
+<div class="input-group"
+     moment-picker="model[options.key]"
+     format="YYYY-MM-DD"
+     locale="sv"
+     start-view="decade">
+    <span class="input-group-addon">
+        <i class="glyphicon glyphicon-calendar"></i>
+    </span>
+    <input class="form-control"
+           placeholder="Select a date"
+           ng-model="model[options.key]"
+           ng-model-options="{ updateOn: 'blur' }">
+</div>

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter){
     var vm = this;
     $scope.tree_data = [];
     $scope.angular = angular;
@@ -457,7 +457,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     $scope.yes = $translate.instant('YES');
     $scope.no = $translate.instant('NO');
     vm.validatorModel = {
-
     };
     vm.validatorFields = [
     {
@@ -549,6 +548,14 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
+    }
+    // Datetimepicker
+    $scope.formatDate = function(date) {
+        console.log(moment().utc());
+        date = date+" utc";
+        console.log(moment(date).utc());
+        console.log(moment(date).utc().format());
+        console.log(vm.validatorModel);
     }
 });
 
