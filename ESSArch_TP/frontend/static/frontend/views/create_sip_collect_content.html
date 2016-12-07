@@ -12,9 +12,12 @@
         </div>
         <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
             <div ng-if="select" class="select-view">
-                <b>Ip: </b>{{ip.Label}}
+                <b>IP: </b>{{ip.Label}}
                 <div ng-include src="'static/frontend/views/file_upload.html'"></div>
             </div>
         </div>
+    </div>
+    <div ng-if="eventlog" class="set-uploaded-wrapper">
+        <button class="btn btn-info btn-sm" ng-click="setUploaded(ip)">Upload done</button>
     </div>
 </body>

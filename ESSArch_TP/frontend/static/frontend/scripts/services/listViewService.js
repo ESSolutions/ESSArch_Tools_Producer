@@ -247,6 +247,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             } else {
                 selectCollapse.push(createProfileObjMinified("sip", [], ip, sa));
             }
+            /*
             if(ip.profile_aip) {
                 selectCollapse.push(createProfileObjMinified("aip", [ip.profile_aip], ip, sa));
             } else {
@@ -291,7 +292,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 selectCollapse.push(createProfileObjMinified("workflow", [ip.profile_workflow], ip, sa));
             } else {
                 selectCollapse.push(createProfileObjMinified("workflow", [], ip, sa));
-            }
+            }*/
             return selectCollapse;
         }
     }

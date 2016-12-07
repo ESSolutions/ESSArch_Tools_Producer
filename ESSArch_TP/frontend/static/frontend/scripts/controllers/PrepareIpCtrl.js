@@ -450,9 +450,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             var profileType = 'profile_' + $scope.profileToSave.profile_type;
             var newProfile = response.data;
             newProfile.profile_name = newProfile.name;
-            $scope.ip[profileType] = newProfile;
-            $scope.getSelectCollection($scope.saProfile.profile, $scope.ip);
-            $scope.selectRowCollection = $scope.selectRowCollapse;
+            listViewService.getIp($scope.ip.url).then(function(result) {
+                $scope.getSelectCollection($scope.saProfile.profile, result);
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            });
             $scope.edit = false;
             $scope.eventlog = false;
         }, function(response) {
