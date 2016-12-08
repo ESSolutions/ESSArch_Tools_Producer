@@ -39,6 +39,7 @@ from ESSArch_Core.util import (
     create_event,
     creation_date,
     get_event_spec,
+    get_files_and_dirs,
     mkdir_p,
     timestamp_to_datetime,
 )
@@ -212,6 +213,23 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         )
         serializer.is_valid()
         return Response(serializer.data)
+
+    @detail_route()
+    def files(self, request, pk=None):
+        ip = self.get_object()
+        entries = []
+        path = os.path.join(ip.ObjectPath, request.query_params.get('path', ''))
+
+        for entry in get_files_and_dirs(path):
+            entry_type = "dir" if entry.is_dir() else "file"
+            entries.append(
+                {
+                    "name": os.path.basename(entry.path),
+                    "type": entry_type
+                }
+            )
+
+        return Response(entries)
 
     @detail_route(methods=['post'], url_path='create')
     def create_ip(self, request, pk=None):
