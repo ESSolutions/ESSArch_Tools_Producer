@@ -133,5 +133,6 @@
     "RESUME": "Resume",
     "RETRY": "Retry",
     "TOTALSIZE": "Total size",
+    "COMPLETEDUPLOADING": "Completed uploading",
     "ISUPLOADING": "Is uploading"
 }

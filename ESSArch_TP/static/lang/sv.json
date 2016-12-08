@@ -133,5 +133,6 @@
     "RESUME": "Återuppta",
     "RETRY": "försök igen",
     "TOTALSIZE": "total storlek",
+    "COMPLETEDUPLOADING": "Färdig med upladdning",
     "ISUPLOADING": "Laddas upp"
 }

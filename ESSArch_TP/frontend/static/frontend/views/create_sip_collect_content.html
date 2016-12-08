@@ -17,7 +17,12 @@
             </div>
             <div ng-if="eventlog" class="eventlog-view">
                 <form class="eventlog-form" ng-submit="setUploaded(ip)">
-                    <button class="btn btn-info submit-button" type="submit" style="float: right;">{{'DONE' | translate}}</button>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkBox" ng-model="completedUploading">{{'COMPLETEDUPLOADING' | translate}}</input>
+                        </label>
+                    </div>
+                    <button class="btn btn-info submit-button" ng-disabled="!completedUploading" type="submit" style="float: right;">{{'DONE' | translate}}</button>
                 </form>
             </div>
         </div>
