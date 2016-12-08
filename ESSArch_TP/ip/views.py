@@ -876,6 +876,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         f.write(open(chunk_file).read())
                         os.remove(chunk_file)
 
+                event_type = EventType.objects.get(eventType=10120)
+                agent = request.user.username or "System"
+                create_event(
+                    event_type, 0, "Uploaded %s" % path,
+                    get_versions()['version'], agent, ip=ip
+                )
+
             return Response("Uploaded files")
 
     @detail_route(methods=['post'], url_path='set-uploaded')

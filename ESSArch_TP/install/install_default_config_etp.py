@@ -199,6 +199,7 @@ def installDefaultEventTypes(): # default events
       'Prepare IP':'10100',
       'Create IP root directory': '10110',
       'Create physical model': '10115',
+      'Upload file': '10120',
       'Create SIP':'10200',
       'Calculate checksum ': '10210',
       'Identify format': '10220',
