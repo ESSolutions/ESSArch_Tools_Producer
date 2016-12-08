@@ -215,6 +215,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
+            $scope.deckGridInit($scope.ip);
             $scope.select = true;
             $scope.eventlog = true;
 
@@ -404,5 +405,43 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         $timeout(function(){
             $scope.getListViewData();
         }, timeout);
+    };
+    //Deckgrid test
+    $scope.previousGridArrays = [];
+    $scope.previousGridArraysString = function() {
+        var retString = "";
+        $scope.previousGridArrays.forEach(function(card) {
+            retString = retString.concat(card.name, "/");
+        });
+        return retString;
+    }
+    $scope.deckGridData = [];
+    $scope.deckGridInit = function(ip) {
+        listViewService.getDir(ip, null).then(function(dir) {
+            $scope.deckGridData = dir;
+            console.log(dir);
+        });
+    };
+    $scope.previousGridArray = function() {
+        $scope.previousGridArrays.pop();
+        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
+            console.log($scope.previousGridArraysString());
+            $scope.deckGridData = dir;
+        });
+    };
+    $scope.updateGridArray = function(ip) {
+        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
+            console.log($scope.previousGridArraysString());
+            $scope.deckGridData = dir;
+        });
+    };
+    $scope.expandFile = function(ip, card) {
+        if(card.type == "dir"){
+            $scope.previousGridArrays.push(card);
+            listViewService.getDir(ip,$scope.previousGridArraysString()).then(function(dir) {
+                console.log($scope.previousGridArraysString());
+                $scope.deckGridData = dir;
+            });
+        }
     };
 });

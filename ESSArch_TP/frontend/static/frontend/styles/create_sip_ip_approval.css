@@ -289,3 +289,56 @@ input[type="checkbox"] {
     border-bottom-style: solid;
     border-color: #666;
 }
+/*DECKGRID TEST*/
+.deckgrid {
+    margin:100px auto;
+    padding:10px;
+    width:1000px;
+}
+
+.deckgrid[deckgrid]::before {
+    content: '5 .column.size-1-5';
+    font-size: 0;
+    visibility:hidden;
+}
+
+.deckgrid .column {
+    float:left;
+}
+
+.card {
+    background:#fff center 30px no-repeat;
+    margin:0 2px 2px 0;
+    position:relative;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    width: 84px;
+    margin: 5px;
+}
+.card p {
+    word-wrap: break-word;
+    font-size: 9pt;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card .file {
+    text-align: center;
+}
+.card .folder {
+    text-align: center;
+}
+
+
+.card .card-index {
+    background:rgba(0, 0, 0, .9);
+    color:#fff;
+    position:absolute;
+    height:100%;
+    text-align:center;
+    width:100%;
+    z-index:99;
+}

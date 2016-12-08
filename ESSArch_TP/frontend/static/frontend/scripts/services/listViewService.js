@@ -359,6 +359,21 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             return array;
         });
     }
+
+    function getDir(ip, pathStr) {
+        if(pathStr == "") {
+            sendData = {};
+        } else {
+            sendData = {path: pathStr};
+        }
+        return $http({
+            method: 'GET',
+            url: ip.url + "files/",
+            params: sendData
+        }).then(function(response) {
+            return response.data;
+        });
+    }
     /*******************/
     /*HELPER FUNCTIONS*/
     /*****************/
@@ -486,6 +501,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getProfilesFromIp: getProfilesFromIp,
         getProfiles: getProfiles,
         getProfilesMin: getProfilesMin,
+        getDir: getDir,
     };
 
 });

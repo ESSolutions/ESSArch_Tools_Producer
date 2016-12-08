@@ -1,0 +1,9 @@
+<div class="card clickable" ng-click="mother.expandFile(mother.ip, card)">
+    <div ng-class="card.type" ng-if="card.type == 'file'">
+        <li class="fa fa-file-o fa-3x"></li>
+    </div>
+    <div ng-class="card.type" ng-if="card.type == 'dir'">
+        <li class="fa fa-folder-o fa-3x"></li>
+    </div>
+    <p>{{card.name}}</p>
+</div>
