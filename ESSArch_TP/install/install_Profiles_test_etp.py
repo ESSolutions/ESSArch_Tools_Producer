@@ -273,6 +273,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Archive Policy",
                     "desc": "xxx",
@@ -292,6 +293,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Container format compression",
                     "desc": "xxx",
@@ -311,6 +313,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission reception validation",
                     "desc": "xxx",
@@ -320,6 +323,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission reception exception handling",
                     "desc": "xxx",
@@ -329,6 +333,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission reception receipt confirmation",
                     "desc": "xxx",
@@ -338,6 +343,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission risk",
                     "desc": "xxx",
@@ -347,6 +353,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission mitigation",
                     "desc": "xxx",
@@ -356,6 +363,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Information package file",
                     "desc": "xxx",
@@ -365,6 +373,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submission information package file",
                     "desc": "xxx",
@@ -374,6 +383,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Archival information package file",
                     "desc": "xxx",
@@ -383,6 +393,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Dissemination information package file",
                     "desc": "xxx",
@@ -392,6 +403,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Submit description file",
                     "desc": "xxx",
@@ -401,6 +413,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Content type specification file",
                     "desc": "xxx",
@@ -410,6 +423,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Archival description file",
                     "desc": "xxx",
@@ -419,6 +433,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Authority information file",
                     "desc": "xxx",
@@ -428,6 +443,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Preservation description file",
                     "desc": "xxx",
@@ -437,6 +453,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "IP event description file",
                     "desc": "xxx",
@@ -446,6 +463,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Mimetypes definition file",
                     "desc": "xxx",
@@ -455,6 +473,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Preservation organization receiver email",
                     "desc": "xxx",
@@ -464,6 +483,7 @@ def installProfileTransferProject(): # Profile Transfer Project
             }, {
                 "hideExpression": "False",
                 "templateOptions": {
+                    "disabled": True,
                     "type": "text",
                     "label": "Preservation organization receiver url",
                     "desc": "xxx",
