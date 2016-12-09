@@ -450,4 +450,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.selectedCard = card;
         }
     };
+    $scope.fileTransferFilter = function(file)
+    {
+        return file.isUploading();
+    };
 });

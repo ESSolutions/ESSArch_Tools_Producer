@@ -16,56 +16,37 @@
         </p>
     </div>
 
-    <h4>{{'TRANSFERS' | translate}}:</h4>
+    <div flow-transfers>
+        <div ng-if="transfers.length">
+            <h4>{{'TRANSFERS' | translate}}:</h4>
 
-    <p>
-    <a class="btn btn-small btn-success" ng-click="$flow.resume();updateListViewTimeout(1000)">{{'UPLOAD' | translate}}</a>
-    <a class="btn btn-small btn-danger" ng-click="$flow.pause()">{{'PAUSE' | translate}}</a>
-    <a class="btn btn-small btn-info" ng-click="$flow.cancel()">{{'CANCEL' | translate}}</a>
-    <div>
-        <span class="label label-info">{{'TOTALSIZE' | translate}}: {{$flow.getSize()}}</span>
-        <span class="label label-info">{{'ISUPLOADING' | translate}}: {{$flow.isUploading()}}</span>
+            <p>
+            <a class="btn btn-small btn-success" ng-click="$flow.resume();updateListViewTimeout(1000)">{{'UPLOAD' | translate}}</a>
+            <a class="btn btn-small btn-danger" ng-click="$flow.pause()">{{'PAUSE' | translate}}</a>
+            <a class="btn btn-small btn-info" ng-click="$flow.cancel()">{{'CANCEL' | translate}}</a>
+            <div>
+                <span class="label label-info">{{'TOTALSIZE' | translate}}: {{$flow.getSize()}}</span>
+                <span class="label label-info">{{'ISUPLOADING' | translate}}: {{$flow.isUploading()}}</span>
+            </div>
+            </p>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>{{'PATH' | translate}}</th>
+                        <th>{{'SIZE' | translate}}</th>
+                        <th>{{'PROGRESS' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="file in transfers | filter: fileTransferFilter">
+                        <td style="width: 33%;">{{file.relativePath}}</td>
+                        <td>{{file.size}}</td>
+                        <td>
+                            <uib-progressbar class="progress" value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    </p>
-    <table class="table table-hover table-bordered table-striped" flow-transfers>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>{{'PATH' | translate}}</th>
-                <th>{{'SIZE' | translate}}</th>
-                <th>{{'PROGRESS' | translate}}</th>
-                <th>{{'PAUSED' | translate}}</th>
-                <th>{{'UPLOADING' | translate}}</th>
-                <th>{{'COMPLETED' | translate}}</th>
-                <th>{{'SETTINGS' | translate}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="file in transfers">
-                <td>{{$index+1}}</td>
-                <td style="width: 33%;">{{file.relativePath}}</td>
-                <td>{{file.size}}</td>
-                <td>{{file.progress()}}</td>
-                <td>{{file.paused}}</td>
-                <td>{{file.isUploading()}}</td>
-                <td>{{file.isComplete()}}</td>
-                <td>
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-warning" ng-click="file.pause()" ng-hide="file.paused">
-                            {{'PAUSE' | translate}}
-                        </a>
-                        <a class="btn btn-mini btn-warning" ng-click="file.resume()" ng-show="file.paused">
-                            {{'RESUME' | translate}}
-                        </a>
-                        <a class="btn btn-mini btn-danger" ng-click="file.cancel()">
-                            {{'CANCEL' | translate}}
-                        </a>
-                        <a class="btn btn-mini btn-info" ng-click="file.retry()" ng-show="file.error">
-                            {{'RETRY' | translate}}
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>
