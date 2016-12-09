@@ -302,21 +302,6 @@ input[type="checkbox"] {
     height: 400px;
 
 }
-.grid-info-wrapper {
-    display: flex;
-    display: -webkit-flex;
-    flex-direction: row;
-    -webkit-flex-direction: row;
-}
-.card-info {
-    margin: 10px;
-    padding: 5px;
-    width: 25%;
-    min-height: 300px;
-    border-style: solid;
-    border-color: #bbb;
-
-}
 .file-explorer-nav {
     display: flex;
     display: -webkit-flex;
