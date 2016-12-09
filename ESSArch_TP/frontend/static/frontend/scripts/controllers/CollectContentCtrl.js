@@ -440,7 +440,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         if(card.type == "dir"){
             $scope.previousGridArrays.push(card);
             listViewService.getDir(ip,$scope.previousGridArraysString()).then(function(dir) {
-                console.log($scope.previousGridArraysString());
                 $scope.deckGridData = dir;
                 $scope.selectedCard = null;
             });
