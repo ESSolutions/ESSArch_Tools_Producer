@@ -1,6 +1,7 @@
 from _version import get_versions
 
 from collections import OrderedDict
+from operator import itemgetter
 
 import errno, glob, os, shutil
 
@@ -229,7 +230,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 }
             )
 
-        return Response(entries)
+        sorted_entries = sorted(entries, key=itemgetter('name'))
+        return Response(sorted_entries)
 
     @detail_route(methods=['post'], url_path='create')
     def create_ip(self, request, pk=None):
