@@ -28,8 +28,7 @@ var vendorFiles = [
         'scripts/bower_components/angular-ui-select/dist/select.min.js',
         'scripts/bower_components/ng-flow/dist/ng-flow-standalone.min.js',
         'node_modules/moment/min/moment-with-locales.min.js',
-        'scripts/bower_components/angular-moment-picker/dist/angular-moment-picker.min.js',
-        'scripts/bower_components/angular-deckgrid/angular-deckgrid.js'
+        'scripts/bower_components/angular-moment-picker/dist/angular-moment-picker.min.js'
     ],
     jsFiles = [
         'scripts/myApp.js', 'scripts/controllers/*.js', 'scripts/services/*.js',

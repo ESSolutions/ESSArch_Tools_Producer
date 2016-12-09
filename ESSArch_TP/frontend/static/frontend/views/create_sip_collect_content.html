@@ -18,7 +18,11 @@
                         <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
                         <b class="dir-path">{{ip.id + '/' + previousGridArraysString()}}</b>
                     </div>
-                    <div deckgrid source="deckGridData" cardTemplate="static/frontend/views/deckgrid_card.html" class="deckgrid"></div>
+                    <div class="deckgrid">
+                        <div class="flex-grid">
+                            <div class="card" ng-repeat="card in deckGridData" ng-include src="'static/frontend/views/deckgrid_card.html'"></div>
+                        </div>
+                    </div>
                 </div>
                 <div ng-include src="'static/frontend/views/file_upload.html'"></div>
             </div>

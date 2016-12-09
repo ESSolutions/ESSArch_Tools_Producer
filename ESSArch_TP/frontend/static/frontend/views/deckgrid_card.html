@@ -1,5 +1,5 @@
-<div class="card clickable">
-    <div class="clickable" ng-dblClick="mother.expandFile(mother.ip, card)" ng-class="{'card-selected': card == mother.selectedCard}"ng-click="mother.toggleCardSelect(card)">
+<div class="clickable">
+    <div class="clickable" ng-dblClick="expandFile(ip, card)" ng-class="{'card-selected': card == selectedCard}"ng-click="toggleCardSelect(card)">
         <div ng-class="card.type" ng-if="card.type == 'file'">
             <li class="fa fa-file-o fa-3x"></li>
         </div>
