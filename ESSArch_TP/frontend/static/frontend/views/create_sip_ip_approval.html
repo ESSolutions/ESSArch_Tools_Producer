@@ -25,7 +25,7 @@
                             </td>
                             <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                             <td><p class="table-col">{{}}</p>
-                                <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa">{{'LOCKED' | translate}}</button>
+                                <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                             </td>
                             <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
                         </tr>
@@ -67,7 +67,7 @@
                                     </ui-select>
                                 </td>
                                 <td>
-                                    <button ng-if="profile.locked && ip.State == 'Prepared'" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)">{{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked && ip.State == 'Uploaded'" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
                                 </td>
                             </tr>
                         </tbody>
