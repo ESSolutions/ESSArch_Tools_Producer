@@ -134,5 +134,6 @@
     "RETRY": "Retry",
     "TOTALSIZE": "Total size",
     "COMPLETEDUPLOADING": "Completed uploading",
+    "TRANSFERS": "Transfers",
     "ISUPLOADING": "Is uploading"
 }
