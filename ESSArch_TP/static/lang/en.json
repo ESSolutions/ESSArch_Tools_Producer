@@ -135,5 +135,8 @@
     "TOTALSIZE": "Total size",
     "COMPLETEDUPLOADING": "Completed uploading",
     "TRANSFERS": "Transfers",
+    "CHOOSEFILES": "Choose files",
+    "CHOOSEFOLDER": "Choose folder",
+    "FILES": "File(s)",
     "ISUPLOADING": "Is uploading"
 }

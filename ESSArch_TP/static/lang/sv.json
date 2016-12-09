@@ -132,8 +132,11 @@
     "SETTINGS": "Inställningar",
     "RESUME": "Återuppta",
     "RETRY": "försök igen",
-    "TOTALSIZE": "total storlek",
+    "TOTALSIZE": "Total storlek",
     "COMPLETEDUPLOADING": "Färdig med uppladdning",
     "TRANSFERS": "Överföringar",
+    "CHOOSEFILES": "Välj filer",
+    "CHOOSEFOLDER": "Välj mapp",
+    "FILES": "Fil(er)",
     "ISUPLOADING": "Laddas upp"
 }
