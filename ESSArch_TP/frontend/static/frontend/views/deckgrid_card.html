@@ -1,9 +1,11 @@
-<div class="card clickable" ng-click="mother.expandFile(mother.ip, card)">
-    <div ng-class="card.type" ng-if="card.type == 'file'">
-        <li class="fa fa-file-o fa-3x"></li>
+<div class="card clickable">
+    <div class="clickable" ng-dblClick="mother.expandFile(mother.ip, card)" ng-class="{'card-selected': card == mother.selectedCard}"ng-click="mother.toggleCardSelect(card)">
+        <div ng-class="card.type" ng-if="card.type == 'file'">
+            <li class="fa fa-file-o fa-3x"></li>
+        </div>
+        <div ng-class="card.type" ng-if="card.type == 'dir'">
+            <li class="fa fa-folder-o fa-3x"></li>
+        </div>
     </div>
-    <div ng-class="card.type" ng-if="card.type == 'dir'">
-        <li class="fa fa-folder-o fa-3x"></li>
-    </div>
-    <p>{{card.name}}</p>
+    <p class="not-selectable">{{card.name}}</p>
 </div>

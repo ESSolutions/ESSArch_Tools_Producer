@@ -13,10 +13,18 @@
         <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
             <div ng-if="select" class="select-view">
                 <b>IP: </b>{{ip.Label}}
-                <div class="file-explorer" style="height: 300px; overflow-y: scroll;">
-                    <p>{{previousGridArraysString()}}</p>
-                    <button class="btn btn-info brn-sm" ng-click="previousGridArray()">one step back</button>
-                <div deckgrid source="deckGridData" cardTemplate="static/frontend/views/deckgrid_card.html" class="deckgrid"></div>
+                <div class="file-explorer">
+                    <div class="file-explorer-nav">
+                        <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
+                        <b class="dir-path">{{ip.id + '/' + previousGridArraysString()}}</b>
+                    </div>
+                    <div class="grid-info-wrapper">
+                        <div deckgrid source="deckGridData" cardTemplate="static/frontend/views/deckgrid_card.html" class="deckgrid"></div>
+                        <div ng-if="selectedCard != null" class="card-info">
+                            <b>{{'NAME' | translate}}:</b> {{selectedCard.name}}<br>
+                            <b>{{'TYPE' | translate}}:</b> {{selectedCard.type}}
+                        </div>
+                    </div>
                 </div>
                 <div ng-include src="'static/frontend/views/file_upload.html'"></div>
             </div>

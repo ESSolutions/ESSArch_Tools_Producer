@@ -427,6 +427,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
             console.log($scope.previousGridArraysString());
             $scope.deckGridData = dir;
+            $scope.selectedCard = null;
         });
     };
     $scope.updateGridArray = function(ip) {
@@ -441,7 +442,16 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             listViewService.getDir(ip,$scope.previousGridArraysString()).then(function(dir) {
                 console.log($scope.previousGridArraysString());
                 $scope.deckGridData = dir;
+                $scope.selectedCard = null;
             });
+        }
+    };
+    $scope.selectedCard = null;
+    $scope.toggleCardSelect = function(card)  {
+        if(card == $scope.selectedCard) {
+            $scope.selectedCard = null;;
+        } else {
+            $scope.selectedCard = card;
         }
     };
 });
