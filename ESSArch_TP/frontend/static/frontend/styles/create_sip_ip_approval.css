@@ -321,9 +321,9 @@ input[type="checkbox"] {
     cursor: auto;
 }
 .deckgrid {
-    margin:10px;
+    margin-top:10px;
     padding: 15px;
-    width: 50%;
+    width: 100%;
     min-width: 520px;
     height: 300px;
     overflow-y: scroll;
@@ -332,7 +332,7 @@ input[type="checkbox"] {
 }
 
 .deckgrid[deckgrid]::before {
-    content: '5 .column.size-1-5';
+    content: '11 .column.size-1-11';
     font-size: 0;
     visibility:hidden;
 }
