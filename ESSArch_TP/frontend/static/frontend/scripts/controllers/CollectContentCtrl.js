@@ -419,20 +419,17 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.deckGridInit = function(ip) {
         listViewService.getDir(ip, null).then(function(dir) {
             $scope.deckGridData = dir;
-            console.log(dir);
         });
     };
     $scope.previousGridArray = function() {
         $scope.previousGridArrays.pop();
         listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            console.log($scope.previousGridArraysString());
             $scope.deckGridData = dir;
             $scope.selectedCard = null;
         });
     };
     $scope.updateGridArray = function(ip) {
         listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            console.log($scope.previousGridArraysString());
             $scope.deckGridData = dir;
         });
     };
