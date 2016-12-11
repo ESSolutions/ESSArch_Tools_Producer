@@ -1,9 +1,12 @@
 var gulp = require('gulp')
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
+var gulpif = require('gulp-if');
 var ngAnnotate = require('gulp-ng-annotate');
+var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var gutil = require('gulp-util');
 
 var vendorFiles = [
         'scripts/bower_components/api-check/dist/api-check.js',
@@ -36,61 +39,50 @@ var vendorFiles = [
     ],
     jsDest = 'scripts';
 
-gulp.task('default', function() {
-    gulp.src(jsFiles)
-        .pipe(sourcemaps.init())
-        .pipe(ngAnnotate())
-        .pipe(concat('scripts.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename('scripts.min.js'))
-        .pipe(uglify().on('error', function(e){
-            console.log(e);
-         }))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(jsDest));
-
-    gulp.src(vendorFiles)
-        .pipe(sourcemaps.init())
-        .pipe(ngAnnotate())
-        .pipe(concat('vendors.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename('vendors.min.js'))
-        .pipe(uglify().on('error', function(e){
-            console.log(e);
-         }))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(jsDest));
-});
-
-gulp.task('scripts', function() {
+var buildScripts = function() {
     return gulp.src(jsFiles)
+        .pipe(plumber(function(error) {
+          // output an error message
+
+          gutil.log(gutil.colors.red('error (' + error.plugin + '): ' + error.message));
+          // emit the end event, to properly end the task
+          this.emit('end');
+        }))
         .pipe(sourcemaps.init())
         .pipe(ngAnnotate())
-        .pipe(concat('scripts.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename('scripts.min.js'))
-        .pipe(uglify().on('error', function(e){
-            console.log(e);
-         }))
-        .pipe(sourcemaps.write())
+        .pipe(concat('scripts.min.js'))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(jsDest));
+};
+
+var buildVendors = function() {
+    return gulp.src(vendorFiles)
+        .pipe(plumber(function(error) {
+          // output an error message
+
+          gutil.log(gutil.colors.red('error (' + error.plugin + '): ' + error.message));
+          // emit the end event, to properly end the task
+          this.emit('end');
+        }))
+        .pipe(sourcemaps.init())
+        .pipe(ngAnnotate())
+        .pipe(concat('vendors.min.js'))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(jsDest));
+};
+
+gulp.task('default', function() {
+    buildScripts(),
+    buildVendors()
 });
 
-gulp.task('vendors', function() {
-    return gulp.src(vendorFiles)
-        .pipe(sourcemaps.init())
-        .pipe(ngAnnotate())
-        .pipe(concat('vendors.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename('vendors.min.js'))
-        .pipe(uglify().on('error', function(e){
-            console.log(e);
-         }))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(jsDest));
-});
+
+gulp.task('scripts', buildScripts);
+gulp.task('vendors', buildVendors);
 
 gulp.task('watch', function(){
     gulp.watch(jsFiles, ['scripts']);
-    gulp.watch(vendorFiles, ['scripts']);
+    gulp.watch(vendorFiles, ['vendors']);
 })
