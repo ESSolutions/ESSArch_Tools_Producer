@@ -353,6 +353,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_TRANSFER_PROJECT_ID"
                         }
                     ],
@@ -375,6 +378,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_SUBMIT_DESCRIPTION_ID"
                         }
@@ -399,6 +405,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_SIP_ID"
                         }
                     ],
@@ -421,6 +430,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_AIP_ID"
                         }
@@ -445,6 +457,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_DIP_ID"
                         }
                     ],
@@ -467,6 +482,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_CONTENT_TYPE_ID"
                         }
@@ -491,6 +509,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_AUTHORITY_INFORMATION_ID"
                         }
                     ],
@@ -513,6 +534,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_ARCHIVAL_DESCRIPTION_ID"
                         }
@@ -537,6 +561,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_PRESERVATION_METADATA_ID"
                         }
                     ],
@@ -559,6 +586,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_DATA_SELECTION_ID"
                         }
@@ -583,6 +613,9 @@
                     "-namespace": "mets",
                     "#content": [
                         {
+                            "text": "ESSARCH_"
+                        },
+                        {
                             "var": "_PROFILE_IMPORT_ID"
                         }
                     ],
@@ -605,6 +638,9 @@
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "#content": [
+                        {
+                            "text": "ESSARCH_"
+                        },
                         {
                             "var": "_PROFILE_WORKFLOW_ID"
                         }
