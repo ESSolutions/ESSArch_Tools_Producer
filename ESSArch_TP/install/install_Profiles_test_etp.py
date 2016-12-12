@@ -1460,35 +1460,6 @@ def installProfileSIP(): # Profile Submission Information Package
         ],
         'template': [
             {
-                "key": "oais_status",
-                "type": "select",
-                "templateOptions": {
-                    "label": "OAIS Status",
-                    "options": [
-                        {
-                          "name": "Submission Information Package",
-                          "value": "SIP"
-                        },
-                        {
-                          "name": "Archival Information Package",
-                          "value": "AIP"
-                        },
-                        {
-                          "name": "Dissemination Information Package",
-                          "value": "DIP"
-                        },
-                        {
-                          "name": "Archival Information Collection",
-                          "value": "AIC"
-                        },
-                        {
-                          "name": "Archival Information Unit",
-                          "value": "AIU"
-                        },
-                    ]
-                },
-            },
-            {
                 "key": "content_type",
                 "type": "select",
                 "templateOptions": {

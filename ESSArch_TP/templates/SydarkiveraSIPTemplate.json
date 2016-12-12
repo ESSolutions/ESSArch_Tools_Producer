@@ -167,7 +167,7 @@
                     "-req": 1,
                     "#content": [
                         {
-                            "var": "oais_status"
+                            "text": "SIP"
                         }
                     ]
                 },
