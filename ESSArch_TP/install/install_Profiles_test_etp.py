@@ -1527,7 +1527,7 @@ def installProfileSIP(): # Profile Submission Information Package
                     "label": "Submission Agreement"
                 },
                 "type": "input",
-                "key": "_SA_ID"
+                "key": "_SA_NAME"
             },
             {
                 "key": "access_restrict",
