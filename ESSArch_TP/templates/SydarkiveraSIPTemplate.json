@@ -471,7 +471,7 @@
                     ],
                     "#content": [
                         {
-                            "var": "_SA_ID"
+                            "var": "_SA_NAME"
                         }
                     ],
                     "-children": []

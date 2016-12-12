@@ -1460,7 +1460,7 @@ def installProfileSIP(): # Profile Submission Information Package
         ],
         'template': [
             {
-                "key": "oais_type",
+                "key": "oais_status",
                 "type": "select",
                 "templateOptions": {
                     "label": "OAIS Status",
