@@ -518,7 +518,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 $scope.getListViewData();
                 updateListViewConditional();
             }, 1000);
-            $scope.submitDisabled = false;;
+            $scope.submitDisabled = false;
         }, function(response) {
             console.log(response.status);
         });
