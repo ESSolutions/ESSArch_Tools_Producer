@@ -520,7 +520,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             }, 1000);
             $scope.submitDisabled = false;
         }, function(response) {
-            console.log(response.status);
+            $scope.submitDisabled = false;
         });
     }
     var listViewInterval;

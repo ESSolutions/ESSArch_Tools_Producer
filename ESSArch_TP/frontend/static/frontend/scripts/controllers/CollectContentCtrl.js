@@ -397,11 +397,14 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             method: 'POST',
             url: ip.url + "set-uploaded/"
         }).then(function(response){
+            $scope.eventlog = false;
+            $scope.select = false;
             $timeout(function() {
-                $scope.eventlog = false;
-                $scope.select = false;
                 $scope.getListViewData();
+                updateListViewConditional();
             }, 1000);
+            $scope.uploadDisabled = false;
+        }, function(response) {
             $scope.uploadDisabled = false;
         });
     }
