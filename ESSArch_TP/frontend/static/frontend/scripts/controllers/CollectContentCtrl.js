@@ -220,6 +220,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventlog = true;
 
         }
+        $scope.uploadDisabled = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
@@ -389,7 +390,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
         return {destination: vm.flowDestination};
     };
+    $scope.uploadDisabled = false;
     $scope.setUploaded = function(ip) {
+        $scope.uploadDisabled = true;
         $http({
             method: 'POST',
             url: ip.url + "set-uploaded/"
@@ -399,6 +402,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 $scope.select = false;
                 $scope.getListViewData();
             }, 1000);
+            $scope.uploadDisabled = false;
         });
     }
     $scope.updateListViewTimeout = function(timeout) {

@@ -77,7 +77,7 @@
                                 <input type="checkbox" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
                             </label>
                         </div>
-                        <button ng-disabled="!approvedToSubmit || ip.State == 'Submitted'"type="submit" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
+                        <button ng-disabled="submitDisabled || !approvedToSubmit || ip.State == 'Submitted'" type="submit" ng-dblClick="" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
                     </form>
                 </div>
             </div>

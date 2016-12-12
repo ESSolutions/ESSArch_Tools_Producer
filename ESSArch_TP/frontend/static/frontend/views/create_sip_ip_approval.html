@@ -83,7 +83,7 @@
                     <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
                 </div>
                 <div ng-if="edit" id="edit-veiw" class="edit-view" >
-                    <form  novalidate>
+                    <form novalidate>
                         <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                         </formly-form>
                     </form>
@@ -92,13 +92,13 @@
                     </div>-->
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
-                    <form class="eventlog-form" ng-submit="createSip(ip)">
+                    <form ng-submit="createSip(ip)" class="eventlog-form">
                         <div class="checkbox">
                             <label>
                                 <input type="checkBox" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
                             </label>
                         </div>
-                        <button type="submit" ng-disabled="!approvedToCreate || !ip.SubmissionAgreementLocked || ip.State=='Created'" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
+                        <button type="submit" ng-dblClick="" ng-disabled="createDisabled || !approvedToCreate || !ip.SubmissionAgreementLocked || ip.State=='Created'" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
                     </form>
                 </div>
             </div>

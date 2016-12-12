@@ -213,6 +213,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $rootScope.ip = row;
 
         }
+        $scope.createDisabled = false;
         $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
@@ -335,9 +336,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-
+    $scope.createDisabled = false;
     //Executes Create sip on an ip
     $scope.createSip = function (ip) {
+        $scope.createDisabled = true;
         $http({
             method: 'POST',
             url: ip.url+"create/",
@@ -351,8 +353,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 $scope.getListViewData();
                 updateListViewConditional();
             }, 1000);
+            $scope.createDisabled = false;
         }), function errorCallback(response){
-            alert(response.status);
+            $scope.createDisabled = false;
         };
     };
     var listViewInterval;

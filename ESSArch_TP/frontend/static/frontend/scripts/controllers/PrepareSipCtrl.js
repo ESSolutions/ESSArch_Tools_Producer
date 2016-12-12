@@ -222,6 +222,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.eventlog = true;
 
         }
+        $scope.submitDisabled = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
@@ -503,7 +504,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
 
         return profiles.active;
     }
+    $scope.submitDisabled = false;
     $scope.submitSip = function(ip) {
+        $scope.submitDisabled = true;
         $http({
             method: 'POST',
             url: ip.url+'submit/',
@@ -515,6 +518,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 $scope.getListViewData();
                 updateListViewConditional();
             }, 1000);
+            $scope.submitDisabled = true;
         }, function(response) {
             console.log(response.status);
         });
