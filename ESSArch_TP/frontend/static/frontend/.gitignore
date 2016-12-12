@@ -4,3 +4,5 @@ scripts/scripts.js
 scripts/scripts.min.js
 scripts/vendors.js
 scripts/vendors.min.js
+scripts/scripts.min.js.map
+scripts/vendors.min.js.map
