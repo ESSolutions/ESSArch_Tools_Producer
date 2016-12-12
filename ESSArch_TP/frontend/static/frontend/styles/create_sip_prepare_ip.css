@@ -147,7 +147,7 @@
 }
 .lock-button  {
     padding: 0px 16px;
-    width: 95px;
+    width: auto;
 }
 .table-col {
     margin: 0;
