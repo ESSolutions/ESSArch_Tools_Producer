@@ -307,6 +307,9 @@ input[type="checkbox"] {
 .file-explorer {
     margin-top: 10px;
     width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 .file-explorer-nav {
     display: flex;
