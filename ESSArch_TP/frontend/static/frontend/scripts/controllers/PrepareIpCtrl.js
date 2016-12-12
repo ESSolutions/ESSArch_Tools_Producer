@@ -276,7 +276,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.profileFields=[];
     //Click funciton for profile view
     $scope.profileClick = function(row){
-        $scope.profileToSave = row.active;
         if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
@@ -304,6 +303,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 vm.profileFields = row.active.template;
                 $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
                 $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+                $scope.profileToSave = row.active;
                 $scope.subSelectProfile = "profile";
                 $scope.eventlog = true;
                 $scope.edit = true;
