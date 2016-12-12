@@ -1408,9 +1408,491 @@ def installProfileSIP(): # Profile Submission Information Package
         }
     }
 
+    dct3 = {
+        'id': '550e8400-e29b-41d4a716-446655440018',
+        'name': 'Sydarkivera',
+        'profile_type': 'sip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'SIP profile for SE submissions',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        'structure': [
+            {
+                "use": "mets_file",
+                "type": "file",
+                "name": "mets.xml"
+            },
+            {
+                "type": "folder",
+                "name": "metadata",
+                "children": [
+                    {
+                        "use": "xsd_files",
+                        "type": "file",
+                        "name": "xsd_files"
+                    }
+                ]
+            },
+            {
+                "type": "folder",
+                "name": "content",
+                "children": [
+                    {
+                        "use": "content",
+                        "type": "file",
+                        "name": "content"
+                    }
+                ]
+            },
+            {
+                "use": "preservation_description_file",
+                "type": "file",
+                "name": "premis.xml"
+            }
+        ],
+        'template': [
+            {
+                "key": "oais_type",
+                "type": "select",
+                "templateOptions": {
+                    "label": "OAIS Status",
+                    "options": [
+                        {
+                          "name": "Submission Information Package",
+                          "value": "SIP"
+                        },
+                        {
+                          "name": "Archival Information Package",
+                          "value": "AIP"
+                        },
+                        {
+                          "name": "Dissemination Information Package",
+                          "value": "DIP"
+                        },
+                        {
+                          "name": "Archival Information Collection",
+                          "value": "AIC"
+                        },
+                        {
+                          "name": "Archival Information Unit",
+                          "value": "AIU"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "content_type",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Content Type",
+                    "options": [
+                        {
+                          "name": "Electronic Record Management System",
+                          "value": "ERMS"
+                        },
+                        {
+                          "name": "Personnel system",
+                          "value": "Personnel"
+                        },
+                        {
+                          "name": "Medical record(s)",
+                          "value": "Medical record"
+                        },
+                        {
+                          "name": "Economics",
+                          "value": "Economics systems"
+                        },
+                        {
+                          "name": "Databases",
+                          "value": "Databases"
+                        },
+                        {
+                          "name": "Webpages",
+                          "value": "Webpages"
+                        },
+                        {
+                          "name": "Geografical Information Systems",
+                          "value": "GIS"
+                        },
+                        {
+                          "name": "No specification",
+                          "value": "No specification"
+                        },
+                        {
+                          "name": "Archival Information Collection",
+                          "value": "AIC"
+                        },
+                        {
+                          "name": "Archival Information",
+                          "value": "Archival Information"
+                        },
+                        {
+                          "name": "Unstructured",
+                          "value": "Unstructured"
+                        },
+                        {
+                          "name": "Single records",
+                          "value": "Single records"
+                        },
+                        {
+                          "name": "Publication",
+                          "value": "Publication"
+                        },
+                    ]
+                },
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "disabled": True,
+                    "label": "Submission Agreement"
+                },
+                "type": "input",
+                "key": "_SA_ID"
+            },
+            {
+                "key": "access_restrict",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Access Restrict",
+                    "options": [
+                        {
+                          "name": "Secrecy",
+                          "value": "Secrecy"
+                        },
+                        {
+                          "name": "PuL",
+                          "value": "PuL"
+                        },
+                        {
+                          "name": "Secrecy and PuL",
+                          "value": "Secrecy and PuL"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "_IP_ARCHIVIST_ORGANIZATION",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "disabled": True,
+                    "label": "Archivist Organization"
+                },
+            },
+            {
+                "key": "archivist_organization_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Organization Note"
+                },
+            },
+            {
+                "key": "archivist_software",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Software"
+                },
+            },
+            {
+                "key": "archivist_software_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Software Note"
+                },
+            },
+            {
+                "key": "creator_organization",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Organization"
+                },
+            },
+            {
+                "key": "creator_organization_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Organization Note"
+                },
+            },
+            {
+                "key": "creator_software",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Software"
+                },
+            },
+            {
+                "key": "creator_software_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Software Note"
+                },
+            },
+            {
+                "key": "data_submission_session",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Data Submission Session"
+                },
+            },
+            {
+                "key": "package_number",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Package Number"
+                },
+            },
+            {
+                "key": "record_status",
+                "type": "select",
+                "defaultValue": "NEW",
+                "templateOptions": {
+                    "label": "Record Status",
+                    "options": [
+                        {
+                          "name": "SUPPLEMENT",
+                          "value": "SUPPLEMENT"
+                        },
+                        {
+                          "name": "REPLACEMENT",
+                          "value": "REPLACEMENT"
+                        },
+                        {
+                            "name": "NEW",
+                            "value": "NEW"
+                        },
+                        {
+                          "name": "TEST",
+                          "value": "TEST"
+                        },
+                        {
+                          "name": "VERSION",
+                          "value": "VERSION"
+                        },
+                        {
+                          "name": "OTHER",
+                          "value": "OTHER"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "reference_code",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Reference Code"
+                },
+            },
+            {
+                "key": "producer_organization",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Producer Organization"
+                },
+            },
+            {
+                "key": "producer_organization_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Producer Organization Note"
+                },
+            },
+            {
+                "key": "system_type",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "System Type"
+                },
+            },
+            {
+                "key": "appraisal",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Appraisal",
+                    "options": [
+                        {
+                          "name": "Yes",
+                          "value": "Yes"
+                        },
+                        {
+                          "name": "No",
+                          "value": "No"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "content_type_specification",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Content Type Specification"
+                },
+            },
+            {
+                "key": "agreement_form",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Agreement Form",
+                    "options": [
+                        {
+                          "name": "AGREEMENT",
+                          "value": "AGREEMENT"
+                        },
+                        {
+                          "name": "DEPOSIT",
+                          "value": "DEPOSIT"
+                        },
+                        {
+                          "name": "GIFT",
+                          "value": "GIFT"
+                        },
+                        {
+                          "name": "Not specified",
+                          "value": "Not specified"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "previous_submission_agreement",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Previous Submission Agreement"
+                },
+            },
+            {
+                "key": "previous_reference_code",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Previous Reference Code"
+                },
+            },
+            {
+                "key": "start_date",
+                "type": "datepicker",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Start Date"
+                },
+            },
+            {
+                "key": "end_date",
+                "type": "datepicker",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "End Date"
+                },
+            },
+            {
+                "key": "information_class",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Information Class",
+                    "options": [
+                        {
+                          "name": "Klass 1 (måttlig)",
+                          "value": "Klass 1"
+                        },
+                        {
+                          "name": "Klass 2 (kännbar)",
+                          "value": "Klass 2"
+                        },
+                        {
+                          "name": "Klass 3 (allvarlig)",
+                          "value": "Klass 3"
+                        },
+                        {
+                          "name": "Klass 4 (rikets säkerhet)",
+                          "value": "Klass 4"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "editor_organization",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Editor Organization"
+                },
+            },
+            {
+                "key": "editor_organization_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Editor Organization Note"
+                },
+            },
+            {
+                "key": "preservation_organization",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization"
+                },
+            },
+            {
+                "key": "preservation_organization_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization Note"
+                },
+            },
+            {
+                "key": "creator_individual",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Individual"
+                },
+            },
+            {
+                "key": "creator_individual_note",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Individual Note"
+                },
+            },
+        ],
+        'specification': json.loads(open(os.path.join(
+            settings.BASE_DIR,
+            'templates/SydarkiveraSIPTemplate.json'
+        )).read()),
+        'specification_data': {}
+    }
+
     # create according to model with many fields
     Profile.objects.create(**dct)
     Profile.objects.create(**dct2)
+    Profile.objects.create(**dct3)
 
     #logger.info('Installed Profile SIP')
     print 'Installed profile SIP'
