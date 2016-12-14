@@ -258,7 +258,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             if(row.active) {
                 $http({
                     method: 'GET',
-                    url: row.active.profile
+                    url: row.active.profile,
+                    params: {
+                        "ip": $scope.ip.id
+                    }
                 }).then(function(response) {
                     $scope.profileToSave = row.active;
                     $scope.selectProfile = row;
