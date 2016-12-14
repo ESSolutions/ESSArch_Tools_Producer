@@ -305,6 +305,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
                 $scope.profileToSave = row.active;
                 $scope.subSelectProfile = "profile";
+                if(row.locked) {
+                    vm.profileFields.forEach(function(field) {
+                        if(field.fieldGroup != null){
+                            field.fieldGroup.forEach(function(subGroup) {
+                                subGroup.fieldGroup.forEach(function(item) {
+                                    item.templateOptions.disabled = true;
+                                });
+                            });
+                        } else {
+                            field.templateOptions.disabled = true;
+                        }
+                    });
+
+                }
                 $scope.eventlog = true;
                 $scope.edit = true;
             });
@@ -1045,7 +1059,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         });
     }
- $scope.tracebackModal = function (profiles) {
+    $scope.tracebackModal = function (profiles) {
         $scope.profileToSave = profiles;
         var modalInstance = $uibModal.open({
             animation: true,

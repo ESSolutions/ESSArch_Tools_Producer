@@ -55,8 +55,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a ng-if="!profile.locked && profile.active && profile.checked && saProfile.locked" class="table-col" ng-disabled="profile.locked" ng-click="profileClickCondition(profile)">{{profile.type_label}}</a>
-                                        <p ng-if="profile.locked || !profile.checked || !saProfile.locked" class="table-col">{{profile.type_label}}</p>
+                                        <a ng-if="profile.active && profile.checked && saProfile.locked" class="table-col" ng-disabled="profile.locked" ng-click="profileClick(profile)">{{profile.type_label}}</a>
                                     </td>
                                     <td><!--<select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.profile_name for x in profile.profiles" ng-change="changeProfile(profile.active)" ng-focus="getProfiles(profile)" data-ng-attr-size="{{profile.profiles.length}}"></select>-->
                                         <ui-select ng-change="changeProfile($select.selected, profile)" ng-click="getProfiles(profile)" ng-model="profile.active" theme="bootstrap" ng-disabled="profile.locked" style="min-width: 300px;">
@@ -91,14 +90,14 @@
                         <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
                     </div>
                     <div ng-if="edit" id="edit-view" class="edit-view" >
-                        <form  novalidate>
+                        <form id="edit-form" ng-submit="saveModal()">
                             <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
                             </formly-form>
                         </form>
                         <div class="map-structure-editor" ng-if="profileToSave.profile_type == 'sip' || profileToSave.profile_type == 'aip' || profileToSave.profile_type == 'dip'" ng-include src="'static/frontend/views/map_structure_tree.html'"></div>
                     </div>
                     <div ng-if="eventlog" class="eventlog-view">
-                        <form class="eventlog-form" ng-submit="saveModal()">
+                        <form class="eventlog-form">
                             <!-- <div class="form-group">
                                 <label>Status note</label>
                                 <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
@@ -109,7 +108,7 @@
                                 <label>Signature</label>
                                 <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
                                 </div>-->
-                                <button ng-disabled="angular.equals(profileToSave.specification_data, vm.profileModel) && angular.equals(profileToSave.structure, treeElements[0].children)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVEPROFILE' | translate}}</button>
+                                <button form="edit-form" ng-disabled="angular.equals(profileToSave.specification_data, vm.profileModel) && angular.equals(profileToSave.structure, treeElements[0].children)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVEPROFILE' | translate}}</button>
                         </form>
                     </div>
                 </div>

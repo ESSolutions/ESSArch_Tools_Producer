@@ -251,7 +251,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     vm.profileFields=[];
     //Click function for profile pbject
     $scope.profileClick = function(row){
-        $scope.profileToSave = row.active;
         if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
@@ -261,6 +260,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                     method: 'GET',
                     url: row.active.profile
                 }).then(function(response) {
+                    $scope.profileToSave = row.active;
                     $scope.selectProfile = row;
                     vm.profileModel = response.data.specification_data;
                     vm.profileFields = response.data.template;
@@ -554,7 +554,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     }
     // Datetimepicker
     $scope.formatDate = function(date) {
-        console.log(moment().utc());
         date = date+" utc";
         console.log(moment(date).utc());
         console.log(moment(date).utc().format());

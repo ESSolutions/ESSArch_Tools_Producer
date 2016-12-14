@@ -68,6 +68,7 @@
                                 </td>
                                 <td>
                                     <button ng-if="profile.locked && ip.State == 'Uploaded'" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked && (ip.State == 'Created' || ip.State == 'Creating')" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                 </td>
                             </tr>
                         </tbody>
