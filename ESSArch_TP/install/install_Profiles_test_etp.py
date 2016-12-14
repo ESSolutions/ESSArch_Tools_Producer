@@ -950,7 +950,6 @@ def installProfileSIP(): # Profile Submission Information Package
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
         'specification_data': {
             "mets_type": "Personnel",
-            "mets_profile": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xml",
             "archivist_organization_note": "Archivist Organization 1 Note",
             "creator_organization_name": "Creator Organization 1",
             "creator_organization_note": "Creator Organization 1 Note",
@@ -1367,7 +1366,6 @@ def installProfileSIP(): # Profile Submission Information Package
             "xsi:schemaLocation": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd "
             "ExtensionMETS http://xml.ra.se/e-arkiv/METS/CSPackageExtensionMETS.xsd",
             "xsi:schemaLocationPremis": "http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd",
-            "PROFILE": "http://xml.ra.se/e-arkiv/METS/CommonSpecificationSwedenPackageProfile.xmll",
             "LABEL": "Test of SIP 1",
             "TYPE": "Personnel",
             "OBJID": "UUID:9bc10faa-3fff-4a8f-bf9a-638841061065",
@@ -1760,7 +1758,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "type": "input",
                 "templateOptions": {
                     "type": "text",
-                    "label": "Previous Reference Code"
+                    "label": "Previous Reference Code",
                 },
             },
             {

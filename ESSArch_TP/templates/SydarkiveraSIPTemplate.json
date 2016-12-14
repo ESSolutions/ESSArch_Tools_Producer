@@ -43,6 +43,15 @@
             "-req": 0
         },
         {
+            "-name": "PROFILE",
+            "-req": 1,
+            "#content": [
+                {
+                    "text": "http://xml.ra.se/e-arkiv/METS/version11/CommonSpecificationSwedenPackageProfile.xml"
+                }
+            ]
+        },
+        {
             "-name": "TYPE",
             "-req": 1,
             "#content": [
@@ -162,6 +171,15 @@
                     "-req": 0
                 },
                 {
+                    "#content": [
+                        {
+                            "var": "_NOW"
+                        }
+                    ],
+                    "-name": "CREATEDATE",
+                    "-req": 1
+                },
+                {
                     "-name": "OAISSTATUS",
                     "-namespace": "ext",
                     "-req": 1,
@@ -182,6 +200,7 @@
                 },
                 {
                     "-name": "AGREEMENTFORM",
+                    "-namespace": "ext",
                     "-req": 0,
                     "#content": [
                         {
@@ -1156,7 +1175,7 @@
     },
     "-schemasToPreserve": [
         "http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd",
-        "http://xml.ra.se/e-arkiv/METS/version10/CSPackageExtensionMETS.xsd"
+        "http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files"
 }

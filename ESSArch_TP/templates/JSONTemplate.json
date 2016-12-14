@@ -54,7 +54,7 @@
         {
             "#content": [
                 {
-                    "var": "mets_profile"
+                    "text": "http://xml.ra.se/e-arkiv/METS/version11/CommonSpecificationSwedenPackageProfile.xml"
                 }
             ],
             "-name": "PROFILE",
@@ -864,7 +864,7 @@
     },
     "-schemasToPreserve": [
         "http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd",
-        "http://xml.ra.se/e-arkiv/METS/version10/CSPackageExtensionMETS.xsd"
+        "http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files"
 }
