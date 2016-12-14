@@ -1,13 +1,13 @@
-<div class="input-group"
-     moment-picker="model[options.key]"
-     format="YYYY-MM-DD"
-     locale="sv"
-     start-view="decade">
-    <span class="input-group-addon">
-        <i class="glyphicon glyphicon-calendar"></i>
-    </span>
-    <input class="form-control"
-           placeholder="Select a date"
-           ng-model="model[options.key]"
-           ng-model-options="{ updateOn: 'blur' }">
+<div class="dropdown">
+    <a class="dropdown-toggle" id="dropdown-{{options.key}}" role="button" data-toggle="dropdown">
+    <div class="input-group">
+        <input type="text" data-date-time-input="YYYY-MM-DD" class="form-control" data-ng-model="model[options.key]"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+    </div>
+  </a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <datetimepicker
+        data-ng-model="model[options.key]"
+        data-on-set-time="onTimeSet(newDate, oldDate)"
+        data-datetimepicker-config="{ dropdownSelector: '#dropdown-' + options.key, minView: 'day', startView: 'year', modelType: 'YYYY-MM-DDTHH:mm:ssZ'}"/>
+  </ul>
 </div>
