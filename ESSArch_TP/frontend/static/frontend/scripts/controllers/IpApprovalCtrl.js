@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll){
     var vm = this;
     $scope.tree_data = [];
     $scope.angular = angular;
@@ -211,7 +211,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = true;
             $scope.ip = row;
             $rootScope.ip = row;
-
+            $timeout(function() {
+                $anchorScroll("select-wrap");
+            }, 0);
         }
         $scope.createDisabled = false;
         $scope.edit = false;
@@ -278,9 +280,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                             field.templateOptions.disabled = true;
                         }
                     });
+                    $scope.edit = true;
                     $scope.eventlog = true;
                     getEventlogData();
-                    $scope.edit = true;
+                    $timeout(function() {
+                        $anchorScroll('edit-view');
+                    }, 0);
                 });
             }
         }
@@ -357,6 +362,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 updateListViewConditional();
             }, 1000);
             $scope.createDisabled = false;
+            $anchorScroll();
         }), function errorCallback(response){
             $scope.createDisabled = false;
         };

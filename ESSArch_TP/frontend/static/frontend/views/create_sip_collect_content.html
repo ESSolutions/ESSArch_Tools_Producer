@@ -10,8 +10,8 @@
                 <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
             </div>
         </div>
-        <div ng-if="select || subSelect || edit || eventlog" class="select-sub-edit-eventlog-wrapper">
-            <div ng-if="select" class="select-view">
+        <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
+            <div ng-if="select" id="select-view" class="select-view">
                 <b>IP: </b>{{ip.Label}}
                 <div class="file-explorer">
                     <div class="file-explorer-nav">

@@ -219,6 +219,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $rootScope.ip = $scope.ip;
             $scope.getSaProfiles($scope.ip);
             $scope.select = true;
+            $timeout(function() {
+                $anchorScroll("select-wrap");
+            }, 0);
         }
         $scope.eventlog = false;
         $scope.edit = false;
@@ -319,8 +322,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                     });
 
                 }
-                $scope.eventlog = true;
                 $scope.edit = true;
+                $scope.eventlog = true;
+                $timeout(function() {
+                    $anchorScroll('edit-view');
+                }, 0);
             });
         }
     };
@@ -465,6 +471,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
             $scope.edit = false;
             $scope.eventlog = false;
+            $anchorScroll();
         }, function(response) {
             alert(response.status);
         });

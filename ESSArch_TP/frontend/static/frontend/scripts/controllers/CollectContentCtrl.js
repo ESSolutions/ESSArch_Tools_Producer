@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate) {
+angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll) {
     var vm = this;
     vm.flowDestination = null;
     // List view
@@ -218,6 +218,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.deckGridInit($scope.ip);
             $scope.select = true;
             $scope.eventlog = true;
+            $timeout(function() {
+                $anchorScroll("select-wrap");
+            }, 0);
 
         }
         $scope.uploadDisabled = false;
@@ -404,6 +407,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 updateListViewConditional();
             }, 1000);
             $scope.uploadDisabled = false;
+            $anchorScroll();
         }, function(response) {
             $scope.uploadDisabled = false;
         });
