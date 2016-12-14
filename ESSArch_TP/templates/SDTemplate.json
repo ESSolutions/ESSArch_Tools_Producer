@@ -67,7 +67,7 @@
         {
             "#content": [
                 {
-                    "var": "profile"
+                    "text": "http://xml.ra.se/e-arkiv/METS/version11/CommonSpecificationSwedenPackageProfile.xml"
                 }
             ],
             "-name": "PROFILE",
