@@ -367,7 +367,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         }
     });
 
-}).run(function(formlyConfig){
     var ngModelAttrs = {};
 
     var attributes = [
@@ -448,14 +447,18 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
     formlyConfig.setType({
         name: 'datepicker',
-        //template: '<input class="form-control" ng-model="ctrl.input" ng-model-options="{ updateOn: \'blur\' }" placeholder="Select a date..." moment-picker="ctrl.input">',
-        templateUrl: "static/frontend/views/datepicker_template.html",// '<br><datetimepicker ng-model="model[options.key]" show-spinners="true" date-format="M/d/yyyy" date-options="dateOptions" show-meridian="false"></datetimepicker>',
-        wrapper: ['bootstrapLabel'],
-        defaultOptions: {
-            ngModelAttrs: ngModelAttrs,
-            templateOptions: {
-                label: 'Time'
-            }
+        templateUrl: "static/frontend/views/datepicker_template.html",
+        overwriteOk: true,
+        wrapper: ['bootstrapHasError'],
+        defaultOptions: function defaultOptions(options) {
+            return {
+                ngModelAttrs: ngModelAttrs,
+                templateOptions: {
+                    validation: {
+                        show: true
+                    }
+                }
+            };
         }
     });
     moment.locale('sv');
