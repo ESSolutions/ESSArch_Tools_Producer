@@ -60,7 +60,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="{{colspan}}" class="text-center">
+                <td ng-show="!initLoad" colspan="{{colspan}}" class="text-center">
                     <div st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="vm.itemsPerPage" st-displayed-pages="7"></div>
                 </td>
             </tr>

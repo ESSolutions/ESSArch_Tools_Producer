@@ -174,6 +174,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
      //Get data for ip table from rest api
      this.callServer = function callServer(tableState) {
          $scope.ipLoading = true;
+         if(vm.displayedIps.length == 0) {
+             $scope.initLoad = true;
+         }
          if(!angular.isUndefined(tableState)) {
              $scope.tableState = tableState;
              var search = "";
@@ -190,11 +193,13 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                  $scope.ipLoading = false;
+                 $scope.initLoad = false;
              });
          }
-     };    //Add ip to selected
-    $scope.selectIp = function(row) {
-        vm.displayedIps.forEach(function(ip) {
+     };
+     //Add ip to selected
+     $scope.selectIp = function(row) {
+         vm.displayedIps.forEach(function(ip) {
             if(ip.id == $scope.selectedIp.id){
                 ip.class = "";
             }

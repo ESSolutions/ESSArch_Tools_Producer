@@ -166,6 +166,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Update ip table with configuration from table paginetion etc
     this.callServer = function callServer(tableState) {
         $scope.ipLoading = true;
+        if(vm.displayedIps.length == 0) {
+            $scope.initLoad = true;
+        }
         if(!angular.isUndefined(tableState)){
             $scope.tableState = tableState;
             var search = "";
@@ -183,6 +186,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
+                $scope.initLoad = false;
             });
         }
     };
