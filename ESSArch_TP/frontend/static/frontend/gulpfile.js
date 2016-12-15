@@ -14,7 +14,7 @@ var vendorFiles = [
         'scripts/bower_components/jquery-ui/jquery-ui.min.js',
         'scripts/bower_components/angular/angular.min.js',
         'scripts/bower_components/angular-route/angular-route.min.js',
-        'scripts/vendor/ui-bootstrap-tpls-1.3.3.min.js',
+        'scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
         'scripts/bower_components/angular-tree-control/angular-tree-control.js',
         'scripts/bower_components/angular-formly/dist/formly.js',
         'scripts/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
