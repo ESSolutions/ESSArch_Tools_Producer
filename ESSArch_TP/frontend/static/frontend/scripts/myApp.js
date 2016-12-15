@@ -231,7 +231,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .config(function(stConfig) {
   stConfig.sort.delay = -1;
 })
-.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig){
+.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
     function _defineProperty(obj, key, value) {
         if (key in obj) {
             Object.defineProperty(obj, key, {
@@ -246,10 +246,39 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         return obj;
     }
 
+    formlyValidationMessages.addStringMessage(
+        'required', 'This field is required'
+    );
+
+    formlyConfig.setWrapper([
+      {
+        template: [
+          '<formly-transclude></formly-transclude>',
+          '<div class="validation"',
+          '  ng-if="showError"',
+          '  ng-messages="fc.$error">',
+          '  <div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages">',
+          '    {{message(fc.$viewValue, fc.$modelValue, this)}}',
+          '  </div>',
+          '</div>'
+        ].join(' ')
+      }
+      ]);
+
     formlyConfig.setType({
       name: 'input',
       templateUrl: 'static/frontend/views/form_template_input.html',
-      overwriteOk: true
+	  overwriteOk: true,
+      wrapper: ['bootstrapHasError'],
+      defaultOptions: function(options) {
+          return {
+              templateOptions: {
+                validation: {
+                    show: true
+                }
+              }
+            };
+      }
     });
     formlyConfig.setType({
       name: 'select-tree-edit',

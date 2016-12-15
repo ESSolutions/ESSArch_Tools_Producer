@@ -28,6 +28,13 @@ body.modal-open[style] {
 }
 .formly-field label {
     font-size: 10px;
+
+}
+.formly-field .validation {
+  color: #a94442;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  font-size: 11px;
 }
 .form-control {
     height: 26px;
