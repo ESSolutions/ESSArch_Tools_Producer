@@ -281,6 +281,25 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
       }
     });
     formlyConfig.setType({
+        name: 'select',
+        templateUrl: 'static/frontend/views/form_template_select.html',
+        overwriteOk: true,
+        wrapper: ['bootstrapHasError'],
+        defaultOptions: function defaultOptions(options) {
+            var ngOptions = options.templateOptions.ngOptions || 'option[to.valueProp || \'value\'] as option[to.labelProp || \'name\'] group by option[to.groupProp || \'group\'] for option in to.options';
+            return {
+                templateOptions: {
+                    validation: {
+                        show: true
+                    }
+                },
+                ngModelAttrs: _defineProperty({}, ngOptions, {
+                    value: options.templateOptions.optionsAttr || 'ng-options'
+                })
+            };
+        },
+    });
+    formlyConfig.setType({
       name: 'select-tree-edit',
       template: '<select class="form-control" ng-model="model[options.key]"><option value="" disabled hidden>Choose here</option></select>',
       wrapper: ['bootstrapLabel', 'bootstrapHasError'],
