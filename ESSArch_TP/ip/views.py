@@ -247,7 +247,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
         sa = ip.SubmissionAgreement
-        agent = request.user.username or "System"
+        agent = request.user
 
         if ip.State != "Uploaded":
             raise ValueError(
@@ -938,7 +938,7 @@ class EventIPViewSet(viewsets.ModelViewSet):
 
         eventType = EventType.objects.get(pk=type_id)
         ip = InformationPackage.objects.get(pk=ip_id)
-        agent = request.user.username or "System"
+        agent = request.user
 
         EventIP.objects.create(
             eventOutcome=outcome, eventOutcomeDetailNote=outcomeDetailNote,
