@@ -101,6 +101,16 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             ip.save()
 
             return Response({'status': 'locking submission_agreement'})
+        elif ip.SubmissionAgreement is None:
+            return Response(
+                {'status': 'No SA connected to IP'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        else:
+            return Response(
+                {'status': 'This SA is not connected to the selected IP'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         return Response({'status': 'Not allowed to lock SA'}, status=status.HTTP_400_BAD_REQUEST)
 
