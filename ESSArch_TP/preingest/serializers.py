@@ -96,8 +96,25 @@ class PermissionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'name', 'codename', 'group_set')
 
 
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    permissions = PermissionSerializer(many=True)
+
+    class Meta:
+        model = Group
+        fields = ('url', 'id', 'name', 'permissions',)
+
+
+class GroupDetailSerializer(GroupSerializer):
+    class Meta:
+        model = Group
+        fields = GroupSerializer.Meta.fields + (
+            'user_set',
+        )
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     user_permissions = PermissionSerializer(many=True)
+    groups = GroupSerializer(many=True)
 
     class Meta:
         model = User
@@ -109,10 +126,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = (
             'last_login', 'date_joined',
         )
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    permissions = PermissionSerializer(many=True)
-
-    class Meta:
-        model = Group
-        fields = ('url', 'id', 'name', 'permissions', 'user_set',)

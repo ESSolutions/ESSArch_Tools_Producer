@@ -11,6 +11,7 @@ from preingest.serializers import (
     ProcessTaskSerializer,
     ProcessTaskDetailSerializer,
     GroupSerializer,
+    GroupDetailSerializer,
     PermissionSerializer,
     UserSerializer,
 )
@@ -31,7 +32,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
     queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return GroupSerializer
+
+        return GroupDetailSerializer
 
 class PermissionViewSet(viewsets.ModelViewSet):
     """
