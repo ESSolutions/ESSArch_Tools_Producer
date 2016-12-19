@@ -9,7 +9,7 @@ from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.http import HttpResponse
-from rest_framework import filters, status
+from rest_framework import filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -29,6 +29,10 @@ from ESSArch_Core.ip.models import (
     ArchivalLocation,
     InformationPackage,
     EventIP
+)
+
+from ESSArch_Core.ip.permissions import (
+    IsResponsibleOrReadOnly,
 )
 
 from ESSArch_Core.profiles.models import (
@@ -108,6 +112,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         Prefetch('profileip_set', to_attr='profiles'), 'steps__child_steps',
     )
     serializer_class = InformationPackageSerializer
+    permission_classes = (permissions.IsAuthenticated, IsResponsibleOrReadOnly,)
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
     )
@@ -154,6 +159,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             None
         """
 
+        self.check_permissions(request)
 
         label = request.data.get('label', None)
         responsible = self.request.user
@@ -162,7 +168,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         return Response({"status": "Prepared IP"})
 
     def destroy(self, request, pk=None):
-        ip = InformationPackage.objects.get(pk=pk)
+        ip = self.get_object()
+        self.check_object_permissions(request, ip)
         path = ip.ObjectPath
 
         try:
