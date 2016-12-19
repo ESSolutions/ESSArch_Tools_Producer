@@ -11,7 +11,8 @@
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-uglify": "^2.0.0",
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.7",
+    "yargs": "^6.5.0"
   },
   "dependencies": {
     "angular-bootstrap-datetimepicker": "^1.1.3",
