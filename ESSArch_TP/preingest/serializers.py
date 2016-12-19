@@ -113,6 +113,7 @@ class GroupDetailSerializer(GroupSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    permissions = serializers.ReadOnlyField(source='get_all_permissions')
     user_permissions = PermissionSerializer(many=True)
     groups = GroupSerializer(many=True)
 
@@ -121,7 +122,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'id', 'username', 'first_name', 'last_name', 'email',
             'groups', 'is_staff', 'is_active', 'is_superuser', 'last_login',
-            'date_joined', 'user_permissions',
+            'date_joined', 'permissions', 'user_permissions',
         )
         read_only_fields = (
             'last_login', 'date_joined',
