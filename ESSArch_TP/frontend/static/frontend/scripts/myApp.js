@@ -197,6 +197,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     });
     $urlRouterProvider.otherwise('info');
 })
+.config(function($animateProvider) {
+    // Only animate elements with the 'angular-animate' class
+    $animateProvider.classNameFilter(/angular-animate/);
+})
 .config(['$httpProvider', function($httpProvider, $rootScope) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
