@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput'])
+angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages'])
 .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider) {
     $stateProvider
         .state('home', {
@@ -231,7 +231,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 .config(function(stConfig) {
     stConfig.sort.delay = -1;
 })
-.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
+.config(function (formlyConfigProvider){
     function _defineProperty(obj, key, value) {
         if (key in obj) {
             Object.defineProperty(obj, key, {
@@ -244,28 +244,9 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             obj[key] = value;
         }
         return obj;
-    }
+    };
 
-    formlyValidationMessages.addStringMessage(
-            'required', 'This field is required'
-            );
-
-    formlyConfig.setWrapper([
-            {
-                template: [
-                    '<formly-transclude></formly-transclude>',
-                    '<div class="validation"',
-                    '  ng-if="showError"',
-                    '  ng-messages="fc.$error">',
-                    '  <div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages">',
-                    '    {{message(fc.$viewValue, fc.$modelValue, this)}}',
-                    '  </div>',
-                    '</div>'
-                ].join(' ')
-            }
-    ]);
-
-    formlyConfig.setType({
+    formlyConfigProvider.setType({
         name: 'input',
         templateUrl: 'static/frontend/views/form_template_input.html',
         overwriteOk: true,
@@ -280,7 +261,8 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             };
         }
     });
-    formlyConfig.setType({
+
+    formlyConfigProvider.setType({
         name: 'select',
         templateUrl: 'static/frontend/views/form_template_select.html',
         overwriteOk: true,
@@ -299,7 +281,25 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             };
         },
     });
-    formlyConfig.setType({
+
+    formlyConfigProvider.setType({
+        name: 'datepicker',
+        templateUrl: "static/frontend/views/datepicker_template.html",
+        overwriteOk: true,
+        wrapper: ['bootstrapHasError'],
+        defaultOptions: function defaultOptions(options) {
+            return {
+                templateOptions: {
+                    validation: {
+                        show: true
+                    }
+                }
+            };
+        }
+    });
+    moment.locale('sv');
+
+    formlyConfigProvider.setType({
         name: 'select-tree-edit',
         template: '<select class="form-control" ng-model="model[options.key]"><option value="" disabled hidden>Choose here</option></select>',
         wrapper: ['bootstrapLabel', 'bootstrapHasError'],
@@ -325,6 +325,34 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             };
         }
     });
+
+    formlyConfigProvider.setWrapper({
+      name: 'validation',
+      types: ['input', 'datepicker', 'select'],
+      templateUrl: 'static/frontend/views/form_error_messages.html'
+    });
+})
+.directive('setTouched', function MainCtrl() {
+    return {
+        restrict: 'A', // only activate on element attribute
+        require: '?ngModel', // get a hold of NgModelController
+        link: function(scope, element, attrs, ngModel) {
+            if (!ngModel) return; // do nothing if no ng-model
+            element.on('blur', function() {
+                var modelControllers = scope.$eval(attrs.setTouched);
+                if(angular.isArray(modelControllers)) {
+                    angular.forEach(modelControllers, function(modelCntrl) {
+                        modelCntrl.$setTouched();
+                    });
+                }
+            });
+        }
+    };
+})
+.run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
+    formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$touched || fc[0].$touched';
+    formlyValidationMessages.addStringMessage('required', 'This field is required');
+
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
         djangoAuth.profile().then(function(data) {
@@ -366,100 +394,4 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             $state.go(to.redirectTo, params, {location: 'replace'})
         }
     });
-
-    var ngModelAttrs = {};
-
-    var attributes = [
-        'ng-model',
-        'min-date',
-        'max-date',
-        'date-disabled',
-        'day-format',
-        'month-format',
-        'year-format',
-        'year-range',
-        'day-header-format',
-        'day-title-format',
-        'month-title-format',
-        'date-format',
-        'date-options',
-        'hour-step',
-        'minute-step',
-        'show-meridian',
-        'meridians',
-        'readonly-time',
-        'readonly-date',
-        'hidden-time',
-        'hidden-date',
-        'mousewheel',
-        'show-spinners',
-        'current-text',
-        'clear-text',
-        'close-text'
-    ];
-
-    var bindings = [
-        'ng-model',
-        'min-date',
-        'max-date',
-        'date-disabled',
-        'day-format',
-        'month-format',
-        'year-format',
-        'year-range',
-        'day-header-format',
-        'day-title-format',
-        'month-title-format',
-        'date-format',
-        'date-options',
-        'hour-step',
-        'minute-step',
-        'show-meridian',
-        'readonly-time',
-        'readonly-date',
-        'hidden-time',
-        'hidden-date'
-    ];
-
-    angular.forEach(attributes, function(attr) {
-        ngModelAttrs[camelize(attr)] = {
-            attribute: attr
-        };
-    });
-
-    angular.forEach(bindings, function(binding) {
-        ngModelAttrs[camelize(binding)] = {
-            bound: binding
-        };
-    });
-
-    function camelize(string) {
-        string = string.replace(/[\-_\s]+(.)?/g,
-
-                function(match, chr) {
-                    return chr ? chr.toUpperCase() : '';
-                });
-        // Ensure 1st char is always lowercase
-        return string.replace(/^([A-Z])/, function(match, chr) {
-            return chr ? chr.toLowerCase() : '';
-        });
-    }
-
-    formlyConfig.setType({
-        name: 'datepicker',
-        templateUrl: "static/frontend/views/datepicker_template.html",
-        overwriteOk: true,
-        wrapper: ['bootstrapHasError'],
-        defaultOptions: function defaultOptions(options) {
-            return {
-                ngModelAttrs: ngModelAttrs,
-                templateOptions: {
-                    validation: {
-                        show: true
-                    }
-                }
-            };
-        }
-    });
-    moment.locale('sv');
 });

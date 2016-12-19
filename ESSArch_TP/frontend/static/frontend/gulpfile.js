@@ -13,6 +13,8 @@ var vendorFiles = [
         'scripts/bower_components/jquery/dist/jquery.min.js',
         'scripts/bower_components/jquery-ui/jquery-ui.min.js',
         'scripts/bower_components/angular/angular.min.js',
+        'scripts/bower_components/angular-animate/angular-animate.js',
+        'scripts/bower_components/angular-messages/angular-messages.js',
         'scripts/bower_components/angular-route/angular-route.min.js',
         'scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
         'scripts/bower_components/angular-tree-control/angular-tree-control.js',
