@@ -365,11 +365,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 $scope.getListViewData();
                 updateListViewConditional();
             }, 1000);
-            $scope.createDisabled = false;
             $anchorScroll();
-        }), function errorCallback(response){
+        }).finally(function(){
             $scope.createDisabled = false;
-        };
+        });
     };
     var listViewInterval;
     function updateListViewConditional() {
