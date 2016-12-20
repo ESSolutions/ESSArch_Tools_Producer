@@ -311,7 +311,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                   ]
                 }
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -321,7 +321,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_reception_validation" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -331,7 +331,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_reception_exception_handling" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -341,7 +341,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_reception_receipt_confirmation" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -351,7 +351,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_risk" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -361,7 +361,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_mitigation" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -371,7 +371,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "information_package_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -381,7 +381,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submission_information_package_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -391,7 +391,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "archival_information_package_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -401,7 +401,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "dissemination_information_package_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -411,7 +411,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "submit_description_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -421,7 +421,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "content_type_specification_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -431,7 +431,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "archival_description_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -441,7 +441,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "authority_information_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -451,7 +451,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "preservation_description_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -461,7 +461,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "ip_event_description_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -471,7 +471,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "mimetypes_definition_file" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -481,7 +481,7 @@ def installProfileTransferProject(): # Profile Transfer Project
                 "type": "input",
                 "key": "preservation_organization_receiver_email" # Responds to specification data
             }, {
-                "hideExpression": "False",
+                "hideExpression": "true",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
