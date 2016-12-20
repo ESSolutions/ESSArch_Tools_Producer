@@ -1,8 +1,8 @@
 <div ng-if="eventShow" class="event-view">
-    <div ng-controller="EventCtrl" class="table-container">
+    <div ng-controller="EventCtrl as vm" class="table-container">
         <span style="float: right; margin-bottom: 5px;" ng-click="stCtrl.pipe()" class="clickable glyphicon glyphicon-refresh" ng-class="{'glyphicon-refresh-animate': eventLoading }"></span>
         <select class="form-control items-per-page"  ng-model="itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
-        <table st-table="displayed" st-pipe="eventPipe" class="table table-striped">
+        <table st-table="vm.displayed" st-pipe="eventPipe" class="table table-striped">
             <thead>
                 <tr>
                     <th class="clickable" st-sort="eventType">{{'EVENTTYPE' | translate}}</th>
@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in displayed">
+                <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in vm.displayed">
                     <td>{{row.eventDetail}}</td>
                     <td>{{row.eventOutcomeDetailNote}}</td>
                     <td>{{getEventOutcome(row.eventOutcome)}}</td>
