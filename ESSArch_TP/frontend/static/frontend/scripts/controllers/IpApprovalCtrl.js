@@ -277,10 +277,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                         if(field.fieldGroup != null){
                             field.fieldGroup.forEach(function(subGroup) {
                                 subGroup.fieldGroup.forEach(function(item) {
+                                    item.type = 'input';
                                     item.templateOptions.disabled = true;
                                 });
                             });
                         } else {
+                            field.type = 'input';
                             field.templateOptions.disabled = true;
                         }
                     });

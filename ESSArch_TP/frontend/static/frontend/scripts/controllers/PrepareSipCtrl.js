@@ -231,6 +231,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                     vm.informationModel= response.data.specification_data;
                     vm.informationFields = response.data.template;
                     vm.informationFields.forEach(function(field) {
+                        field.type = 'input';
                         field.templateOptions.disabled = true;
                     });
                     if(ip.profile_transfer_project) {
@@ -244,6 +245,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                             vm.dependencyModel= response.data.specification_data;
                             vm.dependencyFields = response.data.template;
                             vm.dependencyFields.forEach(function(field) {
+                                field.type = 'input';
                                 field.templateOptions.disabled = true;
                             });
                             listViewService.getFileList(ip).then(function(result) {
