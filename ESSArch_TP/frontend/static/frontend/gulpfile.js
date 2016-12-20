@@ -1,16 +1,18 @@
 var gulp = require('gulp')
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
+var concatCss = require('gulp-concat-css');
 var gulpif = require('gulp-if');
 var ngAnnotate = require('gulp-ng-annotate');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var cleanCSS = require('gulp-clean-css');
 var gutil = require('gulp-util');
 var argv = require('yargs').argv;
 var isProduction = (argv.production === undefined) ? false : true;
 
-var vendorFiles = [
+var jsVendorFiles = [
         'scripts/bower_components/api-check/dist/api-check.js',
         'scripts/bower_components/jquery/dist/jquery.js',
         'scripts/bower_components/jquery-ui/jquery-ui.js',
@@ -44,7 +46,17 @@ var vendorFiles = [
         'scripts/myApp.js', 'scripts/controllers/*.js', 'scripts/services/*.js',
         'scripts/directives/*.js', 'scripts/configs/*.js'
     ],
-    jsDest = 'scripts';
+    jsDest = 'scripts',
+    cssFiles = [
+        'node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
+        'scripts/bower_components/angular-bootstrap-grid-tree/src/treeGrid.css',
+        'scripts/bower_components/angular-tree-control/css/tree-control-attribute.css',
+        'scripts/bower_components/angular-ui-select/dist/select.css',
+        'scripts/bower_components/font-awesome/css/font-awesome.min.css',
+        'scripts/bower_components/select2/dist/css/select2.min.css',
+        'styles/index.css',
+    ],
+    cssDest = 'styles';
 
 var buildScripts = function() {
     return gulp.src(jsFiles)
@@ -64,7 +76,7 @@ var buildScripts = function() {
 };
 
 var buildVendors = function() {
-    return gulp.src(vendorFiles)
+    return gulp.src(jsVendorFiles)
         .pipe(plumber(function(error) {
           // output an error message
 
@@ -80,16 +92,35 @@ var buildVendors = function() {
         .pipe(gulp.dest(jsDest));
 };
 
+var buildCSS = function() {
+    return gulp.src(cssFiles)
+        .pipe(plumber(function(error) {
+          // output an error message
+
+          gutil.log(gutil.colors.red('error (' + error.plugin + '): ' + error.message));
+          // emit the end event, to properly end the task
+          this.emit('end');
+        }))
+        .pipe(sourcemaps.init())
+        .pipe(concatCss('styles.min.css'))
+        .pipe(gulpif(isProduction, cleanCSS()))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(cssDest));
+};
+
 gulp.task('default', function() {
     buildScripts(),
-    buildVendors()
+    buildVendors(),
+    buildCSS()
 });
 
 
 gulp.task('scripts', buildScripts);
 gulp.task('vendors', buildVendors);
+gulp.task('css', buildCSS);
 
 gulp.task('watch', function(){
     gulp.watch(jsFiles, ['scripts']);
-    gulp.watch(vendorFiles, ['vendors']);
+    gulp.watch(jsVendorFiles, ['vendors']);
+    gulp.watch(cssFiles, ['css']);
 })
