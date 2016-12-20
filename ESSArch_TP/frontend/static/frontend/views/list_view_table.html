@@ -54,7 +54,11 @@
                     <uib-progressbar class="progress" value="row.status" type="success"><b>{{row.status | number : 0}}%</b></uib-progressbar>
                 </td>
                 <td ng-click="ipRowClick(row)">
-                    <button ng-hide="row.State == 'Creating' || row.State == 'Submitting'" ng-click="removeIpModal(row)" class="glyphicon glyphicon-remove"></button>
+                    <button type="button"
+                            ng-if="row.Responsible.id == auth.id || checkPermission('ip.delete_informationpackage')"
+                            ng-hide="row.State == 'Creating' || row.State == 'Submitting'"
+                            ng-click="removeIpModal(row)"
+                            class="glyphicon glyphicon-remove"></button>
                 </td>
             </tr>
         </tbody>

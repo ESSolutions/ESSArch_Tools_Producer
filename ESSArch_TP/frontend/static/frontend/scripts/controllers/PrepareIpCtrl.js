@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore){
     var vm = this;
     //Status tree view structure
     $scope.tree_data = [];
@@ -428,7 +428,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     };
     //Changes SA profile for selected ip
-    $scope.changeSaProfile = function (sa, ip) {
+    $scope.changeSaProfile = function (sa, ip, oldSa_idx) {
         $http({
             method: 'PATCH',
             url: ip.url,
@@ -438,6 +438,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }).then(function(response){
             $scope.getSelectCollection(sa, ip);
             $scope.selectRowCollection = $scope.selectRowCollapse;
+        }, function(response) {
+            $scope.saProfile.profile = $scope.saProfile.profiles[oldSa_idx];
         });
     }
     //Toggle visibility of profiles in select view
@@ -475,7 +477,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             });
             $scope.edit = false;
             $scope.eventlog = false;
-            $anchorScroll();
+            $anchorScroll('select-view');
         }, function(response) {
             alert(response.status);
         });
@@ -1041,6 +1043,19 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             profile.profiles = result;
         })
     }
+    //Unlock profile from current IP
+    $scope.unlock = function(profile) {
+        console.log(profile);
+        $http({
+            method: 'POST',
+            url: $scope.ip.url + "unlock-profile/",
+            data: {
+                type: profile.active.profile_type
+            }
+        }).then(function(response){
+            profile.locked = false;
+        });
+    }
     $scope.showLockAllButton = function(profiles){
         return profiles.some(function(elem){
             return elem.checked && !elem.locked;
@@ -1069,6 +1084,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 $scope.lockProfile(profile);
             }
         });
+        $scope.select = false;
+        $scope.edit = false;
+        $scope.eventLog = false;
+        $anchorScroll();
     }
     $scope.tracebackModal = function (profiles) {
         $scope.profileToSave = profiles;
@@ -1087,4 +1106,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    $scope.checkPermission = function(permissionName) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
+    };
 });

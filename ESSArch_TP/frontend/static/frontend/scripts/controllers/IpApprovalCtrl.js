@@ -1,4 +1,4 @@
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore){
     var vm = this;
     $scope.tree_data = [];
     $scope.angular = angular;
@@ -571,5 +571,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         console.log(moment(date).utc().format());
         console.log(vm.validatorModel);
     }
+    $scope.checkPermission = function(permissionName) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
+    };
 });
 

@@ -25,9 +25,9 @@
                                     <td>
                                         <p class="table-col">{{'Submission Agreement'}}</p>
                                     </td>
-                                    <td><select class="form-control table-col" ng-disabled="saProfile.locked" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                    <td><select class="form-control table-col" ng-disabled="(saProfile.locked) || (ip.Responsible.id != auth.id && !checkPermission('ip.change_sa'))" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
                                     <td>
-                                        <button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile" class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i> {{'LOCKSA' | translate}}</button>
+                                        <button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile || (ip.Responsible.id != auth.id && !checkPermission('ip.lock_sa'))" class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i> {{'LOCKSA' | translate}}</button>
                                         <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                         <p class="table-col">{{}}</p></td>
                                     <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
@@ -67,8 +67,9 @@
                                     </ui-select>
                                     </td>
                                     <td>
+                                        <button ng-if="profile.locked && (checkPermission('ip.unlock_profile') || ip.Responsible.id == auth.id)" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
                                         <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active || !saProfile.locked" class="btn btn-success btn-sm lock-button" ng-click="lockProfileModal(profile)"><i class="fa fa-lock"></i> {{'LOCKPROFILE' | translate}}</button>
-                                        <button ng-if="profile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                        <button ng-if="profile.locked && !checkPermission('ip.unlock_profile') && ip.Responsible.id != auth.id" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                     </td>
                                 </tr>
                             </tbody>

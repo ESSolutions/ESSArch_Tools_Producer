@@ -2,10 +2,9 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
     function changePath(state) {
         $state.go(state);
     };
-    function getPermissions(group){
-        var permissions = group.permissions.map(function(currentValue){return currentValue.codename});
-        PermPermissionStore.defineManyPermissions(permissions, function(permissionName) {
-            return_.contains(permissions, permissionName);
+    function getPermissions(permissions){
+        PermPermissionStore.defineManyPermissions(permissions, /*@ngInject*/ function (permissionName) {
+            return permissions.includes(permissionName);
         });
         return permissions;
     }

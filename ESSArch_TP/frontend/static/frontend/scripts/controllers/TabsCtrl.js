@@ -4,7 +4,6 @@ angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope,
     });
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
         if(toState.name == "home.info") {
-            console.log($scope.activeTab);
             $scope.activeTab = null;
         }
     });

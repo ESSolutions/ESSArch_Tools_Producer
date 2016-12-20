@@ -1,4 +1,4 @@
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll){
+angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore){
     var vm = this;
     // List view
     //Go to give state
@@ -711,4 +711,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    $scope.checkPermission = function(permissionName) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
+    };
 });

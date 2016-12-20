@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll) {
+angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore) {
     var vm = this;
     vm.flowDestination = null;
     // List view
@@ -468,5 +468,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.fileTransferFilter = function(file)
     {
         return file.isUploading();
+    };
+    $scope.checkPermission = function(permissionName) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
     };
 });

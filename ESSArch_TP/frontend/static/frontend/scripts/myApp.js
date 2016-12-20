@@ -361,16 +361,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
         djangoAuth.profile().then(function(data) {
             $rootScope.auth = data;
-            data.groups.forEach(function(group){
-                $http({
-                    method: 'GET',
-                    url: group
-                }).then(function(response) {
-                    PermRoleStore.defineRole(response.data.name, myService.getPermissions(response.data));
-                }, function() {
-                    console.log("error");
-                });
-            });
+            myService.getPermissions(data.permissions);
         }, function() {
             $state.go('login');
         });

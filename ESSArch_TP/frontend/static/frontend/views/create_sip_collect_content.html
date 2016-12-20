@@ -30,10 +30,10 @@
                 <form class="eventlog-form" ng-submit="setUploaded(ip)">
                     <div class="checkbox">
                         <label>
-                            <input type="checkBox" ng-model="completedUploading">{{'COMPLETEDUPLOADING' | translate}}</input>
+                            <input type="checkBox" ng-disabled="ip.Responsible.id != auth.id && !checkPermission('ip.set_uploaded')" ng-model="completedUploading">{{'COMPLETEDUPLOADING' | translate}}</input>
                         </label>
                     </div>
-                    <button class="btn btn-info submit-button" ng-dblClick="" ng-disabled="uploadDisabled || !completedUploading" type="submit" style="float: right;">{{'DONE' | translate}}</button>
+                    <button class="btn btn-info submit-button" ng-dblClick="" ng-disabled="uploadDisabled || !completedUploading || (ip.Responsible.id != auth.id && !checkPermission('ip.set_uploaded'))" type="submit" style="float: right;">{{'DONE' | translate}}</button>
                 </form>
             </div>
         </div>
