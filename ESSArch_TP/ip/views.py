@@ -918,7 +918,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         os.remove(chunk_file)
 
                 event_type = EventType.objects.get(eventType=10120)
-                agent = request.user.username or "System"
+                agent = request.user
                 create_event(
                     event_type, 0, "Uploaded %s" % path,
                     get_versions()['version'], agent, ip=ip
