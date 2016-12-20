@@ -22,6 +22,10 @@ from ESSArch_Core.ip.models import (
     InformationPackage,
 )
 
+from ESSArch_Core.ip.permissions import (
+    CanLockSA,
+)
+
 from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep,
     ProcessTask,
@@ -91,10 +95,11 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        try:
-            assert ip.Responsible == request.user
-        except AssertionError:
-            raise PermissionDenied()
+        permission = CanLockSA()
+        if not permission.has_object_permission(request, self, ip):
+            self.permission_denied(
+                request, message=getattr(permission, 'message', None)
+            )
 
         if ip.SubmissionAgreement == sa:
             ip.SubmissionAgreementLocked = True

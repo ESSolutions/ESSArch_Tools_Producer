@@ -32,6 +32,12 @@ from ESSArch_Core.ip.models import (
 )
 
 from ESSArch_Core.ip.permissions import (
+    CanChangeSA,
+    CanCreateSIP,
+    CanDeleteIP,
+    CanSetUploaded,
+    CanSubmitSIP,
+    CanUnlockProfile,
     IsResponsibleOrReadOnly,
 )
 
@@ -112,7 +118,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         Prefetch('profileip_set', to_attr='profiles'), 'steps__child_steps',
     )
     serializer_class = InformationPackageSerializer
-    permission_classes = (permissions.IsAuthenticated, IsResponsibleOrReadOnly,)
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
     )
@@ -125,6 +130,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             return InformationPackageSerializer
 
         return InformationPackageDetailSerializer
+
+    def get_permissions(self):
+        if self.action == 'partial_update':
+            if self.request.data.get('SubmissionAgreement'):
+                self.permission_classes = [CanChangeSA]
+        if self.action == 'destroy':
+            self.permission_classes = [CanDeleteIP]
+
+        return super(InformationPackageViewSet, self).get_permissions()
 
     def get_queryset(self):
         queryset = self.queryset
@@ -240,7 +254,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         sorted_entries = sorted(entries, key=itemgetter('name'))
         return Response(sorted_entries)
 
-    @detail_route(methods=['post'], url_path='create')
+    @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
         """
         Creates the specified information package
@@ -666,7 +680,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         return Response({'status': 'creating ip'})
 
-    @detail_route(methods=['post'], url_path='submit')
+    @detail_route(methods=['post'], url_path='submit', permission_classes=[CanSubmitSIP])
     def submit(self, request, pk=None):
         """
         Submits the specified information package
@@ -846,7 +860,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
         })
 
-    @detail_route(methods=['post'], url_path='unlock-profile')
+    @detail_route(methods=['post'], url_path='unlock-profile', permission_classes=[CanUnlockProfile])
     def unlock_profile(self, request, pk=None):
         ip = self.get_object()
         ptype = request.data.get("type")
@@ -912,7 +926,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response("Uploaded files")
 
-    @detail_route(methods=['post'], url_path='set-uploaded')
+    @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):
         ip = self.get_object()
         ip.State = "Uploaded"
