@@ -51,9 +51,11 @@ var jsVendorFiles = [
         'node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
         'scripts/bower_components/angular-bootstrap-grid-tree/src/treeGrid.css',
         'scripts/bower_components/angular-tree-control/css/tree-control-attribute.css',
+        'scripts/bower_components/angular-tree-control/css/tree-control.css',
         'scripts/bower_components/angular-ui-select/dist/select.css',
-        'scripts/bower_components/font-awesome/css/font-awesome.min.css',
-        'scripts/bower_components/select2/dist/css/select2.min.css',
+        'scripts/bower_components/bootstrap/dist/css/bootstrap.css',
+        'scripts/bower_components/font-awesome/css/font-awesome.css',
+        'scripts/bower_components/select2/dist/css/select2.css',
         'styles/index.css',
     ],
     cssDest = 'styles';
@@ -94,16 +96,9 @@ var buildVendors = function() {
 
 var buildCSS = function() {
     return gulp.src(cssFiles)
-        .pipe(plumber(function(error) {
-          // output an error message
-
-          gutil.log(gutil.colors.red('error (' + error.plugin + '): ' + error.message));
-          // emit the end event, to properly end the task
-          this.emit('end');
-        }))
-        .pipe(sourcemaps.init())
-        .pipe(concatCss('styles.min.css'))
-        .pipe(gulpif(isProduction, cleanCSS()))
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(concatCss("styles.min.css"))
+        .pipe(cleanCSS({root: '../../', keepSpecialComments: 0, sourceMap: true}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(cssDest));
 };
