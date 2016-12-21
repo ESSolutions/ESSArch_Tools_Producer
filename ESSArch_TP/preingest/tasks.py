@@ -12,7 +12,7 @@ from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.WorkflowEngine.models import ProcessStep
 from ESSArch_Core.util import (
-    get_value_from_path, remove_prefix, win_to_posix
+    delete_content, get_value_from_path, remove_prefix, win_to_posix
 )
 from ESSArch_Core import tasks
 
@@ -115,6 +115,7 @@ class CreatePhysicalModel(DBTask):
         """
 
         root = os.path.join(settings.BASE_DIR, str(root))
+        delete_content(root)
 
         for content in structure:
             if content.get('type') == 'folder':
