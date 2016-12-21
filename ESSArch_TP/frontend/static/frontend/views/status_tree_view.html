@@ -1,14 +1,13 @@
 <div class="status-tree-grid">
-<span style="float: right; margin-bottom: 5px;" ng-click="statusViewUpdate(ip)" class="clickable glyphicon glyphicon-refresh" ng-class="{'glyphicon-refresh-animate': statusLoading }"></span>
-
+<span style="float: right; margin-bottom: 5px;" ng-click="statusViewUpdate(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': statusLoading }"></span>
 <tree-grid
     col-defs="col_defs"
     tree-data="tree_data"
     tree-control="myTreeControl"
     expand-on="expanding_property"
-    icon-leaf="glyphicon glyphicon-flash"
-    icon-expand="glyphicon glyphicon-plus"
+    icon-leaf="fa fa-bolt"
+    icon-expand="fa fa-plus"
     on-click="stepTaskClick(branch)"
-    icon-collapse="glyphicon glyphicon-minus">
+    icon-collapse="fa fa-minus">
 </tree-grid>
 </div>
