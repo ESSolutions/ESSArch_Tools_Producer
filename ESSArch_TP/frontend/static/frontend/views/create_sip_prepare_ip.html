@@ -67,7 +67,7 @@
                                     </ui-select>
                                     </td>
                                     <td>
-                                        <button ng-if="profile.locked && (checkPermission('ip.unlock_profile') || ip.Responsible.id == auth.id)" class="btn btn-danger btn-sm lock-button" ng-click="unlock(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
+                                        <button ng-if="profile.locked && (checkPermission('ip.unlock_profile') || ip.Responsible.id == auth.id)" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
                                         <button ng-if="!profile.locked" ng-disabled="!profile.checked || !profile.active || !saProfile.locked" class="btn btn-success btn-sm lock-button" ng-click="lockProfileModal(profile)"><i class="fa fa-lock"></i> {{'LOCKPROFILE' | translate}}</button>
                                         <button ng-if="profile.locked && !checkPermission('ip.unlock_profile') && ip.Responsible.id != auth.id" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                     </td>

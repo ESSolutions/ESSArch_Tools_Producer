@@ -458,6 +458,14 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
         }
     }
+    $scope.unlockConditional = function(profile) {
+        if(profile.profile_type == "sip") {
+            $scope.unlockSipModal(profile);
+        } else {
+            $scope.unlock(profile);
+        }
+    }
+
     //Unlock profile from current IP
     $scope.unlock = function(profile) {
         $http({
@@ -562,6 +570,23 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    $scope.unlockSipModal = function (profile) {
+        $scope.profileToSave = profile;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/unlock_sip_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.unlock($scope.profileToSave);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
