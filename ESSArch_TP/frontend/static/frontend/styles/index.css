@@ -150,10 +150,10 @@ body.modal-open[style] {
 .user-dropdown > h4 {
     margin-right: 5px;
 }
-.user-dropdown > .glyphicon-user {
+.user-dropdown > .fa-user-circle-o {
     font-size: 30px;
 }
-.user-dropdown > .glyphicon-triangle-bottom {
+.user-dropdown > .fa-triangle-bottom {
     font-size: 10px;
 }
 .menu-task-wrapper {
@@ -180,7 +180,7 @@ body.modal-open[style] {
     height: 100%;
     margin: auto;
 }
-.tasks-icons > .glyphicon {
+.tasks-icons > .fa {
     margin-right: 2px;
     margin-left: 2px;
     cursor: pointer;
@@ -267,22 +267,22 @@ body.modal-open[style] {
     margin-right: 5px;
     margin-left: 5px;
 }
-.glyphicon.glyphicon-refresh {
+.fa.fa-refresh {
     font-size: 20px;
 }
-.glyphicon.glyphicon-pencil {
+.fa.fa-pencil {
     font-size: 20px;
 }
-.glyphicon.glyphicon-print {
+.fa.fa-print {
     font-size: 20px;
 }
-.glyphicon.glyphicon-cog {
+.fa.fa-cog {
     font-size: 20px;
 }
-.glyphicon.glyphicon-envelope {
+.fa.fa-envelope {
     font-size: 20px;
 }
-.glyphicon.glyphicon-question-sign {
+.fa.fa-question-circle {
     font-size: 20px;
 }
 .status-tree-grid {
@@ -311,13 +311,13 @@ body.modal-open[style] {
 #items-per-page {
     width: 100px;
 }
-.glyphicon-refresh-animate {
+.fa-refresh-animate {
     -animation: spin 0.7s infinite linear;
     -ms-animation: spin 0.7s infinite linear;
     -webkit-animation: spinw 0.7s infinite linear;
     -moz-animation: spinm 0.7s infinite linear;
 }
-.glyphicon-refresh-animate-once {
+.fa-refresh-animate-once {
     -animation: spin 0.7s;
     -ms-animation: spin 0.7s;
     -webkit-animation: spinw 0.7s;

@@ -8,8 +8,7 @@
                         <div class="btn-group" uib-dropdown is-open="status.isopen">
                             <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled">
                                 <h4>{{auth.username}}</h4>
-                                <span class="glyphicon glyphicon-user"></span>
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                <span class="fa fa-user-circle-o"></span>
                             </div>
                             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
                                 <li ng-repeat="choice in editUserOptions">
@@ -33,9 +32,9 @@
                     </uib-tabset>
                 </div>
                 <div ng-controller="UtilCtrl" class="tasks-icons">
-                    <span ng-click="reloadPage()" class="glyphicon glyphicon-refresh glyphicon-refresh-animate-once"></span>
-                    <span ng-click="redirectAdmin()" class="glyphicon glyphicon-cog"></span>
-                    <span ui-sref="home.versionInfo" class="glyphicon glyphicon-question-sign"></span>
+                    <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once"></span>
+                    <span ng-click="redirectAdmin()" class="fa fa-cog"></span>
+                    <span ui-sref="home.versionInfo" class="fa fa-question-circle"></span>
 
                     <div ng-controller="LanguageCtrl" style="width: 100px; margin-left: 10px;">
                         <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" style="width: 100%;"></select>
