@@ -372,8 +372,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         generate_xml_step.tasks = [t1]
         generate_xml_step.save()
 
-        #dirname = os.path.join(ip_prepare_path, "data")
-
         if any(validators.itervalues()):
             validate_step = ProcessStep.objects.create(
                 name="Validation", parent_step=main_step,
