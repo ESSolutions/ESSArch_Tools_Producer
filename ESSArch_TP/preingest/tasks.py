@@ -248,7 +248,10 @@ class CreateZIP(DBTask):
         return zipname
 
     def undo(self, dirname=None, zipname=None):
-        pass
+        with zipfile.ZipFile(zipname, 'r') as z:
+            z.extractall(dirname)
+
+        os.remove(zipname)
 
     def event_outcome_success(self, dirname=None, zipname=None):
         return "Created %s from %s" % (zipname, dirname)
