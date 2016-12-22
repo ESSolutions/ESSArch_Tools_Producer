@@ -51,7 +51,7 @@ class ProcessTaskDetailSerializer(ProcessTaskSerializer):
     result = serializers.SerializerMethodField()
 
     def get_params(self, obj):
-        return dict((str(k), str(v)) for k,v in obj.params.iteritems())
+        return dict((str(k), str(v)) for k, v in obj.params.iteritems())
 
     def get_result(self, obj):
         return str(obj.result)

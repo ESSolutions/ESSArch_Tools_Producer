@@ -560,7 +560,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                   "-name": "type",
                   '-namespace': 'xsi',
                   "-req": "1",
-                  "#content": [{"text":"premis:file"}]
+                  "#content": [{"text": "premis:file"}]
                 }
             ],
         }
