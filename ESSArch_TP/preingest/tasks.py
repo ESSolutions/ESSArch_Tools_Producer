@@ -212,7 +212,7 @@ class CreateTAR(DBTask):
         return tarname
 
     def undo(self, dirname=None, tarname=None):
-        with tarfile.open(tarname) as tar:
+        with tarfile.open(tarname, 'r') as tar:
             tar.extractall(dirname)
 
         os.remove(tarname)
