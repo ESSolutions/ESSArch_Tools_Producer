@@ -212,7 +212,10 @@ class CreateTAR(DBTask):
         return tarname
 
     def undo(self, dirname=None, tarname=None):
-        pass
+        with tarfile.open(tarname) as tar:
+            tar.extractall(dirname)
+
+        os.remove(tarname)
 
     def event_outcome_success(self, dirname=None, tarname=None):
         return "Created %s from %s" % (tarname, dirname)
