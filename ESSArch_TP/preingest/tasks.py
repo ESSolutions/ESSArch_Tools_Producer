@@ -52,7 +52,7 @@ class PrepareIP(DBTask):
         return ip
 
     def undo(self, label="", responsible={}, step=None):
-        pass
+        self.taskobj.information_package.delete()
 
     def event_outcome_success(self, label="", responsible={}, step=None):
         return "Prepared IP with label '%s'" % label
