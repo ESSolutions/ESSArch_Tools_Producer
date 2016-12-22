@@ -713,7 +713,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step = ProcessStep.objects.create(
             name="Submit SIP",
-            information_package = ip
+            information_package=ip
         )
 
         step.tasks.add(ProcessTask.objects.create(
