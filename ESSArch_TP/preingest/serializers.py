@@ -24,7 +24,7 @@ class RecursiveField(serializers.Serializer):
 
 
 class ProcessTaskSerializer(serializers.HyperlinkedModelSerializer):
-    name =  serializers.ChoiceField(
+    name = serializers.ChoiceField(
         choices=available_tasks(),
     )
     responsible = serializers.SlugRelatedField(
