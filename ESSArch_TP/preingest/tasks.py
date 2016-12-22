@@ -2,17 +2,12 @@ from __future__ import absolute_import
 
 import os, shutil, tarfile, zipfile
 
-from django.conf import settings
-from django.core import serializers
-
-from lxml import etree
-
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.WorkflowEngine.models import ProcessStep
 from ESSArch_Core.util import (
-    delete_content, get_value_from_path, remove_prefix, win_to_posix
+    delete_content
 )
 from ESSArch_Core import tasks
 

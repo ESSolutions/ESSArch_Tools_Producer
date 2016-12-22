@@ -9,7 +9,7 @@ from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.http import HttpResponse
-from rest_framework import filters, permissions, status
+from rest_framework import filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -38,7 +38,6 @@ from ESSArch_Core.ip.permissions import (
     CanSetUploaded,
     CanSubmitSIP,
     CanUnlockProfile,
-    IsResponsibleOrReadOnly,
 )
 
 from ESSArch_Core.profiles.models import (

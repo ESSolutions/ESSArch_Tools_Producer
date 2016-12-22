@@ -11,7 +11,7 @@ from ESSArch_Core.ip.models import (
 
 from ESSArch_Core.serializers import DynamicHyperlinkedModelSerializer
 
-from preingest.serializers import ProcessStepSerializer, UserSerializer
+from preingest.serializers import UserSerializer
 
 from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,

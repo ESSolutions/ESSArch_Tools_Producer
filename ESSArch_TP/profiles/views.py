@@ -2,11 +2,9 @@ import os
 
 from django.db import IntegrityError
 from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.decorators import detail_route
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from ESSArch_Core.configuration.models import (
