@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'frontend',
+    'ESSArch_Core.config',
     'ESSArch_Core.configuration',
     'ESSArch_Core.ip',
     'ESSArch_Core.profiles',
