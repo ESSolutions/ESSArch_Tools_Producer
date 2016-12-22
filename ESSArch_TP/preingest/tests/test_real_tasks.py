@@ -199,3 +199,47 @@ class test_tasks(TestCase):
         self.assertFalse(
             os.path.isfile(tarname)
         )
+
+    def test_create_zip(self):
+        # create directory
+        prepare_path = Path.objects.get(entity="path_preingest_prepare").value
+        dirname = os.path.join(prepare_path, "zipdir")
+        os.makedirs(dirname)
+
+        # create empty file
+        filename = os.path.join(dirname, "file.txt")
+        open(filename, "a").close()
+
+        zipname = dirname + ".zip"
+
+        task = ProcessTask(
+            name="preingest.tasks.CreateZIP",
+            params={
+                "dirname": dirname,
+                "zipname": zipname
+            },
+        )
+        task.run()
+
+        self.assertTrue(
+            os.path.isdir(dirname)
+        )
+        self.assertTrue(
+            os.path.isfile(filename)
+        )
+        self.assertTrue(
+            os.path.isfile(zipname)
+        )
+
+        shutil.rmtree(dirname)
+        task.undo()
+
+        self.assertTrue(
+            os.path.isdir(dirname)
+        )
+        self.assertTrue(
+            os.path.isfile(filename)
+        )
+        self.assertFalse(
+            os.path.isfile(zipname)
+        )
