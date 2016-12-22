@@ -105,6 +105,12 @@ class CreateIPRootDir(DBTask):
 class CreatePhysicalModel(DBTask):
     event_type = 10115
 
+    def get_root(self):
+        root = Path.objects.get(
+            entity="path_preingest_prepare"
+        ).value
+        return os.path.join(root, unicode(self.taskobj.information_package.pk))
+
     def run(self, structure={}, root=""):
         """
         Creates the IP physical model based on a logical model.
@@ -114,8 +120,14 @@ class CreatePhysicalModel(DBTask):
             root: The root dictionary to be used
         """
 
-        root = os.path.join(settings.BASE_DIR, str(root))
-        delete_content(root)
+        if not root:
+            root = self.get_root()
+
+        try:
+            delete_content(root)
+        except OSError as e:
+            if e.errno != 2:
+                raise
 
         for content in structure:
             if content.get('type') == 'folder':
@@ -128,16 +140,14 @@ class CreatePhysicalModel(DBTask):
         self.set_progress(1, total=1)
 
     def undo(self, structure={}, root=""):
-        root = os.path.join(settings.BASE_DIR, str(root))
+        if not root:
+            root = self.get_root()
 
-        if root:
-            shutil.rmtree(root)
-            return
-
-        for k, v in structure.iteritems():
-            k = str(k)
-            dirname = os.path.join(root, k)
-            shutil.rmtree(dirname)
+        for content in structure:
+            if content.get('type') == 'folder':
+                name = content.get('name')
+                dirname = os.path.join(root, name)
+                shutil.rmtree(dirname)
 
     def event_outcome_success(self, structure={}, root=""):
         return "Created physical model for IP '%s'" % self.taskobj.information_package.pk
