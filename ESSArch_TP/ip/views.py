@@ -601,7 +601,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
             )
 
-
         if container_format.lower() == 'zip':
             zipname = os.path.join(ip_reception_path) + '.zip'
             container_task = ProcessTask.objects.create(

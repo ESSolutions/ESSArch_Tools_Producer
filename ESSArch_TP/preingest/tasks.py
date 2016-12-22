@@ -31,7 +31,6 @@ class PrepareIP(DBTask):
             The id of the created information package
         """
 
-
         ip = InformationPackage.objects.create(
             Label=label,
             Responsible=responsible,

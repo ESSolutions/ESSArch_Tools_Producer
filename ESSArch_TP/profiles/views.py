@@ -280,7 +280,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
             ip.save()
 
-
         non_locked_sa_profiles = ProfileSA.objects.filter(
             submission_agreement=ip.SubmissionAgreement,
         ).exclude(
