@@ -117,7 +117,7 @@ class CreatePhysicalModel(DBTask):
 
         Args:
             structure: A dict specifying the logical model.
-            root: The root dictionary to be used
+            root: The root directory to be used
         """
 
         if not root:
