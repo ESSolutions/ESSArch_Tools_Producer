@@ -3,7 +3,10 @@ from _version import get_versions
 from collections import OrderedDict
 from operator import itemgetter
 
-import errno, glob, os, shutil
+import errno
+import glob
+import os
+import shutil
 
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend

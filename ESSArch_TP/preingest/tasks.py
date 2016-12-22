@@ -1,6 +1,9 @@
 from __future__ import absolute_import
 
-import os, shutil, tarfile, zipfile
+import os
+import shutil
+import tarfile
+import zipfile
 
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
