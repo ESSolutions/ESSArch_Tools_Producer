@@ -14,6 +14,7 @@ from ESSArch_Core.util import (
 )
 from ESSArch_Core import tasks
 
+
 class PrepareIP(DBTask):
     event_type = 10100
 
@@ -100,6 +101,7 @@ class CreateIPRootDir(DBTask):
     def event_outcome_success(self, information_package=None):
         return "Created root directory for IP '%s'" % information_package.pk
 
+
 class CreatePhysicalModel(DBTask):
     event_type = 10115
 
@@ -153,6 +155,7 @@ class CreatePhysicalModel(DBTask):
 
 class CalculateChecksum(tasks.CalculateChecksum):
     event_type = 10210
+
 
 class IdentifyFileFormat(tasks.IdentifyFileFormat):
     event_type = 10220
@@ -262,8 +265,10 @@ class DeleteFiles(tasks.DeleteFiles):
 class UpdateIPStatus(tasks.UpdateIPStatus):
     event_type = 10280
 
+
 class UpdateIPPath(tasks.UpdateIPPath):
     event_type = 10285
+
 
 class SubmitSIP(DBTask):
     event_type = 10300

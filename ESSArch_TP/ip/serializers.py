@@ -17,25 +17,30 @@ from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,
 )
 
+
 class ArchivalInstitutionSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalInstitution
         fields = ('url', 'id', 'name', 'information_packages',)
+
 
 class ArchivistOrganizationSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivistOrganization
         fields = ('url', 'id', 'name', 'information_packages',)
 
+
 class ArchivalTypeSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalType
         fields = ('url', 'id', 'name', 'information_packages',)
 
+
 class ArchivalLocationSerializer(DynamicHyperlinkedModelSerializer):
     class Meta:
         model = ArchivalLocation
         fields = ('url', 'id', 'name', 'information_packages',)
+
 
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     Responsible = UserSerializer()
@@ -84,6 +89,7 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
             'ArchivalLocation', 'SubmissionAgreementLocked', 'profiles',
         )
+
 
 class InformationPackageDetailSerializer(InformationPackageSerializer):
     ObjectSize = serializers.SerializerMethodField()

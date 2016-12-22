@@ -45,6 +45,7 @@ from ESSArch_Core.profiles.models import (
 
 from rest_framework import viewsets
 
+
 class SubmissionAgreementViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows submission agreements to be viewed or edited.
@@ -122,9 +123,11 @@ class ProfileSAViewSet(viewsets.ModelViewSet):
     queryset = ProfileSA.objects.all()
     serializer_class = ProfileSASerializer
 
+
 class ProfileIPViewSet(viewsets.ModelViewSet):
     queryset = ProfileIP.objects.all()
     serializer_class = ProfileIPSerializer
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """

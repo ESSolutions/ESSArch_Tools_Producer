@@ -83,12 +83,14 @@ from ip.steps import (
 
 from rest_framework import viewsets
 
+
 class ArchivalInstitutionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows archival institutions to be viewed or edited.
     """
     queryset = ArchivalInstitution.objects.all()
     serializer_class = ArchivalInstitutionSerializer
+
 
 class ArchivistOrganizationViewSet(viewsets.ModelViewSet):
     """
@@ -97,12 +99,14 @@ class ArchivistOrganizationViewSet(viewsets.ModelViewSet):
     queryset = ArchivistOrganization.objects.all()
     serializer_class = ArchivistOrganizationSerializer
 
+
 class ArchivalTypeViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows archival types to be viewed or edited.
     """
     queryset = ArchivalType.objects.all()
     serializer_class = ArchivalTypeSerializer
+
 
 class ArchivalLocationViewSet(viewsets.ModelViewSet):
     """

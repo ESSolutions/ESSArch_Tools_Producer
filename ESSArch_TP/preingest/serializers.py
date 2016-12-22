@@ -8,6 +8,7 @@ from ESSArch_Core.util import available_tasks
 import jsonpickle
 import json
 
+
 class PickledObjectFieldSerializer(serializers.Field):
     def to_representation(self, obj):
         return json.loads(jsonpickle.encode(obj))
@@ -71,6 +72,7 @@ class ProcessTaskSetSerializer(ProcessTaskSerializer):
         fields = (
             'url', 'name',
         )
+
 
 class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
     tasks = ProcessTaskSerializer(many=True, read_only=True)

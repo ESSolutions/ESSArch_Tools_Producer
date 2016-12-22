@@ -19,6 +19,7 @@ from preingest.serializers import (
 from django.contrib.auth.models import User, Group, Permission
 from rest_framework import viewsets
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -39,12 +40,14 @@ class GroupViewSet(viewsets.ModelViewSet):
 
         return GroupDetailSerializer
 
+
 class PermissionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows permissions to be viewed or edited.
     """
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
+
 
 class ProcessStepViewSet(viewsets.ModelViewSet):
     """
@@ -89,6 +92,7 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     def retry(self, request, pk=None):
         self.get_object().retry()
         return Response({'status': 'retrying step'})
+
 
 class ProcessTaskViewSet(viewsets.ModelViewSet):
     """
