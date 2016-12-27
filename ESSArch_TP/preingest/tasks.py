@@ -288,7 +288,14 @@ class SubmitSIP(DBTask):
         self.set_progress(100, total=100)
 
     def undo(self, ip=None):
-        pass
+        reception = Path.objects.get(entity="path_ingest_reception").value
+        container_format = ip.get_container_format()
+
+        tar = os.path.join(reception, str(ip.pk) + ".%s" % container_format)
+        xml = os.path.join(reception, str(ip.pk) + ".xml")
+
+        os.remove(tar)
+        os.remove(xml)
 
     def event_outcome_success(self, ip=None):
         return "Submitted %s" % (ip.pk)
