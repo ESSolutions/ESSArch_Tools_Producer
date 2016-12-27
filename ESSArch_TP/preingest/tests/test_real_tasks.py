@@ -30,26 +30,38 @@ class test_tasks(TestCase):
     def setUpTestData(cls):
         cls.root = os.path.dirname(os.path.realpath(__file__))
         cls.prepare_path = os.path.join(cls.root, "prepare")
+        cls.preingest_reception = os.path.join(cls.root, "preingest_reception")
+        cls.ingest_reception = os.path.join(cls.root, "ingest_reception")
 
-        try:
-            os.makedirs(cls.prepare_path)
-        except OSError as e:
-            if e.errno != 17:
-                raise
+        for path in [cls.prepare_path, cls.preingest_reception, cls.ingest_reception]:
+            try:
+                os.makedirs(path)
+            except OSError as e:
+                if e.errno != 17:
+                    raise
 
         Path.objects.create(
             entity="path_preingest_prepare",
             value=cls.prepare_path
         )
+        Path.objects.create(
+            entity="path_preingest_reception",
+            value=cls.preingest_reception
+        )
+        Path.objects.create(
+            entity="path_ingest_reception",
+            value=cls.ingest_reception
+        )
 
     @classmethod
     def tearDownClass(cls):
-        try:
-            shutil.rmtree(cls.prepare_path)
-        except:
-            pass
-        finally:
-            super(test_tasks, cls).tearDownClass()
+        for path in [cls.prepare_path, cls.preingest_reception, cls.ingest_reception]:
+            try:
+                shutil.rmtree(cls.prepare_path)
+            except:
+                pass
+
+        super(test_tasks, cls).tearDownClass()
 
     def setUp(self):
         settings.CELERY_ALWAYS_EAGER = True
@@ -243,3 +255,29 @@ class test_tasks(TestCase):
         self.assertFalse(
             os.path.isfile(zipname)
         )
+
+    def test_submit_sip(self):
+        ip = InformationPackage.objects.create(Label="ip1")
+
+        srctar = os.path.join(self.preingest_reception, "%s.tar" % ip.pk)
+        srcxml = os.path.join(self.preingest_reception, "%s.xml" % ip.pk)
+        dsttar = os.path.join(self.ingest_reception, "%s.tar" % ip.pk)
+        dstxml = os.path.join(self.ingest_reception, "%s.xml" % ip.pk)
+        open(srctar, "a").close()
+        open(srcxml, "a").close()
+
+        task = ProcessTask(
+            name="preingest.tasks.SubmitSIP",
+            params={
+                "ip": ip
+            },
+        )
+        task.run()
+
+        self.assertTrue(os.path.isfile(dsttar))
+        self.assertTrue(os.path.isfile(dstxml))
+
+        task.undo()
+
+        self.assertFalse(os.path.isfile(dsttar))
+        self.assertFalse(os.path.isfile(dstxml))
