@@ -205,15 +205,18 @@ class CreateTAR(DBTask):
     """
 
     def run(self, dirname=None, tarname=None):
+        base_dir = os.path.basename(os.path.normpath(dirname))
         with tarfile.TarFile(tarname, 'w') as new_tar:
-            new_tar.add(dirname, ".")
+            new_tar.add(dirname, base_dir)
 
         self.set_progress(100, total=100)
         return tarname
 
     def undo(self, dirname=None, tarname=None):
+        parent_dir = os.path.dirname((os.path.normpath(dirname)))
+
         with tarfile.open(tarname, 'r') as tar:
-            tar.extractall(dirname)
+            tar.extractall(parent_dir)
 
         os.remove(tarname)
 
