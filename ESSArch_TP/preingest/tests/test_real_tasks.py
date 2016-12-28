@@ -57,7 +57,7 @@ class test_tasks(TestCase):
     def tearDownClass(cls):
         for path in [cls.prepare_path, cls.preingest_reception, cls.ingest_reception]:
             try:
-                shutil.rmtree(cls.prepare_path)
+                shutil.rmtree(path)
             except:
                 pass
 
