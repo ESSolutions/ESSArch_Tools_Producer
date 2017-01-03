@@ -127,7 +127,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
     )
-    ordering_fields = ('Label', 'Responsible', 'CreateDate', 'State', 'eventDateTime', 'eventDetail', 'id')
+    ordering_fields = (
+        'Label', 'Responsible', 'CreateDate', 'State', 'eventDateTime',
+        'eventType', 'eventOutcomeDetailNote', 'eventOutcome',
+        'linkingAgentIdentifierValue', 'id'
+    )
     search_fields = ('Label', 'Responsible', 'State', 'SubmissionAgreement__sa_name')
     filter_class = InformationPackageFilter
 
