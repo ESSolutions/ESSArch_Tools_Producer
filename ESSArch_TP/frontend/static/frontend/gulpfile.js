@@ -49,13 +49,13 @@ var jsVendorFiles = [
     ],
     jsDest = 'scripts',
     cssFiles = [
-        'styles/create_sip_ip_approval.scss',
-        'styles/create_sip_prepare_ip.scss',
-        'styles/submit_sip_prepare_sip.scss',
-        'styles/index.scss',
-        'styles/login.scss',
-        'styles/my_page.scss',
-        'styles/submit_sip.scss'
+        'styles/modules/create_sip_ip_approval.scss',
+        'styles/modules/create_sip_prepare_ip.scss',
+        'styles/modules/submit_sip_prepare_sip.scss',
+        'styles/modules/index.scss',
+        'styles/modules/login.scss',
+        'styles/modules/my_page.scss',
+        'styles/modules/submit_sip.scss'
     ],
     cssDest = 'styles';
 
