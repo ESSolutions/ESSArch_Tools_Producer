@@ -9,3 +9,5 @@ scripts/vendors.min.js.map
 fonts
 images
 styles/styles.css
+styles/styles.min.css
+styles/styles.min.css.map
