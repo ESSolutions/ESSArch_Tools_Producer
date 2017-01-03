@@ -48,24 +48,6 @@ var jsVendorFiles = [
         'scripts/directives/*.js', 'scripts/configs/*.js'
     ],
     jsDest = 'scripts',
-    cssFiles = [
-        /*'node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
-        'scripts/bower_components/angular-bootstrap-grid-tree/src/treeGrid.css',
-        'scripts/bower_components/angular-tree-control/css/tree-control-attribute.css',
-        'scripts/bower_components/angular-tree-control/css/tree-control.css',
-        'scripts/bower_components/angular-ui-select/dist/select.css',
-        'scripts/bower_components/bootstrap/dist/css/bootstrap.css',
-        'scripts/bower_components/font-awesome/css/font-awesome.css',
-        'scripts/bower_components/select2/dist/css/select2.css',*/
-        'styles/modules/index.css',
-        'styles/modules/create_sip_prepare_ip.css',
-        'styles/modules/create_sip_ip_approval.css',
-        'styles/modules/login.css',
-        'styles/modules/my_page.css',
-        'styles/modules/submit_sip.css',
-        'styles/modules/submit_sip_prepare_sip.css',
-        'styles/styles.scss'
-    ],
     cssDest = 'styles';
 
 var buildScripts = function() {
