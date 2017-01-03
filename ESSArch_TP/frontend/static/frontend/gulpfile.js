@@ -1,4 +1,5 @@
 var gulp = require('gulp')
+var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var concatCss = require('gulp-concat-css');
@@ -48,15 +49,22 @@ var jsVendorFiles = [
     ],
     jsDest = 'scripts',
     cssFiles = [
-        'node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
+        /*'node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
         'scripts/bower_components/angular-bootstrap-grid-tree/src/treeGrid.css',
         'scripts/bower_components/angular-tree-control/css/tree-control-attribute.css',
         'scripts/bower_components/angular-tree-control/css/tree-control.css',
         'scripts/bower_components/angular-ui-select/dist/select.css',
         'scripts/bower_components/bootstrap/dist/css/bootstrap.css',
         'scripts/bower_components/font-awesome/css/font-awesome.css',
-        'scripts/bower_components/select2/dist/css/select2.css',
-        'styles/index.css',
+        'scripts/bower_components/select2/dist/css/select2.css',*/
+        'styles/modules/index.css',
+        'styles/modules/create_sip_prepare_ip.css',
+        'styles/modules/create_sip_ip_approval.css',
+        'styles/modules/login.css',
+        'styles/modules/my_page.css',
+        'styles/modules/submit_sip.css',
+        'styles/modules/submit_sip_prepare_sip.css',
+        'styles/styles.scss'
     ],
     cssDest = 'styles';
 
@@ -103,19 +111,38 @@ var buildCSS = function() {
         .pipe(gulp.dest(cssDest));
 };
 
+var compileSass = function() {
+ return gulp.src('styles/styles.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('styles'));
+};
+var copyIcons = function() {
+    return gulp.src('scripts/bower_components/font-awesome/fonts/**.*') 
+        .pipe(gulp.dest('fonts')); 
+};
+var copyImages = function() {
+    return gulp.src('scripts/bower_components/angular-tree-control/images/**.*') 
+        .pipe(gulp.dest('images')); 
+};
+
 gulp.task('default', function() {
     buildScripts(),
     buildVendors(),
-    buildCSS()
+    compileSass(),
+    copyIcons(),
+    copyImages()
+    //buildCSS()
 });
 
-
+gulp.task('icons', copyIcons);
 gulp.task('scripts', buildScripts);
 gulp.task('vendors', buildVendors);
+gulp.task('sass', compileSass);
 gulp.task('css', buildCSS);
 
 gulp.task('watch', function(){
     gulp.watch(jsFiles, ['scripts']);
     gulp.watch(jsVendorFiles, ['vendors']);
-    gulp.watch(cssFiles, ['css']);
+    //gulp.watch(cssFiles, ['css']);
+    gulp.watch(cssFiles, ['sass']);
 })

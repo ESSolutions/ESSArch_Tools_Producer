@@ -230,7 +230,18 @@ body.modal-open[style] {
     position: relative;
 }
 .uib-daypicker {
-    margin: auto;
+    table {
+        margin: 0 auto;
+    }
+    .glyphicon {
+        @extend .fa;
+        &.glyphicon-chevron-right {
+            @extend .fa-chevron-right;
+        }
+        &.glyphicon-chevron-left {
+            @extend .fa-chevron-left;
+        }
+    }
 }
 .datepicker .form-control {
     height: 15px;

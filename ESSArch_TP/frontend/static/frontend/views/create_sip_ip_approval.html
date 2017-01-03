@@ -1,36 +1,34 @@
-<head>
-    <link rel="stylesheet" type="text/css" href="static/frontend/styles/create_sip_ip_approval.css">
-</head>
 <body>
-    <div class="content-wrapper">
-        <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
-        </div>
-        <div ng-if="statusShow || eventShow" class="events-status-wrapper">
-            <div ng-include src="'static/frontend/views/event_table.html'"></div>
-            <div ng-if="statusShow" class="status-view">
-                <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
+    <div class="ip-approval">
+        <div class="content-wrapper">
+            <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
             </div>
-        </div>
-        <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
-            <div ng-if="select" id="select-view" class="select-view">
-                <div class="sa-table">
-                    <table style="margin-top: 20px;" class="table table-striped">
-                        <tr>
-                            <td>
-                                <div class="checkbox table-col">
-                                </div>
-                            </td>
-                            <td>
-                                <p class="table-col">{{'Submission Agreement'}}</p>
-                            </td>
-                            <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
-                            <td><p class="table-col">{{}}</p>
-                                <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
-                            </td>
-                            <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
-                        </tr>
-                    </table>
+            <div ng-if="statusShow || eventShow" class="events-status-wrapper">
+                <div ng-include src="'static/frontend/views/event_table.html'"></div>
+                <div ng-if="statusShow" class="status-view">
+                    <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
                 </div>
+            </div>
+            <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
+                <div ng-if="select" id="select-view" class="select-view">
+                    <div class="sa-table">
+                        <table style="margin-top: 20px;" class="table table-striped">
+                            <tr>
+                                <td>
+                                    <div class="checkbox table-col">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="table-col">{{'Submission Agreement'}}</p>
+                                </td>
+                                <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                <td><p class="table-col">{{}}</p>
+                                    <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                </td>
+                                <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
+                            </tr>
+                        </table>
+                    </div>
                     <!--<a style="margin-top: 10px;" ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>-->
                     <table ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
                         <thead>
@@ -90,7 +88,7 @@
                     </form>
                     <!--<div class="package-dependencies">
                         <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
-                    </div>-->
+                        </div>-->
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form ng-submit="createSip(ip)" class="eventlog-form">
@@ -104,4 +102,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </body>

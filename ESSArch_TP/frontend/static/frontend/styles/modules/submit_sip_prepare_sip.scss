@@ -1,0 +1,32 @@
+.prepare-sip {
+    .static-form .formly {
+        display: flex;
+        justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+    }
+    .static-form .formly-field {
+        width: 10%;
+    }
+    .edit-view {
+        border-style: none;
+    }
+    .items-per-page {
+        width: 15%;
+    }
+    .package-information {
+        border-bottom-style: solid;
+        margin: 5px;
+    }
+    .package-dependencies {
+        border-bottom-style: solid;
+        margin: 5px;
+    }
+    .static-form {
+        border-bottom-style: solid;
+        margin: 5px;
+    }
+    .validators {
+        border-bottom-style: solid;
+        margin: 5px;
+    }
+}
