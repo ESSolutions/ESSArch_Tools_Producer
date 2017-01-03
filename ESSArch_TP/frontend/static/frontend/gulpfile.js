@@ -51,10 +51,10 @@ var jsVendorFiles = [
     cssFiles = [
         'styles/create_sip_ip_approval.scss',
         'styles/create_sip_prepare_ip.scss',
-        'styles/submit_sip__prepare_sip.scss',
-        'styles/index.css',
+        'styles/submit_sip_prepare_sip.scss',
+        'styles/index.scss',
         'styles/login.scss',
-        'styles/my_page-scss',
+        'styles/my_page.scss',
         'styles/submit_sip.scss'
     ],
     cssDest = 'styles';
