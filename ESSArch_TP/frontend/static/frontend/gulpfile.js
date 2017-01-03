@@ -48,6 +48,15 @@ var jsVendorFiles = [
         'scripts/directives/*.js', 'scripts/configs/*.js'
     ],
     jsDest = 'scripts',
+    cssFiles = [
+        'styles/create_sip_ip_approval.scss',
+        'styles/create_sip_prepare_ip.scss',
+        'styles/submit_sip__prepare_sip.scss',
+        'styles/index.css',
+        'styles/login.scss',
+        'styles/my_page-scss',
+        'styles/submit_sip.scss'
+    ],
     cssDest = 'styles';
 
 var buildScripts = function() {
