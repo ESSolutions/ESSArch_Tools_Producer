@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages'])
+angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config'])
 .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider) {
     $stateProvider
         .state('home', {
@@ -225,13 +225,11 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         }
     };
 }])
-.constant('appConfig', {
-    djangoUrl: "/api/",
-    ipInterval: 10000, //ms
-    ipIdleInterval: 60000, //ms
-    stateInterval: 10000, //ms
-    eventInterval: 10000 //ms
-})
+.config(['$compileProvider', 'appConfig', function ($compileProvider, appConfig) {
+    $compileProvider.debugInfoEnabled(appConfig.debugInfo);
+    $compileProvider.commentDirectivesEnabled(appConfig.commentDirectives);
+    $compileProvider.cssClassDirectivesEnabled(appConfig.cssClassDirectives);
+}])
 .config(function(stConfig) {
     stConfig.sort.delay = -1;
 })

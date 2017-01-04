@@ -1,5 +1,6 @@
 var gulp = require('gulp')
 var sass = require('gulp-sass');
+var ngConstant = require('gulp-ng-constant');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var concatCss = require('gulp-concat-css');
@@ -93,15 +94,6 @@ var buildVendors = function() {
         .pipe(gulp.dest(jsDest));
 };
 
-var buildCSS = function() {
-    return gulp.src(cssFiles)
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(concatCss("styles.min.css"))
-        .pipe(cleanCSS({root: '../../', keepSpecialComments: 0, sourceMap: true}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(cssDest));
-};
-
 var compileSass = function() {
  return gulp.src('styles/styles.scss')
     .pipe(sass().on('error', sass.logError))
@@ -116,24 +108,39 @@ var copyImages = function() {
         .pipe(gulp.dest('images')); 
 };
 
+var configConstants = function() {
+    var myConfig = require('./scripts/configs/config.json');
+    if(isProduction) {
+        var envConfig = myConfig["production"];
+    } else {
+        var envConfig = myConfig["development"];
+    }
+    return ngConstant({
+        name: 'myApp.config',
+        constants: envConfig,
+        stream: true
+    })
+    .pipe(rename('myApp.config.js'))
+    .pipe(gulp.dest('./scripts/configs'));
+};
+
 gulp.task('default', function() {
+    configConstants(),
     buildScripts(),
     buildVendors(),
     compileSass(),
     copyIcons(),
     copyImages()
-    //buildCSS()
 });
 
 gulp.task('icons', copyIcons);
 gulp.task('scripts', buildScripts);
 gulp.task('vendors', buildVendors);
 gulp.task('sass', compileSass);
-gulp.task('css', buildCSS);
+gulp.task('config', configConstants);
 
 gulp.task('watch', function(){
     gulp.watch(jsFiles, ['scripts']);
     gulp.watch(jsVendorFiles, ['vendors']);
-    //gulp.watch(cssFiles, ['css']);
     gulp.watch(cssFiles, ['sass']);
 })
