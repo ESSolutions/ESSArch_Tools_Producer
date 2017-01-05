@@ -22,6 +22,7 @@ var jsVendorFiles = [
         'scripts/bower_components/angular-animate/angular-animate.js',
         'scripts/bower_components/angular-messages/angular-messages.js',
         'scripts/bower_components/angular-route/angular-route.js',
+        'scripts/bower_components/angular-mocks/angular-mocks.js',
         'scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'scripts/bower_components/angular-tree-control/angular-tree-control.js',
         'scripts/bower_components/angular-formly/dist/formly.js',
