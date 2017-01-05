@@ -275,15 +275,15 @@ input[type="checkbox"] {
 .submit-button {
     margin-left: 5px;
 }
-.validator-choices .formly {
-    display: flex;
-    display: -webkit-flex;
-    flex-direction: row;
-    -webkit-flex-direction: row;
-    height: 70px;
-}
-.validator-choices .formly select {
-    width: 170px;
+.validator-choices {
+    .formly {
+        display: flex;
+        flex-direction: row;
+        min-height: 70px;
+        select {
+            width: 170px;
+        }
+    }
 }
 .sa-table {
     padding-bottom: 10px;
