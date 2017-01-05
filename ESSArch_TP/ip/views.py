@@ -799,7 +799,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
                     params={
-                        "files": [ip.ObjectPath],
+                        "files": [os.path.basename(ip.ObjectPath)],
                         "xmlfile": infoxml,
                     },
                     processstep_pos=16,
