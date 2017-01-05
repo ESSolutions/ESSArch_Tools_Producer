@@ -57,7 +57,8 @@ var jsVendorFiles = [
         'styles/modules/index.scss',
         'styles/modules/login.scss',
         'styles/modules/my_page.scss',
-        'styles/modules/submit_sip.scss'
+        'styles/modules/submit_sip.scss',
+        'styles/styles.scss'
     ],
     cssDest = 'styles';
 
@@ -135,6 +136,7 @@ gulp.task('default', function() {
 });
 
 gulp.task('icons', copyIcons);
+gulp.task('images', copyImages);
 gulp.task('scripts', buildScripts);
 gulp.task('vendors', buildVendors);
 gulp.task('sass', compileSass);
