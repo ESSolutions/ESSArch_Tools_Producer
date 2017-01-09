@@ -258,7 +258,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Click function for profile pbject
     $scope.profileClick = function(row){
         if ($scope.selectProfile == row && $scope.edit){
-            $scope.eventlog = false;
             $scope.edit = false;
         } else {
             if(row.active) {
