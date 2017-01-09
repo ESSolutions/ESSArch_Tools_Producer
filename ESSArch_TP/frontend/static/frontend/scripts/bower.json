@@ -1,6 +1,6 @@
 {
-  "name": "essarch_test",
-  "homepage": "https://github.com/pettanj/essarch_test",
+  "name": "essarch_tools_producer",
+  "homepage": "https://github.com/ESSolutions/ESSArch_Tools_Producer",
   "authors": [
     "petrus <petrus.jonsson@gmail.com>"
   ],
