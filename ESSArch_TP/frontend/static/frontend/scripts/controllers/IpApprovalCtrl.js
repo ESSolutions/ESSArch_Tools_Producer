@@ -15,7 +15,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.col_defs = [
         {
             field: "user",
-            displayName: $scope.responsible,
+            displayName: $scope.responsible
         },
         {
             field: "time_created",
@@ -36,7 +36,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             cellTemplate: "<a ng-click=\"treeControl.scope.taskStepUndo(row.branch)\" ng-if=\"(row.branch.status == 'SUCCESS' || row.branch.status == 'FAILURE') && !row.branch.undone && !row.branch.undo_type\" style=\"color: #a00\">{{'UNDO' | translate}}</a></br ><a ng-click=\"treeControl.scope.taskStepRedo(row.branch)\" ng-if=\"row.branch.undone\"style=\"color: #0a0\">{{'REDO' | translate}}</a>"
         }
         ];
-    });    $scope.myTreeControl = {};
+    });
+    $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
     //Undo step/task
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {

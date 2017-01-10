@@ -16,11 +16,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.col_defs = [
         {
             field: "user",
-            displayName: $scope.responsible,
+            displayName: $scope.responsible
         },
         {
             field: "time_created",
             displayName: $scope.date
+
         },
         {
             field: "status",
