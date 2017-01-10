@@ -4,7 +4,7 @@
             "-name": "schemaLocation",
             "#content": [
                 {
-                    "text": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/version10/CSPackageExtensionMETS.xsd"
+                    "text": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
                 }
             ],
             "-namespace": "xsi"
@@ -982,138 +982,8 @@
                             ],
                             "-children": [
                                 {
-                                    "-max": 1,
-                                    "-min": 0,
-                                    "-name": "div",
-                                    "-namespace": "mets",
-                                    "-attr": [
-                                        {
-                                            "#content": [
-                                                {
-                                                    "text": "preservation"
-                                                }
-                                            ],
-                                            "-name": "LABEL",
-                                            "-req": 0
-                                        }
-                                    ],
-                                    "-children": [
-                                        {
-                                            "-containsFiles": true,
-                                            "-filters": {"href": "(metadata/premis.xml|metadata/administrative/premis.xml)"},
-                                            "-attr": [
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "var": "mets.structMap.div.div.fptr.ID"
-                                                        }
-                                                    ],
-                                                    "-name": "ID",
-                                                    "-req": 0
-                                                },
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "text": "ID"
-                                                        },
-                                                        {
-                                                            "var": "FID"
-                                                        }
-                                                    ],
-                                                    "-name": "FILEID",
-                                                    "-req": 1
-                                                }
-                                            ],
-                                            "-children": [],
-                                            "-max": -1,
-                                            "-min": 0,
-                                            "-name": "fptr",
-                                            "-namespace": "mets"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "-max": 1,
-                                    "-min": 0,
-                                    "-name": "div",
-                                    "-namespace": "mets",
-                                    "-attr": [
-                                        {
-                                            "#content": [
-                                                {
-                                                    "text": "descriptive"
-                                                }
-                                            ],
-                                            "-name": "LABEL",
-                                            "-req": 0
-                                        }
-                                    ],
-                                    "-children": [
-                                        {
-                                            "-containsFiles": true,
-                                            "-filters": {"href":"metadata/ead.xml"},
-                                            "-attr": [
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "var": "mets.structMap.div.div.fptr.ID"
-                                                        }
-                                                    ],
-                                                    "-name": "ID",
-                                                    "-req": 0
-                                                },
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "text": "ID"
-                                                        },
-                                                        {
-                                                            "var": "FID"
-                                                        }
-                                                    ],
-                                                    "-name": "FILEID",
-                                                    "-req": 1
-                                                },
-                                                {
-                                                    "#content": [
-                                                        {
-                                                            "var": "mets.structMap.div.div.fptr.CONTENTIDS"
-                                                        }
-                                                    ],
-                                                    "-name": "CONTENTIDS",
-                                                    "-req": 0
-                                                }
-                                            ],
-                                            "-children": [],
-                                            "-max": -1,
-                                            "-min": 0,
-                                            "-name": "fptr",
-                                            "-namespace": "mets"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "-max": 1,
-                            "-min": 0,
-                            "-name": "div",
-                            "-namespace": "mets",
-                            "-attr": [
-                                {
-                                    "#content": [
-                                        {
-                                            "text": "schemas"
-                                        }
-                                    ],
-                                    "-name": "LABEL",
-                                    "-req": 0
-                                }
-                            ],
-                            "-children": [
-                                {
                                     "-containsFiles": true,
-                                    "-filters": {"href":"schemas/*"},
+                                    "-filters": {"href":"metadata/*"},
                                     "-attr": [
                                         {
                                             "#content": [

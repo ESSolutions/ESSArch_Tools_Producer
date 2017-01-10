@@ -231,7 +231,7 @@ def installProfileTransferProject(): # Profile Transfer Project
         'profile_type': 'transfer_project',
         'type': 'Implementation',
         'status': 'Agreed',
-        'label': 'Example of SIP for delivery of SE ERMS',
+        'label': 'Example of SE ERMS SIP Transfer Project',
         'schemas': {},
         'template': [
             {
@@ -1436,6 +1436,11 @@ def installProfileSIP(): # Profile Submission Information Package
                         "use": "xsd_files",
                         "type": "file",
                         "name": "xsd_files"
+                    },
+                    {
+                        "use": "preservation_description_file",
+                        "type": "file",
+                        "name": "premis.xml"
                     }
                 ]
             },
@@ -1449,11 +1454,6 @@ def installProfileSIP(): # Profile Submission Information Package
                         "name": "content"
                     }
                 ]
-            },
-            {
-                "use": "preservation_description_file",
-                "type": "file",
-                "name": "premis.xml"
             }
         ],
         'template': [
