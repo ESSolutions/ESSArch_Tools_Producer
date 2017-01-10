@@ -243,6 +243,15 @@ body.modal-open[style] {
         }
     }
 }
+.glyphicon {
+    @extend .fa;
+    &.glyphicon-arrow-left {
+        @extend .fa-arrow-left;
+    }
+    &.glyphicon-arrow-right {
+        @extend .fa-arrow-right;
+    }
+}
 .datepicker .form-control {
     height: 15px;
     padding: 15px;
