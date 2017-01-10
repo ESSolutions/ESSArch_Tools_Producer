@@ -947,7 +947,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "archivist_software_note"
             },
         ],
-        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/JSONTemplate.json')).read()),
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/ECSIPTemplate.json')).read()),
         'specification_data': {
             "mets_type": "Personnel",
             "archivist_organization_note": "Archivist Organization 1 Note",
