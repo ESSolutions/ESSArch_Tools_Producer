@@ -5,24 +5,17 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from install.install_default_config_etp import installDefaultEventTypes
-
 from ESSArch_Core.configuration.models import (
     Path,
 )
 
 from ESSArch_Core.ip.models import (
-    EventIP,
     InformationPackage,
 )
 
 from ESSArch_Core.WorkflowEngine.models import (
     ProcessTask,
 )
-
-
-def setUpModule():
-    installDefaultEventTypes()
 
 
 class test_tasks(TestCase):
@@ -77,20 +70,12 @@ class test_tasks(TestCase):
                 "label": label,
                 "responsible": user
             },
-            log=EventIP,
             responsible=user
         )
         task.run()
 
         self.assertTrue(
             InformationPackage.objects.filter(Label=label).exists()
-        )
-
-        self.assertTrue(
-            EventIP.objects.filter(
-                linkingAgentIdentifierValue=user,
-                linkingObjectIdentifierValue__Label=label
-            ).exists()
         )
 
         task.undo()
