@@ -139,5 +139,13 @@
     "CHOOSEFOLDER": "Välj mapp",
     "FILES": "Fil(er)",
     "ISUPLOADING": "Laddas upp",
-    "UNLOCKSIPINFO": "Om du låser upp SIP-profilen riskerar du att förlora allt innehåll som är tillagt i IP't. Om du vill använda samma data igen, så se till att du har tillgång till datat. Fortsätt genom att klicka OK."
+    "UNLOCKSIPINFO": "Om du låser upp SIP-profilen riskerar du att förlora allt innehåll som är tillagt i IP't. Om du vill använda samma data igen, så se till att du har tillgång till datat. Fortsätt genom att klicka OK.",
+    "SYSTEMINFORMATION": "Systeminformation",
+    "TIME": "Tid",
+    "HOSTNAME": "Värdnamn",
+    "SETTINGSFLAGS": "Inställningsflaggor",
+    "VERSIONINFORMATION": "Versionsinformation",
+    "PYTHONPACKAGES": "Pythonpaket",
+    "MYSQLVERSION": "MySQL-version",
+    "LOADING": "Laddar"
 }

@@ -1,9 +1,9 @@
-<h2>ESSArch Tools Producer - System information</h2>
+<h2>{{'SYSTEMINFORMATION' | translate}}</h2>
 <div class="version-info" style="width: 50%;" ng-if="sysInfo">
-    <p><b>Time:</b> {{sysInfo.time_checked | date: 'yyyy-MM-dd HH:mm'}}</p>
-    <p><b>Hostname:</b> {{sysInfo.hostname}}</p>
-    <p><b>ESSArch:</b> ETP (ESSArch Tools Producer) v{{sysInfo.version}}</p>
-    <h3>Settings Flags</h3>
+    <p><b>{{'TIME' | translate}}:</b> {{sysInfo.time_checked | date: 'yyyy-MM-dd HH:mm'}}</p>
+    <p><b>{{'HOSTNAME' | translate}}:</b> {{sysInfo.hostname}}</p>
+    <p><b>ESSArch:</b> ETP (ESSArch Tools  for Producer) v{{sysInfo.version}}</p>
+    <h3>{{'SETTINGSFLAGS' | translate}}</h3>
     <table class="table table-striped">
         <tbody>
             <tr ng-repeat="flag in sysInfo.settings_flags" ng-class="{'unexpected': flag.unexpected}">
@@ -16,7 +16,10 @@
             </tr>
         </tbody>
     </table>
-    <h3>Version Information</h3>
-    <p><b>Python packages: </b> {{sysInfo.python_packages.join(' ')}}</p>
-    <p><b>MySql version: </b> {{sysInfo.mysql_version}}</p>
+    <h3>{{'VERSIONINFORMATION' | translate}}</h3>
+    <p><b>{{'PYTHONPACKAGES' | translate}}: </b> {{sysInfo.python_packages.join(' ')}}</p>
+    <p><b>{{'MYSQLVERSION' | translate}}: </b> {{sysInfo.mysql_version}}</p>
+</div>
+<div ng-if="!sysInfo" style="width: 50%;">
+    <p>{{'LOADING' | translate}}...</p>
 </div>

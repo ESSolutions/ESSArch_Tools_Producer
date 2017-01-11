@@ -139,5 +139,13 @@
     "CHOOSEFOLDER": "Choose folder",
     "FILES": "File(s)",
     "ISUPLOADING": "Is uploading",
-    "UNLOCKSIPINFO": "If you unlock SIP profile, all uploaded content may be lost when you lock it again. So if you want to use the same content again, please make sure you have access to it. Proceed by clicking OK."
+    "UNLOCKSIPINFO": "If you unlock SIP profile, all uploaded content may be lost when you lock it again. So if you want to use the same content again, please make sure you have access to it. Proceed by clicking OK.",
+    "SYSTEMINFORMATION": "System Information",
+    "TIME": "Time",
+    "HOSTNAME": "Hostname",
+    "SETTINGSFLAGS": "Settings Flags",
+    "VERSIONINFORMATION": "Version Information",
+    "PYTHONPACKAGES": "Python packages",
+    "MYSQLVERSION": "MySQL version",
+    "LOADING": "Loading"
 }
