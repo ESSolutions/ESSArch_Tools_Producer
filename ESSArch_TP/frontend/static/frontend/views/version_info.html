@@ -1,4 +1,22 @@
 <h2>ESSArch Tools Producer - System information</h2>
-<p>Hostname: essarch3</p>
-
-<p>ESSArch: ETP (ESSArch Tools Producer) v0.95</p>
+<div class="version-info" style="width: 50%;" ng-if="sysInfo">
+    <p><b>Time:</b> {{sysInfo.time_checked | date: 'yyyy-MM-dd HH:mm'}}</p>
+    <p><b>Hostname:</b> {{sysInfo.hostname}}</p>
+    <p><b>ESSArch:</b> ETP (ESSArch Tools Producer) v{{sysInfo.version}}</p>
+    <h3>Settings Flags</h3>
+    <table class="table table-striped">
+        <tbody>
+            <tr ng-repeat="flag in sysInfo.settings_flags" ng-class="{'unexpected': flag.unexpected}">
+                <td>
+                    {{flag.name}}
+                </td>
+                <td>
+                    {{flag.actual.toString().toUpperCase()}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Version Information</h3>
+    <p><b>Python packages: </b> {{sysInfo.python_packages.join(' ')}}</p>
+    <p><b>MySql version: </b> {{sysInfo.mysql_version}}</p>
+</div>

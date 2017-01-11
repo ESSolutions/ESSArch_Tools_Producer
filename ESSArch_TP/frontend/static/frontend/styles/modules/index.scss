@@ -18,7 +18,10 @@ body.modal-open[style] {
     content: '\25B2';
     position: relative;
 }
-
+.unexpected {
+    background-color: maroon !important;
+    color: white !important;
+}
 .st-sort-descent:before {
     content: '\25BC';
     position: relative;
