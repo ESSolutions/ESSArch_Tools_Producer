@@ -24,6 +24,7 @@ from ESSArch_Core.configuration.views import (
     EventTypeViewSet,
     ParameterViewSet,
     PathViewSet,
+    SysInfoView,
 )
 
 from ip.views import (
@@ -77,6 +78,7 @@ router.register(r'paths', PathViewSet)
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/sysinfo/', SysInfoView.as_view()),
     url(r'^api/', include(router.urls)),
     url(r'^accounts/changepassword', auth_views.password_change, {'post_change_redirect': '/'} ),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
