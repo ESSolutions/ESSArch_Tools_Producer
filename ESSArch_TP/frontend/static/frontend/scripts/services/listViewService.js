@@ -44,15 +44,20 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps.forEach(function(step){
                 step.children = getChildSteps(step.child_steps);
                 step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
-                step.tasks.forEach(function(task, idx, arr){
-                    if (task.hidden) {
-                        arr.splice(idx, 1)
+
+                var preserved_tasks = [];
+                step.tasks.forEach(function(task){
+                    if (!task.hidden) {
+                        task.label = task.name;
+                        task.user = task.responsible;
+                        task.time_created = task.time_started;
+                        task.isTask = true;
+                        preserved_tasks.push(task);
                     }
-                    task.label = task.name;
-                    task.user = task.responsible;
-                    task.time_created = task.time_started;
-                    task.isTask = true;
                 });
+
+                step.tasks = preserved_tasks;
+
                 step.children = step.children.concat(step.tasks);
                 step.children.sort(function(a, b){
                     if(a.time_created != null && b.time_created == null) return -1;
@@ -457,14 +462,17 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         var stepsToRemove = [];
         childSteps.forEach(function(child, idx){
             child.child_steps = getChildSteps(child.child_steps);
-            child.tasks.forEach(function(task, idx, arr){
-                if (task.hidden) {
-                    arr.splice(idx, 1)
+            var preserved_tasks = [];
+            child.tasks.forEach(function(task){
+                if (!task.hidden) {
+                    task.user = task.responsible;
+                    task.time_created = task.time_started;
+                    task.isTask = true;
+                    preserved_tasks.push(task);
                 }
-                task.user = task.responsible;
-                task.time_created = task.time_started;
-                task.isTask = true;
             });
+            child.tasks = preserved_tasks;
+
             child.children = child.child_steps.concat(child.tasks);
             if(child.children.length == 0){
                 stepsToRemove.push(idx);
