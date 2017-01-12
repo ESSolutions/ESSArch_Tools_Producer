@@ -93,6 +93,11 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
         self.get_object().retry()
         return Response({'status': 'retrying step'})
 
+    @detail_route(methods=['post'])
+    def resume(self, request, pk=None):
+        self.get_object().resume()
+        return Response({'status': 'resuming step'})
+
 
 class ProcessTaskViewSet(viewsets.ModelViewSet):
     """
