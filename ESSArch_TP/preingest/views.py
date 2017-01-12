@@ -62,23 +62,6 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
         return Response({'status': 'running step'})
 
     @detail_route(methods=['post'])
-    def continue_step(self, request, pk=None):
-        step = self.get_object()
-        task = step.tasks.first()
-        step.waitForParams = False
-
-        if request.method == "POST":
-            for k, v in request.POST.iteritems():
-                if k in task.params:
-                    task.params[k] = v
-
-            task.save()
-
-        step.save()
-        step.parent_step.run(continuing=True)
-        return Response({'status': 'continuing step'})
-
-    @detail_route(methods=['post'])
     def undo(self, request, pk=None):
         self.get_object().undo()
         return Response({'status': 'undoing step'})
@@ -92,6 +75,11 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     def retry(self, request, pk=None):
         self.get_object().retry()
         return Response({'status': 'retrying step'})
+
+    @detail_route(methods=['post'])
+    def resume(self, request, pk=None):
+        self.get_object().resume()
+        return Response({'status': 'resuming step'})
 
 
 class ProcessTaskViewSet(viewsets.ModelViewSet):
