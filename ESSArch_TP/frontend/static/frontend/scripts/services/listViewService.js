@@ -44,7 +44,10 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps.forEach(function(step){
                 step.children = getChildSteps(step.child_steps);
                 step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
-                step.tasks.forEach(function(task){
+                step.tasks.forEach(function(task, idx, arr){
+                    if (task.hidden) {
+                        arr.splice(idx, 1)
+                    }
                     task.label = task.name;
                     task.user = task.responsible;
                     task.time_created = task.time_started;
@@ -454,7 +457,10 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         var stepsToRemove = [];
         childSteps.forEach(function(child, idx){
             child.child_steps = getChildSteps(child.child_steps);
-            child.tasks.forEach(function(task){
+            child.tasks.forEach(function(task, idx, arr){
+                if (task.hidden) {
+                    arr.splice(idx, 1)
+                }
                 task.user = task.responsible;
                 task.time_created = task.time_started;
                 task.isTask = true;
