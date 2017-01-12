@@ -11,7 +11,7 @@ angular.module('myApp').controller('UtilCtrl', function($scope, $state, $locatio
     $scope.getVersionInfo = function() {
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+"sysinfo"
+            url: appConfig.djangoUrl+"sysinfo/"
         }).then(function(response){
             $scope.sysInfo = response.data;
             console.log(response.data);
