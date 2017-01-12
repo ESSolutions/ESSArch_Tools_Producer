@@ -37,7 +37,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     .state('home.versionInfo', {
         url: 'version',
         templateUrl: '/static/frontend/views/version_info.html',
-        controller: 'UtilCtrl as vm',
+        controller: 'VersionCtrl as vm',
         resolve: {
             authenticated: ['djangoAuth', function(djangoAuth){
                 return djangoAuth.authenticationStatus();
