@@ -147,5 +147,6 @@
     "VERSIONINFORMATION": "Version Information",
     "PYTHONPACKAGES": "Python packages",
     "MYSQLVERSION": "MySQL version",
+    "CONTACT": "Contact",
     "LOADING": "Loading"
 }
