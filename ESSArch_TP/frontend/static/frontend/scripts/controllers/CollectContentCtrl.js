@@ -56,7 +56,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             method: 'POST',
             url: branch.url+"undo/"
         }).then(function(response) {
-            console.log("UNDO");
+            $timeout(function(){
+                $scope.statusViewUpdate($scope.ip);
+            }, 1000);
         }, function() {
             console.log("error");
         });
@@ -67,7 +69,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             method: 'POST',
             url: branch.url+"retry/"
         }).then(function(response) {
-            console.log("REDO");
+            $timeout(function(){
+                $scope.statusViewUpdate($scope.ip);
+            }, 1000);
         }, function() {
             console.log("error");
         });
