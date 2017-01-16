@@ -1,3 +1,4 @@
+from rest_framework import filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -60,6 +61,10 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     def child_steps(self, request, pk=None):
         step = self.get_object()
         child_steps = step.child_steps.all()
+        page = self.paginate_queryset(child_steps)
+        if page is not None:
+            serializers = ProcessStepSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializers.data)
         serializers = ProcessStepSerializer(child_steps, many=True, context={'request': request})
         return Response(serializers.data)
 
@@ -67,6 +72,10 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     def tasks(self, request, pk=None):
         step = self.get_object()
         tasks = step.tasks.all()
+        page = self.paginate_queryset(tasks)
+        if page is not None:
+            serializers = ProcessTaskSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializers.data)
         serializers = ProcessTaskSerializer(tasks, many=True, context={'request': request})
         return Response(serializers.data)
 
