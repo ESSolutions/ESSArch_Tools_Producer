@@ -597,7 +597,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'DELETE',
             url: ipObject.url
         }).then(function() {
-            console.log("ip removed");
             vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
             $scope.edit = false;
             $scope.select = false;
@@ -710,7 +709,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 ip: ip.id
             }
         }).then(function (response) {
-            console.log("locked");
             sa.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
@@ -895,7 +893,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.selectedNode = null;
     //Add node to map structure tree view
     $scope.addNode = function(node) {
-        console.log($scope.selectedNode);
         var dir = {
             "name": vm.treeEditModel.name,
             "type": vm.treeEditModel.type,
@@ -1028,7 +1025,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             [$translate.instant('ADD'), function ($itemScope, $event, modelValue, text, $li) {
                 $scope.showSelected($itemScope.node, $itemScope.$parentNode);
                 $scope.enterAddMode($itemScope.node);
-                console.log($event.target);
             }],
 
             [$translate.instant('REMOVE'), function ($itemScope, $event, modelValue, text, $li) {
@@ -1039,14 +1035,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             [$translate.instant('UPDATE'), function ($itemScope, $event, modelValue, text, $li) {
                 $scope.showSelected($itemScope.node, $itemScope.$parentNode);
                 $scope.enterUpdateMode($itemScope.node, $itemScope.$parentNode);
-                console.log($event.target);
             }]
         ];
     };
     $scope.getProfilesFromIp = function(ip, sa) {
         listViewService.getProfilesFromIp(ip, sa).then(function(result) {
             //$scope.selectCollapse = result;
-            console.log(result);
         });
     }
     $scope.getProfiles = function(profile) {
@@ -1075,7 +1069,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Unlock profile from current IP
     $scope.unlock = function(profile) {
-        console.log(profile);
         $http({
             method: 'POST',
             url: $scope.ip.url + "unlock-profile/",

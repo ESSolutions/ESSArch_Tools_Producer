@@ -709,7 +709,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             method: 'DELETE',
             url: ipObject.url
         }).then(function() {
-            console.log("ip removed");
             vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
             $scope.edit = false;
             $scope.select = false;

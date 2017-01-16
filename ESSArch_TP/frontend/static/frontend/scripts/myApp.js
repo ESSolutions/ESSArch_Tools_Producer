@@ -379,8 +379,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
         });
     }, function(status) {
-        console.log("when not logged in");
-        console.log(status);
     });
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
         if (to.redirectTo) {

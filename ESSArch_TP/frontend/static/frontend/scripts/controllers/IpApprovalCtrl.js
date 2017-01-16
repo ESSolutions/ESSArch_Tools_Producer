@@ -334,7 +334,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
 
     //toggle visibility on profiles in select view
     $scope.showHideAllProfiles = function() {
-        console.log($scope.selectRowCollection)
         if($scope.selectRowCollection == {} || $scope.profilesCollapse){
             $scope.profilesCollapse = false;
         } else{
@@ -570,7 +569,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             method: 'DELETE',
             url: ipObject.url
         }).then(function() {
-            console.log("ip removed");
             vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
             $scope.edit = false;
             $scope.select = false;
@@ -613,13 +611,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
-    }
-    // Datetimepicker
-    $scope.formatDate = function(date) {
-        date = date+" utc";
-        console.log(moment(date).utc());
-        console.log(moment(date).utc().format());
-        console.log(vm.validatorModel);
     }
     $scope.checkPermission = function(permissionName) {
         return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
