@@ -59,26 +59,29 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: branch.url+"retry/"
         }).then(function(response) {
-            console.log("REDO");
-            console.log(branch);
+            $timeout(function(){
+                $scope.statusViewUpdate($scope.ip);
+            }, 1000);
         }, function() {
             console.log("error");
         });
     };
      $scope.currentStepTask = {id: ""}
-    //Click funciton for steps and tasks
+     //Click funciton for steps and tasks
      $scope.stepTaskClick = function(branch) {
-         if(branch.isTask){
-             $http({
-                 method: 'GET',
-                 url: branch.url
-             }).then(function(response){
-                 $scope.currentStepTask = response.data;
+         $http({
+             method: 'GET',
+             url: branch.url
+         }).then(function(response){
+             $scope.currentStepTask = response.data;
+             if(branch.isTask){
                  $scope.taskInfoModal();
-             }, function(response) {
-                 response.status;
-             });
-         }
+             } else {
+                 $scope.stepInfoModal();
+             }
+         }, function(response) {
+             response.status;
+         });
      };
      //Redirect to admin page
      $scope.redirectAdmin = function () {
@@ -611,6 +614,22 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/task_info_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        });
+        modalInstance.result.then(function (data, $ctrl) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    //Creates and shows modal with step information
+    $scope.stepInfoModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/step_info_modal.html',
             scope: $scope,
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'

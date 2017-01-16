@@ -72,26 +72,28 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             console.log("error");
         });
     };
-     $scope.currentStepTask = {id: ""}
+    $scope.currentStepTask = {id: ""}
     //Click funciton for steps and tasks
-     $scope.stepTaskClick = function(branch) {
-        if(branch.isTask){
-            if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
-                $scope.stepTaskInfoShow = false;
-            }else {
-                $scope.stepTaskInfoShow = true;
-                $http({
-                    method: 'GET',
-                    url: branch.url
-                }).then(function(response){
-                    $scope.currentStepTask = response.data;
+    $scope.stepTaskClick = function(branch) {
+        if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){
+            $scope.stepTaskInfoShow = false;
+        }else {
+            $scope.stepTaskInfoShow = true;
+            $http({
+                method: 'GET',
+                url: branch.url
+            }).then(function(response){
+                $scope.currentStepTask = response.data;
+                if(branch.isTask){
                     $scope.taskInfoModal();
-                }, function(response) {
-                    response.status;
-                });
-            }
+                } else {
+                    $scope.stepInfoModal();
+                }
+            }, function(response) {
+                response.status;
+            });
         }
-     };
+    };
      // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {
          $scope.selectIp(row);
@@ -277,6 +279,22 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
         })
+        modalInstance.result.then(function (data, $ctrl) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    //Creates and shows modal with step information
+    $scope.stepInfoModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/step_info_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        });
         modalInstance.result.then(function (data, $ctrl) {
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());

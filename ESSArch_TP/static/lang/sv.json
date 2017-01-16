@@ -148,5 +148,6 @@
     "PYTHONPACKAGES": "Pythonpaket",
     "MYSQLVERSION": "MySQL-version",
     "CONTACT": "Kontakt",
-    "LOADING": "Laddar"
+    "LOADING": "Laddar",
+    "STEPREPORTFOR": "Step-rapport för"
 }
