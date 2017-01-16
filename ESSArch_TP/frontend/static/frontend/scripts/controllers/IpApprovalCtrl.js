@@ -158,22 +158,31 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      }
      //Update status view data
      $scope.statusViewUpdate = function(row){
-        $scope.statusLoading = true;
+         $scope.statusLoading = true;
          var expandedNodes = [];
          if($scope.tree_data != []) {
              expandedNodes = checkExpanded($scope.tree_data);
          }
          listViewService.getTreeData(row, expandedNodes).then(function(value) {
              $scope.tree_data = value;
-        $scope.statusLoading = false;
+             $scope.statusLoading = false;
+         }, function(response){
+             if(response.status == 404) {
+                 $scope.statusShow = false;
+                 $timeout(function(){
+                     $scope.getListViewData();
+                     updateListViewConditional();
+                 }, 1000);
+             }
          });
      };
+
      /*******************************************/
      /*Piping and Pagination for List-view table*/
      /*******************************************/
 
-    var ctrl = this;
-    this.itemsPerPage = 10;
+     var ctrl = this;
+     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
 

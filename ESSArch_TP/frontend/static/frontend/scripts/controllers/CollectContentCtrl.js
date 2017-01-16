@@ -164,17 +164,26 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
          return ret;
      }
      //Update status view data
-     $scope.statusViewUpdate = function(row){
-         $scope.statusLoading = true;
-         var expandedNodes = [];
-         if($scope.tree_data != []) {
-             expandedNodes = checkExpanded($scope.tree_data);
-         }
-         listViewService.getTreeData(row, expandedNodes).then(function(value) {
-             $scope.tree_data = value;
-             $scope.statusLoading = false;
-         });
-     };
+    //Update status view data
+    $scope.statusViewUpdate = function(row){
+        $scope.statusLoading = true;
+        var expandedNodes = [];
+        if($scope.tree_data != []) {
+            expandedNodes = checkExpanded($scope.tree_data);
+        }
+        listViewService.getTreeData(row, expandedNodes).then(function(value) {
+            $scope.tree_data = value;
+            $scope.statusLoading = false;
+        }, function(response){
+            if(response.status == 404) {
+                $scope.statusShow = false;
+                $timeout(function(){
+                    $scope.getListViewData();
+                    updateListViewConditional();
+                }, 1000);
+            }
+        });
+    };
 
      /*******************************************/
      /*Piping and Pagination for List-view table*/
