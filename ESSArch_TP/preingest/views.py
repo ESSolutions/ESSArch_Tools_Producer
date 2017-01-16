@@ -1,3 +1,7 @@
+import datetime
+import itertools
+import pytz
+
 from rest_framework import filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -9,6 +13,7 @@ from ESSArch_Core.WorkflowEngine.models import (
 
 from preingest.serializers import (
     ProcessStepSerializer,
+    ProcessStepChildrenSerializer,
     ProcessTaskSerializer,
     ProcessTaskDetailSerializer,
     GroupSerializer,
@@ -56,6 +61,24 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     """
     queryset = ProcessStep.objects.all()
     serializer_class = ProcessStepSerializer
+
+    @detail_route(methods=['get'], url_path='children')
+    def children(self, request, pk=None):
+        step = self.get_object()
+        child_steps = step.child_steps.all()
+        tasks = step.tasks.all()
+        queryset = sorted(
+            itertools.chain(child_steps, tasks),
+            key=lambda instance: instance.time_started or
+            datetime.datetime(datetime.MAXYEAR, 1, 1, 1, 1, 1, 1, pytz.UTC)
+        )
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializers = ProcessStepChildrenSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializers.data)
+        serializers = ProcessStepChildrenSerializer(queryset, many=True, context={'request': request})
+        return Response(serializers.data)
 
     @detail_route(methods=['get'], url_path='child-steps')
     def child_steps(self, request, pk=None):
