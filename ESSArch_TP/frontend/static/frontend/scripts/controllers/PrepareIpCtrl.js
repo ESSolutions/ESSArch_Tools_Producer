@@ -47,8 +47,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: branch.url+"undo/"
         }).then(function(response) {
-            console.log("UNDO");
-            console.log(branch);
+            $timeout(function(){
+                $scope.statusViewUpdate($scope.ip);
+            }, 1000);
         }, function() {
             console.log("error");
         });
