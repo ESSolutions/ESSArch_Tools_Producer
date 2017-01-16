@@ -75,17 +75,12 @@ class ProcessTaskSetSerializer(ProcessTaskSerializer):
 
 
 class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
-    tasks = ProcessTaskSerializer(many=True, read_only=True)
-    task_set = ProcessTaskSetSerializer(many=True, read_only=True)
-    child_steps = RecursiveField(many=True, read_only=True)
-
     class Meta:
         model = ProcessStep
         fields = (
             'url', 'id', 'name', 'result', 'type', 'user', 'parallel',
             'status', 'progress', 'undone', 'time_created', 'parent_step',
-            'parent_step_pos', 'information_package', 'child_steps', 'tasks',
-            'task_set',
+            'parent_step_pos', 'information_package',
         )
         read_only_fields = (
             'status', 'progress', 'time_created', 'time_done', 'undone',

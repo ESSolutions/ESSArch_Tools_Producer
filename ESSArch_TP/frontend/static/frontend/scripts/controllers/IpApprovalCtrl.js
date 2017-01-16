@@ -66,6 +66,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         });
     };
     $scope.currentStepTask = {id: ""}
+
+    //Click on +/- on step
+    $scope.stepClick = function(step) {
+        listViewService.getChildrenForStep(step);
+    };
+
     //Click funciton for steps and tasks
     $scope.stepTaskClick = function(branch) {
         if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){

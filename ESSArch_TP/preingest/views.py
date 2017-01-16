@@ -56,6 +56,20 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     queryset = ProcessStep.objects.all()
     serializer_class = ProcessStepSerializer
 
+    @detail_route(methods=['get'], url_path='child-steps')
+    def child_steps(self, request, pk=None):
+        step = self.get_object()
+        child_steps = step.child_steps.all()
+        serializers = ProcessStepSerializer(child_steps, many=True, context={'request': request})
+        return Response(serializers.data)
+
+    @detail_route(methods=['get'])
+    def tasks(self, request, pk=None):
+        step = self.get_object()
+        tasks = step.tasks.all()
+        serializers = ProcessTaskSerializer(tasks, many=True, context={'request': request})
+        return Response(serializers.data)
+
     @detail_route(methods=['post'])
     def run(self, request, pk=None):
         self.get_object().run()

@@ -76,6 +76,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
     };
     $scope.currentStepTask = {id: ""}
+
+    //Click on +/- on step
+    $scope.stepClick = function(step) {
+        listViewService.getChildrenForStep(step);
+    };
+
     //Click funciton for steps and tasks
     $scope.stepTaskClick = function(branch) {
         if($scope.stepTaskInfoShow && $scope.currentStepTask.id == branch.id){

@@ -40,42 +40,13 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             method: 'GET',
             url: ip.url + 'steps/',
         }).then(function(response){
-            steps = response.data;
+            var steps = response.data;
             steps.forEach(function(step){
-                step.children = getChildSteps(step.child_steps);
                 step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
-
-                var preserved_tasks = [];
-                step.tasks.forEach(function(task){
-                    if (!task.hidden) {
-                        task.label = task.name;
-                        task.user = task.responsible;
-                        task.time_created = task.time_started;
-                        task.isTask = true;
-                        preserved_tasks.push(task);
-                    }
-                });
-
-                step.tasks = preserved_tasks;
-
-                step.children = step.children.concat(step.tasks);
-                step.children.sort(function(a, b){
-                    if(a.time_created != null && b.time_created == null) return -1;
-                    if(a.time_created == null && b.time_created != null) return 1;
-                    var a = new Date(a.time_created),
-                        b = new Date(b.time_created);
-
-                    if(a < b) return -1;
-                    if(a > b) return 1;
-                    return 0;
-                });
-                step.children = step.children.map(function(c){
-                    c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
-                    return c
-                });
+                step.children = [{val: -1}];
+                step.childrenFetched = false;
             });
-            steps = setExpanded(steps, expandedNodes);
-            return steps;
+            return setExpanded(steps, expandedNodes);
         });
         return promise;
     }
@@ -394,17 +365,75 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps.forEach(function(step) {
                 if(step.id == node.id) {
                     step.expanded = true;
-                }
-                if(step.children != null){
-                    if(step.children.length > 0){
-                        setExpanded(step.children, expandedNodes);
-                    }
+                    getChildrenForStep(step).then(function(){
+                        if(step.children != null){
+                            if(step.children.length > 0){
+                                setExpanded(step.children, expandedNodes);
+                            }
+                        }
+                    });
                 }
             });
         });
         return steps;
-
     }
+
+    function getChildrenForStep(step) {
+        return $http({
+            method: 'GET',
+            url: step.url + "tasks/"
+        }).then(function(response) {
+            var placeholder_removed = false;
+            if (response.data.length > 0){
+                // Delete placeholder
+                step.children.pop();
+                placeholder_removed = true;
+            }
+
+            response.data.forEach(function(task){
+                if (!task.hidden) {
+                    task.label = task.name;
+                    task.user = task.responsible;
+                    task.time_created = task.time_started;
+                    task.isTask = true;
+                    step.children.push(task);
+                }
+            });
+
+            return $http({
+                method: 'GET',
+                url: step.url + "child-steps/"
+            }).then(function(response) {
+                if (response.data.length > 0 && !placeholder_removed){
+                    step.children.pop()
+                }
+
+                response.data.forEach(function(child_step){
+                    child_step.isCollapsed = false;
+                    child_step.tasksCollapsed = true;
+                    child_step.children = [{val: -1}];
+                    child_step.childrenFetched = false;
+                    step.children.push(child_step);
+                });
+
+                step.children.sort(function(a, b){
+                    if(a.time_created != null && b.time_created == null) return -1;
+                    if(a.time_created == null && b.time_created != null) return 1;
+                    var a = new Date(a.time_created),
+                        b = new Date(b.time_created);
+
+                    if(a < b) return -1;
+                    if(a > b) return 1;
+                    return 0;
+                });
+                step.children = step.children.map(function(c){
+                    c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
+                    return c
+                });
+            });
+        });
+    }
+
     //Gets all profiles of a specific profile type for an IP
     function getProfiles(type){
         var promise = $http({
@@ -501,6 +530,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return childSteps;
     }
     return {
+        getChildrenForStep: getChildrenForStep,
         getListViewData: getListViewData,
         addEvent: addEvent,
         getEvents: getEvents,
