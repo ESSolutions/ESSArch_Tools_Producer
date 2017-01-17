@@ -1462,6 +1462,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "type": "select",
                 "templateOptions": {
                     "label": "Content Type",
+                    "required": True,
                     "options": [
                         {
                           "name": "Electronic Record Management System",
@@ -1531,6 +1532,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "access_restrict",
                 "type": "select",
                 "templateOptions": {
+                    "required": True,
                     "label": "Access Restrict",
                     "options": [
                         {
@@ -1617,6 +1619,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "data_submission_session",
                 "type": "input",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "Data Submission Session"
                 },
@@ -1625,6 +1628,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "package_number",
                 "type": "input",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "Package Number"
                 },
@@ -1691,6 +1695,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "system_type",
                 "type": "input",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "System Type"
                 },
@@ -1699,6 +1704,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "appraisal",
                 "type": "select",
                 "templateOptions": {
+                    "required": True,
                     "label": "Appraisal",
                     "options": [
                         {
@@ -1716,6 +1722,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "content_type_specification",
                 "type": "input",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "Content Type Specification"
                 },
@@ -1765,6 +1772,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "start_date",
                 "type": "datepicker",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "Start Date"
                 },
@@ -1773,6 +1781,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "end_date",
                 "type": "datepicker",
                 "templateOptions": {
+                    "required": True,
                     "type": "text",
                     "label": "End Date"
                 },
@@ -1781,6 +1790,7 @@ def installProfileSIP(): # Profile Submission Information Package
                 "key": "information_class",
                 "type": "select",
                 "templateOptions": {
+                    "required": True,
                     "label": "Information Class",
                     "options": [
                         {
