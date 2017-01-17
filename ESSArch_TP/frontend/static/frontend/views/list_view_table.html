@@ -56,7 +56,6 @@
                 <td ng-click="ipRowClick(row)">
                     <button type="button"
                             ng-if="row.Responsible.id == auth.id || checkPermission('ip.delete_informationpackage')"
-                            ng-hide="row.State == 'Creating' || row.State == 'Submitting'"
                             ng-click="removeIpModal(row)"
                             class="fa fa-trash"></button>
                 </td>
