@@ -30,7 +30,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             cellTemplate: "<div ng-include src=\"'static/frontend/views/task_pagination.html'\"></div>"
         },
         {
-            field: "time_created",
+            field: "time_started",
             displayName: $scope.date
         },
         {

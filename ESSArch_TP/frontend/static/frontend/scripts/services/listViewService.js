@@ -42,7 +42,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         }).then(function(response){
             var steps = response.data;
             steps.forEach(function(step){
-                step.time_created = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
+                step.time_started = $filter('date')(step.time_created, "yyyy-MM-dd HH:mm:ss");
                 step.children = [{val: -1}];
                 step.childrenFetched = false;
             });
@@ -423,7 +423,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
 
 
                 step.children = step.children.map(function(c){
-                    c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
+                    c.time_started = $filter('date')(c.time_started, "yyyy-MM-dd HH:mm:ss");
                     return c
                 });
         });
