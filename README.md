@@ -12,12 +12,9 @@ Hardware configuration for server, network and storage architecture is not affec
 
 | **OS** | **Version** |   |
 | --- | --- | --- |
-| CentOS | 5.5 (x86\_64) |   |
-| CentOS | 6.4 (x86\_64) | CentOS release 6.6 (Final) |
-| Redhat Enterprise Server | 5 (x86\_64) |   |
-| SUSE Linux Enterprise Server | 10 (x86\_64) |   |
-| SUSE Linux Enterprise Server | 11 (x86\_64) SP3 |   |
-| Fedora | 11 (x86\_64) |   |
+| CentOS / Redhat | 6 (x86\_64) |   |
+| CentOS Redhat | 7 (x86\_64) |   |
+| SUSE Linux Enterprise Server | 11 (x86\_64) |   |
 
 ## OS Packages
 
@@ -91,7 +88,8 @@ Add the following rows to /home/arch/.bash_profile:
     export LANG=en_US.UTF-8
     export LD_LIBRARY_PATH=/ESSArch/pd/python/lib:/ESSArch/pd/libxslt/lib:/ESSArch/pd/libxml/lib:$LD_LIBRARY_PATH
     export ETP=/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP
-    export PYTHONPATH=$ETP:/ESSArch/config
+    export EC=/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_Core
+    export PYTHONPATH=$ETP:$EC:/ESSArch/config
     export DJANGO_SETTINGS_MODULE=config.settings
     alias bin='cd /ESSArch/bin'
     alias log='cd /ESSArch/log'
