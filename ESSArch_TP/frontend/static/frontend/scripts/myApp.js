@@ -226,10 +226,11 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         }
     };
 }])
-.config(['$compileProvider', 'appConfig', function ($compileProvider, appConfig) {
+.config(['$compileProvider', 'appConfig', '$logProvider', function ($compileProvider, appConfig, $logProvider) {
     $compileProvider.debugInfoEnabled(appConfig.debugInfo);
     $compileProvider.commentDirectivesEnabled(appConfig.commentDirectives);
     $compileProvider.cssClassDirectivesEnabled(appConfig.cssClassDirectives);
+    $logProvider.debugEnabled(appConfig.logDebug);
 }])
 .config(function(stConfig) {
     stConfig.sort.delay = -1;
