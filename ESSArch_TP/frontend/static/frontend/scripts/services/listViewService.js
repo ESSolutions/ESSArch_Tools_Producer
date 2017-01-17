@@ -378,6 +378,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return steps;
     }
     function getChildrenForStep(step, page_number) {
+        page_size = 10;
         if(angular.isUndefined(page_number) || !page_number){
             step.page_number = 1;
         } else {
@@ -388,10 +389,15 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             url: step.url + "children/",
             params: {
                 page: step.page_number,
-                page_size: 10
+                page_size: page_size
             }
         }).then(function(response) {
             var link = linkHeaderParser.parse(response.headers('Link'));
+            var count = response.headers('Count');
+            if (count == null) {
+                count = response.data.length;
+            }
+            step.pages = Math.ceil(count/page_size);
             link.next? step.next = link.next : step.next = null;
             link.prev? step.prev = link.prev : step.prev = null;
             step.page_number = page_number || 1;
