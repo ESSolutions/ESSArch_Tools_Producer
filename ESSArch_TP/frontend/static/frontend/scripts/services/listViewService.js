@@ -401,7 +401,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.children.pop();
                 placeholder_removed = true;
             }
-
+            var tempChildArray = [];
             response.data.forEach(function(child){
                 child.label = child.name;
                 child.user = child.responsible;
@@ -411,8 +411,9 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     child.children = [{val: -1}];
                     child.childrenFetched = false;
                 }
-                step.children.push(child);
+                tempChildArray.push(child);
             });
+            step.children = tempChildArray;
 
 
                 step.children = step.children.map(function(c){

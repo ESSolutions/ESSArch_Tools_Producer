@@ -83,11 +83,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.myTreeControl.scope.updatePageNumber = function(branch, page) {
         if(page > branch.page_number && branch.next){
             branch.page_number = parseInt(branch.next.page);
-            branch.children = [];
             listViewService.getChildrenForStep(branch, branch.page_number);
         } else if(page < branch.page_number && branch.prev && page > 0) {
             branch.page_number = parseInt(branch.prev.page);
-            branch.children = [];
             listViewService.getChildrenForStep(branch, branch.page_number);
         }
     };
