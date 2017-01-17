@@ -13,6 +13,7 @@ from ESSArch_Core.WorkflowEngine.models import (
 
 from preingest.serializers import (
     ProcessStepSerializer,
+    ProcessStepDetailSerializer,
     ProcessStepChildrenSerializer,
     ProcessTaskSerializer,
     ProcessTaskDetailSerializer,
@@ -61,6 +62,12 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     """
     queryset = ProcessStep.objects.all()
     serializer_class = ProcessStepSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProcessStepSerializer
+
+        return ProcessStepDetailSerializer
 
     @detail_route(methods=['get'], url_path='children')
     def children(self, request, pk=None):

@@ -1,3 +1,5 @@
+from celery import states as celery_states
+
 from django.contrib.auth.models import User, Group, Permission
 
 from rest_framework import serializers
@@ -119,6 +121,38 @@ class ProcessStepSerializer(serializers.HyperlinkedModelSerializer):
         )
         read_only_fields = (
             'status', 'progress', 'time_created', 'time_done', 'undone',
+        )
+
+
+class ProcessStepDetailSerializer(ProcessStepSerializer):
+    task_count = serializers.SerializerMethodField()
+    failed_task_count = serializers.SerializerMethodField()
+    exception = serializers.SerializerMethodField()
+    traceback = serializers.SerializerMethodField()
+
+    def get_task_count(self, obj):
+        return obj.tasks.count()
+
+    def get_failed_task_count(self, obj):
+        return obj.tasks.filter(status=celery_states.FAILURE, undone=False).count()
+
+    def get_exception(self, obj):
+        t = obj.tasks.filter(status=celery_states.FAILURE, undone=False).first()
+        if t:
+            return t.exception
+
+    def get_traceback(self, obj):
+        t = obj.tasks.filter(status=celery_states.FAILURE, undone=False).first()
+        if t:
+            return t.traceback
+
+    class Meta:
+        model = ProcessStepSerializer.Meta.model
+        fields = ProcessStepSerializer.Meta.fields + (
+            'task_count', 'failed_task_count', 'exception', 'traceback'
+        )
+        read_only_fields = ProcessStepSerializer.Meta.read_only_fields + (
+            'task_count', 'failed_task_count', 'exception', 'traceback'
         )
 
 
