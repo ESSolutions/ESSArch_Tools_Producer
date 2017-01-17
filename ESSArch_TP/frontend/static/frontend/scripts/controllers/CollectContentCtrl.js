@@ -105,7 +105,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 url: branch.url
             }).then(function(response){
                 $scope.currentStepTask = response.data;
-                if(branch.isTask){
+                if(branch.flow_type == "task"){
                     $scope.taskInfoModal();
                 } else {
                     $scope.stepInfoModal();

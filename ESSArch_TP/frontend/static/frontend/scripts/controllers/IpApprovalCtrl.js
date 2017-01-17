@@ -94,7 +94,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 url: branch.url
             }).then(function(response){
                 $scope.currentStepTask = response.data;
-                if(branch.isTask){
+                if(branch.flow_type == "task"){
                     $scope.taskInfoModal();
                 } else {
                     $scope.stepInfoModal();

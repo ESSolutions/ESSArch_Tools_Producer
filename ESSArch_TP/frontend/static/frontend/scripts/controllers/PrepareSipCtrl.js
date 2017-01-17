@@ -104,7 +104,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 url: branch.url
             }).then(function(response){
                 $scope.currentStepTask = response.data;
-                if(branch.isTask){
+                if(branch.flow_type == "task"){
                     $scope.taskInfoModal();
                 } else {
                     $scope.stepInfoModal();
