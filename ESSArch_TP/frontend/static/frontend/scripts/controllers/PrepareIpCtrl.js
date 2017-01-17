@@ -166,7 +166,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
          var ret = [];
          nodes.forEach(function(node) {
              if(node.expanded == true) {
-                ret.push({id: node.id, name: node.name});
+                ret.push(node);
             }
             if(node.children && node.children.length > 0) {
                 ret = ret.concat(checkExpanded(node.children));
