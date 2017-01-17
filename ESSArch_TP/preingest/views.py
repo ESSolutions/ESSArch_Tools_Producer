@@ -66,7 +66,7 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     def children(self, request, pk=None):
         step = self.get_object()
         child_steps = step.child_steps.all()
-        tasks = step.tasks.all()
+        tasks = step.tasks.filter(hidden=False)
         queryset = sorted(
             itertools.chain(child_steps, tasks),
             key=lambda instance: instance.time_started or
@@ -94,7 +94,7 @@ class ProcessStepViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'])
     def tasks(self, request, pk=None):
         step = self.get_object()
-        tasks = step.tasks.all()
+        tasks = step.tasks.filter(hidden=False)
         page = self.paginate_queryset(tasks)
         if page is not None:
             serializers = ProcessTaskSerializer(page, many=True, context={'request': request})
