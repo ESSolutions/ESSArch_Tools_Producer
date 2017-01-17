@@ -1,4 +1,4 @@
-angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig, $rootScope, $filter) {
+angular.module('myApp').factory('listViewService', function ($q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
@@ -38,7 +38,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     function getStatusViewData(ip, expandedNodes){
         var promise = $http({
             method: 'GET',
-            url: ip.url + 'steps/',
+            url: ip.url + 'steps/'
         }).then(function(response){
             var steps = response.data;
             steps.forEach(function(step){
@@ -365,7 +365,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps.forEach(function(step) {
                 if(step.id == node.id) {
                     step.expanded = true;
-                    getChildrenForStep(step).then(function(){
+                    getChildrenForStep(step, node.page_number).then(function(){
                         if(step.children != null){
                             if(step.children.length > 0){
                                 setExpanded(step.children, expandedNodes);
@@ -377,12 +377,24 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         });
         return steps;
     }
-
-    function getChildrenForStep(step) {
+    function getChildrenForStep(step, page_number) {
+        if(angular.isUndefined(page_number) || !page_number){
+            step.page_number = 1;
+        } else {
+            step.page_number = page_number;
+        }
         return $http({
             method: 'GET',
-            url: step.url + "tasks/"
+            url: step.url + "children/",
+            params: {
+                page: step.page_number,
+                page_size: 10
+            }
         }).then(function(response) {
+            var link = linkHeaderParser.parse(response.headers('Link'));
+            link.next? step.next = link.next : step.next = null;
+            link.prev? step.prev = link.prev : step.prev = null;
+            step.page_number = page_number || 1;
             var placeholder_removed = false;
             if (response.data.length > 0){
                 // Delete placeholder
@@ -390,47 +402,23 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 placeholder_removed = true;
             }
 
-            response.data.forEach(function(task){
-                if (!task.hidden) {
-                    task.label = task.name;
-                    task.user = task.responsible;
-                    task.time_created = task.time_started;
-                    task.isTask = true;
-                    step.children.push(task);
+            response.data.forEach(function(child){
+                child.label = child.name;
+                child.user = child.responsible;
+                if (child.flow_type == "step"){
+                    child.isCollapsed = false;
+                    child.tasksCollapsed = true;
+                    child.children = [{val: -1}];
+                    child.childrenFetched = false;
                 }
+                step.children.push(child);
             });
 
-            return $http({
-                method: 'GET',
-                url: step.url + "child-steps/"
-            }).then(function(response) {
-                if (response.data.length > 0 && !placeholder_removed){
-                    step.children.pop()
-                }
 
-                response.data.forEach(function(child_step){
-                    child_step.isCollapsed = false;
-                    child_step.tasksCollapsed = true;
-                    child_step.children = [{val: -1}];
-                    child_step.childrenFetched = false;
-                    step.children.push(child_step);
-                });
-
-                step.children.sort(function(a, b){
-                    if(a.time_created != null && b.time_created == null) return -1;
-                    if(a.time_created == null && b.time_created != null) return 1;
-                    var a = new Date(a.time_created),
-                        b = new Date(b.time_created);
-
-                    if(a < b) return -1;
-                    if(a > b) return 1;
-                    return 0;
-                });
                 step.children = step.children.map(function(c){
                     c.time_created = $filter('date')(c.time_created, "yyyy-MM-dd HH:mm:ss");
                     return c
                 });
-            });
         });
     }
 

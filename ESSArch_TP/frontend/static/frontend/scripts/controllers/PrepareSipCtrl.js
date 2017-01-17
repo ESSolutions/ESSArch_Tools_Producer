@@ -27,6 +27,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             displayName: $scope.responsible,
         },
         {
+            cellTemplate: "<div ng-include src=\"'static/frontend/views/task_pagination.html'\"></div>"
+        },
+        {
             field: "time_created",
             displayName: $scope.date
         },
@@ -76,7 +79,17 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         });
     };
     $scope.currentStepTask = {id: ""}
-
+    $scope.myTreeControl.scope.updatePageNumber = function(branch, page) {
+        if(page > branch.page_number && branch.next){
+            branch.page_number = parseInt(branch.next.page);
+            branch.children = [];
+            listViewService.getChildrenForStep(branch, branch.page_number);
+        } else if(page < branch.page_number && branch.prev && page > 0) {
+            branch.page_number = parseInt(branch.prev.page);
+            branch.children = [];
+            listViewService.getChildrenForStep(branch, branch.page_number);
+        }
+    };
     //Click on +/- on step
     $scope.stepClick = function(step) {
         listViewService.getChildrenForStep(step);
@@ -155,7 +168,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
          var ret = [];
          nodes.forEach(function(node) {
              if(node.expanded == true) {
-                 ret.push({id: node.id, name: node.name});
+                 ret.push(node);
              }
              if(node.children && node.children.length > 0) {
                  ret = ret.concat(checkExpanded(node.children));
