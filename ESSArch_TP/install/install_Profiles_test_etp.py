@@ -1636,7 +1636,6 @@ def installProfileSIP(): # Profile Submission Information Package
             {
                 "key": "record_status",
                 "type": "select",
-                "defaultValue": "NEW",
                 "templateOptions": {
                     "label": "Record Status",
                     "options": [
