@@ -26,7 +26,7 @@ var jsVendorFiles = [
         'scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'scripts/bower_components/angular-tree-control/angular-tree-control.js',
         'scripts/bower_components/angular-formly/dist/formly.js',
-        'scripts/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+        'node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
         'scripts/bower_components/angular-smart-table/dist/smart-table.js',
         'scripts/bower_components/angular-bootstrap-grid-tree/src/tree-grid-directive.js',
         'scripts/bower_components/angular-ui-router/release/angular-ui-router.js',

@@ -312,6 +312,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     vm.profileModel = {};
     vm.profileFields=[];
+    vm.options = {};
     //Click funciton for profile view
     $scope.profileClick = function(row){
         if ($scope.selectProfile == row && $scope.edit){
@@ -570,20 +571,23 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     //Create and show modal when saving a profile
-    $scope.saveModal = function(){
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
-        })
-        modalInstance.result.then(function (data) {
-            vm.onSubmit(data.name);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
+    vm.saveModal = function(){
+        if (vm.editForm.$valid) {
+            vm.options.updateInitialValue();
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
+                controller: 'ModalInstanceCtrl',
+                controllerAs: '$ctrl'
+            })
+            modalInstance.result.then(function (data) {
+                vm.onSubmit(data.name);
+            }, function () {
+                $log.info('modal-component dismissed at: ' + new Date());
+            });
+        }
     }
     //Create and show modal for creating new ip
     $scope.newIpModal = function () {

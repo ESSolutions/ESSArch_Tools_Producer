@@ -1,6 +1,7 @@
 {
   "private": true,
   "devDependencies": {
+    "angular-formly-templates-bootstrap": "^6.4.0",
     "bower": "^1.8.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.3.2",
