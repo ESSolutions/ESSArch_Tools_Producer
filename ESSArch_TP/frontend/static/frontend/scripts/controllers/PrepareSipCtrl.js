@@ -620,12 +620,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         return profiles.active;
     }
     $scope.submitDisabled = false;
-    $scope.submitSip = function(ip) {
+    $scope.submitSip = function(ip, email) {
         $scope.submitDisabled = true;
         $http({
             method: 'POST',
             url: ip.url+'submit/',
-            data: {validators: vm.validatorModel}
+            data: {validators: vm.validatorModel, subject: email.subject, body: email.body}
         }).then(function(response) {
             $scope.eventlog = false;
             $scope.edit = false;
@@ -784,6 +784,25 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+$scope.emailModal = function (profiles) {
+        $scope.profileToSave = profiles;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/email_modal.html',
+            scope: $scope,
+            size: 'lg',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.submitSip($scope.ip, data.email);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+
     $scope.checkPermission = function(permissionName) {
         return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
     };

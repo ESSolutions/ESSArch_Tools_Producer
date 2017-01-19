@@ -89,6 +89,7 @@
     "NAME": "Name",
     "TYPE": "Type",
     "USE": "Use",
+    "SUBJECT": "Subject",
     "VALIDATORCHOICES": "Validator choices",
     "VALIDATEFILES": "Validate files",
     "VALIDATEFILEFORMAT": "Validate file format",

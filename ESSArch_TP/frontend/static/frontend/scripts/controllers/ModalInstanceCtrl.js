@@ -24,7 +24,10 @@
 
 angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance) {
     var $ctrl = this;
-
+    $ctrl.email = {
+        subject: "",
+        body: ""
+    };
     $ctrl.save = function () {
         $ctrl.data = {
             name: $ctrl.profileName
@@ -52,6 +55,13 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInsta
     $ctrl.remove = function () {
         $ctrl.data = {
             status: "removed"
+        }
+        $uibModalInstance.close($ctrl.data);
+    };
+    $ctrl.submit = function () {
+        $ctrl.data = {
+            email: $ctrl.email,
+            status: "submitting"
         }
         $uibModalInstance.close($ctrl.data);
     };
