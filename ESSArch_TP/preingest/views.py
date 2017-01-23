@@ -139,7 +139,7 @@ class ProcessTaskViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows tasks to be viewed or edited.
     """
-    queryset = ProcessTask.objects.all()
+    queryset = ProcessTask.objects.select_related('responsible').all()
     serializer_class = ProcessTaskSerializer
 
     def get_serializer_class(self):
