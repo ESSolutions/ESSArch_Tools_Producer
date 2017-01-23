@@ -28,7 +28,7 @@ class InformationPackageFilter(django_filters.FilterSet):
 
 
 class ArchivalInstitutionFilter(django_filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State')
+    ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
         model = ArchivalInstitution
@@ -36,7 +36,7 @@ class ArchivalInstitutionFilter(django_filters.FilterSet):
 
 
 class ArchivistOrganizationFilter(django_filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State')
+    ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
         model = ArchivistOrganization
@@ -44,7 +44,7 @@ class ArchivistOrganizationFilter(django_filters.FilterSet):
 
 
 class ArchivalTypeFilter(django_filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State')
+    ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
         model = ArchivalType
@@ -52,7 +52,7 @@ class ArchivalTypeFilter(django_filters.FilterSet):
 
 
 class ArchivalLocationFilter(django_filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State')
+    ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
         model = ArchivalLocation
