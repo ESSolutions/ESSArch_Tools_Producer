@@ -24,6 +24,7 @@
 
 angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore){
     var vm = this;
+    var ipSortString = "Preparing,Prepared";
     //Status tree view structure
     $scope.tree_data = [];
     $scope.angular = angular;
@@ -227,7 +228,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
-
     //Get data according to ip table settings and populates ip table
     this.callServer = function callServer(tableState) {
         $scope.ipLoading = true;
@@ -246,7 +246,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Preparing,Prepared").then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
@@ -318,6 +318,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
+        $rootScope.loadNavigation(ipSortString);
     };
     //updates every 5 seconds
     //$scope.getListViewData();
@@ -657,8 +658,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
-            $rootScope.loadNavigation();
-
+            $rootScope.loadNavigation(ipSortString);
         });
     }
     //Creates and shows modal with task information
@@ -731,7 +731,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.getListViewData();
             updateListViewConditional();
-            $rootScope.loadNavigation();
         });
     }
     //Creates modal for lock SA

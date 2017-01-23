@@ -24,6 +24,7 @@
 
 angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore){
     var vm = this;
+    var ipSortString = "Uploaded,Creating,Created";
     $scope.tree_data = [];
     $scope.angular = angular;
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
@@ -240,7 +241,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Uploaded,Creating,Created").then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
@@ -378,6 +379,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Getting data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
+        $rootScope.loadNavigation(ipSortString);
     };
     //$scope.getListViewData();
     //$interval(function(){$scope.getListViewData();}, 5000, false);

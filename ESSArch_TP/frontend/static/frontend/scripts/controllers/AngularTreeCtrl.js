@@ -74,16 +74,18 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
         }
     ];
 
-    $rootScope.loadNavigation = function() {
+    $rootScope.loadNavigation = function(ipState) {
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+"archival-institutions/"
+            url: appConfig.djangoUrl+"archival-institutions/",
+            params: {ip_state: ipState}
         }).then(function(response) {
             $scope.ArchivalInstitution[0].children = response.data;
         });
         $http({
             method: 'GET',
-            url: appConfig.djangoUrl+"archivist-organizations/"
+            url: appConfig.djangoUrl+"archivist-organizations/",
+            params: {ip_state: ipState}
         }).then(function(response) {
             $scope.ArchivistOrganization[0].children = response.data;
         });
@@ -100,7 +102,6 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             $scope.ArchivalLocation[0].children = response.data;
         });*/
     }
-    $rootScope.loadNavigation();
     $rootScope.navigationFilter = {
         institution: null,
         organization: null,

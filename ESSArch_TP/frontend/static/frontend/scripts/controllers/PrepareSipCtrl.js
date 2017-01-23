@@ -24,6 +24,7 @@
 
 angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore){
     var vm = this;
+    var ipSortString = "Created,Submitting,Submitted";
     // List view
     //Go to give state
     $scope.changePath= function(path) {
@@ -245,7 +246,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
              var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
-             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, "Created,Submitting,Submitted").then(function (result) {
+             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {
                  ctrl.displayedIps = result.data;
                  tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                  $scope.ipLoading = false;
@@ -356,6 +357,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
+        $rootScope.loadNavigation(ipSortString);
     };
     //$scope.getListViewData();
     //$interval(function(){$scope.getListViewData();}, 5000, false);
