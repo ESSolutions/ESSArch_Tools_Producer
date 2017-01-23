@@ -731,6 +731,56 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.getListViewData();
             updateListViewConditional();
+        }, function(response) {
+            showRequiredProfileFields(profiles);
+        });
+    }
+    function showRequiredProfileFields(row) {
+        if (row.active.name){
+            var profileUrl = row.active.url;
+        } else {
+            var profileUrl = row.active.profile;
+        }
+        $http({
+            method: 'GET',
+            url: profileUrl,
+            params: {
+                'sa': $scope.saProfile.profile.id,
+                'ip': $scope.ip.id
+            }
+        }).then(function(response) {
+            response.data.profile_name = response.data.name;
+            row.active = response.data;
+            row.profiles = [response.data];
+            $scope.selectProfile = row;
+            vm.profileModel = angular.copy(row.active.specification_data);
+            vm.profileFields = row.active.template;
+            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
+            $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+            $scope.profileToSave = row.active;
+            $scope.subSelectProfile = "profile";
+            if(row.locked) {
+                vm.profileFields.forEach(function(field) {
+                    if(field.fieldGroup != null){
+                        field.fieldGroup.forEach(function(subGroup) {
+                            subGroup.fieldGroup.forEach(function(item) {
+                                item.type = 'input';
+                                item.templateOptions.disabled = true;
+                            });
+                        });
+                    } else {
+                        field.type = 'input';
+                        field.templateOptions.disabled = true;
+                    }
+                });
+
+            }
+            $scope.edit = true;
+            $scope.eventlog = true;
+            $timeout(function() {
+                $anchorScroll('edit-view');
+                vm.editForm.$setSubmitted();
+            }, 0);
         });
     }
     //Creates modal for lock SA
