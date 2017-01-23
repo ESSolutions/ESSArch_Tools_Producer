@@ -116,7 +116,7 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.metsHdr.RECORDSTATUS"
+                            "var": "RECORDSTATUS"
                         }
                     ],
                     "-name": "RECORDSTATUS",

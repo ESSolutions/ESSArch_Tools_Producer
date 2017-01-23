@@ -21,186 +21,86 @@
     Email - essarch@essolutions.se
 """
 
-import sys
-
 import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from ESSArch_Core.configuration.models import Parameter, Path, EventType, Agent
+from ESSArch_Core.configuration.models import EventType, Path
 
-# settings
-site_profile = "SE" # SE_NEW, SE, NO, EC
-#zone = "zone1" # ETP=zone1, ETA=zone2
 
-def installDefaultConfiguration(): # Install default configuration
-
-    # install default configuration
-    createDefaultUsers()	# Default users and groups
-    installDefaultParameters()	# Default Parameters
-    installDefaultPaths()	# Default Paths
-    installDefaultEventTypes()	# Default events
-    installDefaultAgent()	# Default Agent
+def installDefaultConfiguration():
+    print "Installing users, groups and permissions..."
+    installDefaultUsers()
+    print "\nInstalling paths..."
+    installDefaultPaths()
+    print "\nInstalling event types..."
+    installDefaultEventTypes()
 
     return 0
 
 
-def createDefaultUsers(): # default users, groups and permissions
-    
-    # remove existing default users and groups
-    try:
-        User.objects.get(username='user').delete()
-    except User.DoesNotExist:
-        pass
+def installDefaultUsers():
+    user_user, _ = User.objects.get_or_create(
+        username='user', email='usr1@essolutions.se'
+    )
+    user_user.set_password('user')
+    user_user.save()
 
-    try:
-        User.objects.get(username='admin').delete()
-    except User.DoesNotExist:
-        pass
+    user_admin, _ = User.objects.get_or_create(
+        username='admin', email='admin@essolutions.se',
+        is_staff=True
+    )
+    user_admin.set_password('admin')
+    user_admin.save()
 
-    try:
-        User.objects.get(username='sysadmin').delete()
-    except User.DoesNotExist:
-        pass
+    user_sysadmin, _ = User.objects.get_or_create(
+        username='sysadmin', email='sysadmin@essolutions.se',
+        is_staff=True, is_superuser=True
+    )
+    user_sysadmin.set_password('sysadmin')
+    user_sysadmin.save()
 
-    try:
-        Group.objects.get(name='User').delete()
-    except Group.DoesNotExist:
-        pass
+    group_user, _ = Group.objects.get_or_create(name='user')
+    group_admin, _ = Group.objects.get_or_create(name='admin')
+    group_sysadmin, _ = Group.objects.get_or_create(name='sysadmin')
 
-    try:
-        Group.objects.get(name='Admin').delete()
-    except Group.DoesNotExist:
-        pass
+    can_add_ip_event = Permission.objects.get(codename='add_eventip')
+    can_change_ip_event = Permission.objects.get(codename='change_eventip')
+    can_delete_ip_event = Permission.objects.get(codename='delete_eventip')
 
-    try:
-        Group.objects.get(name='Sysadmin').delete()
-    except Group.DoesNotExist:
-        pass
+    group_user.permissions.add(can_add_ip_event, can_change_ip_event, can_delete_ip_event)
 
-    # permissions for default users
-    can_add_ip_event = Permission.objects.get(name='Can add Event Type')
-    can_change_ip_event = Permission.objects.get(name='Can change Event Type')
-    can_delete_ip_event = Permission.objects.get(name='Can delete Event Type')
-    #can_add_ip = Permission.objects.get(name='Can add information package')
-    #can_change_ip = Permission.objects.get(name='Can change information package')
-    #can_delete_ip = Permission.objects.get(name='Can delete information package')    
+    group_user.user_set.add(user_user)
+    group_admin.user_set.add(user_admin)
+    group_sysadmin.user_set.add(user_sysadmin)
 
-    # permissions for default admin user
-    #can_do_admin_stuff = Permission.objects.get(name='Can do admin stuff')
-
-    # permissions for default sysadmin user
-    #can_do_sysadmin_stuff = Permission.objects.get(name='Can do sysadmin stuff')
-
-    # create groups
-    usergroup, created = Group.objects.get_or_create(name='User')
-    usergroup.permissions.clear()
-    usergroup.permissions.add(can_add_ip_event, can_change_ip_event, can_delete_ip_event)
-    admingroup, created = Group.objects.get_or_create(name='Admin')
-    admingroup.permissions.clear()
-    #admingroup.permissions.add(can_do_admin_stuff)
-    sysadmingroup, created = Group.objects.get_or_create(name='Sysadmin')
-    sysadmingroup.permissions.clear()
-    #sysadmingroup.permissions.add(can_do_sysadmin_stuff)
-
-    # create an ordinary user
-    try:
-        myuser = User.objects.get(username='user')
-    except User.DoesNotExist:
-        myuser = User.objects.create_user('user', 'usr1@essolutions.se', 'user')
-        myuser.groups.add(usergroup)
-        myuser.save()
-
-    # create admin user 
-    try:
-        myuser = User.objects.get(username='admin')
-    except User.DoesNotExist:
-        myuser = User.objects.create_user('admin', 'admin@essolutions.se', 'admin')
-        myuser.groups.add(admingroup)
-        myuser.is_staff = 1
-        myuser.save()
-
-    # create sysadmin user
-    try:
-        myuser = User.objects.get(username='sysadmin')
-    except User.DoesNotExist:
-        myuser = User.objects.create_user('sysadmin', 'sysadmin@essolutions.se', 'sysadmin')
-        myuser.groups.add(sysadmingroup)
-        myuser.is_staff = 1
-        myuser.is_superuser = 1
-        myuser.save()
-    print 'added users and groups'
     return 0
-    
-def installDefaultParameters(): # default config parameters
 
-    # First remove all data
-    Parameter.objects.all().delete()
-    
-    # Set default parameters
+
+def installDefaultPaths():
     dct = {
-          'site_profile':site_profile,
-          'smtp_server':'localhost',
-          #'zone': zone ,
-          #'package_descriptionfile':'info.xml',
-          #'content_descriptionfile':'info.xml',
-          #'preservation_descriptionfile':'premis.xml',
-          #'ip_eventfile':'ipevents.xml',
-          #'mimetypes_definition':'mime.types',
-          #'preservation_organization_receiver':'False, example: http://xxx.xxx.xxx.xxx:5002,user,pass',
-          #'preservation_email_receiver':'receiver@archive.xxx',
-          }
+        'path_mimetypes_definitionfile': '/ESSArch/config/mime.types',
+        'path_definitions': '/ESSArch/etp/env',
+        'path_preingest_prepare': '/ESSArch/data/etp/prepare',
+        'path_preingest_reception': '/ESSArch/data/etp/reception',
+        'path_ingest_reception': '/ESSArch/data/eta/reception/eft',
+    }
 
-    # create according to model with two fields
-    for key in dct :
-        print >> sys.stderr, "**", key
-        try:
-            le = Parameter( entity=key, value=dct[key] )
-            le.save()
-        except:
-            pass
+    for key in dct:
+        print '-> %s: %s' % (key, dct[key])
+        Path.objects.get_or_create(entity=key, value=dct[key])
 
     return 0
 
 
-def installDefaultPaths(): # default paths
-
-    # First remove all existing data 
-    Path.objects.all().delete()
-   
-    # create dictionaries 
-    dct = {
-          'path_mimetypes_definitionfile':'/ESSArch/config/mime.types',
-          'path_definitions':'/ESSArch/etp/env',
-          'path_preingest_prepare':'/ESSArch/data/etp/prepare',
-          'path_preingest_reception':'/ESSArch/data/etp/reception',
-          'path_ingest_reception':'/ESSArch/data/eta/reception/eft',
-          }
-
-    # create according to model with two fields
-    for key in dct :
-        print >> sys.stderr, "**", key
-        try:
-            le = Path( entity=key, value=dct[key] )
-            le.save()
-        except:
-            pass
-    
-    return 0
-
-def installDefaultEventTypes(): # default events
-
-    # First remove all existing data
-    EventType.objects.all().delete()
-
-    # create events dictionaries
+def installDefaultEventTypes():
     dct = {
       'Other': '10000',
-      'Prepare IP':'10100',
+      'Prepare IP': '10100',
       'Create IP root directory': '10110',
       'Create physical model': '10115',
       'Upload file': '10120',
-      'Create SIP':'10200',
+      'Create SIP': '10200',
       'Calculate checksum ': '10210',
       'Identify format': '10220',
       'Generate XML files': '10230',
@@ -215,46 +115,15 @@ def installDefaultEventTypes(): # default events
       'Delete files': '10275',
       'Update IP status': '10280',
       'Update IP path': '10285',
-      'Submit SIP':'10300',
+      'Submit SIP': '10300',
     }
 
-    # create according to model with two fields
-    for key in dct :
-        print >> sys.stderr, "**", key
-        try:
-            le = EventType( eventType=dct[key], eventDetail=key )
-            le.save()
-        except:
-            pass
+    for key in dct:
+        print '-> %s: %s' % (key, dct[key])
+        EventType.objects.get_or_create(eventType=dct[key], eventDetail=key)
 
     return 0
-
-
-def installDefaultAgent(): # default Agent
-
-    # First remove all existing data
-    Agent.objects.all().delete()
-
-    # create agent dictionaries
-    dct = {
-          'System':'100',
-          'Organisation':'101',
-          'User':'102',
-          }
-
-    # create according to model with two fields
-    for key in dct :
-        print >> sys.stderr, "**", key
-        try:
-            le = Agent( agentType=dct[key], agentDetail=key )
-            le.save()
-        except:
-            pass
-
-    return 0
-
 
 
 if __name__ == '__main__':
     installDefaultConfiguration()
-
