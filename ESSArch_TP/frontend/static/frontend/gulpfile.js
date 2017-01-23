@@ -126,6 +126,30 @@ var buildVendors = function() {
 var compileSass = function() {
  return gulp.src('styles/styles.scss')
     .pipe(sass().on('error', sass.logError))
+    .pipe(cleanCSS({
+      cleanupCharsets: true, // controls `@charset` moving to the front of a stylesheet; defaults to `true`
+      normalizeUrls: true, // controls URL normalization; defaults to `true`
+      optimizeBackground: true, // controls `background` property optimizatons; defaults to `true`
+      optimizeBorderRadius: true, // controls `border-radius` property optimizatons; defaults to `true`
+      optimizeFilter: true, // controls `filter` property optimizatons; defaults to `true`
+      optimizeFont: true, // ontrols `font` property optimizatons; defaults to `true`
+      optimizeFontWeight: true, // controls `font-weight` property optimizatons; defaults to `true`
+      optimizeOutline: true, // controls `outline` property optimizatons; defaults to `true`
+      removeNegativePaddings: true, // controls removing negative paddings; defaults to `true`
+      removeQuotes: true, // controls removing quotes when unnecessary; defaults to `true`
+      removeWhitespace: true, // controls removing unused whitespace; defaults to `true`
+      replaceMultipleZeros: true, // contols removing redundant zeros; defaults to `true`
+      replaceTimeUnits: true, // controls replacing time units with shorter values; defaults to `true`
+      replaceZeroUnits: true, // controls replacing zero values with units; defaults to `true`
+      roundingPrecision: false, // rounds pixel values to `N` decimal places; `false` disables rounding; defaults to `false`
+      selectorsSortingMethod: 'standard', // denotes selector sorting method; can be `natural` or `standard`; defaults to `standard`
+      keepSpecialComments: 0, // denotes a number of /*! ... */ comments preserved; defaults to `all`
+      tidyAtRules: true, // controls at-rules (e.g. `@charset`, `@import`) optimizing; defaults to `true`
+      tidyBlockScopes: true, // controls block scopes (e.g. `@media`) optimizing; defaults to `true`
+      tidySelectors: true, // controls selectors optimizing; defaults to `true`,
+      transform: function () {} // defines a callback for fine-grained property optimization; defaults to no-op
+    }
+  ))
     .pipe(gulp.dest('styles'));
 };
 var copyIcons = function() {
