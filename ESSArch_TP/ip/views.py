@@ -141,8 +141,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     queryset = InformationPackage.objects.all().prefetch_related(
         Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
         'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType', 'ArchivalLocation',
-        'Responsible__user_permissions', 'Responsible__groups__permissions',
-    )
+        'Responsible__user_permissions', 'Responsible__groups__permissions', 'steps',
+    ).select_related('SubmissionAgreement')
     serializer_class = InformationPackageSerializer
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
