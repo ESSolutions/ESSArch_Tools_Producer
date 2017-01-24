@@ -196,10 +196,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            ProfileIP.objects.get(profile=profile, ip=ip).lock(request.user)
-        except ProfileIP.DoesNotExist:
-            ProfileIP.objects.create(profile=profile, ip=ip).lock(request.user)
+        profile_ip, _ = ProfileIP.objects.get_or_create(profile=profile, ip=ip)
+        profile_ip.lock(request.user)
 
         if profile.profile_type == "sip":
             root = os.path.join(
