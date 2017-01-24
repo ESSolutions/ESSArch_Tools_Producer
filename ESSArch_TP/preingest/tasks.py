@@ -8,7 +8,7 @@ import zipfile
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
-from ESSArch_Core.WorkflowEngine.models import ProcessStep
+from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
 from ESSArch_Core.util import (
     delete_content
 )
@@ -282,11 +282,29 @@ class SubmitSIP(DBTask):
 
         src = os.path.join(srcdir, str(ip.pk) + ".%s" % container_format)
         dst = os.path.join(reception, str(ip.pk) + ".%s" % container_format)
-        shutil.copyfile(src, dst)
+
+        ProcessTask.objects.create(
+            name="ESSArch_Core.tasks.CopyFile",
+            params={
+                'src': src,
+                'dst': dst
+            },
+            processstep=self.taskobj.processstep,
+            hidden=True
+        ).run().get()
 
         src = os.path.join(srcdir, str(ip.pk) + ".xml")
         dst = os.path.join(reception, str(ip.pk) + ".xml")
-        shutil.copyfile(src, dst)
+
+        ProcessTask.objects.create(
+            name="ESSArch_Core.tasks.CopyFile",
+            params={
+                'src': src,
+                'dst': dst
+            },
+            processstep=self.taskobj.processstep,
+            hidden=True
+        ).run().get()
 
         self.set_progress(100, total=100)
 
