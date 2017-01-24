@@ -9,6 +9,7 @@ scripts/vendors.min.js.map
 fonts
 images
 styles/styles.css
+styles/styles.css.map
 styles/styles.min.css
 styles/styles.min.css.map
 scripts/configs/myApp.config.js

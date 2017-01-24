@@ -129,7 +129,9 @@ var buildVendors = function() {
 
 var compileSass = function() {
  return gulp.src('styles/styles.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(cleanCSS({
       cleanupCharsets: true, // controls `@charset` moving to the front of a stylesheet; defaults to `true`
       normalizeUrls: true, // controls URL normalization; defaults to `true`
@@ -152,8 +154,8 @@ var compileSass = function() {
       tidyBlockScopes: true, // controls block scopes (e.g. `@media`) optimizing; defaults to `true`
       tidySelectors: true, // controls selectors optimizing; defaults to `true`,
       transform: function () {} // defines a callback for fine-grained property optimization; defaults to no-op
-    }
-  ))
+    }))
+    .pipe(sourcemaps.write('./styles.css.map'))
     .pipe(gulp.dest('styles'));
 };
 var copyIcons = function() {
