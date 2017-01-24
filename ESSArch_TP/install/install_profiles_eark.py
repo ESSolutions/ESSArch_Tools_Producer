@@ -118,7 +118,6 @@ def installProfileTransferProject(sa):
         'schemas': {},
         'template': [
             {
-                "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival institution",
@@ -127,7 +126,6 @@ def installProfileTransferProject(sa):
                 "type": "input",
                 "key": "archival_institution"
             }, {
-                "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
                     "label": "Archivist organization",
@@ -136,7 +134,6 @@ def installProfileTransferProject(sa):
                 "type": "input",
                 "key": "archivist_organization"
             }, {
-                "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival type",
@@ -145,7 +142,6 @@ def installProfileTransferProject(sa):
                 "type": "input",
                 "key": "archival_type"
             }, {
-                "hideExpression": "False",
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival location",
@@ -154,7 +150,6 @@ def installProfileTransferProject(sa):
                 "type": "input",
                 "key": "archival_location"
             }, {
-                "hideExpression": "False",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -174,7 +169,6 @@ def installProfileTransferProject(sa):
                   ]
                 }
             }, {
-                "hideExpression": "False",
                 "templateOptions": {
                     "disabled": True,
                     "type": "text",
@@ -194,182 +188,16 @@ def installProfileTransferProject(sa):
                   ]
                 }
             }, {
-                "hideExpression": "true",
                 "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission reception validation",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_reception_validation"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission reception exception handling",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_reception_exception_handling"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission reception receipt confirmation",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_reception_receipt_confirmation"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission risk",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_risk"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission mitigation",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_mitigation"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Information package file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "information_package_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submission information package file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submission_information_package_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Archival information package file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "archival_information_package_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Dissemination information package file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "dissemination_information_package_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Submit description file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "submit_description_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Content type specification file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "content_type_specification_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Archival description file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "archival_description_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Authority information file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "authority_information_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Preservation description file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "preservation_description_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "IP event description file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "ip_event_description_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
-                    "label": "Mimetypes definition file",
-                    "desc": "xxx",
-                },
-                "type": "input",
-                "key": "mimetypes_definition_file"
-            }, {
-                "hideExpression": "true",
-                "templateOptions": {
-                    "disabled": True,
                     "type": "text",
                     "label": "Preservation organization receiver email",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "preservation_organization_receiver_email"
             }, {
-                "hideExpression": "true",
                 "templateOptions": {
-                    "disabled": True,
                     "type": "text",
                     "label": "Preservation organization receiver url",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "preservation_organization_receiver_url"
@@ -383,26 +211,7 @@ def installProfileTransferProject(sa):
             "archival_location": "sweden-stockholm-nacka",
             "archive_policy": "archive policy 1",
             "container_format":	"tar",
-            "container_format_compression": "none",
             "checksum_algorithm": "MD5",
-            "submission_reception_validation": "yes",
-            "submission_reception_exception_handling": "none",
-            "submission_reception_receipt_confirmation": "none",
-            "submission_risk": "none",
-            "submission_mitigation": "none",
-            "information_package_file": "ip.xml",
-            "submission_information_package_file": "sip.xml",
-            "archival_information_package_file": "aip.xml",
-            "dissemination_information_package_file": "dip.xml",
-            "submit_description_file": "info.xml",
-            "content_type_specification_file": "erms.xml",
-            "archival_description_file": "ead.xml",
-            "authority_information_file": "eac_cpf.xml",
-            "preservation_description_file": "premis.xml",
-            "ip_event_description_file": "ipevents.xml",
-            "mimetypes_definition_file": "mime.types",
-            "preservation_organization_receiver_email": "receiver@archive.xxx",
-            "preservation_organization_receiver_url": "https://eta-demo.essarch.org,reta,reta",
         },
     }
 
@@ -811,7 +620,6 @@ def installProfileSIP(sa):
             {
                 "key": "RECORDSTATUS",
                 "type": "select",
-                "defaultValue": "NEW",
                 "templateOptions": {
                     "label": "Record Status",
                     "options": [
