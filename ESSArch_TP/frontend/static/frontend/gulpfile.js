@@ -105,8 +105,8 @@ var buildScripts = function() {
         .pipe(ngAnnotate())
         .pipe(concat('scripts.min.js'))
         .pipe(gulpif(isProduction, uglify()))
-        .pipe(sourcemaps.write('.'))
         .pipe(license('/*\n'+licenseString+'\n*/\n'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(jsDest));
 };
 
