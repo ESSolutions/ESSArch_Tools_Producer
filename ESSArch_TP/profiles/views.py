@@ -1,5 +1,6 @@
 import os
 
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Prefetch
 
@@ -175,6 +176,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
         profile = self.get_object()
+
+        try:
+            profile.clean()
+        except ValidationError as e:
+            return Response({'status': repr(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         ip_id = request.data.get(
             "information_package", {}
