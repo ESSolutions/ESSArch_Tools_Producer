@@ -443,7 +443,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
-
+            $rootScope.loadNavigation(ipSortString);
         });
     }
     $scope.tracebackModal = function (profiles) {

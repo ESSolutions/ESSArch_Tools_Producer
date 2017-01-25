@@ -627,7 +627,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
-
+            $rootScope.loadNavigation(ipSortString);
         });
     }
     $scope.tracebackModal = function (profiles) {
