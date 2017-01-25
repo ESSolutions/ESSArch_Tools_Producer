@@ -150,5 +150,8 @@
     "MYSQLVERSION": "MySQL-version",
     "CONTACT": "Kontakt",
     "LOADING": "Laddar",
-    "STEPREPORTFOR": "Step-rapport för"
+    "DOCS": "Docs",
+    "STEPREPORTFOR": "Step-rapport för",
+    "SENDER": "Sändare",
+    "RECEIVER": "Mottagare"
 }

@@ -150,5 +150,8 @@
     "MYSQLVERSION": "MySQL version",
     "CONTACT": "Contact",
     "LOADING": "Loading",
-    "STEPREPORTFOR": "Step report for"
+    "DOCS": "Docs",
+    "STEPREPORTFOR": "Step report for",
+    "SENDER": "Sender",
+    "RECEIVER": "Receiver"
 }

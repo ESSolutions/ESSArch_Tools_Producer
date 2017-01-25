@@ -623,11 +623,16 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     $scope.submitDisabled = false;
     $scope.submitSip = function(ip, email) {
+        if(!email) {
+            var sendData = {validators: vm.validatorModel}
+        } else {
+            var sendData = {validators: vm.validatorModel, subject: email.subject, body: email.body}
+        }
         $scope.submitDisabled = true;
         $http({
             method: 'POST',
             url: ip.url+'submit/',
-            data: {validators: vm.validatorModel, subject: email.subject, body: email.body}
+            data: sendData
         }).then(function(response) {
             $scope.eventlog = false;
             $scope.edit = false;
@@ -786,23 +791,26 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
-$scope.emailModal = function (profiles) {
-        $scope.profileToSave = profiles;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/email_modal.html',
-            scope: $scope,
-            size: 'lg',
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
-        })
-        modalInstance.result.then(function (data) {
-            $scope.submitSip($scope.ip, data.email);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
+    $scope.emailModal = function (profiles) {
+        if(vm.dependencyModel.preservation_organization_receiver_email) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'static/frontend/views/email_modal.html',
+                scope: $scope,
+                size: 'lg',
+                controller: 'ModalInstanceCtrl',
+                controllerAs: '$ctrl'
+            })
+            modalInstance.result.then(function (data) {
+                $scope.submitSip($scope.ip, data.email);
+            }, function () {
+                $log.info('modal-component dismissed at: ' + new Date());
+            });
+        } else {
+            $scope.submitSip($scope.ip);
+        }
     }
 
     $scope.checkPermission = function(permissionName) {
