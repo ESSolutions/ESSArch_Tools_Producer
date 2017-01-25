@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore){
+angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
     var vm = this;
     var ipSortString = "Preparing,Prepared";
     //Status tree view structure
@@ -719,7 +719,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             profileUrl = profiles.active.url;
         }
-        $http({
+        return $http({
             method: 'POST',
             url: profileUrl+"lock/",
             data: {
@@ -731,8 +731,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.getListViewData();
             updateListViewConditional();
-        }, function(response) {
-            showRequiredProfileFields(profiles);
+            return {status: response.status, profile: profiles};
+        }, function(error) {
+            if(error.status == 400) {
+                showRequiredProfileFields(profiles);
+            }
+            return {status: error.status, profile: profiles};
         });
     }
     function showRequiredProfileFields(row) {
@@ -1205,15 +1209,31 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     $scope.lockAllIncluded = function() {
+        var failure = false;
+        var prom = [];
         $scope.selectRowCollection.forEach(function(profile) {
             if(profile.checked && !profile.locked) {
-                $scope.lockProfile(profile);
+                prom.push($scope.lockProfile(profile));
             }
         });
-        $scope.select = false;
-        $scope.edit = false;
-        $scope.eventLog = false;
-        $anchorScroll();
+        $q.all(prom).then(function (results) {
+            var failure = false;
+            var failedProfile = null;
+            results.forEach(function(result) {
+                if(result.status == 400) {
+                    failure = true;
+                    failedProfile = result.profile;
+                }
+            });
+            if(failure && failedProfile != null) {
+                showRequiredProfileFields(failedProfile);
+            } else {
+                $scope.select = false;
+                $scope.edit = false;
+                $scope.eventLog = false;
+                $anchorScroll();
+            }
+        });
     }
     $scope.tracebackModal = function (profiles) {
         $scope.profileToSave = profiles;
