@@ -22,9 +22,13 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore) {
+angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies) {
     var vm = this;
     var ipSortString = "Prepared,Uploading";
+    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
+    $scope.updateIpsPerPage = function(items) {
+        $cookies.put('etp-ips-per-page', items);
+    };
     vm.flowDestination = null;
     // List view
     //Go to give state
@@ -226,7 +230,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
      /*******************************************/
 
      var ctrl = this;
-     this.itemsPerPage = 10;
      $scope.selectedIp = {id: "", class: ""};
      this.displayedIps = [];
      //Get data for ip table from rest api
@@ -244,7 +247,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
              var sorting = tableState.sort;
              var pagination = tableState.pagination;
              var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-             var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
+             var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
              var pageNumber = start/number+1;
 
              Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {

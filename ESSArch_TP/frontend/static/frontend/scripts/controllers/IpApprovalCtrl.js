@@ -22,9 +22,14 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore){
+angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies){
     var vm = this;
     var ipSortString = "Uploaded,Creating,Created";
+    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
+    $scope.updateIpsPerPage = function(items) {
+        $cookies.put('etp-ips-per-page', items);
+    };
+
     $scope.tree_data = [];
     $scope.angular = angular;
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
@@ -218,7 +223,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
      /*******************************************/
 
      var ctrl = this;
-     this.itemsPerPage = 10;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
 
@@ -238,7 +242,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             var sorting = tableState.sort;
             var pagination = tableState.pagination;
             var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || ctrl.itemsPerPage;  // Number of entries showed per page.
+            var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
             Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {
