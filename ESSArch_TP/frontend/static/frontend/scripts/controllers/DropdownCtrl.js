@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window, $translate) {
+angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window, $translate, $uibModal) {
     $scope.items = [
         'Shortcut 1',
         'Shortcut 2',
@@ -34,20 +34,23 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         $scope.changePassword = translations.CHANGEPASSWORD;
         $scope.logOut = translations.LOGOUT;
         options = [
-        {
-            label: $scope.logIn,
-            link: 'login'
-        }
+            {
+                label: $scope.logIn,
+                link: 'login',
+                click: function(){$scope.gotoLink('login');}
+            }
         ];
         optionsAuth = [
-        {
-            label: $scope.changePassword,
-            link: '/accounts/changepassword/'
-        },
-        {
-            label: $scope.logOut,
-            link: 'logout'
-        }
+            {
+                label: $scope.changePassword,
+                link: '',
+                click: function(){$scope.changePasswordModal();}
+            },
+            {
+                label: $scope.logOut,
+                link: 'logout',
+                click: function(){$scope.gotoLink('logout');}
+            }
         ];
     });
     $scope.$watch(function() {
@@ -60,11 +63,11 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         }
     }, true);
     $scope.name = "";
-    $scope.gotoLink = function(choice) {
-        if(choice.link != 'logout') {
-            $window.location.href = choice.link;
+    $scope.gotoLink = function(link) {
+        if(link != 'logout') {
+            $window.location.href = link;
         } else {
-            $state.go(choice.link);
+            $state.go(link);
         }
     };
     $scope.status = {
@@ -80,6 +83,22 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         $event.stopPropagation();
         $scope.status.isopen = !$scope.status.isopen;
     };
+    $scope.changePasswordModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/change_password_modal.html',
+            scope: $scope,
+            size: 'md',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
 
     $scope.appendToEl = angular.element(document.querySelector('#dropdown-long-content'));
 });

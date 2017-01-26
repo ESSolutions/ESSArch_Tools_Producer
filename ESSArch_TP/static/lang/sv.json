@@ -81,7 +81,7 @@
     "ARCHIVALDESCRIPTION": "Arkivbeskrivning",
     "MANAGACONTENT": "Hantera innehåll",
     "QUALITYCONTROL": "Kvalitétskontroll",
-    "SUBMITDESCRIPTION": "???Submit description???",
+    "SUBMITDESCRIPTION": "Submit description",
     "ROOT": "rot",
     "ADD": "Lägg till",
     "UPDATE": "Uppdatera",
@@ -153,5 +153,8 @@
     "DOCS": "Docs",
     "STEPREPORTFOR": "Step-rapport för",
     "SENDER": "Sändare",
-    "RECEIVER": "Mottagare"
+    "RECEIVER": "Mottagare",
+    "OLDPASSWORD": "Gammalt Lösenord",
+    "NEWPASSWORD": "Nytt Lösenord",
+    "REPEATPASSWORD": "Repetera Lösenord"
 }

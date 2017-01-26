@@ -153,5 +153,8 @@
     "DOCS": "Docs",
     "STEPREPORTFOR": "Step report for",
     "SENDER": "Sender",
-    "RECEIVER": "Receiver"
+    "RECEIVER": "Receiver",
+    "OLDPASSWORD": "Old Password",
+    "NEWPASSWORD": "New Password",
+    "REPEATPASSWORD": "Repeat Password"
 }
