@@ -840,6 +840,27 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         ))
 
+        if ip.get_email_recipient():
+            recipients = [ip.get_email_recipient()]
+            subject = request.data.get('subject')
+            body = request.data.get('body')
+
+            attachments = [ip.ObjectPath]
+
+            step.tasks.add(ProcessTask.objects.create(
+                name="ESSArch_Core.tasks.SendEmail",
+                params={
+                    'sender': self.request.user.email,
+                    'recipients': recipients,
+                    'subject': subject,
+                    'body': body,
+                    'attachments': attachments
+                },
+                processstep_pos=25,
+                information_package=ip,
+                responsible=self.request.user
+            ))
+
         step.tasks.add(ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
