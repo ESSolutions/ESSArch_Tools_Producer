@@ -1275,4 +1275,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.checkPermission = function(permissionName) {
         return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
     };
+    $scope.extendedEqual = function(specification_data, model) {
+        var returnValue = true;
+        for(var prop in model) {
+            if(model[prop] == "" && angular.isUndefined(specification_data[prop])){
+                returnValue = false;
+            }
+        }
+        if(returnValue) {
+            return angular.equals(specification_data, model);
+        } else {
+            return true;
+        }
+    };
 });

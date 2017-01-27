@@ -97,7 +97,7 @@
                     </div>
                     <div ng-if="eventlog" class="eventlog-view">
                         <div class="eventlog-form">
-                                <button form="edit-form" ng-disabled="angular.equals(profileToSave.specification_data, vm.profileModel) && angular.equals(profileToSave.structure, treeElements[0].children)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVEPROFILE' | translate}}</button>
+                                <button form="edit-form" ng-disabled="extendedEqual(profileToSave.specification_data, vm.profileModel) && angular.equals(profileToSave.structure, treeElements[0].children)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVEPROFILE' | translate}}</button>
                         </div>
                     </div>
                 </div>
