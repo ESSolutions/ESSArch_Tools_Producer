@@ -22,11 +22,27 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('VersionCtrl', function($scope, myService, $window, $state) {
+angular.module('myApp').controller('VersionCtrl', function($scope, myService, $window, $state, marked, $anchorScroll, $location, $translate) {
     myService.getVersionInfo().then(function(result) {
         $scope.sysInfo = result;
     });
     $scope.redirectToEss = function(){
         $window.open('http://www.essolutions.se', '_blank');
     };
+    $scope.scrollToLink = function(link) {
+        $location.hash(link);
+        $anchorScroll();
+    }
+    $scope.docs = $translate.instant('DOCS');
+    $scope.sysInfo = $translate.instant('SYSTEMINFORMATION');
+    $scope.tabs = [
+        {
+            label: $scope.docs,
+            templateUrl: 'static/frontend/views/docs.html'
+        },
+        {
+            label: $scope.sysInfo,
+            templateUrl: "static/frontend/views/sysinfo.html"
+        }
+    ];
 });

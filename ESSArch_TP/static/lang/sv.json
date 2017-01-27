@@ -156,5 +156,6 @@
     "RECEIVER": "Mottagare",
     "OLDPASSWORD": "Gammalt Lösenord",
     "NEWPASSWORD": "Nytt Lösenord",
-    "REPEATPASSWORD": "Repetera Lösenord"
+    "REPEATPASSWORD": "Repetera Lösenord",
+    "DOCS": "Dokumentation"
 }
