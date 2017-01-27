@@ -9,7 +9,7 @@
         "xlink": "http://www.w3.org/1999/xlink"
     },
     "-schemasToPreserve": [
-        "http://xml.essarch.org/METS/info.xsd"
+        "http://xml.essarch.org/METS/version10/SubmitDescription.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files",
     "-attr": [
@@ -17,7 +17,7 @@
             "-name": "schemaLocation",
             "#content": [
                 {
-                    "text": "http://www.loc.gov/METS/ http://xml.essarch.org/METS/info.xsd"
+                    "text": "http://www.loc.gov/METS/ http://xml.essarch.org/METS/version10/SubmitDescription.xsd"
                 }
             ],
             "-namespace": "xsi"
