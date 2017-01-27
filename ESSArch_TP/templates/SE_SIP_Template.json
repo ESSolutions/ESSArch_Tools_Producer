@@ -4,7 +4,7 @@
             "-name": "schemaLocation",
             "#content": [
                 {
-                    "text": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/version10/CSPackageExtensionMETS.xsd"
+                    "text": "http://www.loc.gov/METS/ http://xml.ra.se/e-arkiv/METS/version11/CSPackageMETS.xsd ExtensionMETS http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
                 }
             ],
             "-namespace": "xsi"
@@ -863,7 +863,7 @@
         "ext": "ExtensionMETS"
     },
     "-schemasToPreserve": [
-        "http://xml.ra.se/e-arkiv/METS/CSPackageMETS.xsd",
+        "http://xml.ra.se/e-arkiv/METS/version11/CSPackageMETS.xsd",
         "http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files"
