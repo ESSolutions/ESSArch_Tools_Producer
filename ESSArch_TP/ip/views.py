@@ -22,7 +22,7 @@ from ESSArch_Core.configuration.models import (
 )
 
 from ESSArch_Core.essxml.Generator.xmlGenerator import (
-    downloadSchemas, find_destination
+    find_destination
 )
 
 from ESSArch_Core.ip.models import (
@@ -369,13 +369,30 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         mets_path = os.path.join(ip.ObjectPath, mets_dir, mets_name)
         filesToCreate[mets_path] = ip.get_profile('sip').specification
 
+        generate_xml_step = ProcessStep.objects.create(
+            name="Generate XML",
+            parent_step_pos=1
+        )
+
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
-            downloadSchemas(
-                template, dirname, structure=structure, root=ip.ObjectPath
+            t = ProcessTask.objects.create(
+                name="ESSArch_Core.tasks.DownloadSchemas",
+                params={
+                    "template": template,
+                    "dirname": dirname,
+                    "structure": structure,
+                    "root": ip.ObjectPath,
+                },
+                processstep_pos=1,
+                log=EventIP,
+                information_package=ip,
+                responsible=self.request.user,
             )
 
-        t1 = ProcessTask.objects.create(
+            generate_xml_step.tasks.add(t)
+
+        t = ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
                 "info": info,
@@ -389,12 +406,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         )
 
-        generate_xml_step = ProcessStep.objects.create(
-            name="Generate XML",
-            parent_step_pos=1
-        )
-        generate_xml_step.tasks = [t1]
-        generate_xml_step.save()
+        generate_xml_step.tasks.add(t)
 
         if any(validators.itervalues()):
             validate_step = ProcessStep.objects.create(
@@ -471,16 +483,26 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         filesToCreate = OrderedDict()
         filesToCreate[events_path] = get_event_spec()
 
-        for fname, template in filesToCreate.iteritems():
-            dirname = os.path.dirname(fname)
-            downloadSchemas(
-                template, dirname, structure=structure, root=ip.ObjectPath
-            )
-
         create_sip_step = ProcessStep.objects.create(
                 name="Create SIP",
                 parent_step_pos=3
         )
+
+        for fname, template in filesToCreate.iteritems():
+            dirname = os.path.dirname(fname)
+            create_sip_step.tasks.add(ProcessTask.objects.create(
+                name="ESSArch_Core.tasks.DownloadSchemas",
+                params={
+                    "template": template,
+                    "dirname": dirname,
+                    "structure": structure,
+                    "root": ip.ObjectPath,
+                },
+                processstep_pos=-1,
+                log=EventIP,
+                information_package=ip,
+                responsible=self.request.user,
+            ))
 
         create_sip_step.tasks.add(ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
