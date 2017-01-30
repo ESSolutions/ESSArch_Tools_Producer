@@ -32,9 +32,9 @@
                     </uib-tabset>
                 </div>
                 <div ng-controller="UtilCtrl" class="tasks-icons">
-                    <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once"></span>
-                    <span ng-click="redirectAdmin()" class="fa fa-cog"></span>
-                    <span ui-sref="home.versionInfo" class="fa fa-question-circle"></span>
+                    <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+                    <span ng-click="redirectAdmin()" class="fa fa-cog info-popover" uib-popover="{{'SETTINGS' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+                    <span ui-sref="home.versionInfo" class="fa fa-question-circle info-popover" uib-popover="{{'HELP' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
 
                     <div ng-controller="LanguageCtrl" style="width: 100px; margin-left: 10px;">
                         <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" style="width: 100%;"></select>

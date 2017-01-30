@@ -157,5 +157,7 @@
     "OLDPASSWORD": "Gammalt Lösenord",
     "NEWPASSWORD": "Nytt Lösenord",
     "REPEATPASSWORD": "Repetera Lösenord",
-    "DOCS": "Dokumentation"
+    "DOCS": "Dokumentation",
+    "REFRESHPAGE": "Uppdatera sida",
+    "HELP": "Hjälp"
 }
