@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
     ESSArch is an open source archiving and digital preservation system
 
@@ -22,7 +24,6 @@
     Email - essarch@essolutions.se
 """
 
-#!/usr/bin/env python
 import os
 import sys
 
