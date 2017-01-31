@@ -1,6 +1,8 @@
-'''
-    ESSArch - ESSArch is an Electronic Archive system
-    Copyright (C) 2010-2014  ES Solutions AB
+"""
+    ESSArch is an open source archiving and digital preservation system
+
+    ESSArch Tools for Producer (ETP)
+    Copyright (C) 2005-2017 ES Solutions AB
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,12 +15,12 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Contact information:
     Web - http://www.essolutions.se
     Email - essarch@essolutions.se
-'''
+"""
 
 import versioneer
 versioneer.VCS = 'git'
@@ -57,10 +59,10 @@ if __name__ == '__main__':
             "pyodbc>=3.0.10",
             "pytz>=2015.4",
             "psutil>=3.2.1",
-            "billiard>=3.3.0.20",
+            "billiard>=3.3.0.23",
             "anyjson>=0.3.3",
-            "amqp>=1.4.6",
-            "kombu>=3.0.26",
+            "amqp>=1.4.9",
+            "kombu>=3.0.35",
             "pycparser>=2.14",
             "cffi>=1.2.1",
             "six>=1.9.0",
@@ -74,7 +76,7 @@ if __name__ == '__main__':
             "nose>=1.3.7",
             "lxml>=3.4.4",
             "pyftpdlib>=1.4.0",
-            "Django>=1.8.4",
+            "Django>=1.10.1",
             "django-picklefield>=0.3.2",
             "django-nested-inline>=0.3.5",
             "argparse>=1.3.0",
@@ -84,10 +86,13 @@ if __name__ == '__main__':
             "Soapbox>=0.3.7",
             "django.js>=0.8.1",
             "django-eztables>=0.3.3.dev0",
-            "celery>=3.1.18",
-            "django-celery>=3.1.16",
+            "celery>=3.1.23",
+            "django-celery>=3.2.0a1",
             "jobtastic>=0.3.1",
-            "logfileviewer>=0.6.2",
+            "djangorestframework==3.4.6",
+            "django-filter>=0.14.0",
+            "djangorestframework-filters>=0.8.0",
+            "logfileviewer>=0.6.3",
         ],
         packages=find_packages(),
         include_package_data=True,

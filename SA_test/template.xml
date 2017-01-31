@@ -1,0 +1,170 @@
+<mets min="1" max="1" allowEmpty="0">
+    <namespace>mets</namespace>
+    <attr name="xmlns:mets" req="1">xmlns:mets</attr>
+    <attr name="xmlns:ext" req="1">xmlns:ext</attr>
+    <attr name="xmlns:xlink" req="1">xmlns:xlink</attr>
+    <attr name="xmlns:xsi" req="1">xmlns:xsi</attr>
+    <attr name="xsi:schemaLocation" req="1">xsi:schemaLocation</attr>
+    <attr name="PROFILE" req="1">PROFILE</attr>
+    <attr name="LABEL" req="0">LABEL</attr>
+    <attr name="TYPE" req="1">TYPE</attr>
+    <attr name="OBJID" req="1">OBJID</attr>
+    <attr name="ext:CONTENTTYPESPECIFICATION" req="0">ext:CONTENTTYPESPECIFICATION</attr>
+    <attr name="ext:SYSTEMTYPE" req="0">ext:SYSTEMTYPE</attr>
+    <attr name="ext:DATASUBMISSIONSESSION" req="0">ext:DATASUBMISSIONSESSION</attr>
+    <attr name="ext:PACKAGENUMBER" req="0">ext:PACKAGENUMBER</attr>
+    <attr name="ext:ARCHIVALNAME" req="0">ext:ARCHIVALNAME</attr>
+    <attr name="ext:APPRAISAL" req="0">ext:APPRAISAL</attr>
+    <attr name="ext:ACCESSRESTRICT" req="0">ext:ACCESSRESTRICT</attr>
+    <attr name="ext:STARTDATE" req="0">ext:STARTDATE</attr>
+    <attr name="ext:ENDDATE" req="0">ext:ENDDATE</attr>
+    <attr name="ext:INFORMATIONCLASS" req="0">ext:INFORMATIONCLASS</attr>
+    <metsHdr min="1" max="1">
+        <attr name="CREATEDATE" req="1">CREATEDATE</attr>
+        <attr name="RECORDSTATUS" req="1">RECORDSTATUS</attr>
+        <attr name="ext:OAISTYPE" req="1">ext:OAISTYPE</attr>
+        <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=ORGANIZATION">
+            <attr name="ROLE" req="1"><metsGenText name="ARCHIVIST"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">name</name>
+            <note min="1" max="1">note</note>
+        </agent>
+        <agent min="1" max="1" arr="agents:ROLE=ARCHIVIST,TYPE=OTHER,OTHERTYPE=SOFTWARE">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="ARCHIVIST"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERTYPE" req="1" value="1"><metsGenText name="SOFTWARE"/></attr>
+            <name min="1" max="1">name</name>
+            <note min="0" max="1">note</note>
+        </agent>
+        <agent min="1" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERROLE" req="1" value="1"><metsGenText name="PRODUCER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERROLE" req="1" value="1"><metsGenText name="SUBMITTER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="IPOWNER"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="EDITOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="OTHER"/></attr>
+            <attr name="OTHERTYPE" req="1" value="1"><metsGenText name="SOFTWARE"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="CREATOR"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="INDIVIDUAL"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <agent min="0" max="1">
+            <attr name="ROLE" req="1" value="1"><metsGenText name="PRESERVATION"/></attr>
+            <attr name="TYPE" req="1" value="1"><metsGenText name="ORGANIZATION"/></attr>
+            <name min="1" max="1">agentName</name>
+            <note min="0" max="1">agentNote</note>
+        </agent>
+        <altRecordID min="1" max="1">SUBMISSIONAGREEMENT<attr name="TYPE" req="1"><metsGenText name="SUBMISSIONAGREEMENT"/></attr></altRecordID>
+        <altRecordID min="0">PREVIOUSSUBMISSIONAGREEMENT<attr name="TYPE" req="1"><metsGenText name="PREVIOUSSUBMISSIONAGREEMENT"/></attr></altRecordID>
+        <altRecordID min="0" max="1">REFERENCECODE<attr name="TYPE" req="1"><metsGenText name="REFERENCECODE"/></attr></altRecordID>
+        <altRecordID min="0">PREVIOUSREFERENCECODE<attr name="TYPE" req="1"><metsGenText name="PREVIOUSREFERENCECODE"/></attr></altRecordID>
+        <metsDocumentID>MetsIdentifier</metsDocumentID>
+    </metsHdr>
+    <amdSec>
+        <attr name="ID" req="1">amdLink</attr>
+        <digiprovMD>
+            <attr name="ID" req="1">digiprovLink</attr>
+            <mdRef allowEmpty="1">
+                <attr name="LOCTYPE" req="1">LOCTYPE</attr>
+                <attr name="MDTYPE" req="1">MDTYPE</attr>
+                <attr name="xlink:href" req="1">xlink:href</attr>
+                <attr name="xlink:type" req="1">xlink:type</attr>
+                <attr name="ID" req="1">ID</attr>
+            </mdRef>
+        </digiprovMD>
+    </amdSec>
+    <fileSec>
+        <fileGrp containsFiles="1" sortby="FName=.*(.csv);">
+            <file min="1">
+                <attr name="CHECKSUM" req="1">FChecksum</attr>
+                <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
+                <attr name="MIMETYPE" req="1">FMimetype</attr>
+                <attr name="CREATED" req="1">FCreated</attr>
+                <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                <attr name="SIZE" req="1">FSize</attr>
+                <attr name="USE" req="1">FUse</attr>
+                <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
+                <FLocat allowEmpty="1">
+                    <attr name="xlink:href" req="1">FName</attr>
+                    <attr name="LOCTYPE" req="1">FLoctype</attr>
+                    <attr name="xlink:type" req="1">FLinkType</attr>
+                </FLocat>
+            </file>
+            <fileGrp containsFiles="1" sortby="FName=[4][\.](?!csv)+[A-z]+;">
+                <file min="1">
+                    <attr name="CHECKSUM" req="1">FChecksum</attr>
+                    <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
+                    <attr name="MIMETYPE" req="1">FMimetype</attr>
+                    <attr name="CREATED" req="1">FCreated</attr>
+                    <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                    <attr name="SIZE" req="1">FSize</attr>
+                    <attr name="USE" req="1">FUse</attr>
+                    <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
+                    <FLocat allowEmpty="1">
+                        <attr name="xlink:href" req="1">FName</attr>
+                        <attr name="LOCTYPE" req="1">FLoctype</attr>
+                        <attr name="xlink:type" req="1">FLinkType</attr>
+                    </FLocat>
+                </file>
+            </fileGrp>
+        </fileGrp>
+        <fileGrp containsFiles="1" sortby="FName=[\.](?!csv)+[A-z]+;">
+            <file min="1">
+                <attr name="CHECKSUM" req="1">FChecksum</attr>
+                <attr name="ID" req="1"><metsGenText name="ID"/>FID</attr>
+                <attr name="MIMETYPE" req="1">FMimetype</attr>
+                <attr name="CREATED" req="1">FCreated</attr>
+                <attr name="ext:FILEFORMATNAME">FFormatName</attr>
+                <attr name="SIZE" req="1">FSize</attr>
+                <attr name="USE" req="1">FUse</attr>
+                <attr name="CHECKSUMTYPE" req="1">FChecksumType</attr>
+                <FLocat allowEmpty="1">
+                    <attr name="xlink:href" req="1">FName</attr>
+                    <attr name="LOCTYPE" req="1">FLoctype</attr>
+                    <attr name="xlink:type" req="1">FLinkType</attr>
+                </FLocat>
+            </file>
+        </fileGrp>
+    </fileSec>
+    <structMap min="1" max="1">
+        <attr name="LABEL">SMLabel</attr>
+        <div containsFiles="1">
+            <fptr allowEmpty="1">
+                <attr name="FILEID" req="1"><metsGenText name="ID"/>FID</attr>
+            </fptr>
+        </div>
+    </structMap>
+</mets>

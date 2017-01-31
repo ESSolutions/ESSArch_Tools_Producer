@@ -1,0 +1,82 @@
+<html>
+    <body>
+        <div class="prepare-sip">
+            <div class="content-wrapper">
+                <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
+                </div>
+                <div ng-if="eventShow || statusShow" class="events-status-wrapper">
+                    <div ng-include src="'static/frontend/views/event_table.html'"></div>
+                    <div ng-if="statusShow" class="status-view">
+                        <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
+                    </div>
+                </div>
+                <div ng-if="edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
+                    <div ng-if="edit" id="edit-veiw" class="edit-view" >
+                        <div class="package-information">
+                            <h4>{{'PACKAGEINFORMATION'| translate}}</h4>
+                            <form  novalidate>
+                                <formly-form model="vm.informationModel" fields="vm.informationFields" options="vm.options">
+                                </formly-form>
+                            </form>
+                        </div>
+                        <div class="package-dependencies">
+                            <h4>{{'PACKAGEDEPENDENCIES' | translate}}</h4>
+                            <form  novalidate>
+                                <formly-form model="vm.dependencyModel" fields="vm.dependencyFields" options="vm.options">
+                                </formly-form>
+                            </form>
+                        </div>
+                        <div class="static-form">
+                            <h4>{{'INCLUDEDPROFILES' | translate}}</h4>
+                            <form style="height: 50px; margin-top: -15px;" novalidate>
+                                <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                                </formly-form>
+                            </form>
+                        </div>
+                        <div class="validators" ng-include src="'static/frontend/views/validator_choices.html'"></div>
+                        <div class="file-list">
+                            <table st-table="fileListRowCollection" st-safe-src="fileListCollection" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="clickable" st-sort="filename">{{'FILENAME' | translate}}</th>
+                                        <th class="clickable" st-sort="created">{{'CREATED' | translate}}</th>
+                                        <th class="clickable" st-sort="size">{{'SIZE' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in fileListRowCollection">
+                                        <td>{{row.filename}}</td>
+                                        <td>{{row.created | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+                                        <td>{{row.size}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-if="eventlog" class="eventlog-view">
+                        <form class="submit-sip-eventlog-form" ng-submit="emailModal(ip)">
+                            <!--
+                                <div class="form-group">
+                                <label>Status note</label>
+                                <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
+                                <option value="" selected="selected" disabled>{{'SELECTONE' | translate}}</option>
+                                </select>
+                                </div>
+                                <div class="form-group">
+                                <label>{{'COMMENT' | translate}}</label>
+                                <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
+                                </div>
+                            -->
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-disabled="ip.Responsible.id != auth.id && !checkPermission('ip.submit_sip')" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
+                                </label>
+                            </div>
+                            <button ng-disabled="submitDisabled || !approvedToSubmit || ip.State == 'Submitted' && (ip.Responsible.id != auth.id || !checkPermission('ip.submit_sip'))" type="submit" ng-dblClick="" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,106 @@
+<body>
+    <div class="ip-approval">
+        <div class="content-wrapper">
+            <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
+            </div>
+            <div ng-if="statusShow || eventShow" class="events-status-wrapper">
+                <div ng-include src="'static/frontend/views/event_table.html'"></div>
+                <div ng-if="statusShow" class="status-view">
+                    <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
+                </div>
+            </div>
+            <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
+                <div ng-if="select" id="select-view" class="select-view">
+                    <div class="sa-table">
+                        <table style="margin-top: 20px;" class="table table-striped">
+                            <tr>
+                                <td>
+                                    <div class="checkbox table-col">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="table-col">{{'Submission Agreement'}}</p>
+                                </td>
+                                <td><select ng-disabled="true" class="form-control table-col" ng-model="saProfile.profile" ng-options="x as x.sa_name for x in saProfile.profiles"></select></td>
+                                <td><p class="table-col">{{}}</p>
+                                    <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                </td>
+                                <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--<a style="margin-top: 10px;" ng-if="saProfile.profile" ng-click="showHideAllProfiles()">{{'SHOWHIDEPROFILES' | translate}}</a>-->
+                    <table ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollapse" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 71px;" class="info-popover column-enabled"><p uib-popover="{{'ENABLEDDESC' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENABLED' | translate}}</p></th>
+                                <th class="info-popover column-entity"><p uib-popover="{{'ENTITYDESC' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'ENTITY' | translate}}</p></th>
+                                <th class="info-popover column-profile"><p uib-popover="{{'PROFILEDESC' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PROFILE' | translate}}</p></th>
+                                <th class="info-popover column-state"><p uib-popover="{{'STATEDESC' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'STATE' | translate}}</p></th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr ng-repeat="(type, profile) in selectRowCollection">
+                                <td>
+                                    <div class="checkbox table-col">
+                                        <label>
+                                            <input type="checkBox" ng-disabled="true" ng-model="profile.checked"></input>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a ng-if="profile.checked" class="table-col" ng-click="profileClick(profile)">{{profile.type_label}}</a>
+                                    <p ng-if="!profile.checked"class="table-col">{{profile.type_label}}</p>
+                                </td>
+
+                                <td><!--<select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select>-->
+                                    <ui-select ng-model="profile.active" theme="bootstrap" ng-disabled="true" style="min-width: 300px;">
+                                        <ui-select-match placeholder="Select a {{profile.type_label}} profile">{{$select.selected.profile_name}}</ui-select-match>
+                                        <ui-select-choices repeat="x in profile.profiles track by x.id | filter: $select.search">
+                                            <span ng-bind-html="x.profile_name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td>
+                                    <button ng-if="profile.locked && ip.State == 'Uploaded' && (ip.Responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
+                                    <button ng-if="profile.locked && (ip.State == 'Created' || ip.State == 'Creating') || (ip.Responsible.id != auth.id && !checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div ng-include src="'static/frontend/views/validator_choices.html'"></div>
+                </div>
+
+                <div ng-if="subSelect" class="sub-select-view">
+                    {{selectProfile.entity}}
+                    <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                    <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                    <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
+                </div>
+                <div ng-if="edit" id="edit-view" class="edit-view" >
+                    <form novalidate>
+                        <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">
+                        </formly-form>
+                    </form>
+                    <!--<div class="package-dependencies">
+                        <p>{{'PACKAGEDEPENDENCIES' | translate}}</p>
+                        </div>-->
+                </div>
+                <div ng-if="eventlog" class="eventlog-view">
+                    <form ng-submit="createSip(ip)" class="eventlog-form">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkBox" ng-disabled="(ip.Responsible.id != auth.id && !checkPermission('ip.create_sip')) || ip.State != 'Uploaded'" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
+                            </label>
+                        </div>
+                        <button type="submit" ng-dblClick="" ng-disabled=" ip.State != 'Uploaded' || createDisabled || !approvedToCreate || !ip.SubmissionAgreementLocked || ip.State=='Created' || (ip.Responsible.id != auth.id && !checkPermission('ip.create_sip'))" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,98 @@
+[
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "mets OBJID"
+    },
+    "type": "input",
+    "key": "mets OBJID"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Mets Label"
+    },
+    "type": "input",
+    "key": "Mets Label"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Mets Profile"
+    },
+    "type": "input",
+    "key": "Mets Profile"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "MetsHdr CreatedDate"
+    },
+    "type": "input",
+    "key": "MetsHdr CreatedDate"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Archivist Organization Name"
+    },
+    "type": "input",
+    "key": "Archivist Organization Name"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Archivist Organization Note"
+    },
+    "type": "input",
+    "key": "Archivist Organization Note"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Archivist Software Name"
+    },
+    "type": "input",
+    "key": "Archivist Software Name"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Archivist Software Note"
+    },
+    "type": "input",
+    "key": "Archivist Software Note"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Creator Organization Name"
+    },
+    "type": "input",
+    "key": "Creator Organization Name"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Creator Organization Note"
+    },
+    "type": "input",
+    "key": "Creator Organization Note"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Submission agreement"
+    },
+    "type": "input",
+    "key": "Submission agreement"
+  },
+  {
+    "templateOptions": {
+      "type": "text",
+      "label": "Reference Code"
+    },
+    "type": "input",
+    "key": "Reference Code"
+  }
+]

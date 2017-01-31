@@ -1,0 +1,346 @@
+{
+  "mets": {
+    "-min": 1,
+    "-max": 1,
+    "-namespace": "mets",
+    "-attr": [
+      {
+        "-name":"ID",
+        "-req": 0,
+        "#content": [{"var":"MetsId"}]
+      },
+      {
+        "-name":"OBJID",
+        "-req": 1,
+        "#content": [{"var":"MetsOBJID"}]
+      },
+      {
+        "-name":"LABEL",
+        "-req": 0,
+        "#content": [{"var":"MetsLABEL"}]
+      },
+      {
+        "-name":"TYPE",
+        "-req": 1,
+        "#content": [{"var":"MetsType"}]
+      },
+      {
+        "-name":"PROFILE",
+        "-req": 1,
+        "#content": [{"var":"MetsPROFILE"}]
+      }
+    ],
+    "metsHdr": {
+      "-min": 1,
+      "-max": 1,
+      "-attr": [
+        {
+          "-name":"ID",
+          "-req": 0,
+          "#content": [{"var":"MetsHdrId"}]
+        },
+        {
+          "-name":"ADMID",
+          "-req": 0,
+          "#content": [{"var":"MetsHdrADMId"}]
+        },
+        {
+          "-name":"CREATEDATE",
+          "-req": 1,
+          "#content": [{"var":"MetsHdrCREATEDATE"}]
+        },
+        {
+          "-name":"LASTMODDATE",
+          "-req": 0,
+          "#content": [{"var":"MetsHdrLASTMODDATE"}]
+        },
+        {
+          "-name":"RECORDSTATUS",
+          "-req": 0,
+          "#content": [{"var":"MetsHdrRECORDSTATUS"}]
+        }
+      ],
+      "agent": [
+        {
+          "-min": 1,
+          "-max": -1,
+          "-attr": [
+            {
+              "-name": "ID",
+              "-req": 0,
+              "#content": [{"var":"ID1"}]
+            },
+            {
+              "-name": "ROLE",
+              "-req": 1,
+              "#content": [{"text":"ARCHIVIST" }]
+            },
+            {
+              "-name": "TYPE",
+              "-req": 1,
+              "#content": [{"text":"ORGANIZATION" }]
+            }
+          ],
+          "name": {
+            "-min": 1,
+            "#content": [{"var":"agentname1" }]
+          },
+          "note": {
+            "-min": 0,
+            "-max": -1,
+            "#content": [{"var":"agentnote1" }]
+          }
+        },
+        {
+          "-min": 1,
+          "-max": -1,
+          "-attr": [
+            {
+              "-name": "ID",
+              "-req": 0,
+              "#content": [{"var":"ID2"}]
+            },
+            {
+              "-name": "ROLE",
+              "-req": 1,
+              "#content": [{"text": "ARCHIVIST" }]
+            },
+            {
+              "-name": "TYPE",
+              "-req": 1,
+              "#content": [{"text": "OTHER" }]
+            },
+            {
+              "-name": "OTHERTYPE",
+              "-req": 1,
+              "#content": [{"text": "SOFTWARE" }]
+            }
+          ],
+          "name": {
+            "-min": 1,
+            "#content": [{"var":"agentname2" }]
+          },
+          "note": {
+            "-min": 0,
+            "-max": -1,
+            "#content": [{"var":"agentnote2" }]
+          }
+        },
+        {
+          "-min": 1,
+          "-max": -1,
+          "-attr": [
+            {
+              "-name": "ID",
+              "-req": 0,
+              "#content": [{"var":"ID3"}]
+            },
+            {
+              "-name": "ROLE",
+              "-req": 1,
+              "#content": [{"text": "CREATOR" }]
+            },
+            {
+              "-name": "TYPE",
+              "-req": 1,
+              "#content": [{"text": "ORGANIZATION" }]
+            }
+          ],
+          "name": {
+            "-min": 1,
+            "#content": [{"var":"agentname3" }]
+          },
+          "note": {
+            "-min": 0,
+            "-max": -1,
+            "#content": [{"var":"agentnote3" }]
+          }
+        }
+      ],
+      "altRecordID": [
+        {
+          "-min": 1,
+          "-max": 1,
+          "#content": [{"var": "SUBMISSIONAGREEMENT"}],
+          "-attr": [{
+            "-name": "TYPE",
+            "-req": 1,
+            "#content": [{"text": "SUBMISSIONAGREEMENT"}]
+          }]
+        },
+        {
+          "-min": 1,
+          "#content": [{"var": "PREVIOUSSUBMISSIONAGREEMENT"}],
+          "-attr": [{
+            "-name": "TYPE",
+            "-req": 1,
+            "#content": [{"text": "PREVIOUSSUBMISSIONAGREEMENT" }]
+          }]
+        },
+        {
+          "-min": 1,
+          "-max": 1,
+          "#content": [{"var": "REFERENCECODE"}],
+          "-attr": [{
+            "-name": "TYPE",
+            "-req": 1,
+            "#content": [{"text": "REFERENCECODE" }]
+          }]
+        }
+      ],
+      "metsDocumentID": {
+        "-min": 0,
+        "-attr": [
+          {
+            "-name": "ID",
+            "-req": 0,
+            "#content": [{"var":"metsDocumentID"}]
+          },
+          {
+            "-name": "TYPE",
+            "-req": 0,
+            "#content": [{"var":"metsDocumentType"}]
+          }
+        ]
+      }
+    },
+    "dmdSec": {
+      "-min": 0,
+      "-max": -1
+    },
+    "amdSec": {
+      "-min": 0,
+      "-max": -1,
+      "-attr": [
+        {
+          "-name": "ID",
+          "-req": "1",
+          "#content": [{"var": "amdSecID"}]
+        }
+      ],
+      "techMD": {
+        "-min": 0,
+        "-max": -1
+      },
+      "rightsMD": {
+        "-min": 0,
+        "-max": -1
+      },
+      "sourceMD": {
+        "-min": 0,
+        "-max": -1
+      },
+      "digiprovMD": {
+        "-min": 0,
+        "-max": -1
+      }
+    },
+    "fileSec": {
+      "-min": 0,
+      "-attr": [
+        {
+          "-name": "ID",
+          "-req": 0,
+          "#content": [{"var":"fileSecID"}]
+        }
+      ],
+      "fileGrp": {
+        "-containsFiles": [
+            {
+                "file": {
+                  "-min": 1,
+                  "-attr": [
+                    {
+                      "-name": "CHECKSUM",
+                      "-req": 1,
+                      "#content": [{"var": "FChecksum"}]
+                    },
+                    {
+                      "-name": "ID",
+                      "-req": 1,
+                      "#content": [{"text": "ID" },{"var": "FID"}]
+                    },
+                    {
+                      "-name": "MIMETYPE",
+                      "-req": 1,
+                      "#content": [{"var": "FMimetype"}]
+                    },
+                    {
+                      "-name": "CREATED",
+                      "-req": 1,
+                      "#content": [{"var": "FCreated"}]
+                    },
+                    {
+                      "-name": "ext:FILEFORMATNAME",
+                      "#content": [{"var": "FFormatName"}]
+                    },
+                    {
+                      "-name": "SIZE",
+                      "-req": 1,
+                      "#content": [{"var": "FSize"}]
+                    },
+                    {
+                      "-name": "USE",
+                      "-req": 1,
+                      "#content": [{"var": "FUse"}]
+                    },
+                    {
+                      "-name": "CHECKSUMTYPE",
+                      "-req": 1,
+                      "#content": [{"var": "FChecksumType"}]
+                    }
+                  ],
+                  "FLocat": {
+                    "-allowEmpty": 1,
+                    "-attr": [
+                      {
+                        "-name": "xlink:href",
+                        "-req": 1,
+                        "#content": [{"var": "FName"}]
+                      },
+                      {
+                        "-name": "LOCTYPE",
+                        "-req": 1,
+                        "#content": [{"var": "FLoctype"}]
+                      },
+                      {
+                        "-name": "xlink:type",
+                        "-req": 1,
+                        "#content": [{"var": "FLinkType"}]
+                      }
+                    ]
+                  }
+                }
+            }
+        ]
+      }
+    },
+    "structMap": {
+      "-min": 1,
+      "-max": 1,
+      "-attr": [{
+        "-name": "LABEL",
+        "-req": 0,
+        "#content": [{"var":"SMLabel"}]
+      }],
+      "div": {
+        "-containsFiles": [{
+            "fptr": {
+              "-allowEmpty": 1,
+              "-attr": [{
+                "-name": "FILEID",
+                "-req": 1,
+                "#content": [{"text": "ID" },{"var":"FID"}]
+              }]
+          }
+        }]
+      }
+    },
+    "structLink": {
+      "-min": 0
+    },
+    "behaviorSec": {
+      "-min": 0
+    }
+  }
+}
