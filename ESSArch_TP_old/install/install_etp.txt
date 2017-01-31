@@ -1,4 +1,0 @@
-# as arch user
-cd /ESSArch/etp
-python manage.py syncdb
-python install_cfg_etp.py
