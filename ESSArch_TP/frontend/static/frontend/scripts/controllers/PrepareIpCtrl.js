@@ -32,54 +32,54 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $interval.cancel(stateInterval);
         $interval.cancel(listViewInterval);
     });
-     // Click funtion columns that does not have a relevant click function
-     $scope.ipRowClick = function(row) {
-         $scope.selectIp(row);
-         if($scope.ip == row){
-             row.class = "";
-             $scope.selectedIp = {id: "", class: ""};
-         }
-         if($scope.eventShow) {
-             $scope.eventsClick(row);
-         }
-         if($scope.statusShow) {
-             $scope.stateClicked(row);
-         }
-         if ($scope.select) {
-             $scope.ipTableClick(row);
-         }
-     }
-     //Click function for status view
-     var stateInterval;
-     $scope.stateClicked = function(row){
-         if($scope.statusShow && $scope.ip == row){
-             $scope.statusShow = false;
-         } else {
-             $scope.statusShow = true;
-             $scope.edit = false;
-             $scope.statusViewUpdate(row);
-         }
-         $scope.subSelect = false;
-         $scope.eventlog = false;
-         $scope.select = false;
-         $scope.eventShow = false;
-         $scope.ip = row;
-         $rootScope.ip = row;
-     };
-     //If status view is visible, start update interval
-     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
-         if(newValue) {
-             $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
+    // Click funtion columns that does not have a relevant click function
+    $scope.ipRowClick = function(row) {
+        $scope.selectIp(row);
+        if($scope.ip == row){
+            row.class = "";
+            $scope.selectedIp = {id: "", class: ""};
+        }
+        if($scope.eventShow) {
+            $scope.eventsClick(row);
+        }
+        if($scope.statusShow) {
+            $scope.stateClicked(row);
+        }
+        if ($scope.select) {
+            $scope.ipTableClick(row);
+        }
+    }
+    //Click function for status view
+    var stateInterval;
+    $scope.stateClicked = function(row){
+        if($scope.statusShow && $scope.ip == row){
+            $scope.statusShow = false;
+        } else {
+            $scope.statusShow = true;
+            $scope.edit = false;
+            $scope.statusViewUpdate(row);
+        }
+        $scope.subSelect = false;
+        $scope.eventlog = false;
+        $scope.select = false;
+        $scope.eventShow = false;
+        $scope.ip = row;
+        $rootScope.ip = row;
+    };
+    //If status view is visible, start update interval
+    $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+        if(newValue) {
+            $interval.cancel(stateInterval);
+            stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
         } else {
             $interval.cancel(stateInterval);
         }
-     });
-     //Get data for status view
+    });
+    //Get data for status view
 
-     /*******************************************/
-     /*Piping and Pagination for List-view table*/
-     /*******************************************/
+    /*******************************************/
+    /*Piping and Pagination for List-view table*/
+    /*******************************************/
 
     var ctrl = this;
     $scope.selectedIp = {id: "", class: ""};
@@ -143,9 +143,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-         $scope.getListViewData();
-     }, true);
+    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+        $scope.getListViewData();
+    }, true);
     //Click funciton for event view
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
@@ -233,7 +233,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                             field.templateOptions.disabled = true;
                         }
                     });
-
                 }
                 $scope.edit = true;
                 $scope.eventlog = true;
@@ -270,18 +269,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         var sendData = {
             "type": type
         };
-
         var uri = $scope.saProfile.profile.url+"include-type/";
-         $http({
+        $http({
             method: 'POST',
             url: uri,
             data: sendData
         })
-        .success(function (response) {
-        })
-        .error(function (response) {
-            alert(response.status);
-        });
+            .success(function (response) {
+            })
+            .error(function (response) {
+                alert(response.status);
+            });
     };
 
     //Exclude the given profile type in the SA
@@ -291,21 +289,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         };
 
         var uri = $scope.saProfile.profile.url+"exclude-type/";
-         $http({
+        $http({
             method: 'POST',
             url: uri,
             data: sendData
         })
-        .success(function (response) {
-        })
-        .error(function (response) {
-            alert(response.status);
-        });
+            .success(function (response) {
+            })
+            .error(function (response) {
+                alert(response.status);
+            });
     };
     //Make a profile "Checked"
     $scope.setCheckedProfile = function(type, checked){
         var uri = $scope.ip.url+"check-profile/";
-         $http({
+        $http({
             method: 'PUT',
             url: uri,
             data: {
@@ -313,27 +311,27 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 checked: checked
             }
         })
-        .success(function (response) {
-        })
+            .success(function (response) {
+            })
     };
 
     //Change the standard profile of the same type as given profile for an sa
     $scope.changeProfile = function(profile, row){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.ip.url+"change-profile/";
-         $http({
+        $http({
             method: 'PUT',
             url: uri,
             data: sendData
-         })
-         .success(function (response) {
-             if($scope.edit) {
-                 $scope.profileClick(row);
-             }
         })
-        .error(function (response) {
-            alert(response.status);
-        });
+            .success(function (response) {
+                if($scope.edit) {
+                    $scope.profileClick(row);
+                }
+            })
+            .error(function (response) {
+                alert(response.status);
+            });
 
     };
     //Changes SA profile for selected ip
@@ -376,20 +374,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             url: profileUrl+"save/",
             data: sendData
         })
-        .then(function(response) {
-            var profileType = 'profile_' + $scope.profileToSave.profile_type;
-            var newProfile = response.data;
-            newProfile.profile_name = newProfile.name;
-            listViewService.getIp($scope.ip.url).then(function(result) {
-                $scope.getSelectCollection($scope.saProfile.profile, result);
-                $scope.selectRowCollection = $scope.selectRowCollapse;
+            .then(function(response) {
+                var profileType = 'profile_' + $scope.profileToSave.profile_type;
+                var newProfile = response.data;
+                newProfile.profile_name = newProfile.name;
+                listViewService.getIp($scope.ip.url).then(function(result) {
+                    $scope.getSelectCollection($scope.saProfile.profile, result);
+                    $scope.selectRowCollection = $scope.selectRowCollapse;
+                });
+                $scope.edit = false;
+                $scope.eventlog = false;
+                $anchorScroll('select-view');
+            }, function(response) {
+                alert(response.status);
             });
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $anchorScroll('select-view');
-        }, function(response) {
-            alert(response.status);
-        });
     };
     $scope.colspan = 9;
     //Decides visibility of stepTask info page
@@ -686,51 +684,51 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.treeEditModel = {
     };
     vm.treeEditFields = [
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('NAME'),
-            "required": true
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('NAME'),
+                "required": true
+            },
+            "type": "input",
+            "key": "name"
         },
-        "type": "input",
-        "key": "name"
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('TYPE'),
-            "options": [{name: "folder", value: "folder"},{name: "file", value: "file"}],
-            "required": true
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('TYPE'),
+                "options": [{name: "folder", value: "folder"},{name: "file", value: "file"}],
+                "required": true
+            },
+            "type": "select",
+            "key": "type",
         },
-        "type": "select",
-        "key": "type",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('USE'),
-            "options": [
-			    {name: "content", value: "content"},
-                {name: "preservation_description_file", value: "preservation_description_file"},
-                {name: "mets_file", value: "mets_file"},
-                {name: "archival_description_file", value: "archival_description_file"},
-                {name: "authoritive_information_file", value: "authoritive_information_file"},
-                {name: "xsd_files", value: "xsd_files"}
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('USE'),
+                "options": [
+                    {name: "content", value: "content"},
+                    {name: "preservation_description_file", value: "preservation_description_file"},
+                    {name: "mets_file", value: "mets_file"},
+                    {name: "archival_description_file", value: "archival_description_file"},
+                    {name: "authoritive_information_file", value: "authoritive_information_file"},
+                    {name: "xsd_files", value: "xsd_files"}
 
-            ],
-        },
-        "hideExpression": function($viewValue, $modelValue, scope){
-            return scope.model.type != "file";
-        },
-        "expressionProperties": {
-            "templateOptions.required": function($viewValue, $modelValue, scope) {
-                return scope.model.type == "file";
-            }
-        },
-        "type": "select-tree-edit",
-        "key": "use",
-        "defaultValue": "Pick one",
-    }
+                ],
+            },
+            "hideExpression": function($viewValue, $modelValue, scope){
+                return scope.model.type != "file";
+            },
+            "expressionProperties": {
+                "templateOptions.required": function($viewValue, $modelValue, scope) {
+                    return scope.model.type == "file";
+                }
+            },
+            "type": "select-tree-edit",
+            "key": "use",
+            "defaultValue": "Pick one",
+        }
 
     ];
 
@@ -777,8 +775,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Populate map structure tree view given tree width and amount of levels
     function getStructure(profileUrl) {
         listViewService.getStructure(profileUrl).then(function(value) {
-           $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: value}];
-           $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+            $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: value}];
+            $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
         });
     }
     $scope.treeElements = [];//[{name: "Root", type: "Folder", children: createSubTree(3, 4, "")}];
@@ -868,7 +866,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     //Resets add/update form fields
     function resetFormVariables() {
-                vm.treeEditModel = {};
+        vm.treeEditModel = {};
     };
     //Update current node variable with selected node in map structure tree view
     $scope.updateCurrentNode = function(node, selected, parentNode) {
@@ -939,17 +937,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.getProfiles = function(profile) {
         listViewService.getProfilesMin(profile.profile_type).then(function(result) {
             if(profile.active != null) {
-            result.forEach(function(prof) {
-                if(angular.isUndefined(profile.active.profile)) {
-                    if(prof.url == profile.active.url) {
+                result.forEach(function(prof) {
+                    if(angular.isUndefined(profile.active.profile)) {
+                        if(prof.url == profile.active.url) {
+                            profile.active = prof;
+                        }
+                    }
+                    if(prof.url == profile.active.profile) {
                         profile.active = prof;
-                }
-                }
-                if(prof.url == profile.active.profile) {
-                    profile.active = prof;
-                }
-            });
-        }
+                    }
+                });
+            }
             profile.profiles = result;
         })
     }
@@ -957,7 +955,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         if(profile.profile_type == "sip") {
             $scope.unlockSipModal(profile);
         } else {
-             $scope.unlock(profile);
+            $scope.unlock(profile);
         }
     }
     //Unlock profile from current IP

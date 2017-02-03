@@ -28,56 +28,56 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     var ipSortString = "Uploaded,Creating,Created";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     // Click funtion columns that does not have a relevant click function
-     $scope.ipRowClick = function(row) {
-         $scope.selectIp(row);
-         if($scope.ip == row){
-             row.class = "";
-             $scope.selectedIp = {id: "", class: ""};
-         }
-         if($scope.eventShow) {
-             $scope.eventsClick(row);
-         }
-         if($scope.statusShow) {
-             $scope.stateClicked(row);
-         }
-         if ($scope.select || $scope.edit || $scope.eventlog) {
-             $scope.ipTableClick(row);
-         }
-     }
-     $scope.ipSelected = false;
-     var stateInterval;
-     $scope.stateClicked = function(row){
-         if($scope.statusShow && $scope.ip == row){
-             $scope.statusShow = false;
-         } else {
-             $scope.statusShow = true;
-             $scope.edit = false;
-             $scope.statusViewUpdate(row);
-         }
-         $scope.subSelect = false;
-         $scope.eventlog = false;
-         $scope.select = false;
-         $scope.eventShow = false;
-         $scope.ip = row;
-     };
-     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
-         if(newValue) {
-             $interval.cancel(stateInterval);
-             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
-         } else {
-             $interval.cancel(stateInterval);
-         }
-     });
-     $rootScope.$on('$stateChangeStart', function() {
-         $interval.cancel(stateInterval);
-         $interval.cancel(listViewInterval);
-     });
-     //Update status view data
-     /*******************************************/
-     /*Piping and Pagination for List-view table*/
-     /*******************************************/
+    $scope.ipRowClick = function(row) {
+        $scope.selectIp(row);
+        if($scope.ip == row){
+            row.class = "";
+            $scope.selectedIp = {id: "", class: ""};
+        }
+        if($scope.eventShow) {
+            $scope.eventsClick(row);
+        }
+        if($scope.statusShow) {
+            $scope.stateClicked(row);
+        }
+        if ($scope.select || $scope.edit || $scope.eventlog) {
+            $scope.ipTableClick(row);
+        }
+    }
+    $scope.ipSelected = false;
+    var stateInterval;
+    $scope.stateClicked = function(row){
+        if($scope.statusShow && $scope.ip == row){
+            $scope.statusShow = false;
+        } else {
+            $scope.statusShow = true;
+            $scope.edit = false;
+            $scope.statusViewUpdate(row);
+        }
+        $scope.subSelect = false;
+        $scope.eventlog = false;
+        $scope.select = false;
+        $scope.eventShow = false;
+        $scope.ip = row;
+    };
+    $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+        if(newValue) {
+            $interval.cancel(stateInterval);
+            stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
+        } else {
+            $interval.cancel(stateInterval);
+        }
+    });
+    $rootScope.$on('$stateChangeStart', function() {
+        $interval.cancel(stateInterval);
+        $interval.cancel(listViewInterval);
+    });
+    //Update status view data
+    /*******************************************/
+    /*Piping and Pagination for List-view table*/
+    /*******************************************/
 
-     var ctrl = this;
+    var ctrl = this;
     $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
 
@@ -142,9 +142,9 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-         $scope.getListViewData();
-     }, true);
+    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+        $scope.getListViewData();
+    }, true);
     //Click funciton for event table objects
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
@@ -261,18 +261,18 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             url: ip.url+"create/",
             data: {validators: vm.validatorModel}
         })
-        .then(function successCallback(response) {
-            $scope.select = false;
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $timeout(function(){
-                $scope.getListViewData();
-                updateListViewConditional();
-            }, 1000);
-            $anchorScroll();
-        }).finally(function(){
-            $scope.createDisabled = false;
-        });
+            .then(function successCallback(response) {
+                $scope.select = false;
+                $scope.edit = false;
+                $scope.eventlog = false;
+                $timeout(function(){
+                    $scope.getListViewData();
+                    updateListViewConditional();
+                }, 1000);
+                $anchorScroll();
+            }).finally(function(){
+                $scope.createDisabled = false;
+            });
     };
     var listViewInterval;
     function updateListViewConditional() {
@@ -386,46 +386,46 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     vm.validatorModel = {
     };
     vm.validatorFields = [
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEFILEFORMAT'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEFILEFORMAT'),
+                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+            },
+            "defaultValue": true,
+            "type": "select",
+            "key": "validate_file_format",
         },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_file_format",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEXMLFILE'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEXMLFILE'),
+                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+            },
+            "defaultValue": true,
+            "type": "select",
+            "key": "validate_xml_file",
         },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_xml_file",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
+                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+            },
+            "defaultValue": true,
+            "type": "select",
+            "key": "validate_logical_physical_representation",
         },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_logical_physical_representation",
-    },
-    {
-        "templateOptions": {
-            "type": "text",
-            "label": $translate.instant('VALIDATEINTEGRITY'),
-            "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
-        },
-        "defaultValue": true,
-        "type": "select",
-        "key": "validate_integrity",
-    }
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEINTEGRITY'),
+                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+            },
+            "defaultValue": true,
+            "type": "select",
+            "key": "validate_integrity",
+        }
     ];
     //Remove and ip
     $scope.removeIp = function (ipObject) {
