@@ -27,9 +27,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     var vm = this;
     var ipSortString = "Preparing,Prepared";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    $scope.updateIpsPerPage = function(items) {
-        $cookies.put('etp-ips-per-page', items);
-    };
     //Cancel update intervals on state change
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(stateInterval);

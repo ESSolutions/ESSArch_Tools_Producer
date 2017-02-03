@@ -27,9 +27,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     var vm = this;
     var ipSortString = "Created,Submitting,Submitted";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    $scope.updateIpsPerPage = function(items) {
-        $cookies.put('etp-ips-per-page', items);
-    };
     // List view
     // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {

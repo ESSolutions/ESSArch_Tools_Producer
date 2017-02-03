@@ -27,9 +27,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     var vm = this;
     var ipSortString = "Uploaded,Creating,Created";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    $scope.updateIpsPerPage = function(items) {
-        $cookies.put('etp-ips-per-page', items);
-    };
     // Click funtion columns that does not have a relevant click function
      $scope.ipRowClick = function(row) {
          $scope.selectIp(row);

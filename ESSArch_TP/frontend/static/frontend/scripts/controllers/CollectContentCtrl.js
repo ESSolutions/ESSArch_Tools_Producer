@@ -27,9 +27,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     var vm = this;
     var ipSortString = "Prepared,Uploading";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    $scope.updateIpsPerPage = function(items) {
-        $cookies.put('etp-ips-per-page', items);
-    };
     vm.flowDestination = null;
     // List view
      // Click funtion columns that does not have a relevant click function
