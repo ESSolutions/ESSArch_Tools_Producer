@@ -88,7 +88,7 @@ class test_tasks(TestCase):
         label = "ip1"
         user = User.objects.create(username="user1")
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.PrepareIP",
             params={
                 "label": label,
@@ -113,7 +113,7 @@ class test_tasks(TestCase):
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         prepare_path = os.path.join(prepare_path, unicode(ip.pk))
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.CreateIPRootDir",
             params={
                 "information_package": ip,
@@ -136,7 +136,7 @@ class test_tasks(TestCase):
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         path = os.path.join(prepare_path, unicode(ip.pk))
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.CreatePhysicalModel",
             params={
                 "structure": [
@@ -189,7 +189,7 @@ class test_tasks(TestCase):
 
         tarname = dirname + ".tar"
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.CreateTAR",
             params={
                 "dirname": dirname,
@@ -233,7 +233,7 @@ class test_tasks(TestCase):
 
         zipname = dirname + ".zip"
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.CreateZIP",
             params={
                 "dirname": dirname,
@@ -275,7 +275,7 @@ class test_tasks(TestCase):
         open(srctar, "a").close()
         open(srcxml, "a").close()
 
-        task = ProcessTask(
+        task = ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
                 "ip": ip
