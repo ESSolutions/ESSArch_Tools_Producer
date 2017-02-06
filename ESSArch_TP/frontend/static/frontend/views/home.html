@@ -4,9 +4,9 @@
             <h3 ng-click="infoPage()">ESSArch Tools for Producer</h3>
         </div>
         <div class="user-admin">
-            <div class="edit-user" ng-controller="DropdownCtrl" uib-popover="{{'USEROPTIONS' | translate}}" popover-trigger="'mouseenter'" popover-placement="right" popover-popup-delay="500" popover-append-to-body="true">
+            <div class="edit-user" ng-controller="DropdownCtrl">
                 <div class="btn-group" uib-dropdown is-open="status.isopen">
-                    <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled">
+                    <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled" uib-popover="{{'USEROPTIONS' | translate}}" popover-trigger="'mouseenter'" popover-placement="right" popover-popup-delay="500" popover-append-to-body="true">
                         <h4>{{auth.username}}</h4>
                         <span class="fa fa-user-circle-o"></span>
                     </div>
