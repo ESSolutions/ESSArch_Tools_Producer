@@ -358,7 +358,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             parent_step_pos=0
         )
 
-        start_create_sip_step.tasks.add(t0)
+        start_create_sip_step.add_tasks(t0)
 
         event_type = EventType.objects.get(eventType=10200)
 
@@ -414,7 +414,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user,
             )
 
-            generate_xml_step.tasks.add(t)
+            generate_xml_step.add_tasks(t)
 
         t = ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
@@ -430,7 +430,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         )
 
-        generate_xml_step.tasks.add(t)
+        generate_xml_step.add_tasks(t)
 
         if any(validators.itervalues()):
             validate_step = ProcessStep.objects.create(
@@ -439,7 +439,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
 
             if validate_xml_file:
-                validate_step.tasks.add(
+                validate_step.add_tasks(
                     ProcessTask.objects.create(
                         name="preingest.tasks.ValidateXMLFile",
                         params={
@@ -453,7 +453,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
 
                 if ip.profile_locked("preservation_metadata"):
-                    validate_step.tasks.add(
+                    validate_step.add_tasks(
                         ProcessTask.objects.create(
                             name="preingest.tasks.ValidateXMLFile",
                             params={
@@ -467,7 +467,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     )
 
             if validate_logical_physical_representation:
-                validate_step.tasks.add(
+                validate_step.add_tasks(
                     ProcessTask.objects.create(
                         name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
                         params={
@@ -481,7 +481,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     )
                 )
 
-            validate_step.tasks.add(
+            validate_step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateFiles",
                     params={
@@ -514,7 +514,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
-            create_sip_step.tasks.add(ProcessTask.objects.create(
+            create_sip_step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.DownloadSchemas",
                 params={
                     "template": template,
@@ -528,7 +528,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user,
             ))
 
-        create_sip_step.tasks.add(ProcessTask.objects.create(
+        create_sip_step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
                 "info": info,
@@ -541,7 +541,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         ))
 
-        create_sip_step.tasks.add(ProcessTask.objects.create(
+        create_sip_step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.AppendEvents",
             params={
                 "filename": events_path,
@@ -641,7 +641,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             'FName': ip.ObjectPath,
         }
 
-        create_sip_step.tasks.add(ProcessTask.objects.create(
+        create_sip_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.InsertXML",
             params={
                 "filename": events_path,
@@ -656,7 +656,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
 
         if validate_xml_file:
-            create_sip_step.tasks.add(
+            create_sip_step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateXMLFile",
                     params={
@@ -697,9 +697,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user,
             )
 
-        create_sip_step.tasks.add(container_task)
+        create_sip_step.add_tasks(container_task)
 
-        create_sip_step.tasks.add(
+        create_sip_step.add_tasks(
             ProcessTask.objects.create(
                 name="preingest.tasks.DeleteFiles",
                 params={
@@ -712,7 +712,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
         )
 
-        create_sip_step.tasks.add(
+        create_sip_step.add_tasks(
             ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPPath",
                 params={
@@ -728,7 +728,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
         )
 
-        create_sip_step.tasks.add(
+        create_sip_step.add_tasks(
             ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPStatus",
                 params={
@@ -744,7 +744,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.save()
 
-        main_step.child_steps.add(
+        main_step.add_child_steps(
             start_create_sip_step, generate_xml_step, create_sip_step
         )
         main_step.information_package = ip
@@ -784,7 +784,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip
         )
 
-        step.tasks.add(ProcessTask.objects.create(
+        step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
                 "ip": ip,
@@ -814,7 +814,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             infoxml: sd_profile.specification
         }
 
-        step.tasks.add(ProcessTask.objects.create(
+        step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
                 "info": info,
@@ -829,7 +829,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
 
         if validate_xml_file:
-            step.tasks.add(
+            step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateXMLFile",
                     params={
@@ -843,7 +843,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
 
         if validate_file_format or validate_integrity:
-            step.tasks.add(
+            step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateFiles",
                     params={
@@ -861,7 +861,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             )
 
         if validate_logical_physical_representation:
-            step.tasks.add(
+            step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
                     params={
@@ -875,7 +875,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
             )
 
-        step.tasks.add(ProcessTask.objects.create(
+        step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
                 "ip": ip
@@ -893,7 +893,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             attachments = [ip.ObjectPath]
 
-            step.tasks.add(ProcessTask.objects.create(
+            step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.SendEmail",
                 params={
                     'sender': self.request.user.email,
@@ -907,7 +907,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user
             ))
 
-        step.tasks.add(ProcessTask.objects.create(
+        step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
                 "ip": ip,
