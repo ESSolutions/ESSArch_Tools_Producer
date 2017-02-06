@@ -217,6 +217,15 @@ body.modal-open[style] {
 }
 .step-task-pagination {
     user-select: none;
+    min-width: 60px;
+}
+.tree-grid {
+    td {
+        span {
+            text-overflow: ellipsis;
+        }
+        max-width: 350px;
+    }
 }
 .calendar {
     display: flex;
