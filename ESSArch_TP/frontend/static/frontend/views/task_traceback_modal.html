@@ -4,8 +4,12 @@
 <div class="modal-body" id="modal-body">
     <div class="step-task-info">
         <b style="margin: 5px;">{{'ID' | translate}}: </b>{{currentStepTask.id}}
-        <pre>{{currentStepTask.traceback}}</pre>
+        <div>
+            <pre id="traceback_pre">{{currentStepTask.traceback}}</pre>
+            <textarea style="display: none;" readonly="readonly" id="traceback_textarea"></textarea>
+        </div>
     </div>
+    <button class="btn btn-default" ng-click="copyToClipboard()">Copy traceback</button>
 </div>
 <div class="modal-footer">
     <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()" focused="true">{{'CANCEL' | translate}}</button>
