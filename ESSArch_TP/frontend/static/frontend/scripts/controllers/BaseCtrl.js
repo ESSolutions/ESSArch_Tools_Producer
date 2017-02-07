@@ -129,26 +129,19 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             response.status;
         });
     };
-    function selectTraceback() {
+
+    $scope.copyToClipboard = function() {
         $("#traceback_textarea").val($("#traceback_pre").html()).show();
         $("#traceback_pre").hide();
-
         $("#traceback_textarea").focus()[0].select();
-    }
-
-    function deselectTraceback() {
-        $("#traceback_pre").html($("#traceback_textarea").val()).show();
-        $("#traceback_textarea").hide();
-    }
-    $scope.copyToClipboard = function() {
-        selectTraceback();
         try {
             var successful = document.execCommand('copy');
             var msg = successful ? 'successful' : 'unsuccessful';
         } catch (err) {
             console.log('Oops, unable to copy');
         }
-       deselectTraceback();
+        $("#traceback_pre").html($("#traceback_textarea").val()).show();
+        $("#traceback_textarea").hide();
     };
     //Redirect to admin page
     $scope.redirectAdmin = function () {
