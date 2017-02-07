@@ -171,5 +171,10 @@
     "CHOOSELANGUAGE": "Välj språk",
     "USEROPTIONS": "Användaralternativ",
     "NAVIGATETO": "Navigera till",
-    "FILTERBY": "Filtrera på"
+    "FILTERBY": "Filtrera på",
+    "SUPPORT": "Support",
+    "COPYTRACEBACK": "Kopiera traceback",
+    "SUPPORTROW1": "Behöver du hjälp? Har du hittat den bugg? eller har du en idé om en ny funktion?",
+    "SUPPORTROW2": "Klicka på länken nedan, logga in/gör ett konto och gör ett nytt ärende och vi kommer hantera ärendet snarast möjligt.",
+    "SUPPORTROW3": "Om ärendet är relaterat till ett misslyckat step/task kan du klistra in traceback i ärendets beskrivning så blir problemet lättare att identifiera. Klicka på step/taskens etikett"
 }
