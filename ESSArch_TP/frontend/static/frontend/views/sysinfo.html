@@ -18,7 +18,6 @@
     <h4>{{'VERSIONINFORMATION' | translate}}</h4>
     <p><b>{{'PYTHONPACKAGES' | translate}}: </b> {{sysInfo.python_packages.join(' ')}}</p>
     <p><b>{{'MYSQLVERSION' | translate}}: </b> {{sysInfo.mysql_version}}</p>
-    <p><a ng-click="redirectToEss()">{{'CONTACT' | translate}}</a></p>
 </div>
 <div ng-if="!sysInfo" style="width: 50%;">
     <p>{{'LOADING' | translate}}...</p>
