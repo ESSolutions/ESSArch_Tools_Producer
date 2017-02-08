@@ -2,7 +2,7 @@ a {
     cursor: pointer;
 }
 body {
-    background-color: #e6e6ff;
+    background-color: rgba(50, 120, 255, 0.1);
     margin: 0px auto;
     max-width: 1440px;
     min-width: 1220px;
@@ -27,7 +27,7 @@ body.modal-open[style] {
     position: relative;
 }
 .selected {
-    background-color: #b2aae5 !important;
+    background-color: rgba(50, 120, 255, 0.27)!important;
 }
 .formly-field label {
     font-size: 10px;
