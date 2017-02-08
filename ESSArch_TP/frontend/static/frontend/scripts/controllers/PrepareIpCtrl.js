@@ -83,6 +83,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     var ctrl = this;
     $scope.selectedIp = {id: "", class: ""};
+    $scope.selectedProfileRow = {profile_type: "", class: ""};
     this.displayedIps = [];
     //Get data according to ip table settings and populates ip table
     this.callServer = function callServer(tableState) {
@@ -122,6 +123,19 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
+        }
+    };
+    $scope.setSelectedProfile = function(row) {
+        $scope.selectRowCollection.forEach(function(profileRow) {
+            if(profileRow.profile_type == $scope.selectedProfileRow.profile_type){
+                profileRow.class = "";
+            }
+        });
+        if(row.profile_type == $scope.selectedProfileRow.profile_type && $scope.edit){
+            $scope.selectedProfileRow = {profile_type: "", class: ""};
+        } else {
+            row.class = "selected";
+            $scope.selectedProfileRow = row;
         }
     };
 
@@ -325,7 +339,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
             .success(function (response) {
-                if($scope.edit) {
+                if($scope.edit && row == $scope.selectedProfileRow) {
+                    $scope.edit = false;
                     $scope.profileClick(row);
                 }
             })
