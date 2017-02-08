@@ -339,9 +339,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         })
             .success(function (response) {
-                if($scope.edit) {
+                if($scope.edit && row == $scope.selectedProfileRow) {
                     $scope.edit = false;
-                    $scope.setSelectedProfile(row);
                     $scope.profileClick(row);
                 }
             })
