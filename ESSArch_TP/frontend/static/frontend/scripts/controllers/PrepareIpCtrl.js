@@ -340,6 +340,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         })
             .success(function (response) {
                 if($scope.edit) {
+                    $scope.edit = false;
+                    $scope.setSelectedProfile(row);
                     $scope.profileClick(row);
                 }
             })
