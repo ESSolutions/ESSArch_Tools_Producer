@@ -131,7 +131,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 profileRow.class = "";
             }
         });
-        if(row.profile_type == $scope.selectedProfileRow.profile_type && !$scope.edit && !$scope.statusShow && !$scope.eventShow){
+        if(row.profile_type == $scope.selectedProfileRow.profile_type && $scope.edit){
             $scope.selectedProfileRow = {profile_type: "", class: ""};
         } else {
             row.class = "selected";
