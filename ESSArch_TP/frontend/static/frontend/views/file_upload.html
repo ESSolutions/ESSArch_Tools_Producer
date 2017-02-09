@@ -27,24 +27,26 @@
                 <span class="label label-info">{{transfers.length}} {{'FILES' | translate}}</span>
                 <span class="label label-info">{{$flow.getSize()}} bytes</span>
             </p>
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>{{'PATH' | translate}}</th>
-                        <th>{{'SIZE' | translate}}</th>
-                        <th>{{'PROGRESS' | translate}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="file in transfers | filter: fileTransferFilter">
-                        <td style="width: 33%;">{{file.relativePath}}</td>
-                        <td>{{file.size}}</td>
-                        <td>
-                            <uib-progressbar class="progress" value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="height:161px">
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{'PATH' | translate}}</th>
+                            <th>{{'SIZE' | translate}}</th>
+                            <th>{{'PROGRESS' | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in transfers | filter: fileTransferFilter">
+                            <td style="width: 33%;">{{file.relativePath}}</td>
+                            <td>{{file.size}}</td>
+                            <td>
+                                <uib-progressbar class="progress" value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
