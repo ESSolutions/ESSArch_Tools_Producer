@@ -256,7 +256,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         permanentErrors: [404, 500, 501],
         maxChunkRetries: 1,
         chunkRetryInterval: 5000,
-        simultaneousUploads: 4,
+        simultaneousUploads: 10,
         testMethod: 'GET',
         uploadMethod: 'POST',
         headers: function (file, chunk, isTest) {
