@@ -105,8 +105,9 @@ class CreateIPRootDir(DBTask):
             None
         """
 
-        self.taskobj.information_package = information_package
-        self.taskobj.save()
+        ProcessTask.objects.filter(pk=self.request.id).update(
+            information_package=information_package
+        )
 
         path = self.create_path(str(information_package.pk))
         os.makedirs(path)
@@ -115,7 +116,7 @@ class CreateIPRootDir(DBTask):
         information_package.save()
 
         self.set_progress(100, total=100)
-        return information_package
+        return information_package.pk
 
     def undo(self, information_package=None):
         path = self.create_path(information_package.pk)
@@ -132,7 +133,7 @@ class CreatePhysicalModel(DBTask):
         root = Path.objects.get(
             entity="path_preingest_prepare"
         ).value
-        return os.path.join(root, unicode(self.taskobj.information_package.pk))
+        return os.path.join(root, unicode(self.ip))
 
     def run(self, structure={}, root=""):
         """
@@ -313,7 +314,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.taskobj.processstep,
+            processstep=self.step,
             hidden=True
         ).run().get()
 
@@ -326,7 +327,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.taskobj.processstep,
+            processstep=self.step,
             hidden=True
         ).run().get()
 
