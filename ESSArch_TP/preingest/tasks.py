@@ -62,8 +62,9 @@ class PrepareIP(DBTask):
             OAIStype="SIP",
         )
 
-        self.taskobj.information_package = ip
-        self.taskobj.save()
+        ProcessTask.objects.filter(pk=self.request.id).update(
+            information_package=ip
+        )
 
         if step is not None:
             s = ProcessStep.objects.get(pk=step)
@@ -71,10 +72,10 @@ class PrepareIP(DBTask):
 
         self.set_progress(100, total=100)
 
-        return ip
+        return ip.pk
 
     def undo(self, label="", responsible={}, step=None):
-        self.taskobj.information_package.delete()
+        ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
 
     def event_outcome_success(self, label="", responsible={}, step=None):
         return "Prepared IP with label '%s'" % label
