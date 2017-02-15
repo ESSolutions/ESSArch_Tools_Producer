@@ -92,7 +92,7 @@ class test_tasks(TestCase):
             name="preingest.tasks.PrepareIP",
             params={
                 "label": label,
-                "responsible": user
+                "responsible": str(user.pk)
             },
             responsible=user
         )
@@ -116,7 +116,7 @@ class test_tasks(TestCase):
         task = ProcessTask.objects.create(
             name="preingest.tasks.CreateIPRootDir",
             params={
-                "information_package": ip,
+                "information_package": ip.pk,
             },
         )
         task.run()

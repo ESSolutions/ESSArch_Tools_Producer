@@ -57,7 +57,7 @@ class PrepareIP(DBTask):
 
         ip = InformationPackage.objects.create(
             Label=label,
-            Responsible=responsible,
+            Responsible_id=responsible,
             State="Preparing",
             OAIStype="SIP",
         )
@@ -107,24 +107,25 @@ class CreateIPRootDir(DBTask):
         """
 
         ProcessTask.objects.filter(pk=self.request.id).update(
-            information_package=information_package
+            information_package_id=information_package
         )
 
-        path = self.create_path(str(information_package.pk))
+        path = self.create_path(information_package)
         os.makedirs(path)
 
-        information_package.ObjectPath = path
-        information_package.save()
+        InformationPackage.objects.filter(pk=information_package).update(
+            ObjectPath=path
+        )
 
         self.set_progress(100, total=100)
-        return information_package.pk
+        return information_package
 
     def undo(self, information_package=None):
-        path = self.create_path(information_package.pk)
+        path = self.create_path(information_package)
         shutil.rmtree(path)
 
     def event_outcome_success(self, information_package=None):
-        return "Created root directory for IP '%s'" % information_package.pk
+        return "Created root directory for IP '%s'" % information_package
 
 
 class CreatePhysicalModel(DBTask):
@@ -175,7 +176,7 @@ class CreatePhysicalModel(DBTask):
                 shutil.rmtree(dirname)
 
     def event_outcome_success(self, structure={}, root=""):
-        return "Created physical model for IP '%s'" % self.taskobj.information_package.pk
+        return "Created physical model for IP '%s'" % self.ip
 
 
 class CalculateChecksum(tasks.CalculateChecksum):
@@ -315,7 +316,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.step,
+            processstep_id=self.step,
             hidden=True
         ).run().get()
 
@@ -328,7 +329,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.step,
+            processstep_id=self.step,
             hidden=True
         ).run().get()
 
