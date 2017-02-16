@@ -24,8 +24,6 @@
 
 from celery import states as celery_states
 
-from django.contrib.auth.models import User, Group, Permission
-
 from rest_framework import serializers
 
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
@@ -177,43 +175,4 @@ class ProcessStepDetailSerializer(ProcessStepSerializer):
         )
         read_only_fields = ProcessStepSerializer.Meta.read_only_fields + (
             'task_count', 'failed_task_count', 'exception', 'traceback'
-        )
-
-
-class PermissionSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Permission
-        fields = ('url', 'id', 'name', 'codename', 'group_set')
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    permissions = PermissionSerializer(many=True)
-
-    class Meta:
-        model = Group
-        fields = ('url', 'id', 'name', 'permissions',)
-
-
-class GroupDetailSerializer(GroupSerializer):
-    class Meta:
-        model = Group
-        fields = GroupSerializer.Meta.fields + (
-            'user_set',
-        )
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    permissions = serializers.ReadOnlyField(source='get_all_permissions')
-    user_permissions = PermissionSerializer(many=True)
-    groups = GroupSerializer(many=True)
-
-    class Meta:
-        model = User
-        fields = (
-            'url', 'id', 'username', 'first_name', 'last_name', 'email',
-            'groups', 'is_staff', 'is_active', 'is_superuser', 'last_login',
-            'date_joined', 'permissions', 'user_permissions',
-        )
-        read_only_fields = (
-            'last_login', 'date_joined',
         )

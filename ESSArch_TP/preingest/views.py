@@ -41,43 +41,9 @@ from preingest.serializers import (
     ProcessStepChildrenSerializer,
     ProcessTaskSerializer,
     ProcessTaskDetailSerializer,
-    GroupSerializer,
-    GroupDetailSerializer,
-    PermissionSerializer,
-    UserSerializer,
 )
 
-from django.contrib.auth.models import User, Group, Permission
 from rest_framework import viewsets
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return GroupSerializer
-
-        return GroupDetailSerializer
-
-
-class PermissionViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows permissions to be viewed or edited.
-    """
-    queryset = Permission.objects.all()
-    serializer_class = PermissionSerializer
 
 
 class ProcessStepViewSet(viewsets.ModelViewSet):

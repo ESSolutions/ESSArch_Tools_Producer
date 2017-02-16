@@ -51,6 +51,12 @@ from ESSArch_Core.configuration.views import (
     SysInfoView,
 )
 
+from ESSArch_Core.auth.views import (
+    GroupViewSet,
+    PermissionViewSet,
+    UserViewSet,
+)
+
 from ip.views import (
     ArchivalInstitutionViewSet,
     ArchivistOrganizationViewSet,
@@ -61,11 +67,8 @@ from ip.views import (
 )
 
 from preingest.views import (
-    GroupViewSet,
-    PermissionViewSet,
     ProcessStepViewSet,
     ProcessTaskViewSet,
-    UserViewSet,
 )
 
 from profiles.views import (
