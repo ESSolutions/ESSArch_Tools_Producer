@@ -891,7 +891,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             subject = request.data.get('subject')
             body = request.data.get('body')
 
-            attachments = [ip.ObjectPath]
+            attachments = [infoxml]
 
             step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.SendEmail",
