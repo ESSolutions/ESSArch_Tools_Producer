@@ -189,14 +189,14 @@ def installProfileTransferProject(sa):
                 }
             }, {
                 "templateOptions": {
-                    "type": "text",
+                    "type": "email",
                     "label": "Preservation organization receiver email",
                 },
                 "type": "input",
                 "key": "preservation_organization_receiver_email"
             }, {
                 "templateOptions": {
-                    "type": "text",
+                    "type": "url",
                     "label": "Preservation organization receiver url",
                 },
                 "type": "input",
