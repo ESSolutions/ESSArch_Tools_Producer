@@ -143,6 +143,7 @@
     "UNLOCKSIPINFO": "If you unlock SIP profile, all uploaded content may be lost when you lock it again. So if you want to use the same content again, please make sure you have access to it. Proceed by clicking OK.",
     "SYSTEMINFORMATION": "System Information",
     "TIME": "Time",
+    "DURATION": "Duration",
     "HOSTNAME": "Hostname",
     "SETTINGSFLAGS": "Settings Flags",
     "VERSIONINFORMATION": "Version Information",

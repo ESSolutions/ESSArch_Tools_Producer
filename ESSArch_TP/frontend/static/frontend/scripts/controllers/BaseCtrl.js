@@ -119,7 +119,11 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             method: 'GET',
             url: branch.url
         }).then(function(response){
-            $scope.currentStepTask = response.data;
+            var data = response.data;
+            var started = moment(data.time_started);
+            var done = moment(data.time_done);
+            data.duration = done.diff(started);
+            $scope.currentStepTask = data;
             if(branch.flow_type == "task"){
                 $scope.taskInfoModal();
             } else {
