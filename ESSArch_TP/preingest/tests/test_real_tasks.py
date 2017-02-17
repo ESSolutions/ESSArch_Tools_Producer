@@ -27,7 +27,7 @@ import shutil
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from ESSArch_Core.configuration.models import (
     Path,
@@ -42,15 +42,17 @@ from ESSArch_Core.WorkflowEngine.models import (
 )
 
 
-class test_tasks(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.root = os.path.dirname(os.path.realpath(__file__))
-        cls.prepare_path = os.path.join(cls.root, "prepare")
-        cls.preingest_reception = os.path.join(cls.root, "preingest_reception")
-        cls.ingest_reception = os.path.join(cls.root, "ingest_reception")
+class test_tasks(TransactionTestCase):
+    def setUp(self):
+        settings.CELERY_ALWAYS_EAGER = True
+        settings.CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
-        for path in [cls.prepare_path, cls.preingest_reception, cls.ingest_reception]:
+        self.root = os.path.dirname(os.path.realpath(__file__))
+        self.prepare_path = os.path.join(self.root, "prepare")
+        self.preingest_reception = os.path.join(self.root, "preingest_reception")
+        self.ingest_reception = os.path.join(self.root, "ingest_reception")
+
+        for path in [self.prepare_path, self.preingest_reception, self.ingest_reception]:
             try:
                 os.makedirs(path)
             except OSError as e:
@@ -59,30 +61,23 @@ class test_tasks(TestCase):
 
         Path.objects.create(
             entity="path_preingest_prepare",
-            value=cls.prepare_path
+            value=self.prepare_path
         )
         Path.objects.create(
             entity="path_preingest_reception",
-            value=cls.preingest_reception
+            value=self.preingest_reception
         )
         Path.objects.create(
             entity="path_ingest_reception",
-            value=cls.ingest_reception
+            value=self.ingest_reception
         )
 
-    @classmethod
-    def tearDownClass(cls):
-        for path in [cls.prepare_path, cls.preingest_reception, cls.ingest_reception]:
+    def tearDown(self):
+        for path in [self.prepare_path, self.preingest_reception, self.ingest_reception]:
             try:
                 shutil.rmtree(path)
             except:
                 pass
-
-        super(test_tasks, cls).tearDownClass()
-
-    def setUp(self):
-        settings.CELERY_ALWAYS_EAGER = True
-        settings.CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
     def test_prepare_ip(self):
         label = "ip1"
