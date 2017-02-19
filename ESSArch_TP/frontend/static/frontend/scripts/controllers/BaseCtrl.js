@@ -157,15 +157,11 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     $scope.extendedEqual = function(specification_data, model) {
         var returnValue = true;
         for(var prop in model) {
-            if(model[prop] == "" && angular.isUndefined(specification_data[prop])){
-                returnValue = false;
+            if((model[prop] != "" || specification_data[prop]) && model[prop] != specification_data[prop]){
+                return false;
             }
         }
-        if(returnValue) {
-            return angular.equals(specification_data, model);
-        } else {
-            return true;
-        }
+        return true;
     };
     //Update status view data
     $scope.statusViewUpdate = function(row){
