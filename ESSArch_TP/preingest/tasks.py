@@ -57,13 +57,14 @@ class PrepareIP(DBTask):
 
         ip = InformationPackage.objects.create(
             Label=label,
-            Responsible=responsible,
+            Responsible_id=responsible,
             State="Preparing",
             OAIStype="SIP",
         )
 
-        self.taskobj.information_package = ip
-        self.taskobj.save()
+        ProcessTask.objects.filter(pk=self.request.id).update(
+            information_package=ip
+        )
 
         if step is not None:
             s = ProcessStep.objects.get(pk=step)
@@ -71,10 +72,10 @@ class PrepareIP(DBTask):
 
         self.set_progress(100, total=100)
 
-        return ip
+        return ip.pk
 
     def undo(self, label="", responsible={}, step=None):
-        self.taskobj.information_package.delete()
+        ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
 
     def event_outcome_success(self, label="", responsible={}, step=None):
         return "Prepared IP with label '%s'" % label
@@ -105,24 +106,26 @@ class CreateIPRootDir(DBTask):
             None
         """
 
-        self.taskobj.information_package = information_package
-        self.taskobj.save()
+        ProcessTask.objects.filter(pk=self.request.id).update(
+            information_package_id=information_package
+        )
 
-        path = self.create_path(str(information_package.pk))
+        path = self.create_path(information_package)
         os.makedirs(path)
 
-        information_package.ObjectPath = path
-        information_package.save()
+        InformationPackage.objects.filter(pk=information_package).update(
+            ObjectPath=path
+        )
 
         self.set_progress(100, total=100)
         return information_package
 
     def undo(self, information_package=None):
-        path = self.create_path(information_package.pk)
+        path = self.create_path(information_package)
         shutil.rmtree(path)
 
     def event_outcome_success(self, information_package=None):
-        return "Created root directory for IP '%s'" % information_package.pk
+        return "Created root directory for IP '%s'" % information_package
 
 
 class CreatePhysicalModel(DBTask):
@@ -132,7 +135,7 @@ class CreatePhysicalModel(DBTask):
         root = Path.objects.get(
             entity="path_preingest_prepare"
         ).value
-        return os.path.join(root, unicode(self.taskobj.information_package.pk))
+        return os.path.join(root, unicode(self.ip))
 
     def run(self, structure={}, root=""):
         """
@@ -173,7 +176,7 @@ class CreatePhysicalModel(DBTask):
                 shutil.rmtree(dirname)
 
     def event_outcome_success(self, structure={}, root=""):
-        return "Created physical model for IP '%s'" % self.taskobj.information_package.pk
+        return "Created physical model for IP '%s'" % self.ip
 
 
 class CalculateChecksum(tasks.CalculateChecksum):
@@ -313,7 +316,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.taskobj.processstep,
+            processstep_id=self.step,
             hidden=True
         ).run().get()
 
@@ -326,7 +329,7 @@ class SubmitSIP(DBTask):
                 'src': src,
                 'dst': dst
             },
-            processstep=self.taskobj.processstep,
+            processstep_id=self.step,
             hidden=True
         ).run().get()
 

@@ -35,7 +35,7 @@ def prepare_ip(label, responsible):
         name="preingest.tasks.PrepareIP",
         params={
             "label": label,
-            "responsible": responsible,
+            "responsible": str(responsible.pk),
             "step": str(step.pk),
         },
         log=EventIP,
