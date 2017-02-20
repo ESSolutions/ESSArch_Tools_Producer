@@ -155,7 +155,6 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
     };
     $scope.extendedEqual = function(specification_data, model) {
-        var returnValue = true;
         for(var prop in model) {
             if((model[prop] != "" || specification_data[prop]) && model[prop] != specification_data[prop]){
                 return false;
