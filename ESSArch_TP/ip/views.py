@@ -345,7 +345,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         t0 = ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
-                "ip": ip,
+                "ip": ip.pk,
                 "status": "Creating",
             },
             processstep_pos=0,
@@ -485,7 +485,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateFiles",
                     params={
-                        "ip": ip,
+                        "ip": ip.pk,
                         "xmlfile": mets_path,
                         "validate_fileformat": validate_file_format,
                         "validate_integrity": validate_integrity,
@@ -716,7 +716,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPPath",
                 params={
-                    "ip": ip,
+                    "ip": ip.pk,
                 },
                 result_params={
                     "path": container_task.pk
@@ -732,7 +732,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPStatus",
                 params={
-                    "ip": ip,
+                    "ip": ip.pk,
                     "status": "Created",
                 },
                 processstep_pos=60,
@@ -787,7 +787,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
-                "ip": ip,
+                "ip": ip.pk,
                 "status": "Submitting",
             },
             processstep_pos=0,
@@ -910,7 +910,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.UpdateIPStatus",
             params={
-                "ip": ip,
+                "ip": ip.pk,
                 "status": "Submitted"
             },
             processstep_pos=30,
