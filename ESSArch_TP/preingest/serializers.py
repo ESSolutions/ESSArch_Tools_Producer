@@ -156,15 +156,15 @@ class ProcessStepDetailSerializer(ProcessStepSerializer):
         return obj.tasks.count()
 
     def get_failed_task_count(self, obj):
-        return obj.tasks.filter(status=celery_states.FAILURE, undone=False).count()
+        return obj.tasks.filter(status=celery_states.FAILURE, undone__isnull=True).count()
 
     def get_exception(self, obj):
-        t = obj.tasks.filter(status=celery_states.FAILURE, undone=False).first()
+        t = obj.tasks.filter(status=celery_states.FAILURE, undone__isnull=True).first()
         if t:
             return t.exception
 
     def get_traceback(self, obj):
-        t = obj.tasks.filter(status=celery_states.FAILURE, undone=False).first()
+        t = obj.tasks.filter(status=celery_states.FAILURE, undone__isnull=True).first()
         if t:
             return t.traceback
 
