@@ -847,7 +847,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateFiles",
                     params={
-                        "ip": ip,
+                        "ip": ip.pk,
                         "rootdir": reception,
                         "xmlfile": infoxml,
                         "validate_fileformat": validate_file_format,
