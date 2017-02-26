@@ -254,7 +254,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
             step.tasks = [task]
             step.save()
-            step.run_eagerly()
+            step.run()
 
         if profile.profile_type == "transfer_project":
             archival_institution = profile.specification_data.get("archival_institution")
