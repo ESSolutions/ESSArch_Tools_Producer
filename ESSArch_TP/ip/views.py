@@ -340,6 +340,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         main_step = ProcessStep.objects.create(
             name="Create SIP",
+            eager=False,
         )
 
         t0 = ProcessTask.objects.create(
@@ -781,7 +782,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step = ProcessStep.objects.create(
             name="Submit SIP",
-            information_package=ip
+            information_package=ip,
+            eager=False,
         )
 
         step.add_tasks(ProcessTask.objects.create(
