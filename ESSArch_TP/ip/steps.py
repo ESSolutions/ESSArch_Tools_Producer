@@ -26,7 +26,7 @@ from ESSArch_Core.ip.models import EventIP
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 
 
-def prepare_ip(label, responsible):
+def prepare_ip(label, responsible, object_identifier_value):
     step = ProcessStep.objects.create(
         name="Prepare IP",
     )
@@ -36,6 +36,7 @@ def prepare_ip(label, responsible):
         params={
             "label": label,
             "responsible": str(responsible.pk),
+            "object_identifier_value": object_identifier_value,
             "step": str(step.pk),
         },
         log=EventIP,

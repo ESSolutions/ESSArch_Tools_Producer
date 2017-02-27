@@ -3,7 +3,11 @@
 </div>
 <form ng-submit="$ctrl.prepare()">
     <div class="modal-body" id="modal-body">
-        <input required focused="true" class="form-control" ng-model="$ctrl.label"></input>
+        <label for="label">Label</label>
+        <input required focused="true" id="label" class="form-control" ng-model="$ctrl.label"></input>
+
+        <label for="objectIdentifierValue">Object Identifier Value</label>
+        <input id="objectIdentifierValue" class="form-control" ng-model="$ctrl.objectIdentifierValue"></input>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="submit">{{'OK' | translate}}</button>

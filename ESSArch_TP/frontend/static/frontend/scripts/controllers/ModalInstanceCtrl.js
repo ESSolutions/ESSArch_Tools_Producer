@@ -39,7 +39,8 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInsta
     };
     $ctrl.prepare = function () {
         $ctrl.data = {
-            label: $ctrl.label
+            label: $ctrl.label,
+            objectIdentifierValue: $ctrl.objectIdentifierValue
         };
         $uibModalInstance.close($ctrl.data);
     };

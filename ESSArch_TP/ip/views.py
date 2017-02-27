@@ -230,9 +230,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         self.check_permissions(request)
 
         label = request.data.get('label', None)
+        object_identifier_value = request.data.get('object_identifier_value')
         responsible = self.request.user
 
-        prepare_ip(label, responsible).run()
+        prepare_ip(label, responsible, object_identifier_value).run()
         return Response({"status": "Prepared IP"})
 
     def destroy(self, request, pk=None):

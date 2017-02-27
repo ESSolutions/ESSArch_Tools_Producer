@@ -488,7 +488,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
-            $scope.prepareIp(data.label);
+            $scope.prepareIp(data.label, data.objectIdentifierValue);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
@@ -638,8 +638,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
     //Create and initialize new ip
-    $scope.prepareIp = function (label) {
-        listViewService.prepareIp(label).then(function() {
+    $scope.prepareIp = function (label, objectIdentifierValue) {
+        listViewService.prepareIp(label, objectIdentifierValue).then(function() {
             $timeout(function(){
                 $scope.getListViewData();
                 updateListViewConditional();

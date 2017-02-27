@@ -27,6 +27,7 @@ from __future__ import absolute_import
 import os
 import shutil
 import tarfile
+import uuid
 import zipfile
 
 from ESSArch_Core.configuration.models import Path
@@ -42,7 +43,7 @@ from ESSArch_Core import tasks
 class PrepareIP(DBTask):
     event_type = 10100
 
-    def run(self, label="", responsible={}, step=None):
+    def run(self, label="", responsible={}, object_identifier_value=None, step=None):
         """
         Prepares a new information package
 
@@ -55,7 +56,14 @@ class PrepareIP(DBTask):
             The id of the created information package
         """
 
+        ip_id = uuid.uuid4()
+
+        if object_identifier_value is None:
+            object_identifier_value = ip_id
+
         ip = InformationPackage.objects.create(
+            pk=ip_id,
+            ObjectIdentifierValue=object_identifier_value,
             Label=label,
             Responsible_id=responsible,
             State="Preparing",
@@ -74,10 +82,10 @@ class PrepareIP(DBTask):
 
         return ip.pk
 
-    def undo(self, label="", responsible={}, step=None):
+    def undo(self, label="", responsible={}, object_identifier_value=None, step=None):
         ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
 
-    def event_outcome_success(self, label="", responsible={}, step=None):
+    def event_outcome_success(self, label="", responsible={}, object_identifier_value=None, step=None):
         return "Prepared IP with label '%s'" % label
 
 

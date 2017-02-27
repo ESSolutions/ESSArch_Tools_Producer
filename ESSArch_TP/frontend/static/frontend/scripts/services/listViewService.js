@@ -321,11 +321,11 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
 
     //Execute prepare ip, which creates a new IP
-    function prepareIp(label){
+    function prepareIp(label, objectIdentifierValue){
         return $http({
             method: 'POST',
             url: appConfig.djangoUrl+"information-packages/",
-            data: {label: label}
+            data: {label: label, object_identifier_value: objectIdentifierValue}
         }).then(function (response){
             return "created";
         });
