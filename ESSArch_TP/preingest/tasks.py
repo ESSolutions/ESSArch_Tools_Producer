@@ -56,13 +56,7 @@ class PrepareIP(DBTask):
             The id of the created information package
         """
 
-        ip_id = uuid.uuid4()
-
-        if object_identifier_value is None:
-            object_identifier_value = ip_id
-
         ip = InformationPackage.objects.create(
-            pk=ip_id,
             ObjectIdentifierValue=object_identifier_value,
             Label=label,
             Responsible_id=responsible,
