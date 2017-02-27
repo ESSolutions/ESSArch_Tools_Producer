@@ -176,7 +176,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         'eventType', 'eventOutcomeDetailNote', 'eventOutcome',
         'linkingAgentIdentifierValue', 'id'
     )
-    search_fields = ('Label', 'Responsible', 'State', 'SubmissionAgreement__sa_name')
+    search_fields = ('Label', 'Responsible__first_name', 'Responsible__last_name', 'Responsible__username', 'State', 'SubmissionAgreement__sa_name')
     filter_class = InformationPackageFilter
 
     def get_serializer_class(self):
