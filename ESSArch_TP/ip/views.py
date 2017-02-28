@@ -382,8 +382,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             entity="path_preingest_reception"
         ).value
 
-        ip_prepare_path = os.path.join(prepare_path, str(ip.pk))
-        ip_reception_path = os.path.join(reception_path, str(ip.pk))
+        ip_prepare_path = os.path.join(prepare_path, ip.ObjectIdentifierValue)
+        ip_reception_path = os.path.join(reception_path, ip.ObjectIdentifierValue)
         events_path = os.path.join(ip_prepare_path, "ipevents.xml")
 
         structure = ip.get_profile('sip').structure
@@ -510,7 +510,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             validate_step.save()
 
         info = {
-            "_OBJID": str(ip.pk),
+            "_OBJID": ip.ObjectIdentifierValue,
             "_OBJLABEL": ip.Label
         }
 
@@ -625,7 +625,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 {
                                     "-name": "contentLocationValue",
                                     "-namespace": "premis",
-                                    "#content": [{"text": "file:///%s.%s" % (ip.pk, container_format.lower())}],
+                                    "#content": [{"text": "file:///%s.%s" % (ip.ObjectIdentifierValue, container_format.lower())}],
                                     "-children": []
                                 }
                             ]
@@ -812,14 +812,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         sd_profile = ip.get_profile('submit_description')
 
         container_format = ip.get_container_format()
-        container_file = os.path.join(reception, str(ip.pk) + ".%s" % container_format.lower())
+        container_file = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format.lower())
 
         sa = ip.SubmissionAgreement
 
         info = sd_profile.fill_specification_data(sa, ip)
         info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
 
-        infoxml = os.path.join(reception, str(ip.pk) + ".xml")
+        infoxml = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
 
         filesToCreate = {
             infoxml: sd_profile.specification

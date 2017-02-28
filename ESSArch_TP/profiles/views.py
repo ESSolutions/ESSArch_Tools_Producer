@@ -234,7 +234,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 Path.objects.get(
                     entity="path_preingest_prepare"
                 ).value,
-                str(ip.pk)
+                ip.ObjectIdentifierValue
             )
 
             step = ProcessStep.objects.create(
