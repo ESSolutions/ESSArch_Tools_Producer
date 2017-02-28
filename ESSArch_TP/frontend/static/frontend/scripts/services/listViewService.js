@@ -320,17 +320,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return typeMap[type];
     }
 
-    //Execute prepare ip, which creates a new IP
-    function prepareIp(label, objectIdentifierValue){
-        return $http({
-            method: 'POST',
-            url: appConfig.djangoUrl+"information-packages/",
-            data: {label: label, object_identifier_value: objectIdentifierValue}
-        }).then(function (response){
-            return "created";
-        });
-
-    }
     //Returns IP
     function getIp(url) {
         return $http({
@@ -558,7 +547,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         changePath: changePath,
         getEventlogData: getEventlogData,
         getSaProfiles: getSaProfiles,
-        prepareIp: prepareIp,
         getIp: getIp,
         getSa: getSa,
         getFileList: getFileList,

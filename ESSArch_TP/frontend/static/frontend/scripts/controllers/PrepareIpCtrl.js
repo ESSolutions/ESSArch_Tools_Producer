@@ -487,10 +487,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
         })
-        modalInstance.result.then(function (data) {
-            $scope.prepareIp(data.label, data.objectIdentifierValue);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
+        modalInstance.closed.then(function (data) {
+            $scope.getListViewData();
+            updateListViewConditional();
         });
     }
     //Remove ip
@@ -635,15 +634,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
-        });
-    }
-    //Create and initialize new ip
-    $scope.prepareIp = function (label, objectIdentifierValue) {
-        listViewService.prepareIp(label, objectIdentifierValue).then(function() {
-            $timeout(function(){
-                $scope.getListViewData();
-                updateListViewConditional();
-            }, 1000);
         });
     }
     //Update ip list view with an interval

@@ -36,7 +36,7 @@ from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.http import HttpResponse
-from rest_framework import filters
+from rest_framework import filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -232,6 +232,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         label = request.data.get('label', None)
         object_identifier_value = request.data.get('object_identifier_value')
         responsible = self.request.user
+
+        if object_identifier_value:
+            ip_exists = InformationPackage.objects.filter(ObjectIdentifierValue=object_identifier_value).exists()
+            if ip_exists:
+                return Response(
+                    {'status': 'IP with object identifer value "%s" already exists' % object_identifier_value},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         prepare_ip(label, responsible, object_identifier_value).run()
         return Response({"status": "Prepared IP"})

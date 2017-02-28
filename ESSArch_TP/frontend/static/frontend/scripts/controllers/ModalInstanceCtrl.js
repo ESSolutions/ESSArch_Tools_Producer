@@ -22,8 +22,25 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('ModalInstanceCtrl', function ($uibModalInstance, djangoAuth) {
+angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth) {
     var $ctrl = this;
+
+    $scope.$on('modal.closing', function(event, reason, closed) {
+        if (!closed){ return }
+
+        event.preventDefault();
+        var data = $ctrl.data;
+        return $http({
+            method: 'POST',
+            url: appConfig.djangoUrl+"information-packages/",
+            data: {label: data.label, object_identifier_value: data.objectIdentifierValue}
+        }).then(function (response){
+            $uibModalInstance.dismiss();
+        }, function(response) {
+            alert(response.data.status);
+        });
+    });
+
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
