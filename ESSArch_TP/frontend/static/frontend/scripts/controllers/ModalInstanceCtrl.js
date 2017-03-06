@@ -25,22 +25,6 @@
 angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth) {
     var $ctrl = this;
 
-    $scope.$on('modal.closing', function(event, reason, closed) {
-        if (!closed){ return }
-
-        event.preventDefault();
-        var data = $ctrl.data;
-        return $http({
-            method: 'POST',
-            url: appConfig.djangoUrl+"information-packages/",
-            data: {label: data.label, object_identifier_value: data.objectIdentifierValue}
-        }).then(function (response){
-            $uibModalInstance.dismiss();
-        }, function(response) {
-            alert(response.data.status);
-        });
-    });
-
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
@@ -58,8 +42,19 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
         $ctrl.data = {
             label: $ctrl.label,
             objectIdentifierValue: $ctrl.objectIdentifierValue
-        };
-        $uibModalInstance.close($ctrl.data);
+        }
+        return $http({
+            method: 'POST',
+            url: appConfig.djangoUrl+"information-packages/",
+            data: {
+                label: $ctrl.data.label,
+                object_identifier_value: $ctrl.data.objectIdentifierValue
+            }
+        }).then(function (response){
+            return $uibModalInstance.close($ctrl.data);
+        }, function(response) {
+            alert(response.data.status);
+        });
     };
     $ctrl.lock = function () {
         $ctrl.data = {
