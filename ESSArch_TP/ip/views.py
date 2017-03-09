@@ -242,7 +242,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
 
         prepare_ip(label, responsible, object_identifier_value).run()
-        return Response({"status": "Prepared IP"})
+        return Response({"status": "Prepared IP"}, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, pk=None):
         ip = self.get_object()
