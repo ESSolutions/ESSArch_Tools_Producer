@@ -527,13 +527,6 @@ def installProfileSIP(sa):
                             {
                                 "type": "folder",
                                 "name": "data",
-                                "children": [
-                                    {
-                                        "use": "content",
-                                        "type": "file",
-                                        "name": "content"
-                                    }
-                                ]
                             }
                         ]
                     }
@@ -780,13 +773,6 @@ def installProfileSIP(sa):
                             {
                                 "type": "folder",
                                 "name": "data",
-                                "children": [
-                                    {
-                                        "use": "content",
-                                        "type": "file",
-                                        "name": "content"
-                                    }
-                                ]
                             }
                         ]
                     }

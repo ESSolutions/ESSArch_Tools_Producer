@@ -408,13 +408,6 @@ def installProfileSIP(sa):
             {
                 "type": "folder",
                 "name": "content",
-                "children": [
-                    {
-                        "use": "content",
-                        "type": "file",
-                        "name": "content"
-                    }
-                ]
             }
         ],
         'template': [
