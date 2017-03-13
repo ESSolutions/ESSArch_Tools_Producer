@@ -258,7 +258,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         return $scope.ip.url + 'upload/';
     };
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
-        return {destination: vm.flowDestination};
+        return {destination: $scope.previousGridArraysString()};
     };
     $scope.uploadDisabled = false;
     $scope.setUploaded = function(ip) {

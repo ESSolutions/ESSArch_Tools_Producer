@@ -986,12 +986,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
         ip.State = "Uploading"
         ip.save()
-        dst, _ = find_destination('content', ip.get_profile('sip').structure)
-
-        if dst is None:
-            dst = ''
 
         if request.method == 'GET':
+            dst = request.GET.get('destination', '').strip('/ ')
             path = os.path.join(dst, request.GET.get('flowRelativePath', ''))
             chunk_nr = request.GET.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
@@ -1001,6 +998,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             return HttpResponse(status=204)
 
         if request.method == 'POST':
+            dst = request.data.get('destination', '').strip('/ ')
             path = os.path.join(dst, request.data.get('flowRelativePath', ''))
             chunk_nr = request.data.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
