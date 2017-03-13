@@ -463,6 +463,259 @@ def installProfileSubmitDescription(sa):
 def installProfileSIP(sa):
 
     dct = {
+        'name': 'SIP EARK Representations',
+        'profile_type': 'sip',
+        'type': 'Implementation',
+        'status': 'Draft',
+        'label': 'SIP profile for EARK submissions',
+        'representation_info': 'Documentation 1',
+        'preservation_descriptive_info': 'Documentation 2',
+        'supplemental': 'Documentation 3',
+        'access_constraints': 'Documentation 4',
+        'datamodel_reference': 'Documentation 5',
+        'additional': 'Documentation 6',
+        'submission_method': 'Electronically',
+        'submission_schedule': 'Once',
+        'submission_data_inventory': 'According to submit description',
+        "structure": [
+            {
+                "use": "mets_file",
+                "type": "file",
+                "name": "mets.xml"
+            },
+            {
+                "type": "folder",
+                "name": "metadata",
+                "children": [
+                    {
+                        "type": "folder",
+                        "name": "administrative",
+                        "children": [
+                            {
+                                "use": "preservation_description_file",
+                                "type": "file",
+                                "name": "premis.xml"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "folder",
+                        "name": "descriptive",
+                        "children": [
+                            {
+                                "use": "archival_description_file",
+                                "type": "file",
+                                "name": "_ARCHIVAL_DESCRIPTION_FILE"
+                            },
+                            {
+                                "use": "authoritive_information_file",
+                                "type": "file",
+                                "name": "_AUTHORITIVE_INFORMATION_FILE"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "folder",
+                "name": "representations",
+                "children": [
+                    {
+                        "type": "folder",
+                        "name": "rep-001",
+                        "children": [
+                            {
+                                "type": "folder",
+                                "name": "data",
+                                "children": [
+                                    {
+                                        "use": "content",
+                                        "type": "file",
+                                        "name": "content"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "folder",
+                "name": "schemas",
+                "children": [
+                    {
+                        "use": "xsd_files",
+                        "type": "file",
+                        "name": "xsd_files"
+                    }
+                ]
+            },
+            {
+                "type": "folder",
+                "name": "documents",
+                "children": []
+            }
+        ],
+        'template': [
+            {
+                "key": "mets_type",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Content Type",
+                    "options": [
+                        {
+                          "name": "Electronic Record Management System",
+                          "value": "ERMS"
+                        },
+                        {
+                          "name": "Personnel system",
+                          "value": "Personnel"
+                        },
+                        {
+                          "name": "Medical record(s)",
+                          "value": "Medical record"
+                        },
+                        {
+                          "name": "Economics",
+                          "value": "Economics systems"
+                        },
+                        {
+                          "name": "Databases",
+                          "value": "Databases"
+                        },
+                        {
+                          "name": "Webpages",
+                          "value": "Webpages"
+                        },
+                        {
+                          "name": "Geografical Information Systems",
+                          "value": "GIS"
+                        },
+                        {
+                          "name": "No specification",
+                          "value": "No specification"
+                        },
+                        {
+                          "name": "Archival Information Collection",
+                          "value": "AIC"
+                        },
+                        {
+                          "name": "Archival Information",
+                          "value": "Archival Information"
+                        },
+                        {
+                          "name": "Unstructured",
+                          "value": "Unstructured"
+                        },
+                        {
+                          "name": "Single records",
+                          "value": "Single records"
+                        },
+                        {
+                          "name": "Publication",
+                          "value": "Publication"
+                        },
+                    ]
+                },
+            },
+            {
+                "key": "RECORDSTATUS",
+                "type": "select",
+                "templateOptions": {
+                    "label": "Record Status",
+                    "options": [
+                        {
+                          "name": "SUPPLEMENT",
+                          "value": "SUPPLEMENT"
+                        },
+                        {
+                          "name": "REPLACEMENT",
+                          "value": "REPLACEMENT"
+                        },
+                        {
+                            "name": "NEW",
+                            "value": "NEW"
+                        },
+                        {
+                          "name": "TEST",
+                          "value": "TEST"
+                        },
+                        {
+                          "name": "VERSION",
+                          "value": "VERSION"
+                        },
+                        {
+                          "name": "OTHER",
+                          "value": "OTHER"
+                        },
+                    ]
+                },
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "disabled": True,
+                    "label": "Archivist Organization"
+                },
+                "type": "input",
+                "key": "_IP_ARCHIVIST_ORGANIZATION"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Organization Note"
+                },
+                "type": "input",
+                "key": "archivist_organization_note"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Organization",
+                    "required": True,
+                },
+                "type": "input",
+                "key": "creator_organization_name"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Creator Organization Note"
+                },
+                "type": "input",
+                "key": "creator_organization_note"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Software",
+                    "required": True,
+                },
+                "type": "input",
+                "key": "archivist_software_name"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Archivist Software Note"
+                },
+                "type": "input",
+                "key": "archivist_software_note"
+            },
+        ],
+        'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/EARK_SIP_REP_Template.json')).read()),
+        'specification_data': {
+            "mets_type": "Personnel",
+            "RECORDSTATUS": "NEW",
+            "archivist_organization_note": "Archivist Organization 1 Note",
+            "creator_organization_name": "Creator Organization 1",
+            "creator_organization_note": "Creator Organization 1 Note",
+            "archivist_software_name": "Archivist Software 1",
+            "archivist_software_note": "Archivist Software 1 Note",
+        }
+    }
+
+    dct2 = {
         'name': 'SIP EARK',
         'profile_type': 'sip',
         'type': 'Implementation',
@@ -716,6 +969,7 @@ def installProfileSIP(sa):
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
+    profile2, _ = Profile.objects.update_or_create(name=dct2['name'], defaults=dct2)
     ProfileSA.objects.get_or_create(profile=profile, submission_agreement=sa)
 
     print 'Installed profile SIP'
