@@ -41,7 +41,7 @@
     "bootstrap-sass": "~3.3.7",
     "font-awesome": "~4.7.0",
     "jquery-ui": "~1.12.1",
-    "ng-flow": "~2.7.4",
+    "ng-flow": "https://github.com/OskarPersson/ng-flow.git",
     "select2": "~4.0.3"
   },
   "resolutions": {
