@@ -709,16 +709,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             "key": "type",
         },
         {
+            // File uses
             "templateOptions": {
                 "type": "text",
                 "label": $translate.instant('USE'),
                 "options": [
-                    {name: "content", value: "content"},
-                    {name: "preservation_description_file", value: "preservation_description_file"},
-                    {name: "mets_file", value: "mets_file"},
-                    {name: "archival_description_file", value: "archival_description_file"},
-                    {name: "authoritive_information_file", value: "authoritive_information_file"},
-                    {name: "xsd_files", value: "xsd_files"}
+                    {name: "Content", value: "content"},
+                    {name: "Premis file", value: "preservation_description_file"},
+                    {name: "Mets file", value: "mets_file"},
+                    {name: "Archival Description File", value: "archival_description_file"},
+                    {name: "Authoritive Information File", value: "authoritive_information_file"},
+                    {name: "XSD Files", value: "xsd_files"}
 
                 ],
             },
