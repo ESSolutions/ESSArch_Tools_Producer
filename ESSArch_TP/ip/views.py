@@ -483,6 +483,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         params={
                             "dirname": ip.ObjectPath,
                             "xmlfile": mets_path,
+                            "rootdir": ip.ObjectPath,
                         },
                         processstep_pos=3,
                         log=EventIP,
