@@ -403,9 +403,9 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
     djangoAuth.initialize('/rest-auth', false).then(function() {
 
-        djangoAuth.profile().then(function(data) {
-            $rootScope.auth = data;
-            myService.getPermissions(data.permissions);
+        djangoAuth.profile().then(function(response) {
+            $rootScope.auth = response.data;
+            myService.getPermissions(response.data.permissions);
         }, function() {
             $state.go('login');
         });
