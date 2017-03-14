@@ -52,6 +52,7 @@ from ESSArch_Core.configuration.views import (
 )
 
 from ESSArch_Core.auth.views import (
+    MeView,
     GroupViewSet,
     PermissionViewSet,
     UserViewSet,
@@ -111,6 +112,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^template/', include('ESSArch_Core.essxml.ProfileMaker.urls')),
     url(r'^accounts/login/$', auth_views.login),
+    url(r'^api/me/', MeView.as_view()),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'', include('two_factor.urls', 'two_factor')),
