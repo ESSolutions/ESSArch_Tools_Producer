@@ -317,6 +317,35 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         sorted_entries = sorted(entries, key=itemgetter('name'))
         return Response(sorted_entries)
 
+    @detail_route(methods=['get', 'post'], url_path='ead-editor')
+    def ead_editor(self, request, pk=None):
+        ip = self.get_object()
+        try:
+            structure = ip.get_profile('sip').structure
+        except AttributeError:
+            return Response("No SIP profile for IP created yet", status=status.HTTP_400_BAD_REQUEST)
+
+        ead_dir, ead_name = find_destination("archival_description_file", structure)
+
+        if ead_name is None:
+            return Response("No EAD file for IP found", status=status.HTTP_404_BAD_REQUEST)
+
+        xmlfile = os.path.join(ip.ObjectPath, ead_dir, ead_name)
+
+        if request.method == 'GET':
+
+            with open(xmlfile) as f:
+                s = f.read()
+                return Response({"data": s})
+            return Response(str(pk))
+
+        content = request.POST.get("content")
+
+        with open(xmlfile, "w") as f:
+            f.write(str(content))
+            return Response("Content written to %s" % xmlfile)
+
+
     @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
         """
