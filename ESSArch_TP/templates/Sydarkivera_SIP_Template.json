@@ -155,8 +155,6 @@
         {
             "-name": "metsHdr",
             "-namespace": "mets",
-            "-max": 1,
-            "-min": 0,
             "-attr": [
                 {
                     "#content": [
@@ -211,8 +209,6 @@
             ],
             "-children": [
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [{
@@ -228,20 +224,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"_IP_ARCHIVIST_ORGANIZATION" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"archivist_organization_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [
@@ -265,20 +257,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"archivist_software" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"archivist_software_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [{
@@ -294,20 +282,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_organization" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_organization_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [{
@@ -323,20 +307,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_individual" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_individual_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [
@@ -360,20 +340,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_software" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"creator_software_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [
@@ -397,20 +373,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"producer_organization" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"producer_organization_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [
@@ -429,20 +401,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"editor_organization" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"editor_organization_note" }]
                         }
                     ]
                 },
                 {
-                    "-min": 1,
-                    "-max": -1,
                     "-name": "agent",
                     "-namespace": "mets",
                     "-attr": [
@@ -461,20 +429,16 @@
                         {
                             "-name": "name",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"preservation_organization" }]
                         },
                         {
                             "-name": "note",
                             "-namespace": "mets",
-                            "-min": 1,
                             "#content": [{"var":"preservation_organization_note" }]
                         }
                     ]
                 },
                 {
-                    "-max": -1,
-                    "-min": 1,
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "-attr": [
@@ -496,8 +460,6 @@
                     "-children": []
                 },
                 {
-                    "-max": -1,
-                    "-min": 1,
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "-attr": [
@@ -519,8 +481,6 @@
                     "-children": []
                 },
                 {
-                    "-max": -1,
-                    "-min": 1,
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "-attr": [
@@ -542,8 +502,6 @@
                     "-children": []
                 },
                 {
-                    "-max": -1,
-                    "-min": 1,
                     "-name": "altRecordID",
                     "-namespace": "mets",
                     "-attr": [
@@ -567,8 +525,6 @@
             ]
         },
         {
-            "-max": 1,
-            "-min": 0,
             "-name": "amdSec",
             "-namespace": "mets",
             "-skipIfNoChildren": true,
@@ -854,20 +810,14 @@
                                     ]
                                 }
                             ],
-                            "-max": -1,
-                            "-min": 0,
                             "-name": "file",
                             "-namespace": "mets"
                         }
                     ],
-                    "-max": -1,
-                    "-min": 0,
                     "-name": "fileGrp",
                     "-namespace": "mets"
                 }
             ],
-            "-max": 1,
-            "-min": 0,
             "-name": "fileSec",
             "-namespace": "mets"
         },
@@ -906,8 +856,6 @@
             ],
             "-children": [
                 {
-                    "-max": 1,
-                    "-min": 0,
                     "-name": "div",
                     "-namespace": "mets",
                     "-attr": [
@@ -923,8 +871,6 @@
                     ],
                     "-children": [
                         {
-                            "-max": 1,
-                            "-min": 0,
                             "-name": "div",
                             "-namespace": "mets",
                             "-attr": [
@@ -957,16 +903,12 @@
                                         }
                                     ],
                                     "-children": [],
-                                    "-max": -1,
-                                    "-min": 0,
                                     "-name": "fptr",
                                     "-namespace": "mets"
                                 }
                             ]
                         },
                         {
-                            "-max": 1,
-                            "-min": 0,
                             "-name": "div",
                             "-namespace": "mets",
                             "-attr": [
@@ -1017,8 +959,6 @@
                                         }
                                     ],
                                     "-children": [],
-                                    "-max": -1,
-                                    "-min": 0,
                                     "-name": "fptr",
                                     "-namespace": "mets"
                                 }
@@ -1027,14 +967,10 @@
                     ]
                 }
             ],
-            "-max": -1,
-            "-min": 0,
             "-name": "structMap",
             "-namespace": "mets"
         }
     ],
-    "-max": 1,
-    "-min": 0,
     "-name": "mets",
     "-namespace": "mets",
     "-nsmap": {
