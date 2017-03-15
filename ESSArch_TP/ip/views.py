@@ -35,9 +35,12 @@ import shutil
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
+from django.conf import settings
+
 from django.http import HttpResponse
 from rest_framework import filters, status
 from rest_framework.decorators import detail_route
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
 from ESSArch_Core.configuration.models import (
@@ -340,7 +343,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     return Response({"data": s})
             except IOError:
                 open(xmlfile, 'a').close()
-                return Response({"data": ''})
+                return Response({"data": ""})
 
         content = request.POST.get("content", '')
 
@@ -348,6 +351,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             f.write(str(content))
             return Response("Content written to %s" % xmlfile)
 
+    @list_route(methods=['get'], url_path='get-xsds')
+    def get_xsds(self, request, pk=None):
+        static_path = os.path.join(settings.BASE_DIR, 'static/edead/xsds')
+        filename_list = os.listdir(static_path)
+        return Response(filename_list)
 
     @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):

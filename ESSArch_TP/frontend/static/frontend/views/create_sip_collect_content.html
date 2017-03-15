@@ -11,6 +11,7 @@
         <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
             <div ng-if="select" id="select-view" class="select-view">
                 <b>IP: </b>{{ip.Label}}
+                <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">Edit EAD</button>
                 <div class="file-explorer">
                     <div class="file-explorer-nav">
                         <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
