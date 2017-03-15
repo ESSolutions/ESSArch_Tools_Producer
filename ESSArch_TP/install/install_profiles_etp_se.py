@@ -520,12 +520,12 @@ def installProfileSIP(sa):
                     },
                     {
                         'type': 'file',
-                        'name': '_ARCHIVAL_DESCRIPTION_FILE',
+                        'name': 'ead.xml',
                         'use': 'archival_description_file',
                     },
                     {
                         'type': 'file',
-                        'name': '_AUTHORITIVE_INFORMATION_FILE',
+                        'name': 'eac.xml',
                         'use': 'authoritive_information_file',
                     },
                 ]
