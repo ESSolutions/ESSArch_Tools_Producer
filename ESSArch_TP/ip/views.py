@@ -102,7 +102,6 @@ from ip.serializers import (
     ArchivalTypeSerializer,
     ArchivalLocationSerializer,
     InformationPackageSerializer,
-    InformationPackageDetailSerializer,
     EventIPSerializer,
 )
 
@@ -181,12 +180,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     )
     search_fields = ('Label', 'Responsible__first_name', 'Responsible__last_name', 'Responsible__username', 'State', 'SubmissionAgreement__sa_name')
     filter_class = InformationPackageFilter
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return InformationPackageSerializer
-
-        return InformationPackageDetailSerializer
 
     def get_permissions(self):
         if self.action == 'partial_update':
@@ -781,6 +774,19 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
+                name="ESSArch_Core.tasks.UpdateIPSizeAndCount",
+                params={
+                    'ip': ip.pk
+                },
+                processstep_pos=55,
+                log=EventIP,
+                information_package=ip,
+                responsible=self.request.user,
+            )
+        )
+
+        create_sip_step.add_tasks(
+            ProcessTask.objects.create(
                 name="preingest.tasks.UpdateIPStatus",
                 params={
                     "ip": ip.pk,
@@ -1075,6 +1081,17 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
         ip.State = "Uploaded"
         ip.save()
+
+        t = ProcessTask.objects.create(
+            name="ESSArch_Core.tasks.UpdateIPSizeAndCount",
+            eager=False,
+            params={
+                'ip': pk
+            },
+            information_package=ip
+        )
+
+        t.run()
         return Response()
 
 

@@ -109,34 +109,10 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'id', 'ObjectIdentifierValue', 'Label', 'Content',
             'Responsible', 'CreateDate', 'State', 'status', 'step_state',
-            'ObjectPath', 'Startdate', 'Enddate', 'OAIStype',
-            'SubmissionAgreement', 'ArchivalInstitution',
-            'ArchivistOrganization', 'ArchivalType', 'ArchivalLocation',
-            'SubmissionAgreementLocked', 'profiles',
-        )
-
-
-class InformationPackageDetailSerializer(InformationPackageSerializer):
-    ObjectSize = serializers.SerializerMethodField()
-    ObjectNumItems = serializers.SerializerMethodField()
-
-    def _get_object_size_and_num(self, obj):
-        if not hasattr(self, '_object_size_and_num'):
-            self._object_size_and_num = obj.ObjectSizeAndNum
-        return self._object_size_and_num
-
-    def get_ObjectSize(self, obj):
-        size, _ = self._get_object_size_and_num(obj)
-        return size
-
-    def get_ObjectNumItems(self, obj):
-        _, num = self._get_object_size_and_num(obj)
-        return num
-
-    class Meta:
-        model = InformationPackageSerializer.Meta.model
-        fields = InformationPackageSerializer.Meta.fields + (
-            'ObjectSize', 'ObjectNumItems',
+            'ObjectPath', 'object_size', 'object_num_items', 'Startdate',
+            'Enddate', 'OAIStype', 'SubmissionAgreement',
+            'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
+            'ArchivalLocation', 'SubmissionAgreementLocked', 'profiles',
         )
 
 
