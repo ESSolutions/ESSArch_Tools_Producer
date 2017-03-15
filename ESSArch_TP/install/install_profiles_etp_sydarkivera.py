@@ -115,7 +115,6 @@ def installProfileTransferProject(sa):
         'type': 'Implementation',
         'status': 'Agreed',
         'label': 'Transfer Project Profile 1',
-        'schemas': {},
         'template': [
             {
                 "templateOptions": {
@@ -203,7 +202,6 @@ def installProfileTransferProject(sa):
                 "key": "preservation_organization_receiver_url"
             }
         ],
-        'specification': {},
         'specification_data': {
             "archivist_organization": "Organization xx",
             "archival_institution": "Sydarkivera",
@@ -854,9 +852,6 @@ def installProfileAIP(sa):
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': 'AIP SE structure xx',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -883,9 +878,6 @@ def installProfileDIP(sa):
         'submission_method': 'Electronically',
         'submission_schedule': 'Once',
         'submission_data_inventory': 'According to submit description',
-        'structure': 'DIP SE structure xx',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -903,8 +895,6 @@ def installProfileContentType(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Content based on SE ERMS specification',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -922,8 +912,6 @@ def installProfileAuthorityInformation(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Authority Information 1',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -940,8 +928,6 @@ def installProfileArchivalDescription(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Archival Description 1',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -960,7 +946,6 @@ def installProfilePreservationMetadata(sa):
         'status': 'Draft',
         'label': 'Preservation profile for AIP xxyy',
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/Premis_Template.json')).read()),
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -978,8 +963,6 @@ def installProfileDataSelection(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Data selection of business system xx',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -997,8 +980,6 @@ def installProfileImport(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Transformation from system x to specification y',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
@@ -1016,8 +997,6 @@ def installProfileWorkflow(sa):
         'type': 'Implementation',
         'status': 'Draft',
         'label': 'Workflow Create SIP for Pre-Ingest',
-        'specification': {},
-        'specification_data': {},
     }
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
