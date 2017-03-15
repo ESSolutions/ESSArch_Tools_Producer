@@ -334,12 +334,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         if request.method == 'GET':
 
-            with open(xmlfile) as f:
-                s = f.read()
-                return Response({"data": s})
-            return Response(str(pk))
+            try:
+                with open(xmlfile) as f:
+                    s = f.read()
+                    return Response({"data": s})
+            except IOError:
+                open(xmlfile, 'a').close()
+                return Response({"data": ''})
 
-        content = request.POST.get("content")
+        content = request.POST.get("content", '')
 
         with open(xmlfile, "w") as f:
             f.write(str(content))
