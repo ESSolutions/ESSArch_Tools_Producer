@@ -35,9 +35,12 @@ import shutil
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 
+from django.conf import settings
+
 from django.http import HttpResponse
 from rest_framework import filters, status
 from rest_framework.decorators import detail_route
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
 from ESSArch_Core.configuration.models import (
@@ -316,6 +319,43 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         sorted_entries = sorted(entries, key=itemgetter('name'))
         return Response(sorted_entries)
+
+    @detail_route(methods=['get', 'post'], url_path='ead-editor')
+    def ead_editor(self, request, pk=None):
+        ip = self.get_object()
+        try:
+            structure = ip.get_profile('sip').structure
+        except AttributeError:
+            return Response("No SIP profile for IP created yet", status=status.HTTP_400_BAD_REQUEST)
+
+        ead_dir, ead_name = find_destination("archival_description_file", structure)
+
+        if ead_name is None:
+            return Response("No EAD file for IP found", status=status.HTTP_404_BAD_REQUEST)
+
+        xmlfile = os.path.join(ip.ObjectPath, ead_dir, ead_name)
+
+        if request.method == 'GET':
+
+            try:
+                with open(xmlfile) as f:
+                    s = f.read()
+                    return Response({"data": s})
+            except IOError:
+                open(xmlfile, 'a').close()
+                return Response({"data": ""})
+
+        content = request.POST.get("content", '')
+
+        with open(xmlfile, "w") as f:
+            f.write(str(content))
+            return Response("Content written to %s" % xmlfile)
+
+    @list_route(methods=['get'], url_path='get-xsds')
+    def get_xsds(self, request, pk=None):
+        static_path = os.path.join(settings.BASE_DIR, 'static/edead/xsds')
+        filename_list = os.listdir(static_path)
+        return Response(filename_list)
 
     @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
