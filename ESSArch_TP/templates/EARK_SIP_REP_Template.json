@@ -673,6 +673,128 @@
                             ],
                             "-children": [
                                 {
+                                    "-name": "metsHdr",
+                                    "-namespace": "mets",
+                                    "-attr": [
+                                        {
+                                            "-name": "ID",
+                                            "-req": 0,
+                                            "#content": [{"text": "ID"}, {"var": "_UUID"}]
+                                        },
+                                        {
+                                            "-name": "CREATEDATE",
+                                            "-req": 1,
+                                            "#content": [{"var": "_NOW"}]
+                                        },
+                                        {
+                                            "-name": "RECORDSTATUS",
+                                            "-req": 0,
+                                            "#content": [{"var": "RECORDSTATUS"}]
+                                        }
+                                    ],
+                                    "-children": [
+                                        {
+                                            "-name": "agent",
+                                            "-namespace": "mets",
+                                            "-attr": [{
+                                                "-name": "ROLE",
+                                                "-req": 1,
+                                                "#content": [{"text":"ARCHIVIST" }]
+                                            },{
+                                                "-name": "TYPE",
+                                                "-req": 1,
+                                                "#content": [{"text":"ORGANIZATION" }]
+                                            }],
+                                            "-children": [
+                                                {
+                                                    "-name": "name",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"_IP_ARCHIVIST_ORGANIZATION" }]
+                                                },
+                                                {
+                                                    "-name": "note",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"archivist_organization_note" }]
+                                                }
+                                            ]
+                                        },{
+                                            "-name": "agent",
+                                            "-namespace": "mets",
+                                            "-attr": [{
+                                                "-name": "ROLE",
+                                                "-req": 0,
+                                                "#content": [{"text":"CREATOR" }]
+                                            },{
+                                                "-name": "TYPE",
+                                                "-req": 0,
+                                                "#content": [{"text":"ORGANIZATION" }]
+                                            }],
+                                            "-children": [
+                                                {
+                                                    "-name": "name",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"creator_organization_name" }]
+                                                },
+                                                {
+                                                    "-name": "note",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"creator_organization_note" }]
+                                                }
+                                            ]
+                                        },{
+                                            "-name": "agent",
+                                            "-namespace": "mets",
+                                            "-attr": [{
+                                                "-name": "ROLE",
+                                                "-req": 0,
+                                                "#content": [{"text":"ARCHIVIST" }]
+                                            },{
+                                                "-name": "TYPE",
+                                                "-req": 0,
+                                                "#content": [{"text":"OTHER" }]
+                                            },{
+                                                "-name": "OTHERTYPE",
+                                                "-req": 0,
+                                                "#content": [{"text":"SOFTWARE" }]
+                                            }],
+                                            "-children": [
+                                                {
+                                                    "-name": "name",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"archivist_software_name" }]
+                                                },
+                                                {
+                                                    "-name": "note",
+                                                    "-namespace": "mets",
+                                                    "#content": [{"var":"archivist_software_note" }]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "-name": "altRecordID",
+                                            "-namespace": "mets",
+                                            "-children": [],
+                                            "#content": [{"var": "mets.metsHdr.altRecordID.content"}],
+                                            "-attr": [
+                                                {
+                                                    "#content": [{"text": "SUBMISSIONAGREEMENT"}],
+                                                    "-name": "TYPE",
+                                                    "-req": 0
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "-name": "metsDocumentID",
+                                            "-namespace": "mets",
+                                            "#content": [
+                                                {
+                                                    "var": "_XML_FILENAME"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
                                     "-name": "fileSec",
                                     "-namespace": "mets",
                                     "-attr": [
