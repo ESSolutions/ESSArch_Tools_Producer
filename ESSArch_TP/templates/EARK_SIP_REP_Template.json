@@ -654,6 +654,21 @@
                                 {
                                     "-name": "LABEL",
                                     "#content": [{"var": "_EXT"}]
+                                },
+                                {
+                                    "-name": "OBJID",
+                                    "-req": 1,
+                                    "#content": [
+                                        {"text": "UUID:"},
+                                        {"var": "_OBJID"}
+                                    ]
+                                },
+                                {
+                                    "-name": "PROFILE",
+                                    "-req": 1,
+                                    "#content": [
+                                        {"text": "http://xml.ra.se/e-arkiv/METS/version11/CommonSpecificationSwedenPackageProfile.xml"}
+                                    ]
                                 }
                             ],
                             "-children": [
