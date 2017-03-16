@@ -615,7 +615,10 @@
                                         {
                                             "-name": "href",
                                             "-namespace": "xlink",
-                                            "#content": [{"var": "_EXT_HREF"}]
+                                            "#content": [
+                                                {"text": "file:///"},
+                                                {"var": "_EXT_HREF"}
+                                            ]
                                         },
                                         {
                                             "-name": "LOCTYPE",
