@@ -487,6 +487,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         name="preingest.tasks.ValidateXMLFile",
                         params={
                             "xml_filename": mets_path,
+                            "rootdir": ip.ObjectPath,
                         },
                         processstep_pos=1,
                         log=EventIP,
@@ -501,6 +502,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             name="preingest.tasks.ValidateXMLFile",
                             params={
                                 "xml_filename": premis_path,
+                                "rootdir": ip.ObjectPath,
                             },
                             processstep_pos=2,
                             log=EventIP,
@@ -705,6 +707,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     name="preingest.tasks.ValidateXMLFile",
                     params={
                         "xml_filename": events_path,
+                        "rootdir": ip.ObjectPath,
                     },
                     processstep_pos=3,
                     log=EventIP,
