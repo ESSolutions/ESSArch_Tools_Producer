@@ -469,23 +469,12 @@ def installProfileSIP(sa):
             {
                 "use": "mets_file",
                 "type": "file",
-                "name": "mets.xml"
+                "name": "METS.xml"
             },
             {
                 "type": "folder",
                 "name": "metadata",
                 "children": [
-                    {
-                        "type": "folder",
-                        "name": "administrative",
-                        "children": [
-                            {
-                                "use": "preservation_description_file",
-                                "type": "file",
-                                "name": "premis.xml"
-                            }
-                        ]
-                    },
                     {
                         "type": "folder",
                         "name": "descriptive",
@@ -498,9 +487,25 @@ def installProfileSIP(sa):
                             {
                                 "use": "authoritive_information_file",
                                 "type": "file",
-                                "name": "eac.xml"
+                                "name": "eaccpf.xml"
                             }
                         ]
+                    },
+                    {
+                        "type": "folder",
+                        "name": "preservation",
+                        "children": [
+                            {
+                                "use": "preservation_description_file",
+                                "type": "file",
+                                "name": "premis.xml"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "folder",
+                        "name": "other",
+                        "children": []
                     }
                 ]
             },
@@ -533,7 +538,7 @@ def installProfileSIP(sa):
             },
             {
                 "type": "folder",
-                "name": "documents",
+                "name": "documentation",
                 "children": []
             }
         ],
@@ -669,30 +674,49 @@ def installProfileSIP(sa):
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist Software",
+                    "label": "Creator Software",
                     "required": True,
                 },
                 "type": "input",
-                "key": "archivist_software_name"
+                "key": "creator_software_name"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist Software Note"
+                    "label": "Creator Software Note"
                 },
                 "type": "input",
-                "key": "archivist_software_note"
+                "key": "creator_software_note"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization",
+                    "required": True,
+                },
+                "type": "input",
+                "key": "preservation_organization_name"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization Note"
+                },
+                "type": "input",
+                "key": "preservation_organization_note"
             },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/EARK_SIP_REP_Template.json')).read()),
         'specification_data': {
-            "mets_type": "Personnel",
+            "mets_type": "ERMS",
             "RECORDSTATUS": "NEW",
             "archivist_organization_note": "Archivist Organization 1 Note",
             "creator_organization_name": "Creator Organization 1",
             "creator_organization_note": "Creator Organization 1 Note",
-            "archivist_software_name": "Archivist Software 1",
-            "archivist_software_note": "Archivist Software 1 Note",
+            "creator_software_name": "Creator Software 1",
+            "creator_software_note": "Creator Software 1 Note",
+            "preservation_organization_name": "Preservation Organization 1",
+            "preservation_organization_note": "Preservation Organization 1 Note",
         }
     }
 
@@ -715,23 +739,12 @@ def installProfileSIP(sa):
             {
                 "use": "mets_file",
                 "type": "file",
-                "name": "mets.xml"
+                "name": "METS.xml"
             },
             {
                 "type": "folder",
                 "name": "metadata",
                 "children": [
-                    {
-                        "type": "folder",
-                        "name": "administrative",
-                        "children": [
-                            {
-                                "use": "preservation_description_file",
-                                "type": "file",
-                                "name": "premis.xml"
-                            }
-                        ]
-                    },
                     {
                         "type": "folder",
                         "name": "descriptive",
@@ -744,9 +757,25 @@ def installProfileSIP(sa):
                             {
                                 "use": "authoritive_information_file",
                                 "type": "file",
-                                "name": "eac.xml"
+                                "name": "eaccpf.xml"
                             }
                         ]
+                    },
+                    {
+                        "type": "folder",
+                        "name": "preservation",
+                        "children": [
+                            {
+                                "use": "preservation_description_file",
+                                "type": "file",
+                                "name": "premis.xml"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "folder",
+                        "name": "other",
+                        "children": []
                     }
                 ]
             },
@@ -779,7 +808,7 @@ def installProfileSIP(sa):
             },
             {
                 "type": "folder",
-                "name": "documents",
+                "name": "documentation",
                 "children": []
             }
         ],
@@ -915,30 +944,49 @@ def installProfileSIP(sa):
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist Software",
+                    "label": "Creator Software",
                     "required": True,
                 },
                 "type": "input",
-                "key": "archivist_software_name"
+                "key": "creator_software_name"
             },
             {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist Software Note"
+                    "label": "Creator Software Note"
                 },
                 "type": "input",
-                "key": "archivist_software_note"
+                "key": "creator_software_note"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization",
+                    "required": True,
+                },
+                "type": "input",
+                "key": "preservation_organization_name"
+            },
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": "Preservation Organization Note"
+                },
+                "type": "input",
+                "key": "preservation_organization_note"
             },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/EARK_SIP_Template.json')).read()),
         'specification_data': {
-            "mets_type": "Personnel",
+            "mets_type": "ERMS",
             "RECORDSTATUS": "NEW",
             "archivist_organization_note": "Archivist Organization 1 Note",
             "creator_organization_name": "Creator Organization 1",
             "creator_organization_note": "Creator Organization 1 Note",
-            "archivist_software_name": "Archivist Software 1",
-            "archivist_software_note": "Archivist Software 1 Note",
+            "creator_software_name": "Creator Software 1",
+            "creator_software_note": "Creator Software 1 Note",
+            "preservation_organization_name": "Preservation Organization 1",
+            "preservation_organization_note": "Preservation Organization 1 Note",
         }
     }
 
