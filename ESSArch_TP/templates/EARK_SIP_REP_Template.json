@@ -273,34 +273,6 @@
                             ]
                         },
                         {
-                            "-name": "FILEFORMATNAME",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatName"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATVERSION",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatVersion"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATREGISTRY",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"text": "PREMIS"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATREGISTRYKEY",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatRegistryKey"}
-                            ]
-                        },
-                        {
                             "-name": "href",
                             "-namespace": "xlink",
                             "#content": [
@@ -417,34 +389,6 @@
                                 {
                                     "var": "FMimetype"
                                 }
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATNAME",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatName"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATVERSION",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatVersion"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATREGISTRY",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"text": "PREMIS"}
-                            ]
-                        },
-                        {
-                            "-name": "FILEFORMATREGISTRYKEY",
-                            "-namespace": "ext",
-                            "#content": [
-                                {"var": "FFormatRegistryKey"}
                             ]
                         },
                         {
@@ -577,34 +521,6 @@
                                     "-name": "MIMETYPE",
                                     "#content": [
                                         {"var": "FMimetype"}
-                                    ]
-                                },
-                                {
-                                    "-name": "FILEFORMATNAME",
-                                    "-namespace": "ext",
-                                    "#content": [
-                                        {"var": "FFormatName"}
-                                    ]
-                                },
-                                {
-                                    "-name": "FILEFORMATVERSION",
-                                    "-namespace": "ext",
-                                    "#content": [
-                                        {"var": "FFormatVersion"}
-                                    ]
-                                },
-                                {
-                                    "-name": "FILEFORMATREGISTRY",
-                                    "-namespace": "ext",
-                                    "#content": [
-                                        {"text": "PREMIS"}
-                                    ]
-                                },
-                                {
-                                    "-name": "FILEFORMATREGISTRYKEY",
-                                    "-namespace": "ext",
-                                    "#content": [
-                                        {"var": "FFormatRegistryKey"}
                                     ]
                                 },
                                 {
@@ -798,14 +714,14 @@
                                                     ]
                                                 },
                                                 {
-                                                    "-name": "FILEFORMATREGISTRY",
+                                                    "-name": "FORMATREGISTRY",
                                                     "-namespace": "ext",
                                                     "#content": [
-                                                        {"text": "PREMIS"}
+                                                        {"text": "PRONOM"}
                                                     ]
                                                 },
                                                 {
-                                                    "-name": "FILEFORMATREGISTRYKEY",
+                                                    "-name": "FORMATREGISTRYKEY",
                                                     "-namespace": "ext",
                                                     "#content": [
                                                         {"var": "FFormatRegistryKey"}
@@ -931,14 +847,14 @@
                                             ]
                                         },
                                         {
-                                            "-name": "FILEFORMATREGISTRY",
+                                            "-name": "FORMATREGISTRY",
                                             "-namespace": "ext",
                                             "#content": [
-                                                {"text": "PREMIS"}
+                                                {"text": "PRONOM"}
                                             ]
                                         },
                                         {
-                                            "-name": "FILEFORMATREGISTRYKEY",
+                                            "-name": "FORMATREGISTRYKEY",
                                             "-namespace": "ext",
                                             "#content": [
                                                 {"var": "FFormatRegistryKey"}
@@ -1062,14 +978,14 @@
                                             ]
                                         },
                                         {
-                                            "-name": "FILEFORMATREGISTRY",
+                                            "-name": "FORMATREGISTRY",
                                             "-namespace": "ext",
                                             "#content": [
-                                                {"text": "PREMIS"}
+                                                {"text": "PRONOM"}
                                             ]
                                         },
                                         {
-                                            "-name": "FILEFORMATREGISTRYKEY",
+                                            "-name": "FORMATREGISTRYKEY",
                                             "-namespace": "ext",
                                             "#content": [
                                                 {"var": "FFormatRegistryKey"}
@@ -1214,14 +1130,14 @@
                                                     ]
                                                 },
                                                 {
-                                                    "-name": "FILEFORMATREGISTRY",
+                                                    "-name": "FORMATREGISTRY",
                                                     "-namespace": "ext",
                                                     "#content": [
-                                                        {"text": "PREMIS"}
+                                                        {"text": "PRONOM"}
                                                     ]
                                                 },
                                                 {
-                                                    "-name": "FILEFORMATREGISTRYKEY",
+                                                    "-name": "FORMATREGISTRYKEY",
                                                     "-namespace": "ext",
                                                     "#content": [
                                                         {"var": "FFormatRegistryKey"}
@@ -1793,34 +1709,6 @@
                                                             ]
                                                         },
                                                         {
-                                                            "-name": "FILEFORMATNAME",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatName"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATVERSION",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatVersion"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATREGISTRY",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"text": "PREMIS"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATREGISTRYKEY",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatRegistryKey"}
-                                                            ]
-                                                        },
-                                                        {
                                                             "-name": "href",
                                                             "-namespace": "xlink",
                                                             "#content": [
@@ -1937,34 +1825,6 @@
                                                                 {
                                                                     "var": "FMimetype"
                                                                 }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATNAME",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatName"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATVERSION",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatVersion"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATREGISTRY",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"text": "PREMIS"}
-                                                            ]
-                                                        },
-                                                        {
-                                                            "-name": "FILEFORMATREGISTRYKEY",
-                                                            "-namespace": "ext",
-                                                            "#content": [
-                                                                {"var": "FFormatRegistryKey"}
                                                             ]
                                                         },
                                                         {
@@ -2097,34 +1957,6 @@
                                                                     "-name": "MIMETYPE",
                                                                     "#content": [
                                                                         {"var": "FMimetype"}
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "-name": "FILEFORMATNAME",
-                                                                    "-namespace": "ext",
-                                                                    "#content": [
-                                                                        {"var": "FFormatName"}
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "-name": "FILEFORMATVERSION",
-                                                                    "-namespace": "ext",
-                                                                    "#content": [
-                                                                        {"var": "FFormatVersion"}
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "-name": "FILEFORMATREGISTRY",
-                                                                    "-namespace": "ext",
-                                                                    "#content": [
-                                                                        {"text": "PREMIS"}
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "-name": "FILEFORMATREGISTRYKEY",
-                                                                    "-namespace": "ext",
-                                                                    "#content": [
-                                                                        {"var": "FFormatRegistryKey"}
                                                                     ]
                                                                 },
                                                                 {
@@ -2303,14 +2135,14 @@
                                                                                     ]
                                                                                 },
                                                                                 {
-                                                                                    "-name": "FILEFORMATREGISTRY",
+                                                                                    "-name": "FORMATREGISTRY",
                                                                                     "-namespace": "ext",
                                                                                     "#content": [
-                                                                                        {"text": "PREMIS"}
+                                                                                        {"text": "PRONOM"}
                                                                                     ]
                                                                                 },
                                                                                 {
-                                                                                    "-name": "FILEFORMATREGISTRYKEY",
+                                                                                    "-name": "FORMATREGISTRYKEY",
                                                                                     "-namespace": "ext",
                                                                                     "#content": [
                                                                                         {"var": "FFormatRegistryKey"}
@@ -2436,14 +2268,14 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRY",
+                                                                            "-name": "FORMATREGISTRY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
-                                                                                {"text": "PREMIS"}
+                                                                                {"text": "PRONOM"}
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRYKEY",
+                                                                            "-name": "FORMATREGISTRYKEY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
                                                                                 {"var": "FFormatRegistryKey"}
@@ -2568,14 +2400,14 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRY",
+                                                                            "-name": "FORMATREGISTRY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
-                                                                                {"text": "PREMIS"}
+                                                                                {"text": "PRONOM"}
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRYKEY",
+                                                                            "-name": "FORMATREGISTRYKEY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
                                                                                 {"var": "FFormatRegistryKey"}
@@ -2699,14 +2531,14 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRY",
+                                                                            "-name": "FORMATREGISTRY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
-                                                                                {"text": "PREMIS"}
+                                                                                {"text": "PRONOM"}
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "-name": "FILEFORMATREGISTRYKEY",
+                                                                            "-name": "FORMATREGISTRYKEY",
                                                                             "-namespace": "ext",
                                                                             "#content": [
                                                                                 {"var": "FFormatRegistryKey"}
