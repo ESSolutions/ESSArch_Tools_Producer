@@ -50,6 +50,11 @@ SESSION_COOKIE_NAME = 'etp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# XSD is not listed in any mime types on macOS
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/xml", ".xsd", True)
+
 ALLOWED_HOSTS = ['*']
 
 REST_FRAMEWORK = {
