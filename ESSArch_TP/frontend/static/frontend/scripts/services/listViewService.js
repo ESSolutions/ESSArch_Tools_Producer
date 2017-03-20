@@ -84,7 +84,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             method: 'POST',
             url: appConfig.djangoUrl+"events/",
             data: {
-                "eventType": eventType.id,
+                "eventType": eventType.eventType,
                 "eventOutcomeDetailNote": eventDetail,
                 "eventOutcome": outcome.value,
                 "information_package": ip.id
