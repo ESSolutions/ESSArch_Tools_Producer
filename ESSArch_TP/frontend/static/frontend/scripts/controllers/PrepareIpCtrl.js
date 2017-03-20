@@ -404,6 +404,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 alert(response.status);
             });
     };
+    $scope.optionalOptions = true;
     $scope.colspan = 9;
     //Decides visibility of stepTask info page
     $scope.stepTaskInfoShow = false;
