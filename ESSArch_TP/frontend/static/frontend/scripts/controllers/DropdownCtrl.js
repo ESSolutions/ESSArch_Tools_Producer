@@ -42,6 +42,11 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         ];
         optionsAuth = [
             {
+                label: "User settings",
+                link: '',
+                click: function(){$state.go("home.userSettings");}
+            },
+            {
                 label: $scope.changePassword,
                 link: '',
                 click: function(){$scope.changePasswordModal();}

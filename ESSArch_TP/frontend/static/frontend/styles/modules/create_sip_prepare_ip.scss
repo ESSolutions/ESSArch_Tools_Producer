@@ -1,4 +1,4 @@
-.prepare-ip {
+.prepare-ip, .user-settings {
     .content-wrapper {
         display: flex;
         display: -webkit-flex;
@@ -323,5 +323,13 @@
         padding-bottom: 10px;
         border-bottom-style: solid;
         border-color: #666;
+    }
+    .column-picker {
+        display: flex;
+        flex-direction: row;
+        .buttons {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
