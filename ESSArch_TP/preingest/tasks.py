@@ -64,6 +64,8 @@ class PrepareIP(DBTask):
             OAIStype="SIP",
         )
 
+        self.ip = ip.pk
+
         ProcessTask.objects.filter(pk=self.request.id).update(
             information_package=ip
         )
@@ -108,6 +110,8 @@ class CreateIPRootDir(DBTask):
         Returns:
             None
         """
+
+        self.ip = information_package
 
         ProcessTask.objects.filter(pk=self.request.id).update(
             information_package_id=information_package
