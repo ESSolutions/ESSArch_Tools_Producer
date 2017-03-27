@@ -43,6 +43,8 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
+from natsort import natsorted
+
 from ESSArch_Core.configuration.models import (
     EventType,
     Path,
@@ -1062,22 +1064,27 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 for c in chunk.chunks():
                     dst.write(c)
 
-            if chunk_nr == request.data.get('flowTotalChunks'):
-                path = os.path.join(ip.ObjectPath, path)
+            return Response("Uploaded chunk")
 
-                with open(path, 'wb') as f:
-                    for chunk_file in glob.glob('%s_*' % path):
-                        f.write(open(chunk_file).read())
-                        os.remove(chunk_file)
+    @detail_route(methods=['post'], url_path='merge-uploaded-chunks')
+    def merge_uploaded_chunks(self, request, pk=None):
+        ip = self.get_object()
 
-                event_type = EventType.objects.get(eventType=10120)
-                agent = request.user
-                create_event(
-                    event_type, 0, "Uploaded %s" % path,
-                    get_versions()['version'], agent, ip=ip
-                )
+        path = os.path.join(ip.ObjectPath, request.data['path'])
 
-            return Response("Uploaded files")
+        with open(path, 'wb') as f:
+            for chunk_file in natsorted(glob.glob('%s_*' % path)):
+                f.write(open(chunk_file).read())
+                os.remove(chunk_file)
+
+        event_type = EventType.objects.get(eventType=10120)
+        agent = request.user
+        create_event(
+            event_type, 0, "Uploaded %s" % path,
+            get_versions()['version'], agent, ip=ip
+        )
+
+        return Response("Merged chunks")
 
     @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):

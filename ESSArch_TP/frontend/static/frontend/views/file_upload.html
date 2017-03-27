@@ -1,5 +1,5 @@
 <div flow-init="{target: getFlowTarget, query: getQuery}"
-     flow-file-success="updateGridArray(ip)"
+     flow-file-success="updateGridArray(ip); fileUploadSuccess(ip, $file, $message, $flow)"
      >
     <div>
         <h4>{{'CHOOSEFILES' | translate}}:</h4>
