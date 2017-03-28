@@ -70,6 +70,7 @@ from ESSArch_Core.ip.permissions import (
     CanSetUploaded,
     CanSubmitSIP,
     CanUnlockProfile,
+    CanUpload,
 )
 
 from ESSArch_Core.profiles.models import (
@@ -1032,7 +1033,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         return Response()
 
-    @detail_route(methods=['get', 'post'], url_path='upload')
+    @detail_route(methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
     def upload(self, request, pk=None):
         ip = self.get_object()
         ip.State = "Uploading"
@@ -1066,7 +1067,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response("Uploaded chunk")
 
-    @detail_route(methods=['post'], url_path='merge-uploaded-chunks')
+    @detail_route(methods=['post'], url_path='merge-uploaded-chunks', permission_classes=[CanUpload])
     def merge_uploaded_chunks(self, request, pk=None):
         ip = self.get_object()
 
