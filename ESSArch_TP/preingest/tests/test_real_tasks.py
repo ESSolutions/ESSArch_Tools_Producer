@@ -30,11 +30,11 @@ from django.contrib.auth.models import User
 from django.test import TransactionTestCase
 
 from ESSArch_Core.configuration.models import (
-    Path,
+    EventType, Path,
 )
 
 from ESSArch_Core.ip.models import (
-    InformationPackage,
+    EventIP, InformationPackage,
 )
 
 from ESSArch_Core.WorkflowEngine.models import (
@@ -82,6 +82,7 @@ class test_tasks(TransactionTestCase):
     def test_prepare_ip(self):
         label = "ip1"
         user = User.objects.create(username="user1")
+        event_type = EventType.objects.create(eventType=10100)
 
         task = ProcessTask.objects.create(
             name="preingest.tasks.PrepareIP",
@@ -93,8 +94,17 @@ class test_tasks(TransactionTestCase):
         )
         task.run()
 
+        ip = InformationPackage.objects.filter(Label=label).first()
+
+        self.assertIsNotNone(ip)
+
         self.assertTrue(
-            InformationPackage.objects.filter(Label=label).exists()
+            EventIP.objects.filter(
+                linkingObjectIdentifierValue=ip,
+                eventOutcome=0,
+                linkingAgentIdentifierValue=user,
+                eventType=event_type,
+            ).exists()
         )
 
         task.undo()
@@ -105,19 +115,31 @@ class test_tasks(TransactionTestCase):
 
     def test_create_ip_root_dir(self):
         ip = InformationPackage.objects.create(Label="ip1")
+        user = User.objects.create(username="user1")
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         prepare_path = os.path.join(prepare_path, unicode(ip.pk))
+        event_type = EventType.objects.create(eventType=10110)
 
         task = ProcessTask.objects.create(
             name="preingest.tasks.CreateIPRootDir",
             params={
                 "information_package": ip.pk,
             },
+            responsible=user
         )
         task.run()
 
         self.assertTrue(
             os.path.isdir(prepare_path)
+        )
+
+        self.assertTrue(
+            EventIP.objects.filter(
+                linkingObjectIdentifierValue=ip,
+                eventOutcome=0,
+                linkingAgentIdentifierValue=user,
+                eventType=event_type,
+            ).exists()
         )
 
         task.undo()
