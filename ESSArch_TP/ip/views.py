@@ -228,7 +228,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         self.check_permissions(request)
 
-        label = request.data.get('label', None)
+        try:
+            label = request.data['label']
+        except KeyError:
+            return Response(
+                {'status': '"label" is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         object_identifier_value = request.data.get('object_identifier_value')
         responsible = self.request.user
 
