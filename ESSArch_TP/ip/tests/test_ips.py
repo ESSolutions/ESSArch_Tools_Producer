@@ -29,6 +29,7 @@ import shutil
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models import F
 from django.test import TestCase
 from django.urls import reverse
 
@@ -37,6 +38,65 @@ from rest_framework.test import APIClient
 
 from ESSArch_Core.configuration.models import EventType
 from ESSArch_Core.ip.models import InformationPackage
+
+
+class test_create_ip(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.root = os.path.dirname(os.path.realpath(__file__))
+        self.datadir = os.path.join(self.root, 'datadir')
+
+        self.url = reverse('informationpackage-list')
+
+        try:
+            os.mkdir(self.datadir)
+        except OSError as e:
+            if e.errno != 17:
+                raise
+
+    def tearDown(self):
+        try:
+            shutil.rmtree(self.datadir)
+        except:
+            pass
+
+    def test_create_ip(self):
+        data = {'label': 'my label', 'object_identifier_value': 'my objid'}
+
+        res = self.client.post(self.url, data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        self.assertTrue(
+            InformationPackage.objects.filter(
+                Responsible=self.user,
+                Label=data['label'],
+                ObjectIdentifierValue=data['object_identifier_value'],
+            ).exists()
+        )
+
+    def test_create_ip_without_objid(self):
+        data = {'label': 'my label'}
+
+        res = self.client.post(self.url, data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        InformationPackage.objects.filter(
+            Responsible=self.user,
+            Label=data['label'],
+            ObjectIdentifierValue=F('pk')
+        ).exists()
+
+    def test_create_ip_without_label(self):
+        data = {'object_identifier_value': 'my objid'}
+
+        res = self.client.post(self.url, data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertFalse(InformationPackage.objects.exists())
 
 
 class test_delete_ip(TestCase):
