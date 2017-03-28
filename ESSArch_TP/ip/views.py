@@ -941,7 +941,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
-                "ip": ip
+                "ip": ip.pk
             },
             processstep_pos=20,
             log=EventIP,

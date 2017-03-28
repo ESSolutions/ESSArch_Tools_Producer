@@ -310,6 +310,8 @@ class SubmitSIP(DBTask):
     event_type = 10300
 
     def run(self, ip=None):
+        ip = InformationPackage.objects.get(pk=ip)
+
         srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
@@ -343,6 +345,8 @@ class SubmitSIP(DBTask):
         self.set_progress(100, total=100)
 
     def undo(self, ip=None):
+        ip = InformationPackage.objects.get(pk=ip)
+
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
 
@@ -353,4 +357,4 @@ class SubmitSIP(DBTask):
         os.remove(xml)
 
     def event_outcome_success(self, ip=None):
-        return "Submitted %s" % (ip.pk)
+        return "Submitted %s" % (ip)

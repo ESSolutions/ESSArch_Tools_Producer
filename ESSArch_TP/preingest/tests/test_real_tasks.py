@@ -273,7 +273,7 @@ class test_tasks(TransactionTestCase):
         task = ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
-                "ip": ip
+                "ip": ip.pk
             },
         )
         task.run()
