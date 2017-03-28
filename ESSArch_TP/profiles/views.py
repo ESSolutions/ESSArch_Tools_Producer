@@ -141,9 +141,6 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        return Response({'status': 'Not allowed to lock SA'}, status=status.HTTP_400_BAD_REQUEST)
-
-
 class ProfileSAViewSet(viewsets.ModelViewSet):
     queryset = ProfileSA.objects.all()
     serializer_class = ProfileSASerializer
