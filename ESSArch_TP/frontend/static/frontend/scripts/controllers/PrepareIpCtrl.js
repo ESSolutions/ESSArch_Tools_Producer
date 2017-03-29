@@ -506,6 +506,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventShow = false;
             $scope.statusShow = false;
             $rootScope.loadNavigation(ipSortString);
+            $scope.getListViewData();
         });
     }
     //Creates and shows modal for profile lock.

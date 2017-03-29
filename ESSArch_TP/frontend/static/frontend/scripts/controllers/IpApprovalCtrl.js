@@ -456,6 +456,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventShow = false;
             $scope.statusShow = false;
             $rootScope.loadNavigation(ipSortString);
+            $scope.getListViewData();
         });
     }
     $scope.unlockSipModal = function (profile) {

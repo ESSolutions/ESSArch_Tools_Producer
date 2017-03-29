@@ -576,6 +576,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.eventShow = false;
             $scope.statusShow = false;
             $rootScope.loadNavigation(ipSortString);
+            $scope.getListViewData();
         });
     }
     $scope.emailModal = function (profiles) {

@@ -251,6 +251,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventShow = false;
             $scope.statusShow = false;
             $rootScope.loadNavigation(ipSortString);
+            $scope.getListViewData();
         });
     }
     //UPLOAD
