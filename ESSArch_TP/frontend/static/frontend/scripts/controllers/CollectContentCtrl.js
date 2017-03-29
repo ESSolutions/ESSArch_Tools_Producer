@@ -364,11 +364,10 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.uploadedSize = 0;
     $scope.flowCompleted = false;
     $scope.flowComplete = function(flow, transfers) {
-        if(!$scope.flowCompleted) {
+        if(flow.progress() === 1) {
             $scope.flowCompleted = true;
             $scope.flowSize = flow.getSize();
             $scope.flowFiles = transfers.length;
-
             flow.cancel();
             $scope.resetUploadedSize();
         }
