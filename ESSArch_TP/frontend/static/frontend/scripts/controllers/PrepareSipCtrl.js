@@ -110,12 +110,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Add ip to selected
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
-            if(ip.id == $scope.selectedIp.id){
+            if(ip.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.edit && !$scope.eventlog && !$scope.eventShow){
-            $scope.selectedIp = {id: "", class: ""};
+        if(row.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
+            $scope.selectedIp = {ObjectIdentifierValue: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;

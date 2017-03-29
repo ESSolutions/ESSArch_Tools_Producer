@@ -114,12 +114,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Make ip selected and add class to visualize
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
-            if(ip.id == $scope.selectedIp.id){
+            if(ip.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
                 ip.class = "";
             }
         });
-        if(row.id == $scope.selectedIp.id && !$scope.select && !$scope.statusShow && !$scope.eventShow){
-            $scope.selectedIp = {id: "", class: ""};
+        if(row.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
+            $scope.selectedIp = {ObjectIdentifierValue: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
