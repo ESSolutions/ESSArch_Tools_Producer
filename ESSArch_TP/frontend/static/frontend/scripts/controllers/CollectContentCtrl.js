@@ -363,12 +363,14 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.uploadedSize = 0;
     $scope.flowCompleted = false;
     $scope.flowComplete = function(flow, transfers) {
-        $scope.flowCompleted = true;
-        $scope.flowSize = flow.getSize();
-        $scope.flowFiles = transfers.length;
+        if(!$scope.flowCompleted) {
+            $scope.flowCompleted = true;
+            $scope.flowSize = flow.getSize();
+            $scope.flowFiles = transfers.length;
 
-        flow.cancel();
-        $scope.resetUploadedSize();
+            flow.cancel();
+            $scope.resetUploadedSize();
+        }
     }
     $scope.hideFlowCompleted = function() {
         $scope.flowCompleted = false;
