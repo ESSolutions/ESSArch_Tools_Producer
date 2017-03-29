@@ -24,7 +24,10 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-include src="'static/frontend/views/file_upload.html'"></div>
+                    <div ng-if="ip.Responsible.id == auth.id || checkPermission('ip.can_upload')" ng-include src="'static/frontend/views/file_upload.html'"></div>
+                    <div ng-if="ip.Responsible.id != auth.id && !checkPermission('ip.can_upload')">
+                        <p style="color:red;">You do not have permission to upload files to this IP</p>
+                    </div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
                     <form class="eventlog-form" ng-submit="setUploaded(ip)">
