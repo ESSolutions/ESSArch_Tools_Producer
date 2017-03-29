@@ -1,12 +1,15 @@
 <div class="body-wrapper">
     <div class="logo-search-user-admin-wrapper">
+        <div class="hamburger" ng-show="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)">
+            <i class="fa fa-2x" ng-class="{'fa-times': hamburgerActive, 'fa-bars': !hamburgerActive}" aria-hidden="true" ng-click="hamburgerActive = !hamburgerActive"></i>
+        </div>
         <div class="logo" ng-controller="UtilCtrl">
             <h3 ng-click="infoPage()">ESSArch Tools for Producer</h3>
         </div>
         <div class="user-admin">
             <div class="edit-user" ng-controller="DropdownCtrl">
                 <div class="btn-group" uib-dropdown is-open="status.isopen">
-                    <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled" uib-popover="{{'USEROPTIONS' | translate}}" popover-trigger="'mouseenter'" popover-placement="right" popover-popup-delay="500" popover-append-to-body="true">
+                    <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled" uib-popover="{{'USEROPTIONS' | translate}}" popover-placement="right" popover-popup-delay="500" popover-append-to-body="true">
                         <h4>{{auth.username}}</h4>
                         <span class="fa fa-user-circle-o"></span>
                     </div>
@@ -29,7 +32,6 @@
                         heading="{{t.label}}"
                         ng-click="go(t)"
                         uib-popover="{{'NAVIGATETO' | translate}}: {{t.label}}"
-                        popover-trigger="'mouseenter'"
                         popover-placement="top-left"
                         popover-popup-delay="500"
                         popover-append-to-body="true">
@@ -37,17 +39,17 @@
             </uib-tabset>
         </div>
         <div ng-controller="UtilCtrl" class="tasks-icons">
-            <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
-            <span ng-click="redirectAdmin()" class="fa fa-cog info-popover" uib-popover="{{'SETTINGS' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
-            <span ui-sref="home.versionInfo" class="fa fa-question-circle info-popover" uib-popover="{{'HELP' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+            <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+            <span ng-click="redirectAdmin()" class="fa fa-cog info-popover" uib-popover="{{'SETTINGS' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+            <span ui-sref="home.versionInfo" class="fa fa-question-circle info-popover" uib-popover="{{'HELP' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
 
-            <div ng-controller="LanguageCtrl" style="width: 100px; margin-left: 10px;">
-                <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" style="width: 100%;" uib-popover="{{'CHOOSELANGUAGE' | translate}}" popover-trigger="'mouseenter'" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></select>
+            <div ng-controller="LanguageCtrl" class="language-select" tyle="width: 100px; margin-left: 10px;">
+                <select class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" uib-popover="{{'CHOOSELANGUAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></select>
             </div>
         </div>
     </div>
     <div class="nav-dynamic-wrapper">
-        <div ng-if="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)" class="shortcut-nav-calendar-wrapper">
+        <div ng-if="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)" class="shortcut-nav-calendar-wrapper" ng-class="{'active-hamburger': hamburgerActive}">
             <!--
                 <div class="shortcut-list" ng-controller="DropdownCtrl">
                 <div class="btn-group" uib-dropdown is-open="status.isopen">
@@ -71,7 +73,6 @@
                              on-selection="showSelectedInstitution(node)"
                              selected-node="nodeInst"
                              uib-popover="{{'FILTERBY' | translate}}: Archival institution"
-                             popover-trigger="'mouseenter'"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
@@ -84,7 +85,6 @@
                              on-selection="showSelectedOrganization(node)"
                              selected-node="nodeOrg"
                              uib-popover="{{'FILTERBY' | translate}}: Archivist organization"
-                             popover-trigger="'mouseenter'"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
@@ -97,7 +97,6 @@
                              on-selection="showSelectedType(node)"
                              selected-node="nodeType"
                              uib-popover="{{'FILTERBY' | translate}}: Archival type"
-                             popover-trigger="'mouseenter'"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
@@ -110,7 +109,6 @@
                              on-selection="showSelectedLocation(node)"
                              selected-node="nodeLoc"
                              uib-popover="{{'FILTERBY' | translate}}: Archival location"
-                             popover-trigger="'mouseenter'"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
@@ -123,7 +121,6 @@
                              on-selection="showSelectedOther(node)"
                              selected-node="nodeOther"
                              uib-popover="{{'FILTERBY' | translate}}: Other"
-                             popover-trigger="'mouseenter'"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"

@@ -111,10 +111,11 @@
         padding-bottom: 0;
         font-size: 13px;
     }
-    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
         padding-top: 4px;
         padding-bottom: 8px;
         line-height: 1;
+        word-break: break-all;
     }
     .status-view {
     }
