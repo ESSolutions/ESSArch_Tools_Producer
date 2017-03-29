@@ -2,7 +2,7 @@
     <div class="">
         <div ng-if="vm.activeColumns.options && vm.allColumns">
             <label>
-                Visible columns
+                {{'TABLE_COLUMNS' | translate}}
             </label>
             <br/>
             <div  class="column-picker">
@@ -19,6 +19,6 @@
             </div>
         </div>
         <br/>
-        <button class="btn btn-info" ng-click="saveColumns()">Save</button>
+        <button class="btn btn-info" ng-click="saveColumns()">{{'SAVE' | translate}}</button>
     </div>
 </div>

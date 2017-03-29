@@ -3,11 +3,11 @@
 </div>
 <form ng-submit="$ctrl.prepare()">
     <div class="modal-body" id="modal-body">
-        <label for="label">Label</label>
+        <label for="label">{{'LABEL' | translate}}</label>
         <input required focused="true" id="label" class="form-control" ng-model="$ctrl.label"></input>
-        <button type="button" class="btn btn-default" ng-click="optionalOptions = !optionalOptions" style="margin-top: 10px;"><i class="fa fa-minus" ng-if="optionalOptions"></i><i class="fa fa-plus" ng-if="!optionalOptions"></i> Options</button>
+        <button type="button" class="btn btn-default" ng-click="optionalOptions = !optionalOptions" style="margin-top: 10px;"><i class="fa fa-minus" ng-if="optionalOptions"></i><i class="fa fa-plus" ng-if="!optionalOptions"></i> {{'OPTIONS' | translate}}</button>
         <div ng-if="optionalOptions" class="form-group" style="margin-top: 15px;">
-            <label for="objectIdentifierValue">Custom identification</label>
+            <label for="objectIdentifierValue">{{'CUSTOM_IDENTIFICATION' | translate}}</label>
             <input id="objectIdentifierValue" class="form-control" ng-model="$ctrl.objectIdentifierValue"></input>
         </div>
     </div>

@@ -12,7 +12,7 @@
             <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="select" id="select-view" class="select-view">
                     <b>IP: </b>{{ip.Label}}
-                    <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">Edit EAD</button>
+                    <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">{{'EDIT' | translate}} EAD</button>
                     <div class="file-explorer">
                         <div class="file-explorer-nav">
                             <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
@@ -26,7 +26,7 @@
                     </div>
                     <div ng-if="ip.Responsible.id == auth.id || checkPermission('ip.can_upload')" ng-include src="'static/frontend/views/file_upload.html'"></div>
                     <div ng-if="ip.Responsible.id != auth.id && !checkPermission('ip.can_upload')">
-                        <p style="color:red;">You do not have permission to upload files to this IP</p>
+                        <p style="color:red;">{{'NO_PERMISSION_UPLOAD' | translate}}!</p>
                     </div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">

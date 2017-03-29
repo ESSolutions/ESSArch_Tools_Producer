@@ -187,6 +187,12 @@
     "ARCHIVAL_INSTITUTION": "Arkivinstitution",
     "ARCHIVIST_ORGANIZATION": "Arkivorganisation",
     "START_DATE": "Startdatum",
-    "END_DATE": "Slutdatum"
-
+    "END_DATE": "Slutdatum",
+    "OPTIONS": "Alternativ",
+    "CUSTOM_IDENTIFICATION": "Egen identifiering",
+    "UPLOAD_COMPLETE": "Upladding slutförd",
+    "NO_PERMISSION_UPLOAD": "Du saknar behörighet att ladda upp filer till detta IP",
+    "TABLE_COLUMNS": "Tabellkolumner",
+    "SAVE": "Spara",
+    "EDIT": "Redigera"
 }
