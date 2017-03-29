@@ -337,7 +337,8 @@
         padding: 15px;
         width: 100%;
         min-width: 520px;
-        height: 400px;
+        min-height: 100px;
+        max-height: 400px;
         overflow-y: scroll;
         border-style: solid;
         border-color: #bbb;

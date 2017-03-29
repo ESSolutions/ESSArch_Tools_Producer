@@ -312,6 +312,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         });
     };
     $scope.fileUploadSuccess = function(ip, file, message, flow) {
+        $scope.uploadedSize += file.size;
         var url = ip.url + 'merge-uploaded-chunks/';
         var path = $scope.getQuery().destination + file.relativePath;
 
@@ -333,7 +334,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.selectedCard = null;
     $scope.toggleCardSelect = function(card)  {
         if(card == $scope.selectedCard) {
-            $scope.selectedCard = null;;
+            $scope.selectedCard = null;
         } else {
             $scope.selectedCard = card;
         }
@@ -354,9 +355,22 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
 
         var left = ((width / 2) - (w / 2)) + dualScreenLeft;
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
-        $http.get(appConfig.djangoUrl + "information-packages/get-xsds/").then(function(response) {
-            console.log(response);
-        });
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    }
+    $scope.resetUploadedSize = function() {
+        $scope.uploadedSize = 0;
+    }
+    $scope.uploadedSize = 0;
+    $scope.flowCompleted = false;
+    $scope.flowComplete = function(flow, transfers) {
+        $scope.flowCompleted = true;
+        $scope.flowSize = flow.getSize();
+        $scope.flowFiles = transfers.length;
+
+        flow.cancel();
+        $scope.resetUploadedSize();
+    }
+    $scope.hideFlowCompleted = function() {
+        $scope.flowCompleted = false;
     }
 });
