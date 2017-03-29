@@ -178,6 +178,13 @@
     "SUPPORTROW1": "Behöver du hjälp? Har du hittat den bugg, eller har du en idé om en ny funktion?",
     "SUPPORTROW2": "Klicka på support-länken nedan, logga in/gör ett konto och gör ett nytt ärende och vi kommer hantera ärendet snarast möjligt.",
     "SUPPORTROW3": "Om ärendet är relaterat till ett misslyckat step/task kan du klistra in traceback i ärendets beskrivning så blir problemet lättare att identifiera. Klicka på step/taskens etikett",
+    "OTHER": "Andra",
     "CREATE_DATE": "Skapad",
-    "OBJECT_IDENTIFIER_VALUE": "ID"
+    "OBJECT_IDENTIFIER_VALUE": "ID",
+    "OBJECT_SIZE": "Objektstorlek",
+    "ARCHIVAL_INSTITUTION": "Arkivinstitution",
+    "ARCHIVIST_ORGANIZATION": "Arkivorganisation",
+    "START_DATE": "Startdatum",
+    "END_DATE": "Slutdatum"
+
 }

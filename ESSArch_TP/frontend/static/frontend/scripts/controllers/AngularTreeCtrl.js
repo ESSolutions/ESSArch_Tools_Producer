@@ -39,14 +39,14 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
     }
     $scope.ArchivalInstitution = [
         {
-            "name": "Archival institution",
+            "name": "ARCHIVAL_INSTITUTION",
             "children": []
         }
     ];
 
     $scope.ArchivistOrganization = [
         {
-            "name": "Archivist organization",
+            "name": "ARCHIVIST_ORGANIZATION",
             "children": []
         }
     ];
@@ -69,7 +69,7 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
 
     $scope.other = [
         {
-            "name": "other",
+            "name": "OTHER",
             "children": []
         }
     ];

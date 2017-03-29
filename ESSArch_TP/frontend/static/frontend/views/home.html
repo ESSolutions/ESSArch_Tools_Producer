@@ -72,24 +72,24 @@
                              options="treeOptions"
                              on-selection="showSelectedInstitution(node)"
                              selected-node="nodeInst"
-                             uib-popover="{{'FILTERBY' | translate}}: Archival institution"
+                             uib-popover="{{'FILTERBY' | translate}}: {{'ARCHIVAL_INSTITUTION' | translate}}"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
                              >
-                             {{node.name}}
+                             {{node.name | translate}}
                 </treecontrol>
                 <treecontrol class="tree-light"
                              tree-model="ArchivistOrganization"
                              options="treeOptions"
                              on-selection="showSelectedOrganization(node)"
                              selected-node="nodeOrg"
-                             uib-popover="{{'FILTERBY' | translate}}: Archivist organization"
+                             uib-popover="{{'FILTERBY' | translate}}: {{'ARCHIVIST_ORGANIZATION' | translate}}"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
                              >
-                             {{node.name}}
+                             {{node.name | translate}}
                 </treecontrol>
                 <treecontrol class="tree-light"
                              tree-model="ArchivalType"
@@ -101,7 +101,7 @@
                              popover-popup-delay="500"
                              popover-append-to-body="true"
                              >
-                             {{node.name}}
+                             {{node.name | translate}}
                 </treecontrol>
                 <treecontrol class="tree-light"
                              tree-model="ArchivalLocation"
@@ -113,19 +113,19 @@
                              popover-popup-delay="500"
                              popover-append-to-body="true"
                              >
-                             {{node.name}}
+                             {{node.name | translate}}
                 </treecontrol>
                 <treecontrol class="tree-light"
                              tree-model="other"
                              options="treeOptions"
                              on-selection="showSelectedOther(node)"
                              selected-node="nodeOther"
-                             uib-popover="{{'FILTERBY' | translate}}: Other"
+                             uib-popover="{{'FILTERBY' | translate}}: {{'OTHER' | translate}}"
                              popover-placement="top-left"
                              popover-popup-delay="500"
                              popover-append-to-body="true"
                              >
-                             {{node.name}}
+                             {{node.name | translate}}
                 </treecontrol>
                 </p>
             </div>
