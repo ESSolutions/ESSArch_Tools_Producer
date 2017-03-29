@@ -96,6 +96,8 @@
     "VALIDATEXMLFILE": "Validera XML-fil",
     "VALIDATELOGICALPHYSICALREPRESENTATION": "Validera logisk fysisk representation",
     "VALIDATEINTEGRITY": "Validera Integritet",
+    "FILECONVERSION": "Filkonvertering",
+    "CONVERTFILES": "Konverta filer",
     "PATH": "Sökväg",
     "YES": "Ja",
     "NO": "Nej",

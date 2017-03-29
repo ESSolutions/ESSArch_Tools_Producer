@@ -96,6 +96,8 @@
     "VALIDATEXMLFILE": "Validate XML file",
     "VALIDATELOGICALPHYSICALREPRESENTATION": "Validate logical physical representation",
     "VALIDATEINTEGRITY": "Validate Integrity",
+    "FILECONVERSION": "File conversion",
+    "CONVERTFILES": "Convert files",
     "PATH": "Path",
     "YES": "Yes",
     "NO": "No",

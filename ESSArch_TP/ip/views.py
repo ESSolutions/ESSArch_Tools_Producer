@@ -390,6 +390,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         validate_integrity = validators.get('validate_integrity', False)
         validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
 
+        file_conversion = request.data.get('file_conversion', False)
+
         container_format = ip.get_container_format()
 
         main_step = ProcessStep.objects.create(
@@ -448,39 +450,40 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         mets_path = os.path.join(ip.ObjectPath, mets_dir, mets_name)
         filesToCreate[mets_path] = ip.get_profile('sip').specification
 
-        convert_files_step = ProcessStep.objects.create(
-            name="Convert files",
-            parent_step_pos=10,
-            parallel=False,
-        )
+        if file_conversion:
+            convert_files_step = ProcessStep.objects.create(
+                name="Convert files",
+                parent_step_pos=10,
+                parallel=False,
+            )
 
-        FILE_FORMAT_MAP = {
-            'doc': 'pdf',
-            'docx': 'pdf'
-        }
+            FILE_FORMAT_MAP = {
+                'doc': 'pdf',
+                'docx': 'pdf'
+            }
 
-        tasks = []
+            tasks = []
 
-        for root, dirs, filenames in walk(ip.ObjectPath):
-            for fname in filenames:
-                filepath = os.path.join(root, fname)
-                try:
-                    new_format = FILE_FORMAT_MAP[os.path.splitext(filepath)[1][1:]]
-                except KeyError:
-                    pass
-                else:
-                    tasks.append(ProcessTask(
-                        name="ESSArch_Core.tasks.ConvertFile",
-                        params={
-                            'filepath': filepath,
-                            'new_format': new_format
-                        },
-                        processstep=convert_files_step,
-                        information_package=ip,
-                        responsible=self.request.user,
-                    ))
+            for root, dirs, filenames in walk(ip.ObjectPath):
+                for fname in filenames:
+                    filepath = os.path.join(root, fname)
+                    try:
+                        new_format = FILE_FORMAT_MAP[os.path.splitext(filepath)[1][1:]]
+                    except KeyError:
+                        pass
+                    else:
+                        tasks.append(ProcessTask(
+                            name="ESSArch_Core.tasks.ConvertFile",
+                            params={
+                                'filepath': filepath,
+                                'new_format': new_format
+                            },
+                            processstep=convert_files_step,
+                            information_package=ip,
+                            responsible=self.request.user,
+                        ))
 
-        ProcessTask.objects.bulk_create(tasks, 1000)
+            ProcessTask.objects.bulk_create(tasks, 1000)
 
         generate_xml_step = ProcessStep.objects.create(
             name="Generate XML",
@@ -851,9 +854,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         create_sip_step.save()
 
         main_step.add_child_steps(
-            start_create_sip_step, convert_files_step, generate_xml_step,
+            start_create_sip_step, generate_xml_step,
             create_sip_step
         )
+
+        if file_conversion:
+            main_step.add_child_steps(convert_files_step)
+
         main_step.information_package = ip
         main_step.save()
         main_step.run()

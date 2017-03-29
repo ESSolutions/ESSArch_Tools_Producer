@@ -259,7 +259,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $http({
             method: 'POST',
             url: ip.url+"create/",
-            data: {validators: vm.validatorModel}
+            data: {
+                validators: vm.validatorModel,
+                file_conversion: vm.fileConversionModel.file_conversion,
+            }
         })
             .then(function successCallback(response) {
                 $scope.select = false;
@@ -426,6 +429,19 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             "type": "select",
             "key": "validate_integrity",
         }
+    ];
+    vm.fileConversionModel = {};
+    vm.fileConversionFields = [
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('CONVERTFILES'),
+                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
+            },
+            "defaultValue": false,
+            "type": "select",
+            "key": "file_conversion",
+        },
     ];
     //Remove and ip
     $scope.removeIp = function (ipObject) {
