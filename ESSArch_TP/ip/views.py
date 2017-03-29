@@ -45,6 +45,8 @@ from rest_framework.response import Response
 
 from natsort import natsorted
 
+from scandir import walk
+
 from ESSArch_Core.configuration.models import (
     EventType,
     Path,
@@ -446,9 +448,43 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         mets_path = os.path.join(ip.ObjectPath, mets_dir, mets_name)
         filesToCreate[mets_path] = ip.get_profile('sip').specification
 
+        convert_files_step = ProcessStep.objects.create(
+            name="Convert files",
+            parent_step_pos=10,
+            parallel=False,
+        )
+
+        FILE_FORMAT_MAP = {
+            'doc': 'pdf',
+            'docx': 'pdf'
+        }
+
+        tasks = []
+
+        for root, dirs, filenames in walk(ip.ObjectPath):
+            for fname in filenames:
+                filepath = os.path.join(root, fname)
+                try:
+                    new_format = FILE_FORMAT_MAP[os.path.splitext(filepath)[1][1:]]
+                except KeyError:
+                    pass
+                else:
+                    tasks.append(ProcessTask(
+                        name="ESSArch_Core.tasks.ConvertFile",
+                        params={
+                            'filepath': filepath,
+                            'new_format': new_format
+                        },
+                        processstep=convert_files_step,
+                        information_package=ip,
+                        responsible=self.request.user,
+                    ))
+
+        ProcessTask.objects.bulk_create(tasks, 1000)
+
         generate_xml_step = ProcessStep.objects.create(
             name="Generate XML",
-            parent_step_pos=1
+            parent_step_pos=20
         )
 
         for fname, template in filesToCreate.iteritems():
@@ -488,7 +524,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if any(validators.itervalues()):
             validate_step = ProcessStep.objects.create(
                 name="Validation", parent_step=main_step,
-                parent_step_pos=2,
+                parent_step_pos=30,
             )
 
             if validate_xml_file:
@@ -565,7 +601,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step = ProcessStep.objects.create(
                 name="Create SIP",
-                parent_step_pos=3
+                parent_step_pos=40
         )
 
         for fname, template in filesToCreate.iteritems():
@@ -815,7 +851,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         create_sip_step.save()
 
         main_step.add_child_steps(
-            start_create_sip_step, generate_xml_step, create_sip_step
+            start_create_sip_step, convert_files_step, generate_xml_step,
+            create_sip_step
         )
         main_step.information_package = ip
         main_step.save()
