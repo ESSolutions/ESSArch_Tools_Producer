@@ -194,5 +194,6 @@
     "NO_PERMISSION_UPLOAD": "You do not have permission to upload files to this IP",
     "TABLE_COLUMNS": "Table columns",
     "SAVE": "Save",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+    "UPLOADED": "Uploaded"
 }

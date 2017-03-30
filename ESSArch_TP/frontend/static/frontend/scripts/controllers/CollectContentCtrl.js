@@ -313,7 +313,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         });
     };
     $scope.fileUploadSuccess = function(ip, file, message, flow) {
-        $scope.uploadedSize += file.size;
+        $scope.uploadedFiles ++;
         var url = ip.url + 'merge-uploaded-chunks/';
         var path = $scope.getQuery().destination + file.relativePath;
 
@@ -358,10 +358,10 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
-    $scope.resetUploadedSize = function() {
-        $scope.uploadedSize = 0;
+    $scope.resetUploadedFiles = function() {
+        $scope.uploadedFiles = 0;
     }
-    $scope.uploadedSize = 0;
+    $scope.uploadedFiles = 0;
     $scope.flowCompleted = false;
     $scope.flowComplete = function(flow, transfers) {
         if(flow.progress() === 1) {
@@ -369,10 +369,17 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.flowSize = flow.getSize();
             $scope.flowFiles = transfers.length;
             flow.cancel();
-            $scope.resetUploadedSize();
+            $scope.resetUploadedFiles();
         }
     }
     $scope.hideFlowCompleted = function() {
         $scope.flowCompleted = false;
+    }
+    $scope.getUploadedPercentage = function(totalSize, uploadedSize, totalFiles) {
+        if(totalSize == 0 || uploadedSize/totalSize == 1) {
+            return ($scope.uploadedFiles / totalFiles) * 100;
+        } else {
+            return (uploadedSize / totalSize) * 100;
+        }
     }
 });

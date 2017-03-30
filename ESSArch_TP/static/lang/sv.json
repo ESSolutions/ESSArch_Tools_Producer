@@ -194,5 +194,6 @@
     "NO_PERMISSION_UPLOAD": "Du saknar behörighet att ladda upp filer till detta IP",
     "TABLE_COLUMNS": "Tabellkolumner",
     "SAVE": "Spara",
-    "EDIT": "Redigera"
+    "EDIT": "Redigera",
+    "UPLOADED": "Uppladdat"
 }
