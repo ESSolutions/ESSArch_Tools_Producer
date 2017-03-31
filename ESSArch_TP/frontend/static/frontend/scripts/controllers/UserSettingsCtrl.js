@@ -62,6 +62,7 @@ angular.module("myApp").controller("UserSettingsCtrl", function($scope, $rootSco
     $scope.saveColumns = function() {
         $rootScope.listViewColumns = vm.activeColumns.options;
         vm.activeColumns.chosen = [];
+        $scope.saveAlert = null;
         var updateArray = vm.activeColumns.options.map(function(a){return a.label});
         $http({
             method: 'PATCH',
@@ -69,6 +70,17 @@ angular.module("myApp").controller("UserSettingsCtrl", function($scope, $rootSco
             data: {ip_list_columns: updateArray}
         }).then(function(response) {
             $rootScope.auth = response.data;
+            $scope.saveAlert = $scope.alerts.saveSuccess;
+        }, function error() {
+            $scope.saveAlert = $scope.alerts.saveError;
         });
+    }
+    $scope.saveAlert = null;
+    $scope.alerts = {
+        saveError: { type: 'danger', msg: 'SAVE_ERROR' },
+        saveSuccess: { type: 'success', msg: 'SAVED_MESSAGE' }
+    };
+    $scope.closeAlert = function() {
+        $scope.saveAlert = null;
     }
 });

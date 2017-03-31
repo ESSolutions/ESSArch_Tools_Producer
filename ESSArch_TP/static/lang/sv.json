@@ -195,5 +195,8 @@
     "TABLE_COLUMNS": "Tabellkolumner",
     "SAVE": "Spara",
     "EDIT": "Redigera",
-    "UPLOADED": "Uppladdat"
+    "UPLOADED": "Uppladdat",
+    "SAVED_MESSAGE": "Sparad!",
+    "EVENT_ADDED": "Event tillagt!",
+    "SAVE_ERROR": "Ett fel uppstod!"
 }

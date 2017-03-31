@@ -20,5 +20,6 @@
         </div>
         <br/>
         <button class="btn btn-info" ng-click="saveColumns()">{{'SAVE' | translate}}</button>
+        <div uib-alert ng-if="saveAlert" style="width: 50%;" ng-class="'alert-' + (saveAlert.type || 'warning')" close="closeAlert()">{{saveAlert.msg | translate}}</div>
     </div>
 </div>

@@ -195,5 +195,8 @@
     "TABLE_COLUMNS": "Table columns",
     "SAVE": "Save",
     "EDIT": "Edit",
-    "UPLOADED": "Uploaded"
+    "UPLOADED": "Uploaded",
+    "SAVED_MESSAGE": "Saved!",
+    "EVENT_ADDED": "Event added!",
+    "SAVE_ERROR": "An error occured!"
 }
