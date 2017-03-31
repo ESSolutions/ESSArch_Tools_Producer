@@ -30,6 +30,9 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     //Status tree view structure
     $scope.tree_data = [];
     $scope.angular = angular;
+    $scope.checkPermission = function(permissionName) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
+    };
     $translate(['LABEL', 'RESPONSIBLE', 'DATE', 'STATE', 'STATUS']).then(function(translations) {
         $scope.responsible = translations.RESPONSIBLE;
         $scope.label = translations.LABEL;
@@ -63,11 +66,14 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
                 field: "progress",
                 displayName: $scope.status,
                 cellTemplate: "<uib-progressbar class=\"progress\" value=\"row.branch[col.field]\" type=\"success\"><b>{{row.branch[col.field]+\"%\"}}</b></uib-progressbar>"
-            },
-            {
-                cellTemplate: "<div ng-include src=\"'static/frontend/views/undo_redo.html'\"></div>"
             }
         ];
+        if($scope.checkPermission("WorkflowEngine.can_undo") || $scope.checkPermission("WorkflowEngine.can_retry")) {
+            $scope.col_defs.push(
+            {
+                cellTemplate: "<div ng-include src=\"'static/frontend/views/undo_redo.html'\"></div>"
+            });
+        }
     });
     $scope.myTreeControl = {};
     $scope.myTreeControl.scope = this;
@@ -151,9 +157,6 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
     }
-    $scope.checkPermission = function(permissionName) {
-        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permissionName));
-    };
     $scope.extendedEqual = function(specification_data, model) {
         for(var prop in model) {
             if((model[prop] != "" || specification_data[prop]) && model[prop] != specification_data[prop]){
