@@ -46,6 +46,6 @@
     "ua-parser-js": "^0.7.12"
   },
   "resolutions": {
-    "angular": "1.6.3"
+    "angular": "~1.6"
   }
 }
