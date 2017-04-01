@@ -31,6 +31,7 @@ import errno
 import glob
 import os
 import shutil
+import re
 
 from django.db.models import Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
@@ -1129,7 +1130,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         path = os.path.join(ip.ObjectPath, request.data['path'])
 
         with open(path, 'wb') as f:
-            for chunk_file in natsorted(glob.glob('%s_*' % path)):
+            for chunk_file in natsorted(glob.glob('%s_*' % re.sub(r'([\[\]])', '[\\1]', path))):
                 f.write(open(chunk_file).read())
                 os.remove(chunk_file)
 
