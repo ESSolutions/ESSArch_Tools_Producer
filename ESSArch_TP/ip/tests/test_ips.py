@@ -218,7 +218,7 @@ class test_upload(TestCase):
 
         with open(srcfile) as fp, open(srcfile_chunk, 'r+') as chunk:
             while total < fsize:
-                chunk = SimpleUploadedFile(srcfile_chunk, fp.read(block_size), content_type='multipary/form-data')
+                chunk = SimpleUploadedFile(srcfile_chunk, fp.read(block_size), content_type='multipart/form-data')
                 data = {
                     'flowChunkNumber': i,
                     'flowRelativePath': os.path.basename(srcfile),
@@ -245,7 +245,7 @@ class test_upload(TestCase):
             fp.write('bar')
 
         with open(srcfile) as fp:
-            chunk = SimpleUploadedFile(srcfile, fp.read(), content_type='multipary/form-data')
+            chunk = SimpleUploadedFile(srcfile, fp.read(), content_type='multipart/form-data')
             data = {
                 'flowChunkNumber': 0,
                 'flowRelativePath': os.path.basename(srcfile),
