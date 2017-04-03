@@ -420,7 +420,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$touched || fc[0].$touched';
         formlyValidationMessages.addStringMessage('required', 'This field is required');
-
         djangoAuth.initialize('/rest-auth', false).then(function() {
 
             djangoAuth.profile().then(function(response) {

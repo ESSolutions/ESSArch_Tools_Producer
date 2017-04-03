@@ -138,6 +138,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             }, 0);
 
         }
+        $scope.previousGridArrays = [];
         $scope.uploadDisabled = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
