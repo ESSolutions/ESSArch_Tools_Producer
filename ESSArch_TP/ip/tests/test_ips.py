@@ -253,3 +253,27 @@ class test_upload(TestCase):
             }
             res = self.client.post(self.baseurl + 'upload/', data, format='multipart')
             self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_upload_file_with_square_brackets_in_name(self):
+        InformationPackage.objects.filter(pk=self.ip.pk).update(
+            Responsible=self.user
+        )
+
+        srcfile = os.path.join(self.src, 'foo[asd].txt')
+        dstfile = os.path.join(self.dst, 'foo[asd].txt')
+
+        with open(srcfile, 'w') as fp:
+            fp.write('bar')
+
+        with open(srcfile) as fp:
+            chunk = SimpleUploadedFile(srcfile, fp.read(), content_type='multipart/form-data')
+            data = {
+                'flowChunkNumber': 0,
+                'flowRelativePath': os.path.basename(srcfile),
+                'file': chunk,
+            }
+            self.client.post(self.baseurl + 'upload/', data, format='multipart')
+
+            data = {'path': dstfile}
+            self.client.post(self.baseurl + 'merge-uploaded-chunks/', data)
+            self.assertTrue(filecmp.cmp(srcfile, dstfile, False))
