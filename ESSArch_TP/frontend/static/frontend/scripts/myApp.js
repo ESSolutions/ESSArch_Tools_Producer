@@ -119,6 +119,17 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     }],
                 }
             })
+            .state('upload', {
+                url: '/upload/?{ip}?{destination}',
+                templateUrl: '/static/frontend/views/file_upload.html',
+                controller: 'UploadCtrl as vm',
+                params: {ip: null, destination: ""},
+                resolve: {
+                    authenticated: ['djangoAuth', function(djangoAuth){
+                        return djangoAuth.authenticationStatus();
+                    }],
+                }
+            })
             .state('home.createSip.dataSelection', {
                 url: '/data-selection',
                 templateUrl: '/static/frontend/views/create_sip_data_selection.html',

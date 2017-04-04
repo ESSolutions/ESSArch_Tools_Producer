@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="ip.Responsible.id == auth.id || checkPermission('ip.can_upload')" ng-include src="'static/frontend/views/file_upload.html'"></div>
+                    <button ng-if="ip.Responsible.id == auth.id || checkPermission('ip.can_upload')" class="btn btn-default" ng-click="openUploadPage()">Upload</button>
                     <div ng-if="ip.Responsible.id != auth.id && !checkPermission('ip.can_upload')">
                         <p style="color:red;">{{'NO_PERMISSION_UPLOAD' | translate}}!</p>
                     </div>

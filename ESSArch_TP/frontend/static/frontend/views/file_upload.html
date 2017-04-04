@@ -1,8 +1,9 @@
-<div flow-init="{target: getFlowTarget, query: getQuery}"
-     flow-file-success="updateGridArray(ip); fileUploadSuccess(ip, $file, $message, $flow)"
+<div class="ip-approval content-wrapper"
+     flow-init="{target: getFlowTarget, query: getQuery}"
+     flow-file-success="fileUploadSuccess(ip, $file, $message, $flow)"
      flow-file-added="hideFlowCompleted()"
      flow-files-added="hideFlowCompleted()"
-     flow-complete="flowComplete($flow, transfers)"
+     flow-complete="flowComplete($flow, transfers, ip)"
      flow-transfers
      >
     <div>

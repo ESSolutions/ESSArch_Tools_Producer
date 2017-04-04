@@ -256,12 +256,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         });
     }
     //UPLOAD
-    $scope.getFlowTarget = function() {
-        return $scope.ip.url + 'upload/';
-    };
-    $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
-        return {destination: $scope.previousGridArraysString()};
-    };
     $scope.uploadDisabled = false;
     $scope.setUploaded = function(ip) {
         $scope.uploadDisabled = true;
@@ -313,17 +307,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.deckGridData = dir;
         });
     };
-    $scope.fileUploadSuccess = function(ip, file, message, flow) {
-        $scope.uploadedFiles ++;
-        var url = ip.url + 'merge-uploaded-chunks/';
-        var path = $scope.getQuery().destination + file.relativePath;
-
-        $http({
-            method: 'POST',
-            url: url,
-            data: {'path': path}
-        });
-    };
     $scope.expandFile = function(ip, card) {
         if(card.type == "dir"){
             $scope.previousGridArrays.push(card);
@@ -341,10 +324,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.selectedCard = card;
         }
     };
-    $scope.fileTransferFilter = function(file)
-    {
-        return file.isUploading();
-    };
     $scope.openEadEditor = function(ip) {
         // Fixes dual-screen position                         Most browsers      Firefox
         var w = 900;
@@ -359,28 +338,21 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
-    $scope.resetUploadedFiles = function() {
-        $scope.uploadedFiles = 0;
-    }
-    $scope.uploadedFiles = 0;
-    $scope.flowCompleted = false;
-    $scope.flowComplete = function(flow, transfers) {
-        if(flow.progress() === 1) {
-            $scope.flowCompleted = true;
-            $scope.flowSize = flow.getSize();
-            $scope.flowFiles = transfers.length;
-            flow.cancel();
-            $scope.resetUploadedFiles();
-        }
-    }
-    $scope.hideFlowCompleted = function() {
-        $scope.flowCompleted = false;
-    }
-    $scope.getUploadedPercentage = function(totalSize, uploadedSize, totalFiles) {
-        if(totalSize == 0 || uploadedSize/totalSize == 1) {
-            return ($scope.uploadedFiles / totalFiles) * 100;
-        } else {
-            return (uploadedSize / totalSize) * 100;
-        }
+    $scope.openUploadPage = function(ip) {
+        var w = 1000;
+        var h = 600;
+        var dualScreenLeft = $window.screenLeft != undefined ? $window.screenLeft : screen.left;
+        var dualScreenTop = $window.screenTop != undefined ? $window.screenTop : screen.top;
+
+        var width = $window.innerWidth ? $window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = $window.innerHeight ? $window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((height / 2) - (h / 2)) + dualScreenTop;
+        var dst = $scope.previousGridArraysString();
+        var url = $state.href('upload', {ip: $scope.ip.id, destination: dst});
+        console.log(url);
+        console.log(dst);
+        $window.open(url, '_blank', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
 });
