@@ -1,11 +1,10 @@
 <div class="ip-approval content-wrapper"
-     flow-init="{target: getFlowTarget, query: getQuery}"
-     flow-file-success="fileUploadSuccess(ip, $file, $message, $flow)"
-     flow-file-added="hideFlowCompleted()"
-     flow-files-added="hideFlowCompleted()"
-     flow-complete="flowComplete($flow, transfers, ip)"
-     flow-transfers
-     >
+    flow-init
+    flow-object="currentFlowObject"
+    flow-file-added="hideFlowCompleted()"
+    flow-files-added="hideFlowCompleted()"
+    flow-transfers
+    >
     <div>
         <h4>{{'CHOOSEFILES' | translate}}:</h4>
 		<!--
@@ -51,7 +50,7 @@
                     <tbody>
                         <tr ng-repeat="file in transfers | filter: fileTransferFilter">
                             <td style="width: 33%;">{{file.relativePath}}</td>
-                            <td>{{file.size}}</td>
+                            <td>{{file.size | filesize}}</td>
                             <td>
                                 <uib-progressbar class="progress" value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
                             </td>

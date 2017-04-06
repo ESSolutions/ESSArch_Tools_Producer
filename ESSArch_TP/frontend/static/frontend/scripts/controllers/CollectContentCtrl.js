@@ -22,12 +22,14 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller) {
+angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
     $controller('BaseCtrl', { $scope: $scope });
     var vm = this;
     var ipSortString = "Prepared,Uploading";
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     vm.flowDestination = null;
+    $scope.showFileUpload = true;
+    $scope.currentFlowObject = null;
     // List view
     // Click funtion columns that does not have a relevant click function
     $scope.ipRowClick = function(row) {
@@ -131,6 +133,16 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.ip = row;
             $rootScope.ip = row;
             $scope.deckGridInit($scope.ip);
+            if(!$rootScope.flowObjects[row.ObjectIdentifierValue]) {
+                $scope.createNewFlow(row);
+            }
+            $scope.currentFlowObject = $rootScope.flowObjects[row.ObjectIdentifierValue];
+            if($scope.select) {
+                $scope.showFileUpload = false;
+                $timeout(function() {
+                    $scope.showFileUpload = true;
+                });
+            }
             $scope.select = true;
             $scope.eventlog = true;
             $timeout(function() {
@@ -146,7 +158,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
         $scope.getListViewData();
     }, true);
-
     //click funtion or event
     $scope.eventsClick = function (row) {
         if($scope.eventShow && $scope.ip == row){
@@ -337,22 +348,5 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var left = ((width / 2) - (w / 2)) + dualScreenLeft;
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-    }
-    $scope.openUploadPage = function(ip) {
-        var w = 1000;
-        var h = 600;
-        var dualScreenLeft = $window.screenLeft != undefined ? $window.screenLeft : screen.left;
-        var dualScreenTop = $window.screenTop != undefined ? $window.screenTop : screen.top;
-
-        var width = $window.innerWidth ? $window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-        var height = $window.innerHeight ? $window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-
-        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
-        var top = ((height / 2) - (h / 2)) + dualScreenTop;
-        var dst = $scope.previousGridArraysString();
-        var url = $state.href('upload', {ip: $scope.ip.id, destination: dst});
-        console.log(url);
-        console.log(dst);
-        $window.open(url, '_blank', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
 });
