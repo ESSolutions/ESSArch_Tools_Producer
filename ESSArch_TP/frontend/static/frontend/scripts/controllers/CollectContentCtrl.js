@@ -349,4 +349,62 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
+        $scope.getFlowTarget = function() {
+        return $scope.ip.url + 'upload/';
+    };
+    $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
+        return {destination: $scope.previousGridArraysString()};
+    };
+    $scope.fileUploadSuccess = function(ip, file, message, flow) {
+        $scope.uploadedFiles ++;
+        var url = ip.url + 'merge-uploaded-chunks/';
+        var path = flow.opts.query.destination + file.relativePath;
+
+        $http({
+            method: 'POST',
+            url: url,
+            data: {'path': path}
+        });
+    };
+    $scope.fileTransferFilter = function(file)
+    {
+        return file.isUploading();
+    };
+    $scope.resetUploadedFiles = function() {
+        $scope.uploadedFiles = 0;
+    }
+    $scope.uploadedFiles = 0;
+    $scope.flowCompleted = false;
+    $scope.flowComplete = function(flow, transfers) {
+        if(flow.progress() === 1) {
+            $scope.flowCompleted = true;
+            $scope.flowSize = flow.getSize();
+            $scope.flowFiles = transfers.length;
+            flow.cancel();
+            $scope.resetUploadedFiles();
+        }
+    }
+    $scope.hideFlowCompleted = function() {
+        $scope.flowCompleted = false;
+    }
+    $scope.getUploadedPercentage = function(totalSize, uploadedSize, totalFiles) {
+        if(totalSize == 0 || uploadedSize/totalSize == 1) {
+            return ($scope.uploadedFiles / totalFiles) * 100;
+        } else {
+            return (uploadedSize / totalSize) * 100;
+        }
+    }
+    $scope.createNewFlow = function(ip) {
+        var flowObj = new Flow({target: ip.url + 'upload/', query: "", headers: {'X-CSRFToken' : $cookies.get("csrftoken")}, complete: $scope.flowComplete});
+        flowObj.on('complete', function(){
+            $scope.flowComplete(flowObj, flowObj.files);
+        });
+        flowObj.on('fileSuccess', function(file,message){
+            $scope.fileUploadSuccess(ip, file, message, flowObj);
+        });
+        flowObj.on('uploadStart', function(){
+            flowObj.opts.query = {destination: $scope.previousGridArraysString()};
+        });
+        $rootScope.flowObjects[ip.ObjectIdentifierValue] = flowObj;
+    }
 });
