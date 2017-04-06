@@ -320,6 +320,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         for entry in get_files_and_dirs(path):
             entry_type = "dir" if entry.is_dir() else "file"
+
+            if entry_type == 'file' and re.search(r'\_\d+$', entry.name) is not None:  # file chunk
+                continue
+
             entries.append(
                 {
                     "name": os.path.basename(entry.path),
