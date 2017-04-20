@@ -313,9 +313,12 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.selectedCard = null;
         });
     };
+    $scope.gridArrayLoading = false;
     $scope.updateGridArray = function(ip) {
+        $scope.gridArrayLoading = true;
         listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
             $scope.deckGridData = dir;
+            $scope.gridArrayLoading = false;
         });
     };
     $scope.expandFile = function(ip, card) {

@@ -466,3 +466,7 @@ padding: 0 12px;
         width: 50%;
     }
 }
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
