@@ -26,9 +26,7 @@ from __future__ import absolute_import
 
 import os
 import shutil
-import tarfile
 import uuid
-import zipfile
 
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
@@ -227,71 +225,12 @@ class ValidateFiles(tasks.ValidateFiles):
     checksum_task = "preingest.tasks.ValidateIntegrity"
 
 
-class CreateTAR(DBTask):
+class CreateTAR(tasks.CreateTAR):
     event_type = 10270
 
-    """
-    Creates a TAR file from the specified directory
 
-    Args:
-        dirname: The directory to create a TAR from
-        tarname: The name of the tar file
-    """
-
-    def run(self, dirname=None, tarname=None):
-        base_dir = os.path.basename(os.path.normpath(dirname))
-        with tarfile.TarFile(tarname, 'w') as new_tar:
-            new_tar.add(dirname, base_dir)
-
-        self.set_progress(100, total=100)
-        return tarname
-
-    def undo(self, dirname=None, tarname=None):
-        parent_dir = os.path.dirname((os.path.normpath(dirname)))
-
-        with tarfile.open(tarname, 'r') as tar:
-            tar.extractall(parent_dir)
-
-        os.remove(tarname)
-
-    def event_outcome_success(self, dirname=None, tarname=None):
-        return "Created %s from %s" % (tarname, dirname)
-
-
-class CreateZIP(DBTask):
+class CreateZIP(tasks.CreateZIP):
     event_type = 10271
-
-    """
-    Creates a ZIP file from the specified directory
-
-    Args:
-        dirname: The directory to create a ZIP from
-        zipname: The name of the zip file
-    """
-
-    def run(self, dirname=None, zipname=None):
-        with zipfile.ZipFile(zipname, 'w') as new_zip:
-            for root, dirs, files in os.walk(dirname):
-                for d in dirs:
-                    filepath = os.path.join(root, d)
-                    arcname = filepath[len(dirname) + 1:]
-                    new_zip.write(filepath, arcname)
-                for f in files:
-                    filepath = os.path.join(root, f)
-                    arcname = filepath[len(dirname) + 1:]
-                    new_zip.write(filepath, arcname)
-
-        self.set_progress(100, total=100)
-        return zipname
-
-    def undo(self, dirname=None, zipname=None):
-        with zipfile.ZipFile(zipname, 'r') as z:
-            z.extractall(dirname)
-
-        os.remove(zipname)
-
-    def event_outcome_success(self, dirname=None, zipname=None):
-        return "Created %s from %s" % (zipname, dirname)
 
 
 class DeleteFiles(tasks.DeleteFiles):
