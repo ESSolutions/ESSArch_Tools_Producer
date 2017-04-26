@@ -187,7 +187,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     search_fields = (
         'ObjectIdentifierValue', 'Label', 'Responsible__first_name',
         'Responsible__last_name', 'Responsible__username', 'State',
-        'SubmissionAgreement__sa_name', 'Startdate', 'Enddate',
+        'SubmissionAgreement__name', 'Startdate', 'Enddate',
     )
     filter_class = InformationPackageFilter
 
