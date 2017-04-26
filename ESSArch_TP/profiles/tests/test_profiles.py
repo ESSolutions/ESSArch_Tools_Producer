@@ -29,7 +29,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ESSArch_Core.ip.models import InformationPackage
+from ESSArch_Core.ip.models import ArchivistOrganization, InformationPackage
 
 from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
 
@@ -54,6 +54,30 @@ class LockSubmissionAgreement(TestCase):
 
         res = self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertFalse(ArchivistOrganization.objects.exists())
+
+    def test_new_archivist_organization(self):
+        ip = InformationPackage.objects.create(Responsible=self.user, SubmissionAgreement=self.sa)
+        self.sa.archivist_organization = 'ao'
+        self.sa.save()
+
+        self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
+
+        ip.refresh_from_db()
+        self.assertEqual(ip.ArchivistOrganization.name, 'ao')
+
+    def test_existing_archivist_organization(self):
+        ip = InformationPackage.objects.create(Responsible=self.user, SubmissionAgreement=self.sa)
+        ArchivistOrganization.objects.create(name='ao')
+
+        self.sa.archivist_organization = 'ao'
+        self.sa.save()
+
+        self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
+
+        ip.refresh_from_db()
+        self.assertEqual(ip.ArchivistOrganization.name, 'ao')
+        self.assertEqual(ArchivistOrganization.objects.count(), 1)
 
 
 class SaveProfile(TestCase):

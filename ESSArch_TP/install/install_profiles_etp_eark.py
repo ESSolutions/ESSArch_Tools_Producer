@@ -128,11 +128,11 @@ def installProfileTransferProject(sa):
             }, {
                 "templateOptions": {
                     "type": "text",
-                    "label": "Archivist organization",
-                    "desc": "xxx",
+                    "disabled": True,
+                    "label": "Archivist Organization"
                 },
                 "type": "input",
-                "key": "archivist_organization"
+                "key": "_IP_ARCHIVIST_ORGANIZATION"
             }, {
                 "templateOptions": {
                     "type": "text",

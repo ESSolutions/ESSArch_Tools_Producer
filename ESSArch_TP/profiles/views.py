@@ -127,6 +127,13 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
         if ip.SubmissionAgreement == sa:
             ip.SubmissionAgreementLocked = True
+
+            if sa.archivist_organization:
+                arch, _ = ArchivistOrganization.objects.get_or_create(
+                    name=sa.archivist_organization
+                )
+                ip.ArchivistOrganization = arch
+
             ip.save()
 
             return Response({'status': 'locking submission_agreement'})
@@ -255,7 +262,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
         if profile.profile_type == "transfer_project":
             archival_institution = profile.specification_data.get("archival_institution")
-            archivist_organization = profile.specification_data.get("archivist_organization")
             archival_type = profile.specification_data.get("archival_type")
             archival_location = profile.specification_data.get("archival_location")
 
@@ -269,17 +275,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
                         name=archival_institution
                     )
                 ip.ArchivalInstitution = arch
-
-            if archivist_organization:
-                try:
-                    (arch, _) = ArchivistOrganization.objects.get_or_create(
-                        name=archivist_organization
-                    )
-                except IntegrityError:
-                    arch = ArchivistOrganization.objects.get(
-                        name=archivist_organization
-                    )
-                ip.ArchivistOrganization = arch
 
             if archival_type:
                 try:
