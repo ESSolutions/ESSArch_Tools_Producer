@@ -52,7 +52,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a ng-if="profile.active && profile.checked && saProfile.locked" class="table-col" ng-disabled="profile.locked" ng-click="setSelectedProfile(profile);profileClick(profile)">{{profile.type_label}}</a>
+                                        <a ng-if="profile.active && profile.checked && saProfile.locked" class="table-col" ng-click="setSelectedProfile(profile);profileClick(profile)">{{profile.type_label}}</a>
                                         <p ng-if="!profile.active || !profile.checked || !saProfile.locked" class="table-col">{{profile.type_label}}</p>
                                     </td>
                                     <td><!--<select class="form-control table-col" ng-disabled="profile.locked" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.profile_name for x in profile.profiles" ng-change="changeProfile(profile.active)" ng-focus="getProfiles(profile)" data-ng-attr-size="{{profile.profiles.length}}"></select>-->
