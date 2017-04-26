@@ -192,12 +192,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     // Progress bar max value
     $scope.max = 100;
     //funcitons for select view
-    //Condition for profile click. it the profile is locked it is not shown in the edit view
-    $scope.profileClickCondition = function(row){
-        if(!row.locked && row.active != null){
-            $scope.profileClick(row);
-        }
-    }
     vm.profileModel = {};
     vm.profileFields=[];
     vm.options = {};
