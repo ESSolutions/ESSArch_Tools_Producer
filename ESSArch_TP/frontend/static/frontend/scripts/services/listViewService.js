@@ -160,7 +160,6 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         .then(function successCallback(response) {
             sas = response.data;
             saProfile.profiles = [];
-            saProfile.profileObjects = sas;
             sas.forEach(function (sa) {
                 saProfile.profiles.push(sa);
                 if (ip.SubmissionAgreement == sa.url){
