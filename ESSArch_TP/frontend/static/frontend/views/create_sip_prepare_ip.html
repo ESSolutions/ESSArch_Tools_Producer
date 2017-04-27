@@ -82,12 +82,6 @@
                         </table>
 
                     </div>
-                    <div ng-if="subSelect" class="sub-select-view">
-                        {{selectProfile.entity}}
-                        <select class="sub-select-profile form-control" ng-model="selectProfile.profile" ng-options="x as x.name for x in selectProfile.profiles"></select>
-                        <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
-                        <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x.display_name for x in subSelectOptions"></select>
-                    </div>
                     <div ng-if="edit" id="edit-view" class="edit-view" >
                         <form id="edit-form" ng-submit="vm.saveModal()" name="vm.editForm" novalidate>
                             <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options" form="vm.editForm">

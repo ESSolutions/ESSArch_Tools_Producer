@@ -76,12 +76,6 @@
                     <div ng-include src="'static/frontend/views/file_conversion.html'"></div>
                 </div>
 
-                <div ng-if="subSelect" class="sub-select-view">
-                    {{selectProfile.entity}}
-                    <select class="sub-select-profile form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                    <select class="sub-select-agreement form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                    <select class="sub-select-nationality form-control" ng-model="subSelectProfile" ng-options="x for x in subSelectOptions"></select>
-                </div>
                 <div ng-if="edit" id="edit-view" class="edit-view" >
                     <form novalidate>
                         <formly-form ng-disabled="true" model="vm.profileModel" fields="vm.profileFields" options="vm.options">

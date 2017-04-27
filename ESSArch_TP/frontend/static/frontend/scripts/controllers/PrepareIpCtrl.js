@@ -225,7 +225,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
                 $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
                 $scope.profileToSave = row.active;
-                $scope.subSelectProfile = "profile";
                 if(row.locked) {
                     vm.profileFields.forEach(function(field) {
                         if(field.fieldGroup != null){
