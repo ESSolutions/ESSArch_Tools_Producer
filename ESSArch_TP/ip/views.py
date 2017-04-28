@@ -257,6 +257,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         prepare_ip(label, responsible, object_identifier_value).run()
         return Response({"status": "Prepared IP"}, status=status.HTTP_201_CREATED)
 
+    def update(self, request, *args, **kwargs):
+        ip = self.get_object()
+
+        if ip.SubmissionAgreementLocked:
+            return Response("SA connected to IP is locked", status=status.HTTP_400_BAD_REQUEST)
+
+        return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
+
     def destroy(self, request, pk=None):
         ip = self.get_object()
         self.check_object_permissions(request, ip)

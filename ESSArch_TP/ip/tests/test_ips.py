@@ -38,6 +38,7 @@ from rest_framework.test import APIClient
 
 from ESSArch_Core.configuration.models import EventType
 from ESSArch_Core.ip.models import InformationPackage
+from ESSArch_Core.profiles.models import SubmissionAgreement
 
 
 class test_create_ip(TestCase):
@@ -297,3 +298,45 @@ class test_upload(TestCase):
             data = {'path': dstfile}
             self.client.post(self.baseurl + 'merge-uploaded-chunks/', data)
             self.assertTrue(filecmp.cmp(srcfile, dstfile, False))
+
+
+class test_change_sa(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.ip = InformationPackage.objects.create(Responsible=self.user)
+        self.url = reverse('informationpackage-detail', args=(str(self.ip.pk),))
+
+        self.sa = SubmissionAgreement.objects.create()
+        self.sa_url = reverse('submissionagreement-detail', args=(str(self.sa.pk),))
+
+    def test_no_sa(self):
+        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        self.ip.refresh_from_db()
+        self.assertEqual(self.ip.SubmissionAgreement, self.sa)
+
+    def test_unlocked_sa(self):
+        self.ip.SubmissionAgreement = SubmissionAgreement.objects.create()
+        self.ip.save()
+
+        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        self.ip.refresh_from_db()
+        self.assertEqual(self.ip.SubmissionAgreement, self.sa)
+
+    def test_locked_sa(self):
+        self.ip.SubmissionAgreement = SubmissionAgreement.objects.create()
+        self.ip.SubmissionAgreementLocked = True
+        self.ip.save()
+
+        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.ip.refresh_from_db()
+        self.assertNotEqual(self.ip.SubmissionAgreement, self.sa)
