@@ -233,6 +233,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         new_data = request.data.get("specification_data", {})
         new_structure = request.data.get("structure", {})
 
+        for field in profile.template:
+            if field.get('templateOptions', {}).get('required', False):
+                if not new_data.get(field['key'], None):
+                    return Response(
+                        {"status': 'missing required field '%s'" % field['key']},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
         changed_data = (profile.specification_data.keys().sort() == new_data.keys().sort() and
                         profile.specification_data != new_data)
 

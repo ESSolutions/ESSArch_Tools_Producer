@@ -255,3 +255,59 @@ class SaveProfile(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(self.ip.get_profile('sip').pk, profile.pk)
         self.assertNotEqual(self.ip.get_profile('sip').name, data['new_name'])
+
+    def test_save_empty_required_value(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'initial'},
+            template=[
+                {
+                    "key": "foo",
+                    "templateOptions": {
+                        "required": True,
+                    },
+                }
+            ]
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'information_package': str(self.ip.pk),
+            'specification_data': {'foo': ''},
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_save_missing_required_value(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'initial'},
+            template=[
+                {
+                    "key": "foo",
+                    "templateOptions": {
+                        "required": True,
+                    },
+                }
+            ]
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'information_package': str(self.ip.pk),
+            'specification_data': {},
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
