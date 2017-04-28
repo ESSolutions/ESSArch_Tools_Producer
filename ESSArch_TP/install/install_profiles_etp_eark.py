@@ -99,6 +99,17 @@ def installSubmissionAgreement():
         'designated_community_individual_phone': '46 (0)8-2002001',
         'designated_community_individual_email': 'Elvis.Presley@xxx.org',
         'designated_community_individual_additional': 'Celebrity',
+        'template': [
+            {
+                "key": "archivist_organization",
+                "type": "input",
+                "templateOptions": {
+                    "type": "text",
+                    "required": True,
+                    "label": "Archivist Organization"
+                },
+            }
+        ],
     }
 
     sa, _ = SubmissionAgreement.objects.get_or_create(name=dct['name'], defaults=dct)
