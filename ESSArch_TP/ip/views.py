@@ -1078,7 +1078,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
         new_profile = Profile.objects.get(pk=request.data["new_profile"])
 
-        ip.change_profile(new_profile)
+        try:
+            ip.change_profile(new_profile)
+        except ValueError as e:
+            return Response({'status': e.message}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
             'status': 'updating IP (%s) with new profile (%s)' % (

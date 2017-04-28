@@ -38,7 +38,7 @@ from rest_framework.test import APIClient
 
 from ESSArch_Core.configuration.models import EventType
 from ESSArch_Core.ip.models import InformationPackage
-from ESSArch_Core.profiles.models import SubmissionAgreement
+from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
 
 
 class test_create_ip(TestCase):
@@ -340,3 +340,40 @@ class test_change_sa(TestCase):
 
         self.ip.refresh_from_db()
         self.assertNotEqual(self.ip.SubmissionAgreement, self.sa)
+
+
+class test_change_profile(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.ip = InformationPackage.objects.create(Responsible=self.user)
+        self.url = reverse('informationpackage-detail', args=(str(self.ip.pk),))
+        self.url = '%schange-profile/' % self.url
+
+        self.profile_type = 'foo'
+        self.profile = Profile.objects.create(profile_type=self.profile_type)
+
+    def test_no_profile(self):
+        res = self.client.put(self.url, {'new_profile': str(self.profile.pk)}, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(ProfileIP.objects.filter(profile=self.profile, ip=self.ip).exists())
+
+    def test_unlocked_profile(self):
+        ProfileIP.objects.create(profile=Profile.objects.create(profile_type=self.profile_type), ip=self.ip)
+        res = self.client.put(self.url, {'new_profile': str(self.profile.pk)}, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(ProfileIP.objects.filter(profile=self.profile, ip=self.ip).exists())
+
+    def test_locked_profile(self):
+        ProfileIP.objects.create(
+            profile=Profile.objects.create(profile_type=self.profile_type), ip=self.ip, LockedBy=self.user
+        )
+        res = self.client.put(self.url, {'new_profile': str(self.profile.pk)}, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(ProfileIP.objects.filter(profile=self.profile, ip=self.ip).exists())
