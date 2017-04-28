@@ -206,6 +206,26 @@ class SaveProfile(TestCase):
             SubmissionAgreementLocked=True
         )
 
+    def test_save_no_changes(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'initial'},
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'information_package': str(self.ip.pk),
+            'specification_data': profile.specification_data,
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_save_unlocked_profile(self):
         profile = Profile.objects.create(
             name='first',
