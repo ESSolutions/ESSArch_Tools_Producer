@@ -112,7 +112,7 @@ def installSubmissionAgreement():
         ],
     }
 
-    sa, _ = SubmissionAgreement.objects.get_or_create(name=dct['name'], defaults=dct)
+    sa, _ = SubmissionAgreement.objects.update_or_create(name=dct['name'], defaults=dct)
 
     print 'Installed submission agreement'
 
