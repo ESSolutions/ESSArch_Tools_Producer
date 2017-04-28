@@ -104,6 +104,59 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             'status': 'Excluding profile type %s in SA %s' % (ptype, sa)
         })
 
+    @detail_route(methods=['post'])
+    def save(self, request, pk=None):
+        sa = self.get_object()
+
+        try:
+            ip = InformationPackage.objects.get(pk=request.data.get('information_package'))
+        except InformationPackage.DoesNotExist:
+            return Response(
+                {'status': 'Invalid IP'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            new_name = request.data["new_name"]
+        except KeyError:
+            new_name = ''
+
+        if not new_name:
+            return Response(
+                {'status': 'No name specified'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        new_data = request.data.get("data", {})
+
+        changed_data = False
+
+        for field in sa.template:
+            if field.get('templateOptions', {}).get('required', False):
+                if not new_data.get(field['key'], None):
+                    return Response(
+                        {"status': 'missing required field '%s'" % field['key']},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        for k, v in new_data.iteritems():
+            if v != getattr(sa, k):
+                changed_data = True
+                break
+
+        if not changed_data:
+            return Response({'status': 'no changes, not saving'}, status=status.HTTP_400_BAD_REQUEST)
+
+        new_sa = sa.copy_and_switch(
+            ip=ip,
+            new_data=new_data,
+            new_name=new_name,
+        )
+        serializer = SubmissionAgreementSerializer(
+            new_sa, context={'request': request}
+        )
+        return Response(serializer.data)
+
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
         sa = self.get_object()

@@ -195,12 +195,55 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     vm.profileModel = {};
     vm.profileFields=[];
     vm.options = {};
+    //Click funciton for sa view
+    $scope.saClick = function(row){
+        if ($scope.selectProfile == row && $scope.editSA){
+            $scope.editSA = false;
+        } else {
+            $scope.eventlog = false;
+            $scope.edit = false;
+
+            var chosen = row.profile
+            $scope.selectProfile = row;
+
+            vm.profileFields = chosen.template;
+            vm.profileOldModel = {};
+            vm.profileModel = {};
+
+            // only keep fields defined in template
+            vm.profileFields.forEach(function(field){
+                vm.profileOldModel[field.key] = chosen[field.key];
+                vm.profileModel[field.key] = chosen[field.key];
+            })
+
+
+            $scope.profileToSave = chosen;
+            if(row.locked) {
+                vm.profileFields.forEach(function(field) {
+                    if(field.fieldGroup != null){
+                        field.fieldGroup.forEach(function(subGroup) {
+                            subGroup.fieldGroup.forEach(function(item) {
+                                item.type = 'input';
+                                item.templateOptions.disabled = true;
+                            });
+                        });
+                    } else {
+                        field.type = 'input';
+                        field.templateOptions.disabled = true;
+                    }
+                });
+            }
+            $scope.editSA = true;
+        }
+    };
     //Click funciton for profile view
     $scope.profileClick = function(row){
         if ($scope.selectProfile == row && $scope.edit){
             $scope.eventlog = false;
             $scope.edit = false;
         } else {
+            $scope.editSA = false;
+
             if (row.active.name){
                 var profileUrl = row.active.url;
             } else {
@@ -220,6 +263,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 row.active = response.data;
                 row.profiles = [response.data];
                 $scope.selectProfile = row;
+                vm.profileOldModel = row.active.specification_data;
                 vm.profileModel = angular.copy(row.active.specification_data);
                 vm.profileFields = row.active.template;
                 $scope.treeElements =[{name: $translate.instant('ROOT'), type: "folder", children: angular.copy(row.active.structure)}];
@@ -367,6 +411,24 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     };
 
+    //Saves edited SA and creates a new SA instance with given name
+    vm.onSASubmit = function(new_name) {
+        var url = $scope.profileToSave.url;
+        var sendData = {
+            "data": vm.profileModel,
+            "information_package": $scope.ip.id,
+            "new_name": new_name,
+        };
+        $http({
+            method: 'POST',
+            url: url+"save/",
+            data: sendData
+        }).then(function(response) {
+            $scope.editSA = false;
+        }, function(response) {
+            console.log(response.status);
+        });
+    };
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
         profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
@@ -449,6 +511,25 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = true;
         }else {
             $scope.eventlog = false;
+        }
+    }
+    //Create and show modal when saving an SA
+    vm.saveSAModal = function(){
+        if (vm.editForm.$valid) {
+            vm.options.updateInitialValue();
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
+                controller: 'ModalInstanceCtrl',
+                controllerAs: '$ctrl'
+            })
+            modalInstance.result.then(function (data) {
+                vm.onSASubmit(data.name);
+            }, function () {
+                $log.info('modal-component dismissed at: ' + new Date());
+            });
         }
     }
     //Create and show modal when saving a profile

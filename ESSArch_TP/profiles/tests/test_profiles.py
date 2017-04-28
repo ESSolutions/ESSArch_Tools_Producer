@@ -80,6 +80,119 @@ class LockSubmissionAgreement(TestCase):
         self.assertEqual(ArchivistOrganization.objects.count(), 1)
 
 
+class SaveSubmissionAgreement(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.sa = SubmissionAgreement.objects.create()
+        self.ip = InformationPackage.objects.create()
+
+    def test_save_no_name(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+
+        data = {
+            'data': {'archivist_organization': 'new ao'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SubmissionAgreement.objects.count(), 1)
+
+    def test_save_empty_name(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+
+        data = {
+            'new_name': '',
+            'data': {'archivist_organization': 'new ao'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SubmissionAgreement.objects.count(), 1)
+
+    def test_save_no_changes(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+        self.sa.archivist_organization = 'initial'
+        self.sa.save()
+
+        data = {
+            'new_name': 'new',
+            'data': {'archivist_organization': 'initial'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SubmissionAgreement.objects.count(), 1)
+
+    def test_save_empty_required_value(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+        self.sa.archivist_organization = ''
+        self.sa.template = [
+            {
+                "key": "archivist_organization",
+                "templateOptions": {
+                    "required": True,
+                },
+            }
+        ]
+        self.sa.save()
+
+        data = {
+            'new_name': 'new',
+            'data': {'archivist_organization': '', 'label': 'new_data'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SubmissionAgreement.objects.count(), 1)
+
+    def test_save_missing_required_value(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+        self.sa.archivist_organization = ''
+        self.sa.template = [
+            {
+                "key": "archivist_organization",
+                "templateOptions": {
+                    "required": True,
+                },
+            }
+        ]
+        self.sa.save()
+
+        data = {
+            'new_name': 'new',
+            'data': {'label': 'new_data'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(SubmissionAgreement.objects.count(), 1)
+
+    def test_save_changes(self):
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+        self.sa.archivist_organization = 'initial'
+        self.sa.save()
+
+        data = {
+            'new_name': 'new',
+            'data': {'archivist_organization': 'new ao'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(SubmissionAgreement.objects.filter(name='', archivist_organization='initial').exists())
+        self.assertTrue(SubmissionAgreement.objects.filter(name='new', archivist_organization='new ao').exists())
+
+
 class SaveProfile(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="admin")
