@@ -425,6 +425,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         }).then(function(response) {
             $scope.editSA = false;
+            $scope.saProfile.profile = response.data;
+            $scope.saProfile.profiles.push(response.data);
         }, function(response) {
             console.log(response.status);
         });
