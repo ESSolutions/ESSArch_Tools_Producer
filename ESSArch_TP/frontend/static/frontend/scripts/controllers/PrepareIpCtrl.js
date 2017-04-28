@@ -324,12 +324,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: uri,
             data: sendData
-        })
-            .success(function (response) {
-            })
-            .error(function (response) {
-                alert(response.status);
-            });
+        }).then(function success(response){
+        }, function error(response){
+            alert(response.status);
+        });
     };
 
     //Exclude the given profile type in the SA
@@ -343,12 +341,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'POST',
             url: uri,
             data: sendData
-        })
-            .success(function (response) {
-            })
-            .error(function (response) {
-                alert(response.status);
-            });
+        }).then(function success(response){
+        }, function error(response){
+            alert(response.status);
+        });
     };
     //Make a profile "Checked"
     $scope.setCheckedProfile = function(type, checked){
@@ -360,9 +356,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 type: type,
                 checked: checked
             }
-        })
-            .success(function (response) {
-            })
+        }).then(function success(response){
+        }, function error(response){
+        });
     };
 
     //Change the standard profile of the same type as given profile for an sa
@@ -373,17 +369,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'PUT',
             url: uri,
             data: sendData
-        })
-            .success(function (response) {
-                if($scope.edit && row == $scope.selectedProfileRow) {
-                    $scope.edit = false;
-                    $scope.profileClick(row);
-                }
-            })
-            .error(function (response) {
-                alert(response.status);
-            });
-
+        }).then(function success(response){
+            if($scope.edit && row == $scope.selectedProfileRow) {
+                $scope.edit = false;
+                $scope.profileClick(row);
+            }
+        }, function error(response){
+            alert(response.status);
+        });
     };
     //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa, ip, oldSa_idx) {
