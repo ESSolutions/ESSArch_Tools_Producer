@@ -516,7 +516,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
+                templateUrl: 'static/frontend/views/save_sa_modal.html',
                 controller: 'ModalInstanceCtrl',
                 controllerAs: '$ctrl'
             })

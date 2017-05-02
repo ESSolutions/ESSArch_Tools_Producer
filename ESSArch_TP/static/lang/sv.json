@@ -200,5 +200,7 @@
     "UPLOADED": "Uppladdat",
     "SAVED_MESSAGE": "Sparad!",
     "EVENT_ADDED": "Event tillagt!",
-    "SAVE_ERROR": "Ett fel uppstod!"
+    "SAVE_ERROR": "Ett fel uppstod!",
+    "SAVESAPROFILE": "Spara SA-profil",
+    "ENTERSAPROFILENAME": "Välj nytt SA-profilnamn"
 }

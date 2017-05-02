@@ -200,5 +200,7 @@
     "UPLOADED": "Uploaded",
     "SAVED_MESSAGE": "Saved!",
     "EVENT_ADDED": "Event added!",
-    "SAVE_ERROR": "An error occured!"
+    "SAVE_ERROR": "An error occured!",
+    "SAVESAPROFILE": "Save SA profile",
+    "ENTERSAPROFILENAME": "Enter new SA-profile name"
 }

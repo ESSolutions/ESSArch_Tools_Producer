@@ -102,8 +102,17 @@
     .clickable {
         cursor: pointer;
     }
-    .edit-view .submit-button {
-        margin-bottom: 5px;
+    .edit-view {
+        .submit-button {
+            margin-bottom: 5px;
+        }
+    }
+    #edit-sa-view {
+        display: inline-block;
+        width: 100%;
+        .submit-button {
+            float: right;
+        }
     }
     .list-view-buttons {
         display: flex;
