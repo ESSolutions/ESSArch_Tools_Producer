@@ -422,21 +422,16 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$touched || fc[0].$touched';
         formlyValidationMessages.addStringMessage('required', 'This field is required');
         $rootScope.flowObjects = {};
-        djangoAuth.initialize('/rest-auth', false).then(function() {
-
-            djangoAuth.profile().then(function(response) {
-                $rootScope.auth = response.data;
-                $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
-                myService.getPermissions(response.data.permissions);
-            }, function() {
-                $state.go('login');
-            });
+        djangoAuth.initialize('/rest-auth', false).then(function(response) {
+            $rootScope.auth = response.data;
+            $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
+            myService.getPermissions(response.data.permissions);
 
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-                if (toState.name === 'login' ){
+                if (toState.name === 'login') {
                     return;
                 }
-                if(djangoAuth.authenticated !== true){
+                if (djangoAuth.authenticated !== true) {
                     event.preventDefault();
                     $state.go('login'); // go to login
                 }
@@ -445,7 +440,8 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
 
 
             });
-        }, function(status) {
+        }).catch(function(status){
+            $state.go('login');
         });
         $rootScope.$on('$stateChangeStart', function(evt, to, params) {
             if (to.redirectTo) {
