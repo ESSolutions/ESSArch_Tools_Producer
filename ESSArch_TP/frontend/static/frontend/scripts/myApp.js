@@ -422,6 +422,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$touched || fc[0].$touched';
         formlyValidationMessages.addStringMessage('required', 'This field is required');
         $rootScope.flowObjects = {};
+
         djangoAuth.initialize('/rest-auth', false).then(function(response) {
             $rootScope.auth = response.data;
             $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
@@ -437,8 +438,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }
 
                 // now, redirect only not authenticated
-
-
             });
         }).catch(function(status){
             $state.go('login');
