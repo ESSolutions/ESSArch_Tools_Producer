@@ -640,7 +640,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user,
             ))
 
-        create_sip_step.add_tasks(ProcessTask.objects.create(
+        create_log_file_step = ProcessStep.objects.create(
+            name="Create Log File",
+            parent_step_pos=15,
+        )
+        create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
                 "info": info,
@@ -653,7 +657,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         ))
 
-        create_sip_step.add_tasks(ProcessTask.objects.create(
+        create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.AppendEvents",
             params={
                 "filename": events_path,
@@ -753,7 +757,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             'FName': ip.ObjectPath,
         }
 
-        create_sip_step.add_tasks(ProcessTask.objects.create(
+        create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.InsertXML",
             params={
                 "filename": events_path,
@@ -768,7 +772,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
 
         if validate_xml_file:
-            create_sip_step.add_tasks(
+            create_log_file_step.add_tasks(
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateXMLFile",
                     params={
@@ -871,7 +875,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         create_sip_step.save()
 
         main_step.add_child_steps(
-            start_create_sip_step, generate_xml_step,
+            start_create_sip_step, create_log_file_step, generate_xml_step,
             create_sip_step
         )
 
