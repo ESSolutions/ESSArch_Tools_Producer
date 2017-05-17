@@ -39,7 +39,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 
 from django.http import HttpResponse
-from rest_framework import filters, status
+from rest_framework import exceptions, filters, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
@@ -86,6 +86,7 @@ from ESSArch_Core.util import (
     creation_date,
     get_event_spec,
     get_files_and_dirs,
+    in_directory,
     mkdir_p,
     timestamp_to_datetime,
 )
@@ -324,9 +325,16 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def files(self, request, pk=None):
         ip = self.get_object()
         entries = []
-        path = os.path.join(ip.ObjectPath, request.query_params.get('path', ''))
+        path = request.query_params.get('path', '')
+        fullpath = os.path.join(ip.ObjectPath, path)
 
-        for entry in get_files_and_dirs(path):
+        if not in_directory(fullpath, ip.ObjectPath):
+            raise exceptions.ParseError('Illegal path %s' % path)
+
+        if not os.path.exists(fullpath):
+            raise exceptions.NotFound
+
+        for entry in get_files_and_dirs(fullpath):
             entry_type = "dir" if entry.is_dir() else "file"
 
             if entry_type == 'file' and re.search(r'\_\d+$', entry.name) is not None:  # file chunk
