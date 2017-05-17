@@ -143,11 +143,8 @@ body.modal-open[style] {
 .user-dropdown {
     display: flex;
     flex-direction: row;
-    display: -webkit-flex;
-    -webkit-flex-direction: row;
-
     cursor: pointer;
-    -webkit-user-select: none;
+    user-select: none;
 }
 .user-dropdown > h4 {
     margin-right: 5px;
@@ -245,8 +242,6 @@ body.modal-open[style] {
     }
     body {
         min-width: 900px;
-    }
-    .list-view, .select-sub-edit-eventlog-wrapper {
     }
     .hamburger {
         margin-right: 5px;
@@ -423,6 +418,14 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
+
+// Whats up here?
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
+    padding-top: 4px;
+    padding-bottom: 8px;
+    line-height: 1;
+    word-break: break-all;
+}
 .step-state {
     padding-top: 0 !important;
 }
@@ -469,4 +472,233 @@ padding: 0 12px;
 .flex-column {
     display: flex;
     flex-direction: column;
+}
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+.column-label {
+    margin: auto;
+}
+.content-wrapper > div {
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+.search-prepare-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+.search-prepare-wrapper button {
+    margin-left: 10px;
+}
+.list-view {
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    position: relative;
+    overflow-x: auto;
+    &::-webkit-scrollbar{
+        height: 10px;
+    };
+}
+
+.list-view-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-bottom: 5px;
+}
+.list-view-buttons .btn {
+    margin-left: 10px;
+}
+.progress {
+    height: 20px;
+    width: 150px;
+    margin: 0;
+    background-color: #aaa;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.48);
+}
+.progress b {
+    position: relative;
+}
+.column-label {
+    cursor: pointer;
+}
+.clickable {
+    cursor: pointer;
+}
+.select-sub-edit-eventlog-wrapper {
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
+    position: relative;
+}
+.events-status-wrapper {
+    border-style: solid;
+    border-color: #666;
+    border-radius: 15px;
+}
+.event-view {
+    margin: 5px;
+    padding: 5px;
+}
+.items-per-page {
+    width: 15%;
+}
+.select-view {
+    margin: 5px;
+    padding: 5px;
+}
+.select-view > .checkbox {
+    height: 10px;
+}
+.select-view > .table>tbody>tr>td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.lock-button  {
+    padding: 0px 16px;
+    width: auto;
+}
+.table-col {
+    margin: 0;
+}
+.tasks-list {
+    padding: 10px;
+}
+.sub-select-view {
+    border-top-style: solid;
+    border-color: #666;
+    /*text-align: center;
+    position: relative;*/
+    height: 60px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    padding: 5px;
+}
+.sub-select-view > select {
+    margin-left: 20px;
+    height: 30px;
+}
+.sub-select-profile {
+    width: 25%;
+}
+.sub-select-agreement {
+    width: 25%;
+}
+.sub-select-nationality {
+    width: 10%;
+}
+.edit-view {
+    border-top-style: solid;
+    border-color: #666;
+    margin: 5px;
+    padding: 5px;
+    position: relative;
+    .formly {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 5px;
+        width: 100%;
+    }
+    .submit-button {
+        margin-bottom: 5px;
+    }
+    .btn-danger {
+        float: right;
+    }
+}
+.eventlog-view {
+    border-top-style: solid;
+    border-color: #666;
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    margin: 5px;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.eventlog-view .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+}
+.eventlog-view .btn-info {
+    float: right;
+    margin-top: 10px;
+
+}
+.eventlog-view .checkbox {
+    margin-top: 20px;
+}
+input[type="checkbox"] {
+    transform:scale(1.3, 1.3);
+}
+.eventlog-view .submit-button {
+    height: 40px;
+}
+.eventlog-form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 10px;
+}
+.events-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 60px;
+    margin: 5px;
+    padding: 5px;
+    .signature {
+        width: 250px;
+        height: 35px;
+        margin-left: 5px;
+        margin-right: 5px;
+        resize: none;
+    }
+}
+.events-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: 10px;
+}
+.events-form .submit-button {
+    height: 35px;
+    margin-top: 25px;
+}
+.control-label {
+    font-size: 10px;
+}
+.formly-field {
+    width: 24%;
+    margin: 5px;
+}
+.submit-button {
+    margin-left: 5px;
+}
+.sa-table {
+    padding-bottom: 10px;
+    border-bottom-style: solid;
+    border-color: #666;
+}
+.column-picker {
+    display: flex;
+    flex-direction: row;
+    .buttons {
+        display: flex;
+        flex-direction: column;
+    }
 }
