@@ -362,9 +362,6 @@ body.modal-open[style] {
     padding: 5px;
     margin: 5px;
 }
-.list-view-table {
-    margin: 5px;
-}
 .well-sm {
     padding: 0px;
 }
@@ -374,9 +371,6 @@ body.modal-open[style] {
 }
 .param-value {
     word-break: break-word;
-}
-.search-prepare-wrapper {
-    width: 100%;
 }
 .global-search {
     width: 400px;
@@ -489,9 +483,21 @@ padding: 0 12px;
 .search-prepare-wrapper {
     display: flex;
     flex-direction: row;
-}
-.search-prepare-wrapper button {
-    margin-left: 10px;
+    font-weight: bold;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    position: relative;
+    margin-bottom:5px;
+    width: 100%;
+    .btn-info {
+        margin-left: 10px;
+        padding: 2px 12px;
+    }
+    .fa-refresh {
+        position: absolute;
+        top: 10px;
+        right: 0px;
+    }
 }
 .list-view {
     border-style: solid;
@@ -500,21 +506,20 @@ padding: 0 12px;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    position: relative;
-    overflow-x: auto;
-    &::-webkit-scrollbar{
-        height: 10px;
-    };
-}
-
-.list-view-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    margin-bottom: 5px;
-}
-.list-view-buttons .btn {
-    margin-left: 10px;
+    padding: 5px;
+    .list-view-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin-bottom: 5px;
+    }
+    .list-view-buttons .btn {
+        margin-left: 10px;
+    }
+    .list-view-table {
+        position: relative;
+        overflow-x: auto;
+    }
 }
 .progress {
     height: 20px;
@@ -546,6 +551,10 @@ padding: 0 12px;
 .event-view {
     margin: 5px;
     padding: 5px;
+    .table {
+        position: relative;
+        overflow-x: auto;
+    }
 }
 .items-per-page {
     width: 15%;
@@ -570,6 +579,10 @@ padding: 0 12px;
 }
 .tasks-list {
     padding: 10px;
+}
+.text-center {
+    text-align: center;
+    margin: auto;
 }
 .sub-select-view {
     border-top-style: solid;

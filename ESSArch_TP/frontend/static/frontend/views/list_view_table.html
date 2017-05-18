@@ -1,34 +1,28 @@
-<div id="list-view" class="list-view-table">
-    <table st-table="vm.displayedIps" st-pipe="vm.callServer" class="table table-striped" style="margin-bottom: 0px;">
-        <thead>
-            <tr>
-                <th colspan="{{listViewColumns.length}}">
-                    <div class="search-prepare-wrapper">
-                        <label for items-per-page></label>
-                        <select id="items-per-page" ng-change="updateIpsPerPage(vm.itemsPerPage)" style="margin-right: 10px;" class="form-control items-per-page" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]" uib-popover="{{'ITEMSPERPAGE' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></select>
-                        <input st-search="" style="width: 50%;" class="form-control" placeholder="{{'GLOBALSEARCH' | translate}}" type="text" uib-popover="{{'GLOBALSEARCHDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" />
-                        <button ng-if="'home.createSip.prepareIp' | isState" type="button" ng-click="newIpModal()" class="btn btn-info" uib-popover="{{'PREPAREIPDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PREPAREIP' | translate}}</button>
-                        <span style="position:absolute; right:12px; top:12px;" ng-click="getListViewData()" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': ipLoading }" uib-popover="{{'REFRESHTABLEDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
-                    </div>
-                </th>
-            </tr>
-            <tr>
-                <th class="clickable" class="column-label" st-sort="{{col.sortString}}" st-sort-default="{{col.sortString == 'CreateDate'? 'reverse' : ''}}" ng-repeat="col in listViewColumns"><span ng-hide="col.label=='step_state'">{{col.label.toUpperCase() | translate}}</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-class="row.class" ng-repeat="row in vm.displayedIps" class="table-item">
-                <td ng-repeat="col in listViewColumns">
-                    <div ng-include src="col.template"></div>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td ng-show="!initLoad" colspan="{{listViewColumns.length}}" class="text-center">
-                    <div st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="vm.itemsPerPage" st-displayed-pages="7"></div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+<div st-table="vm.displayedIps" st-pipe="vm.callServer" >
+    <div class="search-prepare-wrapper">
+        <label for items-per-page></label>
+        <select id="items-per-page" ng-change="updateIpsPerPage(vm.itemsPerPage)" style="margin-right: 10px;" class="form-control items-per-page" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]" uib-popover="{{'ITEMSPERPAGE' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></select>
+        <input st-search="" style="width: 50%;" class="form-control" placeholder="{{'GLOBALSEARCH' | translate}}" type="text" uib-popover="{{'GLOBALSEARCHDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" />
+        <button ng-if="'home.createSip.prepareIp' | isState" type="button" ng-click="newIpModal()" class="btn btn-info" uib-popover="{{'PREPAREIPDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PREPAREIP' | translate}}</button>
+        <span style="position:absolute; right:12px; top:12px;" ng-click="getListViewData()" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': ipLoading }" uib-popover="{{'REFRESHTABLEDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+    </div>
+    <div id="list-view" class="list-view-table">
+        <table class="table table-striped" style="margin-bottom: 0px;">
+            <thead>
+                <tr>
+                    <th class="clickable" class="column-label" st-sort="{{col.sortString}}" st-sort-default="{{col.sortString == 'CreateDate'? 'reverse' : ''}}" ng-repeat="col in listViewColumns"><span ng-hide="col.label=='step_state'">{{col.label.toUpperCase() | translate}}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="row.class" ng-repeat="row in vm.displayedIps" class="table-item">
+                    <td ng-repeat="col in listViewColumns">
+                        <div ng-include src="col.template"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <td ng-show="!initLoad">
+        <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="vm.itemsPerPage" st-displayed-pages="7"></div>
+    </td>
 </div>
