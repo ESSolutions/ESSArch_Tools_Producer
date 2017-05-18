@@ -21,7 +21,7 @@
                                     </td>
                                     <td>
                                         <p ng-if="!saProfile.profile" class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</p>
-                                        <a ng-if="saProfile.profile" class="table-col" ng-click="saClick(saProfile)">{{'SUBMISSIONAGREEMENT' | translate}}</a>
+                                        <a ng-if="saProfile.profile && checkPermission('sa.create_new_generation')" class="table-col" ng-click="saClick(saProfile)">{{'SUBMISSIONAGREEMENT' | translate}}</a>
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="(saProfile.locked) || (ip.Responsible.id != auth.id && !checkPermission('ip.change_sa'))" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.name for x in saProfile.profiles"></select></td>
                                     <td>
@@ -39,7 +39,6 @@
                                 <button ng-if="!saProfile.locked" form="editSA-form" ng-disabled="extendedEqual(vm.profileOldModel, vm.profileModel)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVESAPROFILE' | translate}}</button>
                             </div>
                         </div>
-                        <!--<a ng-click="getProfilesFromIp(ip, saProfile.profile)">{{'SHOWHIDEPROFILES' | translate}}</a>-->
                         <table style="margin-top: 10px; margin-bottom: 0px;" ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
                             <thead>
                                 <tr>
