@@ -29,7 +29,7 @@ body.modal-open[style] {
     position: relative;
 }
 .selected {
-    background-color: rgba(50, 120, 255, 0.27)!important;
+    background-color: $selected !important;
 }
 .formly-field label {
     font-size: 10px;
