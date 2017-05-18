@@ -36,7 +36,7 @@
                                     <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options" form="vm.editForm">
                                     </formly-form>
                                 </form>
-                                <button ng-if="!saProfile.locked" form="editSA-form" ng-disabled="extendedEqual(vm.profileOldModel, vm.profileModel)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVESAPROFILE' | translate}}</button>
+                                <button ng-if="!saProfile.locked" form="editSA-form" ng-disabled="vm.editForm.$invalid || extendedEqual(vm.profileOldModel, vm.profileModel)" type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVESAPROFILE' | translate}}</button>
                             </div>
                         </div>
                         <table style="margin-top: 10px; margin-bottom: 0px;" ng-if="saProfile.profile" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
