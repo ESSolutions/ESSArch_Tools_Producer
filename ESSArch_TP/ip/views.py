@@ -632,9 +632,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 parent_step_pos=40
         )
 
+        create_log_file_step = ProcessStep.objects.create(
+            name="Create Log File",
+            parent_step_pos=15,
+        )
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
-            create_sip_step.add_tasks(ProcessTask.objects.create(
+            create_log_file_step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.DownloadSchemas",
                 params={
                     "template": template,
@@ -648,10 +652,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 responsible=self.request.user,
             ))
 
-        create_log_file_step = ProcessStep.objects.create(
-            name="Create Log File",
-            parent_step_pos=15,
-        )
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.GenerateXML",
             params={
