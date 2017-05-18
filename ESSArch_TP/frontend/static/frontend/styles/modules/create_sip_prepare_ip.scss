@@ -1,3 +1,6 @@
+@import 'colors';
+@import 'mixins';
+
 .prepare-ip {
     .helper {
         background: white;
@@ -32,15 +35,11 @@
     }
     .edit-view-tree {
         display: flex;
-        display: -webkit-flex;
         flex-direction: row;
-        -webkit-flex-direction: row;
         width: 100%;
         .formly {
             display: flex;
-            display: -webkit-flex;
             flex-direction: row;
-            -webkit-flex-direction: row;
             width: 100%;
         }
         .formly-field {
@@ -56,6 +55,7 @@
     }
     .map-structure-editor {
         border-top-style: solid;
-        border-color: #666;
+        border-top-width: 1px;
+        border-color: $border-color;
     }
 }

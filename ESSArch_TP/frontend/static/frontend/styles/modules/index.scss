@@ -1,10 +1,13 @@
+@import 'colors';
+@import 'mixins';
+
 a {
     cursor: pointer;
 }
 body {
-    background-color: rgba(50, 120, 255, 0.1);
+    background-color: $body-background;
     margin: 0px auto;
-    max-width: 1440px;
+    min-width: 680px;
     overflow: auto;
 }
 body.modal-open {
@@ -85,15 +88,16 @@ body.modal-open[style] {
 .body-wrapper {
     display: flex;
     flex-direction: column;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
     width: 100%;
-    padding: 10px;
-    border-style: solid;
     border-radius: 1px;
-    background-color: white;
     min-height: 1131px;
     height: 100%;
+}
+.header {
+    background-color: $header-color;
+    color: white;
+    padding: 10px;
+    box-shadow: 0px 5px 2px $shadow-color;
 }
 .logo-search-user-admin-wrapper {
     display: flex;
@@ -116,9 +120,6 @@ body.modal-open[style] {
     display: flex;
     align-items: center;
     justify-content: center;
-    display: -webkit-flex;
-    -webkit-align-items: center;
-    -webkit-justify-content: center;
     width: 20%;
     height: 100%;
 }
@@ -128,14 +129,12 @@ body.modal-open[style] {
 }
 .user-admin {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    display: -webkit-flex;
-    -webkit-align-items: center;
-    -webkit-justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-end;
     width: 15%;
     height: 100%;
     float: right;
+    margin-right: 15px;
 }
 .user-dropdown {
     display: flex;
@@ -154,27 +153,21 @@ body.modal-open[style] {
 }
 .menu-task-wrapper {
     display: flex;
-    flex-direction: inline;
-    display: -webkit-flex;
-    -webkit-flex-direction: inline;
+    flex-direction: row;
     width: 100%;
     height: 45px;
 }
 .menu {
     display: inline-block;
-    width: 85%;
+    width: 100%;
     height: 100%;
 }
 .tasks-icons {
     display: flex;
     align-items: center;
     justify-content: center;
-    display: -webkit-flex;
-    -webkit-align-items: center;
-    -webkit-justify-content: center;
-    width: 15%;
+    min-width: 200px;
     height: 100%;
-    margin-right: 15px;
 }
 .tasks-icons > .fa {
     margin-right: 2px;
@@ -184,12 +177,12 @@ body.modal-open[style] {
 .shortcut-nav-calendar-wrapper {
     display: flex;
     flex-direction: column;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
-    width: 280px;
-    min-width: 280px;
-    margin: 5px;
-    height: 1000px;
+    position: relative;
+    width: 180px;
+    float: left;
+    overflow: hidden;
+    margin: 5px 0 0 0;
+    height: 600px;
     background-color: transparent;
 }
 .shortcut-list {
@@ -201,11 +194,8 @@ body.modal-open[style] {
     border-radius: 20px;
 }
 .navigation {
-    padding: 5px;
-    border-style: solid;
-    border-radius: 10px;
-    border-color: #666;
-    height: 60%;
+    @include container(5px);
+    height: 100%;
     width: 100%;
     margin-top: 5px;
 }
@@ -218,6 +208,7 @@ body.modal-open[style] {
 @media screen and (max-width: 1200px) {
     .active-hamburger {
         display: block!important;
+        min-width:180px;
     }
     .shortcut-nav-calendar-wrapper {
         cursor: pointer;
@@ -227,8 +218,8 @@ body.modal-open[style] {
         padding: 0 !important;
         display: none;
         position: fixed;
-        left: 0;
-        top: 100px;
+        left: -10px;
+        top: 105px;
         z-index: 100;
         .calendar {
             display: none;
@@ -237,12 +228,8 @@ body.modal-open[style] {
             background-color: white;
         }
     }
-    body {
-        min-width: 900px;
-    }
     .hamburger {
         margin-right: 5px;
-        margin-top: 10px;
         display: inline;
         cursor: pointer;
     }
@@ -265,15 +252,11 @@ body.modal-open[style] {
 .calendar {
     display: flex;
     flex-direction: column;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
     height: 40%;
     width: 100%;
     margin-top: 10px;
     border-style: solid;
     border-color: #AAA;
-
-
 }
 .datepicker {
     width: 100%;
@@ -311,31 +294,12 @@ body.modal-open[style] {
     padding: 8px 8px;
 }
 .nav-dynamic-wrapper {
-    display: flex;
-    flex-direction: inline;
-    display: -webkit-flex;
-    -webkit-flex-direction: inline;
     width: 100%;
+    padding: 0 10px 0 10px;
 }
 .dynamic-part {
     height: 100%;
-    width: 80%;
-}
-/*Shared styling among views*/
-.sub-menu {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    display: -webkit-flex;
-    -webkit-flex-direction: row;
-    -webkit-flex-wrap: wrap;
-    height: 48px;
-    padding-bottom: 5px;
-}
-.sub-menu > button {
-    border-radius: 5px;
-    margin-right: 5px;
-    margin-left: 5px;
+    overflow: hidden;
 }
 .fa.fa-refresh {
     font-size: 20px;
@@ -363,8 +327,9 @@ body.modal-open[style] {
     padding: 0px;
 }
 .info-wrapper {
+    @include container(10px);
     width: 100%;
-    margin-left: 10px;
+    margin-top: 10px;
 }
 .param-value {
     word-break: break-word;
@@ -409,13 +374,10 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
-
-// Whats up here?
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
-    padding-top: 4px;
-    padding-bottom: 8px;
-    line-height: 1;
-    word-break: break-all;
+.list-view {
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
+        padding-bottom: 8px;
+    }
 }
 .step-state {
     padding-top: 0 !important;
@@ -423,7 +385,7 @@ body.modal-open[style] {
 .step-state-success {
     display: inline;
     color: white;
-    background-color: #4fc388;
+    background-color: $step-success;
     padding: 3px 10px;
     font-size: 9px;
     border-radius: 5px;
@@ -431,7 +393,7 @@ body.modal-open[style] {
 .step-state-failure {
     display: inline;
     color: white;
-    background-color: #f44242;
+    background-color: $step-fail;
     padding: 3px 10px;
     font-size: 9px;
     border-radius: 5px;
@@ -439,7 +401,7 @@ body.modal-open[style] {
 .step-state-in-progress {
     display: inline;
     color: white;
-    background-color: #4d94f2;
+    background-color: $step-in-progress;
     padding: 3px 10px;
     font-size: 9px;
     border-radius: 5px;
@@ -464,6 +426,43 @@ padding: 0 12px;
     display: flex;
     flex-direction: column;
 }
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    font-size: 12pt;
+    .sliding-middle-out {
+        display: inline-block;
+        position: relative;
+        padding-bottom: 3px;
+    }
+    .sliding-middle-out:after {
+        content: '';
+        display: block;
+        margin: auto;
+        height: 1px;
+        width: 0px;
+        background: transparent;
+    }
+    .chosen:hover:after {
+        width: 100%;
+        height: 1px;
+        background: #fff;
+    }
+    .chosen:after {
+        width: 100%;
+        height: 1px;
+        background: #fff;
+    }
+}
+.nav-item {
+    cursor: pointer;
+    margin: 0 15px 0 0 !important;
+}
+
 .content-wrapper {
     display: flex;
     flex-direction: column;
@@ -477,6 +476,11 @@ padding: 0 12px;
     margin-bottom: 10px;
     margin-left: 5px;
 }
+@media screen and (max-width: 1200px) {
+    .content-wrapper > div {
+        margin-left: 0;
+    }
+}
 .search-prepare-wrapper {
     display: flex;
     flex-direction: row;
@@ -484,8 +488,8 @@ padding: 0 12px;
     flex-wrap: nowrap;
     align-items: stretch;
     position: relative;
-    margin-bottom:5px;
     width: 100%;
+    padding: 0 0 10px 0;
     .btn-info {
         margin-left: 10px;
         padding: 2px 12px;
@@ -497,26 +501,26 @@ padding: 0 12px;
     }
 }
 .list-view {
-    border-style: solid;
-    border-color: #666;
-    border-radius: 15px;
+    @include container(10px);
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    padding: 5px;
-    .list-view-buttons {
-        display: flex;
-        flex-direction: row;
-        justify-content: left;
-        margin-bottom: 5px;
-    }
-    .list-view-buttons .btn {
-        margin-left: 10px;
-    }
     .list-view-table {
         position: relative;
         overflow-x: auto;
+        thead, tbody {
+            border: 1px solid $border-color;
+        }
     }
+}
+.list-view-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-bottom: 5px;
+}
+.list-view-buttons .btn {
+    margin-left: 10px;
 }
 .progress {
     height: 20px;
@@ -535,15 +539,11 @@ padding: 0 12px;
     cursor: pointer;
 }
 .select-sub-edit-eventlog-wrapper {
-    border-style: solid;
-    border-color: #666;
-    border-radius: 15px;
+    @include container;
     position: relative;
 }
 .events-status-wrapper {
-    border-style: solid;
-    border-color: #666;
-    border-radius: 15px;
+    @include container;
 }
 .event-view {
     margin: 5px;
@@ -559,13 +559,13 @@ padding: 0 12px;
 .select-view {
     margin: 5px;
     padding: 5px;
-}
-.select-view > .checkbox {
-    height: 10px;
-}
-.select-view > .table>tbody>tr>td {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    & > .checkbox {
+        height: 10px;
+    }
+    .table>tbody>tr>td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
 }
 .lock-button  {
     padding: 0px 16px;
@@ -582,16 +582,11 @@ padding: 0 12px;
     margin: auto;
 }
 .sub-select-view {
-    border-top-style: solid;
-    border-color: #666;
-    /*text-align: center;
-    position: relative;*/
+    @include container(5px);
     height: 60px;
-    font-size: 20px;
     display: flex;
     flex-direction: row;
     margin: 5px;
-    padding: 5px;
 }
 .sub-select-view > select {
     margin-left: 20px;
@@ -608,7 +603,8 @@ padding: 0 12px;
 }
 .edit-view {
     border-top-style: solid;
-    border-color: #666;
+    border-top-width: 1px;
+    border-color: $border-color;
     margin: 5px;
     padding: 5px;
     position: relative;
@@ -619,16 +615,14 @@ padding: 0 12px;
         padding: 5px;
         width: 100%;
     }
-    .submit-button {
-        margin-bottom: 5px;
-    }
     .btn-danger {
         float: right;
     }
 }
 .eventlog-view {
     border-top-style: solid;
-    border-color: #666;
+    border-top-width: 1px;
+    border-color: $border-color;
     display: flex;
     flex-direction: row;
     height: 70px;
@@ -651,7 +645,7 @@ padding: 0 12px;
     margin-top: 20px;
 }
 input[type="checkbox"] {
-    transform:scale(1.3, 1.3);
+    transform:scale(1.2, 1.2);
 }
 .eventlog-view .submit-button {
     height: 40px;
@@ -702,13 +696,38 @@ input[type="checkbox"] {
 .sa-table {
     padding-bottom: 10px;
     border-bottom-style: solid;
-    border-color: #666;
+    border-bottom-width: 1px;
+    border-color: $border-color;
 }
-.column-picker {
-    display: flex;
-    flex-direction: row;
-    .buttons {
+.user-settings {
+    @include container(10px);
+    margin-top: 10px;
+    width:50%;
+    min-width: 400px;
+    .ip-view-type {
+        margin-bottom: 10px;
+    }
+    .column-picker {
+        width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        .buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        select {
+            width: 150px;
+        }
+    }
+}
+.version-info-page {
+    @include container(10px);
+    margin-top: 10px;
+}
+.table-container {
+    position: relative;
+    overflow-x: auto;
+    thead, tbody {
+        border: 1px solid $border-color;
     }
 }
