@@ -105,15 +105,12 @@ body.modal-open[style] {
     width: 85%;
     height: 100%;
     margin: 0 auto;
-    cursor: pointer;
-}
-.logo h2 {
-    font-size: 28pt;
-    line-height: 0;
 }
 .logo h3 {
+    display: inline-block;
     margin-top: 12px;
     margin-bottom: 12px;
+    cursor: pointer;
 }
 .search {
     display: flex;
