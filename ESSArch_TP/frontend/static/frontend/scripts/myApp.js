@@ -326,6 +326,11 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                         validation: {
                             show: true
                         }
+                    },
+                    ngModelAttrs: {
+                        remote: {
+                            attribute: 'remote'
+                        }
                     }
                 };
             }
