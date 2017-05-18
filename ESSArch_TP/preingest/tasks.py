@@ -27,6 +27,9 @@ from __future__ import absolute_import
 import os
 import shutil
 import uuid
+from urlparse import urljoin
+
+import requests
 
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
@@ -254,28 +257,49 @@ class SubmitSIP(DBTask):
         srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
-
         src = os.path.join(srcdir, ip.ObjectIdentifierValue + ".%s" % container_format)
-        dst = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format)
+
+        try:
+            remote = ip.get_profile('transfer_project').specification_data.get(
+                'preservation_organization_receiver_url'
+            )
+        except AttributeError:
+            remote = None
+
+        session = None
+
+        if remote:
+            dst, remote_user, remote_pass = remote.split(',')
+            dst = urljoin(dst, 'api/ip-reception/upload/')
+
+            session = requests.Session()
+            session.verify = False
+            session.auth = (remote_user, remote_pass)
+        else:
+            dst = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format)
 
         ProcessTask.objects.create(
             name="ESSArch_Core.tasks.CopyFile",
             params={
                 'src': src,
-                'dst': dst
+                'dst': dst,
+                'requests_session': session,
             },
             processstep_id=self.step,
             hidden=True
         ).run().get()
 
         src = os.path.join(srcdir, ip.ObjectIdentifierValue + ".xml")
-        dst = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
+
+        if remote is None:
+            dst = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
 
         ProcessTask.objects.create(
             name="ESSArch_Core.tasks.CopyFile",
             params={
                 'src': src,
-                'dst': dst
+                'dst': dst,
+                'requests_session': session,
             },
             processstep_id=self.step,
             hidden=True
