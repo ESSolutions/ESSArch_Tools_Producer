@@ -36,7 +36,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ESSArch_Core.configuration.models import EventType
+from ESSArch_Core.configuration.models import EventType, Path
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
 
@@ -50,6 +50,8 @@ class test_create_ip(TestCase):
 
         self.root = os.path.dirname(os.path.realpath(__file__))
         self.datadir = os.path.join(self.root, 'datadir')
+
+        Path.objects.create(entity='path_preingest_prepare', value=self.datadir)
 
         self.url = reverse('informationpackage-list')
 
