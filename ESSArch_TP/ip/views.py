@@ -910,9 +910,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
 
-        if ip.State != "Created":
-            raise ValueError(
-                "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.State)
+        if False:
+            return Response(
+                "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.State),
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         validators = request.data.get('validators', {})
