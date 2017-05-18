@@ -794,6 +794,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
             )
 
+        try:
+            compress = ip.get_profile('transfer_project').specification_data.get(
+                'container_format_compression'
+            )
+        except AttributeError:
+            compress = False
+
         if container_format.lower() == 'zip':
             zipname = os.path.join(ip_reception_path) + '.zip'
             container_task = ProcessTask.objects.create(
@@ -801,6 +808,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={
                     "dirname": ip_prepare_path,
                     "zipname": zipname,
+                    "compress": compress
                 },
                 processstep_pos=4,
                 log=EventIP,
@@ -815,6 +823,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={
                     "dirname": ip_prepare_path,
                     "tarname": tarname,
+                    "compress": compress
                 },
                 processstep_pos=4,
                 log=EventIP,
