@@ -421,6 +421,9 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
     .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$touched || fc[0].$touched';
         formlyValidationMessages.addStringMessage('required', 'This field is required');
+        formlyValidationMessages.addStringMessage('email', 'Enter a valid email address');
+        formlyValidationMessages.addStringMessage('url', 'Enter a valid URL');
+
         $rootScope.flowObjects = {};
 
         djangoAuth.initialize('/rest-auth', false).then(function(response) {
