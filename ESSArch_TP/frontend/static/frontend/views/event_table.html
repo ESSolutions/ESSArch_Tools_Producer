@@ -1,34 +1,38 @@
-<div ng-if="eventShow" class="event-view">
-    <div ng-controller="EventCtrl as vm" class="table-container">
-        <span style="float: right; margin-bottom: 5px;" ng-click="stCtrl.pipe()" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': eventLoading }"></span>
-        <select class="form-control items-per-page" ng-change="updateEventsPerPage(vm.itemsPerPage)" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
-        <table st-table="vm.displayed" st-pipe="eventPipe" class="table table-striped">
-            <thead>
-                <tr>
-                    <th class="clickable" st-sort="eventType">{{'EVENTTYPE' | translate}}</th>
-                    <th class="clickable" st-sort="eventOutcomeDetailNote">{{'COMMENT' | translate}}</th>
-                    <th class="clickable" st-sort="eventOutcome">{{'OUTCOME' | translate}}</th>
-                    <th class="clickable" st-sort="linkingAgentIdentifierValue">{{'AGENT' | translate}}</th>
-                    <th style="min-width: 100px;" class="clickable" st-sort-default="reverse" st-sort="eventDateTime">{{'EVENTTIME' | translate}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in vm.displayed">
-                    <td>{{row.eventDetail}}</td>
-                    <td>{{row.eventOutcomeDetailNote}}</td>
-                    <td>{{getEventOutcome(row.eventOutcome)}}</td>
-                    <td>{{row.linkingAgentIdentifierValue.username}}</td>
-                    <td>{{row.eventDateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5" class="text-center">
-                        <div st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="vm.itemsPerPage" st-displayed-pages="7"></div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+<div ng-if="eventShow" ng-controller="EventCtrl as vm" class="event-view">
+    <div st-table="vm.displayed" st-pipe="eventPipe" class="table-container">
+        <div class="search-prepare-wrapper">
+            <span style="float: right; margin-bottom: 5px;" ng-click="stCtrl.pipe()" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': eventLoading }"></span>
+            <select class="form-control items-per-page" ng-change="updateEventsPerPage(vm.itemsPerPage)" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]"></select>
+        </div>
+        <div class="list-view-table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="clickable" st-sort="eventType">{{'EVENTTYPE' | translate}}</th>
+                        <th class="clickable" st-sort="eventOutcomeDetailNote">{{'COMMENT' | translate}}</th>
+                        <th class="clickable" st-sort="eventOutcome">{{'OUTCOME' | translate}}</th>
+                        <th class="clickable" st-sort="linkingAgentIdentifierValue">{{'AGENT' | translate}}</th>
+                        <th style="min-width: 100px;" class="clickable" st-sort-default="reverse" st-sort="eventDateTime">{{'EVENTTIME' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-class="row.class" ng-click="eventClick(row)" ng-repeat="row in vm.displayed">
+                        <td>{{row.eventDetail}}</td>
+                        <td>{{row.eventOutcomeDetailNote}}</td>
+                        <td>{{getEventOutcome(row.eventOutcome)}}</td>
+                        <td>{{row.linkingAgentIdentifierValue.username}}</td>
+                        <td>{{row.eventDateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <td>
+            <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="vm.itemsPerPage" st-displayed-pages="7"></div>
+        </td>
         <div class="events-footer">
             <form ng-if="ip.State != 'Created' && ip.State != 'Creating' && ip.State != 'Submitting' && ip.State != 'Submitted'" class="events-form" ng-submit="addEvent(ip, newEventForm.eventType, newEventForm.comment, newEventForm.eventOutcome)">
 

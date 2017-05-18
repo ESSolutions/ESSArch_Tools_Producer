@@ -374,7 +374,7 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
-.list-view {
+.list-view, .event-view {
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
         padding-bottom: 8px;
     }
