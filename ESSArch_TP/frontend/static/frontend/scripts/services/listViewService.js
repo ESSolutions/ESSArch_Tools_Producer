@@ -155,7 +155,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         };
         var promise = $http({
             method: 'GET',
-            url: appConfig.djangoUrl+'submission-agreements/'
+            url: appConfig.djangoUrl+'submission-agreements/',
+            params: {pager: 'none'}
         })
         .then(function successCallback(response) {
             sas = response.data;
@@ -459,7 +460,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         var promise = $http({
             method: 'GET',
             url: appConfig.djangoUrl+"profiles/",
-            params: {type: type}
+            params: {type: type, pager: 'none'}
         })
         .then(function successCallback(response) {
             response.data.forEach(function(profileObj) {
