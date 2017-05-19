@@ -391,6 +391,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }).then(function(response){
             $scope.getSelectCollection(sa, ip);
             $scope.selectRowCollection = $scope.selectRowCollapse;
+            if($scope.editSA) {
+                $scope.saClick({profile: sa});
+            }
         }, function(response) {
             $scope.saProfile.profile = $scope.saProfile.profiles[oldSa_idx];
         });
