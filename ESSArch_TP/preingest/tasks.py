@@ -269,12 +269,15 @@ class SubmitSIP(DBTask):
         session = None
 
         if remote:
-            dst, remote_user, remote_pass = remote.split(',')
-            dst = urljoin(dst, 'api/ip-reception/upload/')
+            try:
+                dst, remote_user, remote_pass = remote.split(',')
+                dst = urljoin(dst, 'api/ip-reception/upload/')
 
-            session = requests.Session()
-            session.verify = False
-            session.auth = (remote_user, remote_pass)
+                session = requests.Session()
+                session.verify = False
+                session.auth = (remote_user, remote_pass)
+            except ValueError:
+                remote = None
         else:
             dst = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format)
 
@@ -291,7 +294,7 @@ class SubmitSIP(DBTask):
 
         src = os.path.join(srcdir, ip.ObjectIdentifierValue + ".xml")
 
-        if remote is None:
+        if not remote:
             dst = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
 
         ProcessTask.objects.create(
