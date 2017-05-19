@@ -202,5 +202,7 @@
     "EVENT_ADDED": "Event tillagt!",
     "SAVE_ERROR": "Ett fel uppstod!",
     "SAVESAPROFILE": "Spara SA-profil",
-    "ENTERSAPROFILENAME": "Välj nytt SA-profilnamn"
+    "ENTERSAPROFILENAME": "Välj nytt SA-profilnamn",
+    "LOCK_ERROR": "kunde inte låsas"
+
 }

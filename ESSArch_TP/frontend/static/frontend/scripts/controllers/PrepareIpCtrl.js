@@ -243,7 +243,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.edit = false;
         } else {
             $scope.editSA = false;
-
+            $scope.closeAlert();
             if (row.active.name){
                 var profileUrl = row.active.url;
             } else {
@@ -597,6 +597,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Lock a profile
     $scope.lockProfile = function (profiles) {
+        $scope.closeAlert();
         var profileUrl;
         if(profiles.active.profile) {
             profileUrl = profiles.active.profile;
@@ -623,7 +624,24 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             return {status: error.status, profile: profiles};
         });
     }
+
+    $scope.lockAlert = null;
+    $scope.alerts = {
+        lockError: { type: 'danger', msg: 'LOCK_ERROR', name: '', profile_type: '' },
+    };
+    $scope.closeAlert = function() {
+        $scope.lockAlert = null;
+    }
     function showRequiredProfileFields(row) {
+        console.log(row.active);
+        console.log($scope.selectedProfileRow);
+        if($scope.edit) {
+            $scope.lockAlert = $scope.alerts.lockError;
+            $scope.lockAlert.name = row.active.profile_name;
+            $scope.lockAlert.profile_type = row.active.profile_type;
+            vm.editForm.$setSubmitted();
+            return;
+        }
         if (row.active.name){
             var profileUrl = row.active.url;
         } else {

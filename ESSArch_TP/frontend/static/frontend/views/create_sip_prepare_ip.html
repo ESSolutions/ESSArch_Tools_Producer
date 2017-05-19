@@ -87,6 +87,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div uib-alert ng-if="lockAlert" style="width: 100%;" ng-class="'alert-' + (lockAlert.type || 'warning')" close="closeAlert()">{{'PROFILE' | translate}} {{lockAlert.name}}({{lockAlert.profile_type}}) {{lockAlert.msg | translate}}.</div>
                         </div>
 
                     </div>

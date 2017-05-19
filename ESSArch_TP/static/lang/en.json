@@ -202,5 +202,6 @@
     "EVENT_ADDED": "Event added!",
     "SAVE_ERROR": "An error occured!",
     "SAVESAPROFILE": "Save SA profile",
-    "ENTERSAPROFILENAME": "Enter new SA-profile name"
+    "ENTERSAPROFILENAME": "Enter new SA-profile name",
+    "LOCK_ERROR": "could not be locked"
 }
