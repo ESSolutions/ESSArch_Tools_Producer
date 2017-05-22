@@ -355,7 +355,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         if request.method == 'POST':
             try:
-                path = os.path.join(ip.ObjectPath, request.data['path'])
+                path = request.data['path']
             except KeyError:
                 return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
 
@@ -368,7 +368,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             fullpath = os.path.join(root, path)
 
             if not in_directory(fullpath, root):
-                raise exceptions.ParseError('Illegal path %s' % fullpath)
+                raise exceptions.ParseError('Illegal path %s' % path)
 
             if pathtype == 'dir':
                 os.makedirs(fullpath)
