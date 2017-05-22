@@ -169,6 +169,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 request, message=getattr(permission, 'message', None)
             )
 
+        if ip.SubmissionAgreementLocked:
+            raise exceptions.ParseError('IP already has a locked SA')
+
         if ip.SubmissionAgreement == sa:
             ip.SubmissionAgreementLocked = True
 
