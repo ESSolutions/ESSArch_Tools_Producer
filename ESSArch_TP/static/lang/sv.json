@@ -203,6 +203,13 @@
     "SAVE_ERROR": "Ett fel uppstod!",
     "SAVESAPROFILE": "Spara SA-profil",
     "ENTERSAPROFILENAME": "Välj nytt SA-profilnamn",
-    "LOCK_ERROR": "kunde inte låsas"
+    "LOCK_ERROR": "kunde inte låsas",
+    "NEWFOLDER": "Ny mapp",
+    "FOLDER_NAME": "Mappnamn",
+    "ENTERNEWFOLDERNAME": "Ange namn för ny mapp",
+    "DIR_EXISTS_IN_IP": "Det existerar redan en mapp med samma namn!",
+    "DIR_EXISTS_IN_IP_DESC": "Det existerar redan en mapp med detta namn i IPt. Vill du skriva över den nuvarande mappen?",
+    "FILE_EXISTS_IN_IP": "Det existerar redan en fil med samma namn!",
+    "FILE_EXISTS_IN_IP_DESC": "Det existerar redan en fil med detta namn i IPt. Vill du skriva över den nuvarande filen?"
 
 }

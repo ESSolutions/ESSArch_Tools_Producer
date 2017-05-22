@@ -28,6 +28,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
+    $ctrl.dir_name = "";
     $ctrl.email = {
         subject: "",
         body: ""
@@ -35,6 +36,12 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
     $ctrl.save = function () {
         $ctrl.data = {
             name: $ctrl.profileName
+        };
+        $uibModalInstance.close($ctrl.data);
+    };
+    $ctrl.saveDir = function () {
+        $ctrl.data = {
+            dir_name: $ctrl.dir_name
         };
         $uibModalInstance.close($ctrl.data);
     };
@@ -89,6 +96,20 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
             $ctrl.error_messages_pw1 = error.new_password1 || [];
             $ctrl.error_messages_pw2 = error.new_password2 || [];
         });
+    };
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+})
+.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data) {
+    var $ctrl = this;
+    $ctrl.file = data.file;
+    $ctrl.type = data.type;
+    $ctrl.overwrite = function () {
+        $ctrl.data = {
+            status: "overwritten"
+        }
+        $uibModalInstance.close($ctrl.data);
     };
     $ctrl.cancel = function () {
         $uibModalInstance.dismiss('cancel');

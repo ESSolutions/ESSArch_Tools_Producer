@@ -11,22 +11,26 @@
             </div>
             <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
                 <div ng-if="select" id="select-view" class="select-view">
-                                <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">{{'EDIT' | translate}} EAD</button>
+                    <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">{{'EDIT' | translate}} EAD</button>
                     <b>IP: </b>{{ip.Label}}
                     <div class="file-explorer">
                         <div class="file-explorer-nav">
                             <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
                             <b class="dir-path">{{ip.ObjectIdentifierValue + '/' + previousGridArraysString()}}</b>
                         </div>
-                                <span style="float: right; margin-bottom: 5px;" ng-click="updateGridArray(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': deckGridLoading }" uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500"
-                                    popover-append-to-body="true"></span>
+                        <span style="float: right; margin-bottom: 5px;" ng-click="updateGridArray(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': deckGridLoading }"
+                            uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500"
+                            popover-append-to-body="true"></span>
                         <div class="deckgrid">
                             <div class="flex-grid">
                                 <div class="card" ng-repeat="card in deckGridData" ng-include src="'static/frontend/views/deckgrid_card.html'"></div>
                             </div>
                         </div>
+                        <button ng-if="selectedCards.length" class="btn btn-default" ng-click="removeFiles()" translate="REMOVE"></button>
+                        <button ng-click="newDirModal()" class="btn btn-default" translate="NEWFOLDER"></button>
                     </div>
-                    <div id="file-upload" ng-if="(ip.Responsible.id == auth.id || checkPermission('ip.can_upload')) && showFileUpload" ng-include src="'static/frontend/views/file_upload.html'"></div>
+                    <div id="file-upload" ng-if="(ip.Responsible.id == auth.id || checkPermission('ip.can_upload')) && showFileUpload" ng-include
+                        src="'static/frontend/views/file_upload.html'"></div>
                     <div ng-if="ip.Responsible.id != auth.id && !checkPermission('ip.can_upload')">
                         <p style="color:red;">{{'NO_PERMISSION_UPLOAD' | translate}}!</p>
                     </div>

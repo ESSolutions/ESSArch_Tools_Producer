@@ -368,6 +368,28 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             return response.data;
         });
     }
+    function deleteFile(ip, path, file) {
+        return $http({
+            method: "DELETE",
+            url: ip.url + "files/",
+            data: { path: path + file.name },
+            headers: {
+                'Content-type': 'application/json;charset=utf-8'
+            }
+        })
+            .then(function (response) {
+                return response;
+            });
+    }
+    function addNewFolder(ip, path, file) {
+        return $http.post(ip.url + "files/",
+            {
+                path: path + file.name,
+                type: file.type
+            }).then(function (response) {
+                return response;
+            });
+    }
     /*******************/
     /*HELPER FUNCTIONS*/
     /*****************/
@@ -555,7 +577,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getProfiles: getProfiles,
         getProfilesMin: getProfilesMin,
         getDir: getDir,
+        deleteFile: deleteFile,
+        addNewFolder: addNewFolder,
     };
-
 });
 
