@@ -524,42 +524,34 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     vm.validatorFields = [
         {
             "templateOptions": {
-                "type": "text",
                 "label": $translate.instant('VALIDATEFILEFORMAT'),
-                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
             },
             "defaultValue": false,
-            "type": "select",
+            "type": "checkbox",
             "key": "validate_file_format",
         },
         {
             "templateOptions": {
-                "type": "text",
                 "label": $translate.instant('VALIDATEXMLFILE'),
-                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
             },
             "defaultValue": false,
-            "type": "select",
+            "type": "checkbox",
             "key": "validate_xml_file",
         },
         {
             "templateOptions": {
-                "type": "text",
                 "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
             },
             "defaultValue": false,
-            "type": "select",
+            "type": "checkbox",
             "key": "validate_logical_physical_representation",
         },
         {
             "templateOptions": {
-                "type": "text",
                 "label": $translate.instant('VALIDATEINTEGRITY'),
-                "options": [{name: $scope.yes, value: true},{name: $scope.no, value: false}],
             },
             "defaultValue": false,
-            "type": "select",
+            "type": "checkbox",
             "key": "validate_integrity",
         }
     ];
