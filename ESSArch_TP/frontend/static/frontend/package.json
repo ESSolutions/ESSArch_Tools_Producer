@@ -60,7 +60,7 @@
     "protractor": "^4.0.14",
     "select2": "~4.0.3",
     "ua-parser-js": "^0.7.12",
-    "ui-select": "~0.19.6",
+    "ui-select": "^0.19.8",
     "yargs": "^6.5.0"
   },
   "dependencies": {},
