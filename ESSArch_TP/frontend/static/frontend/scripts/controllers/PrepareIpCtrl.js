@@ -584,9 +584,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.getListViewData();
         });
     }
+    $scope.profileToLock = null;
     //Creates and shows modal for profile lock.
     $scope.lockProfileModal = function (profiles) {
-        $scope.profileToSave = profiles;
+        $scope.profileToLock = profiles;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -597,7 +598,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
-            $scope.lockProfile($scope.profileToSave);
+            $scope.lockProfile($scope.profileToLock);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
@@ -640,8 +641,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.lockAlert = null;
     }
     function showRequiredProfileFields(row) {
-        console.log(row.active);
-        console.log($scope.selectedProfileRow);
         if($scope.edit) {
             $scope.lockAlert = $scope.alerts.lockError;
             $scope.lockAlert.name = row.active.profile_name;
@@ -1068,7 +1067,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
         }).then(function(response){
             profile.locked = false;
-            getAndShowProfile(profile.active.url, profile);
+            if($scope.edit && profile.active.id === $scope.selectedProfileRow.active.id) {
+                getAndShowProfile(profile.active.url, profile);
+            }
         });
     }
     $scope.showLockAllButton = function(profiles){
