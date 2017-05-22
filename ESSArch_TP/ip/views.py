@@ -987,6 +987,16 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        recipients = [ip.get_email_recipient()]
+
+        if recipients:
+            for arg in ['subject', 'body']:
+                if arg not in request.data:
+                    raise exceptions.ParseError('%s parameter missing' % arg)
+
+            subject = request.data['subject']
+            body = request.data['body']
+
         validators = request.data.get('validators', {})
 
         validate_xml_file = validators.get('validate_xml_file', False)
@@ -1102,11 +1112,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         ))
 
-        if ip.get_email_recipient():
-            recipients = [ip.get_email_recipient()]
-            subject = request.data.get('subject')
-            body = request.data.get('body')
-
+        if recipients:
             attachments = [infoxml]
 
             step.add_tasks(ProcessTask.objects.create(
