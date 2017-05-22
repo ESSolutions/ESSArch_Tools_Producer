@@ -28,7 +28,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Prefetch
 
-from rest_framework import status
+from rest_framework import exceptions, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
@@ -106,6 +106,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['post'])
     def save(self, request, pk=None):
+        if not request.user.has_perm('profiles.create_new_sa_generation'):
+            raise exceptions.PermissionDenied
+
         sa = self.get_object()
 
         try:
