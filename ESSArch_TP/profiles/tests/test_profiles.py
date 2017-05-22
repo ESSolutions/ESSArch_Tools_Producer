@@ -22,7 +22,8 @@
     Email - essarch@essolutions.se
 """
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse
 
@@ -83,6 +84,13 @@ class LockSubmissionAgreement(TestCase):
 class SaveSubmissionAgreement(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="admin")
+
+        content_type = ContentType.objects.get_for_model(SubmissionAgreement)
+        perm = Permission.objects.get(
+            codename='create_new_sa_generation',
+            content_type=content_type,
+        )
+        self.user.user_permissions.add(perm)
 
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
@@ -191,6 +199,21 @@ class SaveSubmissionAgreement(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue(SubmissionAgreement.objects.filter(name='', archivist_organization='initial').exists())
         self.assertTrue(SubmissionAgreement.objects.filter(name='new', archivist_organization='new ao').exists())
+
+    def test_save_changes_without_permission(self):
+        self.user.user_permissions.all().delete()
+        url = '/api/submission-agreements/%s/save/' % str(self.sa.pk)
+        self.sa.archivist_organization = 'initial'
+        self.sa.save()
+
+        data = {
+            'new_name': 'new',
+            'data': {'archivist_organization': 'new ao'},
+            'information_package': str(self.ip.pk),
+        }
+
+        res = self.client.post(url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class SaveProfile(TestCase):
