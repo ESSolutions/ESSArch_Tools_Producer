@@ -39,7 +39,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 
 from django.http import HttpResponse
-from rest_framework import exceptions, filters, status
+from rest_framework import exceptions, filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
@@ -74,6 +74,7 @@ from ESSArch_Core.ip.permissions import (
     CanSubmitSIP,
     CanUnlockProfile,
     CanUpload,
+    IsResponsible,
 )
 
 from ESSArch_Core.profiles.models import (
@@ -322,9 +323,62 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         serializer.is_valid()
         return Response(serializer.data)
 
-    @detail_route()
+    @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsible])
     def files(self, request, pk=None):
         ip = self.get_object()
+
+        if request.method not in permissions.SAFE_METHODS:
+            if ip.State not in ['Prepared', 'Uploading']:
+                raise exceptions.ParseError("Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state")
+
+        if request.method == 'DELETE':
+            try:
+                path = os.path.join(ip.ObjectPath, request.data.__getitem__('path'))
+            except KeyError:
+                return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
+
+            if not in_directory(path, ip.ObjectPath):
+                raise exceptions.ParseError('Illegal path %s' % fullpath)
+
+            try:
+                shutil.rmtree(path)
+            except OSError as e:
+                if e.errno == errno.ENOENT:
+                    raise exceptions.NotFound('Path does not exist')
+
+                if e.errno != errno.ENOTDIR:
+                    raise
+
+                os.remove(path)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        if request.method == 'POST':
+            try:
+                path = os.path.join(ip.ObjectPath, request.data['path'])
+            except KeyError:
+                return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                pathtype = request.data['type']
+            except KeyError:
+                return Response('Type parameter missing', status=status.HTTP_400_BAD_REQUEST)
+
+            root = ip.ObjectPath
+            fullpath = os.path.join(root, path)
+
+            if not in_directory(fullpath, root):
+                raise exceptions.ParseError('Illegal path %s' % fullpath)
+
+            if pathtype == 'dir':
+                os.mkdir(fullpath)
+            elif pathtype == 'file':
+                open(fullpath, 'a').close()
+            else:
+                return Response('Type must be either "file" or "dir"', status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(path, status=status.HTTP_201_CREATED)
+
         entries = []
         path = request.query_params.get('path', '')
         fullpath = os.path.join(ip.ObjectPath, path)
