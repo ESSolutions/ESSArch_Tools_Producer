@@ -394,6 +394,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             if($scope.editSA) {
                 $scope.saClick({profile: sa});
             }
+            $scope.saProfile.profile = sa;
         }, function(response) {
             $scope.saProfile.profile = $scope.saProfile.profiles[oldSa_idx];
         });
@@ -423,8 +424,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             data: sendData
         }).then(function(response) {
             $scope.editSA = false;
-            $scope.saProfile.profile = response.data;
+            var old = $scope.saProfile.profiles.indexOf($scope.saProfile.profile);
             $scope.saProfile.profiles.push(response.data);
+            $scope.changeSaProfile(response.data, $scope.ip, old);
         }, function(response) {
             console.log(response.status);
         });
