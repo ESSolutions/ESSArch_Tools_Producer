@@ -981,7 +981,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
 
-        if False:
+        if ip.State != "Created":
             return Response(
                 "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.State),
                 status=status.HTTP_400_BAD_REQUEST
