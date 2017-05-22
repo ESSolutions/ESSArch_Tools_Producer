@@ -73,9 +73,19 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $interval.cancel(stateInterval);
         }
     });
+    var fileBrowserInterval;
+    $scope.$watch(function () { return $scope.select; }, function (newValue, oldValue) {
+        if (newValue) {
+            $interval.cancel(fileBrowserInterval);
+            fileBrowserInterval = $interval(function () { $scope.updateGridArray() }, appConfig.fileBrowserInterval);
+        } else {
+            $interval.cancel(fileBrowserInterval);
+        }
+    });
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(stateInterval);
         $interval.cancel(listViewInterval);
+        $interval.cancel(fileBrowserInterval);
     });
 
     /*******************************************/
