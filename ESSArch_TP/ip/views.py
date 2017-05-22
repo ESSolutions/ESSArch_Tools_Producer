@@ -371,7 +371,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 raise exceptions.ParseError('Illegal path %s' % path)
 
             if pathtype == 'dir':
-                os.makedirs(fullpath)
+                try:
+                    os.makedirs(fullpath)
+                except OSError as e:
+                    if e.errno == errno.EEXIST:
+                        raise exceptions.ParseError('Directory %s already exists' % path)
+
+                    raise
+
             elif pathtype == 'file':
                 open(fullpath, 'a').close()
             else:
