@@ -261,8 +261,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         ip = self.get_object()
 
-        if ip.SubmissionAgreementLocked:
-            return Response("SA connected to IP is locked", status=status.HTTP_400_BAD_REQUEST)
+        if 'SubmissionAgreement' in request.data:
+            if ip.SubmissionAgreementLocked:
+                return Response("SA connected to IP is locked", status=status.HTTP_400_BAD_REQUEST)
 
         return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
 
