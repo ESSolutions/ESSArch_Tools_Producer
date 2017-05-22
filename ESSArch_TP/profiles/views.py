@@ -112,14 +112,6 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         sa = self.get_object()
 
         try:
-            ip = InformationPackage.objects.get(pk=request.data.get('information_package'))
-        except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Invalid IP'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
             new_name = request.data["new_name"]
         except KeyError:
             new_name = ''
@@ -150,11 +142,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         if not changed_data:
             return Response({'status': 'no changes, not saving'}, status=status.HTTP_400_BAD_REQUEST)
 
-        new_sa = sa.copy_and_switch(
-            ip=ip,
-            new_data=new_data,
-            new_name=new_name,
-        )
+        new_sa = sa.copy(new_data=new_data, new_name=new_name,)
         serializer = SubmissionAgreementSerializer(
             new_sa, context={'request': request}
         )
