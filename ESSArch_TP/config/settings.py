@@ -244,6 +244,7 @@ STATICFILES_DIRS = (
 BROKER_URL = 'amqp://guest:guest@localhost:5672/etp'
 CELERY_IMPORTS = ("preingest.tasks", "ESSArch_Core.WorkflowEngine.tests.tasks")
 CELERY_RESULT_BACKEND = 'amqp://'
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 # Rest auth settings
 OLD_PASSWORD_FIELD_ENABLED = True
