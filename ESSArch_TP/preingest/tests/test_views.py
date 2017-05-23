@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
+from unittest import skip
+
 from django.contrib.auth.models import Permission, User
 from django.test import TestCase
 from django.urls import reverse
@@ -8,6 +14,20 @@ from rest_framework.test import APIClient
 from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep, ProcessTask,
 )
+
+
+class ProcessTaskViewSetTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_detail_params_with_unicode(self):
+        t = ProcessTask.objects.create(params={'foo': 'åäö'})
+        url = reverse('processtask-detail', args=(t.pk,))
+
+        self.client.get(url)
 
 
 class UndoTaskTestCase(TestCase):
