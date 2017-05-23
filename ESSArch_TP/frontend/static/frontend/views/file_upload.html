@@ -1,8 +1,8 @@
 <div
     flow-init
     flow-object="currentFlowObject"
-    flow-file-added="hideFlowCompleted()"
-    flow-files-added="hideFlowCompleted()"
+    flow-file-added="hideFlowCompleted($flow)"
+    flow-files-added="hideFlowCompleted($flow)"
     flow-transfers
     >
     <div>
@@ -21,9 +21,9 @@
         <p class="bg-warning drop-zone" flow-drop flow-drag-enter="class='bg-success'" flow-drag-leave="class=''">
            {{'DRAGANDDROPFILEHERE' | translate}}
         </p>
-    <div class="upload-complete" ng-if="flowCompleted">
+    <div class="upload-complete" ng-if="currentFlowObject.flowCompleted">
         <p style="color: green;">{{'UPLOAD_COMPLETE' | translate}}!</p>
-        <p>{{flowFiles}} {{'FILES' | translate}},  {{flowSize | filesize}}</p>
+        <p>{{currentFlowObject.flowFiles}} {{'FILES' | translate}},  {{currentFlowObject.flowSize | filesize}}</p>
     </div>
     </div>
     <div>

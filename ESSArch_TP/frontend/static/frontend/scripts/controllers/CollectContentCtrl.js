@@ -482,16 +482,19 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.flowCompleted = false;
     $scope.flowComplete = function(flow, transfers) {
         if(flow.progress() === 1) {
-            $scope.flowCompleted = true;
-            $scope.flowSize = flow.getSize();
-            $scope.flowFiles = transfers.length;
+            flow.flowCompleted = true;
+            flow.flowSize = flow.getSize();
+            flow.flowFiles = transfers.length;
             flow.cancel();
-            $scope.resetUploadedFiles();
+            if(flow == $scope.currentFlowObject){
+                $scope.resetUploadedFiles();
+            }
         }
+        
         $scope.updateGridArray();
     }
-    $scope.hideFlowCompleted = function() {
-        $scope.flowCompleted = false;
+    $scope.hideFlowCompleted = function(flow) {
+        flow.flowCompleted = false;
     }
     $scope.getUploadedPercentage = function(totalSize, uploadedSize, totalFiles) {
         if(totalSize == 0 || uploadedSize/totalSize == 1) {
