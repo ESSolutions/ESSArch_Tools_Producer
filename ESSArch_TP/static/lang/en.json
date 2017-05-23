@@ -210,5 +210,6 @@
     "DIR_EXISTS_IN_IP": "Folder with this name already exists!",
     "DIR_EXISTS_IN_IP_DESC": "Folder with this name already exists in the IP. Do you want to overwrite current folder?",
     "FILE_EXISTS_IN_IP": "File with this name already exists!",
-    "FILE_EXISTS_IN_IP_DESC": "File with this name already exists in the IP. Do you want to overwrite current file?"
+    "FILE_EXISTS_IN_IP_DESC": "File with this name already exists in the IP. Do you want to overwrite current file?",
+    "ARGS": "Args"
 }
