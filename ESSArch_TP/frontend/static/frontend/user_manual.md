@@ -31,10 +31,11 @@ ETP is a SIP creator tool which provides functionality to facilitate the prepara
  * Translations, e.g. different languages
  * Submission Agreements (SA) are supported
  * SA related profiles like SIP profiles, Submit description profiles, Transfer project profiles etc.
+ * Ability to create new generations of SA-profiles and the SA related profiles.
  * Different parallel tasks, steps and workflows can be managed, e.g. parallel work capabilities
  * Events are logged during every task and step and event types can easily be configured
  * Locking, unlocking and reuse/removal of IPs in conjunction with authority models
- * Filter functions is provided, default Archivist organisation and Archival institution
+ * Filter functions are provided, default Archivist organisation and Archival institution
  * Search functionality, can be adjusted easily
  * Preparation of the physical and logical structure of the IP in order to be able to add content
  * Upload content (exports/file/folders etc.) into the selected prepared IP
@@ -51,7 +52,6 @@ The user interface is well known if you ever have used a web application.
 
  * **Menu** - provides functionality to prepare IP, collect content, create SIP and submit SIP
  * **Navigation view** - filter functionality for archival institutions, archivist organization and others
- * **Calendar** - a basic calender (to let you know the day, if you forgot it)
  * **User administration** - change password and logout functionality
  * **Task icons** - provides refresh, settings and help functionality
  * **Translation** - supports translation of UI
@@ -62,32 +62,118 @@ The user interface is well known if you ever have used a web application.
 The so called list view is the table of IP's that is present in all views in etp(Prepare IP, Collect content, Create SIP and Submit SIP).
 The IP's that are listed in this view are always relevant to the current view(for example, already created SIP's are no longer visble in the Create SIP view).
 
+![list view][list-view]
+
 The list view has a couple of important functions built in which will be described below.
 * The main funcitonality of a view, such as Prepare IP, is accessed by clicking the IP label column. These are described in the sections for the views.
 * Clicking the state column will show all steps and tasks for an IP. This view has information about task and step outcome, progress and sub steps/tasks.
 Click on a step or a task to get a page with more information about the step/task. This is very useful if a step/task fails because the user can access an error traceback which will help
 when trying to find out where things went wrong.
+
+![task_tree][task_tree]
+
+![step_report][step_report]
+
+![task_report][task_report]
+
 * The Events column will show a list of all events for an IP. A user can add new events.
 * Delete IP. A user that is either responsible or has the permission to delete can delete it.
+
+### User settings
+User settings can be found by clicking the user symbol in the top right corner and selecting "User settings".
+
+![user settings1][user-settings1]
+
+* The user can choose what columns should be shown in all the list views of ETP and in which order they appear.
+* The columns are saved for each user, so the user "User" can have a different set of columns from login than the user "Admin" and vice versa. These settings are saved when clicking the "save" button and will always be applied on the specific user.
+
+![user settings2][user-settings2]
 
 ## Prepare IP
 * The first in the process of SIP creation is Prepare IP, which is started by clicking the "Prepare IP" button. 
 The user is then asked to type a working name for the new IP.
 
-* When clicking the label column the user can chose which Submission Agreement to use. When the user is satisfied, he/she locks it.
+* When clicking the label or ID column the user can chose which Submission Agreement(SA)-profile to use. When the user is satisfied, he/she locks it.
+
+![sa1][sa1]
+
+* With the right permissions, the user can click the text "Submission Agreement" next to te SA select field and edit sa fields. Saving the SA-profile creates a new generation of the previous SA.
+
+![sa2][sa2]
+
+![sa3][sa3]
+
+![sa4][sa4]
+
+![sa5][sa5]
+
 * After Submission agreement is locked, the profiles can be chosen, edited and locked.
+* The user can edit profiles by clicking the text in the "Entity" column of the profile table which will enable the "Edit view" for that specific profile. When done, click "save profile" and after entering a name, a new generation of the profile is created with given name.
+
+![profiles1][profiles1]
+
+![profiles2][profiles2]
+
+* When satisfied with a profile, the user can lock it, so it cannot be changed. The profile can be unlocked, but only with the right permissions.
+
+![profiles3][profiles3]
+
+* If the user is satisfied with all profiles, it can use the "Lock all"-button which is just a shortcut for clicking lock profile for every non-locked profile.
 
 ## Collect content
-Once the SA(Submission Agreement) and all included profiles are locked the ip is visible in the Collect content view.
-The user may upload single files or folders by chosing filed/folders and clicking upload.
-When upload is considered done, check "Completed uploading" and click "Done".
+Once the Submission Agreement and all included profiles are locked the ip is visible in the Collect content view.
+
+![cc1][cc1]
+
+![cc4][cc4]
+
+* The user may upload single files or folders by navigated to prefered location in the file browser and clicking upload.
+* It is important to not close the application while uploading content.
+* The file browser also has functionality for deleting files/folders and adding new folders. These functions can be executed through buttons beneath the file browser window.
+
+![cc2][cc2]
+
+![cc3][cc3]
+
+* When upload is considered done, check "Completed uploading" and click "Done".
+
+![cc5][cc5]
 
 ## Create SIP
 When upload is set completed the ip becomes visible in the Create SIP view. 
-* The user can, by clicking the label column inspect all included profiles, but not edit them. If the profiles are incorrect, they can be unlocked and will be editable in the Prepare IP view.
-* If satisfied with the profiles, choose what validators to use in the SIP creation step, check "Approved to create" and click Create SIP.
+* The user can, by clicking the label or ID column inspect all included profiles, but not edit them. With the right permissions, the profiles can be unlocked and made available in prepare IP again. Unlocking the SIP-profile in this stage may have unwanted consequences so in that case, creating a new IP and create a new sip profile generation to use instead is probably a good idea. One reason for this is that we may have uploaded content that would be lost etc.
+
+![create_sip][create_sip]
+
+* If satisfied with the profiles, choose what validators to use in the SIP creation step by checking or unchecking the different validators, check "Approved to create" and click Create SIP.
 
 ## Submit SIP
 Once the SIP is created it becomes visible in the Submit SIP view and is ready for submission.
-* By clicking the label column, the user can see information that is important for the SIp submission and then check "Approved to submit" and click Submit SIP.
+* By clicking the label column, the user can see information that is important for the SIP submission and then check "Approved to submit" and click Submit SIP.
 
+![submit_sip1][submit_sip1]
+
+![submit_sip2][submit_sip2]
+
+[user-settings1]: ./static/frontend/img/user_settings1.png "User settings"
+[user-settings2]: ./static/frontend/img/user_settings2.png "User settings"
+[list-view]: ./static/frontend/img/layout.png "List view"
+[task_tree]: ./static/frontend/img/task_tree.png "Task tree"
+[task_report]: ./static/frontend/img/task_report.png "Task report"
+[step_report]: ./static/frontend/img/step_report.png "Step report"
+[sa1]: ./static/frontend/img/sa1.png "Sa 1"
+[sa2]: ./static/frontend/img/sa2.png "Sa 2"
+[sa3]: ./static/frontend/img/sa3.png "Sa 3"
+[sa4]: ./static/frontend/img/sa4.png "Sa 4"
+[sa5]: ./static/frontend/img/sa5.png "Sa 5"
+[profiles1]: ./static/frontend/img/profiles1.png "Profiles 1"
+[profiles2]: ./static/frontend/img/profiles2.png "Profiles 2"
+[profiles3]: ./static/frontend/img/profiles3.png "Profiles 3"
+[cc1]: ./static/frontend/img/collect_content1.png "Collect content 1"
+[cc2]: ./static/frontend/img/collect_content2.png "Collect content 2"
+[cc3]: ./static/frontend/img/collect_content3.png "Collect content 3"
+[cc4]: ./static/frontend/img/collect_content4.png "Collect content 4"
+[cc5]: ./static/frontend/img/collect_content5.png "Collect content 5"
+[create_sip]: ./static/frontend/img/create_sip.png "Create SIP"
+[submit_sip1]: ./static/frontend/img/submit_sip1.png "Submit SIP1"
+[submit_sip2]: ./static/frontend/img/submit_sip2.png "Submit SIP2"
