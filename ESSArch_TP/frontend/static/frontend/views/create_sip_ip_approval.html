@@ -63,8 +63,8 @@
                                         </ui-select>
                                     </td>
                                     <td>
-                                        <button ng-if="profile.locked && ip.State == 'Uploaded' && (ip.Responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
-                                        <button ng-if="profile.locked && (ip.State == 'Created' || ip.State == 'Creating') || (ip.Responsible.id != auth.id && !checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                        <button ng-if="profile.locked && (ip.State == 'Uploaded' || ip.State == 'Created') && (ip.Responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
+                                        <button ng-if="profile.locked && ip.State == 'Creating' || (ip.Responsible.id != auth.id && !checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                     </td>
                                 </tr>
                             </tbody>
