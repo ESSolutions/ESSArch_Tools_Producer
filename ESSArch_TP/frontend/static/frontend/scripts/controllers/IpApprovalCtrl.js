@@ -367,7 +367,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         if(profile.profile_type == "sip") {
             $scope.unlockSipModal(profile);
         } else {
-            $scope.unlock(profile);
+            $scope.unlockProfileModal(profile);
         }
     }
 
@@ -381,6 +381,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             }
         }).then(function(response){
             profile.locked = false;
+            $scope.getListViewData();
+            $scope.edit = false;
+            $scope.select = false;
+            $scope.eventlog = false;
         });
     }
     //Change state to prepare-ip
@@ -462,6 +466,23 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/unlock_sip_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.unlock($scope.profileToSave);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+        $scope.unlockProfileModal = function (profile) {
+        $scope.profileToSave = profile;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/unlock_profile_modal.html',
             scope: $scope,
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl'
