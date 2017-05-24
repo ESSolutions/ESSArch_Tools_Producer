@@ -1184,6 +1184,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
         ptype = request.data.get("type")
 
+        if ip.State in ['Submitting', 'Submitted']:
+            raise exceptions.ParseError('Cannot unlock profiles in an IP that is %s' % ip.State)
+
         if ptype:
             ip.unlock_profile(ptype)
             prepare_path = Path.objects.get(entity='path_preingest_prepare').value
