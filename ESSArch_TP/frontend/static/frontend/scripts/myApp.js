@@ -428,6 +428,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         formlyValidationMessages.addStringMessage('required', 'This field is required');
         formlyValidationMessages.addStringMessage('email', 'Enter a valid email address');
         formlyValidationMessages.addStringMessage('url', 'Enter a valid URL');
+        formlyValidationMessages.addStringMessage('remoteUrl', 'Enter a valid URL with credentials\n(https://example.com,user,pass)');
 
         $rootScope.flowObjects = {};
 
