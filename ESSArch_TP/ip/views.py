@@ -1182,24 +1182,25 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'], url_path='unlock-profile', permission_classes=[CanUnlockProfile])
     def unlock_profile(self, request, pk=None):
         ip = self.get_object()
-        ptype = request.data.get("type")
 
         if ip.State in ['Submitting', 'Submitted']:
             raise exceptions.ParseError('Cannot unlock profiles in an IP that is %s' % ip.State)
 
-        if ptype:
-            ip.unlock_profile(ptype)
-            prepare_path = Path.objects.get(entity='path_preingest_prepare').value
-            ip.ObjectPath = os.path.join(prepare_path, ip.ObjectIdentifierValue)
+        try:
+            ptype = request.data["type"]
+        except KeyError:
+            raise exceptions.ParseError('type parameter missing')
 
-            ip.save(update_fields=['ObjectPath'])
-            return Response({
-                'status': 'unlocking profile with type "%s" in IP "%s"' % (
-                    ptype, ip.pk
-                )
-            })
+        ip.unlock_profile(ptype)
+        prepare_path = Path.objects.get(entity='path_preingest_prepare').value
+        ip.ObjectPath = os.path.join(prepare_path, ip.ObjectIdentifierValue)
+        ip.save(update_fields=['ObjectPath'])
 
-        return Response()
+        return Response({
+            'status': 'unlocking profile with type "%s" in IP "%s"' % (
+                ptype, ip.pk
+            )
+        })
 
     @detail_route(methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
     def upload(self, request, pk=None):
