@@ -163,9 +163,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                                 $scope.getPackageProfiles(row);
                                 $scope.edit = true;
                                 $scope.eventlog = true;
-                                $timeout(function() {
-                                    $anchorScroll("select-wrap");
-                                }, 0);
                             });
                         });
                     }

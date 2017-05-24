@@ -133,9 +133,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = true;
             $scope.ip = row;
             $rootScope.ip = row;
-            $timeout(function() {
-                $anchorScroll("select-wrap");
-            }, 0);
         }
         $scope.createDisabled = false;
         $scope.edit = false;
@@ -206,9 +203,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                     $scope.edit = true;
                     $scope.eventlog = true;
                     getEventlogData();
-                    $timeout(function() {
-                        $anchorScroll('edit-view');
-                    }, 0);
                 });
             }
         }

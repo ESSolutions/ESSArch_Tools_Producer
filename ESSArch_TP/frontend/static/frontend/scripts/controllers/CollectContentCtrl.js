@@ -155,10 +155,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             }
             $scope.select = true;
             $scope.eventlog = true;
-            $timeout(function() {
-                $anchorScroll("select-wrap");
-            }, 0);
-
         }
         $scope.previousGridArrays = [];
         $scope.uploadDisabled = false;

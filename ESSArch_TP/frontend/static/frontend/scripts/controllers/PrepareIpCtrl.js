@@ -147,9 +147,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $rootScope.ip = $scope.ip;
             $scope.getSaProfiles($scope.ip);
             $scope.select = true;
-            $timeout(function() {
-                $anchorScroll("select-wrap");
-            }, 0);
         }
         $scope.eventlog = false;
         $scope.edit = false;
@@ -289,9 +286,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
             $scope.edit = true;
             $scope.eventlog = true;
-            $timeout(function () {
-                $anchorScroll('edit-view');
-            }, 0);
         });
     }
     //Get data for eventlog view
@@ -455,7 +449,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
                 });
                 $scope.edit = false;
                 $scope.eventlog = false;
-                $anchorScroll('select-view');
             }, function(response) {
                 alert(response.status);
             });
@@ -689,10 +682,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }
             $scope.edit = true;
             $scope.eventlog = true;
-            $timeout(function() {
-                $anchorScroll('edit-view');
-                vm.editForm.$setSubmitted();
-            }, 0);
         });
     }
     //Creates modal for lock SA
@@ -899,7 +888,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             node.node.children.push(dir);
         }
         $scope.exitAddMode();
-        $anchorScroll('edit-tree');
     };
     //Remove node from map structure tree view
     $scope.removeNode = function(node) {
