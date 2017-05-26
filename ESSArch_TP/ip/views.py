@@ -987,9 +987,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        recipients = [ip.get_email_recipient()]
+        recipient = ip.get_email_recipient()
 
-        if recipients:
+        if recipient:
             for arg in ['subject', 'body']:
                 if arg not in request.data:
                     raise exceptions.ParseError('%s parameter missing' % arg)
@@ -1112,14 +1112,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             responsible=self.request.user,
         ))
 
-        if recipients:
+        if recipient:
             attachments = [infoxml]
 
             step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.SendEmail",
                 params={
                     'sender': self.request.user.email,
-                    'recipients': recipients,
+                    'recipients': [recipient],
                     'subject': subject,
                     'body': body,
                     'attachments': attachments
