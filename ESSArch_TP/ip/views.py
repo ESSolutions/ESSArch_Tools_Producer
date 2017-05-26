@@ -987,6 +987,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        sd_profile = ip.get_profile('submit_description')
+
+        if sd_profile is None:
+            return Response(
+                "The IP (%s) has no submit description profile" % pk,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
         recipient = ip.get_email_recipient()
 
         if recipient:
@@ -1023,8 +1032,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
 
         reception = Path.objects.get(entity="path_preingest_reception").value
-
-        sd_profile = ip.get_profile('submit_description')
 
         container_format = ip.get_container_format()
         container_file = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format.lower())
