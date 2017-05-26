@@ -33,12 +33,15 @@ from django.db.models import F
 from django.test import TestCase
 from django.urls import reverse
 
+import mock
+
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from ESSArch_Core.configuration.models import EventType, Path
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
+from ESSArch_Core.WorkflowEngine.models import ProcessTask
 
 
 class test_create_ip(TestCase):
@@ -160,6 +163,119 @@ class test_delete_ip(TestCase):
         res = self.client.delete(self.url)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(os.path.exists(self.datadir))
+
+
+class test_submit_ip(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.root = os.path.dirname(os.path.realpath(__file__))
+        self.datadir = os.path.join(self.root, 'datadir')
+
+        Path.objects.create(entity='path_preingest_prepare', value=self.datadir)
+        Path.objects.create(entity='path_preingest_reception', value=self.datadir)
+
+        self.ip = InformationPackage.objects.create()
+        self.url = reverse('informationpackage-detail', args=(self.ip.pk,))
+        self.url = self.url + 'submit/'
+
+        try:
+            os.mkdir(self.datadir)
+        except OSError as e:
+            if e.errno != 17:
+                raise
+
+    def tearDown(self):
+        try:
+            shutil.rmtree(self.datadir)
+        except:
+            pass
+
+    def test_not_responsible(self):
+        res = self.client.post(self.url)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_not_created(self):
+        self.ip.Responsible = self.user
+        self.ip.save()
+        res = self.client.post(self.url)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_submit_description_profile(self):
+        self.ip.Responsible = self.user
+        self.ip.State = 'Created'
+        self.ip.save()
+        res = self.client.post(self.url)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @mock.patch('ip.views.creation_date', return_value=0)
+    @mock.patch('ip.views.ProcessStep.run')
+    def test_no_mail(self, mock_step, mock_time):
+        self.ip.Responsible = self.user
+        self.ip.State = 'Created'
+        self.ip.save()
+
+        sd = Profile.objects.create(profile_type='submit_description')
+        ProfileIP.objects.create(ip=self.ip, profile=sd)
+
+        res = self.client.post(self.url)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        self.assertFalse(ProcessTask.objects.filter(name="ESSArch_Core.tasks.SendEmail").exists())
+        mock_step.assert_called_once()
+
+    def test_with_mail_without_subject(self):
+        self.ip.Responsible = self.user
+        self.ip.State = 'Created'
+        self.ip.save()
+
+        tp = Profile.objects.create(
+            profile_type='transfer_project',
+            specification_data={'preservation_organization_receiver_email': 'foo'}
+        )
+        ProfileIP.objects.create(ip=self.ip, profile=tp)
+
+        res = self.client.post(self.url, {'body': 'foo'})
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_with_mail_without_body(self):
+        self.ip.Responsible = self.user
+        self.ip.State = 'Created'
+        self.ip.save()
+
+        tp = Profile.objects.create(
+            profile_type='transfer_project',
+            specification_data={'preservation_organization_receiver_email': 'foo'}
+        )
+        ProfileIP.objects.create(ip=self.ip, profile=tp)
+
+        res = self.client.post(self.url, {'subject': 'foo'})
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @mock.patch('ip.views.creation_date', return_value=0)
+    @mock.patch('ip.views.ProcessStep.run')
+    def test_with_mail(self, mock_step, mock_time):
+        self.ip.Responsible = self.user
+        self.ip.State = 'Created'
+        self.ip.save()
+
+        tp = Profile.objects.create(
+            profile_type='transfer_project',
+            specification_data={'preservation_organization_receiver_email': 'foo'}
+        )
+        ProfileIP.objects.create(ip=self.ip, profile=tp)
+
+        sd = Profile.objects.create(profile_type='submit_description')
+        ProfileIP.objects.create(ip=self.ip, profile=sd)
+
+        res = self.client.post(self.url, {'subject': 'foo', 'body': 'bar'})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        self.assertTrue(ProcessTask.objects.filter(name="ESSArch_Core.tasks.SendEmail").exists())
+        mock_step.assert_called_once()
 
 
 class test_set_uploaded(TestCase):
