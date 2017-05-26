@@ -110,7 +110,7 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'url', 'id', 'ObjectIdentifierValue', 'Label', 'Content',
             'Responsible', 'CreateDate', 'State', 'status', 'step_state',
             'ObjectPath', 'object_size', 'object_num_items', 'Startdate',
-            'Enddate', 'OAIStype', 'SubmissionAgreement',
+            'Enddate', 'package_type', 'SubmissionAgreement',
             'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
             'ArchivalLocation', 'SubmissionAgreementLocked', 'profiles',
         )
