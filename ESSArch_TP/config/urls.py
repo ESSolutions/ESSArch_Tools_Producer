@@ -57,6 +57,11 @@ from ESSArch_Core.auth.views import (
     UserViewSet,
 )
 
+from ESSArch_Core.WorkflowEngine.views import (
+    ProcessStepViewSet,
+    ProcessTaskViewSet,
+)
+
 from ip.views import (
     ArchivalInstitutionViewSet,
     ArchivistOrganizationViewSet,
@@ -64,11 +69,6 @@ from ip.views import (
     ArchivalLocationViewSet,
     EventIPViewSet,
     InformationPackageViewSet,
-)
-
-from preingest.views import (
-    ProcessStepViewSet,
-    ProcessTaskViewSet,
 )
 
 from profiles.views import (

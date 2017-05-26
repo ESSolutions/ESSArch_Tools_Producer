@@ -113,7 +113,7 @@ from ip.serializers import (
     EventIPSerializer,
 )
 
-from preingest.serializers import (
+from ESSArch_Core.WorkflowEngine.serializers import (
     ProcessStepSerializer,
 )
 
