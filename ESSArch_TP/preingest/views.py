@@ -26,10 +26,13 @@ import datetime
 import itertools
 import pytz
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
+from ESSArch_Core.WorkflowEngine.filters import ProcessTaskFilter
 from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep,
     ProcessTask,
@@ -136,6 +139,8 @@ class ProcessTaskViewSet(viewsets.ModelViewSet):
     """
     queryset = ProcessTask.objects.select_related('responsible').all()
     serializer_class = ProcessTaskSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ProcessTaskFilter
 
     def get_serializer_class(self):
         if self.action == 'list':

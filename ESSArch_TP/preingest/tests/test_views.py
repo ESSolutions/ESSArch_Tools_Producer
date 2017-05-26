@@ -29,6 +29,41 @@ class ProcessTaskViewSetTestCase(TestCase):
 
         self.client.get(url)
 
+    def test_filter(self):
+        url = reverse('processtask-list')
+
+        t = ProcessTask.objects.create()
+        t_undo = ProcessTask.objects.create()
+        t_retry = ProcessTask.objects.create()
+
+        t.undone = t_undo
+        t.retried = t_retry
+        t.save(update_fields=['undone', 'retried'])
+
+        res = self.client.get(url)
+        self.assertEqual(len(res.data), 3)
+
+        res = self.client.get(url, {'undo_type': True})
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['id'], str(t_undo.pk))
+
+        res = self.client.get(url, {'undo_type': False})
+        self.assertEqual(len(res.data), 2)
+
+        res = self.client.get(url, {'retry_type': True})
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['id'], str(t_retry.pk))
+
+        res = self.client.get(url, {'retry_type': False})
+        self.assertEqual(len(res.data), 2)
+
+        res = self.client.get(url, {'undo_type': True, 'retry_type': True})
+        self.assertEqual(len(res.data), 0)
+
+        res = self.client.get(url, {'undo_type': False, 'retry_type': False})
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['id'], str(t.pk))
+
 
 class UndoTaskTestCase(TestCase):
     def setUp(self):
