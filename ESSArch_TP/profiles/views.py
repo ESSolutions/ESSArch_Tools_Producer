@@ -241,10 +241,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         changed_structure = profile.structure != new_structure
 
         if (changed_data or changed_structure):
-            new_profile = profile.copy_and_switch(
-                ip=InformationPackage.objects.get(
-                    pk=request.data["information_package"]
-                ),
+            new_profile = profile.copy(
                 specification_data=new_data,
                 new_name=request.data["new_name"],
                 structure=new_structure,

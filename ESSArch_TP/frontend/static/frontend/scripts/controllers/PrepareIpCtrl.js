@@ -366,6 +366,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             url: uri,
             data: sendData
         }).then(function success(response){
+            row.active = profile;
             if($scope.edit && row == $scope.selectedProfileRow) {
                 $scope.edit = false;
                 $scope.profileClick(row);
@@ -430,7 +431,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
         var sendData = {
             "specification_data": vm.profileModel,
-            "information_package": $scope.ip.id,
             "new_name": new_name,
             "structure": $scope.treeElements[0].children
         };
@@ -442,11 +442,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             .then(function(response) {
                 var profileType = 'profile_' + $scope.profileToSave.profile_type;
                 var newProfile = response.data;
+                $scope.selectedProfileRow.profiles.push(newProfile);
                 newProfile.profile_name = newProfile.name;
-                listViewService.getIp($scope.ip.url).then(function(result) {
-                    $scope.getSelectCollection($scope.saProfile.profile, result);
-                    $scope.selectRowCollection = $scope.selectRowCollapse;
-                });
+                $scope.changeProfile(newProfile, $scope.selectedProfileRow);
                 $scope.edit = false;
                 $scope.eventlog = false;
             }, function(response) {

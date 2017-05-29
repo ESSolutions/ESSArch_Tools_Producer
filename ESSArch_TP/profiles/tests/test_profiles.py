@@ -32,7 +32,7 @@ from rest_framework.test import APIClient
 
 from ESSArch_Core.ip.models import ArchivistOrganization, InformationPackage
 
-from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
+from ESSArch_Core.profiles.models import Profile, SubmissionAgreement
 
 
 class LockSubmissionAgreement(TestCase):
@@ -223,12 +223,6 @@ class SaveProfile(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-        self.sa = SubmissionAgreement.objects.create()
-        self.ip = InformationPackage.objects.create(
-            SubmissionAgreement=self.sa,
-            SubmissionAgreementLocked=True
-        )
-
     def test_save_no_changes(self):
         profile = Profile.objects.create(
             name='first',
@@ -241,7 +235,6 @@ class SaveProfile(TestCase):
 
         data = {
             'new_name': 'second',
-            'information_package': str(self.ip.pk),
             'specification_data': profile.specification_data,
             'structure': {},
         }
@@ -249,7 +242,7 @@ class SaveProfile(TestCase):
         res = self.client.post(save_url, data, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_save_unlocked_profile(self):
+    def test_save_profile(self):
         profile = Profile.objects.create(
             name='first',
             profile_type='sip',
@@ -261,43 +254,12 @@ class SaveProfile(TestCase):
 
         data = {
             'new_name': 'second',
-            'information_package': str(self.ip.pk),
             'specification_data': {'foo': 'updated'},
             'structure': {},
         }
 
         res = self.client.post(save_url, data, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertNotEqual(self.ip.get_profile('sip').pk, profile.pk)
-        self.assertEqual(self.ip.get_profile('sip').name, data['new_name'])
-
-    def test_save_locked_profile(self):
-        profile = Profile.objects.create(
-            name='first',
-            profile_type='sip',
-            specification_data={'foo': 'initial'}
-        )
-
-        ProfileIP.objects.create(
-            ip=self.ip,
-            profile=profile,
-            LockedBy=self.user,
-        )
-
-        profile_url = reverse('profile-detail', args=(profile.pk,))
-        save_url = '%ssave/' % profile_url
-
-        data = {
-            'new_name': 'second',
-            'information_package': str(self.ip.pk),
-            'specification_data': {'foo': 'updated'},
-            'structure': {},
-        }
-
-        res = self.client.post(save_url, data, format='json')
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.ip.get_profile('sip').pk, profile.pk)
-        self.assertNotEqual(self.ip.get_profile('sip').name, data['new_name'])
 
     def test_save_empty_required_value(self):
         profile = Profile.objects.create(
@@ -319,7 +281,6 @@ class SaveProfile(TestCase):
 
         data = {
             'new_name': 'second',
-            'information_package': str(self.ip.pk),
             'specification_data': {'foo': ''},
             'structure': {},
         }
@@ -347,7 +308,6 @@ class SaveProfile(TestCase):
 
         data = {
             'new_name': 'second',
-            'information_package': str(self.ip.pk),
             'specification_data': {},
             'structure': {},
         }
