@@ -246,7 +246,28 @@ class SaveProfile(TestCase):
         profile = Profile.objects.create(
             name='first',
             profile_type='sip',
-            specification_data={'foo': 'initial'}
+            specification_data={'foo': 'initial'},
+            template=[
+                {
+                    "key": "email",
+                    "templateOptions": {
+                        "type": "email"
+                    },
+                },
+                {
+                    "key": "url",
+                    "templateOptions": {
+                        "type": "url"
+                    },
+                },
+                {
+                    "key": "remote",
+                    "templateOptions": {
+                        "type": "url",
+                        "remote": ""
+                    },
+                }
+            ]
         )
 
         profile_url = reverse('profile-detail', args=(profile.pk,))
@@ -254,7 +275,10 @@ class SaveProfile(TestCase):
 
         data = {
             'new_name': 'second',
-            'specification_data': {'foo': 'updated'},
+            'specification_data': {
+                'foo': 'updated', 'email': 'foo@example.com', 'url': 'http://example.com',
+                'remote': 'http://example.com,admin,admin',
+            },
             'structure': {},
         }
 
@@ -309,6 +333,88 @@ class SaveProfile(TestCase):
         data = {
             'new_name': 'second',
             'specification_data': {},
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_save_invalid_email(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'initial@example.com'},
+            template=[
+                {
+                    "key": "foo",
+                    "templateOptions": {
+                        "type": "email"
+                    },
+                }
+            ]
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'specification_data': {'foo': 'invalid'},
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_save_invalid_url(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'http://example.com'},
+            template=[
+                {
+                    "key": "foo",
+                    "templateOptions": {
+                        "type": "url"
+                    },
+                }
+            ]
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'specification_data': {'foo': 'invalid'},
+            'structure': {},
+        }
+
+        res = self.client.post(save_url, data, format='json')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_save_invalid_remote_url(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='sip',
+            specification_data={'foo': 'http://example.com,admin,admin'},
+            template=[
+                {
+                    "key": "foo",
+                    "templateOptions": {
+                        "type": "url",
+                        "remote": ""
+                    },
+                }
+            ]
+        )
+
+        profile_url = reverse('profile-detail', args=(profile.pk,))
+        save_url = '%ssave/' % profile_url
+
+        data = {
+            'new_name': 'second',
+            'specification_data': {'foo': 'invalid'},
             'structure': {},
         }
 
