@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 """
 
-import django_filters
+from django_filters import rest_framework as filters
 
 from ESSArch_Core.filters import ListFilter
 
@@ -35,13 +35,13 @@ from ESSArch_Core.ip.models import (
 )
 
 
-class InformationPackageFilter(django_filters.FilterSet):
+class InformationPackageFilter(filters.FilterSet):
     state = ListFilter(name='State')
 
-    archival_institution = django_filters.UUIDFilter(name="ArchivalInstitution__pk")
-    archivist_organization = django_filters.UUIDFilter(name='ArchivistOrganization__pk')
-    archival_type = django_filters.UUIDFilter(name='ArchivalType__pk')
-    archival_location = django_filters.UUIDFilter(name='ArchivalLocation__pk')
+    archival_institution = filters.UUIDFilter(name="ArchivalInstitution__pk", label='Archival Institution')
+    archivist_organization = filters.UUIDFilter(name='ArchivistOrganization__pk', label='Archivist Organization')
+    archival_type = filters.UUIDFilter(name='ArchivalType__pk', label='Archival Type')
+    archival_location = filters.UUIDFilter(name='ArchivalLocation__pk', label='Archival Location')
 
     class Meta:
         model = InformationPackage
@@ -51,7 +51,7 @@ class InformationPackageFilter(django_filters.FilterSet):
         ]
 
 
-class ArchivalInstitutionFilter(django_filters.FilterSet):
+class ArchivalInstitutionFilter(filters.FilterSet):
     ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
@@ -59,7 +59,7 @@ class ArchivalInstitutionFilter(django_filters.FilterSet):
         fields = ('ip_state',)
 
 
-class ArchivistOrganizationFilter(django_filters.FilterSet):
+class ArchivistOrganizationFilter(filters.FilterSet):
     ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
@@ -67,7 +67,7 @@ class ArchivistOrganizationFilter(django_filters.FilterSet):
         fields = ('ip_state',)
 
 
-class ArchivalTypeFilter(django_filters.FilterSet):
+class ArchivalTypeFilter(filters.FilterSet):
     ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
@@ -75,7 +75,7 @@ class ArchivalTypeFilter(django_filters.FilterSet):
         fields = ('ip_state',)
 
 
-class ArchivalLocationFilter(django_filters.FilterSet):
+class ArchivalLocationFilter(filters.FilterSet):
     ip_state = ListFilter(name='information_packages__State', distinct=True)
 
     class Meta:
