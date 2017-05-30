@@ -78,9 +78,9 @@ class test_create_ip(TestCase):
 
         self.assertTrue(
             InformationPackage.objects.filter(
-                Responsible=self.user,
-                Label=data['label'],
-                ObjectIdentifierValue=data['object_identifier_value'],
+                responsible=self.user,
+                label=data['label'],
+                object_identifier_value=data['object_identifier_value'],
             ).exists()
         )
 
@@ -91,9 +91,9 @@ class test_create_ip(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         InformationPackage.objects.filter(
-            Responsible=self.user,
-            Label=data['label'],
-            ObjectIdentifierValue=F('pk')
+            responsible=self.user,
+            label=data['label'],
+            object_identifier_value=F('pk')
         ).exists()
 
     def test_create_ip_without_label(self):
@@ -105,7 +105,7 @@ class test_create_ip(TestCase):
         self.assertFalse(InformationPackage.objects.exists())
 
     def test_create_ip_with_same_objid_as_existing(self):
-        existing = InformationPackage.objects.create(ObjectIdentifierValue='objid')
+        existing = InformationPackage.objects.create(object_identifier_value='objid')
 
         data = {'label': 'my label', 'object_identifier_value': 'objid'}
 
@@ -116,13 +116,13 @@ class test_create_ip(TestCase):
         self.assertEqual(InformationPackage.objects.first().pk, existing.pk)
 
     def test_create_ip_with_same_label_as_existing(self):
-        InformationPackage.objects.create(Label='label')
+        InformationPackage.objects.create(label='label')
 
         data = {'label': 'label'}
 
         res = self.client.post(self.url, data)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(InformationPackage.objects.filter(Label='label').count(), 2)
+        self.assertEqual(InformationPackage.objects.filter(label='label').count(), 2)
 
 
 class test_delete_ip(TestCase):
@@ -135,7 +135,7 @@ class test_delete_ip(TestCase):
         self.root = os.path.dirname(os.path.realpath(__file__))
         self.datadir = os.path.join(self.root, 'datadir')
 
-        self.ip = InformationPackage.objects.create(ObjectPath=self.datadir)
+        self.ip = InformationPackage.objects.create(object_path=self.datadir)
         self.url = reverse('informationpackage-detail', args=(str(self.ip.pk),))
 
         try:
@@ -157,7 +157,7 @@ class test_delete_ip(TestCase):
 
     def test_delete_ip_with_permission(self):
         InformationPackage.objects.filter(pk=self.ip.pk).update(
-            Responsible=self.user
+            responsible=self.user
         )
 
         res = self.client.delete(self.url)
@@ -199,14 +199,14 @@ class test_submit_ip(TestCase):
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_not_created(self):
-        self.ip.Responsible = self.user
+        self.ip.responsible = self.user
         self.ip.save()
         res = self.client.post(self.url)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_no_submit_description_profile(self):
-        self.ip.Responsible = self.user
-        self.ip.State = 'Created'
+        self.ip.responsible = self.user
+        self.ip.state = 'Created'
         self.ip.save()
         res = self.client.post(self.url)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -214,8 +214,8 @@ class test_submit_ip(TestCase):
     @mock.patch('ip.views.creation_date', return_value=0)
     @mock.patch('ip.views.ProcessStep.run')
     def test_no_mail(self, mock_step, mock_time):
-        self.ip.Responsible = self.user
-        self.ip.State = 'Created'
+        self.ip.responsible = self.user
+        self.ip.state = 'Created'
         self.ip.save()
 
         sd = Profile.objects.create(profile_type='submit_description')
@@ -228,8 +228,8 @@ class test_submit_ip(TestCase):
         mock_step.assert_called_once()
 
     def test_with_mail_without_subject(self):
-        self.ip.Responsible = self.user
-        self.ip.State = 'Created'
+        self.ip.responsible = self.user
+        self.ip.state = 'Created'
         self.ip.save()
 
         tp = Profile.objects.create(
@@ -242,8 +242,8 @@ class test_submit_ip(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_with_mail_without_body(self):
-        self.ip.Responsible = self.user
-        self.ip.State = 'Created'
+        self.ip.responsible = self.user
+        self.ip.state = 'Created'
         self.ip.save()
 
         tp = Profile.objects.create(
@@ -258,8 +258,8 @@ class test_submit_ip(TestCase):
     @mock.patch('ip.views.creation_date', return_value=0)
     @mock.patch('ip.views.ProcessStep.run')
     def test_with_mail(self, mock_step, mock_time):
-        self.ip.Responsible = self.user
-        self.ip.State = 'Created'
+        self.ip.responsible = self.user
+        self.ip.state = 'Created'
         self.ip.save()
 
         tp = Profile.objects.create(
@@ -293,18 +293,18 @@ class test_set_uploaded(TestCase):
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
         self.ip.refresh_from_db()
-        self.assertEqual(self.ip.State, '')
+        self.assertEqual(self.ip.state, '')
 
     def test_set_uploaded_with_permission(self):
         InformationPackage.objects.filter(pk=self.ip.pk).update(
-            Responsible=self.user
+            responsible=self.user
         )
 
         res = self.client.post('%sset-uploaded/' % self.url)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         self.ip.refresh_from_db()
-        self.assertEqual(self.ip.State, 'Uploaded')
+        self.assertEqual(self.ip.state, 'Uploaded')
 
 
 class test_upload(TestCase):
@@ -320,7 +320,7 @@ class test_upload(TestCase):
         self.src = os.path.join(self.datadir, 'src')
         self.dst = os.path.join(self.datadir, 'dst')
 
-        self.ip = InformationPackage.objects.create(ObjectPath=self.dst)
+        self.ip = InformationPackage.objects.create(object_path=self.dst)
         self.baseurl = reverse('informationpackage-detail', args=(self.ip.pk,))
 
         for path in [self.src, self.dst]:
@@ -338,7 +338,7 @@ class test_upload(TestCase):
 
     def test_upload_file(self):
         InformationPackage.objects.filter(pk=self.ip.pk).update(
-            Responsible=self.user
+            responsible=self.user
         )
 
         srcfile = os.path.join(self.src, 'foo.txt')
@@ -395,7 +395,7 @@ class test_upload(TestCase):
 
     def test_upload_file_with_square_brackets_in_name(self):
         InformationPackage.objects.filter(pk=self.ip.pk).update(
-            Responsible=self.user
+            responsible=self.user
         )
 
         srcfile = os.path.join(self.src, 'foo[asd].txt')
@@ -425,39 +425,39 @@ class test_change_sa(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-        self.ip = InformationPackage.objects.create(Responsible=self.user)
+        self.ip = InformationPackage.objects.create(responsible=self.user)
         self.url = reverse('informationpackage-detail', args=(str(self.ip.pk),))
 
         self.sa = SubmissionAgreement.objects.create()
         self.sa_url = reverse('submissionagreement-detail', args=(str(self.sa.pk),))
 
     def test_no_sa(self):
-        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        res = self.client.patch(self.url, {'submission_agreement': self.sa_url}, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         self.ip.refresh_from_db()
-        self.assertEqual(self.ip.SubmissionAgreement, self.sa)
+        self.assertEqual(self.ip.submission_agreement, self.sa)
 
     def test_unlocked_sa(self):
-        self.ip.SubmissionAgreement = SubmissionAgreement.objects.create()
+        self.ip.submission_agreement = SubmissionAgreement.objects.create()
         self.ip.save()
 
-        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        res = self.client.patch(self.url, {'submission_agreement': self.sa_url}, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         self.ip.refresh_from_db()
-        self.assertEqual(self.ip.SubmissionAgreement, self.sa)
+        self.assertEqual(self.ip.submission_agreement, self.sa)
 
     def test_locked_sa(self):
-        self.ip.SubmissionAgreement = SubmissionAgreement.objects.create()
-        self.ip.SubmissionAgreementLocked = True
+        self.ip.submission_agreement = SubmissionAgreement.objects.create()
+        self.ip.submission_agreement_locked = True
         self.ip.save()
 
-        res = self.client.patch(self.url, {'SubmissionAgreement': self.sa_url}, format='json')
+        res = self.client.patch(self.url, {'submission_agreement': self.sa_url}, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
         self.ip.refresh_from_db()
-        self.assertNotEqual(self.ip.SubmissionAgreement, self.sa)
+        self.assertNotEqual(self.ip.submission_agreement, self.sa)
 
 
 class test_change_profile(TestCase):
@@ -467,7 +467,7 @@ class test_change_profile(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-        self.ip = InformationPackage.objects.create(Responsible=self.user)
+        self.ip = InformationPackage.objects.create(responsible=self.user)
         self.url = reverse('informationpackage-detail', args=(str(self.ip.pk),))
         self.url = '%schange-profile/' % self.url
 

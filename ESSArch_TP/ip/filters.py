@@ -36,12 +36,12 @@ from ESSArch_Core.ip.models import (
 
 
 class InformationPackageFilter(filters.FilterSet):
-    state = ListFilter(name='State')
+    state = ListFilter(name='state')
 
-    archival_institution = filters.UUIDFilter(name="ArchivalInstitution__pk", label='Archival Institution')
-    archivist_organization = filters.UUIDFilter(name='ArchivistOrganization__pk', label='Archivist Organization')
-    archival_type = filters.UUIDFilter(name='ArchivalType__pk', label='Archival Type')
-    archival_location = filters.UUIDFilter(name='ArchivalLocation__pk', label='Archival Location')
+    archival_institution = filters.UUIDFilter(name="archival_institution__pk", label='Archival Institution')
+    archivist_organization = filters.UUIDFilter(name='archivist_organization__pk', label='Archivist Organization')
+    archival_type = filters.UUIDFilter(name='archival_type__pk', label='Archival Type')
+    archival_location = filters.UUIDFilter(name='archival_location__pk', label='Archival Location')
 
     class Meta:
         model = InformationPackage
@@ -52,7 +52,7 @@ class InformationPackageFilter(filters.FilterSet):
 
 
 class ArchivalInstitutionFilter(filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State', distinct=True)
+    ip_state = ListFilter(name='information_packages__state', distinct=True)
 
     class Meta:
         model = ArchivalInstitution
@@ -60,7 +60,7 @@ class ArchivalInstitutionFilter(filters.FilterSet):
 
 
 class ArchivistOrganizationFilter(filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State', distinct=True)
+    ip_state = ListFilter(name='information_packages__state', distinct=True)
 
     class Meta:
         model = ArchivistOrganization
@@ -68,7 +68,7 @@ class ArchivistOrganizationFilter(filters.FilterSet):
 
 
 class ArchivalTypeFilter(filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State', distinct=True)
+    ip_state = ListFilter(name='information_packages__state', distinct=True)
 
     class Meta:
         model = ArchivalType
@@ -76,7 +76,7 @@ class ArchivalTypeFilter(filters.FilterSet):
 
 
 class ArchivalLocationFilter(filters.FilterSet):
-    ip_state = ListFilter(name='information_packages__State', distinct=True)
+    ip_state = ListFilter(name='information_packages__state', distinct=True)
 
     class Meta:
         model = ArchivalLocation

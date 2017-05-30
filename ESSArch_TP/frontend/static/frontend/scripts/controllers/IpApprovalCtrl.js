@@ -111,12 +111,12 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Make ip selected and add class to visualize
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
-            if(ip.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
+            if(ip.object_identifier_value == $scope.selectedIp.object_identifier_value){
                 ip.class = "";
             }
         });
-        if(row.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
-            $scope.selectedIp = {ObjectIdentifierValue: "", class: ""};
+        if(row.object_identifier_value == $scope.selectedIp.object_identifier_value){
+            $scope.selectedIp = {object_identifier_value: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
@@ -277,7 +277,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         listViewInterval = $interval(function() {
             var updateVar = false;
             vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
+                if(ip.status < 100 || (ip.state == "Creating" && ip.status == 100)) {
                     if(ip.step_state != "FAILURE") {
                         updateVar = true;
                     }
@@ -290,7 +290,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 listViewInterval = $interval(function() {
                     var updateVar = false;
                     vm.displayedIps.forEach(function(ip, idx) {
-                        if(ip.status < 100 || (ip.State == "Creating" && ip.status == 100)) {
+                        if(ip.status < 100 || (ip.state == "Creating" && ip.status == 100)) {
                             if(ip.step_state != "FAILURE") {
                                 updateVar = true;
                             }

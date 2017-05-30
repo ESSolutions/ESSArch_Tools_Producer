@@ -25,7 +25,7 @@
                                 <td><p class="table-col">{{}}</p>
                                     <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button-sa"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                 </td>
-                                <p>{{'PATH' | translate}}: {{ip.ObjectPath}}</p>
+                                <p>{{'PATH' | translate}}: {{ip.object_path}}</p>
                             </tr>
                         </table>
                     </div>
@@ -63,8 +63,8 @@
                                         </ui-select>
                                     </td>
                                     <td>
-                                        <button ng-if="profile.locked && (ip.State == 'Uploaded' || ip.State == 'Created') && (ip.Responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
-                                        <button ng-if="profile.locked && ip.State == 'Creating' || (ip.Responsible.id != auth.id && !checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                        <button ng-if="profile.locked && (ip.state == 'Uploaded' || ip.state == 'Created') && (ip.responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>
+                                        <button ng-if="profile.locked && ip.state == 'Creating' || (ip.responsible.id != auth.id && !checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -87,10 +87,10 @@
                     <form ng-submit="createSip(ip)" class="eventlog-form">
                         <div class="checkbox">
                             <label>
-                                <input type="checkBox" ng-disabled="(ip.Responsible.id != auth.id && !checkPermission('ip.create_sip')) || ip.State != 'Uploaded'" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
+                                <input type="checkBox" ng-disabled="(ip.responsible.id != auth.id && !checkPermission('ip.create_sip')) || ip.state != 'Uploaded'" ng-model="approvedToCreate">{{'APPROVEDTOCREATE' | translate}}</input>
                             </label>
                         </div>
-                        <button type="submit" ng-dblClick="" ng-disabled=" ip.State != 'Uploaded' || createDisabled || !approvedToCreate || !ip.SubmissionAgreementLocked || ip.State=='Created' || (ip.Responsible.id != auth.id && !checkPermission('ip.create_sip'))" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
+                        <button type="submit" ng-dblClick="" ng-disabled=" ip.state != 'Uploaded' || createDisabled || !approvedToCreate || !ip.submission_agreement_locked || ip.state=='Created' || (ip.responsible.id != auth.id && !checkPermission('ip.create_sip'))" class="btn btn-info submit-button">{{'CREATESIP' | translate}}</button>
                     </form>
                 </div>
             </div>

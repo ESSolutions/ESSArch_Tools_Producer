@@ -114,12 +114,12 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Make ip selected and add class to visualize
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
-            if(ip.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
+            if(ip.object_identifier_value == $scope.selectedIp.object_identifier_value){
                 ip.class = "";
             }
         });
-        if(row.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
-            $scope.selectedIp = {ObjectIdentifierValue: "", class: ""};
+        if(row.object_identifier_value == $scope.selectedIp.object_identifier_value){
+            $scope.selectedIp = {object_identifier_value: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
@@ -381,7 +381,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             method: 'PATCH',
             url: ip.url,
             data: {
-                'SubmissionAgreement': sa.url
+                'submission_agreement': sa.url
             }
         }).then(function(response){
             $scope.getSelectCollection(sa, ip);

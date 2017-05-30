@@ -123,12 +123,12 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     };    //Add ip to selected
     $scope.selectIp = function(row) {
         vm.displayedIps.forEach(function(ip) {
-            if(ip.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
+            if(ip.object_identifier_value == $scope.selectedIp.object_identifier_value){
                 ip.class = "";
             }
         });
-        if(row.ObjectIdentifierValue == $scope.selectedIp.ObjectIdentifierValue){
-            $scope.selectedIp = {ObjectIdentifierValue: "", class: ""};
+        if(row.object_identifier_value == $scope.selectedIp.object_identifier_value){
+            $scope.selectedIp = {object_identifier_value: "", class: ""};
         } else {
             row.class = "selected";
             $scope.selectedIp = row;
@@ -143,10 +143,10 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.ip = row;
             $rootScope.ip = row;
             $scope.deckGridInit($scope.ip);
-            if(!$rootScope.flowObjects[row.ObjectIdentifierValue]) {
+            if(!$rootScope.flowObjects[row.object_identifier_value]) {
                 $scope.createNewFlow(row);
             }
-            $scope.currentFlowObject = $rootScope.flowObjects[row.ObjectIdentifierValue];
+            $scope.currentFlowObject = $rootScope.flowObjects[row.object_identifier_value];
             if($scope.select) {
                 $scope.showFileUpload = false;
                 $timeout(function() {
@@ -510,6 +510,6 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         flowObj.on('uploadStart', function(){
             flowObj.opts.query = {destination: $scope.previousGridArraysString()};
         });
-        $rootScope.flowObjects[ip.ObjectIdentifierValue] = flowObj;
+        $rootScope.flowObjects[ip.object_identifier_value] = flowObj;
     }
 });

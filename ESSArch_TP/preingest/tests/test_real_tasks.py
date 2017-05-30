@@ -94,7 +94,7 @@ class test_tasks(TransactionTestCase):
         )
         task.run()
 
-        ip = InformationPackage.objects.filter(Label=label).first()
+        ip = InformationPackage.objects.filter(label=label).first()
 
         self.assertIsNotNone(ip)
 
@@ -110,11 +110,11 @@ class test_tasks(TransactionTestCase):
         task.undo()
 
         self.assertFalse(
-            InformationPackage.objects.filter(Label=label).exists()
+            InformationPackage.objects.filter(label=label).exists()
         )
 
     def test_create_ip_root_dir(self):
-        ip = InformationPackage.objects.create(Label="ip1")
+        ip = InformationPackage.objects.create(label="ip1")
         user = User.objects.create(username="user1")
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         prepare_path = os.path.join(prepare_path, unicode(ip.pk))
@@ -149,7 +149,7 @@ class test_tasks(TransactionTestCase):
         )
 
     def test_create_physical_model(self):
-        ip = InformationPackage.objects.create(Label="ip1")
+        ip = InformationPackage.objects.create(label="ip1")
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         path = os.path.join(prepare_path, unicode(ip.pk))
 
@@ -195,7 +195,7 @@ class test_tasks(TransactionTestCase):
         )
 
     def test_submit_sip(self):
-        ip = InformationPackage.objects.create(Label="ip1")
+        ip = InformationPackage.objects.create(label="ip1")
 
         srctar = os.path.join(self.preingest_reception, "%s.tar" % ip.pk)
         srcxml = os.path.join(self.preingest_reception, "%s.xml" % ip.pk)
