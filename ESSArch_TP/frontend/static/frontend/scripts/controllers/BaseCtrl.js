@@ -173,7 +173,14 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             expandedNodes = checkExpanded($scope.tree_data);
         }
         listViewService.getTreeData(row, expandedNodes).then(function(value) {
-            $scope.tree_data = value;
+            $q.all(value).then(function(values) {
+                console.log("Detta är vad vi får efter $q.all i ctrl!", values);
+                if($scope.tree_data.length) {
+                    $scope.tree_data = updateStepProperties($scope.tree_data, values);
+                } else {
+                    $scope.tree_data = value;
+                }
+            })
             $scope.statusLoading = false;
         }, function(response){
             if(response.status == 404) {
@@ -185,6 +192,55 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             }
         });
     };
+
+    //Calculates difference in two sets of steps and tasks recursively
+    //and updates the old set with the differances.
+    function updateStepProperties(A, B) {
+        if(A.length > B.length) {
+            A.splice(0, B.length);
+        }
+        for (i = 0; i < B.length; i++) {
+            if (A[i]) {
+                if (B[i].children && B[i].children.length > 0 && B[i].children[0].val != -1) {
+                    console.log("Rekursivt anrop: ", B[i].children);
+                    var bTemp = B[i];
+                    var aTemp = A[i];
+                    $q.all(B[i].children).then(function(bchildren) {
+                        console.log("B-CHILDREN AFTER SECOND $q.all!", bchildren)
+                        aTemp.children = updateStepProperties(aTemp.children, bchildren);
+                    })
+                }
+                A[i].id = compareAndReplace(A[i], B[i], "id");
+                A[i].name = compareAndReplace(A[i], B[i], "name");
+                A[i].user = compareAndReplace(A[i], B[i], "user");
+                A[i].time_started = compareAndReplace(A[i], B[i], "time_started");
+                A[i].status = compareAndReplace(A[i], B[i], "status");
+                A[i].progress = compareAndReplace(A[i], B[i], "progress");
+                A[i].undone = compareAndReplace(A[i], B[i], "undone");
+                A[i].type = compareAndReplace(A[i], B[i], "type");
+                
+            } else {
+                A.push(B[i]);
+            }
+        }
+        return A;
+    }
+
+    //If A and B are not the same, make A = B
+    function compareAndReplace(a, b, prop) {
+        if (a[prop] && b[prop]) {
+
+            if (a[prop] !== b[prop]) {
+                console.log("---------------------------------------------------")
+                console.log("compared and replaced", a[prop], " with ", b[prop]);
+                console.log("---------------------------------------------------")
+                a[prop] = b[prop];
+            }
+            return a[prop];
+        } else {
+            return b[prop]
+        }
+    }
     //checks expanded rows in tree structure
     function checkExpanded(nodes) {
         var ret = [];

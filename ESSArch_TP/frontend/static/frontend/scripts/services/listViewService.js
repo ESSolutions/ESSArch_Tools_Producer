@@ -60,7 +60,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Get data for status view. child steps and tasks
     function getStatusViewData(ip, expandedNodes){
-        var promise = $http({
+        return $http({
             method: 'GET',
             url: ip.url + 'steps/'
         }).then(function(response){
@@ -70,13 +70,14 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.children = [{val: -1}];
                 step.childrenFetched = false;
             });
-            return setExpanded(steps, expandedNodes);
-        });
-        return promise;
+            temp = expandAndGetChildren(steps, expandedNodes);
+            return temp;
+        })
     }
     //Prepare the data for tree view in status view
     function getTreeData(row, expandedNodes) {
-        return getStatusViewData(row, expandedNodes);
+        temp = getStatusViewData(row, expandedNodes);
+        return temp;
     }
     //Add a new event
     function addEvent(ip, eventType, eventDetail, outcome) {
@@ -394,24 +395,33 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     /*HELPER FUNCTIONS*/
     /*****************/
 
-    //Set expanded nodes in array of steps
-    function setExpanded(steps, expandedNodes) {
-        expandedNodes.forEach(function(node) {
-            steps.forEach(function(step) {
-                if(step.id == node.id) {
-                    step.expanded = true;
-                    getChildrenForStep(step, node.page_number).then(function(){
-                        if(step.children != null){
-                            if(step.children.length > 0){
-                                setExpanded(step.children, expandedNodes);
-                            }
-                        }
-                    });
-                }
+    function expandAndGetChildren(steps, expandedNodes) {
+        var expandedObject = expand(steps, expandedNodes);
+        var expanded = expandedObject.expandedSteps;
+        steps = expandedObject.steps;
+        expanded.forEach(function(item) {
+            steps[item.stepIndex] = getChildrenForStep(steps[item.stepIndex], item.number).then(function(stepChildren) {
+                var temp = stepChildren;
+                temp.children = expandAndGetChildren(temp.children, expandedNodes);
+                return temp;
             });
         });
         return steps;
     }
+
+    function expand (steps, expandedNodes) {
+        var expanded = [];
+         expandedNodes.forEach(function(node) {
+            steps.forEach(function(step, idx) {
+                if(step.id == node.id) {
+                    step.expanded = true;
+                    expanded.push({stepIndex: idx, number: node.number});
+                }
+            });
+        });
+        return {steps: steps, expandedSteps: expanded};
+    }
+    
     function getChildrenForStep(step, page_number) {
         page_size = 10;
         if(angular.isUndefined(page_number) || !page_number){
@@ -461,6 +471,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                     c.time_started = $filter('date')(c.time_started, "yyyy-MM-dd HH:mm:ss");
                     return c
                 });
+                return step;
         });
     }
 
