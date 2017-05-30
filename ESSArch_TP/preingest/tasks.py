@@ -62,7 +62,7 @@ class PrepareIP(DBTask):
             Label=label,
             Responsible_id=responsible,
             State="Preparing",
-            OAIStype="SIP",
+            package_type=InformationPackage.SIP,
         )
 
         self.ip = ip.pk
