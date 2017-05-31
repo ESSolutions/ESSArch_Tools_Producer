@@ -454,15 +454,17 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             }
             var tempChildArray = [];
             response.data.forEach(function(child){
-                child.label = child.name;
-                child.user = child.responsible;
-                if (child.flow_type == "step"){
-                    child.isCollapsed = false;
-                    child.tasksCollapsed = true;
-                    child.children = [{val: -1}];
-                    child.childrenFetched = false;
+                if (!child.hidden) {
+                    child.label = child.name;
+                    child.user = child.responsible;
+                    if (child.flow_type == "step") {
+                        child.isCollapsed = false;
+                        child.tasksCollapsed = true;
+                        child.children = [{ val: -1 }];
+                        child.childrenFetched = false;
+                    }
+                    tempChildArray.push(child);
                 }
-                tempChildArray.push(child);
             });
             step.children = tempChildArray;
 

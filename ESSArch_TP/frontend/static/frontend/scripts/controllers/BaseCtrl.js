@@ -178,6 +178,7 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
                 if($scope.tree_data.length) {
                     $scope.tree_data = updateStepProperties($scope.tree_data, values);
                 } else {
+                    console.log("starting from empty array");
                     $scope.tree_data = value;
                 }
             })
@@ -201,13 +202,13 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         }
         for (i = 0; i < B.length; i++) {
             if (A[i]) {
-                if (B[i].children && B[i].children.length > 0 && B[i].children[0].val != -1) {
+                if (B[i].children && B[i].children[0].val != -1 && B[i].flow_type != "task") {
                     console.log("Rekursivt anrop: ", B[i].children);
-                    var bTemp = B[i];
+                    var bTemp = B[i];   
                     var aTemp = A[i];
-                    $q.all(B[i].children).then(function(bchildren) {
-                        console.log("B-CHILDREN AFTER SECOND $q.all!", bchildren)
-                        aTemp.children = updateStepProperties(aTemp.children, bchildren);
+                    waitForChildren(A[i], B[i]).then(function(result) {
+                        console.log("B-CHILDREN AFTER SECOND $q.all!", result)
+                        result[0].children = result[2];
                     })
                 }
                 A[i].id = compareAndReplace(A[i], B[i], "id");
@@ -226,9 +227,15 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         return A;
     }
 
+    function waitForChildren(a, b) {
+        return $q.all(b.children).then(function (bchildren) {
+            console.log("B-CHILDREN AFTER SECOND $q.all!", bchildren)
+            return  [a, b, updateStepProperties(a.children, bchildren)];
+        })
+    }
     //If A and B are not the same, make A = B
     function compareAndReplace(a, b, prop) {
-        if (a[prop] && b[prop]) {
+        if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop)) {
 
             if (a[prop] !== b[prop]) {
                 console.log("---------------------------------------------------")
