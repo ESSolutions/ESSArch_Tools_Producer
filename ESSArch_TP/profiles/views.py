@@ -169,22 +169,22 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 request, message=getattr(permission, 'message', None)
             )
 
-        if ip.SubmissionAgreementLocked:
+        if ip.submission_agreement_locked:
             raise exceptions.ParseError('IP already has a locked SA')
 
-        if ip.SubmissionAgreement == sa:
-            ip.SubmissionAgreementLocked = True
+        if ip.submission_agreement == sa:
+            ip.submission_agreement_locked = True
 
             if sa.archivist_organization:
                 arch, _ = ArchivistOrganization.objects.get_or_create(
                     name=sa.archivist_organization
                 )
-                ip.ArchivistOrganization = arch
+                ip.archivist_organization = arch
 
             ip.save()
 
             return Response({'status': 'locking submission_agreement'})
-        elif ip.SubmissionAgreement is None:
+        elif ip.submission_agreement is None:
             return Response(
                 {'status': 'No SA connected to IP'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -272,7 +272,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not (ip.SubmissionAgreement and ip.SubmissionAgreementLocked):
+        if not (ip.submission_agreement and ip.submission_agreement_locked):
             return Response(
                 {'status': 'IP needs a locked SA before locking profile'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -286,7 +286,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 Path.objects.get(
                     entity="path_preingest_prepare"
                 ).value,
-                ip.ObjectIdentifierValue
+                ip.object_identifier_value
             )
 
             step = ProcessStep.objects.create(
@@ -321,7 +321,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     arch = ArchivalInstitution.objects.get(
                         name=archival_institution
                     )
-                ip.ArchivalInstitution = arch
+                ip.archival_institution = arch
 
             if archival_type:
                 try:
@@ -332,7 +332,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     arch = ArchivalType.objects.get(
                         name=archival_type
                     )
-                ip.ArchivalType = arch
+                ip.archival_type = arch
 
             if archival_location:
                 try:
@@ -343,12 +343,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     arch = ArchivalLocation.objects.get(
                         name=archival_location
                     )
-                ip.ArchivalLocation = arch
+                ip.archival_location = arch
 
             ip.save()
 
         non_locked_sa_profiles = ProfileSA.objects.filter(
-            submission_agreement=ip.SubmissionAgreement,
+            submission_agreement=ip.submission_agreement,
         ).exclude(
             profile__profile_type__in=ProfileIP.objects.filter(
                 ip=ip, LockedBy__isnull=False
@@ -356,7 +356,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         ).exists()
 
         if not non_locked_sa_profiles:
-            ip.State = "Prepared"
-            ip.save(update_fields=['State'])
+            ip.state = "Prepared"
+            ip.save(update_fields=['state'])
 
         return Response({'status': 'locking profile'})

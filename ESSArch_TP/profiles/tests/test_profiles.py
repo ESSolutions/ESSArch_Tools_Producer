@@ -45,30 +45,30 @@ class LockSubmissionAgreement(TestCase):
         self.sa = SubmissionAgreement.objects.create()
 
     def test_lock_to_ip_without_permission(self):
-        ip = InformationPackage.objects.create(SubmissionAgreement=self.sa)
+        ip = InformationPackage.objects.create(submission_agreement=self.sa)
 
         res = self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_lock_to_ip_with_permission(self):
-        ip = InformationPackage.objects.create(Responsible=self.user, SubmissionAgreement=self.sa)
+        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
 
         res = self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertFalse(ArchivistOrganization.objects.exists())
 
     def test_new_archivist_organization(self):
-        ip = InformationPackage.objects.create(Responsible=self.user, SubmissionAgreement=self.sa)
+        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
         self.sa.archivist_organization = 'ao'
         self.sa.save()
 
         self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
 
         ip.refresh_from_db()
-        self.assertEqual(ip.ArchivistOrganization.name, 'ao')
+        self.assertEqual(ip.archivist_organization.name, 'ao')
 
     def test_existing_archivist_organization(self):
-        ip = InformationPackage.objects.create(Responsible=self.user, SubmissionAgreement=self.sa)
+        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
         ArchivistOrganization.objects.create(name='ao')
 
         self.sa.archivist_organization = 'ao'
@@ -77,7 +77,7 @@ class LockSubmissionAgreement(TestCase):
         self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
 
         ip.refresh_from_db()
-        self.assertEqual(ip.ArchivistOrganization.name, 'ao')
+        self.assertEqual(ip.archivist_organization.name, 'ao')
         self.assertEqual(ArchivistOrganization.objects.count(), 1)
 
 

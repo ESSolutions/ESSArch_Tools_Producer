@@ -174,22 +174,22 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     queryset = InformationPackage.objects.all().prefetch_related(
         Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
-        'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType', 'ArchivalLocation',
-        'Responsible__user_permissions', 'Responsible__groups__permissions', 'steps',
-    ).select_related('SubmissionAgreement')
+        'archival_institution', 'archivist_organization', 'archival_type', 'archival_location',
+        'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
+    ).select_related('submission_agreement')
     serializer_class = InformationPackageSerializer
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
     )
     ordering_fields = (
-        'Label', 'Responsible', 'CreateDate', 'State', 'eventDateTime',
+        'label', 'responsible', 'create_date', 'state', 'eventDateTime',
         'eventType', 'eventOutcomeDetailNote', 'eventOutcome',
-        'linkingAgentIdentifierValue', 'id'
+        'linkingAgentIdentifierValue', 'id', 'object_identifier_value',
     )
     search_fields = (
-        'ObjectIdentifierValue', 'Label', 'Responsible__first_name',
-        'Responsible__last_name', 'Responsible__username', 'State',
-        'SubmissionAgreement__name', 'Startdate', 'Enddate',
+        'object_identifier_value', 'label', 'responsible__first_name',
+        'responsible__last_name', 'responsible__username', 'state',
+        'submission_agreement__name', 'start_date', 'end_date',
     )
     filter_class = InformationPackageFilter
 
@@ -209,10 +209,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         if other is not None:
             queryset = queryset.filter(
-                ArchivalInstitution=None,
-                ArchivistOrganization=None,
-                ArchivalType=None,
-                ArchivalLocation=None
+                archival_institution=None,
+                archivist_organization=None,
+                archival_type=None,
+                archival_location=None
             )
 
         return queryset
@@ -249,7 +249,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         responsible = self.request.user
 
         if object_identifier_value:
-            ip_exists = InformationPackage.objects.filter(ObjectIdentifierValue=object_identifier_value).exists()
+            ip_exists = InformationPackage.objects.filter(object_identifier_value=object_identifier_value).exists()
             if ip_exists:
                 return Response(
                     {'status': 'IP with object identifer value "%s" already exists' % object_identifier_value},
@@ -262,8 +262,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         ip = self.get_object()
 
-        if 'SubmissionAgreement' in request.data:
-            if ip.SubmissionAgreementLocked:
+        if 'submission_agreement' in request.data:
+            if ip.submission_agreement_locked:
                 return Response("SA connected to IP is locked", status=status.HTTP_400_BAD_REQUEST)
 
         return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
@@ -271,7 +271,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         ip = self.get_object()
         self.check_object_permissions(request, ip)
-        path = ip.ObjectPath
+        path = ip.object_path
 
         try:
             shutil.rmtree(path)
@@ -286,17 +286,17 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         raise
 
         try:
-            shutil.rmtree(ip.ObjectPath)
+            shutil.rmtree(ip.object_path)
         except:
             pass
 
         try:
-            os.remove(ip.ObjectPath + ".tar")
+            os.remove(ip.object_path + ".tar")
         except:
             pass
 
         try:
-            os.remove(ip.ObjectPath + ".zip")
+            os.remove(ip.object_path + ".zip")
         except:
             pass
 
@@ -328,17 +328,20 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
 
         if request.method not in permissions.SAFE_METHODS:
-            if ip.State not in ['Prepared', 'Uploading']:
+            if ip.state not in ['Prepared', 'Uploading']:
                 raise exceptions.ParseError("Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state")
 
         if request.method == 'DELETE':
             try:
-                path = os.path.join(ip.ObjectPath, request.data.__getitem__('path'))
+                path = request.data['path']
             except KeyError:
                 return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
 
-            if not in_directory(path, ip.ObjectPath):
-                raise exceptions.ParseError('Illegal path %s' % fullpath)
+            root = ip.object_path
+            fullpath = os.path.join(root, path)
+
+            if not in_directory(fullpath, root):
+                raise exceptions.ParseError('Illegal path %s' % path)
 
             try:
                 shutil.rmtree(path)
@@ -364,7 +367,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             except KeyError:
                 return Response('Type parameter missing', status=status.HTTP_400_BAD_REQUEST)
 
-            root = ip.ObjectPath
+            root = ip.object_path
             fullpath = os.path.join(root, path)
 
             if not in_directory(fullpath, root):
@@ -388,9 +391,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         entries = []
         path = request.query_params.get('path', '')
-        fullpath = os.path.join(ip.ObjectPath, path)
+        fullpath = os.path.join(ip.object_path, path)
 
-        if not in_directory(fullpath, ip.ObjectPath):
+        if not in_directory(fullpath, ip.object_path):
             raise exceptions.ParseError('Illegal path %s' % path)
 
         if not os.path.exists(fullpath):
@@ -425,7 +428,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if ead_name is None:
             return Response("No EAD file for IP found", status=status.HTTP_404_BAD_REQUEST)
 
-        xmlfile = os.path.join(ip.ObjectPath, ead_dir, ead_name)
+        xmlfile = os.path.join(ip.object_path, ead_dir, ead_name)
 
         if request.method == 'GET':
 
@@ -462,12 +465,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         """
 
         ip = self.get_object()
-        sa = ip.SubmissionAgreement
+        sa = ip.submission_agreement
         agent = request.user
 
-        if ip.State != "Uploaded":
+        if ip.state != "Uploaded":
             raise ValueError(
-                "The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.State)
+                "The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state)
             )
 
         validators = request.data.get('validators', {})
@@ -516,8 +519,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             entity="path_preingest_reception"
         ).value
 
-        ip_prepare_path = os.path.join(prepare_path, ip.ObjectIdentifierValue)
-        ip_reception_path = os.path.join(reception_path, ip.ObjectIdentifierValue)
+        ip_prepare_path = os.path.join(prepare_path, ip.object_identifier_value)
+        ip_reception_path = os.path.join(reception_path, ip.object_identifier_value)
         events_path = os.path.join(ip_prepare_path, "ipevents.xml")
 
         structure = ip.get_profile('sip').structure
@@ -530,11 +533,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if ip.profile_locked('preservation_metadata'):
             premis_profile = ip.get_profile('preservation_metadata')
             premis_dir, premis_name = find_destination("preservation_description_file", structure)
-            premis_path = os.path.join(ip.ObjectPath, premis_dir, premis_name)
+            premis_path = os.path.join(ip.object_path, premis_dir, premis_name)
             filesToCreate[premis_path] = premis_profile.specification
 
         mets_dir, mets_name = find_destination("mets_file", structure)
-        mets_path = os.path.join(ip.ObjectPath, mets_dir, mets_name)
+        mets_path = os.path.join(ip.object_path, mets_dir, mets_name)
         filesToCreate[mets_path] = ip.get_profile('sip').specification
 
         if file_conversion:
@@ -551,7 +554,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             tasks = []
 
-            for root, dirs, filenames in walk(ip.ObjectPath):
+            for root, dirs, filenames in walk(ip.object_path):
                 for fname in filenames:
                     filepath = os.path.join(root, fname)
                     try:
@@ -585,7 +588,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "template": template,
                     "dirname": dirname,
                     "structure": structure,
-                    "root": ip.ObjectPath,
+                    "root": ip.object_path,
                 },
                 processstep_pos=1,
                 log=EventIP,
@@ -623,7 +626,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         name="preingest.tasks.ValidateXMLFile",
                         params={
                             "xml_filename": mets_path,
-                            "rootdir": ip.ObjectPath,
+                            "rootdir": ip.object_path,
                         },
                         processstep_pos=1,
                         log=EventIP,
@@ -638,7 +641,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             name="preingest.tasks.ValidateXMLFile",
                             params={
                                 "xml_filename": premis_path,
-                                "rootdir": ip.ObjectPath,
+                                "rootdir": ip.object_path,
                             },
                             processstep_pos=2,
                             log=EventIP,
@@ -652,9 +655,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     ProcessTask.objects.create(
                         name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
                         params={
-                            "dirname": ip.ObjectPath,
+                            "dirname": ip.object_path,
                             "xmlfile": mets_path,
-                            "rootdir": ip.ObjectPath,
+                            "rootdir": ip.object_path,
                         },
                         processstep_pos=3,
                         log=EventIP,
@@ -682,8 +685,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             validate_step.save()
 
         info = {
-            "_OBJID": ip.ObjectIdentifierValue,
-            "_OBJLABEL": ip.Label
+            "_OBJID": ip.object_identifier_value,
+            "_OBJLABEL": ip.label
         }
 
         filesToCreate = OrderedDict()
@@ -706,7 +709,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "template": template,
                     "dirname": dirname,
                     "structure": structure,
-                    "root": ip.ObjectPath,
+                    "root": ip.object_path,
                 },
                 processstep_pos=-1,
                 log=EventIP,
@@ -801,7 +804,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 {
                                     "-name": "contentLocationValue",
                                     "-namespace": "premis",
-                                    "#content": [{"text": "file:///%s.%s" % (ip.ObjectIdentifierValue, container_format.lower())}],
+                                    "#content": [{"text": "file:///%s.%s" % (ip.object_identifier_value, container_format.lower())}],
                                     "-children": []
                                 }
                             ]
@@ -821,10 +824,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         info = {
             'FIDType': "UUID",
-            'FID': ip.ObjectIdentifierValue,
+            'FID': ip.object_identifier_value,
             'FFormatName': container_format.upper(),
             'FLocationType': 'URI',
-            'FName': ip.ObjectPath,
+            'FName': ip.object_path,
         }
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
@@ -847,7 +850,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     name="preingest.tasks.ValidateXMLFile",
                     params={
                         "xml_filename": events_path,
-                        "rootdir": ip.ObjectPath,
+                        "rootdir": ip.object_path,
                     },
                     processstep_pos=3,
                     log=EventIP,
@@ -899,7 +902,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ProcessTask.objects.create(
                 name="preingest.tasks.DeleteFiles",
                 params={
-                    "path": ip.ObjectPath
+                    "path": ip.object_path
                 },
                 processstep_pos=45,
                 log=EventIP,
@@ -981,9 +984,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip = self.get_object()
 
-        if ip.State != "Created":
+        if ip.state != "Created":
             return Response(
-                "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.State),
+                "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.state),
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -1034,14 +1037,14 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         reception = Path.objects.get(entity="path_preingest_reception").value
 
         container_format = ip.get_container_format()
-        container_file = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format.lower())
+        container_file = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format.lower())
 
-        sa = ip.SubmissionAgreement
+        sa = ip.submission_agreement
 
         info = sd_profile.fill_specification_data(sa, ip)
         info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
 
-        infoxml = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
+        infoxml = os.path.join(reception, ip.object_identifier_value + ".xml")
 
         filesToCreate = {
             infoxml: sd_profile.specification
@@ -1098,7 +1101,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 ProcessTask.objects.create(
                     name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
                     params={
-                        "files": [os.path.basename(ip.ObjectPath)],
+                        "files": [os.path.basename(ip.object_path)],
                         "xmlfile": infoxml,
                     },
                     processstep_pos=16,
@@ -1190,8 +1193,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def unlock_profile(self, request, pk=None):
         ip = self.get_object()
 
-        if ip.State in ['Submitting', 'Submitted']:
-            raise exceptions.ParseError('Cannot unlock profiles in an IP that is %s' % ip.State)
+        if ip.state in ['Submitting', 'Submitted']:
+            raise exceptions.ParseError('Cannot unlock profiles in an IP that is %s' % ip.state)
 
         try:
             ptype = request.data["type"]
@@ -1200,8 +1203,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip.unlock_profile(ptype)
         prepare_path = Path.objects.get(entity='path_preingest_prepare').value
-        ip.ObjectPath = os.path.join(prepare_path, ip.ObjectIdentifierValue)
-        ip.save(update_fields=['ObjectPath'])
+        ip.object_path = os.path.join(prepare_path, ip.object_identifier_value)
+        ip.save(update_fields=['object_path'])
 
         return Response({
             'status': 'unlocking profile with type "%s" in IP "%s"' % (
@@ -1212,7 +1215,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
     def upload(self, request, pk=None):
         ip = self.get_object()
-        ip.State = "Uploading"
+        ip.state = "Uploading"
         ip.save()
 
         if request.method == 'GET':
@@ -1221,7 +1224,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             chunk_nr = request.GET.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
 
-            if os.path.exists(os.path.join(ip.ObjectPath, chunk_path)):
+            if os.path.exists(os.path.join(ip.object_path, chunk_path)):
                 return HttpResponse(status=200)
             return HttpResponse(status=204)
 
@@ -1230,7 +1233,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             path = os.path.join(dst, request.data.get('flowRelativePath', ''))
             chunk_nr = request.data.get('flowChunkNumber')
             chunk_path = "%s_%s" % (path, chunk_nr)
-            chunk_path = os.path.join(ip.ObjectPath, chunk_path)
+            chunk_path = os.path.join(ip.object_path, chunk_path)
 
             chunk = request.FILES['file']
 
@@ -1247,7 +1250,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def merge_uploaded_chunks(self, request, pk=None):
         ip = self.get_object()
 
-        path = os.path.join(ip.ObjectPath, request.data['path'])
+        path = os.path.join(ip.object_path, request.data['path'])
 
         with open(path, 'wb') as f:
             for chunk_file in natsorted(glob.glob('%s_*' % re.sub(r'([\[\]])', '[\\1]', path))):
@@ -1266,7 +1269,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):
         ip = self.get_object()
-        ip.State = "Uploaded"
+        ip.state = "Uploaded"
         ip.save()
 
         t = ProcessTask.objects.create(

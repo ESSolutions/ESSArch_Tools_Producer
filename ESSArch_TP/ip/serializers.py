@@ -67,18 +67,18 @@ class ArchivalLocationSerializer(DynamicHyperlinkedModelSerializer):
 
 
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
-    Responsible = UserSerializer()
+    responsible = UserSerializer()
     profiles = ProfileIPSerializer(many=True)
-    ArchivalInstitution = ArchivalInstitutionSerializer(
+    archival_institution = ArchivalInstitutionSerializer(
         fields=['url', 'id', 'name']
     )
-    ArchivistOrganization = ArchivistOrganizationSerializer(
+    archivist_organization = ArchivistOrganizationSerializer(
         fields=['url', 'id', 'name']
     )
-    ArchivalType = ArchivalTypeSerializer(
+    archival_type = ArchivalTypeSerializer(
         fields=['url', 'id', 'name']
     )
-    ArchivalLocation = ArchivalLocationSerializer(
+    archival_location = ArchivalLocationSerializer(
         fields=['url', 'id', 'name']
     )
 
@@ -107,12 +107,12 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = InformationPackage
         fields = (
-            'url', 'id', 'ObjectIdentifierValue', 'Label', 'Content',
-            'Responsible', 'CreateDate', 'State', 'status', 'step_state',
-            'ObjectPath', 'object_size', 'object_num_items', 'Startdate',
-            'Enddate', 'package_type', 'SubmissionAgreement',
-            'ArchivalInstitution', 'ArchivistOrganization', 'ArchivalType',
-            'ArchivalLocation', 'SubmissionAgreementLocked', 'profiles',
+            'url', 'id', 'object_identifier_value', 'label', 'content',
+            'responsible', 'create_date', 'state', 'status', 'step_state',
+            'object_path', 'object_size', 'object_num_items', 'start_date',
+            'end_date', 'package_type', 'submission_agreement',
+            'archival_institution', 'archivist_organization', 'archival_type',
+            'archival_location', 'submission_agreement_locked', 'profiles',
         )
 
 

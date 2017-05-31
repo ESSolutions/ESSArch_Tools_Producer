@@ -58,10 +58,10 @@ class PrepareIP(DBTask):
         """
 
         ip = InformationPackage.objects.create(
-            ObjectIdentifierValue=object_identifier_value,
-            Label=label,
-            Responsible_id=responsible,
-            State="Preparing",
+            object_identifier_value=object_identifier_value,
+            label=label,
+            responsible_id=responsible,
+            state="Preparing",
             package_type=InformationPackage.SIP,
         )
 
@@ -95,7 +95,7 @@ class CreateIPRootDir(DBTask):
         ).value
 
         dirname = InformationPackage.objects.values_list(
-            'ObjectIdentifierValue', flat=True
+            'object_identifier_value', flat=True
         ).get(pk=information_package_id)
 
         return os.path.join(prepare_path, dirname)
@@ -122,7 +122,7 @@ class CreateIPRootDir(DBTask):
         os.makedirs(path)
 
         InformationPackage.objects.filter(pk=information_package).update(
-            ObjectPath=path
+            object_path=path
         )
 
         self.set_progress(100, total=100)
@@ -257,7 +257,7 @@ class SubmitSIP(DBTask):
         srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
-        src = os.path.join(srcdir, ip.ObjectIdentifierValue + ".%s" % container_format)
+        src = os.path.join(srcdir, ip.object_identifier_value + ".%s" % container_format)
 
         try:
             remote = ip.get_profile('transfer_project').specification_data.get(
@@ -279,7 +279,7 @@ class SubmitSIP(DBTask):
             except ValueError:
                 remote = None
         else:
-            dst = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format)
+            dst = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format)
 
         ProcessTask.objects.create(
             name="ESSArch_Core.tasks.CopyFile",
@@ -292,10 +292,10 @@ class SubmitSIP(DBTask):
             hidden=True
         ).run().get()
 
-        src = os.path.join(srcdir, ip.ObjectIdentifierValue + ".xml")
+        src = os.path.join(srcdir, ip.object_identifier_value + ".xml")
 
         if not remote:
-            dst = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
+            dst = os.path.join(reception, ip.object_identifier_value + ".xml")
 
         ProcessTask.objects.create(
             name="ESSArch_Core.tasks.CopyFile",
@@ -316,8 +316,8 @@ class SubmitSIP(DBTask):
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
 
-        tar = os.path.join(reception, ip.ObjectIdentifierValue + ".%s" % container_format)
-        xml = os.path.join(reception, ip.ObjectIdentifierValue + ".xml")
+        tar = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format)
+        xml = os.path.join(reception, ip.object_identifier_value + ".xml")
 
         os.remove(tar)
         os.remove(xml)
