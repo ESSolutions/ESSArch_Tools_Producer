@@ -434,7 +434,8 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             url: step.url + "children/",
             params: {
                 page: step.page_number,
-                page_size: page_size
+                page_size: page_size,
+                hidden: false
             }
         }).then(function(response) {
             var link = linkHeaderParser.parse(response.headers('Link'));
@@ -454,17 +455,15 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             }
             var tempChildArray = [];
             response.data.forEach(function(child){
-                if (!child.hidden) {
-                    child.label = child.name;
-                    child.user = child.responsible;
-                    if (child.flow_type == "step") {
-                        child.isCollapsed = false;
-                        child.tasksCollapsed = true;
-                        child.children = [{ val: -1 }];
-                        child.childrenFetched = false;
-                    }
-                    tempChildArray.push(child);
+                child.label = child.name;
+                child.user = child.responsible;
+                if (child.flow_type == "step"){
+                    child.isCollapsed = false;
+                    child.tasksCollapsed = true;
+                    child.children = [{val: -1}];
+                    child.childrenFetched = false;
                 }
+                tempChildArray.push(child);
             });
             step.children = tempChildArray;
 
