@@ -70,14 +70,12 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 step.children = [{val: -1}];
                 step.childrenFetched = false;
             });
-            temp = expandAndGetChildren(steps, expandedNodes);
-            return temp;
+            return expandAndGetChildren(steps, expandedNodes);
         })
     }
     //Prepare the data for tree view in status view
     function getTreeData(row, expandedNodes) {
-        temp = getStatusViewData(row, expandedNodes);
-        return temp;
+        return getStatusViewData(row, expandedNodes);
     }
     //Add a new event
     function addEvent(ip, eventType, eventDetail, outcome) {
