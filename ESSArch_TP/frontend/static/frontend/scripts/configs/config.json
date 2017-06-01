@@ -16,7 +16,7 @@
     },
     "development": {
         "appConfig": {
-            "name": "developement",
+            "name": "development",
             "djangoUrl": "/api/",
             "ipInterval": 10000,
             "ipIdleInterval": 60000,
