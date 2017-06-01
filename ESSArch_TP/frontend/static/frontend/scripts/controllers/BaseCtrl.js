@@ -211,7 +211,7 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
                 }
                 if (B[i].flow_type != "task") {
                     waitForChildren(A[i], B[i]).then(function (result) {
-                        result[0].children = result[1];
+                        result.step.children = result.children;
                     })
                 }
             } else {
@@ -225,7 +225,7 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     // the result from updateStepProperties called with children of a and b
     function waitForChildren(a, b) {
         return $q.all(b.children).then(function (bchildren) {
-            return  [a, updateStepProperties(a.children, bchildren)];
+            return  {step: a, children: updateStepProperties(a.children, bchildren)};
         })
     }
     // If property in a and b does not have the same value, update a with the value of b
