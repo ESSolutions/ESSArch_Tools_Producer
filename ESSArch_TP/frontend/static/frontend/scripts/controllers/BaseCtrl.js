@@ -204,15 +204,15 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         }
         for (i = 0; i < B.length; i++) {
             if (A[i]) {
-                if (B[i].children && B[i].children[0].val != -1 && B[i].flow_type != "task") {
-                    waitForChildren(A[i], B[i]).then(function (result) {
-                        result[0].children = result[1];
-                    })
-                }
                 for (var prop in B[i]) {
                     if (B[i].hasOwnProperty(prop) && prop != "children") {
                         A[i][prop] = compareAndReplace(A[i], B[i], prop);
                     }
+                }
+                if (B[i].flow_type != "task") {
+                    waitForChildren(A[i], B[i]).then(function (result) {
+                        result[0].children = result[1];
+                    })
                 }
             } else {
                 A.push(B[i]);
