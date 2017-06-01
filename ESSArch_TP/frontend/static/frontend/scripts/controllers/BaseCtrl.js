@@ -196,16 +196,16 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         });
     };
 
-    //Calculates difference in two sets of steps and tasks recursively
-    //and updates the old set with the differances.
+    // Calculates difference in two sets of steps and tasks recursively
+    // and updates the old set with the differances.
     function updateStepProperties(A, B) {
-        if(A.length > B.length) {
+        if (A.length > B.length) {
             A.splice(0, B.length);
         }
         for (i = 0; i < B.length; i++) {
             if (A[i]) {
                 if (B[i].children && B[i].children[0].val != -1 && B[i].flow_type != "task") {
-                    waitForChildren(A[i], B[i]).then(function(result) {
+                    waitForChildren(A[i], B[i]).then(function (result) {
                         result[0].children = result[1];
                     })
                 }
@@ -221,12 +221,14 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         return A;
     }
 
+    // Waits for promises in b.children to resolve before returning
+    // the result from updateStepProperties called with children of a and b
     function waitForChildren(a, b) {
         return $q.all(b.children).then(function (bchildren) {
             return  [a, updateStepProperties(a.children, bchildren)];
         })
     }
-    //If A and B are not the same, make A = B
+    // If property in a and b does not have the same value, update a with the value of b
     function compareAndReplace(a, b, prop) {
         if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop)) {
             if (a[prop] !== b[prop]) {
@@ -237,6 +239,7 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             return b[prop]
         }
     }
+
     //checks expanded rows in tree structure
     function checkExpanded(nodes) {
         var ret = [];

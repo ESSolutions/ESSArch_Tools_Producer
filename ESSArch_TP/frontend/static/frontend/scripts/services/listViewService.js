@@ -393,12 +393,14 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     /*HELPER FUNCTIONS*/
     /*****************/
 
+    // Takes an array of steps, expands the ones that should be expanded and 
+    // populates children recursively.
     function expandAndGetChildren(steps, expandedNodes) {
         var expandedObject = expand(steps, expandedNodes);
         var expanded = expandedObject.expandedSteps;
         steps = expandedObject.steps;
-        expanded.forEach(function(item) {
-            steps[item.stepIndex] = getChildrenForStep(steps[item.stepIndex], item.number).then(function(stepChildren) {
+        expanded.forEach(function (item) {
+            steps[item.stepIndex] = getChildrenForStep(steps[item.stepIndex], item.number).then(function (stepChildren) {
                 var temp = stepChildren;
                 temp.children = expandAndGetChildren(temp.children, expandedNodes);
                 return temp;
@@ -407,22 +409,26 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         return steps;
     }
 
-    function expand (steps, expandedNodes) {
+    // Set expanded to true for each item in steps that exists in expandedNodes
+    // Returns updated steps and an array containing the expanded nodes
+    function expand(steps, expandedNodes) {
         var expanded = [];
-         expandedNodes.forEach(function(node) {
-            steps.forEach(function(step, idx) {
-                if(step.id == node.id) {
+        expandedNodes.forEach(function (node) {
+            steps.forEach(function (step, idx) {
+                if (step.id == node.id) {
                     step.expanded = true;
-                    expanded.push({stepIndex: idx, number: node.page_number});
+                    expanded.push({ stepIndex: idx, number: node.page_number });
                 }
             });
         });
-        return {steps: steps, expandedSteps: expanded};
+        return { steps: steps, expandedSteps: expanded };
     }
     
+    // Gets children for a step and processes each child step/task.
+    // Returns the updated step
     function getChildrenForStep(step, page_number) {
         page_size = 10;
-        if(angular.isUndefined(page_number) || !page_number){
+        if (angular.isUndefined(page_number) || !page_number) {
             step.page_number = 1;
         } else {
             step.page_number = page_number;
@@ -435,42 +441,40 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 page_size: page_size,
                 hidden: false
             }
-        }).then(function(response) {
+        }).then(function (response) {
             var link = linkHeaderParser.parse(response.headers('Link'));
             var count = response.headers('Count');
             if (count == null) {
                 count = response.data.length;
             }
-            step.pages = Math.ceil(count/page_size);
-            link.next? step.next = link.next : step.next = null;
-            link.prev? step.prev = link.prev : step.prev = null;
+            step.pages = Math.ceil(count / page_size);
+            link.next ? step.next = link.next : step.next = null;
+            link.prev ? step.prev = link.prev : step.prev = null;
             step.page_number = page_number || 1;
             var placeholder_removed = false;
-            if (response.data.length > 0){
+            if (response.data.length > 0) {
                 // Delete placeholder
                 step.children.pop();
                 placeholder_removed = true;
             }
             var tempChildArray = [];
-            response.data.forEach(function(child){
+            response.data.forEach(function (child) {
                 child.label = child.name;
                 child.user = child.responsible;
-                if (child.flow_type == "step"){
+                if (child.flow_type == "step") {
                     child.isCollapsed = false;
                     child.tasksCollapsed = true;
-                    child.children = [{val: -1}];
+                    child.children = [{ val: -1 }];
                     child.childrenFetched = false;
                 }
                 tempChildArray.push(child);
             });
             step.children = tempChildArray;
-
-
-                step.children = step.children.map(function(c){
-                    c.time_started = $filter('date')(c.time_started, "yyyy-MM-dd HH:mm:ss");
-                    return c
-                });
-                return step;
+            step.children = step.children.map(function (c) {
+                c.time_started = $filter('date')(c.time_started, "yyyy-MM-dd HH:mm:ss");
+                return c
+            });
+            return step;
         });
     }
 
