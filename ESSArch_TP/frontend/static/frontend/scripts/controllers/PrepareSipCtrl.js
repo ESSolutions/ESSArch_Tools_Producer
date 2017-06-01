@@ -47,9 +47,16 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //click function forstatus view
     var stateInterval;
-    $scope.stateClicked = function(row){
-        if($scope.statusShow && $scope.ip == row){
-            $scope.statusShow = false;
+        $scope.stateClicked = function (row) {
+        if ($scope.statusShow) {
+                $scope.tree_data = [];
+            if ($scope.ip == row) {
+                $scope.statusShow = false;
+            } else {
+                $scope.statusShow = true;
+                $scope.edit = false;
+                $scope.statusViewUpdate(row);
+            }
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
@@ -57,8 +64,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
-        $scope.eventShow = false;
         $scope.select = false;
+        $scope.eventShow = false;
         $scope.ip = row;
         $rootScope.ip = row;
     };
