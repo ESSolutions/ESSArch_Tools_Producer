@@ -107,10 +107,14 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     $scope.myTreeControl.scope.updatePageNumber = function(branch, page) {
         if(page > branch.page_number && branch.next){
             branch.page_number = parseInt(branch.next.page);
-            listViewService.getChildrenForStep(branch, branch.page_number);
+            listViewService.getChildrenForStep(branch, branch.page_number).then(function(result) {
+                branch = result;
+            })
         } else if(page < branch.page_number && branch.prev && page > 0) {
             branch.page_number = parseInt(branch.prev.page);
-            listViewService.getChildrenForStep(branch, branch.page_number);
+            listViewService.getChildrenForStep(branch, branch.page_number).then(function(result) {
+                branch = result;
+            })
         }
     };
 
@@ -174,11 +178,9 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         }
         listViewService.getTreeData(row, expandedNodes).then(function(value) {
             $q.all(value).then(function(values) {
-                console.log("Detta är vad vi får efter $q.all i ctrl!", values);
                 if($scope.tree_data.length) {
                     $scope.tree_data = updateStepProperties($scope.tree_data, values);
                 } else {
-                    console.log("starting from empty array");
                     $scope.tree_data = value;
                 }
             })
@@ -203,9 +205,7 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         for (i = 0; i < B.length; i++) {
             if (A[i]) {
                 if (B[i].children && B[i].children[0].val != -1 && B[i].flow_type != "task") {
-                    console.log("Rekursivt anrop: ", B[i].children);
                     waitForChildren(A[i], B[i]).then(function(result) {
-                        console.log("B-CHILDREN AFTER SECOND $q.all!", result)
                         result[0].children = result[1];
                     })
                 }
@@ -214,14 +214,6 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
                         A[i][prop] = compareAndReplace(A[i], B[i], prop);
                     }
                 }
-                // A[i].id = compareAndReplace(A[i], B[i], "id");
-                // A[i].name = compareAndReplace(A[i], B[i], "name");
-                // A[i].user = compareAndReplace(A[i], B[i], "user");
-                // A[i].time_started = compareAndReplace(A[i], B[i], "time_started");
-                // A[i].status = compareAndReplace(A[i], B[i], "status");
-                // A[i].progress = compareAndReplace(A[i], B[i], "progress");
-                // A[i].undone = compareAndReplace(A[i], B[i], "undone");
-                // A[i].type = compareAndReplace(A[i], B[i], "type");
             } else {
                 A.push(B[i]);
             }
@@ -231,18 +223,13 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
 
     function waitForChildren(a, b) {
         return $q.all(b.children).then(function (bchildren) {
-            console.log("B-CHILDREN AFTER SECOND $q.all!", bchildren)
             return  [a, updateStepProperties(a.children, bchildren)];
         })
     }
     //If A and B are not the same, make A = B
     function compareAndReplace(a, b, prop) {
         if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop)) {
-
             if (a[prop] !== b[prop]) {
-                console.log("---------------------------------------------------")
-                console.log("compared and replaced", a[prop], " with ", b[prop]);
-                console.log("---------------------------------------------------")
                 a[prop] = b[prop];
             }
             return a[prop];

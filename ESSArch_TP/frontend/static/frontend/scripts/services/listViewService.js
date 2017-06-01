@@ -133,12 +133,10 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
     }
     //Returns map structure for a profile
     function getStructure(profileUrl) {
-        console.log(profileUrl)
         return $http({
             method: 'GET',
             url: profileUrl
         }).then(function(response) {
-            console.log(response.data.structure);
             return response.data.structure;
         }, function(response) {
         });
@@ -415,7 +413,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
             steps.forEach(function(step, idx) {
                 if(step.id == node.id) {
                     step.expanded = true;
-                    expanded.push({stepIndex: idx, number: node.number});
+                    expanded.push({stepIndex: idx, number: node.page_number});
                 }
             });
         });
