@@ -32,8 +32,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     $scope.ipRowClick = function(row) {
         $scope.selectIp(row);
         if($scope.ip == row){
-            row.class = "";
-            $scope.selectedIp = {id: "", class: ""};
+            $scope.ip = null;
+            $rootScope.ip = null;
         }
         if($scope.eventShow) {
             $scope.eventsClick(row);
@@ -47,27 +47,31 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     }
     //click function forstatus view
     var stateInterval;
-        $scope.stateClicked = function (row) {
+    $scope.stateClicked = function (row) {
         if ($scope.statusShow) {
-                $scope.tree_data = [];
+            $scope.tree_data = [];
             if ($scope.ip == row) {
                 $scope.statusShow = false;
+                $scope.ip = null;
+                $rootScope.ip = null;
             } else {
                 $scope.statusShow = true;
                 $scope.edit = false;
                 $scope.statusViewUpdate(row);
+                $scope.ip = row;
+                $rootScope.ip = row;
             }
         } else {
             $scope.statusShow = true;
             $scope.edit = false;
             $scope.statusViewUpdate(row);
+            $scope.ip = row;
+            $rootScope.ip = row;
         }
         $scope.subSelect = false;
         $scope.eventlog = false;
         $scope.select = false;
         $scope.eventShow = false;
-        $scope.ip = row;
-        $rootScope.ip = row;
     };
     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
         if(newValue) {
@@ -86,7 +90,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     /*******************************************/
 
     var ctrl = this;
-    $scope.selectedIp = {id: "", class: ""};
     this.displayedIps = [];
     //Get data for ip table from rest api
     this.callServer = function callServer(tableState) {
@@ -106,7 +109,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
             var pageNumber = start/number+1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, $scope.selectedIp, sorting, search, ipSortString).then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
                 ctrl.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
@@ -114,25 +117,14 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             });
         }
     };
-    //Add ip to selected
-    $scope.selectIp = function(row) {
-        vm.displayedIps.forEach(function(ip) {
-            if(ip.object_identifier_value == $scope.selectedIp.object_identifier_value){
-                ip.class = "";
-            }
-        });
-        if(row.object_identifier_value == $scope.selectedIp.object_identifier_value){
-            $scope.selectedIp = {object_identifier_value: "", class: ""};
-        } else {
-            row.class = "selected";
-            $scope.selectedIp = row;
-        }
-    };
+
     //Click function for ip table
     $scope.ipTableClick = function(row) {
         if($scope.edit && $scope.ip.id== row.id){
             $scope.edit = false;
             $scope.eventlog = false;
+            $scope.ip = null;
+            $rootScope.ip = null;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
@@ -192,6 +184,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
             $rootScope.stCtrl = null;
+            $scope.ip = null;
+            $rootScope.ip = null;
         } else {
             if($rootScope.stCtrl) {
                 $rootScope.stCtrl.pipe();
@@ -199,12 +193,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
+            $scope.ip = row;
+            $rootScope.ip = row;
         }
         $scope.select = false;
         $scope.edit = false;
         $scope.eventlog = false;
-        $scope.ip = row;
-        $rootScope.ip = row;
     };
     //Add event to database
     $scope.addEvent = function(ip, eventType, eventDetail) {

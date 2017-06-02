@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-class="row.class" ng-repeat="row in vm.displayedIps" class="table-item">
+                <tr ng-repeat="row in vm.displayedIps" ng-class="{'selected': ip.object_identifier_value == row.object_identifier_value}" class="table-item">
                     <td ng-repeat="col in listViewColumns">
                         <div ng-include src="col.template"></div>
                     </td>
