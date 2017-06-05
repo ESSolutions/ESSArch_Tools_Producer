@@ -55,7 +55,7 @@ if __name__ == '__main__':
         author_email='info@essolutions.se',
         url='http://www.essolutions.se',
         install_requires=[
-            "ESSArch-Core>=1.0.3,<=1.0.3",
+            "ESSArch-Core>=1.1.0,<=1.1.0",
         ],
         packages=find_packages(),
         include_package_data=True,
