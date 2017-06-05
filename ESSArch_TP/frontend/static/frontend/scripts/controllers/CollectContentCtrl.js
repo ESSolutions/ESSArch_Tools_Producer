@@ -502,7 +502,14 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         }
     }
     $scope.createNewFlow = function(ip) {
-        var flowObj = new Flow({target: ip.url + 'upload/', query: "", headers: {'X-CSRFToken' : $cookies.get("csrftoken")}, complete: $scope.flowComplete});
+        var flowObj = new Flow({
+            target: ip.url + 'upload/',
+            simultaneousUploads: 15,
+            maxChunkRetries: 5,
+            chunkRetryInterval: 1000,
+            headers: {'X-CSRFToken' : $cookies.get("csrftoken")},
+            complete: $scope.flowComplete
+        });
         flowObj.on('complete', function(){
             $scope.flowComplete(flowObj, flowObj.files);
         });
