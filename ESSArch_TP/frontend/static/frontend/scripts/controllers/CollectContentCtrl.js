@@ -26,6 +26,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $controller('BaseCtrl', { $scope: $scope });
     var vm = this;
     var ipSortString = "Prepared,Uploading";
+    $scope.ip = null;
+    $rootScope.ip = null;
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     vm.flowDestination = null;
     $scope.showFileUpload = true;

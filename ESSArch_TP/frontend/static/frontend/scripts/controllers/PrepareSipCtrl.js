@@ -26,6 +26,8 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     $controller('BaseCtrl', { $scope: $scope });
     var vm = this;
     var ipSortString = "Created,Submitting,Submitted";
+    $scope.ip = null;
+    $rootScope.ip = null;
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     // List view
     // Click funtion columns that does not have a relevant click function
