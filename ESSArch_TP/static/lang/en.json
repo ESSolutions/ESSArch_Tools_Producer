@@ -212,5 +212,6 @@
     "FILE_EXISTS_IN_IP": "File with this name already exists!",
     "FILE_EXISTS_IN_IP_DESC": "File with this name already exists in the IP. Do you want to overwrite current file?",
     "ARGS": "Args",
-    "UNLOCKPROFILEINFO": "If you unlock this profile, the IP will be moved to the \"Prepare IP\" view. Proceed by clicking OK."
+    "UNLOCKPROFILEINFO": "If you unlock this profile, the IP will be moved to the \"Prepare IP\" view. Proceed by clicking OK.",
+    "REFRESH": "Refresh"
 }
