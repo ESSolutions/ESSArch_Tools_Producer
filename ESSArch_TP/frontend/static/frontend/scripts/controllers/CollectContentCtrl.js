@@ -505,16 +505,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     }
 
     $scope.getFileExtension = function(file) {
-        var splitName = file.name.split("");
-        var fileExt = "";
-        for(i=splitName.length-1; i>0; i--) {
-            if(splitName[i] === "." || fileExt.length >= 6) {
-                break;
-            } else {
-                fileExt = splitName[i] + fileExt;
-            }
-        }
-        return fileExt.toUpperCase();
+        return file.name.split(".").pop().toUpperCase();
     }
     $scope.createNewFlow = function(ip) {
         var flowObj = new Flow({
