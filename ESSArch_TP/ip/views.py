@@ -345,7 +345,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 raise exceptions.ParseError('Illegal path %s' % path)
 
             try:
-                shutil.rmtree(path)
+                shutil.rmtree(fullpath)
             except OSError as e:
                 if e.errno == errno.ENOENT:
                     raise exceptions.NotFound('Path does not exist')
@@ -353,7 +353,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 if e.errno != errno.ENOTDIR:
                     raise
 
-                os.remove(path)
+                os.remove(fullpath)
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
