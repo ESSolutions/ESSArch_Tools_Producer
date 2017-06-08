@@ -213,5 +213,6 @@
     "FILE_EXISTS_IN_IP_DESC": "Det existerar redan en fil med detta namn i IPt. Vill du skriva över den nuvarande filen?",
     "ARGS": "Args",
     "UNLOCKPROFILEINFO": "Om du låser upp denna profil kommer IPt att flyttas till \"Förbered IP\"-vyn. Fortsätt genom att klicka OK.",
-    "REFRESH": "Uppdatera"
+    "REFRESH": "Uppdatera",
+    "CHANGED": "Ändrad"
 }
