@@ -87,6 +87,7 @@ from ESSArch_Core.util import (
     creation_date,
     get_event_spec,
     get_files_and_dirs,
+    get_tree_size_and_count,
     in_directory,
     mkdir_p,
     timestamp_to_datetime,
@@ -405,10 +406,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             if entry_type == 'file' and re.search(r'\_\d+$', entry.name) is not None:  # file chunk
                 continue
 
+            size, _ = get_tree_size_and_count(entry.path)
+
             entries.append(
                 {
                     "name": os.path.basename(entry.path),
-                    "type": entry_type
+                    "type": entry_type,
+                    "size": size,
                 }
             )
 
