@@ -413,6 +413,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "name": os.path.basename(entry.path),
                     "type": entry_type,
                     "size": size,
+                    "modified": timestamp_to_datetime(entry.stat().st_mtime),
                 }
             )
 
