@@ -996,7 +996,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         }
     }
     //context menu data
-    $scope.menuOptions = function(item) {
+    $scope.treeEditOptions = function(item) {
         if($scope.addMode.active || $scope.updateMode.active){
             return [];
         }
