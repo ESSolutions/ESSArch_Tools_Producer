@@ -48,6 +48,8 @@ from natsort import natsorted
 
 from scandir import walk
 
+from ESSArch_Core.exceptions import Conflict
+
 from ESSArch_Core.configuration.models import (
     EventType,
     Path,
@@ -241,10 +243,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         try:
             label = request.data['label']
         except KeyError:
-            return Response(
-                {'status': '"label" is required'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            raise exceptions.ParseError('Missing parameter label')
 
         object_identifier_value = request.data.get('object_identifier_value')
         responsible = self.request.user
@@ -252,13 +251,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if object_identifier_value:
             ip_exists = InformationPackage.objects.filter(object_identifier_value=object_identifier_value).exists()
             if ip_exists:
-                return Response(
-                    {'status': 'IP with object identifer value "%s" already exists' % object_identifier_value},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+                raise Conflict('IP with object identifer value "%s" already exists' % object_identifier_value)
+
+            prepare_path = Path.objects.get(entity="path_preingest_prepare").value
+
+            if os.path.exists(os.path.join(prepare_path, object_identifier_value)):
+                raise Conflict('IP with identifier "%s" already exists on disk' % object_identifier_value)
 
         prepare_ip(label, responsible, object_identifier_value).run()
-        return Response({"status": "Prepared IP"}, status=status.HTTP_201_CREATED)
+        return Response({"detail": "Prepared IP"}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         ip = self.get_object()
