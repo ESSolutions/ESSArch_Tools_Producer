@@ -115,6 +115,14 @@ class test_create_ip(TestCase):
         self.assertEqual(InformationPackage.objects.count(), 1)
         self.assertEqual(InformationPackage.objects.first().pk, existing.pk)
 
+    def test_create_ip_with_same_objid_as_existing_on_disk_but_not_db(self):
+        os.mkdir(os.path.join(self.datadir, 'objid'))
+        data = {'label': 'my label', 'object_identifier_value': 'objid'}
+
+        res = self.client.post(self.url, data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(InformationPackage.objects.exists())
+
     def test_create_ip_with_same_label_as_existing(self):
         InformationPackage.objects.create(label='label')
 

@@ -257,6 +257,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
+            prepare_path = Path.objects.get(entity="path_preingest_prepare").value
+
+            if os.path.exists(os.path.join(prepare_path, object_identifier_value)):
+                raise exceptions.ParseError({'status': 'IP with identifier "%s" already exists on disk' % object_identifier_value})
+
         prepare_ip(label, responsible, object_identifier_value).run()
         return Response({"status": "Prepared IP"}, status=status.HTTP_201_CREATED)
 
