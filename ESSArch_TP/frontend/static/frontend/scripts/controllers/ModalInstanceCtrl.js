@@ -60,7 +60,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
         }).then(function (response){
             return $uibModalInstance.close($ctrl.data);
         }, function(response) {
-            alert(response.data.status);
+            alert(response.data.detail);
         });
     };
     $ctrl.lock = function () {
