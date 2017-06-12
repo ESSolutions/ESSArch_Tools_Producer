@@ -393,6 +393,54 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
+        if ip.state == 'Created':
+            path = request.query_params.get('path')
+
+            if path == os.path.basename(ip.object_path):
+                content_type, _ = mimetypes.guess_type(ip.object_path)
+                return HttpResponse(open(ip.object_path).read(), content_type=content_type)
+            elif path is not None:
+                raise exceptions.NotFound
+
+            path = ip.object_path
+
+            entry = {
+                "name": os.path.basename(path),
+                "type": 'file',
+                "size": os.path.getsize(path),
+                "modified": timestamp_to_datetime(os.path.getmtime(path)),
+            }
+            return Response([entry])
+
+        if ip.state == 'Submitted':
+            path = request.query_params.get('path')
+
+            container = ip.object_path
+            xml = os.path.splitext(ip.object_path)[0] + '.xml'
+
+            if path in [os.path.basename(container), os.path.basename(xml)]:
+                fullpath = os.path.join(os.path.dirname(container), path)
+                content_type, _ = mimetypes.guess_type(fullpath)
+                return HttpResponse(open(fullpath).read(), content_type=content_type)
+            elif path is not None:
+                raise exceptions.NotFound
+
+            entry = {
+                "name": os.path.basename(container),
+                "type": 'file',
+                "size": os.path.getsize(container),
+                "modified": timestamp_to_datetime(os.path.getmtime(container)),
+            }
+
+            xmlentry = {
+                "name": os.path.basename(xml),
+                "type": 'file',
+                "size": os.path.getsize(xml),
+                "modified": timestamp_to_datetime(os.path.getmtime(xml)),
+            }
+            return Response([entry, xmlentry])
+
+
         entries = []
         path = request.query_params.get('path', '')
         fullpath = os.path.join(ip.object_path, path).rstrip('/')
