@@ -393,7 +393,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         entries = []
         path = request.query_params.get('path', '')
-        fullpath = os.path.join(ip.object_path, path)
+        fullpath = os.path.join(ip.object_path, path).rstrip('/')
 
         if not in_directory(fullpath, ip.object_path):
             raise exceptions.ParseError('Illegal path %s' % path)
