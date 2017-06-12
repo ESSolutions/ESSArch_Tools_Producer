@@ -141,6 +141,20 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
+
+    $scope.filebrowser = false;
+    $scope.filebrowserClick = function(ip) {
+        if($scope.filebrowser && $scope.ip == ip){
+            $scope.filebrowser = false;
+            $scope.ip = null;
+            $rootScope.ip = null;
+        } else {
+            $scope.filebrowser = true;
+            $scope.ip = ip;
+            $rootScope.ip = ip;
+        }
+    }
+
     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
         $scope.getListViewData();
     }, true);

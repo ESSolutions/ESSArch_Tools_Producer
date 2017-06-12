@@ -214,5 +214,6 @@
     "ARGS": "Args",
     "UNLOCKPROFILEINFO": "Om du låser upp denna profil kommer IPt att flyttas till \"Förbered IP\"-vyn. Fortsätt genom att klicka OK.",
     "REFRESH": "Uppdatera",
-    "CHANGED": "Ändrad"
+    "CHANGED": "Ändrad",
+    "FILEBROWSER": "Filhanterare"
 }
