@@ -387,6 +387,16 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
                 return response;
             });
     }
+
+    function getFile(ip, path, file) {
+        return $http({
+            method: 'GET',
+            url: ip.url + "files/",
+            params: {path: path + file.name}
+        }).then(function(response) {
+            return response;
+        });
+    }
     /*******************/
     /*HELPER FUNCTIONS*/
     /*****************/
@@ -591,6 +601,7 @@ angular.module('myApp').factory('listViewService', function ($q, $http, $state, 
         getDir: getDir,
         deleteFile: deleteFile,
         addNewFolder: addNewFolder,
+        getFile: getFile,
     };
 });
 

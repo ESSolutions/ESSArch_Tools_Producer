@@ -18,7 +18,9 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
         $scope.deckGridInit($rootScope.ip);
     }
     $scope.$watch(function () { return $rootScope.ip; }, function (newValue, oldValue) {
+        $scope.ip = $rootScope.ip;
         $scope.deckGridInit($rootScope.ip);
+        $scope.previousGridArrays = [];
     }, true);
     $scope.previousGridArray = function () {
         $scope.previousGridArrays.pop();
@@ -42,6 +44,8 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
                 $scope.deckGridData = dir;
                 $scope.selectedCards = [];
             });
+        } else {
+            $scope.getFile(card);
         }
     };
     $scope.selectedCards = [];
@@ -83,6 +87,12 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
         }
     }
 
+    $scope.getFile = function(file) {
+        listViewService.getFile($scope.ip, $scope.previousGridArraysString(), file).then(function(response) {
+            file.content = response.data;
+            $scope.textfileModal(file);
+        });
+    }
     function folderNameExistsModal(index, folder, fileToOverwrite) {
         var modalInstance = $uibModal.open({
             animation: true,
@@ -119,10 +129,31 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
             templateUrl: 'static/frontend/views/new-dir-modal.html',
             scope: $scope,
             controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl',
         })
         modalInstance.result.then(function (data) {
             $scope.createFolder(data.dir_name);
+        });
+    }
+    $scope.textfileModal = function (file) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/textfile_modal.html',
+            scope: $scope,
+            size: 'lg',
+            controller: 'FileModalInstanceCtrl',
+            controllerAs: '$ctrl',
+                        resolve: {
+                data: function () {
+                    return {
+                        file: file,
+                    };
+                }
+            },
+        })
+        modalInstance.result.then(function (data) {
         });
     }
     $scope.removeFiles = function () {
