@@ -1,0 +1,15 @@
+<div class="enter-profile-name">
+    <h3 class="modal-title" id="modal-title" style="margin: 5px;">{{$ctrl.file.name}}</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+    <div class="step-task-info">
+        <div>
+            <pre style="max-height:700px; overflow-y:auto;">{{$ctrl.file.content}}</pre>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()" focused="true">{{'CANCEL' | translate}}</button>
+</div>
+
