@@ -29,11 +29,13 @@ from operator import itemgetter
 
 import errno
 import glob
+import mimetypes
 import os
 import shutil
 import re
 
 from django.db.models import Prefetch
+from django.http.response import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.conf import settings
@@ -400,6 +402,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         if not os.path.exists(fullpath):
             raise exceptions.NotFound
+
+        if os.path.isfile(fullpath):
+            content_type, _ = mimetypes.guess_type(fullpath)
+            return HttpResponse(open(fullpath).read(), content_type=content_type)
 
         for entry in get_files_and_dirs(fullpath):
             entry_type = "dir" if entry.is_dir() else "file"
