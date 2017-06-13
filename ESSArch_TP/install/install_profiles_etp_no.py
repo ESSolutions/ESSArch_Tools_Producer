@@ -54,7 +54,7 @@ def installProfiles():
 def installSubmissionAgreement():
 
     dct = {
-        'name': 'SA National Archive and Government 1',
+        'name': 'SA National Archive and Government NO',
         'type': 'Standard',
         'status': 'Agreed',
         'label': 'Submission Agreement National Archive x and Government x',
@@ -114,7 +114,7 @@ def installSubmissionAgreement():
 def installProfileTransferProject(sa):
 
     dct = {
-        'name': 'Transfer Project Profile 1',
+        'name': 'Transfer Project Profile NO',
         'profile_type': 'transfer_project',
         'type': 'Implementation',
         'status': 'Agreed',
@@ -233,7 +233,7 @@ def installProfileTransferProject(sa):
 def installProfileSubmitDescription(sa):
 
     dct = {
-        'name': 'Submit description of a single SIP',
+        'name': 'Submit description of a single SIP NO',
         'profile_type': 'submit_description',
         'type': 'Implementation',
         'status': 'Draft',
@@ -572,7 +572,7 @@ def installProfileSIP(sa):
 def installProfilePreservationMetadata(sa):
 
     dct = {
-        'name': 'Preservation profile xx',
+        'name': 'Preservation profile NO',
         'profile_type': 'preservation_metadata',
         'type': 'Implementation',
         'status': 'Draft',
