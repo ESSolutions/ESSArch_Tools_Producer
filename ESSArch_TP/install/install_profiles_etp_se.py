@@ -176,14 +176,22 @@ def installProfileTransferProject(sa):
                   ]
                 }
             }, {
+                "key": "container_format_compression",
                 "templateOptions": {
-                    "disabled": True,
-                    "type": "text",
                     "label": "Container format compression",
-                    "desc": "xxx",
+                    "options": [
+                        {
+                            "name": "Yes",
+                            "value": True
+                        },
+                        {
+                            "name": "No",
+                            "value": False
+                        }
+                    ]
                 },
-                "type": "input",
-                "key": "container_format_compression"
+                "defaultValue": False,
+                "type": "select"
             }, {
                 'key': 'checksum_algorithm',
                 'type': 'select',
