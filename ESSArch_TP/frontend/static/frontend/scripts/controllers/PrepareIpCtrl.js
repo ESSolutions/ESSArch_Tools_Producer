@@ -158,8 +158,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.filebrowserClick = function (ip) {
         if ($scope.filebrowser && $scope.ip == ip) {
             $scope.filebrowser = false;
-            $scope.ip = null;
-            $rootScope.ip = null;
+            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow) {
+                $scope.ip = null;
+                $rootScope.ip = null;
+            }
         } else {
             $scope.filebrowser = true;
             $scope.ip = ip;
