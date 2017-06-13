@@ -204,7 +204,7 @@
                 {
                     "#content": [
                         {
-                            "var": "mets.metsHdr.altRecordID.content"
+                            "var": "_SA_NAME"
                         }
                     ],
                     "-attr": [
