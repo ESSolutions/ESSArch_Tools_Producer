@@ -590,6 +590,44 @@
                                 {
                                     "#content": [
                                         {
+                                            "text": "root"
+                                        }
+                                    ],
+                                    "-name": "LABEL",
+                                    "-req": 0
+                                }
+                            ],
+                            "-children": [
+                                {
+                                    "-containsFiles": true,
+                                    "-filters": {"href":"^[^/]+$"},
+                                    "-attr": [
+                                        {
+                                            "#content": [
+                                                {
+                                                    "text": "ID"
+                                                },
+                                                {
+                                                    "var": "FID"
+                                                }
+                                            ],
+                                            "-name": "FILEID",
+                                            "-req": 1
+                                        }
+                                    ],
+                                    "-children": [],
+                                    "-name": "fptr",
+                                    "-namespace": "mets"
+                                }
+                            ]
+                        },
+                        {
+                            "-name": "div",
+                            "-namespace": "mets",
+                            "-attr": [
+                                {
+                                    "#content": [
+                                        {
                                             "text": "content"
                                         }
                                     ],
