@@ -386,16 +386,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             templateUrl: 'static/frontend/views/form_error_messages.html'
         });
     })
-    .directive('prism', [function() {
-        return {
-            restrict: 'A',
-            link: function ($scope, element, attrs) {
-                element.ready(function() {
-                    Prism.highlightElement(element[0]);
-                });
-            }
-        }
-    }])
     .directive('setTouched', function MainCtrl() {
         return {
             restrict: 'A', // only activate on element attribute

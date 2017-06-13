@@ -350,8 +350,15 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 $scope.deckGridData = dir;
                 $scope.selectedCards = [];
             });
+        } else {
+            $scope.getFile(card);
         }
     };
+
+    $scope.getFile = function (file) {
+        file.content = $sce.trustAsResourceUrl($scope.ip.url + "files/?path=" + $scope.previousGridArraysString() + file.name);
+        $window.open(file.content, '_blank');
+    }
     $scope.selectedCards = [];
     $scope.cardSelect = function (card) {
 

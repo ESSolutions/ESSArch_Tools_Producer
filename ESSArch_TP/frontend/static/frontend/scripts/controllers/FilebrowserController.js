@@ -1,4 +1,4 @@
-angular.module('myApp').controller('FilebrowserController', function ($scope, $rootScope, appConfig, listViewService, $uibModal) {
+angular.module('myApp').controller('FilebrowserController', function ($scope, $rootScope, $sce, appConfig, listViewService, $uibModal, $window) {
     $scope.previousGridArrays = [];
     $scope.ip = $rootScope.ip;
     $scope.previousGridArraysString = function () {
@@ -88,10 +88,8 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
     }
 
     $scope.getFile = function(file) {
-        listViewService.getFile($scope.ip, $scope.previousGridArraysString(), file).then(function(response) {
-            file.content = response.data;
-            $scope.textfileModal(file);
-        });
+        file.content = $sce.trustAsResourceUrl($scope.ip.url + "files/?path=" + $scope.previousGridArraysString() + file.name);
+        $window.open(file.content, '_blank');
     }
     function folderNameExistsModal(index, folder, fileToOverwrite) {
         var modalInstance = $uibModal.open({
@@ -133,27 +131,6 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
         })
         modalInstance.result.then(function (data) {
             $scope.createFolder(data.dir_name);
-        });
-    }
-    $scope.textfileModal = function (file) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/textfile_modal.html',
-            scope: $scope,
-            size: 'lg',
-            controller: 'FileModalInstanceCtrl',
-            controllerAs: '$ctrl',
-                        resolve: {
-                data: function () {
-                    return {
-                        file: file,
-                    };
-                }
-            },
-        })
-        modalInstance.result.then(function (data) {
         });
     }
     $scope.removeFiles = function () {
