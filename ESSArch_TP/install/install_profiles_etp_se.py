@@ -132,7 +132,6 @@ def installProfileTransferProject(sa):
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival institution",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "archival_institution"
@@ -148,7 +147,6 @@ def installProfileTransferProject(sa):
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival type",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "archival_type"
@@ -156,7 +154,6 @@ def installProfileTransferProject(sa):
                 "templateOptions": {
                     "type": "text",
                     "label": "Archival location",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "archival_location"
@@ -165,7 +162,6 @@ def installProfileTransferProject(sa):
                     "disabled": True,
                     "type": "text",
                     "label": "Archive Policy",
-                    "desc": "xxx",
                 },
                 "type": "input",
                 "key": "archive_policy"
