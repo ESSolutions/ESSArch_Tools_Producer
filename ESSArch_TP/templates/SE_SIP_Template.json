@@ -240,7 +240,7 @@
         {
             "-name": "amdSec",
             "-namespace": "mets",
-            "-skipIfNoChildren": true,
+            "-hideEmptyContent": true,
             "-attr": [
                 {
                     "-name": "ID",
@@ -258,7 +258,7 @@
                 {
                     "-name": "digiprovMD",
                     "-namespace": "mets",
-                    "-skipIfNoChildren": true,
+                    "-hideEmptyContent": true,
                     "-attr": [
                         {
                             "-name": "ID",
