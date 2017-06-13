@@ -814,7 +814,8 @@
     },
     "-schemasToPreserve": [
         "http://xml.ra.se/e-arkiv/METS/version11/CSPackageMETS.xsd",
-        "http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd"
+        "http://xml.ra.se/e-arkiv/METS/version11/CSPackageExtensionMETS.xsd",
+        "http://xml.ra.se/e-arkiv/xlink/xlink.xsd"
     ],
     "-schemaPreservationLocation": "xsd_files"
 }
