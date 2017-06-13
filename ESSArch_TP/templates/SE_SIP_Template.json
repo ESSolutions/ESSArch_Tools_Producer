@@ -600,7 +600,7 @@
                             "-children": [
                                 {
                                     "-containsFiles": true,
-                                    "-filters": {"href":"^(?!.*(metadata/premis.xml|metadata/administrative/premis.xml|schemas/*)).*$"},
+                                    "-filters": {"href":"content/*"},
                                     "-attr": [
                                         {
                                             "#content": [
