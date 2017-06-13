@@ -172,9 +172,11 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 $rootScope.ip = null;
             }
         } else {
-            $scope.filebrowser = true;
-            $scope.ip = ip;
-            $rootScope.ip = ip;
+            if ($rootScope.auth.id == ip.responsible.id || !ip.responsible) {
+                $scope.filebrowser = true;
+                $scope.ip = ip;
+                $rootScope.ip = ip;
+            }
         }
     }
     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {

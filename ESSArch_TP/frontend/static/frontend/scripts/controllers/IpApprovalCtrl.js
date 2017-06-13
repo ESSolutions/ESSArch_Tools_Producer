@@ -151,9 +151,11 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 $rootScope.ip = null;
             }
         } else {
-            $scope.filebrowser = true;
-            $scope.ip = ip;
-            $rootScope.ip = ip;
+            if ($rootScope.auth.id == ip.responsible.id || !ip.responsible) {
+                $scope.filebrowser = true;
+                $scope.ip = ip;
+                $rootScope.ip = ip;
+            }
         }
     }
 
