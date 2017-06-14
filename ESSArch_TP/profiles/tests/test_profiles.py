@@ -439,8 +439,27 @@ class LockProfile(TestCase):
         profile = Profile.objects.create(
             name='first',
             profile_type='test',
-            specification_data={},
-            template=[]
+            specification_data={
+                'first': 'initial'
+            },
+            template=[
+                {
+                    "templateOptions": {
+                        "type": "text",
+                    },
+                    "defaultValue": "foo",
+                    "type": "input",
+                    "key": "first"
+                },
+                {
+                    "templateOptions": {
+                        "type": "text",
+                    },
+                    "defaultValue": "bar",
+                    "type": "input",
+                    "key": "second"
+                },
+            ]
         )
 
         url = reverse('profile-detail', args=(profile.pk,))
@@ -448,6 +467,10 @@ class LockProfile(TestCase):
 
         res = self.client.post(url, {'information_package': self.ip.pk})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        profile.refresh_from_db()
+        self.assertEqual(profile.specification_data['first'], 'initial')
+        self.assertEqual(profile.specification_data['second'], 'bar')
 
     def test_lock_profile_without_ip(self):
         profile = Profile.objects.create(
