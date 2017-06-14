@@ -280,6 +280,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
             )
 
         profile_ip, _ = ProfileIP.objects.get_or_create(profile=profile, ip=ip)
+
+        if profile_ip.LockedBy is not None:
+            raise exceptions.ParseError(detail='Profile "%s" already locked to "%s"' % (profile.name, ip.object_identifier_value))
+
         profile_ip.lock(request.user)
 
         if profile.profile_type == "sip":

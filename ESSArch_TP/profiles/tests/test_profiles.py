@@ -462,3 +462,20 @@ class LockProfile(TestCase):
 
         res = self.client.post(url)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_lock_profile_twice(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='test',
+            specification_data={},
+            template=[]
+        )
+
+        url = reverse('profile-detail', args=(profile.pk,))
+        url = url + 'lock/'
+
+        res = self.client.post(url, {'information_package': self.ip.pk})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        res = self.client.post(url, {'information_package': self.ip.pk})
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
