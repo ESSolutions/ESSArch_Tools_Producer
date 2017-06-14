@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth) {
+angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate) {
     var $ctrl = this;
 
     $ctrl.error_messages_old = [];
@@ -33,6 +33,10 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
         subject: "",
         body: ""
     };
+    $ctrl.tracebackCopied = false;
+    $ctrl.copied = function() {
+        $ctrl.tracebackCopied = true;
+    }
     $ctrl.save = function () {
         $ctrl.data = {
             name: $ctrl.profileName
