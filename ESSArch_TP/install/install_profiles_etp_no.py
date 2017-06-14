@@ -550,6 +550,18 @@ def installProfileSIP(sa):
                 },
                 "type": "datepicker"
             },
+            {
+                "templateOptions": {
+                    "label": "Allow unknown file types",
+                    "options": [
+                        {"name": "Yes", "value": True},
+                        {"name": "No", "value": False},
+                    ],
+                },
+                "type": "select",
+                "defaultValue": True,
+                "key": "allow_unknown_file_types"
+            },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/NO_SIP_Template.json')).read()),
         'specification_data': {

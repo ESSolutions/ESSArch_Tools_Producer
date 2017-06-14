@@ -681,6 +681,18 @@ def installProfileSIP(sa):
                 "type": "input",
                 "key": "archivist_software_note"
             },
+            {
+                "templateOptions": {
+                    "label": "Allow unknown file types",
+                    "options": [
+                        {"name": "Yes", "value": True},
+                        {"name": "No", "value": False},
+                    ],
+                },
+                "type": "select",
+                "defaultValue": True,
+                "key": "allow_unknown_file_types"
+            },
         ],
         'specification': json.loads(open(os.path.join(settings.BASE_DIR, 'templates/SE_SIP_Template.json')).read()),
         'specification_data': {
