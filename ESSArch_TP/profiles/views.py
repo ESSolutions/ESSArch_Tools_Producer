@@ -258,9 +258,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
             return Response({'status': repr(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        ip_id = request.data.get(
-            "information_package", {}
-        )
+        try:
+            ip_id = request.data["information_package"]
+        except KeyError:
+            raise exceptions.ParseError(detail='information_package parameter missing')
 
         try:
             ip = InformationPackage.objects.get(

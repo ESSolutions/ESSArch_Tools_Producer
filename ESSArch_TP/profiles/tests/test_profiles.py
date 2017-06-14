@@ -420,3 +420,45 @@ class SaveProfile(TestCase):
 
         res = self.client.post(save_url, data, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class LockProfile(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username="admin")
+
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.sa = SubmissionAgreement.objects.create()
+        self.ip = InformationPackage.objects.create(
+            submission_agreement=self.sa,
+            submission_agreement_locked=True,
+        )
+
+    def test_lock_profile(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='test',
+            specification_data={},
+            template=[]
+        )
+
+        url = reverse('profile-detail', args=(profile.pk,))
+        url = url + 'lock/'
+
+        res = self.client.post(url, {'information_package': self.ip.pk})
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_lock_profile_without_ip(self):
+        profile = Profile.objects.create(
+            name='first',
+            profile_type='test',
+            specification_data={},
+            template=[]
+        )
+
+        url = reverse('profile-detail', args=(profile.pk,))
+        url = url + 'lock/'
+
+        res = self.client.post(url)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
