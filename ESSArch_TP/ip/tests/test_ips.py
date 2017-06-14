@@ -467,6 +467,17 @@ class test_change_sa(TestCase):
         self.ip.refresh_from_db()
         self.assertNotEqual(self.ip.submission_agreement, self.sa)
 
+    def test_not_responsible_for_ip(self):
+        self.ip.responsible = User.objects.create(username="stranger")
+        self.ip.submission_agreement = SubmissionAgreement.objects.create()
+        self.ip.save()
+
+        res = self.client.patch(self.url, {'submission_agreement': self.sa_url}, format='json')
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+        self.ip.refresh_from_db()
+        self.assertNotEqual(self.ip.submission_agreement, self.sa)
+
 
 class test_change_profile(TestCase):
     def setUp(self):

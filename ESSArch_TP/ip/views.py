@@ -199,8 +199,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     filter_class = InformationPackageFilter
 
     def get_permissions(self):
-        if self.action == 'partial_update':
-            if self.request.data.get('SubmissionAgreement'):
+        if self.action in ['partial_update', 'update']:
+            if self.request.data.get('submission_agreement'):
                 self.permission_classes = [CanChangeSA]
         if self.action == 'destroy':
             self.permission_classes = [CanDeleteIP]
