@@ -377,17 +377,15 @@ body.modal-open[style] {
     padding-bottom: 4px;
     line-height: 1;
 }
-.list-view, .event-view {
-    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th {
-        padding-bottom: 8px;
-    }
-}
 .step-state {
     padding-top: 0 !important;
+    text-align: center;
 }
 .step-state-success {
-    display: inline;
     color: white;
+    display: inline-block;
+    min-width: 55px;
+    text-align: center;
     background-color: $step-success;
     padding: 3px 10px;
     font-size: 9px;
@@ -395,8 +393,10 @@ body.modal-open[style] {
     box-shadow: 0px 1px 0px rgba(0,0,0,.15);
 }
 .step-state-failure {
-    display: inline;
     color: white;
+    display: inline-block;
+    min-width: 55px;
+    text-align: center;
     background-color: $step-fail;
     padding: 3px 10px;
     font-size: 9px;
@@ -404,8 +404,10 @@ body.modal-open[style] {
     box-shadow: 0px 1px 0px rgba(0,0,0,.15);
 }
 .step-state-in-progress {
-    display: inline;
     color: white;
+    display: inline-block;
+    min-width: 55px;
+    text-align: center;
     background-color: $step-in-progress;
     padding: 3px 10px;
     font-size: 9px;
