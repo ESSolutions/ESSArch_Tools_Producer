@@ -589,6 +589,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
+            $scope.filebrowser = false;
             $rootScope.loadNavigation(ipSortString);
             $scope.getListViewData();
         });

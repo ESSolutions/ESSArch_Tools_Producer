@@ -287,6 +287,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
+            $scope.filebrowser = false;
             $rootScope.loadNavigation(ipSortString);
             $scope.getListViewData();
         });
@@ -301,6 +302,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         }).then(function(response){
             $scope.eventlog = false;
             $scope.select = false;
+            $scope.filebrowser = false;
             $timeout(function() {
                 $scope.getListViewData();
                 updateListViewConditional();

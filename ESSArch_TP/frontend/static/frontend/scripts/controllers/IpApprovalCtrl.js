@@ -283,6 +283,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
                 $scope.select = false;
                 $scope.edit = false;
                 $scope.eventlog = false;
+                $scope.filebrowser = false;
                 $timeout(function(){
                     $scope.getListViewData();
                     updateListViewConditional();
@@ -470,6 +471,8 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
             $scope.eventShow = false;
             $scope.statusShow = false;
+            $scope.filebrowser = false;
+
             $rootScope.loadNavigation(ipSortString);
             $scope.getListViewData();
         });
