@@ -62,7 +62,23 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
         });
     }
     function generateColumns(columns) {
-        var allColumns = [{label: "object_identifier_value", sortString: "object_identifier_value", template: "static/frontend/views/columns/column_object_identifier_value.html"}, {label: "label", sortString: "label", template: "static/frontend/views/columns/column_label.html"}, {label: "responsible", sortString: "responsible", template: "static/frontend/views/columns/column_responsible.html"}, {label: "create_date", sortString: "create_date", template: "static/frontend/views/columns/column_create_date.html"}, {label: "state", sortString: "state", template: "static/frontend/views/columns/column_state.html"}, {label: "step_state", sortString: "step_state", template: "static/frontend/views/columns/column_step_state.html"}, {label: "events", sortString: "Events", template: "static/frontend/views/columns/column_events.html"}, {label: "status", sortString: "Status", template: "static/frontend/views/columns/column_status.html"}, {label: "delete", sortString: "", template: "static/frontend/views/columns/column_delete.html"}, {label: "object_size", sortString: "object_size", template: "static/frontend/views/columns/column_object_size.html"}, {label: "archival_institution", sortString: "archival_institution", template: "static/frontend/views/columns/column_archival_institution.html"}, {label: "archivist_organization", sortString: "archivist_organization", template: "static/frontend/views/columns/column_archivist_organization.html"}, {label: "start_date", sortString: "start_date", template: "static/frontend/views/columns/column_start_date.html"}, {label: "end_date", sortString: "end_date", template: "static/frontend/views/columns/column_end_date.html"}];
+        var allColumns = [
+            {label: "object_identifier_value", sortString: "object_identifier_value", template: "static/frontend/views/columns/column_object_identifier_value.html"},
+            {label: "label", sortString: "label", template: "static/frontend/views/columns/column_label.html"},
+            {label: "responsible", sortString: "responsible", template: "static/frontend/views/columns/column_responsible.html"},
+            {label: "create_date", sortString: "create_date", template: "static/frontend/views/columns/column_create_date.html"},
+            {label: "state", sortString: "state", template: "static/frontend/views/columns/column_state.html"},
+            {label: "step_state", sortString: "step_state", template: "static/frontend/views/columns/column_step_state.html"},
+            {label: "events", sortString: "Events", template: "static/frontend/views/columns/column_events.html"},
+            {label: "status", sortString: "Status", template: "static/frontend/views/columns/column_status.html"},
+            {label: "delete", sortString: "", template: "static/frontend/views/columns/column_delete.html"},
+            {label: "object_size", sortString: "object_size", template: "static/frontend/views/columns/column_object_size.html"},
+            {label: "archival_institution", sortString: "archival_institution", template: "static/frontend/views/columns/column_archival_institution.html"},
+            {label: "archivist_organization", sortString: "archivist_organization", template: "static/frontend/views/columns/column_archivist_organization.html"},
+            {label: "start_date", sortString: "start_date", template: "static/frontend/views/columns/column_start_date.html"},
+            {label: "end_date", sortString: "end_date", template: "static/frontend/views/columns/column_end_date.html"},
+            {label: "filebrowser", sortString: "", template: "static/frontend/views/columns/column_filebrowser.html"},
+        ];
         var activeColumns = [];
         var simpleColumns = allColumns.map(function(a){return a.label});
         columns.forEach(function(column) {
