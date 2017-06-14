@@ -21,7 +21,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <p ng-if="!saProfile.profile" class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</p>
+                                        <p ng-if="!saProfile.profile || !checkPermission('profiles.create_new_sa_generation')" class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</p>
                                         <a ng-if="saProfile.profile && checkPermission('profiles.create_new_sa_generation')" class="table-col" ng-click="saClick(saProfile)">{{'SUBMISSIONAGREEMENT' | translate}}</a>
                                     </td>
                                     <td><select class="form-control table-col" ng-disabled="(saProfile.locked) || (ip.responsible.id != auth.id && !checkPermission('ip.change_sa'))" ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)" ng-options="x as x.name for x in saProfile.profiles"></select></td>
