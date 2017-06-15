@@ -459,6 +459,13 @@ class LockProfile(TestCase):
                     "type": "input",
                     "key": "second"
                 },
+                {
+                    "templateOptions": {
+                        "type": "text",
+                    },
+                    "type": "input",
+                    "key": "third"
+                },
             ]
         )
 
