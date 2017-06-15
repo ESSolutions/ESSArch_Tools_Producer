@@ -831,3 +831,7 @@ input[type="checkbox"] {
 .traceback-copied {
     color: $step-success;
 }
+
+.popover {
+    word-break: break-all;
+}
