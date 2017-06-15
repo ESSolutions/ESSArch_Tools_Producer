@@ -215,5 +215,6 @@
     "UNLOCKPROFILEINFO": "If you unlock this profile, the IP will be moved to the \"Prepare IP\" view. Proceed by clicking OK.",
     "REFRESH": "Refresh",
     "CHANGED": "Changed",
-    "FILEBROWSER": "File browser"
+    "FILEBROWSER": "File browser",
+    "COPYID": "Copy ID"
 }
