@@ -490,19 +490,11 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
 
     //Toggle visibility of select view
     $scope.toggleSelectView = function () {
-        if($scope.select == false){
-            $scope.select = true;
-        } else {
-            $scope.select = false;
-        }
+        $scope.select = !$scope.select;
     };
     //Toggle visibility of sub-select view
     $scope.toggleSubSelectView = function () {
-        if($scope.subSelect == false){
-            $scope.subSelect = true;
-        } else {
-            $scope.subSelect = false;
-        }
+        $scope.subSelect = !$scope.subSelect;
     };
     //Toggle visibility of edit view
     $scope.toggleEditView = function () {
@@ -512,7 +504,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     //Toggle visibility of eventlog view
     $scope.toggleEventlogView = function() {
-        $scope.eventlog = !$scope.eventlog
+        $scope.eventlog = !$scope.eventlog;
     }
     //Create and show modal when saving an SA
     vm.saveSAModal = function(){
