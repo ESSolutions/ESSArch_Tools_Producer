@@ -1,4 +1,4 @@
-<div ng-click="ipRowClick(row)" context-menu="menuOptions('row')">
+<div context-menu="menuOptions('row')">
     <button type="button"
             ng-if="row.responsible.id == auth.id || checkPermission('ip.delete_informationpackage')"
             ng-click="removeIpModal(row)"

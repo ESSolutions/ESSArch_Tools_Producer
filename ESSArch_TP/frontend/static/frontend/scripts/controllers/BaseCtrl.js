@@ -23,10 +23,119 @@
 */
 
 angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
-    vm = this;
+    var vm = this;
     $scope.updateIpsPerPage = function(items) {
         $cookies.put('etp-ips-per-page', items);
     };
+
+    // Initialize variables
+    $scope.max = 100;
+    $scope.stepTaskInfoShow = false;
+    $scope.statusShow = false;
+    $scope.eventShow = false;
+    $scope.select = false;
+    $scope.subSelect = false;
+    $scope.edit = false;
+    $scope.eventlog = false;
+    $scope.filebrowser = false;
+    $scope.ip = null;
+    $rootScope.ip = null;
+
+    // Init intervals
+    // If status view is visible, start update interval
+    $rootScope.$on('$stateChangeStart', function () {
+        $interval.cancel(stateInterval);
+    });
+
+    var stateInterval;
+    $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+        if(newValue) {
+            $interval.cancel(stateInterval);
+            stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
+    } else {
+            $interval.cancel(stateInterval);
+        }
+    });
+
+    // Click functions
+    $scope.stateClicked = function (row) {
+        if ($scope.statusShow) {
+            $scope.tree_data = [];
+            if ($scope.ip == row) {
+                $scope.statusShow = false;
+                $scope.ip = null;
+                $rootScope.ip = null;
+            } else {
+                $scope.statusShow = true;
+                $scope.edit = false;
+                $scope.statusViewUpdate(row);
+                $scope.ip = row;
+                $rootScope.ip = row;
+            }
+        } else {
+            $scope.statusShow = true;
+            $scope.edit = false;
+            $scope.statusViewUpdate(row);
+            $scope.ip = row;
+            $rootScope.ip = row;
+        }
+        $scope.subSelect = false;
+        $scope.eventlog = false;
+        $scope.select = false;
+        $scope.eventShow = false;
+    };
+
+    $scope.eventsClick = function (row) {
+        if($scope.eventShow && $scope.ip == row){
+            $scope.eventShow = false;
+            $rootScope.stCtrl = null;
+            $scope.ip = null;
+            $rootScope.ip = null;
+        } else {
+            if($rootScope.stCtrl) {
+                $rootScope.stCtrl.pipe();
+            }
+            getEventlogData();
+            $scope.eventShow = true;
+            $scope.statusShow = false;
+            $scope.ip = row;
+            $rootScope.ip = row;
+        }
+        $scope.select = false;
+        $scope.edit = false;
+        $scope.eventlog = false;
+    };
+
+    $scope.filebrowserClick = function (ip) {
+        if ($scope.filebrowser && $scope.ip == ip) {
+            $scope.filebrowser = false;
+            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow) {
+                $scope.ip = null;
+                $rootScope.ip = null;
+            }
+        } else {
+            if ($rootScope.auth.id == ip.responsible.id || !ip.responsible) {
+                $scope.filebrowser = true;
+                $scope.ip = ip;
+                $rootScope.ip = ip;
+            }
+        }
+    }
+
+    // Basic functions
+
+    //Get data for eventlog view
+    function getEventlogData() {
+        listViewService.getEventlogData().then(function(value){
+            $scope.eventTypeCollection = value;
+        });
+    };
+
+    //Adds a new event to the database
+    $scope.addEvent = function(ip, eventType, eventDetail) {
+        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
+        });
+    }
     //Status tree view structure
     $scope.tree_data = [];
     $scope.angular = angular;

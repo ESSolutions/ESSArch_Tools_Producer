@@ -26,74 +26,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $controller('BaseCtrl', { $scope: $scope });
     var vm = this;
     var ipSortString = "Preparing,Prepared";
-    $scope.ip = null;
-    $rootScope.ip = null;
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     //Cancel update intervals on state change
-    $rootScope.$on('$stateChangeStart', function() {
-        $interval.cancel(stateInterval);
+    // If status view is visible, start update interval
+    $rootScope.$on('$stateChangeStart', function () {
         $interval.cancel(listViewInterval);
     });
-    // Click funtion columns that does not have a relevant click function
-    $scope.ipRowClick = function(row) {
-        if($scope.ip == row){
-            $scope.ip = null;
-            $rootScope.ip = null;
-        }
-        if($scope.eventShow) {
-            $scope.eventsClick(row);
-        }
-        if($scope.statusShow) {
-            $scope.stateClicked(row);
-        }
-        if ($scope.select) {
-            $scope.ipTableClick(row);
-        }
-    }
-    //Click function for status view
-    var stateInterval;
-    $scope.stateClicked = function (row) {
-        if ($scope.statusShow) {
-                $scope.tree_data = [];
-            if ($scope.ip == row) {
-                $scope.statusShow = false;
-                $scope.ip = null;
-                $rootScope.ip = null;
-            } else {
-                $scope.statusShow = true;
-                $scope.edit = false;
-                $scope.statusViewUpdate(row);
-                $scope.ip = row;
-                $rootScope.ip = row;
-            }
-        } else {
-            $scope.statusShow = true;
-            $scope.edit = false;
-            $scope.statusViewUpdate(row);
-            $scope.ip = row;
-            $rootScope.ip = row;
-        }
-        $scope.subSelect = false;
-        $scope.eventlog = false;
-        $scope.select = false;
-        $scope.eventShow = false;
-    };
-    //If status view is visible, start update interval
-    $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
-        if(newValue) {
-            $interval.cancel(stateInterval);
-            stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
-        } else {
-            $interval.cancel(stateInterval);
-        }
-    });
-    //Get data for status view
 
     /*******************************************/
     /*Piping and Pagination for List-view table*/
     /*******************************************/
 
-    var ctrl = this;
     $scope.selectedProfileRow = {profile_type: "", class: ""};
     this.displayedIps = [];
     //Get data according to ip table settings and populates ip table
@@ -115,7 +58,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             var pageNumber = start/number+1;
 
             Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
-                ctrl.displayedIps = result.data;
+                vm.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
                 $scope.initLoad = false;
@@ -153,59 +96,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-    $scope.filebrowser = false;
-    $scope.filebrowserClick = function (ip) {
-        if ($scope.filebrowser && $scope.ip == ip) {
-            $scope.filebrowser = false;
-            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow) {
-                $scope.ip = null;
-                $rootScope.ip = null;
-            }
-        } else {
-            if ($rootScope.auth.id == ip.responsible.id || !ip.responsible) {
-                $scope.filebrowser = true;
-                $scope.ip = ip;
-                $rootScope.ip = ip;
-            }
-        }
-    }
+
     $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
         $scope.getListViewData();
     }, true);
-    //Click funciton for event view
-    $scope.eventsClick = function (row) {
-        if($scope.eventShow && $scope.ip == row){
-            $scope.eventShow = false;
-            $rootScope.stCtrl = null;
-            $scope.ip = null;
-            $rootScope.ip = null;
-        } else {
-            if($rootScope.stCtrl) {
-                $rootScope.stCtrl.pipe();
-            }
-            getEventlogData();
-            $scope.eventShow = true;
-            $scope.statusShow = false;
-            $scope.ip = row;
-            $rootScope.ip = row;
-        }
-        $scope.select = false;
-        $scope.edit = false;
-        $scope.eventlog = false;
-    };
 
-    //Adds a new event to the database
-    $scope.addEvent = function(ip, eventType, eventDetail) {
-        listViewService.addEvent(ip, eventType, eventDetail).then(function(value) {
-        });
-    }
     //Get data for list view
     $scope.getListViewData = function() {
         vm.callServer($scope.tableState);
         $rootScope.loadNavigation(ipSortString);
     };
     // Progress bar max value
-    $scope.max = 100;
     //funcitons for select view
     vm.profileModel = {};
     vm.profileFields=[];
@@ -306,12 +207,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.eventlog = true;
         });
     }
-    //Get data for eventlog view
-    function getEventlogData() {
-        listViewService.getEventlogData().then(function(value){
-            $scope.eventTypeCollection = value;
-        });
-    };
+
     //populating select view
     $scope.selectRowCollection = [];
     $scope.selectRowCollapse = [];
@@ -471,41 +367,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     $scope.optionalOptions = true;
     $scope.colspan = 9;
-    //Decides visibility of stepTask info page
-    $scope.stepTaskInfoShow = false;
-    //Decides visibility of status view
-    $scope.statusShow = false;
-    //Decides visibility of events view
-    $scope.eventShow = false;
-    //Decides visibility of select view
-    $scope.select = false;
-    //Decides visibility of sub-select view
-    $scope.subSelect = false;
-    //Decides visibility of edit view
-    $scope.edit = false;
-    //Decides visibility of eventlog view
-    $scope.eventlog = false;
-    //Html popover template for currently disabled
-    $scope.htmlPopover = $sce.trustAsHtml('<font size="3" color="red">Currently disabled</font>');
 
-    //Toggle visibility of select view
-    $scope.toggleSelectView = function () {
-        $scope.select = !$scope.select;
-    };
-    //Toggle visibility of sub-select view
-    $scope.toggleSubSelectView = function () {
-        $scope.subSelect = !$scope.subSelect;
-    };
-    //Toggle visibility of edit view
-    $scope.toggleEditView = function () {
-        $('.edit-view').toggle();
-        $scope.edit = !$scope.edit;
-        $scope.eventlog = !$scope.eventlog;
-    };
-    //Toggle visibility of eventlog view
-    $scope.toggleEventlogView = function() {
-        $scope.eventlog = !$scope.eventlog;
-    }
     //Create and show modal when saving an SA
     vm.saveSAModal = function(){
         if (vm.editForm.$valid) {
@@ -757,10 +619,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     updateListViewConditional();
 
-    //Reload current view
-    $scope.reloadPage = function (){
-        $state.reload();
-    }
     /*
      * Edit view map structure tree
      */

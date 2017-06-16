@@ -4,7 +4,7 @@
         <b class="dir-path">{{ip.object_identifier_value + '/' + previousGridArraysString()}}</b>
     </div>
     <span style="float: right; margin-bottom: 5px;" ng-click="updateGridArray(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': deckGridLoading }"
-        uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+        uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></span>
     <div class="deckgrid">
         <div class="flex-grid">
             <div class="card" ng-repeat="card in deckGridData" ng-include src="'static/frontend/views/deckgrid_card.html'"></div>
