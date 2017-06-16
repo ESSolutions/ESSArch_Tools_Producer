@@ -359,25 +359,15 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.subSelect = false;
         }
     };
-    //toggle visibility of edit view
+    //Toggle visibility of edit view
     $scope.toggleEditView = function () {
-        if($scope.edit == false){
-            $('.edit-view').show();
-            $scope.edit = true;
-            $scope.eventlog = true;
-        } else {
-            $('.edit-view').hide();
-            $scope.edit = false;
-            $scope.eventlog = false;
-        }
+        $('.edit-view').toggle();
+        $scope.edit = !$scope.edit;
+        $scope.eventlog = !$scope.eventlog;
     };
     //Toggle visibility of eventlog view
     $scope.toggleEventlogView = function() {
-        if($scope.eventlog == false){
-            $scope.eventlog = true;
-        }else {
-            $scope.eventlog = false;
-        }
+        $scope.eventlog = !$scope.eventlog
     }
     $scope.unlockConditional = function(profile) {
         if(profile.profile_type == "sip") {
