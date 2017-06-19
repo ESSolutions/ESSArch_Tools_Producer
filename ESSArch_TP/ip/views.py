@@ -288,6 +288,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         os.remove(fl)
                     except:
                         raise
+            elif e.errno == errno.ENOENT:
+                pass
+            else:
+                raise
 
         try:
             shutil.rmtree(ip.object_path)
