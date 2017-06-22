@@ -37,6 +37,10 @@
 * Milliseconds are now included in start and end time in task report
 * Profiles in IPs with state `Created` can now be unlocked
 * Updates of the task tree for an IP is no longer rebuilt on each refresh
+* A file browser is now available for the logged in user's IPs
+* A refresh button is now available in step and task modals
+* A button for copying the id is now available in the task modal
+* The root of the directory tree is now always named "root" in all languages
 
 #### API
 
@@ -55,7 +59,19 @@
 * The archivist organization for an IP is now specified in the submission agreement and therefore set when locking the submission agreement
 * New submission agreement generations can now be created at `/api/submission-agreements/{id}/save`
 * The task serialization now includes `args` which is the list of positional arguments provided to the task
+* Task parameters are now serialized as json instead of a string
 * `CreateTAR` and `CreateZIP` has been moved to ESSArch Core
+* Files in an IP can now be listed, previewed (depending on browser) and downloaded at `/api/information-packages/{id}/files/`
+
+#### Profiles
+* (SE - TPP) "Container format compression" is now enabled and a `select` with options `Yes` and `No`
+* (SE - TPP) "Preservation organization receiver url" now supports credentials
+* (SE - SIP) Added "Allow unknown file types" field
+* (SE - SIP) `link.xsd` is now preserved
+* (SE - SIP) `root` is now included in the struct map
+* (SE - SIP) `<altRecordID TYPE="SUBMISSIONAGREEMENT"></altRecordID` is now set to the name of the locked submission agreement
+* (NO) NO profiles has been added
+
 
 #### Misc
 
@@ -66,12 +82,16 @@
 ## Bug Fixes
 
 * (API) `400 Bad Request` is now returned when trying to prepare an IP without a label
+* (API) `409 Conflict` is now returned when trying to prepare an IP with same object identifier value as a IP in DB or as a folder on disk
+* (API) Response messages when preparing IP is now under `detail` instead of `status`
 * (API) Can no longer change the submission agreement of an IP that already has
   a locked submission agreement, `400 Bad Request` is now returned when trying
 * (API) `400 Bad Request` is now returned when trying to lock a submission
   agreement to an IP that already has a locked submission agreement
 * (API) `400 Bad Request` is now returned when trying to change profile locked to IP
 * (API) `400 Bad Request` is now returned when saving invalid profile
+* (API) `400 Bad Request` is now returned when locking profile without providing IP
+* (API) `400 Bad Request` is now returned when locking profile to same IP twice
 * (API) `400 Bad Request` is now returned when trying to unlock proifle with
   missing `type` parameter
 * (API) Log file is now created before mets file
@@ -82,6 +102,8 @@
   recipient but no subject or body parameter is entered
 * Locking a profile with missing required fields no longer reloads the profile
 * Unlocking a profile no longer requires a page refresh before the profile can be edited
+* The pop up menu in the directory tree editor is now closed when clicking outside menu on larger screens
+* (API) IPs already deleted from file system can now be deleted without resulting in a `500 Internal Server Error`
 
 ## Requirement changes
 ### Updates
