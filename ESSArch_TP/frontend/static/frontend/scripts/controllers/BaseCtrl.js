@@ -23,8 +23,6 @@
 */
 
 angular.module('myApp').controller('BaseCtrl', function (vm, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
-    console.log("VM: ", vm, "!!!!!");
-    console.log("ipsortString: ", ipSortString, "!!!!!");
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     $scope.updateIpsPerPage = function(items) {
         $cookies.put('etp-ips-per-page', items);
