@@ -28,7 +28,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             .state('home', {
                 url: '/',
                 templateUrl: '/static/frontend/views/home.html',
-                controller: 'BaseCtrl as vm'
             })
             .state('login', {
                 url: '/login',
