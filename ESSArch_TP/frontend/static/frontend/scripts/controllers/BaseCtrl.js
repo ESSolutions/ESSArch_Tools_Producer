@@ -22,8 +22,10 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
-    var vm = this;
+angular.module('myApp').controller('BaseCtrl', function (vm, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
+    console.log("VM: ", vm, "!!!!!");
+    console.log("ipsortString: ", ipSortString, "!!!!!");
+    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     $scope.updateIpsPerPage = function(items) {
         $cookies.put('etp-ips-per-page', items);
     };
@@ -41,10 +43,16 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
     $scope.ip = null;
     $rootScope.ip = null;
 
+    // Watchers
+    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+        $scope.getListViewData();
+    }, true);
+
     // Init intervals
     // If status view is visible, start update interval
     $rootScope.$on('$stateChangeStart', function () {
         $interval.cancel(stateInterval);
+        $interval.cancel(listViewInterval);
     });
 
     var stateInterval;
@@ -56,6 +64,45 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
             $interval.cancel(stateInterval);
         }
     });
+
+    //Update ip list view with an interval
+    //Update only if status < 100 and no step has failed in any IP
+    var listViewInterval;
+    vm.updateListViewConditional = function() {
+        $interval.cancel(listViewInterval);
+        listViewInterval = $interval(function() {
+            var updateVar = false;
+            vm.displayedIps.forEach(function(ip, idx) {
+                if(ip.status < 100) {
+                    if(ip.step_state != "FAILURE") {
+                        updateVar = true;
+                    }
+                }
+            });
+            if(updateVar) {
+                $scope.getListViewData();
+            } else {
+                $interval.cancel(listViewInterval);
+                listViewInterval = $interval(function() {
+                    var updateVar = false;
+                    vm.displayedIps.forEach(function(ip, idx) {
+                        if(ip.status < 100) {
+                            if(ip.step_state != "FAILURE") {
+                                updateVar = true;
+                            }
+                        }
+                    });
+                    if(!updateVar) {
+                        $scope.getListViewData();
+                    } else {
+                        vm.updateListViewConditional();
+                    }
+
+                }, appConfig.ipIdleInterval);
+            }
+        }, appConfig.ipInterval);
+    };
+    vm.updateListViewConditional();
 
     // Click functions
     $scope.stateClicked = function (row) {
@@ -122,10 +169,146 @@ angular.module('myApp').controller('BaseCtrl', function ($log, $uibModal, $timeo
         }
     }
 
+    // List view
+
+    vm.displayedIps = [];
+    //Get data according to ip table settings and populates ip table
+    vm.callServer = function callServer(tableState) {
+        $scope.ipLoading = true;
+        if (vm.displayedIps.length == 0) {
+            $scope.initLoad = true;
+        }
+        if (!angular.isUndefined(tableState)) {
+            $scope.tableState = tableState;
+            var search = "";
+            if (tableState.search.predicateObject) {
+                var search = tableState.search.predicateObject["$"];
+            }
+            var sorting = tableState.sort;
+            var pagination = tableState.pagination;
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
+            var pageNumber = start / number + 1;
+
+            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
+                vm.displayedIps = result.data;
+                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
+                $scope.ipLoading = false;
+                $scope.initLoad = false;
+            });
+        }
+    };
+
+    //Get data for list view
+    $scope.getListViewData = function() {
+        vm.callServer($scope.tableState);
+        $rootScope.loadNavigation(ipSortString);
+    };
+
+
+    // Functions associated with profiles
+
+    //populating select view
+    $scope.selectRowCollection = [];
+    $scope.selectRowCollapse = [];
+
+    //Gets all submission agreement profiles
+    $scope.getSaProfiles = function (ip) {
+        listViewService.getSaProfiles(ip).then(function (value) {
+            $scope.saProfile = value;
+            $scope.getSelectCollection(value.profile, ip)
+            $scope.selectRowCollection = $scope.selectRowCollapse;
+        });
+    };
+
+    //Get All profiles and populates the select view table array
+    $scope.getSelectCollection = function (sa, ip) {
+        $scope.selectRowCollapse = listViewService.getProfilesFromIp(sa, ip)
+    };
+
+    // Initialize validator fields
+
+    vm.validatorModel = {
+    };
+    vm.validatorFields = [
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEFILEFORMAT'),
+            },
+            "defaultValue": true,
+            "type": "checkbox",
+            "key": "validate_file_format",
+        },
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEXMLFILE'),
+            },
+            "defaultValue": true,
+            "type": "checkbox",
+            "key": "validate_xml_file",
+        },
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
+            },
+            "defaultValue": true,
+            "type": "checkbox",
+            "key": "validate_logical_physical_representation",
+        },
+        {
+            "templateOptions": {
+                "type": "text",
+                "label": $translate.instant('VALIDATEINTEGRITY'),
+            },
+            "defaultValue": true,
+            "type": "checkbox",
+            "key": "validate_integrity",
+        }
+    ];
+
+    // file conversion
+
+    vm.fileConversionModel = {};
+    $translate(['YES', 'NO']).then(function(translations) {
+        vm.fileConversionFields = [
+            {
+                "templateOptions": {
+                    "type": "text",
+                    "label": $translate.instant('CONVERTFILES'),
+                    "options": [{name: translations.YES, value: true},{name: translations.NO, value: false}],
+                },
+                "defaultValue": false,
+                "type": "select",
+                "key": "file_conversion",
+            },
+        ];
+
+    });
+
     // Basic functions
 
+    //Remove ip
+    $scope.removeIp = function (ipObject) {
+        $http({
+            method: 'DELETE',
+            url: ipObject.url
+        }).then(function() {
+            vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
+            $scope.edit = false;
+            $scope.select = false;
+            $scope.eventlog = false;
+            $scope.eventShow = false;
+            $scope.statusShow = false;
+            $scope.filebrowser = false;
+            $rootScope.loadNavigation(ipSortString);
+            $scope.getListViewData();
+        });
+    }
     //Get data for eventlog view
-    function getEventlogData() {
+    vm.getEventlogData = function() {
         listViewService.getEventlogData().then(function(value){
             $scope.eventTypeCollection = value;
         });
