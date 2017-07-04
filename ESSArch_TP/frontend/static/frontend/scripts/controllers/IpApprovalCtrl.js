@@ -35,6 +35,7 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.getSaProfiles(row);
             $scope.select = true;

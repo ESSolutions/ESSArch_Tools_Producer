@@ -50,6 +50,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;

@@ -48,6 +48,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.select = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = $scope.ip;
