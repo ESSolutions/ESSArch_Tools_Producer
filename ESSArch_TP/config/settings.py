@@ -186,7 +186,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # http://django-rest-auth.readthedocs.io/en/latest/configuration.html
 
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'ESSArch_Core.auth.serializers.UserSerializer'
+    'USER_DETAILS_SERIALIZER': 'ESSArch_Core.auth.serializers.UserLoggedInSerializer'
 }
 
 
