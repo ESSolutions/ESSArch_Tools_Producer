@@ -140,7 +140,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, ipSortString, $log,
             if($rootScope.stCtrl) {
                 $rootScope.stCtrl.pipe();
             }
-            getEventlogData();
+            vm.getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
             $scope.ip = row;
