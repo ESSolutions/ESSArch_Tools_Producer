@@ -70,16 +70,16 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     responsible = UserSerializer()
     profiles = ProfileIPSerializer(many=True)
     archival_institution = ArchivalInstitutionSerializer(
-        fields=['url', 'id', 'name']
+        read_only=True, fields=['url', 'id', 'name']
     )
     archivist_organization = ArchivistOrganizationSerializer(
-        fields=['url', 'id', 'name']
+        read_only=True, fields=['url', 'id', 'name']
     )
     archival_type = ArchivalTypeSerializer(
-        fields=['url', 'id', 'name']
+        read_only=True, fields=['url', 'id', 'name']
     )
     archival_location = ArchivalLocationSerializer(
-        fields=['url', 'id', 'name']
+        read_only=True, fields=['url', 'id', 'name']
     )
 
     def to_representation(self, obj):
