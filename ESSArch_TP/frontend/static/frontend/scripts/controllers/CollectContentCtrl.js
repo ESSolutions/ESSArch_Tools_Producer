@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
+angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
     var vm = this;
     var ipSortString = "Prepared,Uploading";
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
@@ -78,10 +78,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     $scope.uploadDisabled = false;
     $scope.setUploaded = function(ip) {
         $scope.uploadDisabled = true;
-        $http({
-            method: 'POST',
-            url: ip.url + "set-uploaded/"
-        }).then(function(response){
+        IP.setUploaded({
+            id: ip.id
+        }).$promise.then(function(response){
             $scope.eventlog = false;
             $scope.select = false;
             $scope.filebrowser = false;
@@ -253,10 +252,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var url = ip.url + 'merge-uploaded-chunks/';
         var path = flow.opts.query.destination + file.relativePath;
 
-        $http({
-            method: 'POST',
-            url: url,
-            data: {'path': path}
+        IP.mergeChunks({
+            'path': path
         });
     };
     $scope.fileTransferFilter = function(file)

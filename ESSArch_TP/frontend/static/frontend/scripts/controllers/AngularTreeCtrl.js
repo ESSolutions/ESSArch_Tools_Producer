@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($scope, $http, $rootScope, appConfig) {
+angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl(ArchivalInstitution, ArchivistOrganization, $scope, $http, $rootScope, appConfig) {
     $scope.treeOptions = {
         nodeChildren: "children",
         dirSelectable: true,
@@ -75,19 +75,15 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
     ];
 
     $rootScope.loadNavigation = function(ipState) {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archival-institutions/",
-            params: {ip_state: ipState}
-        }).then(function(response) {
-            $scope.ArchivalInstitution[0].children = response.data;
+        ArchivalInstitution.query({
+            ip_state: ipState
+        }).$promise.then(function(data) {
+            $scope.ArchivalInstitution[0].children = data;
         });
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archivist-organizations/",
-            params: {ip_state: ipState}
-        }).then(function(response) {
-            $scope.ArchivistOrganization[0].children = response.data;
+        ArchivistOrganization.query({
+            ip_state: ipState
+        }).$promise.then(function(data) {
+            $scope.ArchivistOrganization[0].children = data;
         });
        /* $http({
             method: 'GET',

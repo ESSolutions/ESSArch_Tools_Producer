@@ -47,14 +47,9 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
         return temp1;
     }
     function getVersionInfo() {
-        return $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"sysinfo/"
-        }).then(function(response){
-            return response.data;
-        }, function() {
-            console.log('error');
-        })
+        return Sysinfo.get().$promise.then(function(data){
+            return data;
+        });
     }
     function getActiveColumns() {
         return djangoAuth.profile().then(function(response) {

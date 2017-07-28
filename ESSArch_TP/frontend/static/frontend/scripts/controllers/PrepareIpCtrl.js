@@ -592,8 +592,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         else return [];
     }
     //Populate map structure tree view given tree width and amount of levels
-    function getStructure(profileUrl) {
-        listViewService.getStructure(profileUrl).then(function(value) {
+    function getStructure(profileId) {
+        listViewService.getStructure(profileId).then(function(value) {
             $scope.treeElements =[{name: 'root', type: "folder", children: value}];
             $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
         });
