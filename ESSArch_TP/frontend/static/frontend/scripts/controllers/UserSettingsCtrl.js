@@ -1,4 +1,4 @@
-angular.module("myApp").controller("UserSettingsCtrl", function($scope, $rootScope, $http, appConfig, $controller, $cookies, myService, $q, $window) {
+angular.module("myApp").controller("UserSettingsCtrl", function(Me, $scope, $rootScope, $http, appConfig, $controller, $cookies, myService, $q, $window) {
     var vm = this;
     $controller('BaseCtrl', {$scope: $scope, vm: vm, ipSortString: "" });
     vm.activeColumns = {chosen: []};
@@ -64,12 +64,10 @@ angular.module("myApp").controller("UserSettingsCtrl", function($scope, $rootSco
         vm.activeColumns.chosen = [];
         $scope.saveAlert = null;
         var updateArray = vm.activeColumns.options.map(function(a){return a.label});
-        $http({
-            method: 'PATCH',
-            url: $rootScope.auth.url,
-            data: {ip_list_columns: updateArray}
-        }).then(function(response) {
-            $rootScope.auth = response.data;
+        Me.update({
+            ip_list_columns: updateArray
+        }).$promise.then(function(resource) {
+            $rootScope.auth = resource;
             $scope.saveAlert = $scope.alerts.saveSuccess;
         }, function error() {
             $scope.saveAlert = $scope.alerts.saveError;

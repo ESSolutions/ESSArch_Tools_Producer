@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies, $controller){
+angular.module('myApp').controller('IpApprovalCtrl', function (IP, Profile, $log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
     var ipSortString = "Uploaded,Creating,Created";
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
@@ -59,17 +59,15 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
             $scope.edit = false;
         } else {
             if(row.active) {
-                $http({
-                    method: 'GET',
-                    url: row.active.profile,
-                    params: {
-                        "ip": $scope.ip.id
-                    }
-                }).then(function(response) {
+                console.log(row)
+                Profile.get({
+                    id: row.active.profile,
+                    ip: $scope.ip.id
+                }).$promise.then(function(resource) {
                     $scope.profileToSave = row.active;
                     $scope.selectProfile = row;
-                    vm.profileModel = response.data.specification_data;
-                    vm.profileFields = response.data.template;
+                    vm.profileModel = resource.specification_data;
+                    vm.profileFields = resource.template;
                     vm.profileFields.forEach(function(field) {
                         if(field.fieldGroup != null){
                             field.fieldGroup.forEach(function(subGroup) {
@@ -96,27 +94,23 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
     //Executes Create sip on an ip
     $scope.createSip = function (ip) {
         $scope.createDisabled = true;
-        $http({
-            method: 'POST',
-            url: ip.url+"create/",
-            data: {
-                validators: vm.validatorModel,
-                file_conversion: vm.fileConversionModel.file_conversion,
-            }
-        })
-            .then(function successCallback(response) {
-                $scope.select = false;
-                $scope.edit = false;
-                $scope.eventlog = false;
-                $scope.filebrowser = false;
-                $timeout(function(){
-                    $scope.getListViewData();
-                    vm.updateListViewConditional();
-                }, 1000);
-                $anchorScroll();
-            }).finally(function(){
-                $scope.createDisabled = false;
-            });
+        IP.create({
+            id: ip.id,
+            validators: vm.validatorModel,
+            file_conversion: vm.fileConversionModel.file_conversion,
+        }).$promise.then(function (response) {
+            $scope.select = false;
+            $scope.edit = false;
+            $scope.eventlog = false;
+            $scope.filebrowser = false;
+            $timeout(function () {
+                $scope.getListViewData();
+                vm.updateListViewConditional();
+            }, 1000);
+            $anchorScroll();
+        }).finally(function () {
+            $scope.createDisabled = false;
+        });
     };
 
     $scope.unlockConditional = function(profile) {
@@ -129,13 +123,10 @@ angular.module('myApp').controller('IpApprovalCtrl', function ($log, $scope, myS
 
     //Unlock profile from current IP
     $scope.unlock = function(profile) {
-        $http({
-            method: 'POST',
-            url: $scope.ip.url + "unlock-profile/",
-            data: {
+        IP.unlockProfile({
+                id: $scope.ip.id,
                 type: profile.active.profile_type
-            }
-        }).then(function(response){
+        }).$promise.then(function(response){
             profile.locked = false;
             $scope.getListViewData();
             $scope.edit = false;

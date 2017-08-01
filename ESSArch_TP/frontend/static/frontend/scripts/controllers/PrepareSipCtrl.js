@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller){
+angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
     var ipSortString = "Created,Submitting,Submitted";
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
@@ -40,29 +40,23 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $rootScope.ip = row;
             var ip = row;
             if (ip.profile_submit_description) {
-                $http({
-                    method: 'GET',
-                    url: ip.profile_submit_description.profile,
-                    params: {
-                        'ip': ip.id
-                    }
-                }).then(function(response) {
-                    vm.informationModel= response.data.specification_data;
-                    vm.informationFields = response.data.template;
+                Profile.get({
+                    id: ip.profile_submit_description.profile,
+                    ip: ip.id
+                }).$promise.then(function(resource) {
+                    vm.informationModel= resource.specification_data;
+                    vm.informationFields = resource.template;
                     vm.informationFields.forEach(function(field) {
                         field.type = 'input';
                         field.templateOptions.disabled = true;
                     });
                     if(ip.profile_transfer_project) {
-                        $http({
-                            method: 'GET',
-                            url: ip.profile_transfer_project.profile,
-                            params: {
-                                'ip': ip.id
-                            }
-                        }).then(function(response) {
-                            vm.dependencyModel= response.data.specification_data;
-                            vm.dependencyFields = response.data.template;
+                        Profile.get({
+                            id: ip.profile_transfer_project.profile,
+                            ip: ip.id
+                        }).$promise.then(function(resource) {
+                            vm.dependencyModel= resource.specification_data;
+                            vm.dependencyFields = resource.template;
                             vm.dependencyFields.forEach(function(field) {
                                 field.type = 'input';
                                 field.templateOptions.disabled = true;
@@ -100,15 +94,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {
         if(ip.profile_transfer_project) {
-            $http({
-                method: 'GET',
-                url: ip.profile_transfer_project.profile,
-                params: {
-                    'ip': ip.id
-                }
-            }).then(function(response) {
-                vm.dependencyModel= response.data.specification_data;
-                vm.dependencyFields = response.data.template;
+            Profile.get({
+                id: ip.profile_transfer_project.profile,
+                ip: ip.id
+            }).$promise.then(function(resource) {
+                vm.dependencyModel= resource.specification_data;
+                vm.dependencyFields = resource.template;
                 vm.dependencyFields.forEach(function(field) {
                     field.templateOptions.disabled = true;
                 });
@@ -283,15 +274,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get package information(submit-description)
     $scope.getPackageInformation = function(ip) {
         if (ip.profile_submit_description) {
-            $http({
-                method: 'GET',
-                url: ip.profile_submit_description.profile,
-                params: {
-                    'ip': ip.id
-                }
-            }).then(function(response) {
-                vm.informationModel= response.data.specification_data;
-                vm.informationFields = response.data.template;
+            Profile.get({
+                id: ip.profile_submit_description.profile,
+                ip: ip.id
+            }).$promise.then(function(resource) {
+                vm.informationModel= resource.specification_data;
+                vm.informationFields = resource.template;
                 vm.informationFields.forEach(function(field) {
                     field.templateOptions.disabled = true;
                 });
@@ -313,11 +301,9 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             var sendData = {validators: vm.validatorModel, subject: email.subject, body: email.body}
         }
         $scope.submitDisabled = true;
-        $http({
-            method: 'POST',
-            url: ip.url+'submit/',
-            data: sendData
-        }).then(function(response) {
+        IP.submit(
+            angular.extend({ id: ip.id }, sendData)
+        ).$promise.then(function(response) {
             $scope.eventlog = false;
             $scope.edit = false;
             $timeout(function() {
