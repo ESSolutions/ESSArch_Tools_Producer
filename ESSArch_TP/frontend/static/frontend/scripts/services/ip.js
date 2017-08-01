@@ -28,13 +28,12 @@ angular.module('myApp').factory('IP', function ($resource, appConfig, Event, Ste
                 }
             },
         },
-        prepareDip: {
+        prepare: {
             method: "POST",
-            params: { action: "prepare-dip" }
         },
-        createDip: {
+        create: {
             method: "POST",
-            params: { action: "create-dip", id: "@id" }
+            params: { action: "create", id: "@id" }
         },
         files: {
             method: "GET",
@@ -54,6 +53,26 @@ angular.module('myApp').factory('IP', function ($resource, appConfig, Event, Ste
                     return response.resource;
                 }
             },
+        },
+        unlockProfile: {
+            method: "POST",
+            params: { action: "unlock-profile", id: "@id" }
+        },
+        checkProfile: {
+            method: "PUT",
+            params: { method: "check-profile", id: "@id"}
+        },
+        unlockProfile: {
+            method: "POST",
+            params: { action: "unlock-profile", id: "@id" }
+        },
+        changeProfile: {
+            method: "PUT",
+            params: { action: "change-profile", id: "@id" }
+        },
+        changeSa: {
+            method: "PATCH",
+            params: { id: "@id" }
         },
         addFile: {
             method: "POST",

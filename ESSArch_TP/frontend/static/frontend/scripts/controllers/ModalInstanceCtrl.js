@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate) {
+angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate) {
     var $ctrl = this;
 
     $ctrl.error_messages_old = [];
@@ -58,17 +58,13 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
             label: $ctrl.label,
             objectIdentifierValue: $ctrl.objectIdentifierValue
         }
-        return $http({
-            method: 'POST',
-            url: appConfig.djangoUrl+"information-packages/",
-            data: {
+        return IP.prepare({
                 label: $ctrl.data.label,
                 object_identifier_value: $ctrl.data.objectIdentifierValue
-            }
-        }).then(function (response){
+        }).$promise.then(function (resource){
             return $uibModalInstance.close($ctrl.data);
-        }, function(response) {
-            alert(response.data.detail);
+        }, function(resource) {
+            alert(resource.detail);
         });
     };
     $ctrl.lock = function () {

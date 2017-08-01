@@ -249,11 +249,11 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     };
     $scope.fileUploadSuccess = function(ip, file, message, flow) {
         $scope.uploadedFiles ++;
-        var url = ip.url + 'merge-uploaded-chunks/';
         var path = flow.opts.query.destination + file.relativePath;
 
         IP.mergeChunks({
-            'path': path
+            id: ip.id,
+            path: path
         });
     };
     $scope.fileTransferFilter = function(file)
