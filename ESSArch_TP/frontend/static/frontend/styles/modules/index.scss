@@ -420,7 +420,8 @@ padding: 0 12px;
     flex-direction: column;
 }
 
-.nav {
+.header .nav {
+    cursor: default;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
