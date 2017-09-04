@@ -58,6 +58,8 @@ from ESSArch_Core.profiles.serializers import (
     ProfileSerializer,
     ProfileSASerializer,
     ProfileIPSerializer,
+    ProfileIPWriteSerializer,
+    ProfileIPDataSerializer,
     SubmissionAgreementSerializer
 )
 
@@ -66,9 +68,11 @@ from ESSArch_Core.profiles.models import (
     Profile,
     ProfileSA,
     ProfileIP,
+    ProfileIPData,
 )
 
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions, viewsets
 
 
 class SubmissionAgreementViewSet(viewsets.ModelViewSet):
@@ -79,6 +83,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         Prefetch('profilesa_set', to_attr='profiles')
     )
     serializer_class = SubmissionAgreementSerializer
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('published',)
 
     @detail_route(methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
@@ -202,7 +209,20 @@ class ProfileSAViewSet(viewsets.ModelViewSet):
 
 class ProfileIPViewSet(viewsets.ModelViewSet):
     queryset = ProfileIP.objects.all()
-    serializer_class = ProfileIPSerializer
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('ip', 'profile',)
+
+    def get_serializer_class(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return ProfileIPSerializer
+
+        return ProfileIPWriteSerializer
+
+
+class ProfileIPDataViewSet(viewsets.ModelViewSet):
+    queryset = ProfileIPData.objects.all()
+    serializer_class = ProfileIPDataSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
