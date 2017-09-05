@@ -71,6 +71,8 @@ from ESSArch_Core.profiles.models import (
     ProfileIPData,
 )
 
+from ESSArch_Core.profiles.utils import profile_types
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 
@@ -181,6 +183,15 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
         if ip.submission_agreement == sa:
             ip.submission_agreement_locked = True
+
+            for profile_type in profile_types:
+                lower_type = profile_type.lower().replace(' ', '_')
+                profile = getattr(sa, 'profile_%s' % lower_type, None)
+
+                if profile is None:
+                    continue
+
+                ProfileIP.objects.create(ip=ip, profile=profile)
 
             if sa.archivist_organization:
                 arch, _ = ArchivistOrganization.objects.get_or_create(
