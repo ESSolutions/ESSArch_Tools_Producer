@@ -1,0 +1,21 @@
+<div class="import">
+    <form ng-submit="vm.getSaProfiles()">
+        <label>
+            {{ "EPP_INSTANCE_URL" | translate }}
+        </label>
+        <input class="form-control" ng-model="vm.eppUrl" type="url" required />
+        <label>
+            {{ "EPP_USERNAME" | translate }}
+        </label>
+        <input class="form-control" ng-model="vm.user.username" required />
+        <label>
+            {{ "EPP_PASSWORD" | translate }}
+        </label>
+        <input class="form-control" ng-model="vm.user.password" type="password" required />
+        <button class="btn btn-info" ng-enter type="submit" translate="GET_SAS"></button>
+    </form>
+    <div ng-if="vm.select" class="select-view">
+        <select class="form-control" focused="true" ng-model="vm.saProfile.profile" ng-options="x as x.name for x in vm.saProfile.profiles">{{ x }}</select>
+        <button class="btn btn-primary" style="margin-top: 5px;" ng-click="vm.importSa(vm.saProfile.profile)" translate="IMPORT_SA"></button>
+    </div>
+</div>

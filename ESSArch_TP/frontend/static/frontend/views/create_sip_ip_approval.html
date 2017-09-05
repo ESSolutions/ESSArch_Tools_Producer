@@ -51,17 +51,18 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a ng-if="profile.checked" class="table-col" ng-click="profileClick(profile)">{{profile.type_label}}</a>
-                                        <p ng-if="!profile.checked"class="table-col">{{profile.type_label}}</p>
+                                        <a ng-if="profile.checked" class="table-col" ng-click="profileClick(profile)">{{profile.profile_type}}</a>
+                                        <p ng-if="!profile.checked" class="table-col">{{profile.profile_type}}</p>
                                     </td>
 
                                     <td><!--<select ng-disabled="true" class="form-control table-col" ng-init="profile.active" ng-model="profile.active" ng-options="x as x.name for x in profile.profiles"></select>-->
-                                        <ui-select ng-model="profile.active" theme="bootstrap" ng-disabled="true" style="min-width: 300px;">
+                                        <!--<ui-select ng-model="profile.active" theme="bootstrap" ng-disabled="true" style="min-width: 300px;">
                                             <ui-select-match placeholder="Select a {{profile.type_label}} profile">{{$select.selected.profile_name}}</ui-select-match>
                                             <ui-select-choices repeat="x in profile.profiles track by x.id | filter: $select.search">
                                                 <span ng-bind-html="x.profile_name | highlight: $select.search"></span>
                                             </ui-select-choices>
-                                        </ui-select>
+                                        </ui-select>-->
+                                        <b>{{ profile.name }}</b>
                                     </td>
                                     <td>
                                         <button ng-if="profile.locked && (ip.state == 'Uploaded' || ip.state == 'Created') && (ip.responsible.id == auth.id || checkPermission('ip.unlock_profile'))" class="btn btn-danger btn-sm lock-button" ng-click="unlockConditional(profile)"><i class="fa fa-unlock"></i> {{'UNLOCKPROFILE' | translate}}</button>

@@ -1,5 +1,5 @@
 angular.module('myApp').factory('SA', function ($resource, appConfig) {
-    return $resource(appConfig.djangoUrl + 'submission-agreements/:id/:action/', {id: "@id"}, {
+    return $resource(appConfig.djangoUrl + 'submission-agreements/:id/:action/', {}, {
         get: {
             method: "GET",
             params: { id: "@id" }
@@ -15,6 +15,9 @@ angular.module('myApp').factory('SA', function ($resource, appConfig) {
         save: {
             method: "POST",
             params: { action: "save", id: "@id" }
+        },
+        new: {
+            method: "POST",
         },
         lock: {
             method: "POST",

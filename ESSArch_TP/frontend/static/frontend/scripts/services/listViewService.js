@@ -133,7 +133,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             saProfile.profiles = [];
             sas.forEach(function (sa) {
                 saProfile.profiles.push(sa);
-                if (ip.submission_agreement == sa.url){
+                if (ip.submission_agreement == sa.id){
                     saProfile.profile = sa;
                     saProfile.locked = ip.submission_agreement_locked;
                 }
@@ -222,7 +222,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             } else {
                 selectCollapse.push(createProfileObjMinified("sip", [], ip, sa));
             }
-            /*
+            
             if(ip.profile_aip) {
                 selectCollapse.push(createProfileObjMinified("aip", [ip.profile_aip], ip, sa));
             } else {
@@ -233,6 +233,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             } else {
                 selectCollapse.push(createProfileObjMinified("dip", [], ip, sa));
             }
+            /*
             if(ip.profile_content_type) {
                 selectCollapse.push(createProfileObjMinified("content_type", [ip.profile_content_type], ip, sa));
             } else {

@@ -1,0 +1,70 @@
+<div class="profile-editor">
+    <div ng-if="select" id="select-view" class="select-view">
+        <div class="sa-table">
+            <table style="margin-top: 20px;" class="table table-striped">
+                <tr>
+                    <td ng-if="!saAlert">
+                        <p ng-if="!saProfile.profile || !checkPermission('profiles.create_new_sa_generation')" class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</p>
+                    </td>
+                    <td>
+                        <p ng-if="!saProfile.locked || !checkPermission('profiles.create_new_sa_generation')" class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</p>
+                        <a ng-if="saProfile.locked && checkPermission('profiles.create_new_sa_generation')" class="table-col" ng-click="saClick(saProfile)">{{'SUBMISSIONAGREEMENT' | translate}}</a>
+                    </td>
+                    <td ng-if="!saAlert"><select class="form-control table-col" ng-disabled="(saProfile.locked)"
+                            ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)"
+                            ng-options="x as x.name for x in saProfile.profiles"></select>
+                        </td>
+                        <td><button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile || (ip.responsible.id != auth.id && !checkPermission('ip.lock_sa'))"
+                            class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i> {{'LOCK' | translate}}</button>
+                    
+                        <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                    </td>
+                    <p>{{'PATH' | translate}}: {{ip.object_path}}</p>
+                </tr>
+            </table>
+            <div uib-alert ng-if="saAlert" style="width: 100%;" ng-class="'alert-' + (saAlert.type || 'warning')">{{saAlert.msg}}</div>
+            <div ng-if="editSA" id="edit-sa-view">
+                <form id="editSA-form" ng-submit="vm.saveSAModal()" name="vm.editForm" novalidate>
+                    <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options" form="vm.editForm">
+                    </formly-form>
+                </form>
+                <button ng-if="!saProfile.locked" form="editSA-form" ng-disabled="vm.editForm.$invalid || extendedEqual(vm.profileOldModel, vm.profileModel)"
+                    type="submit" class="btn btn-info submit-button"><i class="fa fa-floppy-o"></i> {{'SAVESAPROFILE' | translate}}</button>
+            </div>
+        </div><div ng-if="saProfile.profile" id="edit-view" class="edit-view">
+            <form id="edit-form" ng-submit="vm.saveProfileModel(vm.selectedProfile.profile_type, vm.profileModel, vm.treeEditModel)"
+                name="vm.editForm" novalidate>
+                <div class="table-container" >
+                    <table ng-if="saProfile.locked" style="margin-top: 10px; margin-bottom: 0px;" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="info-popover column-entity" uib-popover="{{'ENTITYDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'TYPE' | translate}}</th>
+                                <th class="info-popover column-profile" uib-popover="{{'PROFILEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PROFILE' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="profile in selectRowCollection">
+                                <div ng-if="profile.name">
+                                    <td>{{profile.profile_type}}</td>
+                                    <td><a ng-click="vm.getAndShowProfile(profile.id, {})">{{profile.name}}</a></td>
+                                </div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options" form="vm.editForm">
+                </formly-form>
+                <div class="data-version-list" ng-if="vm.profileFields.length">
+                    Versions
+                    <select class="form-control" ng-change="vm.getProfileData(vm.dataVersion)" ng-model="vm.dataVersion" ng-options="x as x for x in vm.profileIp.data_versions">{{ x }}</select>
+                    <div class="map-structure-editor" ng-if="profileToSave.structure.length && !angular.equals(profileToSave.structure, {})" ng-include
+                        src="'static/frontend/views/map_structure_tree.html'"></div>
+                    <button ng-if="vm.profileFields.length" type="submit" class="btn btn-info" ng-disabled="$ctrl.editForm.$invalid" translate="SAVE"></button>
+                    <button ng-if="vm.profileFields.length" ng-click="vm.cancel()" class="btn btn-warning" translate="CANCEL"></button>
+                </div>
+            </form>
+            <br />
+        </div>
+    </div>
+</div>

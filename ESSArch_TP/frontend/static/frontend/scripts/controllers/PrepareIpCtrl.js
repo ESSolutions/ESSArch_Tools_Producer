@@ -25,10 +25,21 @@
 angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q, $controller){
     var vm = this;
     var ipSortString = "Preparing,Prepared";
+    $scope.angular = angular;
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
     $scope.selectedProfileRow = {profile_type: "", class: ""};
-
+    $scope.prepareAlert = null;
+    vm.prepareForUpload = function(ip) {
+        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
+            $scope.getListViewData();
+            $scope.select = false;
+            $scope.eventlog = false;
+            $scope.edit = false;
+        }).catch(function(response) {
+            $scope.prepareAlert = { msg: JSON.stringify(response) };
+        })
+    }
     $scope.setSelectedProfile = function(row) {
         $scope.selectRowCollection.forEach(function(profileRow) {
             if(profileRow.profile_type == $scope.selectedProfileRow.profile_type){
@@ -46,6 +57,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
+            $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
             $scope.filebrowser = false;
@@ -53,9 +65,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             $scope.ip = row;
             $rootScope.ip = $scope.ip;
             $scope.getSaProfiles($scope.ip);
+            $scope.eventlog = true;
             $scope.select = true;
         }
-        $scope.eventlog = false;
         $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
@@ -116,10 +128,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             $scope.editSA = false;
             $scope.closeAlert();
             var profileId;
-            if (row.active.name){
-                profileId = row.active.id;
+            if (row.name){
+                profileId = row.id;
             } else {
-                profileId = row.active.profile;
+                profileId = row.profile;
             }
             getAndShowProfile(profileId, row);
         }
@@ -219,8 +231,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             id: ip.id,
             submission_agreement: sa.url
         }).$promise.then(function(response){
-            $scope.getSelectCollection(sa, ip);
-            $scope.selectRowCollection = $scope.selectRowCollapse;
+            //$scope.getSelectCollection(sa, ip);
+            //$scope.selectRowCollection = $scope.selectRowCollapse;
+            $scope.getSaProfiles($scope.ip);           
             if($scope.editSA) {
                 $scope.saClick({profile: sa});
             }
@@ -377,6 +390,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
     };
     $scope.closeAlert = function() {
         $scope.lockAlert = null;
+    }
+    $scope.closePrepareAlert = function() {
+        $scope.prepareAlert = null;
     }
     function showRequiredProfileFields(row) {
         if($scope.edit) {
@@ -750,7 +766,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
     }
     $scope.showLockAllButton = function(profiles){
         return profiles.some(function(elem){
-            return elem.checked && !elem.locked;
+            return !elem.locked;
         });
     };
     $scope.lockAllIncludedModal = function (profiles) {

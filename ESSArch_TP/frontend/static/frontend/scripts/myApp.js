@@ -200,6 +200,26 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     }],
                 }
             })
+            .state('home.administration', {
+                url: 'administration',
+                templateUrl: '/static/frontend/views/administration.html',
+                redirectTo: 'home.administration.import',
+                resolve: {
+                    authenticated: ['djangoAuth', function(djangoAuth){
+                        return djangoAuth.authenticationStatus();
+                    }],
+                }
+            })
+            .state('home.administration.import', {
+                url: '/import',
+                templateUrl: '/static/frontend/views/import.html',
+                controller: 'ImportCtrl as vm',
+                resolve: {
+                    authenticated: ['djangoAuth', function(djangoAuth){
+                        return djangoAuth.authenticationStatus();
+                    }],
+                }
+            })
             .state('restricted', {
                 url: '/restricted',
                 templateUrl: '/static/frontend/views/restricted.html',

@@ -216,5 +216,11 @@
     "REFRESH": "Refresh",
     "CHANGED": "Changed",
     "FILEBROWSER": "File browser",
-    "COPYID": "Copy ID"
+    "COPYID": "Copy ID",
+    "EPP_INSTANCE_URL": "EPP instance URL",
+    "EPP_USERNAME": "EPP username",
+    "EPP_PASSWORD": "EPP Password",
+    "GET_SAS": "Get submission agreements",
+    "IMPORT_SA": "Import submission agreement",
+    "PREPARE": "Prepare"
 }
