@@ -46,7 +46,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         vm.cancel();
         listViewService.getSaProfiles($scope.ip).then(function (result) {
             $scope.saProfile.profiles = result.profiles;
-            $scope.saProfile.locked = result.locked;            
+            $scope.saProfile.locked = result.locked;
             var chosen_sa_id = null;
             if($scope.ip.submission_agreement) {
                 chosen_sa_id = $scope.ip.submission_agreement;
