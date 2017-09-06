@@ -46,16 +46,16 @@
                             <tr ng-repeat="profile in selectRowCollection">
                                 <div ng-if="profile.name">
                                     <td>{{profile.profile_type}}</td>
-                                    <td><a ng-click="vm.getAndShowProfile(profile, {})">{{profile.name}}</a></td>
+                                    <td><a ng-click="profileClick(profile, {})">{{profile.name}}</a></td>
                                 </div>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <hr />
-                <div>
+                <div ng-if="vm.profileFields.length">
                     <h4 class="profile-name">{{ vm.selectedProfile.name }}</h4>
-                    <div class="data-version-list" ng-if="vm.profileFields.length">
+                    <div class="data-version-list">
                         Versions
                         <select class="form-control" ng-change="vm.getProfileData(vm.dataVersion)" ng-model="vm.dataVersion" ng-options="x as vm.profileIp.data_versions.indexOf(x)+1 for x in vm.profileIp.data_versions">{{ x }}</select>
                     </div>

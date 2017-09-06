@@ -174,20 +174,15 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
 
     //Click funciton for profile view
     $scope.profileClick = function(row){
-        if (vm.profileModel.id == row.id && $scope.edit){
-            $scope.eventlog = false;
-            $scope.edit = false;
-            vm.cancel();
-        } else {
-            $scope.editSA = false;
-            $scope.closeAlert();
-            if (row.active.name){
-                var profileId = row.active.url;
+            if (vm.selectedProfile && vm.selectedProfile.id == row.id){
+                $scope.eventlog = false;
+                $scope.edit = false;
+                vm.cancel();
             } else {
-                var profileId = row.active.profile;
+                $scope.editSA = false;
+                vm.getAndShowProfile(row, {});
+                $scope.edit = true;
             }
-            vm.getAndShowProfile(profile, row);
-        }
     };
 
     vm.profileIp = null;
