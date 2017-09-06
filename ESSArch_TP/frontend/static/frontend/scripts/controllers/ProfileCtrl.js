@@ -210,6 +210,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                     vm.profileOldModel = profileIp[0].data.data;
                     vm.profileModel = angular.copy(profileIp[0].data.data);
                     vm.profileIp = profileIp[0];
+                    vm.dataVersion = vm.profileIp.data_versions[vm.profileIp.data_versions.length-1];
                     getStructure(row.active);
                     var temp = [];
                     row.active.template.forEach(function (x) {
