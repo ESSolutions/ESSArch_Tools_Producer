@@ -14,7 +14,7 @@
                             ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)"
                             ng-options="x as x.name for x in saProfile.profiles"></select>
                         </td>
-                        <td><button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile || (ip.responsible.id != auth.id && !checkPermission('ip.lock_sa'))"
+                        <td><button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile || (ip.responsible.id != $root.auth.id && !checkPermission('ip.lock_sa'))"
                             class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i> {{'LOCK' | translate}}</button>
                     
                         <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
