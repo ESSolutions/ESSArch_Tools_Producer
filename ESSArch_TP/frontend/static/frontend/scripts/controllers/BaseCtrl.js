@@ -420,26 +420,29 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     };
 
     //Click funciton for steps and tasks
-    $scope.stepTaskClick = function(branch) {
-    $scope.getStepTask(branch).then(function(response){
-            if(response.flow_type == "task"){
-                $scope.taskInfoModal();
-            } else {
-                $scope.stepInfoModal();
-            }
-        });
-    };
-    $scope.getStepTask = function (branch) {
+    $scope.stepTaskClick = function (branch) {
         $scope.stepTaskLoading = true;
-        return branch.$get().then(function (data) {
-            var started = moment(data.time_started);
-            var done = moment(data.time_done);
-            data.duration = done.diff(started);
-            $scope.currentStepTask = data;
-            $scope.stepTaskLoading = false;
-            return data;
-        });
-    }
+        if (branch.flow_type == "task") {
+            Task.get({ id: branch.id }).$promise.then(function (data) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+                $scope.currentStepTask = data;
+                $scope.stepTaskLoading = false;
+                $scope.taskInfoModal();
+            });
+        } else {
+            Step.get({ id: branch.id }).$promise.then(function (data) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+                $scope.currentStepTask = data;
+                $scope.stepTaskLoading = false;
+                $scope.stepInfoModal();
+            });
+        }
+    };
+
     //Redirect to admin page
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";
