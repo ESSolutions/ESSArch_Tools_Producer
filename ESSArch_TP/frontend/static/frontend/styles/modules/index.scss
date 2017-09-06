@@ -836,7 +836,12 @@ input[type="checkbox"] {
 }
 
 .data-version-list {
-    width: 24%;
-    min-width: 100px;
+    width: 10%;
+    min-width: 50px;
     margin-left: 10px;
+    float: right;
+}
+
+.profile-name {
+    float: left;
 }

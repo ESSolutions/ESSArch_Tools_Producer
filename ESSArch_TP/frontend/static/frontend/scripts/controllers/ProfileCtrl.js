@@ -196,7 +196,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         vm.selectedProfile = profile;
         var profileId = profile.id;
         Profile.get({
-            id: profile,
+            id: profile.id,
         }).$promise.then(function (resource) {
             ProfileIp.query({ profile: resource.id, ip: $scope.ip.id })
                 .$promise.then(function (profileIp) {
