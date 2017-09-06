@@ -422,7 +422,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     //Click funciton for steps and tasks
     $scope.stepTaskClick = function(branch) {
     $scope.getStepTask(branch).then(function(response){
-            if(branch.flow_type == "task"){
+            if(response.flow_type == "task"){
                 $scope.taskInfoModal();
             } else {
                 $scope.stepInfoModal();
