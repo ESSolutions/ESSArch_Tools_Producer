@@ -102,6 +102,12 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         })
     }
 
+    vm.changeDataVersion = function(profileIp, data) {
+        ProfileIp.patch({ id: profileIp.id }, { data: data }).$promise.then(function(resource) {
+            vm.getAndShowProfile(vm.selectedProfile, {});
+        })
+    }
+
     $scope.pushData = function() {
         vm.shareData({$event: {aipProfileId: $scope.saProfile.profile.profile_aip.id, dipProfileId: $scope.saProfile.profile.profile_dip.id, aipModel: vm.savedAip, dipModel: vm.savedDip, submissionAgreement: $scope.saProfile.profile.id}});
     }
@@ -116,8 +122,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             data: vm.profileModel
         }).$promise.then(function (resource) {
             ProfileIp.patch({id: vm.profileIp.id}, {data: resource.id}).$promise.then(function(response) {
-                vm.profileModel = {};
-                vm.profileFields = {};
+                vm.cancel();
                 return response;
             })
         })
@@ -127,6 +132,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         vm.profileModel = {};
         vm.profileFields = [];
         $scope.profileToSave = null;
+        vm.selectedProfile = null;
     }
 
     vm.profileModel = {};
@@ -206,7 +212,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                     vm.profileOldModel = profileIp[0].data.data;
                     vm.profileModel = angular.copy(profileIp[0].data.data);
                     vm.profileIp = profileIp[0];
-                    vm.dataVersion = vm.profileIp.data_versions[vm.profileIp.data_versions.length-1];
+                    vm.dataVersion = vm.profileIp.data_versions[vm.profileIp.data_versions.indexOf(vm.profileIp.data.id)];
                     getStructure(row.active);
                     var temp = [];
                     row.active.template.forEach(function (x) {
