@@ -25,8 +25,10 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
         var auth = window.btoa(vm.user.username + ":" + vm.user.password);
         var headers = { "Authorization": "Basic " + auth };
         var promises = [];
+        var profile_types = ["sip", "transfer_project", "submit_description"];
+        var pattern = new RegExp("^profile_(" + profile_types.join("|") + ")$");
         for (var key in sa) {
-            if (/^profile/.test(key) && sa[key] != null) {
+            if (pattern.test(key) && sa[key] != null) {
                 promises.push($http.get(vm.eppUrl + '/api/profiles/' + sa[key] + '/', { headers: headers }).then(function (response) {
                     return Profile.new(response.data).$promise.then(function(response) {
                         return response;
@@ -37,6 +39,12 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
             }
         }
         Promise.all(promises).then(function () {
+            var pattern = new RegExp("^profile_(?!(" + profile_types.join("|") + ")$)");
+            for (var key in sa) {
+                if (pattern.test(key)) {
+                    delete sa[key];
+                }
+            }
             SA.new(sa).$promise.then(function (resource) {
             })
         })
