@@ -37,7 +37,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             $scope.eventlog = false;
             $scope.edit = false;
         }).catch(function(response) {
-            $scope.prepareAlert = { msg: JSON.stringify(response) };
+            $scope.prepareAlert = { msg: response.data.detail };
         })
     }
     $scope.setSelectedProfile = function(row) {
