@@ -23,7 +23,10 @@
     */
 
 angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config', 'ig.linkHeaderParser', 'hc.marked', 'ngFilesizeFilter', 'angular-clipboard', 'ngResource'])
-    .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider) {
+    .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider, $urlMatcherFactoryProvider) {
+
+        $urlMatcherFactoryProvider.strictMode(false);
+
         $stateProvider
             .state('home', {
                 url: '/',
@@ -265,6 +268,23 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 }
             }
         });
+    }])
+    .config(['$httpProvider', '$windowProvider', function($httpProvider, $windowProvider, $rootScope) {
+        var $window = $windowProvider.$get();
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
+            return {
+                'responseError': function(response) {
+                    if(response.status === 401 || response.status === 403) {
+                        if ($location.path() != '/login' && $location.path() != ''){
+                            $window.location.assign('/');
+                        }
+                    }
+                    return $q.reject(response);
+                }
+            };
+        }]);
     }])
     .config(['$httpProvider', function ($httpProvider, $rootScope) {
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
