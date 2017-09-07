@@ -81,7 +81,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             return response;
         });
     }
-    
+
     //Returns all events for one ip
     function getEvents(ip, pageNumber, pageSize, sortString) {
         return IP.events({
@@ -222,7 +222,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             } else {
                 selectCollapse.push(createProfileObjMinified("sip", [], ip, sa));
             }
-            
+
             if(ip.profile_aip) {
                 selectCollapse.push(createProfileObjMinified("aip", [ip.profile_aip], ip, sa));
             } else {
@@ -336,7 +336,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     }
 
     function deleteFile(ip, path, file) {
-        return IP.removeFile({ 
+        return IP.removeFile({
             id: ip.id,
             path: path + file.name,
         }).$promise.then(function(response) {
@@ -366,7 +366,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     /*HELPER FUNCTIONS*/
     /*****************/
 
-    // Takes an array of steps, expands the ones that should be expanded and 
+    // Takes an array of steps, expands the ones that should be expanded and
     // populates children recursively.
     function expandAndGetChildren(steps, expandedNodes) {
         var expandedObject = expand(steps, expandedNodes);
@@ -396,7 +396,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         });
         return { steps: steps, expandedSteps: expanded };
     }
-    
+
     // Gets children for a step and processes each child step/task.
     // Returns the updated step
     function getChildrenForStep(step, page_number) {

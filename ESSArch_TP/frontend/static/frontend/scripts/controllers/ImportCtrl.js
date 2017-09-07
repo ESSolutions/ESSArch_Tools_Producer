@@ -4,7 +4,7 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
         profiles: [],
         profile: null
     };
-    
+
     vm.user = {
         username: null,
         password: null

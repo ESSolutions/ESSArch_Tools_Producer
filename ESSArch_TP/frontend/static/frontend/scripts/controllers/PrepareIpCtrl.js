@@ -233,7 +233,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
         }).$promise.then(function(response){
             //$scope.getSelectCollection(sa, ip);
             //$scope.selectRowCollection = $scope.selectRowCollapse;
-            $scope.getSaProfiles($scope.ip);           
+            $scope.getSaProfiles($scope.ip);
             if($scope.editSA) {
                 $scope.saClick({profile: sa});
             }
