@@ -244,10 +244,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return ProfileDetailSerializer
+        if self.action == 'list':
+            return ProfileSerializer
 
-        return ProfileSerializer
+        return ProfileDetailSerializer
 
     def get_queryset(self):
         queryset = Profile.objects.all()
