@@ -277,7 +277,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             return {
                 'responseError': function(response) {
                     if(response.status === 401 || response.status === 403) {
-                        if ($location.path() != '/login' && $location.path() != ''){
+                        if ($location.path() != '/login' && $location.path() != '' && $location.path() != '/info'){
                             $window.location.assign('/');
                         }
                     }
