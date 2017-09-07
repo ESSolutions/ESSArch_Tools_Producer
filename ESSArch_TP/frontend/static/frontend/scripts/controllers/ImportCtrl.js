@@ -25,7 +25,7 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
         var auth = window.btoa(vm.user.username + ":" + vm.user.password);
         var headers = { "Authorization": "Basic " + auth };
         var promises = [];
-        var profile_types = ["sip", "transfer_project", "submit_description"];
+        var profile_types = ["sip", "transfer_project", "submit_description", "preservation_metadata"];
         var pattern = new RegExp("^profile_(" + profile_types.join("|") + ")$");
         for (var key in sa) {
             if (pattern.test(key) && sa[key] != null) {
