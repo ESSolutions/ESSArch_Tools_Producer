@@ -473,6 +473,19 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             profile_ip.LockedBy = request.user
             profile_ip.save()
 
+        profile_ip_sip = ProfileIP.objects.filter(ip=ip, profile=sa.profile_sip).first()
+        profile_ip_transfer_project = ProfileIP.objects.filter(ip=ip, profile=sa.profile_transfer_project).first()
+        profile_ip_submit_description = ProfileIP.objects.filter(ip=ip, profile=sa.profile_submit_description).first()
+
+        if profile_ip_sip is None:
+            raise exceptions.ParseError('Information package missing SIP profile')
+
+        if profile_ip_transfer_project is None:
+            raise exceptions.ParseError('Information package missing Transfer Project profile')
+
+        if profile_ip_submit_description is None:
+            raise exceptions.ParseError('Information package missing Submit Description profile')
+
         root = os.path.join(
             Path.objects.get(
                 entity="path_preingest_prepare"
