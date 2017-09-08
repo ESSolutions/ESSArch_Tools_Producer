@@ -53,6 +53,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             $scope.selectedProfileRow = row;
         }
     };
+
+    $rootScope.$on("refresh_list_view", function() {
+        $timeout(function() {
+            $scope.getListViewData();
+            $scope.ip.submission_agreement_locked = true;
+        });
+    });
+
     //Click function for Ip table
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){

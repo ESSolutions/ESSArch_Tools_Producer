@@ -67,25 +67,23 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         });
     };
 
+    vm.disableFields = function(fields) {
+        fields.forEach(function(field) {
+            field.disabled == true;
+        });
+    }
+
     vm.loadProfiles = function() {
         $scope.selectRowCollapse = [];
         var profileObject = {
             transfer_project: null,
             submit_description: null,
             sip: null,
-            aip: null,
-            dip: null,
-            content_type: null,
-            authority_information: null,
-            archival_description: null,
             preservation_metadata: null,
-            data_selection: null,
-            import: null,
-            workflow: null
         };
         var promises = [];
         for(var key in  $scope.saProfile.profile) {
-            if (/^profile/.test(key) && $scope.saProfile.profile[key] != null) {
+            if (/^profile/.test(key) && $scope.saProfile.profile[key] != null && !angular.isUndefined(profileObject[key.substring(8)])) {
                 promises.push(Profile.get({ id: $scope.saProfile.profile[key] }).$promise.then(function(resource) {
                     profileObject[resource.profile_type] = resource;
                     return resource;
@@ -217,6 +215,9 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                     var temp = [];
                     row.active.template.forEach(function (x) {
                         if (!x.templateOptions.disabled) {
+                            if(vm.disabled) {
+                                x.templateOptions.disabled = true;
+                            }
                             temp.push(x);
                         }
                     });
@@ -335,9 +336,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             ip: $scope.ip.id
         }).$promise.then(function (response) {
             sa.locked = true;
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $scope.getListViewData();
+            $rootScope.$emit("refresh_list_view", {});
         });
     }
 
