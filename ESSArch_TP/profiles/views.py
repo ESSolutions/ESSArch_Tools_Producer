@@ -185,7 +185,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         if ip.submission_agreement == sa:
             ip.submission_agreement_locked = True
 
-            for profile_type in profile_types:
+            types = ('sip', 'transfer_project', 'submit_description', 'preservation_metadata',)
+
+            for profile_type in types:
                 lower_type = profile_type.lower().replace(' ', '_')
                 profile = getattr(sa, 'profile_%s' % lower_type, None)
 
