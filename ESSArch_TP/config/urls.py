@@ -58,7 +58,7 @@ from ESSArch_Core.auth.views import (
     UserViewSet,
 )
 
-from ESSArch_Core.profiles.views import ProfileIPViewSet
+from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet
 
 from ESSArch_Core.WorkflowEngine.views import (
     ProcessViewSet,
@@ -78,7 +78,6 @@ from ip.views import (
 from profiles.views import (
     ProfileViewSet,
     ProfileSAViewSet,
-    ProfileIPDataViewSet,
     SubmissionAgreementViewSet,
 )
 
