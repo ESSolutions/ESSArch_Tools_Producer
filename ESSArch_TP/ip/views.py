@@ -470,7 +470,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     )
                     profile_ip.data = data_obj
 
-                profile_ip.save()
+            profile_ip.LockedBy = request.user
+            profile_ip.save()
 
         root = os.path.join(
             Path.objects.get(
