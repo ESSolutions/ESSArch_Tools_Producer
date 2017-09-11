@@ -56,18 +56,6 @@
                     </div>
                     <div ng-if="eventlog" class="eventlog-view">
                         <form class="submit-sip-eventlog-form" ng-submit="emailModal(ip)">
-                            <!--
-                                <div class="form-group">
-                                <label>Status note</label>
-                                <select class="status-note form-control" ng-model="statusNote" ng-options="x as x.eventDetail for x in statusNoteCollection" ng-required="true">
-                                <option value="" selected="selected" disabled>{{'SELECTONE' | translate}}</option>
-                                </select>
-                                </div>
-                                <div class="form-group">
-                                <label>{{'COMMENT' | translate}}</label>
-                                <input class="signature form-control" ng-model="signature" ng-required="true" id="signature"></input>
-                                </div>
-                            -->
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" ng-disabled="ip.responsible.id != auth.id && !checkPermission('ip.submit_sip')" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
