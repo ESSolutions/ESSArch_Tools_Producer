@@ -105,7 +105,11 @@ angular.module('myApp')
                 delete $http.defaults.headers.common.Authorization;
                 delete $cookies.token;
                 djangoAuth.authenticated = false;
-                $rootScope.$broadcast("djangoAuth.logged_out");
+                if (data.data.redirect) {
+                    window.location.replace(data.data.redirect);
+                } else {
+                    $rootScope.$broadcast("djangoAuth.logged_out");
+                }
             });
         },
         'changePassword': function(password1,password2,oldPassword){
