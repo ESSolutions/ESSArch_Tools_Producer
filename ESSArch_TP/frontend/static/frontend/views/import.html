@@ -16,6 +16,6 @@
     </form>
     <div ng-if="vm.select" class="select-view">
         <select class="form-control" focused="true" ng-model="vm.saProfile.profile" ng-options="x as x.name for x in vm.saProfile.profiles">{{ x }}</select>
-        <button class="btn btn-primary" style="margin-top: 5px;" ng-click="vm.importSa(vm.saProfile.profile)" translate="IMPORT_SA"></button>
+        <button class="btn btn-primary" ng-disabled="!vm.saProfile.profile" style="margin-top: 5px;" ng-click="vm.importSa(vm.saProfile.profile)" translate="IMPORT_SA"></button>
     </div>
 </div>
