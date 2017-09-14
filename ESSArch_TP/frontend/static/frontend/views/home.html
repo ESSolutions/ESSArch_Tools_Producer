@@ -14,16 +14,14 @@
                         <h4>{{auth.username}}</h4>
                         <span class="fa fa-user-circle-o"></span>
                     </div>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
+                    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
                         <li ng-repeat="choice in editUserOptions">
                             <a ng-click="choice.click()">{{choice.label}}</a>
                         </li>
                     </ul>
                 </div>
             </div>
-
         </div>
-
     </div>
     <div class="menu-task-wrapper">
         <div class="nav" ng-controller="TabsCtrl">
@@ -31,6 +29,7 @@
             <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.collectContent')}" ui-sref="home.createSip.collectContent">{{('COLLECTCONTENT' | translate)}}</p>
             <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.ipApproval')}" ui-sref="home.createSip.ipApproval">{{('CREATESIP' | translate)}}</p>
             <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.submitSip.prepareSip')}" ui-sref="home.submitSip.prepareSip">{{('SUBMITSIP' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.administration.import')}" ui-sref="home.administration.import">{{('Import' | translate)}}</p>
         </div>
         <div ng-controller="UtilCtrl" class="tasks-icons">
             <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
@@ -115,4 +114,3 @@
         </div>
     </div>
 </div>
-

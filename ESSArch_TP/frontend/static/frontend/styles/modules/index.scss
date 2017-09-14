@@ -402,6 +402,13 @@ body.modal-open[style] {
 .pagination {
     margin: 5px 0;
 }
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    * {
+        margin-right: 3px;
+    }
+}
 .input-group-addon {
 padding: 0 12px;
 }
@@ -620,7 +627,7 @@ padding: 0 12px;
     border-color: $border-color;
     display: flex;
     flex-direction: row;
-    height: 70px;
+    //height: 70px;
     margin: 5px;
     padding: 5px;
     justify-content: space-between;
@@ -687,12 +694,6 @@ input[type="checkbox"] {
 }
 .submit-button {
     margin-left: 5px;
-}
-.sa-table {
-    padding-bottom: 10px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-color: $border-color;
 }
 .user-settings {
     @include container(10px);
@@ -814,10 +815,34 @@ input[type="checkbox"] {
     }
 }
 
+.import {
+    @include container(10px);
+    margin-top: 10px;
+    width:100%;
+    min-width: 400px;
+    input {
+        width: 33%;
+    }
+    .btn-info {
+        margin-top: 5px;
+    }
+}
+
 .traceback-copied {
     color: $step-success;
 }
 
 .popover {
     word-break: break-all;
+}
+
+.data-version-list {
+    width: 10%;
+    min-width: 50px;
+    margin-left: 10px;
+    float: right;
+}
+
+.profile-name {
+    float: left;
 }

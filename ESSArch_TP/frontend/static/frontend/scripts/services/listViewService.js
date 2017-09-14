@@ -81,7 +81,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             return response;
         });
     }
-    
+
     //Returns all events for one ip
     function getEvents(ip, pageNumber, pageSize, sortString) {
         return IP.events({
@@ -133,7 +133,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             saProfile.profiles = [];
             sas.forEach(function (sa) {
                 saProfile.profiles.push(sa);
-                if (ip.submission_agreement == sa.url){
+                if (ip.submission_agreement == sa.id){
                     saProfile.profile = sa;
                     saProfile.locked = ip.submission_agreement_locked;
                 }
@@ -222,7 +222,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             } else {
                 selectCollapse.push(createProfileObjMinified("sip", [], ip, sa));
             }
-            /*
+
             if(ip.profile_aip) {
                 selectCollapse.push(createProfileObjMinified("aip", [ip.profile_aip], ip, sa));
             } else {
@@ -233,6 +233,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
             } else {
                 selectCollapse.push(createProfileObjMinified("dip", [], ip, sa));
             }
+            /*
             if(ip.profile_content_type) {
                 selectCollapse.push(createProfileObjMinified("content_type", [ip.profile_content_type], ip, sa));
             } else {
@@ -335,7 +336,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     }
 
     function deleteFile(ip, path, file) {
-        return IP.removeFile({ 
+        return IP.removeFile({
             id: ip.id,
             path: path + file.name,
         }).$promise.then(function(response) {
@@ -365,7 +366,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     /*HELPER FUNCTIONS*/
     /*****************/
 
-    // Takes an array of steps, expands the ones that should be expanded and 
+    // Takes an array of steps, expands the ones that should be expanded and
     // populates children recursively.
     function expandAndGetChildren(steps, expandedNodes) {
         var expandedObject = expand(steps, expandedNodes);
@@ -395,7 +396,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         });
         return { steps: steps, expandedSteps: expanded };
     }
-    
+
     // Gets children for a step and processes each child step/task.
     // Returns the updated step
     function getChildrenForStep(step, page_number) {

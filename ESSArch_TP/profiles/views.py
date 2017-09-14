@@ -56,8 +56,11 @@ from ESSArch_Core.WorkflowEngine.models import (
 
 from ESSArch_Core.profiles.serializers import (
     ProfileSerializer,
+    ProfileDetailSerializer,
     ProfileSASerializer,
     ProfileIPSerializer,
+    ProfileIPWriteSerializer,
+    ProfileIPDataSerializer,
     SubmissionAgreementSerializer
 )
 
@@ -66,9 +69,13 @@ from ESSArch_Core.profiles.models import (
     Profile,
     ProfileSA,
     ProfileIP,
+    ProfileIPData,
 )
 
-from rest_framework import viewsets
+from ESSArch_Core.profiles.utils import profile_types
+
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions, viewsets
 
 
 class SubmissionAgreementViewSet(viewsets.ModelViewSet):
@@ -79,6 +86,9 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         Prefetch('profilesa_set', to_attr='profiles')
     )
     serializer_class = SubmissionAgreementSerializer
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('published',)
 
     @detail_route(methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
@@ -175,6 +185,17 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         if ip.submission_agreement == sa:
             ip.submission_agreement_locked = True
 
+            types = ('sip', 'transfer_project', 'submit_description', 'preservation_metadata',)
+
+            for profile_type in types:
+                lower_type = profile_type.lower().replace(' ', '_')
+                profile = getattr(sa, 'profile_%s' % lower_type, None)
+
+                if profile is None:
+                    continue
+
+                ProfileIP.objects.create(ip=ip, profile=profile)
+
             if sa.archivist_organization:
                 arch, _ = ArchivistOrganization.objects.get_or_create(
                     name=sa.archivist_organization
@@ -200,17 +221,17 @@ class ProfileSAViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSASerializer
 
 
-class ProfileIPViewSet(viewsets.ModelViewSet):
-    queryset = ProfileIP.objects.all()
-    serializer_class = ProfileIPSerializer
-
-
 class ProfileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows profiles to be viewed or edited.
     """
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProfileSerializer
+
+        return ProfileDetailSerializer
 
     def get_queryset(self):
         queryset = Profile.objects.all()

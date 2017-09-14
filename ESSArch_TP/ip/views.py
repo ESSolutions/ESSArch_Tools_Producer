@@ -34,6 +34,8 @@ import os
 import shutil
 import re
 
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.db.models import Prefetch
 from django.http.response import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -84,7 +86,10 @@ from ESSArch_Core.ip.permissions import (
 from ESSArch_Core.profiles.models import (
     Profile,
     ProfileIP,
+    ProfileIPData,
 )
+
+from ESSArch_Core.profiles.utils import fill_specification_data
 
 from ESSArch_Core.util import (
     create_event,
@@ -436,6 +441,121 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         filename_list = os.listdir(static_path)
         return Response(filename_list)
 
+    @detail_route(methods=['post'], url_path='prepare')
+    def prepare(self, request, pk=None):
+        ip = self.get_object()
+        sa = ip.submission_agreement
+
+        if sa is None or not ip.submission_agreement_locked:
+            raise exceptions.ParseError('IP requires locked SA to be prepared')
+
+        for profile_ip in ProfileIP.objects.filter(ip=ip).iterator():
+            try:
+                profile_ip.clean()
+            except ValidationError as e:
+                raise exceptions.ParseError('%s: %s' % (profile_ip.profile.name, e[0]))
+
+            if profile_ip.data is None:
+                if profile_ip.data_versions.count():
+                    profile_ip.data = profile_ip.data_versions.last()
+                else:
+                    data = {}
+                    for field in profile_ip.profile.template:
+                        try:
+                            data[field['key']] = field['defaultValue']
+                        except KeyError:
+                            pass
+                    data_obj = ProfileIPData.objects.create(
+                        relation=profile_ip, data=data, version=0, user=request.user,
+                    )
+                    profile_ip.data = data_obj
+
+            profile_ip.LockedBy = request.user
+            profile_ip.save()
+
+        profile_ip_sip = ProfileIP.objects.filter(ip=ip, profile=sa.profile_sip).first()
+        profile_ip_transfer_project = ProfileIP.objects.filter(ip=ip, profile=sa.profile_transfer_project).first()
+        profile_ip_submit_description = ProfileIP.objects.filter(ip=ip, profile=sa.profile_submit_description).first()
+
+        if profile_ip_sip is None:
+            raise exceptions.ParseError('Information package missing SIP profile')
+
+        if profile_ip_transfer_project is None:
+            raise exceptions.ParseError('Information package missing Transfer Project profile')
+
+        if profile_ip_submit_description is None:
+            raise exceptions.ParseError('Information package missing Submit Description profile')
+
+        root = os.path.join(
+            Path.objects.get(
+                entity="path_preingest_prepare"
+            ).value,
+            ip.object_identifier_value
+        )
+
+        step = ProcessStep.objects.create(
+            name="Create Physical Model",
+            information_package=ip
+        )
+        ProcessTask.objects.create(
+            name="preingest.tasks.CreatePhysicalModel",
+            params={
+                "structure": sa.profile_sip.structure,
+                "root": root
+            },
+            log=EventIP,
+            information_package=ip,
+            responsible=self.request.user,
+            processstep=step,
+        )
+
+        step.run().get()
+
+        transfer_project = sa.profile_transfer_project
+        transfer_project_data = ProfileIP.objects.get(profile=transfer_project, ip=ip).data.data
+
+        archival_institution = transfer_project_data.get("archival_institution")
+        archival_type = transfer_project_data.get("archival_type")
+        archival_location = transfer_project_data.get("archival_location")
+
+        if archival_institution is not None:
+            try:
+                (arch, _) = ArchivalInstitution.objects.get_or_create(
+                    name=archival_institution
+                )
+            except IntegrityError:
+                arch = ArchivalInstitution.objects.get(
+                    name=archival_institution
+                )
+            ip.archival_institution = arch
+
+        if archival_type is not None:
+            try:
+                (arch, _) = ArchivalType.objects.get_or_create(
+                    name=archival_type
+                )
+            except IntegrityError:
+                arch = ArchivalType.objects.get(
+                    name=archival_type
+                )
+            ip.archival_type = arch
+
+        if archival_location is not None:
+            try:
+                (arch, _) = ArchivalLocation.objects.get_or_create(
+                    name=archival_location
+                )
+            except IntegrityError:
+                arch = ArchivalLocation.objects.get(
+                    name=archival_location
+                )
+            ip.archival_location = arch
+
+        ip.state = "Prepared"
+        ip.save(update_fields=['archival_institution', 'archival_type', 'archival_location', 'state'])
+
+        return Response()
+
     @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
         """
@@ -507,9 +627,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip_reception_path = os.path.join(reception_path, ip.object_identifier_value)
         events_path = os.path.join(ip_prepare_path, "ipevents.xml")
 
-        structure = ip.get_profile('sip').structure
-
-        info = ip.get_profile('sip').fill_specification_data(sa, ip)
+        profile_ip_sip = ip.get_profile_rel('sip')
+        structure = profile_ip_sip.profile.structure
+        info = fill_specification_data(profile_ip_sip.data.data, ip=ip, sa=sa)
 
         # ensure premis is created before mets
         filesToCreate = OrderedDict()
@@ -522,7 +642,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         mets_dir, mets_name = find_destination("mets_file", structure)
         mets_path = os.path.join(ip.object_path, mets_dir, mets_name)
-        filesToCreate[mets_path] = ip.get_profile('sip').specification
+        filesToCreate[mets_path] = profile_ip_sip.profile.specification
 
         if file_conversion:
             convert_files_step = ProcessStep.objects.create(
@@ -1025,7 +1145,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         sa = ip.submission_agreement
 
-        info = sd_profile.fill_specification_data(sa, ip)
+        info = fill_specification_data(ip.get_profile_data('submit_description'), ip=ip, sa=sa)
         info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
 
         infoxml = os.path.join(reception, ip.object_identifier_value + ".xml")

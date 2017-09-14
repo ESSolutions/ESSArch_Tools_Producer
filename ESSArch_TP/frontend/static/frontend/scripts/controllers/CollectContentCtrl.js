@@ -173,7 +173,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         $scope.deckGridData.forEach(function(chosen, index) {
             if (chosen.name === folder.name) {
                 fileExists = true;
-                folderNameExistsModal(index, folder, chosen);                    
+                folderNameExistsModal(index, folder, chosen);
             }
         });
         if (!fileExists) {
@@ -241,7 +241,8 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
-        $scope.getFlowTarget = function() {
+    $scope.getFlowTarget = function() {
+        console.log("settarget");
         return $scope.ip.url + 'upload/';
     };
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
@@ -293,7 +294,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
                 $scope.resetUploadedFiles();
             }
         }
-        
+
         $scope.updateGridArray();
     }
     $scope.hideFlowCompleted = function(flow) {

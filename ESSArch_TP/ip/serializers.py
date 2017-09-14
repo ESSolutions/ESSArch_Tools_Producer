@@ -37,6 +37,8 @@ from ESSArch_Core.serializers import DynamicHyperlinkedModelSerializer
 
 from ESSArch_Core.auth.serializers import UserSerializer
 
+from ESSArch_Core.profiles.models import SubmissionAgreement
+
 from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,
 )
@@ -69,6 +71,7 @@ class ArchivalLocationSerializer(DynamicHyperlinkedModelSerializer):
 class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     responsible = UserSerializer()
     profiles = ProfileIPSerializer(many=True)
+    submission_agreement = serializers.PrimaryKeyRelatedField(queryset=SubmissionAgreement.objects.all())
     archival_institution = ArchivalInstitutionSerializer(
         read_only=True, fields=['url', 'id', 'name']
     )

@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('BaseCtrl', function (vm, IP, Step, Task, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
+angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, Task, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q){
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     $scope.updateIpsPerPage = function(items) {
         $cookies.put('etp-ips-per-page', items);
@@ -212,10 +212,23 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Step, Task, ipS
 
     //Gets all submission agreement profiles
     $scope.getSaProfiles = function (ip) {
+        $scope.selectRowCollapse = [];
         listViewService.getSaProfiles(ip).then(function (value) {
             $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip)
-            $scope.selectRowCollection = $scope.selectRowCollapse;
+            var promises = [];
+            for(var key in  $scope.saProfile.profile) {
+                if (/^profile/.test(key) && $scope.saProfile.profile[key] != null) {
+                    promises.push(Profile.get({ id: $scope.saProfile.profile[key] }).$promise.then(function(resource) {
+                        $scope.selectRowCollapse.push(resource);
+                        return resource;
+                    }));
+                }
+            }
+            Promise.all(promises).then(function() {
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+                return $scope.saProfile;
+            })
+            //$scope.getSelectCollection(value.profile, ip)
         });
     };
 
@@ -407,26 +420,29 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Step, Task, ipS
     };
 
     //Click funciton for steps and tasks
-    $scope.stepTaskClick = function(branch) {
-    $scope.getStepTask(branch).then(function(response){
-            if(branch.flow_type == "task"){
-                $scope.taskInfoModal();
-            } else {
-                $scope.stepInfoModal();
-            }
-        });
-    };
-    $scope.getStepTask = function (branch) {
+    $scope.stepTaskClick = function (branch) {
         $scope.stepTaskLoading = true;
-        return branch.$get().then(function (data) {
-            var started = moment(data.time_started);
-            var done = moment(data.time_done);
-            data.duration = done.diff(started);
-            $scope.currentStepTask = data;
-            $scope.stepTaskLoading = false;
-            return data;
-        });
-    }
+        if (branch.flow_type == "task") {
+            Task.get({ id: branch.id }).$promise.then(function (data) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+                $scope.currentStepTask = data;
+                $scope.stepTaskLoading = false;
+                $scope.taskInfoModal();
+            });
+        } else {
+            Step.get({ id: branch.id }).$promise.then(function (data) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+                $scope.currentStepTask = data;
+                $scope.stepTaskLoading = false;
+                $scope.stepInfoModal();
+            });
+        }
+    };
+
     //Redirect to admin page
     $scope.redirectAdmin = function () {
         $window.location.href="/admin/";

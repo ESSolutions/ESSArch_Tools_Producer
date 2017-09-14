@@ -14,6 +14,10 @@ angular.module('myApp').factory('IP', function ($resource, appConfig, Event, Ste
                 }
             },
         },
+        patch: {
+            method: 'PATCH',
+            params: { id: "@id" }
+        },
         events: {
             method: 'GET',
             params: {action: "events", id: "@id"},
@@ -99,6 +103,10 @@ angular.module('myApp').factory('IP', function ($resource, appConfig, Event, Ste
         mergeChunks: {
             method: "POST",
             params: { action: "merge-uploaded-chunks", id: "@id" }
+        },
+        prepareForUpload: {
+            method: "POST",
+            params: { action: "prepare", id: "@id" }
         }
     });
 });
