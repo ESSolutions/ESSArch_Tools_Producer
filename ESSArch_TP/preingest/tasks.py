@@ -199,20 +199,12 @@ class CopySchemas(tasks.CopySchemas):
     event_type = 10250
 
 
-class ValidateFileFormat(tasks.ValidateFileFormat):
-    event_type = 10260
-
-
 class ValidateXMLFile(tasks.ValidateXMLFile):
     event_type = 10261
 
 
 class ValidateLogicalPhysicalRepresentation(tasks.ValidateLogicalPhysicalRepresentation):
     event_type = 10262
-
-
-class ValidateIntegrity(tasks.ValidateIntegrity):
-    event_type = 10263
 
 
 class CreateTAR(tasks.CreateTAR):
