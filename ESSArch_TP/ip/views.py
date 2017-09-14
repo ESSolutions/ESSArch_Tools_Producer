@@ -652,7 +652,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             validate_step.add_tasks(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateFiles",
+                    name="ESSArch_Core.tasks.ValidateFiles",
                     params={
                         "ip": ip.pk,
                         "xmlfile": mets_path,
@@ -1065,7 +1065,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if validate_file_format or validate_integrity:
             step.add_tasks(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateFiles",
+                    name="ESSArch_Core.tasks.ValidateFiles",
                     params={
                         "ip": ip.pk,
                         "rootdir": reception,

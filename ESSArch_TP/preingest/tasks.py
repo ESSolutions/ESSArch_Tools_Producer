@@ -187,14 +187,6 @@ class CreatePhysicalModel(DBTask):
         return "Created physical model for IP '%s'" % self.ip
 
 
-class CalculateChecksum(tasks.CalculateChecksum):
-    event_type = 10210
-
-
-class IdentifyFileFormat(tasks.IdentifyFileFormat):
-    event_type = 10220
-
-
 class GenerateXML(tasks.GenerateXML):
     event_type = 10230
 
@@ -221,11 +213,6 @@ class ValidateLogicalPhysicalRepresentation(tasks.ValidateLogicalPhysicalReprese
 
 class ValidateIntegrity(tasks.ValidateIntegrity):
     event_type = 10263
-
-
-class ValidateFiles(tasks.ValidateFiles):
-    fileformat_task = "preingest.tasks.ValidateFileFormat"
-    checksum_task = "preingest.tasks.ValidateIntegrity"
 
 
 class CreateTAR(tasks.CreateTAR):
