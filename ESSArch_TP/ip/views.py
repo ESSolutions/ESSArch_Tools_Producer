@@ -25,24 +25,21 @@
 from _version import get_versions
 
 from collections import OrderedDict
-from operator import itemgetter
 
 import errno
 import glob
-import mimetypes
 import os
 import shutil
 import re
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Prefetch
-from django.http.response import HttpResponse
+from django.http import HttpResponse
+
 from django_filters.rest_framework import DjangoFilterBackend
 
-from django.conf import settings
-
-from django.http import HttpResponse
 from rest_framework import exceptions, filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
@@ -57,10 +54,6 @@ from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.configuration.models import (
     EventType,
     Path,
-)
-
-from ESSArch_Core.essxml.Generator.xmlGenerator import (
-    find_destination
 )
 
 from ESSArch_Core.ip.models import (
@@ -94,6 +87,7 @@ from ESSArch_Core.profiles.utils import fill_specification_data
 from ESSArch_Core.util import (
     create_event,
     creation_date,
+    find_destination,
     get_event_spec,
     get_files_and_dirs,
     get_tree_size_and_count,
