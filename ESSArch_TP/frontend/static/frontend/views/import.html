@@ -1,15 +1,15 @@
 <div class="import">
     <form ng-submit="vm.getSaProfiles()">
         <label>
-            {{ "EPP_INSTANCE_URL" | translate }}
+            {{ "IMPORT_URL" | translate }}
         </label>
-        <input class="form-control" ng-model="vm.eppUrl" type="url" required />
+        <input class="form-control" ng-model="vm.url" type="url" required />
         <label>
-            {{ "EPP_USERNAME" | translate }}
+            {{ "USERNAME" | translate }}
         </label>
         <input class="form-control" ng-model="vm.user.username" required />
         <label>
-            {{ "EPP_PASSWORD" | translate }}
+            {{ "PASSWORD" | translate }}
         </label>
         <input class="form-control" ng-model="vm.user.password" type="password" required />
         <button class="btn btn-info" ng-enter type="submit" translate="GET_SAS"></button>

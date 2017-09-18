@@ -10,12 +10,12 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
         password: null
     }
 
-    vm.eppUrl = null;
+    vm.url = null;
 
     vm.getSaProfiles = function() {
         var auth = window.btoa(vm.user.username + ":" + vm.user.password);
         var headers = {"Authorization": "Basic " + auth};
-        $http.get(vm.eppUrl + '/api/submission-agreements/', { headers: headers, published: true }).then(function(response) {
+        $http.get(vm.url + '/api/submission-agreements/', { headers: headers, published: true }).then(function(response) {
             vm.saProfile.profiles = response.data;
             vm.select = true;
         });
@@ -31,7 +31,7 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
         var pattern = new RegExp("^profile_(" + profile_types.join("|") + ")$");
         for (var key in sa) {
             if (pattern.test(key) && sa[key] != null) {
-                promises.push($http.get(vm.eppUrl + '/api/profiles/' + sa[key] + '/', { headers: headers }).then(function (response) {
+                promises.push($http.get(vm.url + '/api/profiles/' + sa[key] + '/', { headers: headers }).then(function (response) {
                     return Profile.new(response.data).$promise.then(function(response) {
                         return response;
                     }).catch(function(response) {
@@ -40,7 +40,7 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
                 }));
             }
         }
-        Promise.all(promises).then(function () {
+        $q.all(promises).then(function () {
             // Exclude profiles matching the types listed in profile_types
             var pattern = new RegExp("^profile_(?!(" + profile_types.join("|") + ")$)");
             for (var key in sa) {
@@ -49,6 +49,8 @@ angular.module('myApp').controller('ImportCtrl', function($q, $rootScope, $scope
                 }
             }
             SA.new(sa).$promise.then(function (resource) {
+                vm.select = false;
+            }).catch(function(response) {
             })
         })
     }

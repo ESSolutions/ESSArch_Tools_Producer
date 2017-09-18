@@ -217,11 +217,9 @@
     "CHANGED": "Ändrad",
     "FILEBROWSER": "Filhanterare",
     "COPYID": "Kopiera ID",
-    "EPP_INSTANCE_URL": "EPP instans-URL",
-    "EPP_USERNAME": "EPP användarnamn",
-    "EPP_PASSWORD": "EPP lösenord",
+    "IMPORT_URL": "Import-URL",
     "GET_SAS": "Hämta Leveransöverenskommelser",
     "IMPORT_SA": "Importera Leveransöverenskommelse",
     "PREPARE": "Förbered"
-    
+
 }

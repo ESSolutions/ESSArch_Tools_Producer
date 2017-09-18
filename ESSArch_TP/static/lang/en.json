@@ -217,9 +217,7 @@
     "CHANGED": "Changed",
     "FILEBROWSER": "File browser",
     "COPYID": "Copy ID",
-    "EPP_INSTANCE_URL": "EPP instance URL",
-    "EPP_USERNAME": "EPP username",
-    "EPP_PASSWORD": "EPP Password",
+    "IMPORT_URL": "Import URL",
     "GET_SAS": "Get submission agreements",
     "IMPORT_SA": "Import submission agreement",
     "PREPARE": "Prepare"
