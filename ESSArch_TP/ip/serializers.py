@@ -22,7 +22,11 @@
     Email - essarch@essolutions.se
 """
 
+from _version import get_versions
+
 from rest_framework import serializers
+
+from ESSArch_Core.configuration.models import EventType
 
 from ESSArch_Core.ip.models import (
     ArchivalInstitution,
@@ -42,6 +46,8 @@ from ESSArch_Core.profiles.models import SubmissionAgreement
 from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,
 )
+
+VERSION = get_versions()['version']
 
 
 class ArchivalInstitutionSerializer(DynamicHyperlinkedModelSerializer):
@@ -120,14 +126,21 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventIPSerializer(serializers.HyperlinkedModelSerializer):
-    linkingAgentIdentifierValue = UserSerializer()
+    user = UserSerializer(read_only=True, source='linkingAgentIdentifierValue', default=serializers.CurrentUserDefault())
+    information_package = serializers.PrimaryKeyRelatedField(required=False, allow_null=True, queryset=InformationPackage.objects.all(), source='linkingObjectIdentifierValue',)
+    eventType = serializers.PrimaryKeyRelatedField(queryset=EventType.objects.all())
     eventDetail = serializers.SlugRelatedField(slug_field='eventDetail', source='eventType', read_only=True)
 
     class Meta:
         model = EventIP
         fields = (
                 'url', 'id', 'eventType', 'eventDateTime', 'eventDetail',
-                'eventApplication', 'eventVersion', 'eventOutcome',
-                'eventOutcomeDetailNote', 'linkingAgentIdentifierValue',
-                'linkingObjectIdentifierValue',
+                'eventVersion', 'eventOutcome',
+                'eventOutcomeDetailNote', 'user',
+                'information_package',
         )
+        extra_kwargs = {
+            'eventVersion': {
+                'default': VERSION
+            }
+        }
