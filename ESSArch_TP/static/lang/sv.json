@@ -220,6 +220,6 @@
     "IMPORT_URL": "Import-URL",
     "GET_SAS": "Hämta Leveransöverenskommelser",
     "IMPORT_SA": "Importera Leveransöverenskommelse",
-    "PREPARE": "Förbered"
-
+    "PREPARE": "Förbered",
+    "EMPTY": "Tomt"
 }
