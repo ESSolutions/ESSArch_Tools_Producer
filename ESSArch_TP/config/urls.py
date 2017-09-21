@@ -58,6 +58,8 @@ from ESSArch_Core.auth.views import (
     UserViewSet,
 )
 
+from ESSArch_Core.ip.views import EventIPViewSet
+
 from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet
 
 from ESSArch_Core.WorkflowEngine.views import (
@@ -71,7 +73,6 @@ from ip.views import (
     ArchivistOrganizationViewSet,
     ArchivalTypeViewSet,
     ArchivalLocationViewSet,
-    EventIPViewSet,
     InformationPackageViewSet,
 )
 

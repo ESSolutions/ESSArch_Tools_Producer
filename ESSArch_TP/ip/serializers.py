@@ -123,24 +123,3 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
             'archival_institution', 'archivist_organization', 'archival_type',
             'archival_location', 'submission_agreement_locked', 'profiles',
         )
-
-
-class EventIPSerializer(serializers.HyperlinkedModelSerializer):
-    user = UserSerializer(read_only=True, source='linkingAgentIdentifierValue', default=serializers.CurrentUserDefault())
-    information_package = serializers.PrimaryKeyRelatedField(required=False, allow_null=True, queryset=InformationPackage.objects.all(), source='linkingObjectIdentifierValue',)
-    eventType = serializers.PrimaryKeyRelatedField(queryset=EventType.objects.all())
-    eventDetail = serializers.SlugRelatedField(slug_field='eventDetail', source='eventType', read_only=True)
-
-    class Meta:
-        model = EventIP
-        fields = (
-                'url', 'id', 'eventType', 'eventDateTime', 'eventDetail',
-                'eventVersion', 'eventOutcome',
-                'eventOutcomeDetailNote', 'user',
-                'information_package',
-        )
-        extra_kwargs = {
-            'eventVersion': {
-                'default': VERSION
-            }
-        }
