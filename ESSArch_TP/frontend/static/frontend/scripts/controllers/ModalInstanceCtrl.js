@@ -63,8 +63,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
                 object_identifier_value: $ctrl.data.objectIdentifierValue
         }).$promise.then(function (resource){
             return $uibModalInstance.close($ctrl.data);
-        }, function(resource) {
-            alert(resource.detail);
+        }).catch(function(response) {
         });
     };
     $ctrl.lock = function () {
