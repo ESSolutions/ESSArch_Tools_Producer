@@ -314,6 +314,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             $scope.statusShow = false;
             $scope.filebrowser = false;
             $rootScope.loadNavigation(ipSortString);
+            if(vm.displayedIps.length == 0) {
+                $state.reload();
+            }
             $scope.getListViewData();
         });
     }
