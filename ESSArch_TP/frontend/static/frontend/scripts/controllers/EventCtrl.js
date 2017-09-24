@@ -53,24 +53,20 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
         eventOutcome: "",
         comment: ""
     };
+    $scope.eventLevels = {
+        0: 'Success',
+        1: 'Failure'
+    };
     $scope.getEventOutcome = function(outcome) {
-        if(outcome == 0) {
-            return "Success";
-        } else {
-            return "Failure";
-        }
+        level = $scope.eventLevels[outcome];
+        return level.charAt(0).toUpperCase() + level.slice(1)
     }
-    $scope.eventOutcomes = [
-    {
-        name: "Success",
-        value: 0
-    },
-    {
-        name: "Failure",
-        value: 1
-    }
-
-    ]
+    $scope.eventOutcomes = function(){
+        levels = $scope.eventLevels;
+        return Object.keys(levels).map(function(k) {
+            return {value: k, name: levels[k]};
+        });
+    }()
     //Event click funciton
     $scope.eventClick = function(row) {
         if(row.class == "selected"){
