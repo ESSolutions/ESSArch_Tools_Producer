@@ -67,12 +67,6 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         });
     };
 
-    vm.disableFields = function(fields) {
-        fields.forEach(function(field) {
-            field.disabled == true;
-        });
-    }
-
     vm.loadProfiles = function() {
         $scope.selectRowCollapse = [];
         var profileObject = {
@@ -158,18 +152,18 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             })
 
             $scope.profileToSave = chosen;
-            if(row.locked) {
-                vm.profileFields.forEach(function(field) {
-                    if(field.fieldGroup != null){
-                        field.fieldGroup.forEach(function(subGroup) {
-                            subGroup.fieldGroup.forEach(function(item) {
-                                item.type = 'input';
+            if (row.locked) {
+                vm.profileFields.forEach(function (field) {
+                    if (field.fieldGroup != null) {
+                        field.fieldGroup.forEach(function (subGroup) {
+                            subGroup.fieldGroup.forEach(function (item) {
                                 item.templateOptions.disabled = true;
+                                item.type = 'input';
                             });
                         });
                     } else {
-                        field.type = 'input';
                         field.templateOptions.disabled = true;
+                        item.type = 'input';
                     }
                 });
             }
@@ -217,6 +211,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                         if (!x.templateOptions.disabled) {
                             if(vm.disabled) {
                                 x.templateOptions.disabled = true;
+                                x.type = 'input';
                             }
                             temp.push(x);
                         }
