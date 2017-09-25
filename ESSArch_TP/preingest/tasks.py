@@ -88,7 +88,7 @@ class PrepareIP(DBTask):
 
 
 class CreateIPRootDir(DBTask):
-    event_type = 10110
+    event_type = 10200
 
     def create_path(self, information_package_id):
         prepare_path = Path.objects.get(
@@ -138,7 +138,7 @@ class CreateIPRootDir(DBTask):
 
 
 class CreatePhysicalModel(DBTask):
-    event_type = 10115
+    event_type = 10300
 
     def get_root(self):
         root = Path.objects.get(
@@ -188,48 +188,8 @@ class CreatePhysicalModel(DBTask):
         return "Created physical model for IP '%s'" % self.ip
 
 
-class GenerateXML(tasks.GenerateXML):
-    event_type = 10230
-
-
-class AppendEvents(tasks.AppendEvents):
-    event_type = 10240
-
-
-class CopySchemas(tasks.CopySchemas):
-    event_type = 10250
-
-
-class ValidateXMLFile(tasks.ValidateXMLFile):
-    event_type = 10261
-
-
-class ValidateLogicalPhysicalRepresentation(tasks.ValidateLogicalPhysicalRepresentation):
-    event_type = 10262
-
-
-class CreateTAR(tasks.CreateTAR):
-    event_type = 10270
-
-
-class CreateZIP(tasks.CreateZIP):
-    event_type = 10271
-
-
-class DeleteFiles(tasks.DeleteFiles):
-    event_type = 10275
-
-
-class UpdateIPStatus(tasks.UpdateIPStatus):
-    event_type = 10280
-
-
-class UpdateIPPath(tasks.UpdateIPPath):
-    event_type = 10285
-
-
 class SubmitSIP(DBTask):
-    event_type = 10300
+    event_type = 10500
 
     def run(self, ip=None):
         ip = InformationPackage.objects.get(pk=ip)

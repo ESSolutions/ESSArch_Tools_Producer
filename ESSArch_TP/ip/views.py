@@ -589,7 +589,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         )
 
         t0 = ProcessTask.objects.create(
-            name="preingest.tasks.UpdateIPStatus",
+            name="ESSArch_Core.tasks.UpdateIPStatus",
             params={
                 "ip": ip.pk,
                 "status": "Creating",
@@ -698,7 +698,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             generate_xml_step.add_tasks(t)
 
         t = ProcessTask.objects.create(
-            name="preingest.tasks.GenerateXML",
+            name="ESSArch_Core.tasks.GenerateXML",
             params={
                 "info": info,
                 "filesToCreate": filesToCreate,
@@ -722,7 +722,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             if validate_xml_file:
                 validate_step.add_tasks(
                     ProcessTask.objects.create(
-                        name="preingest.tasks.ValidateXMLFile",
+                        name="ESSArch_Core.tasks.ValidateXMLFile",
                         params={
                             "xml_filename": mets_path,
                             "rootdir": ip.object_path,
@@ -737,7 +737,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 if ip.profile_locked("preservation_metadata"):
                     validate_step.add_tasks(
                         ProcessTask.objects.create(
-                            name="preingest.tasks.ValidateXMLFile",
+                            name="ESSArch_Core.tasks.ValidateXMLFile",
                             params={
                                 "xml_filename": premis_path,
                                 "rootdir": ip.object_path,
@@ -752,7 +752,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             if validate_logical_physical_representation:
                 validate_step.add_tasks(
                     ProcessTask.objects.create(
-                        name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                        name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
                         params={
                             "dirname": ip.object_path,
                             "xmlfile": mets_path,
@@ -817,7 +817,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ))
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.GenerateXML",
+            name="ESSArch_Core.tasks.GenerateXML",
             params={
                 "info": info,
                 "filesToCreate": filesToCreate,
@@ -830,7 +830,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.AppendEvents",
+            name="ESSArch_Core.tasks.AppendEvents",
             params={
                 "filename": events_path,
             },
@@ -946,7 +946,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if validate_xml_file:
             create_log_file_step.add_tasks(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateXMLFile",
+                    name="ESSArch_Core.tasks.ValidateXMLFile",
                     params={
                         "xml_filename": events_path,
                         "rootdir": ip.object_path,
@@ -968,7 +968,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if container_format.lower() == 'zip':
             zipname = os.path.join(ip_reception_path) + '.zip'
             container_task = ProcessTask.objects.create(
-                name="preingest.tasks.CreateZIP",
+                name="ESSArch_Core.tasks.CreateZIP",
                 params={
                     "dirname": ip_prepare_path,
                     "zipname": zipname,
@@ -983,7 +983,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         else:
             tarname = os.path.join(ip_reception_path) + '.tar'
             container_task = ProcessTask.objects.create(
-                name="preingest.tasks.CreateTAR",
+                name="ESSArch_Core.tasks.CreateTAR",
                 params={
                     "dirname": ip_prepare_path,
                     "tarname": tarname,
@@ -999,7 +999,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
-                name="preingest.tasks.DeleteFiles",
+                name="ESSArch_Core.tasks.DeleteFiles",
                 params={
                     "path": ip.object_path
                 },
@@ -1012,7 +1012,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
-                name="preingest.tasks.UpdateIPPath",
+                name="ESSArch_Core.tasks.UpdateIPPath",
                 params={
                     "ip": ip.pk,
                 },
@@ -1041,7 +1041,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
-                name="preingest.tasks.UpdateIPStatus",
+                name="ESSArch_Core.tasks.UpdateIPStatus",
                 params={
                     "ip": ip.pk,
                     "status": "Created",
@@ -1122,7 +1122,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         )
 
         step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.UpdateIPStatus",
+            name="ESSArch_Core.tasks.UpdateIPStatus",
             params={
                 "ip": ip.pk,
                 "status": "Submitting",
@@ -1150,7 +1150,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         }
 
         step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.GenerateXML",
+            name="ESSArch_Core.tasks.GenerateXML",
             params={
                 "info": info,
                 "filesToCreate": filesToCreate,
@@ -1166,7 +1166,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if validate_xml_file:
             step.add_tasks(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateXMLFile",
+                    name="ESSArch_Core.tasks.ValidateXMLFile",
                     params={
                         "xml_filename": infoxml
                     },
@@ -1198,7 +1198,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if validate_logical_physical_representation:
             step.add_tasks(
                 ProcessTask.objects.create(
-                    name="preingest.tasks.ValidateLogicalPhysicalRepresentation",
+                    name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
                     params={
                         "files": [os.path.basename(ip.object_path)],
                         "xmlfile": infoxml,
@@ -1239,7 +1239,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ))
 
         step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.UpdateIPStatus",
+            name="ESSArch_Core.tasks.UpdateIPStatus",
             params={
                 "ip": ip.pk,
                 "status": "Submitted"

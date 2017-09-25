@@ -28,7 +28,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from ESSArch_Core.configuration.models import EventType, Path
+from ESSArch_Core.configuration.models import Path
 
 
 def installDefaultConfiguration():
@@ -36,8 +36,6 @@ def installDefaultConfiguration():
     installDefaultUsers()
     print "\nInstalling paths..."
     installDefaultPaths()
-    print "\nInstalling event types..."
-    installDefaultEventTypes()
 
     return 0
 
@@ -92,38 +90,6 @@ def installDefaultPaths():
     for key in dct:
         print '-> %s: %s' % (key, dct[key])
         Path.objects.get_or_create(entity=key, value=dct[key])
-
-    return 0
-
-
-def installDefaultEventTypes():
-    dct = {
-        'Other': '10000',
-        'Prepare IP': '10100',
-        'Create IP root directory': '10110',
-        'Create physical model': '10115',
-        'Upload file': '10120',
-        'Create SIP': '10200',
-        'Calculate checksum ': '10210',
-        'Identify format': '10220',
-        'Generate XML files': '10230',
-        'Append events': '10240',
-        'Copy schemas': '10250',
-        'Validate file format': '10260',
-        'Validate XML file': '10261',
-        'Validate logical representation against physical representation': '10262',
-        'Validate checksum': '10263',
-        'Create TAR': '10270',
-        'Create ZIP': '10271',
-        'Delete files': '10275',
-        'Update IP status': '10280',
-        'Update IP path': '10285',
-        'Submit SIP': '10300',
-    }
-
-    for key in dct:
-        print '-> %s: %s' % (key, dct[key])
-        EventType.objects.get_or_create(eventType=dct[key], eventDetail=key)
 
     return 0
 
