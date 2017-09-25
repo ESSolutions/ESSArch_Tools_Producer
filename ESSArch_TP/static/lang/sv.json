@@ -221,5 +221,6 @@
     "GET_SAS": "Hämta Leveransöverenskommelser",
     "IMPORT_SA": "Importera Leveransöverenskommelse",
     "PREPARE": "Förbered",
-    "EMPTY": "Tomt"
+    "EMPTY": "Tomt",
+    "ERROR_MESSAGE": "Event kunde inte bli tillagt"
 }

@@ -221,5 +221,6 @@
     "GET_SAS": "Get submission agreements",
     "IMPORT_SA": "Import submission agreement",
     "PREPARE": "Prepare",
-    "EMPTY": "Empty"
+    "EMPTY": "Empty",
+    "ERROR_MESSAGE": "Event could not be added"
 }
