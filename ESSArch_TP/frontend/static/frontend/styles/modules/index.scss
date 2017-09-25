@@ -847,6 +847,9 @@ input[type="checkbox"] {
     float: left;
 }
 
+.profile-editor {
+    overflow: auto;
+}
 .empty-step {
     background-color: rgba(244, 66, 66, 0.30);
     text-align: center;
