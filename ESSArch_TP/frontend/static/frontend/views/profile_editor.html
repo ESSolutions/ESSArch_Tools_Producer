@@ -61,8 +61,9 @@
                 </div>
                 <formly-form model="vm.profileModel" fields="vm.profileFields" options="vm.options" form="vm.editForm">
                 </formly-form>
-                    <!--<div class="map-structure-editor" ng-if="profileToSave.structure.length && !angular.equals(profileToSave.structure, {})" ng-include
-                        src="'static/frontend/views/map_structure_tree.html'"></div>-->
+                    <div class="map-structure-editor" ng-if="profileToSave.structure.length && !angular.equals(profileToSave.structure, {})" ng-include
+                        src="'static/frontend/views/map_structure_tree.html'"></div>
+                    <br />
                     <button ng-if="vm.profileFields.length && !vm.disabled" type="submit" class="btn btn-info" ng-disabled="vm.editForm.$invalid || angular.equals(vm.profileOldModel, vm.profileModel)" translate="SAVE"></button>
                     <button ng-if="vm.profileFields.length && !vm.disabled" ng-click="vm.cancel()" class="btn btn-warning" translate="CANCEL"></button>
             </form>

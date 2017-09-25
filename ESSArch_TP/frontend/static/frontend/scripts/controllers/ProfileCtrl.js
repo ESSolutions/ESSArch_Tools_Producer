@@ -283,7 +283,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             vm.profileModel = angular.copy(row.active.specification_data);
             vm.profileFields = row.active.template;
             $scope.treeElements =[{name: 'root', type: "folder", children: angular.copy(row.active.structure)}];
-            $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+            $scope.expandedNodes = [];
             $scope.profileToSave = row.active;
             $scope.subSelectProfile = "profile";
             if(row.locked) {
@@ -434,7 +434,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
     //Populate map structure tree view given tree width and amount of levels
     function getStructure(profile) {
         $scope.treeElements =[{name: 'root', type: "folder", children: profile.structure}];
-        $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
+        $scope.expandedNodes = [];
     }
     $scope.treeElements = [];//[{name: "Root", type: "Folder", children: createSubTree(3, 4, "")}];
     $scope.currentNode = null;
