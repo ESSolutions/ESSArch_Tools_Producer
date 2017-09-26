@@ -12,8 +12,8 @@
                 </div>
                 <div ng-if="filebrowser" class="file-browser" ng-controller="FilebrowserController" ng-include src="'static/frontend/views/filebrowser.html'"></div>
                 <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
-                    <profile-editor ng-if="select" ip="ip"></profile-editor>
-                    <div ng-if="eventlog" class="eventlog-view">
+                    <profile-editor ng-if="select" ip="ip" disabled="ip.state == 'Prepared'"></profile-editor>
+                    <div ng-if="eventlog && ip.state != 'Prepared'" class="eventlog-view">
                         <div uib-alert ng-if="prepareAlert" ng-class="'alert-danger'" close="closePrepareAlert()">{{prepareAlert.msg | translate}}</div>
                         <div class="eventlog-form">
                             <button ng-click="vm.prepareForUpload(ip)" type="button" class="btn btn-info submit-button" ng-disabled="!ip.submission_agreement_locked">{{'PREPARE' | translate}}</button>
