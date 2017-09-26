@@ -441,6 +441,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ip = self.get_object()
         sa = ip.submission_agreement
 
+        if ip.state != 'Preparing':
+            raise exceptions.ParseError('IP must be in state "Preparing"')
+
         if sa is None or not ip.submission_agreement_locked:
             raise exceptions.ParseError('IP requires locked SA to be prepared')
 
