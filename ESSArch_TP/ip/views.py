@@ -313,7 +313,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route()
     def events(self, request, pk=None):
         ip = self.get_object()
-        events = filters.OrderingFilter().filter_queryset(request, EventIP.objects.filter(linkingObjectIdentifierValue=ip.object_identifier_value), self)
+        events = filters.OrderingFilter().filter_queryset(request, EventIP.objects.filter(linkingObjectIdentifierValue=ip.pk), self)
         page = self.paginate_queryset(events)
         if page is not None:
             serializers = EventIPSerializer(page, many=True, context={'request': request})
