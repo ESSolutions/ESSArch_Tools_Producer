@@ -449,7 +449,10 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             $rootScope.auth = response.data;
             $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
             myService.getPermissions(response.data.permissions);
-
+            // kick-off router and start the application rendering
+            $urlRouter.sync();
+            // Also enable router to listen to url changes
+            $urlRouter.listen();
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
                 if (toState.name === 'login') {
                     return;
