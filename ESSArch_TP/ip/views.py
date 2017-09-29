@@ -1359,11 +1359,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 f.write(open(chunk_file).read())
                 os.remove(chunk_file)
 
-        event_type = EventType.objects.get(eventType=10120)
-        agent = request.user
+        event_type = EventType.objects.get(eventType=50700)
+        agent = request.user.username
         create_event(
             event_type, 0, "Uploaded %s" % path,
-            get_versions()['version'], agent, ip=ip
+            get_versions()['version'], agent, ip=str(ip.pk)
         )
 
         return Response("Merged chunks")
