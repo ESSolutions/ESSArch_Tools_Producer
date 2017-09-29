@@ -4,7 +4,7 @@
             <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
             </div>
             <div ng-if="statusShow || eventShow" class="events-status-wrapper">
-                <div ng-include src="'static/frontend/views/event_table.html'"></div>
+                <event-table ng-if="eventShow" ip="ip"></event-table>
                 <div ng-if="statusShow" class="status-view">
                     <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
                 </div>

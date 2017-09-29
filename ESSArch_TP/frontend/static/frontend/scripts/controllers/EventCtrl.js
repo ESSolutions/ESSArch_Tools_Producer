@@ -33,6 +33,25 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
         addEventError: { type: 'danger', msg: 'ERROR_MESSAGE' },
         addEventSuccess: { type: 'success', msg: 'EVENT_ADDED' }
     };
+
+    vm.$onInit = function() {
+        $scope.ip = vm.ip;
+        vm.getEventlogData();
+    }
+
+    vm.$onChanges = function() {
+        $scope.addEventAlert = null;
+        if($scope.stCtrl) {
+            $scope.stCtrl.pipe();
+        }
+    }
+    //Get data for eventlog view
+    vm.getEventlogData = function() {
+        listViewService.getEventlogData().then(function(value){
+            vm.eventTypeCollection = value;
+        });
+    };
+
     $scope.closeAlert = function() {
         $scope.addEventAlert = null;
     }
@@ -84,7 +103,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     $scope.addEvent = function(ip, eventType, eventDetail, eventOutcome) {
         $scope.addEventAlert = null;
         listViewService.addEvent(ip, eventType, eventDetail, eventOutcome).then(function(value) {
-            $rootScope.stCtrl.pipe();
+            $scope.stCtrl.pipe();
             $scope.addEventAlert = $scope.alerts.addEventSuccess;
             $scope.newEventForm = {
                 eventType: "",
@@ -99,7 +118,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     function updateEvents() {
         $interval.cancel(eventInterval);
         eventInterval = $interval(function() {
-            $rootScope.stCtrl.pipe();
+            $scope.stCtrl.pipe();
         }, appConfig.eventInterval);
     }
     updateEvents();
@@ -109,7 +128,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
         if(vm.displayed.length == 0) {
             $scope.initLoad = true;
         }
-        $rootScope.stCtrl = ctrl;
+        $scope.stCtrl = ctrl;
         var sorting = tableState.sort;
         var pagination = tableState.pagination;
         var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.

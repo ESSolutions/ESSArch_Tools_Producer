@@ -137,10 +137,6 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             $scope.ip = null;
             $rootScope.ip = null;
         } else {
-            if($rootScope.stCtrl) {
-                $rootScope.stCtrl.pipe();
-            }
-            vm.getEventlogData();
             $scope.eventShow = true;
             $scope.statusShow = false;
             $scope.ip = row;
