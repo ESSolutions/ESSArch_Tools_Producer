@@ -72,6 +72,7 @@ var jsVendorFiles = [
         'bower_components/lodash/lodash.js', // required by angular-link-header-parser
         'bower_components/uri-util/dist/uri-util.js', // required by angular-link-header-parser
         'node_modules/marked/lib/marked.js',
+        'node_modules/angular-relative-date/dist/angular-relative-date.js',
         'node_modules/angular-marked/dist/angular-marked.js',
         'node_modules/angular-filesize-filter/angular-filesize-filter.js',
         'node_modules/moment/min/moment-with-locales.js',
@@ -90,6 +91,7 @@ var jsVendorFiles = [
         'styles/modules/create_sip_ip_approval.scss',
         'styles/modules/create_sip_prepare_ip.scss',
         'styles/modules/submit_sip_prepare_sip.scss',
+        'styles/modules/top_alert.scss',
         'styles/modules/index.scss',
         'styles/modules/login.scss',
         'styles/modules/my_page.scss',

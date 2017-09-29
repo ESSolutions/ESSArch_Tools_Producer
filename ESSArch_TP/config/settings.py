@@ -76,6 +76,7 @@ PROXY_PAGINATION_MAPPING = {'none': 'ESSArch_Core.pagination.NoPagination'}
 INSTALLED_APPS = [
     'allauth',
     'allauth.account',
+    'channels',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -100,6 +101,13 @@ INSTALLED_APPS = [
     'ESSArch_Core.storage',
     'ESSArch_Core.WorkflowEngine',
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "ROUTING": "ESSArch_Core.routing.channel_routing",
+    },
+}
 
 SITE_ID = 1
 

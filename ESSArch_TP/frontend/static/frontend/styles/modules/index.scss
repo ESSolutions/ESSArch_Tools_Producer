@@ -310,6 +310,9 @@ body.modal-open[style] {
 .fa.fa-pencil {
     font-size: 21px;
 }
+.fa.fa-bell {
+    font-size: 21px;
+}
 .fa.fa-print {
     font-size: 21px;
 }
@@ -856,4 +859,22 @@ input[type="checkbox"] {
 }
 .object-identifier-value {
     display: inline-block;
+}
+.notification-icon {
+    position: relative;
+    cursor: pointer;
+}
+.unseen-text {
+    width: auto;
+    position: absolute;
+    color: white;
+    height: 12px;
+    top: -5px;
+    right: -3px;
+    border-radius: 2px;
+    padding-right: 10%;
+    padding-left: 10%;
+    background-color: $step-fail;
+    font-size: 10px;
+    margin-left: 10px;
 }

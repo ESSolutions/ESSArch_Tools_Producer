@@ -56,6 +56,7 @@ from ESSArch_Core.auth.views import (
     PermissionViewSet,
     MeView,
     UserViewSet,
+    NotificationViewSet,
 )
 
 from ESSArch_Core.ip.views import EventIPViewSet
@@ -94,6 +95,7 @@ router.register(r'archivist-organizations', ArchivistOrganizationViewSet)
 router.register(r'archival-types', ArchivalTypeViewSet)
 router.register(r'archival-locations', ArchivalLocationViewSet)
 router.register(r'information-packages', InformationPackageViewSet)
+router.register(r'notifications', NotificationViewSet)
 router.register(r'steps', ProcessStepViewSet)
 router.register(r'steps', ProcessStepViewSet, base_name='steps').register(
     r'tasks',
