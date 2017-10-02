@@ -12,6 +12,7 @@
             "logDebug": false,
             "commentDirectives": false,
             "cssClassDirectives": false,
+            "notificationInterval": 60000,
             "webSocketProtocol": "wss"
         }
     },
@@ -28,6 +29,7 @@
             "logDebug": true,
             "commentDirectives": true,
             "cssClassDirectives": true,
+            "notificationInterval": 60000,
             "webSocketProtocol": "ws"
 
         }
