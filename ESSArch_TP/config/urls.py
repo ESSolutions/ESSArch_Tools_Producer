@@ -45,7 +45,6 @@ from rest_framework_extensions.routers import ExtendedDefaultRouter
 
 from ESSArch_Core.configuration.views import (
     AgentViewSet,
-    EventTypeViewSet,
     ParameterViewSet,
     PathViewSet,
     SysInfoView,
@@ -68,6 +67,8 @@ from ESSArch_Core.WorkflowEngine.views import (
     ProcessStepViewSet,
     ProcessTaskViewSet,
 )
+
+from configuration.views import EventTypeViewSet
 
 from ip.views import (
     ArchivalInstitutionViewSet,
