@@ -28,6 +28,7 @@ from collections import OrderedDict
 
 import errno
 import glob
+import logging
 import os
 import shutil
 import re
@@ -1394,12 +1395,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 f.write(open(chunk_file).read())
                 os.remove(chunk_file)
 
-        event_type = EventType.objects.get(eventType=50700)
-        agent = request.user.username
-        create_event(
-            event_type, 0, "Uploaded %s" % path,
-            get_versions()['version'], agent, ip=str(ip.pk)
-        )
+        logger = logging.getLogger('essarch')
+        extra = {'event_type': 50700, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
+        logger.info("Uploaded %s" % path, extra=extra)
 
         return Response("Merged chunks")
 
