@@ -184,6 +184,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'ESSArch_Core.log.dbhandler.DBHandler',
             'application': 'ESSArch Tools for Producer',
+            'agent_role': 'Producer',
         }
     },
     'loggers': {
