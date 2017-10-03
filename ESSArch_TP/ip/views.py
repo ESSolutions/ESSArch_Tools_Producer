@@ -591,13 +591,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             eager=False,
         )
 
+        pos = 0
+
         t0 = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
             params={
                 "ip": ip.pk,
                 "status": "Creating",
             },
-            processstep_pos=0,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
@@ -682,6 +684,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             parent_step_pos=20
         )
 
+        pos = 0
+
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
             t = ProcessTask.objects.create(
@@ -692,13 +696,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "structure": structure,
                     "root": ip.object_path,
                 },
-                processstep_pos=1,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
 
             generate_xml_step.add_tasks(t)
+
+        pos += 10
 
         t = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
@@ -708,13 +714,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "folderToParse": ip_prepare_path,
                 "algorithm": ip.get_checksum_algorithm(),
             },
-            processstep_pos=3,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         )
 
         generate_xml_step.add_tasks(t)
+
+        pos = 0
 
         if any(validators.itervalues()):
             validate_step = ProcessStep.objects.create(
@@ -730,12 +738,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             "xml_filename": mets_path,
                             "rootdir": ip.object_path,
                         },
-                        processstep_pos=1,
+                        processstep_pos=pos,
                         log=EventIP,
                         information_package=ip,
                         responsible=self.request.user,
                     )
                 )
+                pos += 10
 
                 if ip.profile_locked("preservation_metadata"):
                     validate_step.add_tasks(
@@ -745,12 +754,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 "xml_filename": premis_path,
                                 "rootdir": ip.object_path,
                             },
-                            processstep_pos=2,
+                            processstep_pos=pos,
                             log=EventIP,
                             information_package=ip,
                             responsible=self.request.user,
                         )
                     )
+                    pos += 10
 
             if validate_logical_physical_representation:
                 validate_step.add_tasks(
@@ -761,12 +771,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             "xmlfile": mets_path,
                             "rootdir": ip.object_path,
                         },
-                        processstep_pos=3,
+                        processstep_pos=pos,
                         log=EventIP,
                         information_package=ip,
                         responsible=self.request.user,
                     )
                 )
+                pos += 10
 
             validate_step.add_tasks(
                 ProcessTask.objects.create(
@@ -777,12 +788,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "validate_fileformat": validate_file_format,
                         "validate_integrity": validate_integrity,
                     },
-                    processstep_pos=4,
+                    processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
                     responsible=self.request.user,
                 )
             )
+            pos += 10
 
             validate_step.save()
 
@@ -803,6 +815,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             name="Create Log File",
             parent_step_pos=15,
         )
+        pos = 0
         for fname, template in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
             create_log_file_step.add_tasks(ProcessTask.objects.create(
@@ -813,11 +826,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "structure": structure,
                     "root": ip.object_path,
                 },
-                processstep_pos=-1,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             ))
+            pos += 10
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
@@ -826,22 +840,26 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "filesToCreate": filesToCreate,
                 "algorithm": ip.get_checksum_algorithm(),
             },
-            processstep_pos=0,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         ))
+
+        pos += 10
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.AppendEvents",
             params={
                 "filename": events_path,
             },
-            processstep_pos=1,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         ))
+
+        pos += 10
 
         spec = {
             "-name": "object",
@@ -941,10 +959,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "info": info,
                 "index": 0
             },
-            processstep_pos=2,
+            processstep_pos=pos,
             information_package=ip,
             responsible=self.request.user,
         ))
+
+        pos += 10
 
         if validate_xml_file:
             create_log_file_step.add_tasks(
@@ -954,7 +974,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "xml_filename": events_path,
                         "rootdir": ip.object_path,
                     },
-                    processstep_pos=3,
+                    processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
                     responsible=self.request.user,
@@ -968,6 +988,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         except AttributeError:
             compress = False
 
+        pos = 0
+
         if container_format.lower() == 'zip':
             zipname = os.path.join(ip_reception_path) + '.zip'
             container_task = ProcessTask.objects.create(
@@ -977,7 +999,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "zipname": zipname,
                     "compress": compress
                 },
-                processstep_pos=4,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
@@ -992,11 +1014,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "tarname": tarname,
                     "compress": compress
                 },
-                processstep_pos=4,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
+
+        pos += 10
 
         create_sip_step.add_tasks(container_task)
 
@@ -1006,12 +1030,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={
                     "path": ip.object_path
                 },
-                processstep_pos=45,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
         )
+        pos += 10
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
@@ -1022,12 +1047,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 result_params={
                     "path": container_task.pk
                 },
-                processstep_pos=50,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
         )
+        pos += 10
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
@@ -1035,12 +1061,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={
                     'ip': ip.pk
                 },
-                processstep_pos=55,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
         )
+        pos += 10
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
@@ -1049,7 +1076,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "ip": ip.pk,
                     "status": "Created",
                 },
-                processstep_pos=60,
+                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
@@ -1123,6 +1150,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip,
             eager=False,
         )
+        pos = 0
 
         step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
@@ -1130,11 +1158,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "ip": ip.pk,
                 "status": "Submitting",
             },
-            processstep_pos=0,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         ))
+        pos += 10
 
         reception = Path.objects.get(entity="path_preingest_reception").value
 
@@ -1160,11 +1189,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "folderToParse": container_file,
                 "algorithm": ip.get_checksum_algorithm(),
             },
-            processstep_pos=10,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         ))
+        pos += 10
 
         if validate_xml_file:
             step.add_tasks(
@@ -1173,12 +1203,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     params={
                         "xml_filename": infoxml
                     },
-                    processstep_pos=14,
+                    processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
                     responsible=self.request.user,
                 )
             )
+            pos += 10
 
         if validate_file_format or validate_integrity:
             step.add_tasks(
@@ -1191,12 +1222,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "validate_fileformat": validate_file_format,
                         "validate_integrity": validate_integrity,
                     },
-                    processstep_pos=15,
+                    processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
                     responsible=self.request.user,
                 )
             )
+            pos += 10
 
         if validate_logical_physical_representation:
             step.add_tasks(
@@ -1206,23 +1238,25 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "files": [os.path.basename(ip.object_path)],
                         "xmlfile": infoxml,
                     },
-                    processstep_pos=16,
+                    processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
                     responsible=self.request.user,
                 )
             )
+            pos += 10
 
         step.add_tasks(ProcessTask.objects.create(
             name="preingest.tasks.SubmitSIP",
             params={
                 "ip": ip.pk
             },
-            processstep_pos=20,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
         ))
+        pos += 10
 
         if recipient:
             attachments = [infoxml]
@@ -1236,10 +1270,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     'body': body,
                     'attachments': attachments
                 },
-                processstep_pos=25,
+                processstep_pos=pos,
                 information_package=ip,
                 responsible=self.request.user
             ))
+            pos += 10
 
         step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
@@ -1247,7 +1282,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "ip": ip.pk,
                 "status": "Submitted"
             },
-            processstep_pos=30,
+            processstep_pos=pos,
             log=EventIP,
             information_package=ip,
             responsible=self.request.user,
