@@ -188,9 +188,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
     )
     ordering_fields = (
-        'label', 'responsible', 'create_date', 'state', 'eventDateTime',
-        'eventType', 'eventOutcomeDetailNote', 'eventOutcome',
-        'linkingAgentIdentifierValue', 'id', 'object_identifier_value',
+        'label', 'responsible', 'create_date', 'state',
+        'id', 'object_identifier_value',
     )
     search_fields = (
         'object_identifier_value', 'label', 'responsible__first_name',
