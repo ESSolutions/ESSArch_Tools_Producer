@@ -856,6 +856,14 @@ input[type="checkbox"] {
 
 .profile-editor {
     overflow: auto;
+    .edit-view {
+        margin: 0;
+        padding-bottom: 0;
+    }
+    .select-view {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
 }
 .empty-step {
     background-color: rgba(244, 66, 66, 0.30);
