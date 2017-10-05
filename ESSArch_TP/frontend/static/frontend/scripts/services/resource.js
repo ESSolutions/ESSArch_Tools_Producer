@@ -27,11 +27,15 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
     //Get data for Events table
 	function getEventPage(start, number, pageNumber, params, selected, sort) {
         var sortString = sort.predicate;
+        if(sort.predicate == "eventDateTime") {
+            if(sort.reverse) {
+                sortString = sortString + ",-id";
+            } else {
+                sortString = sortString + ",id";
+            }
+        }
         if(sort.reverse) {
             sortString = "-"+sortString;
-        }
-        if(sort.predicate == "eventDateTime") {
-            sortString = sortString + ",-id";
         }
         return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString).then(function(value) {
             var eventCollection = value.data;
