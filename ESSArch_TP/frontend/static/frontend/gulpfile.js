@@ -60,6 +60,7 @@ var jsVendorFiles = [
         'node_modules/angular-ui-router/release/angular-ui-router.js',
         'node_modules/angular-cookies/angular-cookies.js ',
         'node_modules/angular-permission/dist/angular-permission.js',
+        'node_modules/angular-permission/dist/angular-permission-ui.js',
         'node_modules/angular-translate/dist/angular-translate.js',
         'node_modules/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
         'node_modules/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
@@ -195,11 +196,24 @@ var configConstants = function() {
     .pipe(gulp.dest('./scripts/configs'));
 };
 
+var permissionConfig = function() {
+    var permissionConfig = require('./scripts/configs/permissions.json');
+    var envConfig = permissionConfig;
+    return ngConstant({
+        name: 'permission.config',
+        constants: envConfig,
+        stream: true
+    })
+    .pipe(rename('permission.config.js'))
+    .pipe(gulp.dest('./scripts/configs'));
+};
+
 gulp.task('default', function() {
     configConstants();
+    permissionConfig();
     compileSass();
     copyIcons();
-    copyImages()
+    copyImages();
     buildScripts();
     return buildVendors();
 });

@@ -1,0 +1,27 @@
+{
+    "permissionConfig": {
+        "home": {
+            "createSip": {
+                "prepareIp": {
+                    "_permissions": ["ip.prepare_ip"]
+                },
+                "collectContent": {
+                    "_permissions": ["ip.can_upload", "ip.set_uploaded"]
+                },
+                "ipApproval": {
+                    "_permissions": ["ip.create_sip"]
+                }
+            },
+            "submitSip": {
+                "prepareSip": {
+                    "_permissions": ["ip.submit_sip"]
+                }
+            },
+            "administration": {
+                "import": {
+                    "_permissions": ["profiles.add_submissionagreement"]
+                }
+            }
+        }
+    }
+}

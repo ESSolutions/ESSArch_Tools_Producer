@@ -22,8 +22,26 @@
     Email - essarch@essolutions.se
     */
 
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config', 'ig.linkHeaderParser', 'hc.marked', 'ngFilesizeFilter', 'angular-clipboard', 'ngResource', 'relativeDate'])
-    .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider, $urlMatcherFactoryProvider) {
+Object.resolve = function (path, obj) {
+    return path.split('.').reduce(function (prev, curr) {
+        return prev ? prev[curr] : undefined
+    }, obj || self)
+}
+
+function nestedPermissions(page) {
+    if (Array.isArray(page)) {
+        return page;
+    } else if (typeof (page) == "object") {
+        var temp = [];
+        for (var entry in page) {
+            temp = temp.concat(nestedPermissions(page[entry]));
+        }
+        return temp;
+    }
+}
+
+angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'permission.ui', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config', 'ig.linkHeaderParser', 'hc.marked', 'ngFilesizeFilter', 'angular-clipboard', 'ngResource', 'relativeDate', 'permission.config'])
+    .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider, $urlMatcherFactoryProvider, permissionConfig) {
 
         $urlMatcherFactoryProvider.strictMode(false);
 
@@ -100,6 +118,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
                     }],
+                },
+                data: {
+                    permissions: {
+                        only: nestedPermissions("home.createSip.prepareIp"),
+                        redirectTo: 'home.restricted'
+                    }
                 }
             })
             .state('home.createSip.collectContent', {
@@ -110,6 +134,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
                     }],
+                },
+                data: {
+                    permissions: {
+                        only: nestedPermissions("home.createSip.collectContent"),
+                        redirectTo: 'home.restricted'
+                    }
                 }
             })
             .state('home.createSip.dataSelection', {
@@ -150,6 +180,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
                     }],
+                },
+                data: {
+                    permissions: {
+                        only: nestedPermissions("home.createSip.ipApproval"),
+                        redirectTo: 'home.restricted'
+                    }
                 }
             })
             .state('home.submitSip', {
@@ -181,6 +217,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
                     }],
+                },
+                data: {
+                    permissions: {
+                        only: nestedPermissions("home.submitSip.prepareSip"),
+                        redirectTo: 'home.restricted'
+                    }
                 }
             })
             .state('home.submitSip.reuseSip', {
@@ -221,10 +263,16 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
                     }],
+                },
+                data: {
+                    permissions: {
+                        only: nestedPermissions("home.administration.import"),
+                        redirectTo: 'home.restricted'
+                    }
                 }
             })
-            .state('restricted', {
-                url: '/restricted',
+            .state('home.restricted', {
+                url: 'restricted',
                 templateUrl: '/static/frontend/views/restricted.html',
                 controller: 'RestrictedCtrl as vm',
                 resolve: {
@@ -243,7 +291,12 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     }],
                 }
             });
-        $urlRouterProvider.otherwise('info');
+        $urlRouterProvider.otherwise(function ($injector) {
+            var $state = $injector.get("$state");
+            $state.go('home.info');
+        });
+
+        $urlRouterProvider.deferIntercept();
     })
     .config(function($animateProvider) {
         // Only animate elements with the 'angular-animate' class
@@ -436,7 +489,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             }
         };
     })
-    .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages){
+    .run(function(djangoAuth, $rootScope, $state, $location, $cookies, PermPermissionStore, PermRoleStore, $http, myService, formlyConfig, formlyValidationMessages, $urlRouter, permissionConfig){
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$dirty || fc[0].$dirty';
         formlyValidationMessages.addStringMessage('required', 'This field is required');
         formlyValidationMessages.addStringMessage('email', 'Enter a valid email address');
@@ -444,15 +497,14 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         formlyValidationMessages.addStringMessage('remoteUrl', 'Enter a valid URL with credentials\n(https://example.com,user,pass)');
 
         $rootScope.flowObjects = {};
-
         djangoAuth.initialize('/rest-auth', false).then(function(response) {
             $rootScope.auth = response.data;
-            $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
             myService.getPermissions(response.data.permissions);
             // kick-off router and start the application rendering
             $urlRouter.sync();
             // Also enable router to listen to url changes
             $urlRouter.listen();
+            $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
                 if (toState.name === 'login') {
                     return;
@@ -479,6 +531,18 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 } else {
                     $state.transitionTo('home.info');
                 }
+            }
+            if(to.name == "home.createSip" || to.name == "home.submitSip" || to.name == "home.administration") {
+                evt.preventDefault();
+                var resolved = Object.resolve(to.name, permissionConfig);
+                for( var key in resolved) {
+                    if(key != "_permissions" && myService.checkPermissions(nestedPermissions(resolved[key]))) {
+                        $state.go(to.name + "." + key);
+                        return;
+                    }
+                }
+                $state.go("home.restricted");
+                return;
             }
         });
     });

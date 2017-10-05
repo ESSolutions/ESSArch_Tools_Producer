@@ -56,6 +56,20 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
             return generateColumns(response.data.ip_list_columns);
         });
     }
+
+    function checkPermissions(permissions) {
+        var hasPermissions = false;
+        permissions.forEach(function(permission) {
+            if(checkPermission(permission)) {
+                hasPermissions = true;
+            }
+        });
+        return hasPermissions;
+    }
+
+    function checkPermission(permission) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permission));
+    }
     function generateColumns(columns) {
         var allColumns = [
             {label: "object_identifier_value", sortString: "object_identifier_value", template: "static/frontend/views/columns/column_object_identifier_value.html"},
@@ -91,6 +105,8 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
         hasChild: hasChild,
         getVersionInfo: getVersionInfo,
         getActiveColumns: getActiveColumns,
-        generateColumns: generateColumns
+        generateColumns: generateColumns,
+        checkPermission: checkPermission,
+        checkPermissions: checkPermissions
     }
 });

@@ -903,3 +903,17 @@ input[type="checkbox"] {
     font-size: 10px;
     margin-left: 10px;
 }
+
+.restricted {
+    @include container(5px);
+    margin-top: 5px;
+    padding: 10px;
+    .restricted-text {
+        color: $step-fail;
+    }
+    a {
+        color: rgb(206, 0, 0);
+    }
+    display: flex;
+    flex-direction: row;
+}
