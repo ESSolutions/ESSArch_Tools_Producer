@@ -85,7 +85,7 @@ class PrepareIP(DBTask):
         ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
 
     def event_outcome_success(self, label="", responsible={}, object_identifier_value=None, step=None):
-        return "Prepared %s" % self.ip_objid
+        return "Prepared %s" % get_cached_objid(str(self.ip))
 
 
 class CreateIPRootDir(DBTask):
