@@ -30,6 +30,9 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
         if(sort.reverse) {
             sortString = "-"+sortString;
         }
+        if(sort.predicate == "eventDateTime") {
+            sortString = sortString + ",-id";
+        }
         return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString).then(function(value) {
             var eventCollection = value.data;
             eventCollection.forEach(function(event) {
