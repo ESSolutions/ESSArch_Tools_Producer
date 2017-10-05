@@ -1080,7 +1080,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         )
 
         if file_conversion:
-            main_step.add_child_steps(convert_files_step)
+            if convert_files_step.tasks.count() > 0:
+                main_step.add_child_steps(convert_files_step)
+            else:
+                convert_files_step.delete()
 
         main_step.information_package = ip
         main_step.save()
