@@ -1314,7 +1314,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         return Response({
             'status': 'updating IP (%s) with new profile (%s)' % (
-                ip.pk, new_profile
+                ip, new_profile
             )
         })
 

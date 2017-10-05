@@ -34,6 +34,7 @@ import requests
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.ip.models import InformationPackage
+from ESSArch_Core.ip.utils import get_cached_objid
 from ESSArch_Core.storage.copy import copy_file
 from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
 from ESSArch_Core.util import (
@@ -84,7 +85,7 @@ class PrepareIP(DBTask):
         ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
 
     def event_outcome_success(self, label="", responsible={}, object_identifier_value=None, step=None):
-        return "Prepared IP with label '%s'" % label
+        return "Prepared %s" % self.ip_objid
 
 
 class CreateIPRootDir(DBTask):
@@ -134,7 +135,7 @@ class CreateIPRootDir(DBTask):
         shutil.rmtree(path)
 
     def event_outcome_success(self, information_package=None):
-        return "Created root directory for IP '%s'" % information_package
+        return "Created root directory for %s" % get_cached_objid(information_package)
 
 
 class CreatePhysicalModel(DBTask):
@@ -185,7 +186,7 @@ class CreatePhysicalModel(DBTask):
                 shutil.rmtree(dirname)
 
     def event_outcome_success(self, structure={}, root=""):
-        return "Created physical model for IP '%s'" % self.ip
+        return "Created physical model for %s" % self.ip_objid
 
 
 class SubmitSIP(DBTask):
@@ -242,4 +243,4 @@ class SubmitSIP(DBTask):
         os.remove(xml)
 
     def event_outcome_success(self, ip=None):
-        return "Submitted %s" % (ip)
+        return "Submitted %s" % get_cached_objid(ip)
