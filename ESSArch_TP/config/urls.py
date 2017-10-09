@@ -41,8 +41,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-from rest_framework.schemas import get_schema_view
-
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
 from ESSArch_Core.configuration.views import (
@@ -130,14 +128,11 @@ router.register(r'agents', AgentViewSet)
 router.register(r'parameters', ParameterViewSet)
 router.register(r'paths', PathViewSet)
 
-schema_view = get_schema_view(title="ESSArch Tools Producer API")
-
 urlpatterns = [
     url(r'^', include('frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/sysinfo/', SysInfoView.as_view()),
     url(r'^api/me/$', MeView.as_view(), name='me'),
-    url(r'api/schema', schema_view),
     url(r'^api/', include(router.urls)),
     url(r'^accounts/changepassword', auth_views.password_change, {'post_change_redirect': '/'} ),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
