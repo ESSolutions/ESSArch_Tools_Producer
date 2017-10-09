@@ -213,8 +213,8 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                                 x.templateOptions.disabled = true;
                                 x.type = 'input';
                             }
-                            temp.push(x);
                         }
+                        temp.push(x);
                     });
                     $scope.profileToSave = row.active;
                     vm.profileFields = temp;
