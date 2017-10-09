@@ -58,6 +58,7 @@ if DEBUG:
 ALLOWED_HOSTS = ['*']
 
 REST_FRAMEWORK = {
+    'DEFAULT_METADATA_CLASS': 'ESSArch_Core.metadata.CustomMetadata',
     'DEFAULT_PAGINATION_CLASS': 'proxy_pagination.ProxyPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_PERMISSION_CLASSES': (
