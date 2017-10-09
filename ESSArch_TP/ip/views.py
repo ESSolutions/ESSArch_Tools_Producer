@@ -57,6 +57,8 @@ from ESSArch_Core.configuration.models import (
     Path,
 )
 
+from ESSArch_Core.ip.filters import InformationPackageFilter
+
 from ESSArch_Core.ip.models import (
     ArchivalInstitution,
     ArchivistOrganization,
@@ -103,21 +105,7 @@ from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep, ProcessTask,
 )
 
-from ip.filters import (
-    ArchivalInstitutionFilter,
-    ArchivistOrganizationFilter,
-    ArchivalTypeFilter,
-    ArchivalLocationFilter,
-    InformationPackageFilter,
-)
-
-from ip.serializers import (
-    ArchivalInstitutionSerializer,
-    ArchivistOrganizationSerializer,
-    ArchivalTypeSerializer,
-    ArchivalLocationSerializer,
-    InformationPackageSerializer,
-)
+from ip.serializers import InformationPackageSerializer
 
 from ESSArch_Core.WorkflowEngine.serializers import (
     ProcessStepSerializer,
@@ -128,50 +116,6 @@ from ip.steps import (
 )
 
 from rest_framework import viewsets
-
-
-class ArchivalInstitutionViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows archival institutions to be viewed or edited.
-    """
-    queryset = ArchivalInstitution.objects.all()
-    serializer_class = ArchivalInstitutionSerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = ArchivalInstitutionFilter
-
-
-class ArchivistOrganizationViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows archivist organizations to be viewed or edited.
-    """
-    queryset = ArchivistOrganization.objects.all()
-    serializer_class = ArchivistOrganizationSerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = ArchivistOrganizationFilter
-
-
-class ArchivalTypeViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows archival types to be viewed or edited.
-    """
-    queryset = ArchivalType.objects.all()
-    serializer_class = ArchivalTypeSerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = ArchivalTypeFilter
-
-
-class ArchivalLocationViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows archival locations to be viewed or edited.
-    """
-    queryset = ArchivalLocation.objects.all()
-    serializer_class = ArchivalLocationSerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = ArchivalLocationFilter
 
 
 class InformationPackageViewSet(viewsets.ModelViewSet):
