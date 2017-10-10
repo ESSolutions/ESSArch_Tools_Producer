@@ -561,21 +561,28 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         events_path = os.path.join(ip_prepare_path, "ipevents.xml")
 
         profile_ip_sip = ip.get_profile_rel('sip')
+        sip_profile_data = ip.get_profile_data('sip')
         structure = profile_ip_sip.profile.structure
-        info = fill_specification_data(profile_ip_sip.data.data, ip=ip, sa=sa)
 
         # ensure premis is created before mets
         filesToCreate = OrderedDict()
 
         if ip.profile_locked('preservation_metadata'):
-            premis_profile = ip.get_profile('preservation_metadata')
+            premis_profile = ip.get_profile_rel('preservation_metadata')
+            premis_profile_data = ip.get_profile_data('preservation_metadata')
             premis_dir, premis_name = find_destination("preservation_description_file", structure)
             premis_path = os.path.join(ip.object_path, premis_dir, premis_name)
-            filesToCreate[premis_path] = premis_profile.specification
+            filesToCreate[premis_path] = {
+                'spec': premis_profile.profile.specification,
+                'data': fill_specification_data(premis_profile_data, ip=ip, sa=sa)
+            }
 
         mets_dir, mets_name = find_destination("mets_file", structure)
         mets_path = os.path.join(ip.object_path, mets_dir, mets_name)
-        filesToCreate[mets_path] = profile_ip_sip.profile.specification
+        filesToCreate[mets_path] = {
+            'spec': profile_ip_sip.profile.specification,
+            'data': fill_specification_data(sip_profile_data, ip=ip, sa=sa)
+        }
 
         if file_conversion:
             convert_files_step = ProcessStep.objects.create(
@@ -642,7 +649,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         t = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
             params={
-                "info": info,
                 "filesToCreate": filesToCreate,
                 "folderToParse": ip_prepare_path,
                 "algorithm": ip.get_checksum_algorithm(),
@@ -737,7 +743,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         }
 
         filesToCreate = OrderedDict()
-        filesToCreate[events_path] = get_event_spec()
+        filesToCreate[events_path] = {
+            'spec': get_event_spec(),
+            'data': info
+        }
 
         create_sip_step = ProcessStep.objects.create(
                 name="Create SIP",
@@ -769,7 +778,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
             params={
-                "info": info,
                 "filesToCreate": filesToCreate,
                 "algorithm": ip.get_checksum_algorithm(),
             },
@@ -1114,13 +1122,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         infoxml = os.path.join(reception, ip.object_identifier_value + ".xml")
 
         filesToCreate = {
-            infoxml: sd_profile.specification
+            infoxml: {'spec': sd_profile.specification, 'data': info}
         }
 
         step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
             params={
-                "info": info,
                 "filesToCreate": filesToCreate,
                 "folderToParse": container_file,
                 "algorithm": ip.get_checksum_algorithm(),
