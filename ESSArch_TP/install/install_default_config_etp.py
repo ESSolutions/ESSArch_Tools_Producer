@@ -28,14 +28,32 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User, Group, Permission
-from ESSArch_Core.configuration.models import Path
+from ESSArch_Core.configuration.models import Parameter, Path
 
 
 def installDefaultConfiguration():
+    print "\nInstalling parameters..."
+    installDefaultParameters()
     print "Installing users, groups and permissions..."
     installDefaultUsers()
     print "\nInstalling paths..."
     installDefaultPaths()
+
+    return 0
+
+
+def installDefaultParameters():
+    site_name = 'Site-X'
+
+    dct = {
+        'site_name': site_name,
+        'medium_location': 'Media_%s' % site_name,
+        'content_location_type': 'SIP',
+    }
+
+    for key in dct:
+        print '-> %s: %s' % (key, dct[key])
+        Parameter.objects.get_or_create(entity=key, value=dct[key])
 
     return 0
 
