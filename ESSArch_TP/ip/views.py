@@ -737,10 +737,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             validate_step.save()
 
-        info = {
-            "_OBJID": ip.object_identifier_value,
-            "_OBJLABEL": ip.label
-        }
+        info = fill_specification_data(ip=ip)
 
         filesToCreate = OrderedDict()
         filesToCreate[events_path] = {
