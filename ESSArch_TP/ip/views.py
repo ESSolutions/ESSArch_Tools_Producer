@@ -888,6 +888,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             'FName': ip.object_path,
         }
 
+        info = fill_specification_data(info, ip=ip)
+
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.InsertXML",
             params={
