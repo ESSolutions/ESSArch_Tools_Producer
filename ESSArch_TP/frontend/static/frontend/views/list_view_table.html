@@ -2,7 +2,26 @@
     <div class="search-prepare-wrapper">
         <label for items-per-page></label>
         <select id="items-per-page" ng-change="updateIpsPerPage(vm.itemsPerPage)" style="margin-right: 10px;" class="form-control items-per-page" ng-model="vm.itemsPerPage" ng-options="x for x in [5,10,20,25,50]" uib-popover="{{'ITEMSPERPAGE' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></select>
-        <input st-search="" style="width: 50%;" class="form-control" ng-attr-placeholder="{{'GLOBALSEARCH' | translate}}" type="text" uib-popover="{{'GLOBALSEARCHDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" />
+        <span class="fa fa-lg fa-filter filter-icon" ng-class="{'blue-border': showAdvancedFilters, 'filter-active': filterActive()}" ng-click="toggleAdvancedFilters()"></span>
+        <div ng-show="showAdvancedFilters" class="advanced-filters">
+            <label>
+                <input type="checkbox" ng-model="filterOwnIps" ng-change="vm.toggleOwnIps(filterOwnIps)">
+                {{'SEE_MY_IPS' | translate}}
+            </label>
+            <form name="form1" style="position: relative;" novalidate>
+                <div class="formly-buttons-wrapper">
+                    <formly-form model="filterModel" fields="fields" options="options">
+                    </formly-form>
+                </div>
+            </form>
+            <button class="btn btn-default" style="float: right;margin-top: 5px;" ng-click="submitAdvancedFilters()">{{'APPLY' | translate}}</button>
+        </div>
+        <div style="width: 50%;" class="input-group margin-bottom-sm">
+        <input id="search-input" st-search="" class="form-control" ng-attr-placeholder="{{'GLOBALSEARCH' | translate}}" type="text"
+            uib-popover="{{'GLOBALSEARCHDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"
+        />
+            <span ng-if="tableState.search.predicateObject && tableState.search.predicateObject['$']" class="input-group-addon clickable" ng-click="clearSearch(); getListViewData();"><i class="fa fa-lg fa-times" style="color: red;"></i></span>
+        </div>
         <button ng-if="'home.createSip.prepareIp' | isState" type="button" ng-click="newIpModal()" class="btn btn-info" uib-popover="{{'PREPAREIPDESC' | translate}}"  popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PREPAREIP' | translate}}</button>
         <span ng-click="getListViewData()" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': ipLoading }" uib-popover="{{'REFRESHTABLEDESC' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></span>
     </div>

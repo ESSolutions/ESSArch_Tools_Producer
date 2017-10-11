@@ -258,5 +258,10 @@
     "EVENTDATETIME": "Event time",
     "EVENTDATETIME_START": "Event time start",
     "EVENTDATETIME_END": "Event time end",
-    "APPLY": "Apply"
+    "APPLY": "Apply",
+    "SEE_MY_IPS": "See own IP's",
+    "CREATE_DATE_START": "Event time start",
+    "CREATE_DATE_END": "Event time end",
+    "ARCHIVAL_TYPE": "Archival type",
+    "ARCHIVAL_LOCATION": "Archival location"
 }

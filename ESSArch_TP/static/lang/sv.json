@@ -258,5 +258,10 @@
     "EVENTDATETIME": "Event-tid",
     "EVENTDATETIME_START": "Event-tid start",
     "EVENTDATETIME_END": "Event-tid slut",
-    "APPLY": "Applicera"
+    "APPLY": "Applicera",
+    "SEE_MY_IPS": "Se egna IPn",
+    "CREATE_DATE_START": "Event-tid start",
+    "CREATE_DATE_END": "Event-tid end",
+    "ARCHIVAL_TYPE": "Arkivtyp",
+    "ARCHIVAL_LOCATION": "Arkivplats"
 }

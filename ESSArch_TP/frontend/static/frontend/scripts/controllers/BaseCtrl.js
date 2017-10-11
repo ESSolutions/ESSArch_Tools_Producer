@@ -62,7 +62,6 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             $interval.cancel(stateInterval);
         }
     });
-
     //Update ip list view with an interval
     //Update only if status < 100 and no step has failed in any IP
     var listViewInterval;
@@ -184,7 +183,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
             var pageNumber = start / number + 1;
 
-            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
+            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString, $scope.columnFilters).then(function (result) {
                 vm.displayedIps = result.data;
                 tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
                 $scope.ipLoading = false;
@@ -569,6 +568,146 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             }
         });
         return ret;
+    }
+
+    //advanced filter form data
+    $scope.columnFilters = {};
+    $scope.filterModel = {};
+    $scope.options = {};
+    $scope.fields = [];
+    vm.setupForm = function() {
+        $scope.fields = [];
+        $scope.filterModel = {};
+         for(var key in $scope.usedColumns) {
+             var column = $scope.usedColumns[key];
+             switch(column.type) {
+                 case "ModelChoiceFilter":
+                 case "ChoiceFilter":
+                    $scope.fields.push({
+                        "templateOptions": {
+                            "type": "text",
+                            "label": $translate.instant(key.toUpperCase()),
+                            "labelProp": "display_name",
+                            "valueProp": "value",
+                            "options": column.choices,
+                        },
+                        "type": "select",
+                        "key": key,
+                    })
+                 break;
+                 case "CharFilter":
+                    $scope.fields.push({
+                        "templateOptions": {
+                            "type": "text",
+                            "label": $translate.instant(key.toUpperCase()),
+                            "labelProp": key,
+                            "valueProp": key,
+                        },
+                        "type": "input",
+                        "key": key,
+                    })
+                 break;
+                 case "IsoDateTimeFromToRangeFilter":
+                 $scope.fields.push(
+                    {
+                        "templateOptions": {
+                            "type": "text",
+                            "label": $translate.instant(key.toUpperCase()+"_START"),
+                        },
+                        "type": "datepicker",
+                        "key": key + "_0"
+                    }
+                 )
+                 $scope.fields.push(
+                    {
+                        "templateOptions": {
+                            "type": "text",
+                            "label": $translate.instant(key.toUpperCase()+"_END"),
+                        },
+                        "type": "datepicker",
+                        "key": key + "_1"
+                    }
+                 )
+                 break;
+             }
+         }
+    }
+
+    vm.toggleOwnIps = function(filterIps) {
+        if(filterIps) {
+            $scope.filterModel.responsible = $rootScope.auth.username;
+        } else {
+            if($scope.filterModel.responsible == $rootScope.auth.username) {
+                delete $scope.filterModel.responsible;
+            }
+        }
+    }
+
+    //Toggle visibility of advanced filters
+    $scope.toggleAdvancedFilters = function () {
+        if ($scope.showAdvancedFilters) {
+            $scope.showAdvancedFilters = false;
+        } else {
+            if ($scope.fields.length <=0) {
+                $http({
+                    method: "OPTIONS",
+                    url: appConfig.djangoUrl + "information-packages/"
+                }).then(function(response) {
+                    console.log(response.data.filters);
+                    $scope.usedColumns = response.data.filters;
+                    vm.setupForm();
+                });
+            }
+            $scope.showAdvancedFilters = true;
+        }
+         if ($scope.showAdvancedFilters) {
+             $window.onclick = function (event) {
+                 var clickedElement = $(event.target);
+                 if (!clickedElement) return;
+                 var elementClasses = event.target.classList;
+                 var clickedOnAdvancedFilters = elementClasses.contains('filter-icon') ||
+                 elementClasses.contains('advanced-filters') ||
+                 clickedElement.parents('.advanced-filters').length ||
+                 clickedElement.parents('.button-group').length;
+
+                 if (!clickedOnAdvancedFilters) {
+                     $scope.showAdvancedFilters = !$scope.showAdvancedFilters;
+                     $window.onclick = null;
+                     $scope.$apply();
+                 }
+             }
+         } else {
+             $window.onclick = null;
+         }
+    }
+
+    $scope.clearSearch = function() {
+        delete $scope.tableState.search.predicateObject;
+        $('#search-input')[0].value = "";
+        $scope.getListViewData();
+    }
+
+    $scope.filterActive = function() {
+        var temp = false;
+        for(var key in $scope.columnFilters) {
+            if($scope.columnFilters[key] !== "" && $scope.columnFilters[key] !== null) {
+                temp = true;
+            }
+        }
+        return temp;
+    }
+
+    $scope.submitAdvancedFilters = function() {
+        $scope.columnFilters = angular.copy($scope.filterModel);
+        $scope.getListViewData();
+    }
+
+    // Click function for request form submit.
+    // Replaced form="vm.requestForm" to work in IE
+    $scope.clickSubmit = function () {
+        if (vm.requestForm.$valid) {
+            $scope.submitRequest($scope.ip, vm.request);
+        }
     }
 
     $scope.tracebackModal = function (profiles) {

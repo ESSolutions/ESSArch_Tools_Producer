@@ -28,8 +28,8 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         $state.go(state);
     }
     //Gets data for list view i.e information packages
-    function getListViewData(pageNumber, pageSize, filters, sortString, searchString, state) {
-        return IP.query({
+    function getListViewData(pageNumber, pageSize, filters, sortString, searchString, state, columnFilters) {
+        return IP.query(angular.extend({
                 page: pageNumber,
                 page_size: pageSize,
                 archival_institution: filters.institution,
@@ -40,8 +40,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
                 ordering: sortString,
                 state: state,
                 search: searchString
-        })
-        .$promise.then(function successCallback(resource) {
+        }, columnFilters)).$promise.then(function successCallback(resource) {
             count = resource.$httpHeaders('Count');
             if (count == null) {
                 count = resource.length;
