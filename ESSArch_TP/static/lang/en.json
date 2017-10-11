@@ -252,5 +252,11 @@
     "months_from_now": "{{time}} months from now",
     "a_year_from_now": "a year from now",
     "years_from_now": "{{time}} years from now",
-    "over_a_year_from_now": "over a year from now"
+    "over_a_year_from_now": "over a year from now",
+    "EVENTOUTCOME": "Event outcome",
+    "LINKINGAGENTROLE": "Agent",
+    "EVENTDATETIME": "Event time",
+    "EVENTDATETIME_START": "Event time start",
+    "EVENTDATETIME_END": "Event time end",
+    "APPLY": "Apply"
 }

@@ -83,13 +83,14 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     }
 
     //Returns all events for one ip
-    function getEvents(ip, pageNumber, pageSize, sortString) {
-        return IP.events({
+    function getEvents(ip, pageNumber, pageSize, sortString,  columnFilters, searchString) {
+        return IP.events(angular.extend({
             id: ip.id,
             page: pageNumber,
             page_size: pageSize,
+            search: searchString,
             ordering: sortString
-        }).$promise.then(function (resource) {
+        }, columnFilters)).$promise.then(function (resource) {
                 count = resource.$httpHeaders('Count');
                 if (count == null) {
                     count = resource.length;

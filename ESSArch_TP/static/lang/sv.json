@@ -252,5 +252,11 @@
     "months_from_now": "om {{time}} månader",
     "a_year_from_now": "om ett år",
     "years_from_now": "om {{time}} år",
-    "over_a_year_from_now": "om över ett år"
+    "over_a_year_from_now": "om över ett år",
+    "EVENTOUTCOME": "Event-resultat",
+    "LINKINGAGENTROLE": "Agent",
+    "EVENTDATETIME": "Event-tid",
+    "EVENTDATETIME_START": "Event-tid start",
+    "EVENTDATETIME_END": "Event-tid slut",
+    "APPLY": "Applicera"
 }
