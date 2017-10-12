@@ -263,5 +263,6 @@
     "CREATE_DATE_START": "Event-tid start",
     "CREATE_DATE_END": "Event-tid end",
     "ARCHIVAL_TYPE": "Arkivtyp",
-    "ARCHIVAL_LOCATION": "Arkivplats"
+    "ARCHIVAL_LOCATION": "Arkivplats",
+    "RETRY_CONNECTION": "Försök igen"
 }
