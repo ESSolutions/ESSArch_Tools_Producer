@@ -55,10 +55,10 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             $scope.ip = row;
             $rootScope.ip = row;
             $scope.deckGridInit($scope.ip);
-            if(!$rootScope.flowObjects[row.object_identifier_value]) {
+            if(!$rootScope.flowObjects[row.id]) {
                 $scope.createNewFlow(row);
             }
-            $scope.currentFlowObject = $rootScope.flowObjects[row.object_identifier_value];
+            $scope.currentFlowObject = $rootScope.flowObjects[row.id];
             if($scope.select) {
                 $scope.showFileUpload = false;
                 $timeout(function() {
@@ -329,6 +329,6 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         flowObj.on('uploadStart', function(){
             flowObj.opts.query = {destination: $scope.previousGridArraysString()};
         });
-        $rootScope.flowObjects[ip.object_identifier_value] = flowObj;
+        $rootScope.flowObjects[ip.id] = flowObj;
     }
 });
