@@ -653,7 +653,6 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
                     method: "OPTIONS",
                     url: appConfig.djangoUrl + "information-packages/"
                 }).then(function(response) {
-                    console.log(response.data.filters);
                     $scope.usedColumns = response.data.filters;
                     vm.setupForm();
                 });
