@@ -121,7 +121,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 },
                 data: {
                     permissions: {
-                        only: nestedPermissions("home.createSip.prepareIp"),
+                        only: nestedPermissions(Object.resolve("home.createSip.prepareIp", permissionConfig)),
                         redirectTo: 'home.restricted'
                     }
                 }
@@ -137,7 +137,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 },
                 data: {
                     permissions: {
-                        only: nestedPermissions("home.createSip.collectContent"),
+                        only: nestedPermissions(Object.resolve("home.createSip.collectContent", permissionConfig)),
                         redirectTo: 'home.restricted'
                     }
                 }
@@ -183,7 +183,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 },
                 data: {
                     permissions: {
-                        only: nestedPermissions("home.createSip.ipApproval"),
+                        only: nestedPermissions(Object.resolve("home.createSip.ipApproval", permissionConfig)),
                         redirectTo: 'home.restricted'
                     }
                 }
@@ -220,7 +220,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 },
                 data: {
                     permissions: {
-                        only: nestedPermissions("home.submitSip.prepareSip"),
+                        only: nestedPermissions(Object.resolve("home.submitSip.prepareSip", permissionConfig)),
                         redirectTo: 'home.restricted'
                     }
                 }
@@ -266,7 +266,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 },
                 data: {
                     permissions: {
-                        only: nestedPermissions("home.administration.import"),
+                        only: nestedPermissions(Object.resolve("home.administration.import", permissionConfig)),
                         redirectTo: 'home.restricted'
                     }
                 }
