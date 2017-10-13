@@ -586,9 +586,54 @@ padding: 0 12px;
     & > .checkbox {
         height: 10px;
     }
-    .table>tbody>tr>td {
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
+}
+.sa-table {
+    padding: 5px;
+    table {
+        table-layout: fixed;
+        tbody {
+            td {
+                border: none;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        margin-top: 20px;
+        select {
+            min-width: 150px;
+            max-width: 50%;
+        }
+        .flex-row {
+            select {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+.edit-form {
+    table {
+        table-layout: fixed;
+        .flex-row {
+            align-items: center;
+            p {
+                word-break: normal;
+                margin: 0 10px 0 0;
+            }
+        }
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+.sa-edit {
+    .formly {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: baseline;
+        padding: 5px;
+        width: 100%;
     }
 }
 .lock-button  {

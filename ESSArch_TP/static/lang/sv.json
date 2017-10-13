@@ -264,5 +264,6 @@
     "CREATE_DATE_END": "Event-tid end",
     "ARCHIVAL_TYPE": "Arkivtyp",
     "ARCHIVAL_LOCATION": "Arkivplats",
-    "RETRY_CONNECTION": "Försök igen"
+    "RETRY_CONNECTION": "Försök igen",
+    "VIEW": "Visa"
 }

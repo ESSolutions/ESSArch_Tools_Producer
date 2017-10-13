@@ -44,6 +44,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         };
         $scope.ip = vm.ip;
         vm.cancel();
+        vm.saCancel();
         listViewService.getSaProfiles($scope.ip).then(function (result) {
             $scope.saProfile.profiles = result.profiles;
             $scope.saProfile.locked = result.locked;
@@ -126,47 +127,57 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         $scope.profileToSave = null;
         vm.selectedProfile = null;
     }
+    vm.saCancel = function() {
+        vm.saModel = {};
+        vm.saFields = [];
+    }
 
     vm.profileModel = {};
     vm.profileFields=[];
     vm.options = {};
     //Click funciton for sa view
     $scope.saClick = function(row){
-        if ($scope.selectProfile == row && $scope.editSA){
+        if ($scope.selectedSa == row && $scope.editSA){
+            vm.saCancel();
             $scope.editSA = false;
         } else {
+            $scope.selectedSa = row;
             $scope.eventlog = false;
             $scope.edit = false;
 
             var chosen = row.profile
-            $scope.selectProfile = row;
 
-            vm.profileFields = chosen.template;
-            vm.profileOldModel = {};
-            vm.profileModel = {};
+            vm.saFields = [];
+            vm.saModel = {};
 
             // only keep fields defined in template
-            vm.profileFields.forEach(function(field){
-                vm.profileOldModel[field.key] = chosen[field.key];
-                vm.profileModel[field.key] = chosen[field.key];
+            chosen.template.forEach(function(field){
+                if(!field.hidden) {
+                    vm.saModel[field.key] = chosen[field.key];
+                    vm.saFields.push(field);
+                }
             })
-
-            $scope.profileToSave = chosen;
-            if (row.locked) {
-                vm.profileFields.forEach(function (field) {
-                    if (field.fieldGroup != null) {
-                        field.fieldGroup.forEach(function (subGroup) {
-                            subGroup.fieldGroup.forEach(function (item) {
-                                item.templateOptions.disabled = true;
-                                item.type = 'input';
-                            });
-                        });
-                    } else {
-                        field.templateOptions.disabled = true;
-                        item.type = 'input';
+            var toDelete = [];
+            vm.saFields = vm.saFields.map(function (field, idx) {
+                delete field.templateOptions.options;
+                field.type = "input";
+                field.templateOptions.disabled = true;
+                if (field.key.startsWith('profile_')) {
+                    $scope.selectRowCollection.forEach(function(profile) {
+                        if(vm.saModel[field.key] == profile.id) {
+                            vm.saModel[field.key] = profile.name
+                        }
+                    })
+                    if(vm.saModel[field.key] == null) {
+                        toDelete.push(field)
                     }
-                });
-            }
+                    field.templateOptions.label = field.key.replace('profile_', '');
+                }
+                return field;
+            });
+            toDelete.forEach(function(field) {
+                vm.saFields.splice(vm.saFields.indexOf(field), 1);
+            });
             $scope.editSA = true;
         }
     };
@@ -214,7 +225,9 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                                 x.type = 'input';
                             }
                         }
-                        temp.push(x);
+                        if(!x.hidden) {
+                            temp.push(x);
+                        }
                     });
                     $scope.profileToSave = row.active;
                     vm.profileFields = temp;

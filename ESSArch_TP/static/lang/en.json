@@ -264,5 +264,6 @@
     "CREATE_DATE_END": "Event time end",
     "ARCHIVAL_TYPE": "Archival type",
     "ARCHIVAL_LOCATION": "Archival location",
-    "RETRY_CONNECTION": "Retry connection"
+    "RETRY_CONNECTION": "Retry connection",
+    "VIEW": "View"
 }
