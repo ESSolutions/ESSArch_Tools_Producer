@@ -130,6 +130,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
     vm.saCancel = function() {
         vm.saModel = {};
         vm.saFields = [];
+        $scope.selectedSa = null;
     }
 
     vm.profileModel = {};
