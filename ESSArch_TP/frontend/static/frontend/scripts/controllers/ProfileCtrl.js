@@ -151,34 +151,28 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             vm.saFields = [];
             vm.saModel = {};
 
-            // only keep fields defined in template
-            chosen.template.forEach(function(field){
-                if(!field.hidden) {
-                    vm.saModel[field.key] = chosen[field.key];
-                    vm.saFields.push(field);
+            vm.saFields = _.reduce(chosen.template, function(memo, field) {
+                if (field.hidden) {
+                    return memo;
                 }
-            })
-            var toDelete = [];
-            vm.saFields = vm.saFields.map(function (field, idx) {
+                vm.saModel[field.key] = chosen[field.key];
                 delete field.templateOptions.options;
                 field.type = "input";
                 field.templateOptions.disabled = true;
                 if (field.key.startsWith('profile_')) {
                     $scope.selectRowCollection.forEach(function(profile) {
                         if(vm.saModel[field.key] == profile.id) {
-                            vm.saModel[field.key] = profile.name
+                            vm.saModel[field.key] = profile.name;
                         }
                     })
                     if(vm.saModel[field.key] == null) {
-                        toDelete.push(field)
+                        return memo;
                     }
                     field.templateOptions.label = field.key.replace('profile_', '');
                 }
-                return field;
-            });
-            toDelete.forEach(function(field) {
-                vm.saFields.splice(vm.saFields.indexOf(field), 1);
-            });
+                memo.push(field);
+                return memo;
+            }, []);
             $scope.editSA = true;
         }
     };
