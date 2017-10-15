@@ -21,9 +21,9 @@
                         </td>
                         <td class="flex-row">
                             <button ng-if="!saProfile.locked" ng-disabled="!saProfile.profile || (ip.responsible.id != $root.auth.id && !checkPermission('ip.lock_sa'))"
-                                class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i> {{'LOCK' | translate}}</button>
-                            <button class="btn btn-default lock-button" ng-click="saClick(saProfile)" uib-popover="{{saProfile.profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>{{'VIEW' | translate}}</i></button>
-                            <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i> {{'LOCKED' | translate}}</button>
+                                class="btn btn-success btn-sm lock-button" ng-click="lockSaModal(saProfile)"><i class="fa fa-lock"></i>&nbsp;{{'LOCK' | translate}}</button>
+                            <button class="btn btn-default lock-button" ng-click="saClick(saProfile)" uib-popover="{{saProfile.profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i></button>
+                            <button ng-if="saProfile.locked" class="btn btn-danger btn-sm lock-button"><i class="fa fa-lock"></i>&nbsp;{{'LOCKED' | translate}}</button>
                         </td>
                         <p>{{'PATH' | translate}}: {{ip.object_path}}</p>
                     </tr>
@@ -54,7 +54,7 @@
                                         {{profile.name}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>{{'VIEW' | translate}}</i></button>
+                                        <button type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i></button>
                                     </td>
                                 </div>
                             </tr>
