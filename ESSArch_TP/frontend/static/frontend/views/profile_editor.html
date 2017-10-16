@@ -35,7 +35,7 @@
                 <button ng-if="vm.saFields.length && !vm.disabled" ng-click="vm.saCancel()" class="btn btn-warning" translate="CANCEL"></button>
             </form>
             <div uib-alert ng-if="saAlert" style="width: 100%;" ng-class="'alert-' + (saAlert.type || 'warning')">{{saAlert.msg}}</div>
-        </div><div ng-if="saProfile.profile" id="edit-view" class="edit-view">
+        </div><div ng-if="saProfile.profile && saProfile.locked" id="edit-view" class="edit-view">
             <form id="edit-form" class="edit-form" ng-submit="vm.saveProfileModel(vm.selectedProfile.profile_type, vm.profileModel, vm.treeEditModel)" name="vm.editForm" novalidate>
                 <div class="table-container" >
                     <table ng-if="saProfile.locked" style="margin-top: 10px; margin-bottom: 0px;" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
@@ -54,7 +54,7 @@
                                         {{profile.name}}
                                     </td>
                                     <td>
-                                        <button ng-if="!vm.disabled" type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-pencil"></i>{{'EDIT' | translate}}</i></button>
+                                        <button ng-if="!vm.disabled" type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-pencil"></i>&nbsp;{{'EDIT' | translate}}</i></button>
                                         <button ng-if="vm.disabled" type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i></button>
                                     </td>
                                 </div>

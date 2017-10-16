@@ -312,9 +312,6 @@ body.modal-open[style] {
 .fa.fa-refresh {
     font-size: 21px;
 }
-.fa.fa-pencil {
-    font-size: 21px;
-}
 .fa.fa-bell {
     font-size: 21px;
 }
@@ -599,10 +596,6 @@ padding: 0 12px;
             }
         }
         margin-top: 20px;
-        select {
-            min-width: 150px;
-            max-width: 50%;
-        }
         .flex-row {
             select {
                 margin-right: 10px;
@@ -623,9 +616,6 @@ padding: 0 12px;
         td {
             overflow: hidden;
             text-overflow: ellipsis;
-            .fa-pencil {
-                padding-right: 2px;
-            }
         }
     }
 }
