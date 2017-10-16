@@ -54,7 +54,8 @@
                                         {{profile.name}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i></button>
+                                        <button ng-if="!vm.disabled" type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-pencil"></i>{{'EDIT' | translate}}</i></button>
+                                        <button ng-if="vm.disabled" type="button" class="btn btn-default lock-button" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"><i class="fa fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i></button>
                                     </td>
                                 </div>
                             </tr>
