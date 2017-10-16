@@ -107,8 +107,10 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             $scope.tree_data = [];
             if ($scope.ip == row) {
                 $scope.statusShow = false;
-                $scope.ip = null;
-                $rootScope.ip = null;
+                if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow && !$scope.filebrowser) {
+                    $scope.ip = null;
+                    $rootScope.ip = null;
+                }
             } else {
                 $scope.statusShow = true;
                 $scope.edit = false;
@@ -133,8 +135,10 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         if($scope.eventShow && $scope.ip == row){
             $scope.eventShow = false;
             $rootScope.stCtrl = null;
-            $scope.ip = null;
-            $rootScope.ip = null;
+            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow && !$scope.filebrowser) {
+                $scope.ip = null;
+                $rootScope.ip = null;
+            }
         } else {
             $scope.eventShow = true;
             $scope.statusShow = false;
@@ -149,7 +153,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     $scope.filebrowserClick = function (ip) {
         if ($scope.filebrowser && $scope.ip == ip) {
             $scope.filebrowser = false;
-            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow) {
+            if(!$scope.select && !$scope.edit && !$scope.statusShow && !$scope.eventShow && !$scope.filebrowser) {
                 $scope.ip = null;
                 $rootScope.ip = null;
             }
