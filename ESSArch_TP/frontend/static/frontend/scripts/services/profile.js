@@ -8,6 +8,10 @@ angular.module('myApp').factory('Profile', function ($resource, appConfig) {
             method: "POST",
             params: { action: "save", id: "@id" }
         },
+        update: {
+            method: "PUT",
+            params: { id: "@id" }
+        },
         new: {
             method: "POST",
         },

@@ -265,5 +265,9 @@
     "ARCHIVAL_TYPE": "Archival type",
     "ARCHIVAL_LOCATION": "Archival location",
     "RETRY_CONNECTION": "Retry connection",
-    "VIEW": "View"
+    "VIEW": "View",
+    "PROFILE_EXISTS": "Profile exists",
+    "PROFILE_EXISTS_DESC": "Profile with same ID already exists. Would you like to overwrite it?",
+    "SA_EXISTS": "Submission agreement exists",
+    "SA_EXISTS_DESC": "Submission agreement with same ID already exists. Would you like to overwrite it?"
 }

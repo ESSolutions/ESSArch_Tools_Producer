@@ -265,5 +265,9 @@
     "ARCHIVAL_TYPE": "Arkivtyp",
     "ARCHIVAL_LOCATION": "Arkivplats",
     "RETRY_CONNECTION": "Försök igen",
-    "VIEW": "Visa"
+    "VIEW": "Visa",
+    "PROFILE_EXISTS": "Profil finns redan",
+    "PROFILE_EXISTS_DESC": "Profil med samma ID finns redan. Vill du skriva över den?",
+    "SA_EXISTS": "Leveransöverenskommelse finns redan",
+    "SA_EXISTS_DESC": "Leveransöverenskommelse med samma ID finns redan. Vill du skriva över den?"
 }

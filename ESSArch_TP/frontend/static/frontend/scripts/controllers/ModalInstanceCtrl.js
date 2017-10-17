@@ -104,10 +104,40 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
         $uibModalInstance.dismiss('cancel');
     };
 })
-.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data) {
+.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, TopAlert) {
     var $ctrl = this;
-    $ctrl.file = data.file;
-    $ctrl.type = data.type;
+    if(data.file) {
+        $ctrl.file = data.file;
+    }
+    if(data.type) {
+        $ctrl.type = data.type;
+    }
+    if(data.profile) {
+        $ctrl.profile = data.profile;
+    }
+    $ctrl.overwriteProfile = function() {
+        return Profile.update($ctrl.profile).$promise.then(function(resource) {
+            $ctrl.data = {
+                status: "overwritten"
+            }
+            $uibModalInstance.close($ctrl.data);
+            return resource;
+        }).catch(function(repsonse) {
+            TopAlert.add(response.detail, "error");
+        })
+    }
+    $ctrl.overwriteSa = function() {
+        $ctrl.profile.published = false;
+        return SA.update($ctrl.profile).$promise.then(function(resource) {
+            $ctrl.data = {
+                status: "overwritten"
+            }
+            $uibModalInstance.close($ctrl.data);
+            return resource;
+        }).catch(function(response) {
+            TopAlert.add("Submission Agreement " + $ctrl.profile.name + " is Published and can not be overwritten", "error");
+        })
+    }
     $ctrl.overwrite = function () {
         $ctrl.data = {
             status: "overwritten"
