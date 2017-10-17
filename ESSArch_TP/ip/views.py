@@ -718,6 +718,23 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 )
                 pos += 10
 
+                if ip.profile_locked('preservation_metadata'):
+                    validate_step.add_tasks(
+                        ProcessTask.objects.create(
+                            name="ESSArch_Core.tasks.CompareXMLFiles",
+                            args=[mets_path, premis_path],
+                            params={
+                                "rootdir": ip.object_path,
+                                "compare_checksum": validate_integrity,
+                            },
+                            processstep_pos=pos,
+                            log=EventIP,
+                            information_package=ip,
+                            responsible=self.request.user,
+                        )
+                    )
+                    pos += 10
+
             validate_step.add_tasks(
                 ProcessTask.objects.create(
                     name="ESSArch_Core.tasks.ValidateFiles",
