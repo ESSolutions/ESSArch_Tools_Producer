@@ -66,6 +66,8 @@ class PrepareIP(DBTask):
             state="Preparing",
             package_type=InformationPackage.SIP,
         )
+        ip.entry_date = ip.create_date
+        ip.save(update_fields=['entry_date'])
 
         self.ip = ip.pk
 
