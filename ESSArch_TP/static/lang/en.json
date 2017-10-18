@@ -12,7 +12,7 @@
     "DATAEXTRACTION": "Data extraction",
     "MANAGEDATA": "Manage data",
     "IPMANAGEMENT": "IP management",
-    "PREPARESIP": "Prepare SIP",
+    "PREPARESIP": "Submit SIP",
     "LOGIN": "Login",
     "LOGOUT": "Logout",
     "CHANGEPASSWORD": "Change Password",
@@ -286,5 +286,8 @@
     "END_DATE_DESC": "End date",
     "STORAGE_STATUS_DESC": "Storage status, cached or archived",
     "FILEBROWSER_DESC": "Browse files in IP",
-    "ENTRY_DATE_DESC": "Date of creation of original SIP"
+    "ENTRY_DATE_DESC": "Date of creation of original SIP",
+    "IPAPPROVAL": "Create SIP",
+    "IMPORT": "Import",
+    "INFO": "Info"
 }

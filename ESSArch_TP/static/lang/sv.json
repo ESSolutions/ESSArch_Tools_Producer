@@ -12,7 +12,7 @@
     "DATAEXTRACTION": "Datautvinning",
     "MANAGEDATA": "Hantera data",
     "IPMANAGEMENT": "IP-management",
-    "PREPARESIP": "Förbered SIP",
+    "PREPARESIP": "Skicka SIP",
     "LOGIN": "Logga in",
     "LOGOUT": "Logga ut",
     "CHANGEPASSWORD": "Ändra lösenord",
@@ -286,5 +286,8 @@
     "END_DATE_DESC": "Slutdatum",
     "STORAGE_STATUS_DESC": "Lagringsstatus, cachad eller arkiverad",
     "FILEBROWSER_DESC": "Bläddra i filer för IP",
-    "ENTRY_DATE_DESC": "Datum för skapande av original-SIP"
+    "ENTRY_DATE_DESC": "Datum för skapande av original-SIP",
+    "IPAPPROVAL": "Skapa SIP",
+    "IMPORT": "Import",
+    "INFO": "Info"
 }
