@@ -87,6 +87,7 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
             {label: "start_date", sortString: "start_date", template: "static/frontend/views/columns/column_start_date.html"},
             {label: "end_date", sortString: "end_date", template: "static/frontend/views/columns/column_end_date.html"},
             {label: "filebrowser", sortString: "", template: "static/frontend/views/columns/column_filebrowser.html"},
+            {label: "entry_date", sortString: "entry_date", template: "static/frontend/views/columns/column_entry_date.html"},
         ];
         var activeColumns = [];
         var simpleColumns = allColumns.map(function(a){return a.label});
