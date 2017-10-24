@@ -57,6 +57,7 @@ from ESSArch_Core.WorkflowEngine.models import (
 from ESSArch_Core.profiles.serializers import (
     ProfileSerializer,
     ProfileDetailSerializer,
+    ProfileWriteSerializer,
     ProfileSASerializer,
     ProfileIPSerializer,
     ProfileIPWriteSerializer,
@@ -231,7 +232,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return ProfileSerializer
 
-        return ProfileDetailSerializer
+        if self.action == 'retrieve':
+            return ProfileDetailSerializer
+
+        return ProfileWriteSerializer
 
     def get_queryset(self):
         queryset = Profile.objects.all()
