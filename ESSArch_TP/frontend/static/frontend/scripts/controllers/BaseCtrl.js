@@ -53,6 +53,10 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         $interval.cancel(listViewInterval);
     });
 
+    $rootScope.$on('REFRESH_LIST_VIEW', function (event, data) {
+        $scope.getListViewData();
+    });
+
     var stateInterval;
     $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
         if(newValue) {
