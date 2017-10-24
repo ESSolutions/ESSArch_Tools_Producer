@@ -442,8 +442,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step.run().get()
 
-        transfer_project = sa.profile_transfer_project
-        transfer_project_data = ProfileIP.objects.get(profile=transfer_project, ip=ip).data.data
+        transfer_project_data = ip.get_profile_data('transfer_project')
+        submit_description_data = ip.get_profile_data('submit_description')
+
+        ip.start_date = submit_description_data.get('start_date')
+        ip.end_date = submit_description_data.get('end_date')
 
         archival_institution = transfer_project_data.get("archival_institution")
         archival_type = transfer_project_data.get("archival_type")
@@ -483,7 +486,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             ip.archival_location = arch
 
         ip.state = "Prepared"
-        ip.save(update_fields=['archival_institution', 'archival_type', 'archival_location', 'state'])
+        ip.save(update_fields=[
+            'archival_institution', 'archival_type', 'archival_location', 'state',
+            'start_date', 'end_date',
+        ])
 
         return Response()
 
