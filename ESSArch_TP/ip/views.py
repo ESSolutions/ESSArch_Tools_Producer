@@ -1126,6 +1126,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             params={
                 "ip": ip.pk,
                 "status": "Submitting",
+                "prev": ip.status,
             },
             processstep_pos=pos,
             log=EventIP,
@@ -1249,6 +1250,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             params={
                 "ip": ip.pk,
                 "status": "Submitted"
+                "prev": "Submitting",
             },
             processstep_pos=pos,
             log=EventIP,
