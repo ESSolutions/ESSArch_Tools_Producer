@@ -1249,7 +1249,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             name="ESSArch_Core.tasks.UpdateIPStatus",
             params={
                 "ip": ip.pk,
-                "status": "Submitted"
+                "status": "Submitted",
                 "prev": "Submitting",
             },
             processstep_pos=pos,
