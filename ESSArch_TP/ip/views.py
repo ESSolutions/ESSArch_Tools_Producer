@@ -537,6 +537,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             params={
                 "ip": ip.pk,
                 "status": "Creating",
+                "prev": ip.state,
             },
             processstep_pos=pos,
             log=EventIP,
@@ -1006,6 +1007,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 name="ESSArch_Core.tasks.UpdateIPPath",
                 params={
                     "ip": ip.pk,
+                    "prev": ip.object_path,
                 },
                 result_params={
                     "path": container_task.pk
@@ -1038,6 +1040,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={
                     "ip": ip.pk,
                     "status": "Created",
+                    "prev": "Creating",
                 },
                 processstep_pos=pos,
                 log=EventIP,
