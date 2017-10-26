@@ -237,7 +237,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 eager=False,
             )
 
-            for fl in glob.glob(no_ext + "*"):
+            for fl in [no_ext + '.' + ext for ext in ['xml', 'tar', 'zip']]:
                 t = ProcessTask.objects.create(
                     name='ESSArch_Core.tasks.DeleteFiles',
                     params={'path': fl},
