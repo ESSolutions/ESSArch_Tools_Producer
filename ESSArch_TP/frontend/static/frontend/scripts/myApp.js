@@ -60,15 +60,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                     }],
                 }
             })
-            .state('home.myPage', {
-                url: 'my-page',
-                templateUrl: '/static/frontend/views/my_page.html',
-                resolve: {
-                    authenticated: ['djangoAuth', function(djangoAuth){
-                        return djangoAuth.authenticationStatus();
-                    }],
-                }
-            })
             .state('home.userSettings', {
                 url: 'user-settings',
                 templateUrl: '/static/frontend/views/user_settings.html',
