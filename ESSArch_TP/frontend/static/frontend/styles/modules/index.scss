@@ -815,6 +815,25 @@ input[type="checkbox"] {
     width: 100%;
     align-items: center;
 }
+.file-list-view {
+    margin-top: 10px;
+    .type-name-column {
+        display: flex;
+        align-items: center;
+        .file, .dir {
+            margin-right: 5px;
+        }
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+}
+.file-view-options {
+    display: flex;
+    flex-direction: row;
+    margin-right: 15px;
+}
 .nav-refresh-wrapper {
     width: 100%;
     display: flex;

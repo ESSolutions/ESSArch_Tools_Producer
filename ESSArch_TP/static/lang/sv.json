@@ -289,5 +289,7 @@
     "ENTRY_DATE_DESC": "Datum för skapande av original-SIP",
     "IPAPPROVAL": "Skapa SIP",
     "IMPORT": "Import",
-    "INFO": "Info"
+    "INFO": "Info",
+    "LIST_VIEW": "Lista",
+    "GRID_VIEW": "Rutnät"
 }

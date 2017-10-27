@@ -289,5 +289,7 @@
     "ENTRY_DATE_DESC": "Date of creation of original SIP",
     "IPAPPROVAL": "Create SIP",
     "IMPORT": "Import",
-    "INFO": "Info"
+    "INFO": "Info",
+    "LIST_VIEW": "List",
+    "GRID_VIEW": "Grid"
 }
