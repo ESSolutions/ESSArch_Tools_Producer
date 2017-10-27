@@ -326,7 +326,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
-        return Response(ip.files(request.query_params.get('path', '').rstrip('/')))
+        return ip.files(request.query_params.get('path', '').rstrip('/'))
 
     @detail_route(methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
