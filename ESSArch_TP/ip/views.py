@@ -327,30 +327,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
-        page_query_param = self.paginator.pager.page_query_param
-        page_size_query_param = self.paginator.pager.page_size_query_param
-
-        page = request.query_params.get(page_query_param, 1)
-        page_size = request.query_params.get(page_size_query_param, drf_settings.PAGE_SIZE)
-
-        try:
-            page = int(page)
-            if page < 1:
-                raise ValueError
-        except (TypeError, ValueError):
-            raise exceptions.ParseError('Invalid page')
-
-        try:
-            page_size = int(page_size)
-        except (TypeError, ValueError):
-            page_size = drf_settings.PAGE_SIZE
-
-        try:
-            offset = (page-1)*page_size
-        except TypeError:
-            offset = 0
-
-        return ip.files(request.query_params.get('path', '').rstrip('/'), offset=offset, limit=offset+page_size)
+        files = ip.files(request.query_params.get('path', '').rstrip('/'))
+        return self.paginator.get_paginated_response(self.paginator.paginate_queryset(files, request, view=self))
 
     @detail_route(methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
