@@ -195,7 +195,19 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 if profile is None:
                     continue
 
-                ProfileIP.objects.create(ip=ip, profile=profile)
+                profile_ip = ProfileIP.objects.create(ip=ip, profile=profile)
+                data = {}
+
+                for field in profile_ip.profile.template:
+                    try:
+                        data[field['key']] = field['defaultValue']
+                    except KeyError:
+                        pass
+                data_obj = ProfileIPData.objects.create(
+                    relation=profile_ip, data=data, version=0, user=request.user,
+                )
+                profile_ip.data = data_obj
+                profile_ip.save()
 
             if sa.archivist_organization:
                 arch, _ = ArchivistOrganization.objects.get_or_create(
