@@ -45,6 +45,7 @@ from rest_framework import exceptions, filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
+from rest_framework.settings import api_settings as drf_settings
 
 from natsort import natsorted
 
@@ -326,7 +327,30 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
-        return ip.files(request.query_params.get('path', '').rstrip('/'))
+        page_query_param = self.paginator.pager.page_query_param
+        page_size_query_param = self.paginator.pager.page_size_query_param
+
+        page = request.query_params.get(page_query_param, 1)
+        page_size = request.query_params.get(page_size_query_param, drf_settings.PAGE_SIZE)
+
+        try:
+            page = int(page)
+            if page < 1:
+                raise ValueError
+        except (TypeError, ValueError):
+            raise exceptions.ParseError('Invalid page')
+
+        try:
+            page_size = int(page_size)
+        except (TypeError, ValueError):
+            page_size = drf_settings.PAGE_SIZE
+
+        try:
+            offset = (page-1)*page_size
+        except TypeError:
+            offset = 0
+
+        return ip.files(request.query_params.get('path', '').rstrip('/'), offset=offset, limit=offset+page_size)
 
     @detail_route(methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
