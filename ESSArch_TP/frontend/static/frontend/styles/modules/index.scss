@@ -813,6 +813,14 @@ input[type="checkbox"] {
     flex-direction: row;
     vertical-align: middle;
     width: 100%;
+    align-items: center;
+}
+.nav-refresh-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 .dir-path {
     margin-left: 10px;
