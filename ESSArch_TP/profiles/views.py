@@ -73,7 +73,7 @@ from ESSArch_Core.profiles.models import (
     ProfileIPData,
 )
 
-from ESSArch_Core.profiles.utils import profile_types
+from ESSArch_Core.profiles.utils import fill_specification_data
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
@@ -187,6 +187,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
             ip.submission_agreement_locked = True
 
             types = ('sip', 'transfer_project', 'submit_description', 'preservation_metadata',)
+            extra_data = fill_specification_data(ip=ip, sa=sa)
 
             for profile_type in types:
                 lower_type = profile_type.lower().replace(' ', '_')
@@ -195,7 +196,23 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 if profile is None:
                     continue
 
-                ProfileIP.objects.create(ip=ip, profile=profile)
+                profile_ip = ProfileIP.objects.create(ip=ip, profile=profile)
+                data = {}
+
+                for field in profile_ip.profile.template:
+                    try:
+                        if field['defaultValue'] in extra_data:
+                            data[field['key']] = extra_data[field['defaultValue']]
+                            continue
+
+                        data[field['key']] = field['defaultValue']
+                    except KeyError:
+                        pass
+                data_obj = ProfileIPData.objects.create(
+                    relation=profile_ip, data=data, version=0, user=request.user,
+                )
+                profile_ip.data = data_obj
+                profile_ip.save()
 
             if sa.archivist_organization:
                 arch, _ = ArchivistOrganization.objects.get_or_create(

@@ -14,7 +14,7 @@
                 <div ng-if="select" id="select-view" class="select-view">
                     <button class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">{{'EDIT' | translate}} EAD</button>
                     <b>IP: </b>{{ip.label}}
-                    <div ng-include src="'static/frontend/views/filebrowser.html'"></div>
+                    <div style="margin-top: 20px;" ng-include src="'static/frontend/views/filebrowser.html'"></div>
                     <div id="file-upload" ng-if="(ip.responsible.id == auth.id || checkPermission('ip.can_upload')) && showFileUpload" ng-include
                         src="'static/frontend/views/file_upload.html'"></div>
                     <div ng-if="ip.responsible.id != auth.id && !checkPermission('ip.can_upload')">

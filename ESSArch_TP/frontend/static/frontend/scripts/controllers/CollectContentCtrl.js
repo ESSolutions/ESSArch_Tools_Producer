@@ -100,6 +100,17 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         }, timeout);
     };
     //Deckgrid test
+    $scope.listView = false;
+    $scope.gridView = true;
+    $scope.useListView = function() {
+        $scope.listView = true;
+        $scope.gridView = false;
+    }
+
+    $scope.useGridView = function() {
+        $scope.listView = false;
+        $scope.gridView = true;
+    }
     $scope.previousGridArrays = [];
     $scope.previousGridArraysString = function() {
         var retString = "";
