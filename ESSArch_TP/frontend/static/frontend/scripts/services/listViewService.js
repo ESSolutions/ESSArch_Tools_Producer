@@ -322,16 +322,27 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         });
     }
 
-    function getDir(ip, pathStr) {
+    function getDir(ip, pathStr, pageNumber, pageSize) {
         if(pathStr == "") {
             sendData = {};
         } else {
             sendData = {path: pathStr};
         }
         return IP.files(
-            angular.extend({ id: ip.id }, sendData)
+            angular.extend({
+                    id: ip.id,
+                    page: pageNumber,
+                    page_size: pageSize
+                }, sendData)
         ).$promise.then(function(data) {
-            return data;
+            count = data.$httpHeaders('Count');
+            if (count == null) {
+                count = data.length;
+            }
+            return {
+                numberOfPages: Math.ceil(count/pageSize),
+                data: data
+            };
         });
     }
 

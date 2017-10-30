@@ -17,12 +17,17 @@
         <span ng-click="updateGridArray(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': deckGridLoading }"
             uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></span>
     </div>
-    <div ng-if="gridView" class="deckgrid">
-        <div class="flex-grid">
-            <div class="card" ng-repeat="card in deckGridData" ng-include src="'static/frontend/views/deckgrid_card.html'"></div>
+    <div ng-if="gridView" st-table="deckGridData" st-pipe="dirPipe">
+        <div class="deckgrid">
+            <div class="flex-grid">
+                <div class="card" ng-repeat="card in deckGridData" ng-include src="'static/frontend/views/deckgrid_card.html'"></div>
+            </div>
         </div>
+        <td>
+            <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+        </td>
     </div>
-    <div ng-if="listView" class="file-list-view">
+    <div ng-if="listView" st-table="deckGridData" st-pipe="dirPipe" class="file-list-view">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -47,5 +52,10 @@
                 </tr>
             </tbody>
         </table>
+        <td>
+            <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+        </td>
     </div>
+    <button ng-if="selectedCards.length && ip.state !== 'Created' && ip.state !== 'Creating' && ip.state !== 'Submitted' && ip.state !=='Uploaded'" class="btn btn-default" ng-click="removeFiles()" translate="REMOVE"></button>
+    <button ng-if="ip.state !== 'Created' && ip.state !== 'Creating' && ip.state !== 'Submitted' && ip.state !=='Uploaded'" ng-click="newDirModal()" class="btn btn-default" translate="NEWFOLDER"></button>
 </div>

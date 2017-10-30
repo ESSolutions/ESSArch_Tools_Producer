@@ -120,33 +120,53 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         return retString;
     }
     $scope.deckGridData = [];
+    $scope.dirPipe = function(tableState) {
+        $scope.gridArrayLoading = true;
+        if ($scope.deckGridData.length == 0) {
+            $scope.initLoad = true;
+        }
+        if (!angular.isUndefined(tableState)) {
+            $scope.tableState = tableState;
+            var pagination = tableState.pagination;
+            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
+            var number = pagination.number;  // Number of entries showed per page.
+            var pageNumber = start / number + 1;
+            listViewService.getDir($scope.ip, $scope.previousGridArraysString(), pageNumber, number).then(function(dir) {
+                $scope.deckGridData = dir.data;
+                tableState.pagination.numberOfPages = dir.numberOfPages;//set the number of pages so the pagination can update
+                $scope.gridArrayLoading = false;
+                $scope.initLoad = false;
+            })
+        }
+    }
     $scope.deckGridInit = function(ip) {
-        listViewService.getDir(ip, null).then(function(dir) {
-            $scope.deckGridData = dir;
-        });
+        $scope.previousGridArrays = [];
+        if($scope.tableState) {
+            $scope.dirPipe($scope.tableState);
+            $scope.selectedCards = [];
+        }
     };
     $scope.previousGridArray = function() {
         $scope.previousGridArrays.pop();
-        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            $scope.deckGridData = dir;
+        if($scope.tableState) {
+            $scope.dirPipe($scope.tableState);
             $scope.selectedCards = [];
-        });
+        }
     };
     $scope.gridArrayLoading = false;
     $scope.updateGridArray = function(ip) {
-        $scope.gridArrayLoading = true;
-        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            $scope.deckGridData = dir;
-            $scope.gridArrayLoading = false;
-        });
+        if($scope.tableState) {
+            $scope.dirPipe($scope.tableState);
+        }
     };
     $scope.expandFile = function(ip, card) {
         if(card.type == "dir"){
             $scope.previousGridArrays.push(card);
-            listViewService.getDir(ip,$scope.previousGridArraysString()).then(function(dir) {
-                $scope.deckGridData = dir;
+            if($scope.tableState) {
+                $scope.tableState.pagination.start = 0;
+                $scope.dirPipe($scope.tableState);
                 $scope.selectedCards = [];
-            });
+            }
         } else {
             $scope.getFile(card);
         }
