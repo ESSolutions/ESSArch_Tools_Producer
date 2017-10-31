@@ -103,13 +103,20 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     $scope.listView = false;
     $scope.gridView = true;
     $scope.useListView = function() {
+        $scope.filesPerPage = $cookies.get("files-per-page") || 50;
         $scope.listView = true;
         $scope.gridView = false;
     }
 
     $scope.useGridView = function() {
+        $scope.filesPerPage = $cookies.get("files-per-page") || 50;
         $scope.listView = false;
         $scope.gridView = true;
+    }
+
+    $scope.filesPerPage = $cookies.get("files-per-page") || 50;
+    $scope.changeFilesPerPage = function(filesPerPage) {
+        $cookies.put("files-per-page", filesPerPage, { expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT") });
     }
     $scope.previousGridArrays = [];
     $scope.previousGridArraysString = function() {

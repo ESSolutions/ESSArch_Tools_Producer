@@ -840,11 +840,14 @@ input[type="checkbox"] {
     flex-direction: row;
     margin-right: 15px;
 }
+.files-per-page-pagination-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
 .file-pagination {
-    float: right;
-    .disabled {
-        color: #e8e8e8;
-    }
     a {
         color: black;
         float: left;

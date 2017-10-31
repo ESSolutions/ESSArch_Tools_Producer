@@ -291,5 +291,6 @@
     "IMPORT": "Import",
     "INFO": "Info",
     "LIST_VIEW": "List",
-    "GRID_VIEW": "Grid"
+    "GRID_VIEW": "Grid",
+    "FILES_PER_PAGE": "Files per page"
 }

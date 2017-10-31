@@ -291,5 +291,6 @@
     "IMPORT": "Import",
     "INFO": "Info",
     "LIST_VIEW": "Lista",
-    "GRID_VIEW": "Rutnät"
+    "GRID_VIEW": "Rutnät",
+    "FILES_PER_PAGE": "Filer per sida"
 }
