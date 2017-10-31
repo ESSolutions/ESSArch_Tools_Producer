@@ -24,7 +24,7 @@
             </div>
         </div>
         <td>
-            <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+            <div class="text-center" st-template="static/frontend/views/file_pagination.html" st-pagination="" st-items-by-page="1" st-displayed-pages="7"></div>
         </td>
     </div>
     <div ng-if="listView" st-table="deckGridData" st-pipe="dirPipe" class="file-list-view">
@@ -53,7 +53,7 @@
             </tbody>
         </table>
         <td>
-            <div class="text-center" st-template="static/frontend/views/pagination.html" st-pagination="" st-items-by-page="50" st-displayed-pages="7"></div>
+            <div class="text-center" st-template="static/frontend/views/file_pagination.html" st-pagination="" st-items-by-page="1" st-displayed-pages="7"></div>
         </td>
     </div>
     <button ng-if="selectedCards.length && ip.state !== 'Created' && ip.state !== 'Creating' && ip.state !== 'Submitted' && ip.state !=='Uploaded'" class="btn btn-default" ng-click="removeFiles()" translate="REMOVE"></button>
