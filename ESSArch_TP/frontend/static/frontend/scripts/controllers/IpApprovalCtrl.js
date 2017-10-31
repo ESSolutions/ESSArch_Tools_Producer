@@ -169,4 +169,20 @@ angular.module('myApp').controller('IpApprovalCtrl', function (IP, Profile, $log
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    vm.createSipModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/create_sip_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            $scope.createSip(data.ip);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
 });

@@ -291,5 +291,10 @@
     "IMPORT": "Import",
     "INFO": "Info",
     "LIST_VIEW": "List",
-    "GRID_VIEW": "Grid"
+    "GRID_VIEW": "Grid",
+    "PREPARE_IP": "Prepare IP",
+    "PREPARE_IP_DESC": "Do you want to prepare IP {{label}} for upload?",
+    "COMPLETED_UPLOAD_DESC": "Do you want to complete upload of IP {{label}}?",
+    "CREATE_SIP_DESC": "Do you want to create SIP from IP {{label}}?",
+    "SUBMIT_SIP_DESC": "Do you want to submit SIP {{label}}?"
 }

@@ -56,12 +56,7 @@
                     </div>
                     <div ng-if="eventlog" class="eventlog-view">
                         <form class="submit-sip-eventlog-form" ng-submit="emailModal(ip)">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-disabled="ip.responsible.id != auth.id && !checkPermission('ip.submit_sip')" ng-model="approvedToSubmit">{{'APPROVEDTOSUBMIT' | translate}}</input>
-                                </label>
-                            </div>
-                            <button ng-disabled="submitDisabled || !approvedToSubmit || ip.state == 'Submitted' && (ip.responsible.id != auth.id || !checkPermission('ip.submit_sip')) || ip.state != 'Created'" type="submit" ng-dblClick="" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
+                            <button ng-disabled="submitDisabled || ip.state == 'Submitted' && (ip.responsible.id != auth.id || !checkPermission('ip.submit_sip')) || ip.state != 'Created'" type="submit" ng-dblClick="" class="btn btn-info submit-button">{{'SUBMITSIP' | translate}}</button>
                         </form>
                     </div>
                 </div>

@@ -22,13 +22,8 @@
                     </div>
                 </div>
                 <div ng-if="eventlog" class="eventlog-view">
-                    <form class="eventlog-form" ng-submit="setUploaded(ip)">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkBox" ng-disabled="ip.responsible.id != auth.id && !checkPermission('ip.set_uploaded')" ng-model="completedUploading">{{'COMPLETEDUPLOADING' | translate}}</input>
-                            </label>
-                        </div>
-                        <button class="btn btn-info submit-button" ng-dblClick="" ng-disabled="uploadDisabled || !completedUploading || (ip.responsible.id != auth.id && !checkPermission('ip.set_uploaded'))" type="submit" style="float: right;">{{'DONE' | translate}}</button>
+                    <form class="eventlog-form" ng-submit="vm.uploadCompletedModal(ip)">
+                        <button class="btn btn-info submit-button" ng-dblClick="" ng-disabled="uploadDisabled || (ip.responsible.id != auth.id && !checkPermission('ip.set_uploaded'))" type="submit" style="float: right;">{{'DONE' | translate}}</button>
                     </form>
                 </div>
             </div>

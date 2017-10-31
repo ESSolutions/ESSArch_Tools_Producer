@@ -66,6 +66,30 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
         }).catch(function(response) {
         });
     };
+    $ctrl.prepareForUpload = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $uibModalInstance.close($ctrl.data);
+    }
+    $ctrl.setUploaded = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $uibModalInstance.close($ctrl.data);
+    }
+    $ctrl.createSip = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $uibModalInstance.close($ctrl.data);
+    }
+    $ctrl.submitSip = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $uibModalInstance.close($ctrl.data);
+    }
     $ctrl.lock = function () {
         $ctrl.data = {
             status: "locked"

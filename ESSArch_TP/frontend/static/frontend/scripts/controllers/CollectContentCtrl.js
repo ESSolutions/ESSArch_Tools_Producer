@@ -43,6 +43,23 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         $interval.cancel(fileBrowserInterval);
     });
 
+    vm.uploadCompletedModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/upload_completed_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            vm.setUploaded(data.ip);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+
     //Click function for ip table
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){

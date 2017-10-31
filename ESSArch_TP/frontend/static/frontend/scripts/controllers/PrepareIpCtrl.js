@@ -838,4 +838,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }
+    vm.prepareIpForUploadModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/prepare_ip_for_upload_modal.html',
+            scope: $scope,
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl'
+        })
+        modalInstance.result.then(function (data) {
+            vm.prepareForUpload(data.ip);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
 });
