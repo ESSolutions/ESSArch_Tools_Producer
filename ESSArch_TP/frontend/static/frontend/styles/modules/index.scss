@@ -817,8 +817,6 @@ input[type="checkbox"] {
 }
 .file-list-view {
     margin-top: 10px;
-    max-height: 400px;
-    overflow-y: auto;
     thead, tbody {
         border: 1px solid $border-color;
     }
@@ -889,8 +887,6 @@ input[type="checkbox"] {
     width: 100%;
     min-width: 520px;
     min-height: 100px;
-    max-height: 400px;
-    overflow-y: scroll;
     border-style: solid;
     border-color: #bbb;
     border-width: 1px;
