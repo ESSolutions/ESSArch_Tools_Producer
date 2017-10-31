@@ -1,12 +1,12 @@
 <div class="enter-profile-name" style="padding: 5px;">
-        <h3 class="modal-title" id="modal-title">{{'SUBMITSIP' | translate}}</h3>
+    <h3 class="modal-title" id="modal-title">{{'SUBMITSIP' | translate}}</h3>
+</div>
+<form ng-submit="$ctrl.submitSip()">
+    <div class="modal-body" id="modal-body">
+        {{'SUBMIT_SIP_DESC' | translate:ip}}
     </div>
-    <form ng-submit="$ctrl.submitSip()">
-        <div class="modal-body" id="modal-body">
-            {{'SUBMIT_SIP_DESC' | translate:ip}}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.submitSip()">{{'SUBMITSIP' | translate}}</button>
-            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">{{'CANCEL' | translate}}</button>
-        </div>
-    </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="$ctrl.submitSip()">{{'SUBMITSIP' | translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">{{'CANCEL' | translate}}</button>
+    </div>
+</form>
