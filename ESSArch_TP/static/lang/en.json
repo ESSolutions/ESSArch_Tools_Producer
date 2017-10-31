@@ -296,5 +296,6 @@
     "PREPARE_IP_DESC": "Do you want to prepare IP {{label}} for upload?",
     "COMPLETED_UPLOAD_DESC": "Do you want to complete upload of IP {{label}}?",
     "CREATE_SIP_DESC": "Do you want to create SIP from IP {{label}}?",
-    "SUBMIT_SIP_DESC": "Do you want to submit SIP {{label}}?"
+    "SUBMIT_SIP_DESC": "Do you want to submit SIP {{label}}?",
+    "FILES_PER_PAGE": "Files per page"
 }

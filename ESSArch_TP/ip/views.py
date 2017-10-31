@@ -45,6 +45,7 @@ from rest_framework import exceptions, filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
+from rest_framework.settings import api_settings as drf_settings
 
 from natsort import natsorted
 
@@ -326,7 +327,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
-        return ip.files(request.query_params.get('path', '').rstrip('/'))
+        return ip.files(request.query_params.get('path', '').rstrip('/'), paginator=self.paginator, request=request)
 
     @detail_route(methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
