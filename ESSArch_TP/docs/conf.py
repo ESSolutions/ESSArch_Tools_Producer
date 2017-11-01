@@ -1,7 +1,7 @@
 """
     ESSArch is an open source archiving and digital preservation system
 
-    ESSArch Tools for Producer (ETP)
+    ESSArch Tools Producer (ETP)
     Copyright (C) 2005-2017 ES Solutions AB
 
     This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ import os
 import sys
 
 proj_folder = os.path.realpath(
-    os.path.join(os.path.dirname(__file__), '../../..'))
+    os.path.join(os.path.dirname(__file__), '../..'))
 
 sys.path.append(proj_folder)
 
@@ -140,7 +140,13 @@ def setup(app):
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinxtogithub', 'sphinx.ext.autodoc', 'sphinx.ext.inheritance_diagram', 'sphinx.ext.intersphinx', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode']
+extensions = ['sphinxtogithub', 'sphinx.ext.autodoc', 'sphinx.ext.autosectionlabel', 'sphinx.ext.inheritance_diagram', 'sphinx.ext.intersphinx', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode', 'sphinxcontrib.httpdomain']
+
+# True to prefix each section label with the name of the document it is in,
+# followed by a colon. For example, index:Introduction for a section called
+# Introduction that appears in document index.rst. Useful for avoiding
+# ambiguity when the same section heading appears in different documents.
+autosectionlabel_prefix_document = True
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.5', None),
@@ -199,7 +205,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -7,10 +7,11 @@ ESSArch Tools Producer
 ==================================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 10
 
-   modules
+   configuration/index
+   restapi/index
+   source/modules
 
 
 
