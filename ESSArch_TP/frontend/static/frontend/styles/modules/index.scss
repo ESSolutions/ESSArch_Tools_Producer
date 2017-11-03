@@ -1079,3 +1079,6 @@ input[type="checkbox"] {
 .blue-border {
     border-color: rgba(102, 102, 102, 0.4);
 }
+.no-select {
+    user-select: none;
+}
