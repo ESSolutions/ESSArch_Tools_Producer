@@ -33,7 +33,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
         addEventError: { type: 'danger', msg: 'ERROR_MESSAGE' },
         addEventSuccess: { type: 'success', msg: 'EVENT_ADDED' }
     };
-
+    var watchers = [];
     vm.$onInit = function() {
         $scope.ip = vm.ip;
         vm.getEventlogData();
@@ -68,12 +68,15 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(eventInterval);
     });
-    $scope.$on("$destroy", function() {
+    vm.$onDestroy = function() {
         $interval.cancel(eventInterval);
-    });
-    $rootScope.$watch(function() {return $rootScope.ip;}, function(){
+        watchers.forEach(function(watcher) {
+            watcher();
+        });
+    };
+    watchers.push($rootScope.$watch(function() {return $rootScope.ip;}, function(){
         $scope.addEventAlert = null;
-    });
+    }));
     $scope.newEventForm = {
         eventType: "",
         eventOutcome: "",

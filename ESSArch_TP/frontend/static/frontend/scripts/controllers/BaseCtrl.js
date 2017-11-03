@@ -41,16 +41,20 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     $scope.ip = null;
     $rootScope.ip = null;
 
+    var watchers = [];
     // Watchers
-    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
+    watchers.push($scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
         $scope.getListViewData();
-    }, true);
+    }, true));
 
     // Init intervals
     // If status view is visible, start update interval
     $rootScope.$on('$stateChangeStart', function () {
         $interval.cancel(stateInterval);
         $interval.cancel(listViewInterval);
+        watchers.forEach(function(watcher) {
+            watcher();
+        });
     });
 
     $rootScope.$on('REFRESH_LIST_VIEW', function (event, data) {
@@ -58,14 +62,14 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     });
 
     var stateInterval;
-    $scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
+    watchers.push($scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
         if(newValue) {
             $interval.cancel(stateInterval);
             stateInterval = $interval(function(){$scope.statusViewUpdate($scope.ip)}, appConfig.stateInterval);
     } else {
             $interval.cancel(stateInterval);
         }
-    });
+    }));
     //Update ip list view with an interval
     //Update only if status < 100 and no step has failed in any IP
     var listViewInterval;

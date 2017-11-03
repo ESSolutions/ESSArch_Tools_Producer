@@ -29,18 +29,22 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     vm.flowDestination = null;
     $scope.showFileUpload = true;
     $scope.currentFlowObject = null;
+    var watchers = [];
     // File browser interval
     var fileBrowserInterval;
-    $scope.$watch(function () { return $scope.select; }, function (newValue, oldValue) {
+    watchers.push($scope.$watch(function () { return $scope.select; }, function (newValue, oldValue) {
         if (newValue) {
             $interval.cancel(fileBrowserInterval);
             fileBrowserInterval = $interval(function () { $scope.updateGridArray() }, appConfig.fileBrowserInterval);
         } else {
             $interval.cancel(fileBrowserInterval);
         }
-    });
+    }));
     $rootScope.$on('$stateChangeStart', function() {
         $interval.cancel(fileBrowserInterval);
+        watchers.forEach(function(watcher) {
+            watcher();
+        });
     });
 
     vm.uploadCompletedModal = function (ip) {
