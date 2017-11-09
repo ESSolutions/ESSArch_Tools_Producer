@@ -106,7 +106,7 @@ from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep, ProcessTask,
 )
 
-from ip.serializers import InformationPackageSerializer
+from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
 
 from ESSArch_Core.WorkflowEngine.serializers import (
     ProcessStepSerializer,
@@ -142,6 +142,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         'submission_agreement__name', 'start_date', 'end_date',
     )
     filter_class = InformationPackageFilter
+
+    def get_serializer_class(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return InformationPackageReadSerializer
+
+        return InformationPackageSerializer
 
     def get_permissions(self):
         if self.action in ['partial_update', 'update']:

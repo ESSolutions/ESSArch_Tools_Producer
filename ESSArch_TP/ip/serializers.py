@@ -66,8 +66,21 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
     archival_type = ArchivalTypeSerializer(read_only=True)
     archival_location = ArchivalLocationSerializer(read_only=True)
 
+    class Meta:
+        model = InformationPackage
+        fields = (
+            'url', 'id', 'object_identifier_value', 'label', 'content',
+            'responsible', 'create_date', 'entry_date', 'state', 'status', 'step_state',
+            'object_path', 'object_size', 'object_num_items', 'start_date',
+            'end_date', 'package_type', 'submission_agreement',
+            'archival_institution', 'archivist_organization', 'archival_type',
+            'archival_location', 'submission_agreement_locked', 'profiles',
+        )
+
+
+class InformationPackageReadSerializer(InformationPackageSerializer):
     def to_representation(self, obj):
-        data = super(InformationPackageSerializer, self).to_representation(obj)
+        data = super(InformationPackageReadSerializer, self).to_representation(obj)
         profiles = data['profiles']
         data['profiles'] = {}
 
@@ -89,12 +102,6 @@ class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
     class Meta:
-        model = InformationPackage
-        fields = (
-            'url', 'id', 'object_identifier_value', 'label', 'content',
-            'responsible', 'create_date', 'entry_date', 'state', 'status', 'step_state',
-            'object_path', 'object_size', 'object_num_items', 'start_date',
-            'end_date', 'package_type', 'submission_agreement',
-            'archival_institution', 'archivist_organization', 'archival_type',
-            'archival_location', 'submission_agreement_locked', 'profiles',
-        )
+        model = InformationPackageSerializer.Meta.model
+        fields = InformationPackageSerializer.Meta.fields
+
