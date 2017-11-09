@@ -58,7 +58,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             controllerAs: '$ctrl'
         })
         modalInstance.result.then(function (data) {
-            vm.setUploaded(data.ip);
+            $scope.setUploaded(data.ip);
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
