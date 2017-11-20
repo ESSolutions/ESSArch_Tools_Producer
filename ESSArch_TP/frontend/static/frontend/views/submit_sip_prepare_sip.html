@@ -12,7 +12,8 @@
                 </div>
                 <div ng-if="filebrowser" class="file-browser" ng-controller="FilebrowserController" ng-include src="'static/frontend/views/filebrowser.html'"></div>
                 <div ng-if="edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
-                    <div ng-if="edit" id="edit-veiw" class="edit-view" >
+                    <div ng-if="edit" id="edit-veiw" class="edit-view">
+                        <profile-editor ng-if="ip.state != 'Submitted'" ip="ip"></profile-editor>
                         <div class="package-information">
                             <h4>{{'PACKAGEINFORMATION'| translate}}</h4>
                             <form  novalidate>
