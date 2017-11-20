@@ -11,7 +11,7 @@
             </div>
             <div ng-if="filebrowser" class="file-browser" ng-controller="FilebrowserController" ng-include src="'static/frontend/views/filebrowser.html'"></div>
             <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
-                <profile-editor ng-if="select" ip="ip" disabled="true"></profile-editor>
+                <profile-editor ng-if="select" ip="ip"></profile-editor>
                 <div ng-if="select" id="edit-view" class="edit-view" >
                     <div ng-include src="'static/frontend/views/validator_choices.html'"></div>
                     <div ng-include src="'static/frontend/views/file_conversion.html'"></div>
