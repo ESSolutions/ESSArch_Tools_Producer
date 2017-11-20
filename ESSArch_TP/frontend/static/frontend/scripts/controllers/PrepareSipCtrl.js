@@ -44,7 +44,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
                     id: ip.profile_submit_description.profile,
                     ip: ip.id
                 }).$promise.then(function(resource) {
-                    vm.informationModel= resource.specification_data;
+                    vm.informationModel= ip.profile_submit_description.data.data;
                     vm.informationFields = resource.template;
                     vm.informationFields.forEach(function(field) {
                         field.type = 'input';
@@ -55,7 +55,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
                             id: ip.profile_transfer_project.profile,
                             ip: ip.id
                         }).$promise.then(function(resource) {
-                            vm.dependencyModel= resource.specification_data;
+                            vm.dependencyModel= ip.profile_transfer_project.data.data;
                             vm.dependencyFields = resource.template;
                             vm.dependencyFields.forEach(function(field) {
                                 field.type = 'input';
