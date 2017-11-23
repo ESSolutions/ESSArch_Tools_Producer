@@ -37,9 +37,6 @@ from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.ip.utils import get_cached_objid
 from ESSArch_Core.storage.copy import copy_file
 from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
-from ESSArch_Core.util import (
-    delete_content
-)
 from ESSArch_Core import tasks
 
 
@@ -138,57 +135,6 @@ class CreateIPRootDir(DBTask):
 
     def event_outcome_success(self, information_package=None):
         return "Created root directory for %s" % get_cached_objid(information_package)
-
-
-class CreatePhysicalModel(DBTask):
-    event_type = 10300
-
-    def get_root(self):
-        root = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-        return os.path.join(root, unicode(self.ip))
-
-    def run(self, structure={}, root=""):
-        """
-        Creates the IP physical model based on a logical model.
-
-        Args:
-            structure: A dict specifying the logical model.
-            root: The root directory to be used
-        """
-
-        if not root:
-            root = self.get_root()
-
-        try:
-            delete_content(root)
-        except OSError as e:
-            if e.errno != 2:
-                raise
-
-        for content in structure:
-            if content.get('type') == 'folder':
-                name = content.get('name')
-                dirname = os.path.join(root, name)
-                os.makedirs(dirname)
-
-                self.run(content.get('children', []), dirname)
-
-        self.set_progress(1, total=1)
-
-    def undo(self, structure={}, root=""):
-        if not root:
-            root = self.get_root()
-
-        for content in structure:
-            if content.get('type') == 'folder':
-                name = content.get('name')
-                dirname = os.path.join(root, name)
-                shutil.rmtree(dirname)
-
-    def event_outcome_success(self, structure={}, root=""):
-        return "Created physical model for %s" % self.ip_objid
 
 
 class SubmitSIP(DBTask):
