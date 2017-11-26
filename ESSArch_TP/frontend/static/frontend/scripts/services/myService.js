@@ -58,6 +58,8 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
     }
 
     function checkPermissions(permissions) {
+        if (permissions.length == 0) {return true;}
+
         var hasPermissions = false;
         permissions.forEach(function(permission) {
             if(checkPermission(permission)) {
