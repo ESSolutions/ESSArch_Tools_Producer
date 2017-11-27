@@ -297,5 +297,9 @@
     "COMPLETED_UPLOAD_DESC": "Do you want to complete upload of IP {{label}}?",
     "CREATE_SIP_DESC": "Do you want to create SIP from IP {{label}}?",
     "SUBMIT_SIP_DESC": "Do you want to submit SIP {{label}}?",
-    "FILES_PER_PAGE": "Files per page"
+    "FILES_PER_PAGE": "Files per page",
+    "SUBMISSION_AGREEMENT": "Submission agreement",
+    "IMPORT_SA_FROM_FILE": "Import SA from file",
+    "IMPORT_PROFILE_FROM_FILE": "Import profile from file",
+    "IMPORT_PROFILE": "Import profile"
 }
