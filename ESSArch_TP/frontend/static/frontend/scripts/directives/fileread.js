@@ -9,7 +9,6 @@ angular.module('myApp').directive("fileread", [function () {
                 reader.onload = function (loadEvent) {
                     scope.$apply(function () {
                         scope.fileread = loadEvent.target.result;
-                        console.log(element)
                         element[0].value = "";
                     });
                 }
