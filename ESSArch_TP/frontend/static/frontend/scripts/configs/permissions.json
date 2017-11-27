@@ -3,18 +3,18 @@
         "home": {
             "createSip": {
                 "prepareIp": {
-                    "_permissions": ["ip.prepare_ip"]
+                    "_permissions": []
                 },
                 "collectContent": {
-                    "_permissions": ["ip.can_upload", "ip.set_uploaded"]
+                    "_permissions": []
                 },
                 "ipApproval": {
-                    "_permissions": ["ip.create_sip"]
+                    "_permissions": []
                 }
             },
             "submitSip": {
                 "prepareSip": {
-                    "_permissions": ["ip.submit_sip"]
+                    "_permissions": []
                 }
             },
             "administration": {

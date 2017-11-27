@@ -1,6 +1,6 @@
 <div context-menu="menuOptions('row')">
     <button type="button"
-            ng-if="row.responsible.id == auth.id || checkPermission('ip.delete_informationpackage')"
+            ng-if="row.permissions.includes('delete_informationpackage')"
             ng-click="removeIpModal(row)"
             class="fa fa-trash"
             uib-popover="{{'REMOVEIP' | translate}}: {{row.label}}"

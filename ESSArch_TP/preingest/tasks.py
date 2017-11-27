@@ -29,6 +29,10 @@ import shutil
 import uuid
 from urlparse import urljoin
 
+from django.conf import settings
+
+from groups_manager.models import Member
+
 import requests
 
 from ESSArch_Core.configuration.models import Path
@@ -67,6 +71,15 @@ class PrepareIP(DBTask):
         ip.save(update_fields=['entry_date'])
 
         self.ip = ip.pk
+
+        member = Member.objects.get(django_user__id=responsible)
+        try:
+            perms = settings.IP_CREATION_PERMS_MAP
+        except AttributeError:
+            raise ValueError('Missing IP_CREATION_PERMS_MAP in settings')
+
+        organization = member.django_user.user_profile.current_organization
+        member.assign_object(organization, ip, custom_permissions=perms)
 
         ProcessTask.objects.filter(pk=self.request.id).update(
             information_package=ip

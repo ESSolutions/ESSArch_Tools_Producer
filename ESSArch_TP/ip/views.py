@@ -41,6 +41,8 @@ from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
 
+from guardian.shortcuts import get_objects_for_group
+
 from rest_framework import exceptions, filters, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
@@ -51,6 +53,7 @@ from natsort import natsorted
 
 from scandir import walk
 
+from ESSArch_Core.auth.util import get_membership_descendants
 from ESSArch_Core.exceptions import Conflict
 
 from ESSArch_Core.configuration.models import (
@@ -123,11 +126,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows information packages to be viewed or edited.
     """
-    queryset = InformationPackage.objects.all().prefetch_related(
-        Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
-        'archival_institution', 'archivist_organization', 'archival_type', 'archival_location',
-        'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
-    ).select_related('submission_agreement')
+    queryset = InformationPackage.objects.none()
     serializer_class = InformationPackageSerializer
     filter_backends = (
         filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter,
@@ -160,6 +159,20 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+        user = self.request.user
+
+        groups = get_membership_descendants(user.user_profile.current_organization, user)
+        if not groups.exists():
+            raise exceptions.ParseError('You are not a member of the selected group')
+
+        for grp in groups:
+            queryset |= get_objects_for_group(grp.django_group, 'ip.view_informationpackage')
+
+        queryset = queryset.prefetch_related(
+            Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
+            'archival_institution', 'archivist_organization', 'archival_type', 'archival_location',
+            'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
+        ).select_related('submission_agreement')
 
         other = self.request.query_params.get('other')
 
