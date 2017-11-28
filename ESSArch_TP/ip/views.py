@@ -158,16 +158,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         return super(InformationPackageViewSet, self).get_permissions()
 
     def get_queryset(self):
-        queryset = self.queryset
         user = self.request.user
-
-        groups = get_membership_descendants(user.user_profile.current_organization, user)
-        if not groups.exists():
-            raise exceptions.ParseError('You are not a member of the selected group')
-
-        for grp in groups:
-            queryset |= get_objects_for_group(grp.django_group, 'ip.view_informationpackage')
-
+        queryset = InformationPackage.objects.visible_to_user(user)
         queryset = queryset.prefetch_related(
             Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
             'archival_institution', 'archivist_organization', 'archival_type', 'archival_location',
