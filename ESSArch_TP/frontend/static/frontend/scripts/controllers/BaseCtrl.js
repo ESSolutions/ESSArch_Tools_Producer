@@ -251,7 +251,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
                     }));
                 }
             }
-            Promise.all(promises).then(function() {
+            $q.all(promises).then(function() {
                 $scope.selectRowCollection = $scope.selectRowCollapse;
                 return $scope.saProfile;
             })
