@@ -15,7 +15,7 @@
                             <p class="table-col">{{'SUBMISSIONAGREEMENT' | translate}}</a>
                         </td>
                         <td ng-if="!saAlert">
-                            <select class="form-control table-col" ng-disabled="(saProfile.locked)"
+                            <select class="form-control table-col" ng-disabled="saProfile.locked"
                                 ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)"
                                 ng-options="x as x.name for x in saProfile.profiles"></select>
                         </td>
