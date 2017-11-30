@@ -37,11 +37,11 @@
     </div>
     <div class="menu-task-wrapper">
         <div class="nav" ng-controller="UtilCtrl">
-            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.prepareIp')}" ui-sref="home.createSip.prepareIp" ng-if="checkPermissions(getPermissions('home.createSip.prepareIp'))">{{('PREPAREIP' | translate)}}</p>
-            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.collectContent')}" ui-sref="home.createSip.collectContent" ng-if="checkPermissions(getPermissions('home.createSip.collectContent'))">{{('COLLECTCONTENT' | translate)}}</p>
-            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.ipApproval')}" ui-sref="home.createSip.ipApproval" ng-if="checkPermissions(getPermissions('home.createSip.ipApproval'))">{{('CREATESIP' | translate)}}</p>
-            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.submitSip.prepareSip')}" ui-sref="home.submitSip.prepareSip" ng-if="checkPermissions(getPermissions('home.submitSip.prepareSip'))">{{('SUBMITSIP' | translate)}}</p>
-            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.administration.import')}" ui-sref="home.administration.import" ng-if="checkPermissions(getPermissions('home.administration.import'))">{{('Import' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.prepareIp')}" ui-sref="home.createSip.prepareIp" ng-if="checkPermissions('home.createSip.prepareIp')">{{('PREPAREIP' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.collectContent')}" ui-sref="home.createSip.collectContent" ng-if="checkPermissions('home.createSip.collectContent')">{{('COLLECTCONTENT' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.ipApproval')}" ui-sref="home.createSip.ipApproval" ng-if="checkPermissions('home.createSip.ipApproval')">{{('CREATESIP' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.submitSip.prepareSip')}" ui-sref="home.submitSip.prepareSip" ng-if="checkPermissions('home.submitSip.prepareSip')">{{('SUBMITSIP' | translate)}}</p>
+            <p class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.administration.import')}" ui-sref="home.administration.import" ng-if="checkPermissions('home.administration.import')">{{('Import' | translate)}}</p>
         </div>
         <div ng-controller="UtilCtrl" class="tasks-icons">
             <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
