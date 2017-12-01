@@ -102,8 +102,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             .state('home.createSip', {
                 url: 'create-SIP',
                 templateUrl: '/static/frontend/views/create_sip.html',
-                redirectTo: 'home.createSip.prepareIp',
-                controller: 'CreateSipCtrl as vm',
                 resolve: {
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
@@ -200,9 +198,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             })
             .state('home.submitSip', {
                 url: 'submit-SIP',
-                redirectTo: 'home.submitSip.prepareSip',
                 templateUrl: '/static/frontend/views/submit_sip.html',
-                controller: 'IpApprovalCtrl as vm',
                 resolve: {
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
@@ -212,7 +208,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
             .state('home.submitSip.info', {
                 url: '/info',
                 templateUrl: '/static/frontend/views/submit_sip_info_page.html',
-                controller: 'PrepareSipCtrl as vm',
                 resolve: {
                     authenticated: ['djangoAuth', function(djangoAuth){
                         return djangoAuth.authenticationStatus();
