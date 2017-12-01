@@ -49,7 +49,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
 
     // Init intervals
     // If status view is visible, start update interval
-    $rootScope.$on('$stateChangeStart', function () {
+    $scope.$on('$stateChangeStart', function () {
         $interval.cancel(stateInterval);
         $interval.cancel(listViewInterval);
         watchers.forEach(function(watcher) {
@@ -57,7 +57,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         });
     });
 
-    $rootScope.$on('REFRESH_LIST_VIEW', function (event, data) {
+    $scope.$on('REFRESH_LIST_VIEW', function (event, data) {
         $scope.getListViewData();
     });
 

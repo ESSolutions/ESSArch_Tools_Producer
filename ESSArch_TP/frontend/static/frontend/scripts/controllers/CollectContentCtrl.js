@@ -40,7 +40,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             $interval.cancel(fileBrowserInterval);
         }
     }));
-    $rootScope.$on('$stateChangeStart', function() {
+    $scope.$on('$stateChangeStart', function() {
         $interval.cancel(fileBrowserInterval);
         watchers.forEach(function(watcher) {
             watcher();

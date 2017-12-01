@@ -3,11 +3,11 @@ angular.module('myApp').controller('HeadCtrl', function($scope, $rootScope, $tim
     var appName = " | ESSArch Tools for Producer";
     vm.pageTitle = "ESSArch Tools for Producer";
     vm.responsiveTag = "";
-    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         vm.pageTitle = $translate.instant(toState.name.split(".").pop().toUpperCase())+appName;
         $scope.getResponsiveTag();
     });
-    $rootScope.$on('$translateChangeSuccess', function () {
+    $scope.$on('$translateChangeSuccess', function () {
         vm.pageTitle = $translate.instant($state.current.name.split(".").pop().toUpperCase())+appName;
     });
     $scope.getResponsiveTag = function() {

@@ -65,7 +65,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
 
     $scope.selected = [];
     vm.displayed = [];
-    $rootScope.$on('$stateChangeStart', function() {
+    $scope.$on('$stateChangeStart', function() {
         $interval.cancel(eventInterval);
     });
     vm.$onDestroy = function() {
@@ -74,7 +74,7 @@ angular.module('myApp').controller('EventCtrl', ['Resource', '$scope', '$rootSco
             watcher();
         });
     };
-    watchers.push($rootScope.$watch(function() {return $rootScope.ip;}, function(){
+    watchers.push($scope.$watch(function() {return $rootScope.ip;}, function(){
         $scope.addEventAlert = null;
     }));
     $scope.newEventForm = {

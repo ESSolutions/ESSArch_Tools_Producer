@@ -23,7 +23,7 @@
 */
 
 angular.module('myApp').controller('TabsCtrl', function TabsCtrl($state, $scope, $location, $window, myService, $translate, $rootScope){
-    $rootScope.$on('$translateChangeSuccess', function () {
+    $scope.$on('$translateChangeSuccess', function () {
         $state.reload()
     });
     $scope.$state = $state;

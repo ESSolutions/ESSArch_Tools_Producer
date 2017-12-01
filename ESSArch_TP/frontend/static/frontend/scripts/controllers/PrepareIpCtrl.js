@@ -54,7 +54,7 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
         }
     };
 
-    $rootScope.$on("refresh_list_view", function() {
+    $scope.$on("refresh_list_view", function() {
         $timeout(function() {
             $scope.getListViewData();
             $scope.ip.submission_agreement_locked = true;
