@@ -339,7 +339,8 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             ip: $scope.ip.id
         }).$promise.then(function (response) {
             sa.locked = true;
-            $rootScope.$emit("refresh_list_view", {});
+            $scope.$emit("REFRESH_LIST_VIEW", {});
+            $scope.$emit("RELOAD_IP", {});
         });
     }
 

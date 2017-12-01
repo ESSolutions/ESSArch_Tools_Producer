@@ -61,6 +61,12 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         $scope.getListViewData();
     });
 
+    $scope.$on('RELOAD_IP', function (event, data) {
+        $http.get(appConfig.djangoUrl + "information-packages/" + $scope.ip.id + "/").then(function(response) {
+            $scope.ip = response.data;
+            $rootScope.ip = response.data;
+        });
+    });
     var stateInterval;
     watchers.push($scope.$watch(function(){return $scope.statusShow;}, function(newValue, oldValue) {
         if(newValue) {
