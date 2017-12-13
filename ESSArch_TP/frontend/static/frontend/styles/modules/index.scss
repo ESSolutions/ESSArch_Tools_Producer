@@ -1079,3 +1079,14 @@ input[type="checkbox"] {
 .no-select {
     user-select: none;
 }
+
+// Remove scroll on main page when modal is open
+body.modal-open {
+    overflow: hidden;
+}
+
+.empty-table-indicator {
+    text-align: center;
+    background-color: #b6c8e4;
+    color: #999595;
+}
