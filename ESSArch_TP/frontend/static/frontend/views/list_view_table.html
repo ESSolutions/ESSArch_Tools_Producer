@@ -49,7 +49,7 @@
                     <td colspan="{{listViewColumns.length}}">{{'NO_RESULTS_FOUND' | translate}}</td>
                 </tr>
                 <tr ng-if="!vm.displayedIps.length && ipLoading" class="empty-table-indicator">
-                    <td colspan="{{listViewColumns.length}}">{{'LOADING' | translate}}</td>
+                    <td class="loading-column" colspan="{{listViewColumns.length}}">{{'LOADING' | translate}}</td>
                 </tr>
             </tbody>
         </table>
