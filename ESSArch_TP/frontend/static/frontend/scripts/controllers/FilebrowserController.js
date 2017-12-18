@@ -1,13 +1,26 @@
 angular.module('myApp').controller('FilebrowserController', function ($scope, $rootScope, $sce, appConfig, listViewService, $uibModal, $window, $cookies) {
     $scope.previousGridArrays = [];
-    $scope.ip = $rootScope.ip;
     var vm = this;
+    vm.$onInit = function() {
+        if(vm.ip) {
+            $scope.ip = vm.ip;
+        } else {
+            $scope.ip = $rootScope.ip;
+        }
+        $scope.listView = false;
+        $scope.gridView = true;
+    }
     var watchers = [];
     vm.$onDestroy = function() {
         watchers.forEach(function(watcher) {
             watcher();
         });
     };
+
+    $scope.$on('UPDATE_FILEBROWSER', function(data) {
+        $scope.dirPipe($scope.tableState);
+    });
+
     $scope.listView = false;
     $scope.gridView = true;
     $scope.useListView = function() {
@@ -35,6 +48,9 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
     }
     $scope.deckGridData = [];
     $scope.dirPipe = function(tableState) {
+        if(vm.browserstate) {
+            vm.browserstate.path = $scope.previousGridArraysString();
+        }
         $scope.gridArrayLoading = true;
         if ($scope.deckGridData.length == 0) {
             $scope.initLoad = true;
@@ -130,7 +146,7 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
     }
 
     $scope.getFile = function(file) {
-        file.content = $sce.trustAsResourceUrl($scope.ip.url + "files/?path=" + $scope.previousGridArraysString() + file.name);
+        file.content = $sce.trustAsResourceUrl(appConfig.pythonUrl + "information-packages/" + $scope.ip.id + "/files/?path=" + $scope.previousGridArraysString() + file.name);
         $window.open(file.content, '_blank');
     }
     function folderNameExistsModal(index, folder, fileToOverwrite) {

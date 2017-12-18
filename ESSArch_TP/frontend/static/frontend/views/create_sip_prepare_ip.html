@@ -10,7 +10,9 @@
                         <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
                     </div>
                 </div>
-                <div ng-if="filebrowser" class="file-browser" ng-controller="FilebrowserController" ng-include src="'static/frontend/views/filebrowser.html'"></div>
+                <div ng-if="filebrowser" class="file-browser">
+                    <filebrowser ip="ip"></filebrowser>
+                </div>
                 <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
                     <profile-editor ng-if="select" ip="ip"></profile-editor>
                     <div ng-if="eventlog && ip.state != 'Prepared'" class="eventlog-view">

@@ -29,6 +29,9 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     vm.flowDestination = null;
     $scope.showFileUpload = true;
     $scope.currentFlowObject = null;
+    vm.browserstate = {
+        path: ""
+    };
     var watchers = [];
     // File browser interval
     var fileBrowserInterval;
@@ -75,7 +78,6 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
-            $scope.deckGridInit($scope.ip);
             if(!$rootScope.flowObjects[row.id]) {
                 $scope.createNewFlow(row);
             }
@@ -121,97 +123,9 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         }, timeout);
     };
     //Deckgrid test
-    $scope.listView = false;
-    $scope.gridView = true;
-    $scope.useListView = function() {
-        $scope.filesPerPage = $cookies.get("files-per-page") || 50;
-        $scope.listView = true;
-        $scope.gridView = false;
-    }
 
-    $scope.useGridView = function() {
-        $scope.filesPerPage = $cookies.get("files-per-page") || 50;
-        $scope.listView = false;
-        $scope.gridView = true;
-    }
-
-    $scope.filesPerPage = $cookies.get("files-per-page") || 50;
-    $scope.changeFilesPerPage = function(filesPerPage) {
-        $cookies.put("files-per-page", filesPerPage, { expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT") });
-    }
-    $scope.previousGridArrays = [];
-    $scope.previousGridArraysString = function() {
-        var retString = "";
-        $scope.previousGridArrays.forEach(function(card) {
-            retString = retString.concat(card.name, "/");
-        });
-        return retString;
-    }
-    $scope.deckGridData = [];
-    $scope.dirPipe = function(tableState) {
-        $scope.gridArrayLoading = true;
-        if ($scope.deckGridData.length == 0) {
-            $scope.initLoad = true;
-        }
-        if (!angular.isUndefined(tableState)) {
-            $scope.tableState = tableState;
-            var pagination = tableState.pagination;
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number;  // Number of entries showed per page.
-            var pageNumber = start / number + 1;
-            listViewService.getDir($scope.ip, $scope.previousGridArraysString(), pageNumber, number).then(function(dir) {
-                $scope.deckGridData = dir.data;
-                tableState.pagination.numberOfPages = dir.numberOfPages;//set the number of pages so the pagination can update
-                $scope.gridArrayLoading = false;
-                $scope.initLoad = false;
-            })
-        }
-    }
-    $scope.deckGridInit = function(ip) {
-        $scope.previousGridArrays = [];
-        if($scope.tableState) {
-            $scope.dirPipe($scope.tableState);
-            $scope.selectedCards = [];
-        }
-    };
-    $scope.previousGridArray = function() {
-        $scope.previousGridArrays.pop();
-        if($scope.tableState) {
-            $scope.dirPipe($scope.tableState);
-            $scope.selectedCards = [];
-        }
-    };
-    $scope.gridArrayLoading = false;
     $scope.updateGridArray = function(ip) {
-        if($scope.tableState) {
-            $scope.dirPipe($scope.tableState);
-        }
-    };
-    $scope.expandFile = function(ip, card) {
-        if(card.type == "dir"){
-            $scope.previousGridArrays.push(card);
-            if($scope.tableState) {
-                $scope.tableState.pagination.start = 0;
-                $scope.dirPipe($scope.tableState);
-                $scope.selectedCards = [];
-            }
-        } else {
-            $scope.getFile(card);
-        }
-    };
-
-    $scope.getFile = function (file) {
-        file.content = $sce.trustAsResourceUrl($scope.ip.url + "files/?path=" + $scope.previousGridArraysString() + file.name);
-        $window.open(file.content, '_blank');
-    }
-    $scope.selectedCards = [];
-    $scope.cardSelect = function (card) {
-
-        if (includesWithProperty($scope.selectedCards, "name", card.name)) {
-            $scope.selectedCards.splice($scope.selectedCards.indexOf(card), 1);
-        } else {
-            $scope.selectedCards.push(card);
-        }
+        $scope.$broadcast("UPDATE_FILEBROWSER", {});
     };
 
     function includesWithProperty(array, property, value) {
@@ -236,7 +150,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             }
         });
         if (!fileExists) {
-            listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
+            listViewService.addNewFolder($scope.ip, vm.browserstate.path, folder)
                 .then(function (response) {
                     $scope.updateGridArray();
                 });
@@ -262,9 +176,9 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             },
         })
         modalInstance.result.then(function (data) {
-            listViewService.deleteFile($scope.ip, $scope.previousGridArraysString(), fileToOverwrite)
+            listViewService.deleteFile($scope.ip, vm.browserstate.path, fileToOverwrite)
                 .then(function() {
-                    listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
+                    listViewService.addNewFolder($scope.ip, vm.browserstate.path, folder)
                         .then(function () {
                             $scope.updateGridArray();
                         });
@@ -301,11 +215,10 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
     $scope.getFlowTarget = function() {
-        console.log("settarget");
-        return $scope.ip.url + 'upload/';
+        return appConfig.djangoUrl + "information-packages/" + $scope.ip.id + '/upload/';
     };
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
-        return {destination: $scope.previousGridArraysString()};
+        return {destination: vm.browserstate.path};
     };
     $scope.fileUploadSuccess = function(ip, file, message, flow) {
         $scope.uploadedFiles ++;
@@ -322,7 +235,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     };
     $scope.removeFiles = function() {
         $scope.selectedCards.forEach(function(file) {
-            listViewService.deleteFile($scope.ip, $scope.previousGridArraysString(), file)
+            listViewService.deleteFile($scope.ip, vm.browserstate.path, file)
             .then(function () {
                 $scope.updateGridArray();
             });
@@ -386,7 +299,7 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             $scope.fileUploadSuccess(ip, file, message, flowObj);
         });
         flowObj.on('uploadStart', function(){
-            flowObj.opts.query = {destination: $scope.previousGridArraysString()};
+            flowObj.opts.query = {destination: vm.browserstate.path};
         });
         $rootScope.flowObjects[ip.id] = flowObj;
     }
