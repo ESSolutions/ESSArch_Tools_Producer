@@ -144,7 +144,7 @@ angular.module('myApp').controller('FilebrowserController', function ($scope, $r
     }
 
     $scope.getFile = function(file) {
-        file.content = $sce.trustAsResourceUrl(appConfig.pythonUrl + "information-packages/" + $scope.ip.id + "/files/?path=" + $scope.previousGridArraysString() + file.name);
+        file.content = $sce.trustAsResourceUrl(appConfig.djangoUrl + "information-packages/" + $scope.ip.id + "/files/?path=" + $scope.previousGridArraysString() + file.name);
         $window.open(file.content, '_blank');
     }
     function folderNameExistsModal(index, folder, fileToOverwrite) {
