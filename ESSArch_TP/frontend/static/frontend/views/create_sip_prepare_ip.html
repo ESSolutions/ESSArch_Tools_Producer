@@ -4,16 +4,16 @@
             <div class="content-wrapper">
                 <div class="list-view" ng-include src="'static/frontend/views/list_view_table.html'">
                 </div>
-                <div ng-if="eventShow || statusShow" class="events-status-wrapper">
+                <div ng-if="eventShow || statusShow" class="events-status-wrapper" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                     <event-table ng-if="eventShow" ip="ip"></event-table>
                     <div ng-if="statusShow" class="status-view">
                         <div ng-include src="'static/frontend/views/status_tree_view.html'"></div>
                     </div>
                 </div>
-                <div ng-if="filebrowser" class="file-browser">
+                <div ng-if="filebrowser" class="file-browser" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                     <filebrowser ip="ip"></filebrowser>
                 </div>
-                <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
+                <div ng-if="select || subSelect || edit || eventlog" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)" id="select-wrap" class="select-sub-edit-eventlog-wrapper">
                     <profile-editor ng-if="select" ip="ip"></profile-editor>
                     <div ng-if="eventlog && ip.state != 'Prepared'" class="eventlog-view">
                         <div uib-alert ng-if="prepareAlert" ng-class="'alert-danger'" close="closePrepareAlert()">{{prepareAlert.msg | translate}}</div>

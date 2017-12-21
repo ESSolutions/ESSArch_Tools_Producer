@@ -41,6 +41,10 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     $scope.ip = null;
     $rootScope.ip = null;
 
+    // Tree control for state tree
+    $scope.myTreeControl = {};
+    $scope.myTreeControl.scope = this;
+
     var watchers = [];
     // Watchers
     watchers.push($scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
@@ -252,7 +256,145 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         $rootScope.loadNavigation(ipSortString);
     };
 
+    function selectNextIp() {
+        var index = 0;
+        if($scope.ip) {
+            vm.displayedIps.forEach(function(ip, idx, array) {
+                if($scope.ip.id === ip.id) {
+                    index = idx+1;
+                }
+            });
+        }
+        if(index !== vm.displayedIps.length) {
+            $scope.ipTableClick(vm.displayedIps[index]);
+        }
+    }
 
+    function previousIp() {
+        var index = vm.displayedIps.length-1;
+        if($scope.ip) {
+            vm.displayedIps.forEach(function(ip, idx, array) {
+                if($scope.ip.id === ip.id) {
+                    index = idx-1;
+                }
+            });
+        }
+        if(index >= 0) {
+            $scope.ipTableClick(vm.displayedIps[index]);
+        }
+    }
+
+    function closeContentViews() {
+        $scope.stepTaskInfoShow = false;
+        $scope.statusShow = false;
+        $scope.eventShow = false;
+        $scope.select = false;
+        $scope.subSelect = false;
+        $scope.edit = false;
+        $scope.eventlog = false;
+        $scope.filebrowser = false;
+        $scope.ip = null;
+        $rootScope.ip = null;
+    }
+    var arrowLeft = 37;
+    var arrowUp = 38;
+    var arrowRight = 39;
+    var arrowDown = 40;
+    var escape = 27;
+    var enter = 13;
+    var space = 32;
+
+    /**
+     * Handle keydown events in list view
+     * @param {Event} e
+     */
+    vm.ipListKeydownListener = function(e) {
+        switch(e.keyCode) {
+            case arrowDown:
+                e.preventDefault();
+                selectNextIp();
+                break;
+            case arrowUp:
+                e.preventDefault();
+                previousIp();
+                break;
+            case arrowLeft:
+                e.preventDefault();
+                var pagination = $scope.tableState.pagination;
+                if(pagination.start != 0) {
+                    pagination.start -= pagination.number;
+                    $scope.getListViewData();
+                }
+                break;
+            case arrowRight:
+                e.preventDefault();
+                var pagination = $scope.tableState.pagination;
+                if((pagination.start / pagination.number + 1) < pagination.numberOfPages) {
+                    pagination.start+=pagination.number;
+                    $scope.getListViewData();
+                }
+                break;
+            case escape:
+                if($scope.ip) {
+                    closeContentViews();
+                }
+                break;
+        }
+    }
+
+    /**
+     * Handle keydown events in views outside list view
+     * @param {Event} e
+     */
+    vm.contentViewsKeydownListener = function(e) {
+        switch(e.keyCode) {
+            case escape:
+                if($scope.ip) {
+                    closeContentViews();
+                }
+                document.getElementById("list-view").focus();
+                break;
+        }
+    }
+
+    /**
+     * Handle keydown events for state view table
+     * @param {Event} e
+     */
+    $scope.myTreeControl.scope.stateTableKeydownListener = function(e, branch) {
+        switch(e.keyCode) {
+            case arrowDown:
+                e.preventDefault();
+                e.target.nextElementSibling.focus();
+                break;
+            case arrowUp:
+                e.preventDefault();
+                e.target.previousElementSibling.focus();
+                break;
+            case enter:
+                e.preventDefault();
+                $scope.stepTaskClick(branch)
+                break;
+            case space:
+                e.preventDefault();
+                if(branch.flow_type != "task") {
+                    if(branch.expanded) {
+                        branch.expanded = false;
+                    } else {
+                        branch.expanded = true;
+                        $scope.statusViewUpdate($scope.ip);
+                    }
+                }
+                break;
+            case escape:
+                e.preventDefault();
+                if($scope.ip) {
+                    closeContentViews();
+                }
+                document.getElementById("list-view").focus();
+                break;
+        }
+    }
     // Functions associated with profiles
 
     //populating select view
@@ -298,6 +440,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             },
             "defaultValue": true,
             "type": "checkbox",
+            "ngModelElAttrs": {
+                "tabindex": '-1'
+            },
             "key": "validate_file_format",
         },
         {
@@ -307,6 +452,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             },
             "defaultValue": true,
             "type": "checkbox",
+            "ngModelElAttrs": {
+                "tabindex": '-1'
+            },
             "key": "validate_xml_file",
         },
         {
@@ -316,6 +464,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             },
             "defaultValue": true,
             "type": "checkbox",
+            "ngModelElAttrs": {
+                "tabindex": '-1'
+            },
             "key": "validate_logical_physical_representation",
         },
         {
@@ -325,6 +476,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             },
             "defaultValue": true,
             "type": "checkbox",
+            "ngModelElAttrs": {
+                "tabindex": '-1'
+            },
             "key": "validate_integrity",
         }
     ];
@@ -342,6 +496,9 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
                 },
                 "defaultValue": false,
                 "type": "select",
+                "ngModelElAttrs": {
+                    "tabindex": '-1'
+                },
                 "key": "file_conversion",
             },
         ];
@@ -429,8 +586,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             });
         }
     });
-    $scope.myTreeControl = {};
-    $scope.myTreeControl.scope = this;
+
     //Undo step/task
     $scope.myTreeControl.scope.taskStepUndo = function(branch) {
         branch.$undo().then(function(response) {

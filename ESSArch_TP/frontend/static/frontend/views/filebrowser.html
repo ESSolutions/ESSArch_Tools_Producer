@@ -6,16 +6,16 @@
         </div>
         <div class="file-view-options btn-group">
             <div>
-                <select class="form-control items-per-page" ng-change="changeFilesPerPage(filesPerPage)" ng-model="filesPerPage" ng-options="x for x in [5, 10, 25, 50]"
+                <select tabindex="-1" class="form-control items-per-page" ng-change="changeFilesPerPage(filesPerPage)" ng-model="filesPerPage" ng-options="x for x in [5, 10, 25, 50]"
                 uib-popover="{{'FILES_PER_PAGE' | translate}}" popover-placement="top" popover-popup-delay="500" popover-append-to-body="true">
                     {{x}}
                 </select>
             </div>
-            <button class="btn btn-default btn-sm" ng-class="{'active': listView}" ng-click="useListView()"
+            <button tabindex="-1" class="btn btn-default btn-sm" ng-class="{'active': listView}" ng-click="useListView()"
                 uib-popover="{{'LIST_VIEW' | translate}}" popover-placement="top" popover-popup-delay="500" popover-append-to-body="true">
                 <i class="fa fa-th-list fa-lg"></i>
             </button>
-            <button class="btn btn-default btn-sm" ng-class="{'active': gridView}" ng-click="useGridView()"
+            <button tabindex="-1" class="btn btn-default btn-sm" ng-class="{'active': gridView}" ng-click="useGridView()"
                 uib-popover="{{'GRID_VIEW' | translate}}" popover-placement="top" popover-popup-delay="500" popover-append-to-body="true">
                 <i class="fa fa-th fa-lg"></i>
             </button>
