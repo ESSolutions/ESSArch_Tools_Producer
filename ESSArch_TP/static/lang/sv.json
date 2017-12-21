@@ -313,5 +313,7 @@
     "MOVE_SELECTION_UP": "Flytta markering uppåt",
     "SEE_STEP_TASK_REPORT": "Se step/task-rapport",
     "EXPAND_STEP": "Expandera step",
-    "IN_GENERAL_SELECTED_IP": "Generellt när ett IP är valt"
+    "IN_GENERAL_SELECTED_IP": "Generellt när ett IP är valt",
+    "STEP_PAGINATION_NEXT": "Gå till nästa sida i paginering",
+    "STEP_PAGINATION_PREVIOUS": "Gå till föregående sida i paginering"
 }

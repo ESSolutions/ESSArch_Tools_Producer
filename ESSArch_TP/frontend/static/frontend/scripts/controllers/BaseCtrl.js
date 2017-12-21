@@ -296,8 +296,10 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         $scope.ip = null;
         $rootScope.ip = null;
     }
-    var arrowDown = 40;
+    var arrowLeft = 37;
     var arrowUp = 38;
+    var arrowRight = 39;
+    var arrowDown = 40;
     var escape = 27;
     var enter = 13;
     var space = 32;
@@ -315,6 +317,22 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             case arrowUp:
                 e.preventDefault();
                 previousIp();
+                break;
+            case arrowLeft:
+                e.preventDefault();
+                var pagination = $scope.tableState.pagination;
+                if(pagination.start != 0) {
+                    pagination.start -= pagination.number;
+                    $scope.getListViewData();
+                }
+                break;
+            case arrowRight:
+                e.preventDefault();
+                var pagination = $scope.tableState.pagination;
+                if((pagination.start / pagination.number + 1) < pagination.numberOfPages) {
+                    pagination.start+=pagination.number;
+                    $scope.getListViewData();
+                }
                 break;
             case escape:
                 if($scope.ip) {

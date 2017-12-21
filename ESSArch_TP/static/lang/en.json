@@ -313,5 +313,7 @@
     "MOVE_SELECTION_UP": "Move selection up",
     "SEE_STEP_TASK_REPORT": "See step/task report",
     "EXPAND_STEP": "Expand step",
-    "IN_GENERAL_SELECTED_IP": "In general when IP is selected"
+    "IN_GENERAL_SELECTED_IP": "In general when IP is selected",
+    "STEP_PAGINATION_NEXT": "Go to next page in pagination",
+    "STEP_PAGINATION_PREVIOUS": "Go to previous page in pagination"
 }
