@@ -344,6 +344,38 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         });
     }
 
+    // Map for profile types
+    var typeMap = {
+        transfer_project: "Transfer Project",
+        content_type: "Content Type",
+        data_selection: "Data Selection",
+        authority_information: "Authority Information",
+        archival_description: "Archival Description",
+        import: "Import",
+        submit_description: "Submit Description",
+        sip: "SIP",
+        aip: "AIP",
+        aic_description: "AIC Description",
+        aip_description: "AIP Description",
+        dip: "DIP",
+        workflow: "Workflow",
+        preservation_metadata: "Preservation Metadata",
+        validation: "Validation",
+        transformation: "Transformation",
+    }
+
+    /**
+     * Maps profile type to a prettier format
+     * @param {String} type
+     */
+    vm.mapProfileType = function(type) {
+        if(typeMap[type]) {
+            return typeMap[type];
+        } else {
+            return type;
+        }
+    }
+
     vm.treeEditModel = {
     };
     vm.treeEditFields = [
