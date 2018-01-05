@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope, $timeout, $http, appConfig, TopAlert, permissionConfig, myService) {
+angular.module('myApp').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope, $timeout, $http, appConfig, TopAlert, permissionConfig, myService, $anchorScroll) {
     $scope.$state = $state;
     $scope.reloadPage = function (){
         $state.reload();
@@ -43,5 +43,35 @@ angular.module('myApp').controller('UtilCtrl', function($scope, $state, $locatio
     }
     $scope.showAlert = function() {
         TopAlert.show();
+    }
+
+    $scope.navigateToState = function(state) {
+        $state.go(state);
+        $scope.focusRouterView();
+    }
+
+    var enter = 13;
+    var space = 32;
+
+    /**
+     * Handle keydown events navigation
+     * @param {Event} e
+     */
+    $scope.navKeydownListener = function(e, state) {
+        switch(e.keyCode) {
+            case space:
+            case enter:
+                event.preventDefault();
+                $state.go(state);
+                $scope.focusRouterView();
+                break;
+        }
+    }
+    $scope.focusRouterView = function() {
+        $timeout(function() {
+            var elm = document.getElementsByClassName('dynamic-part')[0];
+            elm.focus();
+            $anchorScroll();
+        })
     }
 });
