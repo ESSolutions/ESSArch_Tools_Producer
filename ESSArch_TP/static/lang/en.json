@@ -316,5 +316,6 @@
     "IN_GENERAL_SELECTED_IP": "In general when IP is selected",
     "STEP_PAGINATION_NEXT": "Go to next page in pagination",
     "STEP_PAGINATION_PREVIOUS": "Go to previous page in pagination",
-    "OPEN_KEYBOARD_SHORTCUT_INFO": "Open keyboard shortcut info page"
+    "OPEN_KEYBOARD_SHORTCUT_INFO": "Open keyboard shortcut info page",
+    "NO_SUBMISSION_AGREEMENT_AVAILABLE": "No Submission Agreement available"
 }

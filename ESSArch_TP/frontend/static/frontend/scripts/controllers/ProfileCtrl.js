@@ -4,6 +4,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
     $scope.select = true;
     $scope.alerts = {
         error: { type: 'danger', msg: $translate.instant('ERROR') },
+        noSas: { type: 'danger', msg: $translate.instant('NO_SUBMISSION_AGREEMENT_AVAILABLE') },
     };
     $scope.saAlert = null;
     $scope.aipAlert = $scope.alerts.aipError;
@@ -25,6 +26,9 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             if($scope.ip.submission_agreement) {
                 chosen_sa_id = $scope.ip.submission_agreement;
             }
+            if(result.profiles.length <= 0) {
+                $scope.saAlert = $scope.alerts.noSas;
+            } else
             if (chosen_sa_id) {
                 var found = $filter('filter')(result.profiles, { id: chosen_sa_id }, true);
                 if (found.length) {
@@ -52,6 +56,9 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             if($scope.ip.submission_agreement) {
                 chosen_sa_id = $scope.ip.submission_agreement;
             }
+            if(result.profiles.length <= 0) {
+                $scope.saAlert = $scope.alerts.noSas;
+            } else
             if (chosen_sa_id) {
                 var found = $filter('filter')(result.profiles, { id: chosen_sa_id }, true);
                 if (found.length) {
