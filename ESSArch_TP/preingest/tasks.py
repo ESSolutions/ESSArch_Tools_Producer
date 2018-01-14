@@ -32,6 +32,9 @@ from urlparse import urljoin
 from django.conf import settings
 
 from groups_manager.models import Member
+from groups_manager.utils import get_permission_name
+
+from guardian.shortcuts import assign_perm
 
 import requests
 
@@ -78,8 +81,14 @@ class PrepareIP(DBTask):
         except AttributeError:
             raise ValueError('Missing IP_CREATION_PERMS_MAP in settings')
 
+        user_perms = perms.pop('owner', [])
+
         organization = member.django_user.user_profile.current_organization
-        member.assign_object(organization, ip, custom_permissions=perms)
+        organization.assign_object(ip, custom_permissions=perms)
+
+        for perm in user_perms:
+            perm_name = get_permission_name(perm, ip)
+            assign_perm(perm_name, member.django_user, ip
 
         ProcessTask.objects.filter(pk=self.request.id).update(
             information_package=ip
