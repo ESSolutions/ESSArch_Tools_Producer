@@ -317,5 +317,6 @@
     "STEP_PAGINATION_NEXT": "Go to next page in pagination",
     "STEP_PAGINATION_PREVIOUS": "Go to previous page in pagination",
     "OPEN_KEYBOARD_SHORTCUT_INFO": "Open keyboard shortcut info page",
-    "NO_SUBMISSION_AGREEMENT_AVAILABLE": "No Submission Agreement available"
+    "NO_SUBMISSION_AGREEMENT_AVAILABLE": "No Submission Agreement available",
+    "IP_EXISTS": "IP with object identifer value \"{{ip}}\" already exists"
 }
