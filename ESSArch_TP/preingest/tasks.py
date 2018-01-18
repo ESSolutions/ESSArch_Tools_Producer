@@ -24,12 +24,14 @@
 
 from __future__ import absolute_import
 
+import logging
 import os
 import shutil
 import uuid
 from urlparse import urljoin
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 
 from groups_manager.models import Member
 from groups_manager.utils import get_permission_name
@@ -49,6 +51,7 @@ from ESSArch_Core import tasks
 
 class PrepareIP(DBTask):
     event_type = 10100
+    logger = logging.getLogger('essarch.etp.tasks.PrepareIP')
 
     def run(self, label="", responsible={}, object_identifier_value=None, step=None):
         """
@@ -63,6 +66,13 @@ class PrepareIP(DBTask):
             The id of the created information package
         """
 
+        try:
+            perms = settings.IP_CREATION_PERMS_MAP
+        except AttributeError:
+            msg = 'IP_CREATION_PERMS_MAP not defined in settings'
+            self.logger.error(msg)
+            raise ImproperlyConfigured(msg)
+
         ip = InformationPackage.objects.create(
             object_identifier_value=object_identifier_value,
             label=label,
@@ -76,13 +86,7 @@ class PrepareIP(DBTask):
         self.ip = ip.pk
 
         member = Member.objects.get(django_user__id=responsible)
-        try:
-            perms = settings.IP_CREATION_PERMS_MAP
-        except AttributeError:
-            raise ValueError('Missing IP_CREATION_PERMS_MAP in settings')
-
         user_perms = perms.pop('owner', [])
-
         organization = member.django_user.user_profile.current_organization
         organization.assign_object(ip, custom_permissions=perms)
 
