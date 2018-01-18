@@ -66,10 +66,10 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
         }).catch(function(response) {
             if (response.status == 409) {
                 var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
-            } else {
-                var msg = response.data.detail;
+                TopAlert.add(msg, "error", 5000);
+            } else if (response.status != 500) {
+                TopAlert.add(response.data.detail, "error", 5000);
             }
-            TopAlert.add(msg, "error", 5000);
         });
     };
     $ctrl.prepareForUpload = function() {
