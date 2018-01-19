@@ -24,6 +24,7 @@
 
 from __future__ import absolute_import
 
+import copy
 import logging
 import os
 import shutil
@@ -67,7 +68,7 @@ class PrepareIP(DBTask):
         """
 
         try:
-            perms = settings.IP_CREATION_PERMS_MAP
+            perms = copy.deepcopy(settings.IP_CREATION_PERMS_MAP)
         except AttributeError:
             msg = 'IP_CREATION_PERMS_MAP not defined in settings'
             self.logger.error(msg)
