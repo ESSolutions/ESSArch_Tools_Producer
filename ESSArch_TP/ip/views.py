@@ -617,7 +617,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             responsible=self.request.user,
                         ))
 
-            ProcessTask.objects.bulk_create(tasks, 1000)
+            ProcessTask.objects.bulk_create(tasks, 100)
 
         generate_xml_step = ProcessStep.objects.create(
             name="Generate XML",
