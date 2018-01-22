@@ -523,6 +523,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             eager=False,
         )
 
+        download_schemas_step = ProcessStep.objects.create(
+            name="Download Schemas",
+            parent_step_pos=12,
+        )
+
         pos = 0
 
         t0 = ProcessTask.objects.create(
@@ -636,15 +641,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "structure": structure,
                     "root": ip.object_path,
                 },
-                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             )
 
-            generate_xml_step.add_tasks(t)
-
-        pos += 10
+            download_schemas_step.add_tasks(t)
 
         t = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
@@ -774,7 +776,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         pos = 0
         for fname, fcontent in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
-            create_log_file_step.add_tasks(ProcessTask.objects.create(
+            download_schemas_step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.DownloadSchemas",
                 params={
                     "template": fcontent['spec'],
@@ -782,12 +784,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     "structure": structure,
                     "root": ip.object_path,
                 },
-                processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
                 responsible=self.request.user,
             ))
-            pos += 10
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.GenerateXML",
@@ -1046,7 +1046,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         main_step.add_child_steps(
             start_create_sip_step, create_log_file_step, generate_xml_step,
-            create_sip_step
+            download_schemas_step, create_sip_step
         )
 
         if file_conversion:
