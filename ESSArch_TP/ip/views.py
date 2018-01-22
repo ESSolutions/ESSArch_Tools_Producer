@@ -626,12 +626,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         pos = 0
 
-        for fname, template in filesToCreate.iteritems():
+        for fname, fcontent in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
             t = ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.DownloadSchemas",
                 params={
-                    "template": template,
+                    "template": fcontent['spec'],
                     "dirname": dirname,
                     "structure": structure,
                     "root": ip.object_path,
@@ -772,12 +772,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             parent_step_pos=15,
         )
         pos = 0
-        for fname, template in filesToCreate.iteritems():
+        for fname, fcontent in filesToCreate.iteritems():
             dirname = os.path.dirname(fname)
             create_log_file_step.add_tasks(ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.DownloadSchemas",
                 params={
-                    "template": template,
+                    "template": fcontent['spec'],
                     "dirname": dirname,
                     "structure": structure,
                     "root": ip.object_path,
