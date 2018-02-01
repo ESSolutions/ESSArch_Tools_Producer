@@ -47,7 +47,6 @@ angular.module('myApp').controller('UtilCtrl', function($scope, $state, $locatio
 
     $scope.navigateToState = function(state) {
         $state.go(state);
-        $scope.focusRouterView();
     }
 
     var enter = 13;
