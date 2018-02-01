@@ -53,6 +53,14 @@ angular.module('myApp').controller('UtilCtrl', function($scope, $state, $locatio
     var enter = 13;
     var space = 32;
 
+    var stateChangeListeners = [];
+    function resetStateListeners() {
+        stateChangeListeners.forEach(function(listener) {
+            listener();
+        });
+        stateChangeListeners = [];
+    }
+
     /**
      * Handle keydown events navigation
      * @param {Event} e
@@ -62,8 +70,12 @@ angular.module('myApp').controller('UtilCtrl', function($scope, $state, $locatio
             case space:
             case enter:
                 event.preventDefault();
+                stateChangeListeners.push($scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
+                    event.preventDefault();
+                    $scope.focusRouterView();
+                    resetStateListeners();
+                }));
                 $state.go(state);
-                $scope.focusRouterView();
                 break;
         }
     }
