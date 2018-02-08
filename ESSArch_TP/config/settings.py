@@ -209,6 +209,11 @@ CACHES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+    },
     'handlers': {
         'core': {
             'level': 'DEBUG',
@@ -216,6 +221,22 @@ LOGGING = {
             'application': 'ESSArch Tools for Producer',
             'agent_role': 'Producer',
         }
+        'file_etp': {
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'class' : 'logging.handlers.RotatingFileHandler',
+            'filename': '/ESSArch/log/etp.log',
+            'maxBytes': 1024*1024*100, # 100MB
+            'backupCount': 5,
+        },
+        'log_file_auth': {
+            'level': 'DEBUG',
+            'class' : 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': '/ESSArch/log/auth_etp.log',
+            'maxBytes': 1024*1024*100, # 100MB
+            'backupCount': 5,
+        },
     },
     'loggers': {
         'essarch': {
