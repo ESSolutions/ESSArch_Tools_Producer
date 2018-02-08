@@ -240,8 +240,13 @@ LOGGING = {
     },
     'loggers': {
         'essarch': {
-            'handlers': ['core'],
+            'handlers': ['core', 'file_etp'],
             'level': 'DEBUG',
+        },
+        'essarch.auth': {
+            'level': 'DEBUG',
+            'handlers': ['log_file_auth'],
+            'propagate': True,
         },
     },
 }
