@@ -220,7 +220,7 @@ LOGGING = {
             'class': 'ESSArch_Core.log.dbhandler.DBHandler',
             'application': 'ESSArch Tools for Producer',
             'agent_role': 'Producer',
-        }
+        },
         'file_etp': {
             'level': 'DEBUG',
             'formatter': 'verbose',
