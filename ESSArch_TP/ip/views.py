@@ -38,6 +38,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Prefetch
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -156,6 +157,33 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             self.permission_classes = [CanDeleteIP]
 
         return super(InformationPackageViewSet, self).get_permissions()
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Perform the lookup filtering.
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+        assert lookup_url_kwarg in self.kwargs, (
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
+        )
+
+        lookup_field = self.lookup_field
+
+        objid = self.request.query_params.get('objid')
+        if objid is not None:
+            lookup_field = 'object_identifier_value'
+
+        filter_kwargs = {lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
 
     def get_queryset(self):
         user = self.request.user
