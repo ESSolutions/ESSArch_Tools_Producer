@@ -196,12 +196,13 @@ class SubmitSIP(DBTask):
                 remote = None
         else:
             dst = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format)
-        copy_file(src, dst, requests_session=session)
+        block_size = 8 * 1000000 # 8MB
+        copy_file(src, dst, requests_session=session, block_size=block_size)
 
         src = os.path.join(srcdir, ip.object_identifier_value + ".xml")
         if not remote:
             dst = os.path.join(reception, ip.object_identifier_value + ".xml")
-        copy_file(src, dst, requests_session=session)
+        copy_file(src, dst, requests_session=session, block_size=block_size)
 
         self.set_progress(100, total=100)
 
