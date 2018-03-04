@@ -23,35 +23,20 @@
 """
 
 from _version import get_versions
-
 from guardian.shortcuts import get_perms
-
 from rest_framework import serializers
 
-from ESSArch_Core.configuration.models import EventType
-
+from ESSArch_Core.auth.serializers import UserSerializer
 from ESSArch_Core.ip.models import (
-    ArchivalInstitution,
-    ArchivistOrganization,
-    ArchivalType,
-    ArchivalLocation,
-    EventIP,
     InformationPackage
 )
-
-from ESSArch_Core.serializers import DynamicHyperlinkedModelSerializer
-
-from ESSArch_Core.auth.serializers import UserSerializer
-
 from ESSArch_Core.ip.serializers import (
     ArchivalInstitutionSerializer,
     ArchivistOrganizationSerializer,
     ArchivalTypeSerializer,
     ArchivalLocationSerializer,
 )
-
 from ESSArch_Core.profiles.models import SubmissionAgreement
-
 from ESSArch_Core.profiles.serializers import (
     ProfileIPSerializer,
 )

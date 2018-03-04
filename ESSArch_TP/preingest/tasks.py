@@ -28,26 +28,21 @@ import copy
 import logging
 import os
 import shutil
-import uuid
 from urlparse import urljoin
 
+import requests
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-
 from groups_manager.models import Member
 from groups_manager.utils import get_permission_name
-
 from guardian.shortcuts import assign_perm
 
-import requests
-
-from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
+from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
+from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.ip.utils import get_cached_objid
 from ESSArch_Core.storage.copy import copy_file
-from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
-from ESSArch_Core import tasks
 
 
 class PrepareIP(DBTask):

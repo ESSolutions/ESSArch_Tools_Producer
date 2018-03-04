@@ -22,57 +22,53 @@
     Email - essarch@essolutions.se
 """
 
-from _version import get_versions
-
-from collections import OrderedDict
-
 import errno
 import glob
 import logging
 import os
-import shutil
 import re
+import shutil
+from collections import OrderedDict
 
+from _version import get_versions
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-
 from django_filters.rest_framework import DjangoFilterBackend
-
-from guardian.shortcuts import get_objects_for_group
-
+from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
+from ip.steps import (
+    prepare_ip,
+)
+from natsort import natsorted
 from rest_framework import exceptions, filters, permissions, status
+from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
-from rest_framework.settings import api_settings as drf_settings
-
-from natsort import natsorted
-
 from scandir import walk
 
-from ESSArch_Core.auth.util import get_membership_descendants
-from ESSArch_Core.exceptions import Conflict
-
+from ESSArch_Core.WorkflowEngine.models import (
+    ProcessStep, ProcessTask,
+)
+from ESSArch_Core.WorkflowEngine.serializers import (
+    ProcessStepSerializer,
+)
 from ESSArch_Core.configuration.models import (
     EventType,
     Path,
 )
-
+from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.ip.filters import InformationPackageFilter
-
 from ESSArch_Core.ip.models import (
     ArchivalInstitution,
-    ArchivistOrganization,
     ArchivalType,
     ArchivalLocation,
     InformationPackage,
     EventIP
 )
-
 from ESSArch_Core.ip.permissions import (
     CanChangeSA,
     CanCreateSIP,
@@ -83,44 +79,20 @@ from ESSArch_Core.ip.permissions import (
     CanUpload,
     IsResponsible,
 )
-
-from ESSArch_Core.ip.serializers import EventIPSerializer
-
 from ESSArch_Core.profiles.models import (
     Profile,
     ProfileIP,
-    ProfileIPData,
 )
-
 from ESSArch_Core.profiles.utils import fill_specification_data
-
 from ESSArch_Core.util import (
     create_event,
     creation_date,
     find_destination,
     get_event_spec,
-    get_files_and_dirs,
-    get_tree_size_and_count,
     in_directory,
     mkdir_p,
     timestamp_to_datetime,
 )
-
-from ESSArch_Core.WorkflowEngine.models import (
-    ProcessStep, ProcessTask,
-)
-
-from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
-
-from ESSArch_Core.WorkflowEngine.serializers import (
-    ProcessStepSerializer,
-)
-
-from ip.steps import (
-    prepare_ip,
-)
-
-from rest_framework import viewsets
 
 
 class InformationPackageViewSet(viewsets.ModelViewSet):
