@@ -37,6 +37,8 @@ from groups_manager.models import Member
 from groups_manager.utils import get_permission_name
 from guardian.shortcuts import assign_perm
 
+# noinspection PyUnresolvedReferences
+from ESSArch_Core import tasks
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
 from ESSArch_Core.configuration.models import Path
