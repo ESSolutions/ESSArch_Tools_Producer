@@ -317,5 +317,6 @@
     "STEP_PAGINATION_PREVIOUS": "Gå till föregående sida i paginering",
     "OPEN_KEYBOARD_SHORTCUT_INFO": "Öppna tangentbordsgenväg-sida",
     "NO_SUBMISSION_AGREEMENT_AVAILABLE": "Inga leveransöverenskommelser tillgängliga",
-    "IP_EXISTS": "IP med object identifer value \"{{ip}}\" finns redan"
+    "IP_EXISTS": "IP med object identifer value \"{{ip}}\" finns redan",
+    "VERSIONINFO": "Version-info"
 }
