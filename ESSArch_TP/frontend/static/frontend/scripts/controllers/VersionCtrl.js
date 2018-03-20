@@ -33,6 +33,11 @@ angular.module('myApp').controller('VersionCtrl', function($scope, myService, $w
         $location.hash(link);
         $anchorScroll();
     }
+
+    $scope.gotoDocs = function() {
+        $window.open("/docs/"+$translate.use()+"/user_guide/index.html", '_blank');
+    }
+
     $scope.docs = $translate.instant('DOCS');
     $scope.sysInfo = $translate.instant('SYSTEMINFORMATION');
     $scope.support = $translate.instant('SUPPORT');
