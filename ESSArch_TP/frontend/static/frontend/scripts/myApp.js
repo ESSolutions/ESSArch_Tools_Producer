@@ -465,7 +465,6 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 };
             }
         });
-        moment.locale('sv');
 
         formlyConfigProvider.setType({
             name: 'select-tree-edit',
