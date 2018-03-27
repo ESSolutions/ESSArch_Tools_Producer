@@ -27,12 +27,13 @@
 import django
 django.setup()
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from groups_manager.models import GroupType
 from ESSArch_Core.auth.models import Group, Member
 from ESSArch_Core.configuration.models import Parameter, Path
 
-
+User = get_user_model()
 
 
 def installDefaultConfiguration():
@@ -164,44 +165,44 @@ def installDefaultUsers():
 
     #####################################
     # Users
-    user_superuser, created = Member.objects.get_or_create(
+    user_superuser, created = User.objects.get_or_create(
         first_name='superuser', last_name='Lastname',
         username='superuser', email='superuser@essolutions.se',
     )
     if created:
-        user_superuser.django_user.set_password('superuser')
-        user_superuser.django_user.is_staff=True
-        user_superuser.django_user.is_superuser=True
-        user_superuser.django_user.save()
+        user_superuser.set_password('superuser')
+        user_superuser.is_staff=True
+        user_superuser.is_superuser=True
+        user_superuser.save()
 
-    user_user, created = Member.objects.get_or_create(
+    user_user, created = User.objects.get_or_create(
         first_name='user', last_name='Lastname',
         username='user', email='user@essolutions.se'
     )
     if created:
-        user_user.django_user.set_password('user')
-        user_user.django_user.save()
-        group_user.add_member(user_user)
+        user_user.set_password('user')
+        user_user.save()
+        group_user.add_member(user_user.essauth_member)
 
-    user_admin, created = Member.objects.get_or_create(
+    user_admin, created = User.objects.get_or_create(
         first_name='admin', last_name='Lastname',
         username='admin', email='admin@essolutions.se',
     )
     if created:
-        user_admin.django_user.set_password('admin')
-        user_admin.django_user.is_staff=True
-        user_admin.django_user.save()
-        group_admin.add_member(user_admin)
+        user_admin.set_password('admin')
+        user_admin.is_staff=True
+        user_admin.save()
+        group_admin.add_member(user_admin.essauth_member)
 
-    user_sysadmin, created = Member.objects.get_or_create(
+    user_sysadmin, created = User.objects.get_or_create(
         first_name='sysadmin', last_name='Lastname',
         username='sysadmin', email='sysadmin@essolutions.se',
     )
     if created:
-        user_sysadmin.django_user.set_password('sysadmin')
-        user_sysadmin.django_user.is_staff=True
-        user_sysadmin.django_user.save()
-        group_sysadmin.add_member(user_sysadmin)
+        user_sysadmin.set_password('sysadmin')
+        user_sysadmin.is_staff=True
+        user_sysadmin.save()
+        group_sysadmin.add_member(user_sysadmin.essauth_member)
 
     return 0
 
