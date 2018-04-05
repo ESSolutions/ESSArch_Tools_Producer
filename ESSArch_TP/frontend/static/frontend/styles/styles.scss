@@ -31,6 +31,8 @@
 @import '../node_modules/angular-bootstrap-grid-tree/src/treeGrid';
 @import '../node_modules/angular-tree-control/css/tree-control-attribute';
 @import '../node_modules/angular-tree-control/css/tree-control';
+@import '../node_modules/messenger-hubspot/build/css/messenger';
+@import '../node_modules/messenger-hubspot/build/css/messenger-theme-flat';
 @import 'modules/index';
 @import 'modules/login';
 @import 'modules/create_sip_prepare_ip';
@@ -39,4 +41,6 @@
 @import 'modules/my_page';
 @import 'modules/submit_sip_prepare_sip';
 @import 'modules/tree_control';
-@import 'modules/top_alert';
+@import 'modules/notifications';
+@import 'modules/positions';
+@import 'modules/utils';

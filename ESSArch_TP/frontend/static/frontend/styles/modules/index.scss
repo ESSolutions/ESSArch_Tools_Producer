@@ -175,6 +175,30 @@ body.modal-open[style] {
     margin-left: auto;
     min-width: 200px;
     height: 100%;
+    @include medium-screen {
+        min-width: 0px;
+        .organization-select {
+            display: none;
+        }
+        .language-select {
+            display: none;
+        }
+    }
+    @include small-screen {
+        min-width: 0px;
+        .organization-select {
+            display: none;
+        }
+        .language-select {
+            display: none;
+        }
+        .fa {
+            display: none;
+        }
+        .unseen-text {
+            display: none;
+        }
+    }
 }
 .tasks-icons > .fa {
     margin-right: 2px;
@@ -212,6 +236,14 @@ body.modal-open[style] {
 .language-select {
     min-width: 100px!important;
 }
+
+.username {
+    display: block;
+    @include small-screen {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .active-hamburger {
         display: block!important;
@@ -420,7 +452,7 @@ body.modal-open[style] {
 .flex-row {
     display: flex;
     flex-direction: row;
-    > * {
+    * {
         margin-right: 3px;
     }
 }
@@ -788,11 +820,7 @@ input[type="checkbox"] {
 .user-settings {
     @include container(10px);
     margin-top: 10px;
-    width:50%;
-    min-width: 400px;
-    .ip-view-type {
-        margin-bottom: 10px;
-    }
+    width: 100%;
     .column-picker {
         width: 100%;
         display: flex;
@@ -803,6 +831,25 @@ input[type="checkbox"] {
         }
         select {
             width: 150px;
+        }
+    }
+    .main-page-selects {
+        display: none;
+        @include medium-screen {
+            display: flex;
+        }
+        @include small-screen {
+            display: flex;
+        }
+    }
+    .main-view-options {
+        display: none;
+        margin-bottom: 10px;
+        .fa {
+            cursor: pointer;
+        }
+        @include small-screen {
+            display: flex;
         }
     }
 }
@@ -1014,23 +1061,29 @@ input[type="checkbox"] {
 .object-identifier-value {
     display: inline-block;
 }
+
 .notification-icon {
-    position: relative;
+    @include large-screen-up {
+        position: relative;
+    }
+    @include medium-screen {
+        position: relative;
+    }
     cursor: pointer;
-}
-.unseen-text {
-    width: auto;
-    position: absolute;
-    color: white;
-    height: 12px;
-    top: -5px;
-    right: -3px;
-    border-radius: 2px;
-    padding-right: 10%;
-    padding-left: 10%;
-    background-color: $step-fail;
-    font-size: 10px;
-    margin-left: 10px;
+    .unseen-text {
+        width: auto;
+        position: absolute;
+        color: white;
+        height: 12px;
+        top: -5px;
+        right: -3px;
+        border-radius: 2px;
+        padding-right: 10%;
+        padding-left: 10%;
+        background-color: $step-fail;
+        font-size: 10px;
+        margin-left: 10px;
+    }
 }
 
 .restricted {

@@ -318,5 +318,6 @@
     "OPEN_KEYBOARD_SHORTCUT_INFO": "Open keyboard shortcut info page",
     "NO_SUBMISSION_AGREEMENT_AVAILABLE": "No Submission Agreement available",
     "IP_EXISTS": "IP with object identifer value \"{{ip}}\" already exists",
-    "VERSIONINFO": "Version info"
+    "VERSIONINFO": "Version info",
+    "POPUP_ENABLED": "Popup enabled"
 }

@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, TopAlert) {
+angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
     var $ctrl = this;
 
     $ctrl.error_messages_old = [];
@@ -66,9 +66,9 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
         }).catch(function(response) {
             if (response.status == 409) {
                 var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
-                TopAlert.add(msg, "error", 5000);
+                Notifications.add(msg, "error", 5000);
             } else if (response.status != 500) {
-                TopAlert.add(response.data.detail, "error", 5000);
+                Notifications.add(response.data.detail, "error", 5000);
             }
         });
     };
@@ -134,7 +134,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
         $uibModalInstance.dismiss('cancel');
     };
 })
-.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, TopAlert) {
+.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, Notifications) {
     var $ctrl = this;
     if(data.file) {
         $ctrl.file = data.file;
@@ -147,27 +147,27 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
     }
     $ctrl.overwriteProfile = function() {
         return Profile.update($ctrl.profile).$promise.then(function(resource) {
-            TopAlert.add("Profile: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            Notifications.add("Profile: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
             $ctrl.data = {
                 status: "overwritten"
             }
             $uibModalInstance.close($ctrl.data);
             return resource;
         }).catch(function(repsonse) {
-            TopAlert.add(response.detail, "error");
+            Notifications.add(response.detail, "error");
         })
     }
     $ctrl.overwriteSa = function() {
         $ctrl.profile.published = false;
         return SA.update($ctrl.profile).$promise.then(function(resource) {
-            TopAlert.add("Submission agreement: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            Notifications.add("Submission agreement: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
             $ctrl.data = {
                 status: "overwritten"
             }
             $uibModalInstance.close($ctrl.data);
             return resource;
         }).catch(function(response) {
-            TopAlert.add("Submission Agreement " + $ctrl.profile.name + " is Published and can not be overwritten", "error");
+            Notifications.add("Submission Agreement " + $ctrl.profile.name + " is Published and can not be overwritten", "error");
         })
     }
     $ctrl.overwrite = function () {
