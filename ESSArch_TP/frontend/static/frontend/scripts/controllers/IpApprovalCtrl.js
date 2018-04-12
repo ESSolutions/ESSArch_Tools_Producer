@@ -43,7 +43,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function (IP, Profile, $log
             $scope.ip = row;
             $rootScope.ip = row;
         }
-        $scope.createDisabled = false;
         $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
@@ -87,30 +86,6 @@ angular.module('myApp').controller('IpApprovalCtrl', function (IP, Profile, $log
                 });
             }
         }
-    };
-
-    //Creates and shows modal with task information
-    $scope.createDisabled = false;
-    //Executes Create sip on an ip
-    $scope.createSip = function (ip) {
-        $scope.createDisabled = true;
-        IP.create({
-            id: ip.id,
-            validators: vm.validatorModel,
-            file_conversion: vm.fileConversionModel.file_conversion,
-        }).$promise.then(function (response) {
-            $scope.select = false;
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $scope.filebrowser = false;
-            $timeout(function () {
-                $scope.getListViewData();
-                vm.updateListViewConditional();
-            }, 1000);
-            $anchorScroll();
-        }).finally(function () {
-            $scope.createDisabled = false;
-        });
     };
 
     $scope.unlockConditional = function(profile) {
@@ -176,11 +151,23 @@ angular.module('myApp').controller('IpApprovalCtrl', function (IP, Profile, $log
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/create_sip_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {
+                    ip: ip,
+                    vm: vm
+                }
+            }
         })
         modalInstance.result.then(function (data) {
-            $scope.createSip(data.ip);
+            $scope.select = false;
+            $scope.edit = false;
+            $scope.eventlog = false;
+            $scope.filebrowser = false;
+            $scope.getListViewData();
+            vm.updateListViewConditional();
+            $anchorScroll();
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });

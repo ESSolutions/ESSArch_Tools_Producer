@@ -293,29 +293,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
 
         return profiles.active;
     }
-    $scope.submitDisabled = false;
-    $scope.submitSip = function(ip, email) {
-        if(!email) {
-            var sendData = {validators: vm.validatorModel}
-        } else {
-            var sendData = {validators: vm.validatorModel, subject: email.subject, body: email.body}
-        }
-        $scope.submitDisabled = true;
-        IP.submit(
-            angular.extend({ id: ip.id }, sendData)
-        ).$promise.then(function(response) {
-            $scope.eventlog = false;
-            $scope.edit = false;
-            $timeout(function() {
-                $scope.getListViewData();
-                vm.updateListViewConditional();
-            }, 1000);
-            $scope.submitDisabled = false;
-            $anchorScroll();
-        }, function(response) {
-            $scope.submitDisabled = false;
-        });
-    }
 
     $scope.emailModal = function (profiles) {
         if(vm.dependencyModel.preservation_organization_receiver_email) {
@@ -326,12 +303,23 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
                 templateUrl: 'static/frontend/views/email_modal.html',
                 scope: $scope,
                 size: 'lg',
-                controller: 'ModalInstanceCtrl',
-                controllerAs: '$ctrl'
+                controller: 'DataModalInstanceCtrl',
+                controllerAs: '$ctrl',
+                resolve: {
+                    data: {
+                        ip: $scope.ip,
+                        vm: vm
+                    }
+                }
             })
             modalInstance.result.then(function (data) {
-                $scope.submitSip($scope.ip, data.email);
-            }, function () {
+                $scope.eventlog = false;
+                $scope.edit = false;
+                $scope.getListViewData();
+                vm.updateListViewConditional();
+                $scope.submitDisabled = false;
+                $anchorScroll();
+            }).catch(function () {
                 $log.info('modal-component dismissed at: ' + new Date());
             });
         } else {
@@ -345,12 +333,23 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/submit_sip_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {
+                    ip: ip,
+                    vm: vm
+                }
+            }
         })
         modalInstance.result.then(function (data) {
-            $scope.submitSip(data.ip);
-        }, function () {
+            $scope.eventlog = false;
+            $scope.edit = false;
+            $scope.getListViewData();
+            vm.updateListViewConditional();
+            $scope.submitDisabled = false;
+            $anchorScroll();
+        }).catch(function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
     }

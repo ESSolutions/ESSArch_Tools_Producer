@@ -57,11 +57,22 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/upload_completed_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {
+                    ip: ip
+                }
+            }
         })
         modalInstance.result.then(function (data) {
-            $scope.setUploaded(data.ip);
+            $scope.eventlog = false;
+            $scope.select = false;
+            $scope.filebrowser = false;
+            $scope.getListViewData();
+            vm.updateListViewConditional();
+            $scope.uploadDisabled = false;
+            $anchorScroll();
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });
@@ -98,25 +109,6 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
     };
 
     //UPLOAD
-    $scope.uploadDisabled = false;
-    $scope.setUploaded = function(ip) {
-        $scope.uploadDisabled = true;
-        IP.setUploaded({
-            id: ip.id
-        }).$promise.then(function(response){
-            $scope.eventlog = false;
-            $scope.select = false;
-            $scope.filebrowser = false;
-            $timeout(function() {
-                $scope.getListViewData();
-                vm.updateListViewConditional();
-            }, 1000);
-            $scope.uploadDisabled = false;
-            $anchorScroll();
-        }, function(response) {
-            $scope.uploadDisabled = false;
-        });
-    }
     $scope.updateListViewTimeout = function(timeout) {
         $timeout(function(){
             $scope.getListViewData();
@@ -153,7 +145,9 @@ angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uib
             listViewService.addNewFolder($scope.ip, vm.browserstate.path, folder)
                 .then(function (response) {
                     $scope.updateGridArray();
-                });
+                }).catch(function(response) {
+                    Notifications.add(response.data.detail, 'error');
+                })
         }
     }
 
