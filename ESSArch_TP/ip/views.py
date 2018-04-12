@@ -503,9 +503,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         agent = request.user
 
         if ip.state != "Uploaded":
-            raise ValueError(
-                "The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state)
-            )
+            raise exceptions.ParseError("The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state))
 
         validators = request.data.get('validators', {})
 
