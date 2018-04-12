@@ -30,16 +30,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
 
     $scope.selectedProfileRow = {profile_type: "", class: ""};
     $scope.prepareAlert = null;
-    vm.prepareForUpload = function(ip) {
-        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
-            $scope.getListViewData();
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.edit = false;
-        }).catch(function(response) {
-            $scope.prepareAlert = { msg: response.data.detail };
-        })
-    }
     $scope.setSelectedProfile = function(row) {
         $scope.selectRowCollection.forEach(function(profileRow) {
             if(profileRow.profile_type == $scope.selectedProfileRow.profile_type){
@@ -845,11 +835,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
             ariaDescribedBy: 'modal-body',
             templateUrl: 'static/frontend/views/prepare_ip_for_upload_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: function () {
+                    return {
+                        ip: ip,
+                    };
+                }
+            },
         })
         modalInstance.result.then(function (data) {
-            vm.prepareForUpload(data.ip);
+            $scope.getListViewData();
+            $scope.select = false;
+            $scope.eventlog = false;
+            $scope.edit = false;
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });

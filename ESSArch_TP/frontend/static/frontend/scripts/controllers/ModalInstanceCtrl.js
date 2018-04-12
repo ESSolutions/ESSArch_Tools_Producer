@@ -24,7 +24,7 @@
 
 angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
     var $ctrl = this;
-
+    $ctrl.preparing = false;
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
@@ -58,10 +58,12 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             label: $ctrl.label,
             objectIdentifierValue: $ctrl.objectIdentifierValue
         }
+        $ctrl.preparing = true;
         return IP.prepare({
                 label: $ctrl.data.label,
                 object_identifier_value: $ctrl.data.objectIdentifierValue
         }).$promise.then(function (resource){
+            $ctrl.preparing = false;
             return $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             if (response.status == 409) {
@@ -70,13 +72,21 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             } else if (response.status != 500) {
                 Notifications.add(response.data.detail, "error", 5000);
             }
+            $ctrl.preparing = false;
         });
     };
     $ctrl.prepareForUpload = function() {
         $ctrl.data = {
             ip: $scope.ip
         }
-        $uibModalInstance.close($ctrl.data);
+        $ctrl.preparing = true;
+        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
+            $ctrl.preparing = false;
+            $uibModalInstance.close($ctrl.data);
+        }).catch(function(response) {
+            Notifications.add($translate.instant(response.data.detail), 'error');
+            $ctrl.preparing = false;
+        })
     }
     $ctrl.setUploaded = function() {
         $ctrl.data = {
@@ -130,6 +140,27 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             $ctrl.error_messages_pw2 = error.new_password2 || [];
         });
     };
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+})
+.controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications, data) {
+    var $ctrl = this;
+    $scope.prepareAlert = null;
+    $ctrl.data = data;
+    $scope.closePrepareAlert = function() {
+        $scope.prepareAlert = null;
+    }
+    $ctrl.prepareForUpload = function(ip) {
+        $ctrl.preparing = true;
+        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
+            $ctrl.preparing = false;
+            $uibModalInstance.close();
+        }).catch(function(response) {
+            $scope.prepareAlert = { msg: response.data.detail };
+            $ctrl.preparing = false;
+        })
+    }
     $ctrl.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
