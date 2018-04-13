@@ -176,7 +176,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         };
         var promise = SA.query({
             pager: 'none'
-        }).$promise.then(function successCallback(resource) {
+        }).$promise.then(function(resource) {
             sas = resource;
             saProfile.profiles = [];
             sas.forEach(function (sa) {
@@ -187,7 +187,8 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
                 }
             });
             return saProfile;
-        }, function errorCallback(response){
+        }).catch(function(response){
+            Notifications.add(response.data.detail, 'error');
         });
         return promise;
     }
