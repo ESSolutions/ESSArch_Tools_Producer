@@ -506,14 +506,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             raise exceptions.ParseError("The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state))
 
         validators = request.data.get('validators', {})
-
         validate_xml_file = validators.get('validate_xml_file', False)
         validate_file_format = validators.get('validate_file_format', False)
         validate_integrity = validators.get('validate_integrity', False)
         validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
-
         file_conversion = request.data.get('file_conversion', False)
-
         container_format = ip.get_container_format()
 
         main_step = ProcessStep.objects.create(
@@ -525,7 +522,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             name="Download Schemas",
             parent_step_pos=12,
         )
-
         pos = 0
 
         t0 = ProcessTask.objects.create(
@@ -544,20 +540,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             name="Update IP Status",
             parent_step_pos=0
         )
-
         start_create_sip_step.add_tasks(t0)
 
         event_type = EventType.objects.get(eventType=10200)
-
         create_event(event_type, 0, "Created SIP", get_versions()['version'], agent, ip=ip)
 
-        prepare_path = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-
-        reception_path = Path.objects.get(
-            entity="path_preingest_reception"
-        ).value
+        prepare_path = Path.objects.get(entity="path_preingest_prepare").value
+        reception_path = Path.objects.get(entity="path_preingest_reception").value
 
         ip_prepare_path = os.path.join(prepare_path, ip.object_identifier_value)
         ip_reception_path = os.path.join(reception_path, ip.object_identifier_value)
@@ -626,7 +615,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             name="Generate XML",
             parent_step_pos=20
         )
-
         pos = 0
 
         for fname, fcontent in filesToCreate.iteritems():
@@ -643,7 +631,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 information_package=ip,
                 responsible=self.request.user,
             )
-
             download_schemas_step.add_tasks(t)
 
         t = ProcessTask.objects.create(
@@ -658,9 +645,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip,
             responsible=self.request.user,
         )
-
         generate_xml_step.add_tasks(t)
-
         pos = 0
 
         if any(validators.itervalues()):
@@ -766,7 +751,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 name="Create SIP",
                 parent_step_pos=40
         )
-
         create_log_file_step = ProcessStep.objects.create(
             name="Create Log File",
             parent_step_pos=15,
@@ -798,7 +782,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip,
             responsible=self.request.user,
         ))
-
         pos += 10
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
@@ -811,7 +794,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip,
             responsible=self.request.user,
         ))
-
         pos += 10
 
         spec = {
@@ -902,7 +884,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             'FLocationType': 'URI',
             'FName': ip.object_path,
         }
-
         info = fill_specification_data(info, ip=ip)
 
         create_log_file_step.add_tasks(ProcessTask.objects.create(
@@ -918,7 +899,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             information_package=ip,
             responsible=self.request.user,
         ))
-
         pos += 10
 
         if validate_xml_file:
@@ -935,49 +915,31 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     responsible=self.request.user,
                 )
             )
-
-        try:
-            compress = ip.get_profile('transfer_project').specification_data.get(
-                'container_format_compression'
-            )
-        except AttributeError:
-            compress = False
-
         pos = 0
 
+        compress = ip.get_profile('transfer_project').specification_data.get(
+            'container_format_compression', False
+        )
+        container_path = os.path.join(ip_reception_path) + '.' + container_format.lower()
         if container_format.lower() == 'zip':
-            zipname = os.path.join(ip_reception_path) + '.zip'
-            container_task = ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.CreateZIP",
-                params={
-                    "dirname": ip_prepare_path,
-                    "zipname": zipname,
-                    "compress": compress
-                },
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-
+            container_task_name = "ESSArch_Core.tasks.CreateZIP"
         else:
-            tarname = os.path.join(ip_reception_path) + '.tar'
-            container_task = ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.CreateTAR",
-                params={
-                    "dirname": ip_prepare_path,
-                    "tarname": tarname,
-                    "compress": compress
-                },
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
+            container_task_name = "ESSArch_Core.tasks.CreateTAR"
 
-        pos += 10
-
+        container_task = ProcessTask.objects.create(
+            name=container_task_name,
+            params={
+                "dirname": ip_prepare_path,
+                "tarname": container_path,
+                "compress": compress
+            },
+            processstep_pos=pos,
+            log=EventIP,
+            information_package=ip,
+            responsible=self.request.user,
+        )
         create_sip_step.add_tasks(container_task)
+        pos += 10
 
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
