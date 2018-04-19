@@ -206,6 +206,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         object_identifier_value = request.data.get('object_identifier_value')
         responsible = self.request.user
 
+        if responsible.user_profile.current_organization is None:
+            raise exceptions.ParseError('You must be part of an organization to prepare an IP')
+
         if object_identifier_value:
             ip_exists = InformationPackage.objects.filter(object_identifier_value=object_identifier_value).exists()
             if ip_exists:
