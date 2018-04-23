@@ -89,6 +89,7 @@ from ESSArch_Core.util import (
     creation_date,
     find_destination,
     get_event_spec,
+    get_premis_ip_object_element_spec,
     in_directory,
     mkdir_p,
     timestamp_to_datetime,
@@ -799,87 +800,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ))
         pos += 10
 
-        spec = {
-            "-name": "object",
-            "-namespace": "premis",
-            "-children": [
-                {
-                    "-name": "objectIdentifier",
-                    "-namespace": "premis",
-                    "-children": [
-                        {
-                            "-name": "objectIdentifierType",
-                            "-namespace": "premis",
-                            "#content": [{"var": "FIDType"}],
-                            "-children": []
-                        },
-                        {
-                            "-name": "objectIdentifierValue",
-                            "-namespace": "premis",
-                            "#content": [{"var": "FID"}],
-                            "-children": []
-                        }
-                    ]
-                },
-                {
-                    "-name": "objectCharacteristics",
-                    "-namespace": "premis",
-                    "-children": [
-                        {
-                            "-name": "format",
-                            "-namespace": "premis",
-                            "-children": [
-                                {
-                                    "-name": "formatDesignation",
-                                    "-namespace": "premis",
-                                    "-children": [
-                                        {
-                                            "-name": "formatName",
-                                            "-namespace": "premis",
-                                            "#content": [{"var": "FFormatName"}],
-                                            "-children": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "-name": "storage",
-                    "-namespace": "premis",
-                    "-children": [
-                        {
-                            "-name": "contentLocation",
-                            "-namespace": "premis",
-                            "-children": [
-                                {
-                                    "-name": "contentLocationType",
-                                    "-namespace": "premis",
-                                    "#content": [{"var": "FLocationType"}],
-                                    "-children": []
-                                },
-                                {
-                                    "-name": "contentLocationValue",
-                                    "-namespace": "premis",
-                                    "#content": [{"text": "file:///%s.%s" % (ip.object_identifier_value, container_format.lower())}],
-                                    "-children": []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "-attr": [
-                {
-                  "-name": "type",
-                  '-namespace': 'xsi',
-                  "-req": "1",
-                  "#content": [{"text": "premis:file"}]
-                }
-            ],
-        }
-
+        spec = get_premis_ip_object_element_spec()
         info = {
             'FIDType': "UUID",
             'FID': ip.object_identifier_value,
