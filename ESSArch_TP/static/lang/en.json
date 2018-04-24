@@ -319,5 +319,6 @@
     "NO_SUBMISSION_AGREEMENT_AVAILABLE": "No Submission Agreement available",
     "IP_EXISTS": "IP with object identifer value \"{{ip}}\" already exists",
     "VERSIONINFO": "Version info",
-    "POPUP_ENABLED": "Popup enabled"
+    "POPUP_ENABLED": "Popup enabled",
+    "USER_SETTINGS": "User settings"
 }
