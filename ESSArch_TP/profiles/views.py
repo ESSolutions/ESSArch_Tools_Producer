@@ -25,7 +25,7 @@
 import os
 
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Prefetch
 
 from rest_framework import exceptions, status
@@ -159,6 +159,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    @transaction.atomic
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
         sa = self.get_object()
@@ -185,6 +186,12 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
 
         if ip.submission_agreement == sa:
             ip.submission_agreement_locked = True
+            if sa.archivist_organization:
+                arch, _ = ArchivistOrganization.objects.get_or_create(
+                    name=sa.archivist_organization
+                )
+                ip.archivist_organization = arch
+            ip.save()
 
             types = ('sip', 'transfer_project', 'submit_description', 'preservation_metadata',)
             extra_data = fill_specification_data(ip=ip, sa=sa)
@@ -213,14 +220,6 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                 )
                 profile_ip.data = data_obj
                 profile_ip.save()
-
-            if sa.archivist_organization:
-                arch, _ = ArchivistOrganization.objects.get_or_create(
-                    name=sa.archivist_organization
-                )
-                ip.archivist_organization = arch
-
-            ip.save()
 
             return Response({'status': 'locking submission_agreement'})
         elif ip.submission_agreement is None:
