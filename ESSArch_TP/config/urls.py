@@ -66,7 +66,7 @@ from ESSArch_Core.ip.views import (
     EventIPViewSet,
 )
 
-from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet
+from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet, InformationPackageProfileIPViewSet
 
 from ESSArch_Core.WorkflowEngine.views import (
     ProcessViewSet,
@@ -101,6 +101,12 @@ router.register(r'information-packages', InformationPackageViewSet).register(
     EventIPViewSet,
     base_name='ip-events',
     parents_query_lookups=['linkingObjectIdentifierValue']
+)
+router.register(r'information-packages', InformationPackageViewSet).register(
+    r'profiles',
+    InformationPackageProfileIPViewSet,
+    base_name='ip-profiles',
+    parents_query_lookups=['ip']
 )
 router.register(r'notifications', NotificationViewSet)
 router.register(r'steps', ProcessStepViewSet)

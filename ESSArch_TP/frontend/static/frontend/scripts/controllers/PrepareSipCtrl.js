@@ -40,23 +40,25 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
             $rootScope.ip = row;
             var ip = row;
             if (ip.profile_submit_description) {
-                Profile.get({
-                    id: ip.profile_submit_description.profile,
-                    ip: ip.id
-                }).$promise.then(function(resource) {
-                    vm.informationModel= ip.profile_submit_description.data.data;
-                    vm.informationFields = resource.template;
+                $http.get(
+                    appConfig.djangoUrl + "information-packages/" + ip.id + "/profiles/",{
+                    params: {profile__profile_type: 'submit_description'}
+                }).then(function(response) {
+                    var sd_profile_ip = response.data[0];
+                    vm.informationModel= sd_profile_ip.data.data;
+                    vm.informationFields = sd_profile_ip.profile.template;
                     vm.informationFields.forEach(function(field) {
                         field.type = 'input';
                         field.templateOptions.disabled = true;
                     });
                     if(ip.profile_transfer_project) {
-                        Profile.get({
-                            id: ip.profile_transfer_project.profile,
-                            ip: ip.id
-                        }).$promise.then(function(resource) {
-                            vm.dependencyModel= ip.profile_transfer_project.data.data;
-                            vm.dependencyFields = resource.template;
+                        $http.get(
+                            appConfig.djangoUrl + "information-packages/" + ip.id + "/profiles/",{
+                            params: {profile__profile_type: 'transfer_project'}
+                        }).then(function(response) {
+                            var tp_profile_ip = response.data[0];
+                            vm.dependencyModel= tp_profile_ip.data.data;
+                            vm.dependencyFields = tp_profile_ip.profile.template;
                             vm.dependencyFields.forEach(function(field) {
                                 field.type = 'input';
                                 field.templateOptions.disabled = true;
@@ -69,8 +71,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function (IP, Profile, $log
                             });
                         });
                     }
-
-                }, function(response) {
+                }).catch(function(response) {
                     console.log(response.status);
                 });
             }
