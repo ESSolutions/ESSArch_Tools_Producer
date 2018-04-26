@@ -694,11 +694,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 validate_step.add_tasks(
                     ProcessTask.objects.create(
                         name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
-                        params={
-                            "dirname": ip.object_path,
-                            "xmlfile": mets_path,
-                            "rootdir": ip.object_path,
-                        },
+                        args=[ip.object_path, mets_path],
                         processstep_pos=pos,
                         log=EventIP,
                         information_package=ip,
@@ -1080,10 +1076,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             step.add_tasks(
                 ProcessTask.objects.create(
                     name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
-                    params={
-                        "files": [os.path.basename(ip.object_path)],
-                        "xmlfile": infoxml,
-                    },
+                    args=[ip.object_path, infoxml],
                     processstep_pos=pos,
                     log=EventIP,
                     information_package=ip,
