@@ -72,17 +72,9 @@ angular.module('myApp').factory('IP', function ($resource, appConfig, Event, Ste
             method: "PUT",
             params: { method: "check-profile", id: "@id"}
         },
-        unlockProfile: {
-            method: "POST",
-            params: { action: "unlock-profile", id: "@id" }
-        },
         changeProfile: {
             method: "PUT",
             params: { action: "change-profile", id: "@id" }
-        },
-        changeSa: {
-            method: "PATCH",
-            params: { id: "@id" }
         },
         addFile: {
             method: "POST",
