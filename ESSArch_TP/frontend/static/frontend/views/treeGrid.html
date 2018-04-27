@@ -11,18 +11,16 @@
                 ng-class="['level-' + {{ row.level }} + (row.branch.selected ? ' active':''), {'empty-step': row.branch.empty}]" class="tree-grid-row"
                 ng-keydown="treeControl.scope.stateTableKeydownListener($event, row.branch)">
                 <td colspan="7" class="" ng-if="row.branch.empty">{{'EMPTY' | translate}}</td>
-                <td ng-if="!row.branch.empty"><a ng-click="user_clicks_branch(row.branch)"><i ng-class="row.tree_icon"
-                    ng-click="row.branch.expanded = !row.branch.expanded"
-                    class="indented tree-icon"></i></a><span ng-if="expandingProperty.cellTemplate" class="indented tree-label"
-                    ng-click="on_user_click(row.branch)" compile="expandingProperty.cellTemplate"></span>
-                  <span  ng-if="!expandingProperty.cellTemplate" class="indented tree-label" ng-click="on_user_click(row.branch)">
-                 {{row.branch[expandingProperty.field] || row.branch[expandingProperty]}}</span>
-           </td>
-           <td ng-if="!row.branch.empty" ng-repeat="col in colDefinitions">
-             <div ng-if="col.cellTemplate" compile="col.cellTemplate" cell-template-scope="col.cellTemplateScope"></div>
-             <div ng-if="!col.cellTemplate">{{row.branch[col.field]}}</div>
-           </td>
-         </tr>
+                <td ng-if="!row.branch.empty">
+                    <a ng-click="user_clicks_branch(row.branch)"><i ng-class="row.tree_icon" ng-click="row.branch.expanded = !row.branch.expanded" class="indented tree-icon"></i></a>
+                    <span ng-if="expandingProperty.cellTemplate" class="indented tree-label" ng-click="on_user_click(row.branch)" compile="expandingProperty.cellTemplate"></span>
+                    <span ng-if="!expandingProperty.cellTemplate" class="indented tree-label" ng-click="on_user_click(row.branch)">{{row.branch[expandingProperty.field] || row.branch[expandingProperty]}}</span>
+                </td>
+                <td ng-if="!row.branch.empty" ng-repeat="col in colDefinitions">
+                    <div ng-if="col.cellTemplate" compile="col.cellTemplate" cell-template-scope="col.cellTemplateScope"></div>
+                    <div ng-if="!col.cellTemplate">{{row.branch[col.field]}}</div>
+                </td>
+            </tr>
        </tbody>
      </table>
 </div
