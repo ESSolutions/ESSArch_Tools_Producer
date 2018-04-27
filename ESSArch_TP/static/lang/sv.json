@@ -320,5 +320,6 @@
     "IP_EXISTS": "IP med object identifer value \"{{ip}}\" finns redan",
     "VERSIONINFO": "Version-info",
     "POPUP_ENABLED": "Popup aktiverad",
-    "USER_SETTINGS": "Användarinställningar"
+    "USER_SETTINGS": "Användarinställningar",
+    "STEP_STATE_DESC": "Step-tillstånd, Slutförd/Fel"
 }
