@@ -242,7 +242,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 params={'path': path},
                 eager=False,
                 responsible=request.user,
-                information_package=ip,
             )
             t.run()
         else:
