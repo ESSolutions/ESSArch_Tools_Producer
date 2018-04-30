@@ -1193,6 +1193,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
     def upload(self, request, pk=None):
         ip = self.get_object()
+        if ip.state not in ['Prepared', 'Uploading']:
+            raise exceptions.ParseError('IP must be in state "Prepared" or "Uploading"')
+
         ip.state = "Uploading"
         ip.save()
 
@@ -1227,6 +1230,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'], url_path='merge-uploaded-chunks', permission_classes=[CanUpload])
     def merge_uploaded_chunks(self, request, pk=None):
         ip = self.get_object()
+        if ip.state != 'Uploading':
+            raise exceptions.ParseError('IP must be in state "Uploading"')
 
         path = os.path.join(ip.object_path, request.data['path'])
 
@@ -1244,6 +1249,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):
         ip = self.get_object()
+        if ip.state not in ['Prepared', 'Uploading']:
+            raise exceptions.ParseError('IP must be in state "Prepared" or "Uploading"')
         ip.state = "Uploaded"
         ip.save()
 
