@@ -253,12 +253,6 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             Notifications.add(response.data.detail, 'error');
         })
     }
-    //Gets all submission agreement profiles
-    $scope.getSaProfiles = function(ip) {
-        listViewService.getSaProfiles(ip).then(function(value) {
-            $scope.saProfile = value;
-        });
-    };
 
     //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa, ip, oldSa_idx) {

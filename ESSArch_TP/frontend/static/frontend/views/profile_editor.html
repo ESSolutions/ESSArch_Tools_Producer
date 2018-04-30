@@ -16,7 +16,7 @@
                         </td>
                         <td>
                             <select class="form-control table-col" ng-disabled="saProfile.locked || vm.gettingSas"
-                                ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}}); getSelectCollection(saProfile.profile, ip)"
+                                ng-model="saProfile.profile" ng-change="changeSaProfile(saProfile.profile, ip, {{saProfile.profiles.indexOf(saProfile.profile)}})"
                                 ng-options="x as x.name for x in saProfile.profiles">
                                 <option ng-show="vm.gettingSas" value="" disabled selected>{{vm.gettingSas?('LOADING' | translate)+'...':''}}</option>
                             </select>
