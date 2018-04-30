@@ -13,39 +13,16 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
     $scope.selectRowCollapse = [];
     // On init
     vm.$onInit = function() {
-        $scope.saProfile = {
-            profile: null,
-            profiles: [],
-            disabled: false
-        };
-        $scope.ip = vm.ip;
-        vm.gettingSas = true;
-        listViewService.getSaProfiles($scope.ip).then(function (result) {
-            vm.gettingSas = false;
-            $scope.saProfile.profiles = result.profiles;
-            $scope.saProfile.locked = result.locked;
-            var chosen_sa_id = null;
-            if($scope.ip.submission_agreement) {
-                chosen_sa_id = $scope.ip.submission_agreement;
-            } else
-            if($scope.ip.submission_agreement == null && result.profiles.length > 0) {
-                chosen_sa_id = $scope.saProfile.profiles[0].id;
-            }
-            if(result.profiles.length <= 0) {
-                $scope.saAlert = $scope.alerts.noSas;
-            } else
-            if (chosen_sa_id) {
-                var found = $filter('filter')(result.profiles, { id: chosen_sa_id }, true);
-                if (found.length) {
-                    $scope.saProfile.profile = found[0];
-                } else {
-                    $scope.saAlert = $scope.alerts.error;
-                }
-            }
-        });
+        init();
     };
 
-    vm.$onChanges = function($event) {
+    vm.$onChanges = function(changes) {
+        if(!changes.ip.isFirstChange()) {
+            init();
+        }
+    };
+
+    function init() {
         $scope.saProfile = {
             profile: null,
             profiles: [],
@@ -62,57 +39,54 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             var chosen_sa_id = null;
             if($scope.ip.submission_agreement) {
                 chosen_sa_id = $scope.ip.submission_agreement;
-            } else
-            if($scope.ip.submission_agreement == null && result.profiles.length > 0) {
+            } else if($scope.ip.submission_agreement == null && result.profiles.length > 0) {
                 chosen_sa_id = $scope.saProfile.profiles[0].id;
             }
             if(result.profiles.length <= 0) {
                 $scope.saAlert = $scope.alerts.noSas;
-            } else
-            if (chosen_sa_id) {
+            } else if (chosen_sa_id) {
                 var found = $filter('filter')(result.profiles, { id: chosen_sa_id }, true);
                 if (found.length) {
                     $scope.saProfile.profile = found[0];
-                    $scope.saProfile.disabled = true;
                 } else {
-                    $scope.saAlert = $scope.alerts.receiveError;
-                    $scope.saProfile.disabled = true;
-                    $scope.$emit('disable_receive', {});
+                    $scope.saAlert = $scope.alerts.error;
                 }
             }
             vm.loadProfiles();
-
         });
-    };
+    }
 
-    vm.loadProfiles = function() {
-        $scope.selectRowCollapse = [];
-        var profileObject = {
-            transfer_project: null,
-            submit_description: null,
-            sip: null,
-            preservation_metadata: null,
-        };
-        var promises = [];
-        for (var key in $scope.saProfile.profile) {
-            if (/^profile/.test(key) && $scope.saProfile.profile[key] != null && !angular.isUndefined(profileObject[key.substring(8)])) {
-                promises.push(Profile.get({ id: $scope.saProfile.profile[key] }).$promise.then(function (resource) {
-                    profileObject[resource.profile_type] = resource;
-                    return resource;
-                }).catch(function (response) {
-                    Notifications.add(response.data.detail, 'error');
-                })
-                );
-            }
-        }
-        $q.all(promises).then(function() {
-            for(var key in profileObject) {
-                if(profileObject[key] != null) {
-                    $scope.selectRowCollapse.push(profileObject[key]);
+    vm.loadProfiles = function () {
+        if ($scope.saProfile.locked) {
+            $scope.selectRowCollapse = [];
+
+            var profileObject = {
+                transfer_project: null,
+                submit_description: null,
+                sip: null,
+                preservation_metadata: null,
+            };
+            var promises = [];
+            for (var key in $scope.saProfile.profile) {
+                if (/^profile/.test(key) && $scope.saProfile.profile[key] != null && !angular.isUndefined(profileObject[key.substring(8)])) {
+                    promises.push(Profile.get({ id: $scope.saProfile.profile[key] }).$promise.then(function (resource) {
+                        profileObject[resource.profile_type] = resource;
+                        return resource;
+                    }).catch(function (response) {
+                        Notifications.add(response.data.detail, 'error');
+                    })
+                    );
                 }
             }
-            $scope.selectRowCollection = $scope.selectRowCollapse;
-        })
+            $q.all(promises).then(function () {
+                for (var key in profileObject) {
+                    if (profileObject[key] != null) {
+                        $scope.selectRowCollapse.push(profileObject[key]);
+                    }
+                }
+                $scope.selectRowCollection = $scope.selectRowCollapse;
+            })
+        }
     }
 
     vm.changeDataVersion = function(profileIp, data) {
