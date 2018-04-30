@@ -288,12 +288,14 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
 
     //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa, ip, oldSa_idx) {
+        vm.changingSa = true;
         IP.changeSa({ id: ip.id }, { submission_agreement: sa.id }).$promise.then(function (resource) {
             $scope.ip = resource;
             $scope.saProfile.profile = sa;
             vm.loadProfiles();
-            //vm.getAndShowProfile(sa.profile.profile_aip.profile, {})
+            vm.changingSa = false;
         }).catch(function (response) {
+            vm.changingSa = false;
             Notifications.add(response.data.detail, 'error');
         })
     }
