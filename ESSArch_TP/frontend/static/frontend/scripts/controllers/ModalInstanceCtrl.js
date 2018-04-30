@@ -158,9 +158,9 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             $uibModalInstance.close();
         }).catch(function (response) {
             $ctrl.settingUploaded = false;
-            if(response.status) {
+            if(response.status == 404) {
                 Notifications.add('IP could not be found', 'error');
-            } else {
+            } else if(response.data.detail) {
                 Notifications.add(response.data.detail, 'error');
             }
         });
