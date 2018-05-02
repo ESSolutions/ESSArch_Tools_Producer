@@ -29,9 +29,7 @@ import itertools
 import os
 import re
 import shutil
-from collections import OrderedDict
 
-from _version import get_versions
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -49,16 +47,13 @@ from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
-from scandir import walk
 
 from ESSArch_Core.WorkflowEngine.models import (
     ProcessStep, ProcessTask,
 )
 from ESSArch_Core.WorkflowEngine.serializers import ProcessStepChildrenSerializer
-from ESSArch_Core.configuration.models import (
-    EventType,
-    Path,
-)
+from ESSArch_Core.WorkflowEngine.util import create_workflow
+from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.ip.filters import InformationPackageFilter
 from ESSArch_Core.ip.models import (
@@ -84,11 +79,8 @@ from ESSArch_Core.profiles.models import (
 )
 from ESSArch_Core.profiles.utils import fill_specification_data
 from ESSArch_Core.util import (
-    create_event,
     creation_date,
     find_destination,
-    get_event_spec,
-    get_premis_ip_object_element_spec,
     in_directory,
     mkdir_p,
     timestamp_to_datetime,
@@ -503,434 +495,129 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         """
 
         ip = self.get_object()
-        sa = ip.submission_agreement
-        agent = request.user
 
         if ip.state != "Uploaded":
             raise exceptions.ParseError("The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state))
+        generate_premis = ip.profile_locked('preservation_metadata')
 
-        validators = request.data.get('validators', {})
-        validate_xml_file = validators.get('validate_xml_file', False)
-        validate_file_format = validators.get('validate_file_format', False)
-        validate_integrity = validators.get('validate_integrity', False)
-        validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
-        file_conversion = request.data.get('file_conversion', False)
-        container_format = ip.get_container_format()
-
-        main_step = ProcessStep.objects.create(
-            name="Create SIP",
-            eager=False,
-        )
-
-        download_schemas_step = ProcessStep.objects.create(
-            name="Download Schemas",
-            parent_step_pos=12,
-        )
-        pos = 0
-
-        t0 = ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.UpdateIPStatus",
-            args=["Creating"],
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        )
-        start_create_sip_step = ProcessStep.objects.create(
-            name="Update IP Status",
-            parent_step_pos=0
-        )
-        start_create_sip_step.add_tasks(t0)
-
-        event_type = EventType.objects.get(eventType=10200)
-        create_event(event_type, 0, "Created SIP", get_versions()['version'], agent, ip=ip)
-
-        prepare_path = Path.objects.get(entity="path_preingest_prepare").value
-        reception_path = Path.objects.get(entity="path_preingest_reception").value
-
-        ip_prepare_path = os.path.join(prepare_path, ip.object_identifier_value)
-        ip_reception_path = os.path.join(reception_path, ip.object_identifier_value)
-        events_path = os.path.join(ip_prepare_path, "ipevents.xml")
-
-        profile_ip_sip = ip.get_profile_rel('sip')
-        sip_profile_data = ip.get_profile_data('sip')
-        structure = profile_ip_sip.profile.structure
-
-        # ensure premis is created before mets
-        filesToCreate = OrderedDict()
-
-        if ip.profile_locked('preservation_metadata'):
-            premis_profile = ip.get_profile_rel('preservation_metadata')
-            premis_profile_data = ip.get_profile_data('preservation_metadata')
-            premis_dir, premis_name = find_destination("preservation_description_file", structure)
-            premis_path = os.path.join(ip.object_path, premis_dir, premis_name)
-            filesToCreate[premis_path] = {
-                'spec': premis_profile.profile.specification,
-                'data': fill_specification_data(premis_profile_data, ip=ip, sa=sa)
-            }
-
-        mets_dir, mets_name = find_destination("mets_file", structure)
-        mets_path = os.path.join(ip.object_path, mets_dir, mets_name)
-        filesToCreate[mets_path] = {
-            'spec': profile_ip_sip.profile.specification,
-            'data': fill_specification_data(sip_profile_data, ip=ip, sa=sa)
+        convert_files = request.data.get('file_conversion', False)
+        file_format_map = {
+            'doc': 'pdf',
+            'docx': 'pdf'
         }
 
-        if file_conversion:
-            convert_files_step = ProcessStep.objects.create(
-                name="Convert files",
-                parent_step_pos=10,
-                parallel=False,
-            )
-
-            FILE_FORMAT_MAP = {
-                'doc': 'pdf',
-                'docx': 'pdf'
-            }
-
-            tasks = []
-
-            for root, dirs, filenames in walk(ip.object_path):
-                for fname in filenames:
-                    filepath = os.path.join(root, fname)
-                    try:
-                        new_format = FILE_FORMAT_MAP[os.path.splitext(filepath)[1][1:]]
-                    except KeyError:
-                        pass
-                    else:
-                        tasks.append(ProcessTask(
-                            name="ESSArch_Core.tasks.ConvertFile",
-                            params={
-                                'filepath': filepath,
-                                'new_format': new_format
-                            },
-                            processstep=convert_files_step,
-                            information_package=ip,
-                            responsible=self.request.user,
-                        ))
-
-            ProcessTask.objects.bulk_create(tasks, 100)
-
-        generate_xml_step = ProcessStep.objects.create(
-            name="Generate XML",
-            parent_step_pos=20
-        )
-        pos = 0
-
-        for fname, fcontent in filesToCreate.iteritems():
-            dirname = os.path.dirname(fname)
-            t = ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.DownloadSchemas",
-                params={
-                    "template": fcontent['spec'],
-                    "dirname": dirname,
-                    "structure": structure,
-                    "root": ip.object_path,
-                },
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-            download_schemas_step.add_tasks(t)
-
-        t = ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.GenerateXML",
-            params={
-                "filesToCreate": filesToCreate,
-                "folderToParse": ip_prepare_path,
-                "algorithm": ip.get_checksum_algorithm(),
+        workflow_spec = [
+            {
+                "name": "ESSArch_Core.tasks.UpdateIPStatus",
+                "label": "Set status to creating",
+                "args": ["Creating"],
             },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        )
-        generate_xml_step.add_tasks(t)
-        pos = 0
-
-        if any(validators.itervalues()):
-            validate_step = ProcessStep.objects.create(
-                name="Validation", parent_step=main_step,
-                parent_step_pos=30,
-            )
-
-            if validate_xml_file:
-                validate_step.add_tasks(
-                    ProcessTask.objects.create(
-                        name="ESSArch_Core.tasks.ValidateXMLFile",
-                        params={
-                            "xml_filename": mets_path,
-                            "rootdir": ip.object_path,
-                        },
-                        processstep_pos=pos,
-                        log=EventIP,
-                        information_package=ip,
-                        responsible=self.request.user,
-                    )
-                )
-                pos += 10
-
-                if ip.profile_locked("preservation_metadata"):
-                    validate_step.add_tasks(
-                        ProcessTask.objects.create(
-                            name="ESSArch_Core.tasks.ValidateXMLFile",
-                            params={
-                                "xml_filename": premis_path,
-                                "rootdir": ip.object_path,
-                            },
-                            processstep_pos=pos,
-                            log=EventIP,
-                            information_package=ip,
-                            responsible=self.request.user,
-                        )
-                    )
-                    pos += 10
-
-            if validate_logical_physical_representation:
-                validate_step.add_tasks(
-                    ProcessTask.objects.create(
-                        name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
-                        args=[ip.object_path, mets_path],
-                        processstep_pos=pos,
-                        log=EventIP,
-                        information_package=ip,
-                        responsible=self.request.user,
-                    )
-                )
-                pos += 10
-
-                if ip.profile_locked('preservation_metadata'):
-                    validate_step.add_tasks(
-                        ProcessTask.objects.create(
-                            name="ESSArch_Core.tasks.CompareXMLFiles",
-                            args=[mets_path, premis_path],
-                            params={
-                                "rootdir": ip.object_path,
-                                "compare_checksum": validate_integrity,
-                            },
-                            processstep_pos=pos,
-                            log=EventIP,
-                            information_package=ip,
-                            responsible=self.request.user,
-                        )
-                    )
-                    pos += 10
-
-            validate_step.add_tasks(
-                ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateFiles",
-                    params={
-                        "ip": ip.pk,
-                        "xmlfile": mets_path,
-                        "validate_fileformat": validate_file_format,
-                        "validate_integrity": validate_integrity,
+            {
+                "name": "ESSArch_Core.tasks.ConvertFile",
+                "if": convert_files,
+                "label": "Convert Files",
+                "args": ["{{_OBJPATH}}", file_format_map]
+            },
+            {
+                "step": True,
+                "name": "Download Schemas",
+                "children": [
+                    {
+                        "name": "ESSArch_Core.ip.tasks.DownloadSchemas",
+                        "label": "Download Schemas",
                     },
-                    processstep_pos=pos,
-                    log=EventIP,
-                    information_package=ip,
-                    responsible=self.request.user,
-                )
-            )
-            pos += 10
-
-            validate_step.save()
-
-        info = fill_specification_data(ip=ip)
-
-        filesToCreate = OrderedDict()
-        filesToCreate[events_path] = {
-            'spec': get_event_spec(),
-            'data': info
-        }
-
-        create_sip_step = ProcessStep.objects.create(
-                name="Create SIP",
-                parent_step_pos=40
-        )
-        create_log_file_step = ProcessStep.objects.create(
-            name="Create Log File",
-            parent_step_pos=15,
-        )
-        pos = 0
-        for fname, fcontent in filesToCreate.iteritems():
-            dirname = os.path.dirname(fname)
-            download_schemas_step.add_tasks(ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.DownloadSchemas",
-                params={
-                    "template": fcontent['spec'],
-                    "dirname": dirname,
-                    "structure": structure,
-                    "root": ip.object_path,
-                },
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            ))
-
-        create_log_file_step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.GenerateXML",
-            params={
-                "filesToCreate": filesToCreate,
-                "algorithm": ip.get_checksum_algorithm(),
+                ]
             },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        create_log_file_step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.AppendEvents",
-            params={
-                "filename": events_path,
-            },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        spec = get_premis_ip_object_element_spec()
-        info = {
-            'FIDType': "UUID",
-            'FID': ip.object_identifier_value,
-            'FFormatName': container_format.upper(),
-            'FLocationType': 'URI',
-            'FName': ip.object_path,
-        }
-        info = fill_specification_data(info, ip=ip)
-
-        create_log_file_step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.InsertXML",
-            params={
-                "filename": events_path,
-                "elementToAppendTo": "premis",
-                "spec": spec,
-                "info": info,
-                "index": 0
-            },
-            processstep_pos=pos,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        if validate_xml_file:
-            create_log_file_step.add_tasks(
-                ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateXMLFile",
-                    params={
-                        "xml_filename": events_path,
-                        "rootdir": ip.object_path,
+            {
+                "step": True,
+                "name": "Create Log File",
+                "children": [
+                    {
+                        "name": "ESSArch_Core.ip.tasks.GenerateEventsXML",
+                        "label": "Generate events xml file",
                     },
-                    processstep_pos=pos,
-                    log=EventIP,
-                    information_package=ip,
-                    responsible=self.request.user,
-                )
-            )
-        pos = 0
+                    {
+                        "name": "ESSArch_Core.tasks.AppendEvents",
+                        "label": "Add events to xml file",
+                    },
+                    {
+                        "name": "ESSArch_Core.ip.tasks.AddPremisIPObjectElementToEventsFile",
+                        "label": "Add premis IP object to xml file",
+                    },
 
-        compress = ip.get_profile('transfer_project').specification_data.get(
-            'container_format_compression', False
-        )
-        container_path = os.path.join(ip_reception_path) + '.' + container_format.lower()
-        if container_format.lower() == 'zip':
-            container_task_name = "ESSArch_Core.tasks.CreateZIP"
-        else:
-            container_task_name = "ESSArch_Core.tasks.CreateTAR"
-
-        container_task = ProcessTask.objects.create(
-            name=container_task_name,
-            params={
-                "dirname": ip_prepare_path,
-                "tarname": container_path,
-                "compress": compress
+                ]
             },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        )
-        create_sip_step.add_tasks(container_task)
-        pos += 10
-
-        create_sip_step.add_tasks(
-            ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.DeleteFiles",
-                params={
-                    "path": ip.object_path
-                },
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-        )
-        pos += 10
-
-        create_sip_step.add_tasks(
-            ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.UpdateIPPath",
-                params={
-                    "ip": ip.pk,
-                    "prev": ip.object_path,
-                },
-                result_params={
-                    "path": container_task.pk
-                },
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-        )
-        pos += 10
-
-        create_sip_step.add_tasks(
-            ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.UpdateIPSizeAndCount",
-                params={
-                    'ip': ip.pk
-                },
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-        )
-        pos += 10
-
-        create_sip_step.add_tasks(
-            ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.UpdateIPStatus",
-                args=["Created"],
-                processstep_pos=pos,
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-            )
-        )
-
-        create_sip_step.save()
-
-        main_step.add_child_steps(
-            start_create_sip_step, create_log_file_step, generate_xml_step,
-            download_schemas_step, create_sip_step
-        )
-
-        if file_conversion:
-            if convert_files_step.tasks.count() > 0:
-                main_step.add_child_steps(convert_files_step)
-            else:
-                convert_files_step.delete()
-
-        main_step.information_package = ip
-        main_step.save()
-        main_step.run()
-
+            {
+                "name": "ESSArch_Core.ip.tasks.GeneratePremis",
+                "if": generate_premis,
+                "label": "Generate premis",
+            },
+            {
+                "name": "ESSArch_Core.ip.tasks.GenerateContentMets",
+                "label": "Generate content-mets",
+            },
+            {
+                "step": True,
+                "name": "Create SIP",
+                "children": [
+                    {
+                        "step": True,
+                        "name": "Validation",
+                        "children": [
+                            {
+                                "name": "ESSArch_Core.tasks.ValidateXMLFile",
+                                "label": "Validate content-mets",
+                                "params": {
+                                    "xml_filename": "{{_CONTENT_METS_PATH}}",
+                                    "rootdir": "{{_OBJPATH}}",
+                                }
+                            },
+                            {
+                                "name": "ESSArch_Core.tasks.ValidateXMLFile",
+                                "if": generate_premis,
+                                "label": "Validate premis",
+                                "params": {
+                                    "xml_filename": "{{_PREMIS_PATH}}",
+                                    "rootdir": "{{_OBJPATH}}",
+                                }
+                            },
+                            {
+                                "name": "ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
+                                "label": "Diff-check against content-mets",
+                                "args": ["{{_OBJPATH}}", "{{_CONTENT_METS_PATH}}"],
+                            },
+                            {
+                                "name": "ESSArch_Core.tasks.CompareXMLFiles",
+                                "if": generate_premis,
+                                "label": "Compare premis and content-mets",
+                                "args": ["{{_PREMIS_PATH}}", "{{_CONTENT_METS_PATH}}"],
+                                "params": {
+                                    "rootdir": "{{_OBJPATH}}",
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ESSArch_Core.ip.tasks.CreateContainer",
+                        "label": "Create container",
+                    },
+                    {
+                        "name": "ESSArch_Core.ip.tasks.GeneratePackageMets",
+                        "label": "Generate package-mets",
+                    },
+                    {
+                        "name": "ESSArch_Core.tasks.UpdateIPStatus",
+                        "label": "Set status to created",
+                        "args": ["Created"],
+                    },
+                ]
+            },
+        ]
+        workflow = create_workflow(workflow_spec, ip)
+        workflow.name = "Create SIP"
+        workflow.information_package = ip
+        workflow.save()
+        workflow.run()
         return Response({'status': 'creating ip'})
 
     @detail_route(methods=['post'], url_path='submit', permission_classes=[CanSubmitSIP])
