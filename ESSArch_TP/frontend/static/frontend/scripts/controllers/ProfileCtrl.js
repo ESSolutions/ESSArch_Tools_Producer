@@ -41,6 +41,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                 chosen_sa_id = $scope.ip.submission_agreement;
             } else if($scope.ip.submission_agreement == null && result.profiles.length > 0) {
                 chosen_sa_id = $scope.saProfile.profiles[0].id;
+                $scope.changeSaProfile($scope.saProfile.profiles[0], $scope.ip);
             }
             if(result.profiles.length <= 0) {
                 $scope.saAlert = $scope.alerts.noSas;
