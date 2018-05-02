@@ -609,10 +609,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                         "label": "Create container",
                     },
                     {
-                        "name": "ESSArch_Core.ip.tasks.GeneratePackageMets",
-                        "label": "Generate package-mets",
-                    },
-                    {
                         "name": "ESSArch_Core.tasks.UpdateIPStatus",
                         "label": "Set status to created",
                         "args": ["Created"],
@@ -655,160 +651,74 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-
+        email_subject = None
+        email_body = None
         recipient = ip.get_email_recipient()
-
         if recipient:
             for arg in ['subject', 'body']:
                 if arg not in request.data:
                     raise exceptions.ParseError('%s parameter missing' % arg)
 
-            subject = request.data['subject']
-            body = request.data['body']
+            email_subject = request.data['subject']
+            email_body = request.data['body']
 
         validators = request.data.get('validators', {})
-
         validate_xml_file = validators.get('validate_xml_file', False)
-        validate_file_format = validators.get('validate_file_format', False)
-        validate_integrity = validators.get('validate_integrity', False)
         validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
 
-        step = ProcessStep.objects.create(
-            name="Submit SIP",
-            information_package=ip,
-            eager=False,
-        )
-        pos = 0
-
-        step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.UpdateIPStatus",
-            args=["Submitting"],
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        reception = Path.objects.get(entity="path_preingest_reception").value
-
-        container_format = ip.get_container_format()
-        container_file = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format.lower())
-
-        sa = ip.submission_agreement
-
-        info = fill_specification_data(ip.get_profile_data('submit_description'), ip=ip, sa=sa)
-        info["_IP_CREATEDATE"] = timestamp_to_datetime(creation_date(container_file)).isoformat()
-
-        infoxml = os.path.join(reception, ip.object_identifier_value + ".xml")
-
-        filesToCreate = {
-            infoxml: {'spec': sd_profile.specification, 'data': info}
-        }
-
-        step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.GenerateXML",
-            params={
-                "filesToCreate": filesToCreate,
-                "folderToParse": container_file,
-                "algorithm": ip.get_checksum_algorithm(),
+        workflow_spec = [
+            {
+                "name": "ESSArch_Core.tasks.UpdateIPStatus",
+                "label": "Set status to submitting",
+                "args": ["Submitting"],
             },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        if validate_xml_file:
-            step.add_tasks(
-                ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateXMLFile",
-                    params={
-                        "xml_filename": infoxml
-                    },
-                    processstep_pos=pos,
-                    log=EventIP,
-                    information_package=ip,
-                    responsible=self.request.user,
-                )
-            )
-            pos += 10
-
-        if validate_file_format or validate_integrity:
-            step.add_tasks(
-                ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateFiles",
-                    params={
-                        "ip": ip.pk,
-                        "rootdir": reception,
-                        "xmlfile": infoxml,
-                        "validate_fileformat": validate_file_format,
-                        "validate_integrity": validate_integrity,
-                    },
-                    processstep_pos=pos,
-                    log=EventIP,
-                    information_package=ip,
-                    responsible=self.request.user,
-                )
-            )
-            pos += 10
-
-        if validate_logical_physical_representation:
-            step.add_tasks(
-                ProcessTask.objects.create(
-                    name="ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
-                    args=[ip.object_path, infoxml],
-                    processstep_pos=pos,
-                    log=EventIP,
-                    information_package=ip,
-                    responsible=self.request.user,
-                )
-            )
-            pos += 10
-
-        step.add_tasks(ProcessTask.objects.create(
-            name="preingest.tasks.SubmitSIP",
-            params={
-                "ip": ip.pk
+            {
+                "name": "ESSArch_Core.ip.tasks.GeneratePackageMets",
+                "label": "Generate package-mets",
             },
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-        pos += 10
-
-        if recipient:
-            attachments = [infoxml]
-
-            step.add_tasks(ProcessTask.objects.create(
-                name="ESSArch_Core.tasks.SendEmail",
-                params={
-                    'sender': self.request.user.email,
-                    'recipients': [recipient],
-                    'subject': subject,
-                    'body': body,
-                    'attachments': attachments
-                },
-                processstep_pos=pos,
-                information_package=ip,
-                responsible=self.request.user
-            ))
-            pos += 10
-
-        step.add_tasks(ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.UpdateIPStatus",
-            args=["Submitted"],
-            processstep_pos=pos,
-            log=EventIP,
-            information_package=ip,
-            responsible=self.request.user,
-        ))
-
-        step.save()
-        step.run()
-
+            {
+                "name": "ESSArch_Core.tasks.ValidateXMLFile",
+                "if": validate_xml_file,
+                "label": "Validate package-mets",
+                "params": {
+                    "xml_filename": "{{_PACKAGE_METS_PATH}}",
+                }
+            },
+            {
+                "name": "ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
+                "if": validate_logical_physical_representation,
+                "label": "Diff-check against package-mets",
+                "args": ["{{_OBJPATH}}", "{{_PACKAGE_METS_PATH}}"],
+            },
+            {
+                "name": "preingest.tasks.SubmitSIP",
+                "label": "Submit SIP",
+            },
+            {
+                "name": "ESSArch_Core.tasks.UpdateIPStatus",
+                "label": "Set status to submitted",
+                "args": ["Submitted"],
+            },
+            {
+                "name": "ESSArch_Core.tasks.SendEmail",
+                "if": recipient,
+                "label": "Send email",
+                "params": {
+                    "subject": email_subject,
+                    "body": email_body,
+                    "sender": self.request.user.email,
+                    "recipients": [recipient],
+                    "attachments": [
+                        "{{_PACKAGE_METS_PATH}}",
+                    ],
+                }
+            },
+        ]
+        workflow = create_workflow(workflow_spec, ip)
+        workflow.name = "Submit SIP"
+        workflow.information_package = ip
+        workflow.save()
+        workflow.run()
         return Response({'status': 'submitting ip'})
 
     @detail_route(methods=['put'], url_path='check-profile')
