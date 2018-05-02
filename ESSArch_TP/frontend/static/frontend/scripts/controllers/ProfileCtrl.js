@@ -136,6 +136,7 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         vm.saModel = {};
         vm.saFields = [];
         $scope.selectedSa = null;
+        $scope.editSa = false;
     }
 
     vm.profileModel = {};
@@ -262,6 +263,9 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
             $scope.ip = resource;
             $scope.saProfile.profile = sa;
             vm.loadProfiles();
+            if(vm.saFields.length > 0) {
+                vm.saCancel();
+            }
             vm.changingSa = false;
         }).catch(function (response) {
             vm.changingSa = false;
