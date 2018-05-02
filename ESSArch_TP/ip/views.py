@@ -506,6 +506,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             'docx': 'pdf'
         }
 
+        validators = request.data.get('validators', {})
+        validate_xml_file = validators.get('validate_xml_file', False)
+        validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
+
         workflow_spec = [
             {
                 "name": "ESSArch_Core.tasks.UpdateIPStatus",
@@ -563,9 +567,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     {
                         "step": True,
                         "name": "Validation",
+                        "if": any([validate_xml_file, validate_logical_physical_representation]),
                         "children": [
                             {
                                 "name": "ESSArch_Core.tasks.ValidateXMLFile",
+                                "if": validate_xml_file,
                                 "label": "Validate content-mets",
                                 "params": {
                                     "xml_filename": "{{_CONTENT_METS_PATH}}",
@@ -574,7 +580,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             },
                             {
                                 "name": "ESSArch_Core.tasks.ValidateXMLFile",
-                                "if": generate_premis,
+                                "if": generate_premis and validate_xml_file,
                                 "label": "Validate premis",
                                 "params": {
                                     "xml_filename": "{{_PREMIS_PATH}}",
@@ -583,6 +589,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                             },
                             {
                                 "name": "ESSArch_Core.tasks.ValidateLogicalPhysicalRepresentation",
+                                "if": validate_logical_physical_representation,
                                 "label": "Diff-check against content-mets",
                                 "args": ["{{_OBJPATH}}", "{{_CONTENT_METS_PATH}}"],
                             },
