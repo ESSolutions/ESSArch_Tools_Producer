@@ -530,11 +530,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         t0 = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
-            params={
-                "ip": ip.pk,
-                "status": "Creating",
-                "prev": ip.state,
-            },
+            args=["Creating"],
             processstep_pos=pos,
             log=EventIP,
             information_package=ip,
@@ -910,11 +906,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         create_sip_step.add_tasks(
             ProcessTask.objects.create(
                 name="ESSArch_Core.tasks.UpdateIPStatus",
-                params={
-                    "ip": ip.pk,
-                    "status": "Created",
-                    "prev": "Creating",
-                },
+                args=["Created"],
                 processstep_pos=pos,
                 log=EventIP,
                 information_package=ip,
@@ -996,11 +988,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
-            params={
-                "ip": ip.pk,
-                "status": "Submitting",
-                "prev": ip.status,
-            },
+            args=["Submitting"],
             processstep_pos=pos,
             log=EventIP,
             information_package=ip,
@@ -1117,11 +1105,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step.add_tasks(ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPStatus",
-            params={
-                "ip": ip.pk,
-                "status": "Submitted",
-                "prev": "Submitting",
-            },
+            args=["Submitted"],
             processstep_pos=pos,
             log=EventIP,
             information_package=ip,
