@@ -347,7 +347,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ead_dir, ead_name = find_destination("archival_description_file", structure)
 
         if ead_name is None:
-            return Response("No EAD file for IP found", status=status.HTTP_404_BAD_REQUEST)
+            return Response("No EAD file for IP found", status=status.HTTP_404_NOT_FOUND)
 
         xmlfile = os.path.join(ip.object_path, ead_dir, ead_name)
 
