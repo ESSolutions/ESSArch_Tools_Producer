@@ -168,12 +168,14 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                 field.type = "input";
                 field.templateOptions.disabled = true;
                 if (field.key.startsWith('profile_')) {
-                    $scope.selectRowCollection.forEach(function(profile) {
-                        if(vm.saModel[field.key] == profile.id) {
-                            vm.saModel[field.key] = profile.name;
-                        }
-                    })
-                    if(vm.saModel[field.key] == null) {
+                    if($scope.saProfile.locked) {
+                        $scope.selectRowCollection.forEach(function (profile) {
+                            if (vm.saModel[field.key] == profile.id) {
+                                vm.saModel[field.key] = profile.name;
+                            }
+                        })
+                    }
+                    if (vm.saModel[field.key] == null) {
                         return memo;
                     }
                     field.templateOptions.label = field.key.replace('profile_', '');
