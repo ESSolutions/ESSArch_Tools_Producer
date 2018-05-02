@@ -295,7 +295,7 @@
     "PREPARE_IP_DESC": "Vill du förbereda IP {{label}} för uppladdning?",
     "COMPLETED_UPLOAD_DESC": "Vill du slutföra uppladdning för IP {{label}}?",
     "CREATE_SIP_DESC": "Vill du skapa en SIP av IP {{label}}?",
-    "SUBMIT_SIP_DESC": "vill du skicka SIP {{label}}?",
+    "SUBMIT_SIP_DESC": "Vill du skicka SIP {{label}}?",
     "FILES_PER_PAGE": "Filer per sida",
     "SUBMISSION_AGREEMENT": "Leveransöverenskommelse",
     "IMPORT_SA_FROM_FILE": "Import SA from file",
