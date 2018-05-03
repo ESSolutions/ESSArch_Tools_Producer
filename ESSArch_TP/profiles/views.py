@@ -26,71 +26,23 @@ import os
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
-from django.db.models import Prefetch
-
 from rest_framework import exceptions, status
+from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ESSArch_Core.configuration.models import (
-    Path,
-)
-
-from ESSArch_Core.ip.models import (
-    ArchivalInstitution,
-    ArchivistOrganization,
-    ArchivalLocation,
-    ArchivalType,
-    EventIP,
-    InformationPackage,
-)
-
-from ESSArch_Core.ip.permissions import (
-    CanLockSA,
-)
-
-from ESSArch_Core.WorkflowEngine.models import (
-    ProcessStep,
-    ProcessTask,
-)
-
-from ESSArch_Core.profiles.serializers import (
-    ProfileSerializer,
-    ProfileDetailSerializer,
-    ProfileWriteSerializer,
-    ProfileSASerializer,
-    ProfileIPSerializer,
-    ProfileIPWriteSerializer,
-    ProfileIPDataSerializer,
-    SubmissionAgreementSerializer
-)
-
-from ESSArch_Core.profiles.models import (
-    SubmissionAgreement,
-    Profile,
-    ProfileSA,
-    ProfileIP,
-    ProfileIPData,
-)
-
-from ESSArch_Core.profiles.utils import fill_specification_data
-
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
+from ESSArch_Core.configuration.models import Path
+from ESSArch_Core.ip.models import ArchivalInstitution, ArchivistOrganization, ArchivalLocation, ArchivalType, EventIP, \
+    InformationPackage
+from ESSArch_Core.ip.permissions import CanLockSA
+from ESSArch_Core.profiles.models import SubmissionAgreement, Profile, ProfileSA, ProfileIP
+from ESSArch_Core.profiles.serializers import ProfileSerializer, ProfileDetailSerializer, ProfileWriteSerializer, \
+    ProfileSASerializer, SubmissionAgreementSerializer
+from ESSArch_Core.profiles.views import SubmissionAgreementViewSet as SAViewSetCore
 
 
-class SubmissionAgreementViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows submission agreements to be viewed or edited.
-    """
-    queryset = SubmissionAgreement.objects.all().prefetch_related(
-        Prefetch('profilesa_set', to_attr='profiles')
-    )
-    serializer_class = SubmissionAgreementSerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('published',)
-
+class SubmissionAgreementViewSet(SAViewSetCore):
     @detail_route(methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
         sa = SubmissionAgreement.objects.get(pk=pk)
@@ -159,79 +111,39 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    def get_profile_types(self):
+        return 'sip', 'transfer_project', 'submit_description', 'preservation_metadata'
+
     @transaction.atomic
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
         sa = self.get_object()
         ip_id = request.data.get("ip")
+        permission = CanLockSA()
 
         try:
-            ip = InformationPackage.objects.get(
-                pk=ip_id
-            )
+            ip = InformationPackage.objects.get(pk=ip_id)
         except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Information Package with id %s does not exist' % ip_id},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        permission = CanLockSA()
-        if not permission.has_object_permission(request, self, ip):
-            self.permission_denied(
-                request, message=getattr(permission, 'message', None)
-            )
+            raise exceptions.ParseError('Information Package with id %s does not exist')
 
         if ip.submission_agreement_locked:
             raise exceptions.ParseError('IP already has a locked SA')
 
-        if ip.submission_agreement == sa:
-            ip.submission_agreement_locked = True
-            if sa.archivist_organization:
-                arch, _ = ArchivistOrganization.objects.get_or_create(
-                    name=sa.archivist_organization
-                )
-                ip.archivist_organization = arch
-            ip.save()
+        if not permission.has_object_permission(request, self, ip):
+            self.permission_denied(request, message=getattr(permission, 'message', None))
 
-            types = ('sip', 'transfer_project', 'submit_description', 'preservation_metadata',)
-            extra_data = fill_specification_data(ip=ip, sa=sa)
+        if ip.submission_agreement != sa:
+            raise exceptions.ParseError('This SA is not connected to the selected IP')
 
-            for profile_type in types:
-                lower_type = profile_type.lower().replace(' ', '_')
-                profile = getattr(sa, 'profile_%s' % lower_type, None)
+        ip.submission_agreement_locked = True
+        if sa.archivist_organization:
+            arch, _ = ArchivistOrganization.objects.get_or_create(name=sa.archivist_organization)
+            ip.archivist_organization = arch
+        ip.save()
 
-                if profile is None:
-                    continue
+        ip.create_profile_rels(self.get_profile_types(), request.user)
+        return Response({'status': 'Locked submission agreement'})
 
-                profile_ip = ProfileIP.objects.create(ip=ip, profile=profile)
-                data = {}
-
-                for field in profile_ip.profile.template:
-                    try:
-                        if field['defaultValue'] in extra_data:
-                            data[field['key']] = extra_data[field['defaultValue']]
-                            continue
-
-                        data[field['key']] = field['defaultValue']
-                    except KeyError:
-                        pass
-                data_obj = ProfileIPData.objects.create(
-                    relation=profile_ip, data=data, version=0, user=request.user,
-                )
-                profile_ip.data = data_obj
-                profile_ip.save()
-
-            return Response({'status': 'locking submission_agreement'})
-        elif ip.submission_agreement is None:
-            return Response(
-                {'status': 'No SA connected to IP'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        else:
-            return Response(
-                {'status': 'This SA is not connected to the selected IP'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
 class ProfileSAViewSet(viewsets.ModelViewSet):
     queryset = ProfileSA.objects.all()
