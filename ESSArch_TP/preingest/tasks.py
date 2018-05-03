@@ -164,8 +164,8 @@ class CreateIPRootDir(DBTask):
 class SubmitSIP(DBTask):
     event_type = 10500
 
-    def run(self, ip=None):
-        ip = InformationPackage.objects.get(pk=ip)
+    def run(self):
+        ip = InformationPackage.objects.get(pk=self.ip)
 
         srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
@@ -203,8 +203,8 @@ class SubmitSIP(DBTask):
 
         self.set_progress(100, total=100)
 
-    def undo(self, ip=None):
-        ip = InformationPackage.objects.get(pk=ip)
+    def undo(self):
+        ip = InformationPackage.objects.get(pk=self.ip)
 
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
@@ -215,5 +215,5 @@ class SubmitSIP(DBTask):
         os.remove(tar)
         os.remove(xml)
 
-    def event_outcome_success(self, ip=None):
-        return "Submitted %s" % get_cached_objid(ip)
+    def event_outcome_success(self):
+        return "Submitted %s" % get_cached_objid(self.ip)
