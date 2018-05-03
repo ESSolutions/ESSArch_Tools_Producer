@@ -844,9 +844,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         t = ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPSizeAndCount",
             eager=False,
-            params={
-                'ip': pk
-            },
             information_package=ip
         )
 
