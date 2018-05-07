@@ -58,36 +58,13 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
     }
 
     vm.loadProfiles = function () {
-        if ($scope.saProfile.locked) {
-            $scope.selectRowCollapse = [];
-
-            var profileObject = {
-                transfer_project: null,
-                submit_description: null,
-                sip: null,
-                preservation_metadata: null,
-            };
-            var promises = [];
-            for (var key in $scope.saProfile.profile) {
-                if (/^profile/.test(key) && $scope.saProfile.profile[key] != null && !angular.isUndefined(profileObject[key.substring(8)])) {
-                    promises.push(Profile.get({ id: $scope.saProfile.profile[key] }).$promise.then(function (resource) {
-                        profileObject[resource.profile_type] = resource;
-                        return resource;
-                    }).catch(function (response) {
-                        Notifications.add(response.data.detail, 'error');
-                    })
-                    );
-                }
-            }
-            $q.all(promises).then(function () {
-                for (var key in profileObject) {
-                    if (profileObject[key] != null) {
-                        $scope.selectRowCollapse.push(profileObject[key]);
-                    }
-                }
-                $scope.selectRowCollection = $scope.selectRowCollapse;
-            })
-        }
+        var sa = $scope.saProfile.profile;
+        $scope.selectRowCollection = [];
+        SA.profiles({ id: sa.id }).$promise.then(function (resource) {
+            $scope.selectRowCollection = resource;
+        }).catch(function (response) {
+            Notifications.add(response.data.detail, "error");
+        });
     }
 
     vm.changeDataVersion = function(profileIp, data) {
@@ -168,13 +145,11 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                 field.type = "input";
                 field.templateOptions.disabled = true;
                 if (field.key.startsWith('profile_')) {
-                    if($scope.saProfile.locked) {
-                        $scope.selectRowCollection.forEach(function (profile) {
-                            if (vm.saModel[field.key] == profile.id) {
-                                vm.saModel[field.key] = profile.name;
-                            }
-                        })
-                    }
+                    $scope.selectRowCollection.forEach(function (profile) {
+                        if (vm.saModel[field.key] == profile.id) {
+                            vm.saModel[field.key] = profile.name;
+                        }
+                    })
                     if (vm.saModel[field.key] == null) {
                         return memo;
                     }

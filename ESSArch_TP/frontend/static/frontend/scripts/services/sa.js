@@ -26,6 +26,11 @@ angular.module('myApp').factory('SA', function ($resource, appConfig) {
         lock: {
             method: "POST",
             params: { action: "lock", id: "@id" }
+        },
+        profiles: {
+            method: "GET",
+            isArray: true,
+            params: { action: "profiles", id: "@id" }
         }
     });
 });

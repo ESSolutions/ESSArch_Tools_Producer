@@ -62,7 +62,6 @@ angular.module('myApp').controller('PrepareIpCtrl', function (IP, SA, Profile, $
         } else {
             $scope.ip = row;
             $rootScope.ip = $scope.ip;
-            $scope.getSaProfiles($scope.ip);
             $scope.eventlog = true;
             $scope.select = true;
         }
