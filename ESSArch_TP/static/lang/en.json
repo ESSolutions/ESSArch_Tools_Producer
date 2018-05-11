@@ -118,6 +118,7 @@
     "OUTCOME": "Outcome",
     "LOCKALL": "Lock all",
     "AGENT": "Agent",
+    "AGENTS": "Agents",
     "SUCCESS": "Success",
     "FAILURE": "Failure",
     "INPROGRESS": "In progress",

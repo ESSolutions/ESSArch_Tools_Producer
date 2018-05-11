@@ -56,13 +56,7 @@ from ESSArch_Core.WorkflowEngine.util import create_workflow
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.ip.filters import InformationPackageFilter
-from ESSArch_Core.ip.models import (
-    ArchivalInstitution,
-    ArchivalType,
-    ArchivalLocation,
-    InformationPackage,
-    EventIP
-)
+from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import (
     CanChangeSA,
     CanCreateSIP,
@@ -153,21 +147,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         user = self.request.user
         queryset = InformationPackage.objects.visible_to_user(user)
         queryset = queryset.prefetch_related(
-            Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile',
-            'archival_institution', 'archivist_organization', 'archival_type', 'archival_location',
+            Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile', 'agents',
             'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
         ).select_related('submission_agreement')
-
-        other = self.request.query_params.get('other')
-
-        if other is not None:
-            queryset = queryset.filter(
-                archival_institution=None,
-                archivist_organization=None,
-                archival_type=None,
-                archival_location=None
-            )
-
         return queryset
 
     def create(self, request):
@@ -431,54 +413,12 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         step.run().get()
 
-        transfer_project_data = ip.get_profile_data('transfer_project')
         submit_description_data = ip.get_profile_data('submit_description')
-
         ip.start_date = submit_description_data.get('start_date')
         ip.end_date = submit_description_data.get('end_date')
 
-        archival_institution = transfer_project_data.get("archival_institution")
-        archival_type = transfer_project_data.get("archival_type")
-        archival_location = transfer_project_data.get("archival_location")
-
-        if archival_institution is not None:
-            try:
-                (arch, _) = ArchivalInstitution.objects.get_or_create(
-                    name=archival_institution
-                )
-            except IntegrityError:
-                arch = ArchivalInstitution.objects.get(
-                    name=archival_institution
-                )
-            ip.archival_institution = arch
-
-        if archival_type is not None:
-            try:
-                (arch, _) = ArchivalType.objects.get_or_create(
-                    name=archival_type
-                )
-            except IntegrityError:
-                arch = ArchivalType.objects.get(
-                    name=archival_type
-                )
-            ip.archival_type = arch
-
-        if archival_location is not None:
-            try:
-                (arch, _) = ArchivalLocation.objects.get_or_create(
-                    name=archival_location
-                )
-            except IntegrityError:
-                arch = ArchivalLocation.objects.get(
-                    name=archival_location
-                )
-            ip.archival_location = arch
-
         ip.state = "Prepared"
-        ip.save(update_fields=[
-            'archival_institution', 'archival_type', 'archival_location', 'state',
-            'start_date', 'end_date',
-        ])
+        ip.save(update_fields=['state', 'start_date', 'end_date'])
 
         return Response()
 

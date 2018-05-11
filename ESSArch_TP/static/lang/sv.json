@@ -118,6 +118,7 @@
     "OUTCOME": "Resultat",
     "LOCKALL": "Lås alla",
     "AGENT": "Agent",
+    "AGENTS": "Agenter",
     "SUCCESS": "Slutförd",
     "FAILURE": "Fel",
     "INPROGRESS": "Evalueras",

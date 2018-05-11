@@ -80,10 +80,7 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
         return IP.query(angular.extend({
                 page: pageNumber,
                 page_size: pageSize,
-                archival_institution: filters.institution,
-                archivist_organization: filters.organization,
-                archival_type: filters.type,
-                archival_location: filters.location,
+                agents: filters.agents,
                 other: filters.other,
                 ordering: sortString,
                 state: state,

@@ -22,56 +22,22 @@
     Email - essarch@essolutions.se
 """
 
-from _version import get_versions
-from guardian.shortcuts import get_perms
 from rest_framework import serializers
 
-from ESSArch_Core.auth.serializers import UserSerializer
-from ESSArch_Core.ip.models import (
-    InformationPackage
-)
-from ESSArch_Core.ip.serializers import (
-    ArchivalInstitutionSerializer,
-    ArchivistOrganizationSerializer,
-    ArchivalTypeSerializer,
-    ArchivalLocationSerializer,
-)
-from ESSArch_Core.profiles.models import SubmissionAgreement
-from ESSArch_Core.profiles.serializers import (
-    ProfileIPSerializer,
-)
-
-VERSION = get_versions()['version']
+from ESSArch_Core.ip.serializers import InformationPackageSerializer as CoreInformationPackageSerializer
+from ESSArch_Core.profiles.serializers import ProfileIPSerializer
+from ESSArch_Core.profiles.utils import profile_types
 
 
-class InformationPackageSerializer(serializers.HyperlinkedModelSerializer):
-    responsible = UserSerializer()
-    profiles = ProfileIPSerializer(many=True)
-    submission_agreement = serializers.PrimaryKeyRelatedField(queryset=SubmissionAgreement.objects.all())
-    archival_institution = ArchivalInstitutionSerializer(read_only=True)
-    archivist_organization = ArchivistOrganizationSerializer(read_only=True)
-    archival_type = ArchivalTypeSerializer(read_only=True)
-    archival_location = ArchivalLocationSerializer(read_only=True)
-    permissions = serializers.SerializerMethodField()
+class InformationPackageSerializer(CoreInformationPackageSerializer):
+    profiles = serializers.SerializerMethodField()
 
-    def get_permissions(self, obj):
-        request = self.context.get('request')
-        if hasattr(request, 'user'):
-            return get_perms(request.user, obj)
+    def get_profiles(self, obj):
+        profiles = getattr(obj, 'profiles', obj.profileip_set)
+        return ProfileIPSerializer(profiles, many=True, context=self.context).data
 
-        return []
-
-    class Meta:
-        model = InformationPackage
-        fields = (
-            'url', 'id', 'object_identifier_value', 'label', 'content',
-            'responsible', 'create_date', 'entry_date', 'state', 'status', 'step_state',
-            'object_path', 'object_size', 'object_num_items', 'start_date',
-            'end_date', 'package_type', 'submission_agreement',
-            'archival_institution', 'archivist_organization', 'archival_type',
-            'archival_location', 'submission_agreement_locked', 'profiles',
-            'permissions',
-        )
+    class Meta(CoreInformationPackageSerializer.Meta):
+        fields = CoreInformationPackageSerializer.Meta.fields + ('profiles',)
 
 
 class InformationPackageReadSerializer(InformationPackageSerializer):
@@ -80,14 +46,7 @@ class InformationPackageReadSerializer(InformationPackageSerializer):
         profiles = data['profiles']
         data['profiles'] = {}
 
-        types = [
-            'transfer_project', 'content_type', 'data_selection',
-            'authority_information', 'archival_description',
-            'import', 'submit_description', 'sip', 'aip',
-            'dip', 'workflow', 'preservation_metadata',
-        ]
-
-        for ptype in types:
+        for ptype in profile_types:
             data['profile_%s' % ptype] = None
 
         for p in profiles:

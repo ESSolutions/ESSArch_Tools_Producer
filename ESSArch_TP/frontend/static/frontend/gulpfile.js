@@ -42,6 +42,7 @@ var argv = require('yargs').argv;
 var isProduction = (argv.production === undefined) ? false : true;
 
 var jsPolyfillFiles = [
+    'node_modules/ie-array-find-polyfill/index.js',
     'node_modules/string.prototype.startswith/startswith.js',
     'node_modules/string.prototype.endswith/endswith.js',
     'node_modules/string.prototype.contains/contains.js',
