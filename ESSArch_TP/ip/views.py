@@ -405,7 +405,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "structure": sa.profile_sip.structure,
                 "root": root
             },
-            log=EventIP,
             information_package=ip,
             responsible=self.request.user,
             processstep=step,
@@ -515,7 +514,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 "label": "Validate content-mets",
                                 "params": {
                                     "xml_filename": "{{_CONTENT_METS_PATH}}",
-                                    "rootdir": "{{_OBJPATH}}",
                                 }
                             },
                             {
@@ -524,7 +522,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 "label": "Validate premis",
                                 "params": {
                                     "xml_filename": "{{_PREMIS_PATH}}",
-                                    "rootdir": "{{_OBJPATH}}",
                                 }
                             },
                             {
@@ -538,9 +535,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                                 "if": generate_premis,
                                 "label": "Compare premis and content-mets",
                                 "args": ["{{_PREMIS_PATH}}", "{{_CONTENT_METS_PATH}}"],
-                                "params": {
-                                    "rootdir": "{{_OBJPATH}}",
-                                }
                             }
                         ]
                     },
