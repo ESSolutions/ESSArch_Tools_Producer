@@ -59,7 +59,7 @@ function nestedEmptyPermissions(page) {
     }
 }
 
-angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'permission.ui', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config', 'ig.linkHeaderParser', 'hc.marked', 'ngFilesizeFilter', 'angular-clipboard', 'ngResource', 'relativeDate', 'permission.config', 'ngWebSocket'])
+angular.module('myApp', ['templates', 'ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'formlyBootstrap', 'smart-table', 'treeGrid', 'ui.router', 'ngCookies', 'permission', 'permission.ui', 'pascalprecht.translate', 'ngSanitize', 'ui.bootstrap.contextMenu', 'ui.select', 'flow', 'ui.bootstrap.datetimepicker', 'ui.dateTimeInput', 'ngAnimate', 'ngMessages', 'myApp.config', 'ig.linkHeaderParser', 'hc.marked', 'ngFilesizeFilter', 'angular-clipboard', 'ngResource', 'relativeDate', 'permission.config', 'ngWebSocket'])
     .config(function($routeProvider, formlyConfigProvider, $stateProvider, $urlRouterProvider, $rootScopeProvider, $uibTooltipProvider, $urlMatcherFactoryProvider, permissionConfig) {
 
         $urlMatcherFactoryProvider.strictMode(false);
@@ -74,7 +74,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
                 params: {
                     requestedPage: '/login',
                 },
-                templateUrl: '/static/frontend/views/login.html',
+                templateUrl: 'login.html',
                 controller: 'LoginCtrl as vm',
                 resolve: {
                     authenticated: ['djangoAuth', function(djangoAuth){
@@ -527,6 +527,7 @@ angular.module('myApp', ['ngRoute', 'treeControl', 'ui.bootstrap', 'formly', 'fo
         formlyValidationMessages.addStringMessage('remoteUrl', 'Enter a valid URL with credentials\n(https://example.com,user,pass)');
 
         $rootScope.flowObjects = {};
+        $rootScope.app = 'ESSArch Tools Producer'
         djangoAuth.initialize('/rest-auth', false).then(function(response) {
             $rootScope.auth = response.data;
             myService.getPermissions(response.data.permissions);
