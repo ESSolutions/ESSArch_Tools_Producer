@@ -12,7 +12,7 @@ ESSArch Tools Producer
    configuration/index
    restapi/index
    source/modules
-
+   user_guide/index
 
 
 Indices and tables
