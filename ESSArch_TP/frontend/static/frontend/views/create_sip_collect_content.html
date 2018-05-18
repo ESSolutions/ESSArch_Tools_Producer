@@ -14,7 +14,7 @@
             </div>
             <div ng-if="select || subSelect || edit || eventlog" id="select-wrap" class="select-sub-edit-eventlog-wrapper" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                 <div ng-if="select" id="select-view" class="select-view">
-                    <button tabindex="-1" class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right;">{{'EDIT' | translate}} EAD</button>
+                    <button tabindex="-1" class="btn btn-default" ng-click="openEadEditor(ip)" style="float:right; margin-bottom: 5px;">{{'EDIT' | translate}} EAD</button>
                     <b>IP: </b>{{ip.label}}
                     <!--<div style="margin-top: 20px;" ng-include src="'static/frontend/views/filebrowser.html'"></div>-->
                     <filebrowser ip="ip" browserstate="vm.browserstate"></filebrowser>
