@@ -401,10 +401,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         )
         ProcessTask.objects.create(
             name="ESSArch_Core.tasks.CreatePhysicalModel",
-            params={
-                "structure": sa.profile_sip.structure,
-                "root": root
-            },
+            args=[sa.profile_sip.structure],
             information_package=ip,
             responsible=self.request.user,
             processstep=step,
