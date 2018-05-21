@@ -24,23 +24,18 @@
 
 import errno
 import glob
-import logging
 import itertools
+import logging
 import os
 import re
 import shutil
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
-from ip.steps import (
-    prepare_ip,
-)
 from natsort import natsorted
 from rest_framework import exceptions, filters, permissions, status
 from rest_framework import viewsets
@@ -48,37 +43,19 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
-from ESSArch_Core.WorkflowEngine.models import (
-    ProcessStep, ProcessTask,
-)
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 from ESSArch_Core.WorkflowEngine.serializers import ProcessStepChildrenSerializer
 from ESSArch_Core.WorkflowEngine.util import create_workflow
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.ip.filters import InformationPackageFilter
 from ESSArch_Core.ip.models import InformationPackage, EventIP
-from ESSArch_Core.ip.permissions import (
-    CanChangeSA,
-    CanCreateSIP,
-    CanDeleteIP,
-    CanSetUploaded,
-    CanSubmitSIP,
-    CanUnlockProfile,
-    CanUpload,
-    IsResponsible,
-)
-from ESSArch_Core.profiles.models import (
-    Profile,
-    ProfileIP,
-)
-from ESSArch_Core.profiles.utils import fill_specification_data
-from ESSArch_Core.util import (
-    creation_date,
-    find_destination,
-    in_directory,
-    mkdir_p,
-    timestamp_to_datetime,
-)
+from ESSArch_Core.ip.permissions import CanChangeSA, CanCreateSIP, CanDeleteIP, CanSetUploaded, CanSubmitSIP, \
+    CanUnlockProfile, CanUpload, IsResponsible
+from ESSArch_Core.profiles.models import Profile, ProfileIP
+from ESSArch_Core.util import find_destination, in_directory, mkdir_p
+from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
+from ip.steps import prepare_ip
 
 
 class InformationPackageViewSet(viewsets.ModelViewSet):
@@ -152,7 +129,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         ).select_related('submission_agreement')
         return queryset
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         """
         Prepares a new information package (IP) using the following tasks:
 
@@ -205,7 +182,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, *args, **kwargs):
         ip = self.get_object()
         self.check_object_permissions(request, ip)
         path = ip.object_path
@@ -236,7 +213,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             step.run()
 
-        return super(InformationPackageViewSet, self).destroy(request, pk=pk)
+        return super(InformationPackageViewSet, self).destroy(request, *args, **kwargs)
 
     @detail_route()
     def workflow(self, request, pk=None):
@@ -656,16 +633,11 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
     def check_profile(self, request, pk=None):
         ip = self.get_object()
         ptype = request.data.get("type")
+        pip = ProfileIP.objects.get(ip=ip, profile__profile_type=ptype)
 
-        try:
-            pip = ProfileIP.objects.get(ip=ip, profile__profile_type=ptype)
-
-            if not pip.LockedBy:
-                pip.included = request.data.get('checked', not pip.included)
-                pip.save()
-        except ProfileIP.DoesNotExist:
-            print "pip does not exist"
-            pass
+        if not pip.LockedBy:
+            pip.included = request.data.get('checked', not pip.included)
+            pip.save()
 
         return Response()
 
