@@ -22,6 +22,7 @@
     Email - essarch@essolutions.se
 """
 
+import copy
 import errno
 import glob
 import itertools
@@ -31,11 +32,14 @@ import re
 import shutil
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.db.models import Prefetch
+from django.db import IntegrityError, transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from groups_manager.utils import get_permission_name
+from guardian.shortcuts import assign_perm
 from natsort import natsorted
 from rest_framework import exceptions, filters, permissions, status
 from rest_framework import viewsets
@@ -46,6 +50,7 @@ from rest_framework.response import Response
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 from ESSArch_Core.WorkflowEngine.serializers import ProcessStepChildrenSerializer
 from ESSArch_Core.WorkflowEngine.util import create_workflow
+from ESSArch_Core.auth.models import Member
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
 from ESSArch_Core.ip.filters import InformationPackageFilter
@@ -55,13 +60,13 @@ from ESSArch_Core.ip.permissions import CanChangeSA, CanCreateSIP, CanDeleteIP, 
 from ESSArch_Core.profiles.models import Profile, ProfileIP
 from ESSArch_Core.util import find_destination, in_directory, mkdir_p
 from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
-from ip.steps import prepare_ip
 
 
 class InformationPackageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows information packages to be viewed or edited.
     """
+    logger = logging.getLogger('essarch.etp.InformationPackageViewSet')
     queryset = InformationPackage.objects.none()
     serializer_class = InformationPackageSerializer
     filter_backends = (
@@ -160,17 +165,53 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         if responsible.user_profile.current_organization is None:
             raise exceptions.ParseError('You must be part of an organization to prepare an IP')
 
+        prepare_path = Path.objects.get(entity="path_preingest_prepare").value
         if object_identifier_value:
             ip_exists = InformationPackage.objects.filter(object_identifier_value=object_identifier_value).exists()
             if ip_exists:
                 raise Conflict('IP with object identifer value "%s" already exists' % object_identifier_value)
 
-            prepare_path = Path.objects.get(entity="path_preingest_prepare").value
-
             if os.path.exists(os.path.join(prepare_path, object_identifier_value)):
                 raise Conflict('IP with identifier "%s" already exists on disk' % object_identifier_value)
 
-        prepare_ip(label, responsible, object_identifier_value).run()
+        try:
+            perms = copy.deepcopy(settings.IP_CREATION_PERMS_MAP)
+        except AttributeError:
+            msg = 'IP_CREATION_PERMS_MAP not defined in settings'
+            self.logger.error(msg)
+            raise ImproperlyConfigured(msg)
+
+        try:
+            with transaction.atomic():
+                ip = InformationPackage.objects.create(object_identifier_value=object_identifier_value, label=label,
+                                                       responsible=responsible, state="Preparing",
+                                                       package_type=InformationPackage.SIP)
+                ip.entry_date = ip.create_date
+                extra = {'event_type': 10100, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
+                self.logger.info("Prepared {obj}".format(obj=ip.object_identifier_value), extra=extra)
+
+                member = Member.objects.get(django_user=responsible)
+                user_perms = perms.pop('owner', [])
+                organization = member.django_user.user_profile.current_organization
+                organization.assign_object(ip, custom_permissions=perms)
+
+                for perm in user_perms:
+                    perm_name = get_permission_name(perm, ip)
+                    assign_perm(perm_name, member.django_user, ip)
+
+                obj_path = os.path.join(prepare_path, ip.object_identifier_value)
+                os.mkdir(obj_path)
+                ip.object_path = obj_path
+                ip.save()
+                extra = {'event_type': 10200, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
+                self.logger.info("Created IP root directory", extra=extra)
+        except IntegrityError:
+            try:
+                shutil.rmtree(obj_path)
+            except OSError as e:
+                pass
+            raise
+
         return Response({"detail": "Prepared IP"}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
