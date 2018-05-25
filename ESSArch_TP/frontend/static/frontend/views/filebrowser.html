@@ -4,7 +4,7 @@
             <li ng-class="{'arrow-disabled': previousGridArrays.length == 0}" class="fa fa-arrow-circle-o-left fa-2x clickable" ng-click="previousGridArray()"></li>
             <b class="dir-path">{{ip.object_identifier_value + '/' + previousGridArraysString()}}</b>
         </div>
-        <div class="file-view-options btn-group">
+        <div class="button-refresh-wrapper">
             <div>
                 <select tabindex="-1" class="form-control items-per-page" ng-change="changeFilesPerPage(filesPerPage)" ng-model="filesPerPage" ng-options="x for x in [5, 10, 25, 50]"
                 uib-popover="{{'FILES_PER_PAGE' | translate}}" popover-placement="top" popover-popup-delay="500" popover-append-to-body="true">
@@ -19,9 +19,11 @@
                 uib-popover="{{'GRID_VIEW' | translate}}" popover-placement="top" popover-popup-delay="500" popover-append-to-body="true">
                 <i class="fa fa-th fa-lg"></i>
             </button>
+            <div class="refresh-filebrowser">
+                <span ng-click="updateGridArray(ip)" class="clickable angular-animate fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': gridArrayLoading }"
+                    uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></span>
+            </div>
         </div>
-        <span ng-click="updateGridArray(ip)" class="clickable fa fa-refresh fa-lg" ng-class="{'fa-refresh-animate': gridArrayLoading }"
-            uib-popover="{{'REFRESHTABLEDESC' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></span>
     </div>
     <div ng-show="gridView">
         <div class="deckgrid">
