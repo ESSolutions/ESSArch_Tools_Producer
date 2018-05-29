@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'ESSArch_Core.config',
     'ESSArch_Core.configuration',
     'ESSArch_Core.docs',
+    'ESSArch_Core.frontend',
     'ESSArch_Core.ip',
     'ESSArch_Core.profiles',
     'ESSArch_Core.essxml.Generator',
