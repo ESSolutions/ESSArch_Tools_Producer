@@ -32,7 +32,7 @@ import re
 import shutil
 
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.core.exceptions import ValidationError
 from django.db.models import Prefetch
 from django.db import IntegrityError, transaction
 from django.http import HttpResponse
@@ -174,13 +174,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             if os.path.exists(os.path.join(prepare_path, object_identifier_value)):
                 raise Conflict('IP with identifier "%s" already exists on disk' % object_identifier_value)
 
-        try:
-            perms = copy.deepcopy(settings.IP_CREATION_PERMS_MAP)
-        except AttributeError:
-            msg = 'IP_CREATION_PERMS_MAP not defined in settings'
-            self.logger.error(msg)
-            raise ImproperlyConfigured(msg)
-
+        perms = copy.deepcopy(getattr(settings, 'IP_CREATION_PERMS_MAP', {}))
         try:
             with transaction.atomic():
                 ip = InformationPackage.objects.create(object_identifier_value=object_identifier_value, label=label,
@@ -194,6 +188,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 user_perms = perms.pop('owner', [])
                 organization = member.django_user.user_profile.current_organization
                 organization.assign_object(ip, custom_permissions=perms)
+                organization.add_object(ip)
 
                 for perm in user_perms:
                     perm_name = get_permission_name(perm, ip)
