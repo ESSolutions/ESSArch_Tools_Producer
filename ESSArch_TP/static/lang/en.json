@@ -323,5 +323,7 @@
     "VERSIONINFO": "Version info",
     "POPUP_ENABLED": "Popup enabled",
     "USER_SETTINGS": "User settings",
-    "STEP_STATE_DESC": "Step state, Success/Failure"
+    "STEP_STATE_DESC": "Step state, Success/Failure",
+    "CHANGE_ORGANIZATION": "Change organization",
+    "ORGANIZATION_CHANGED": "Organization changed"
 }

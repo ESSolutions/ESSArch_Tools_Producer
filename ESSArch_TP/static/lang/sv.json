@@ -323,5 +323,7 @@
     "VERSIONINFO": "Version-info",
     "POPUP_ENABLED": "Popup aktiverad",
     "USER_SETTINGS": "Användarinställningar",
-    "STEP_STATE_DESC": "Step-tillstånd, Slutförd/Fel"
+    "STEP_STATE_DESC": "Step-tillstånd, Slutförd/Fel",
+    "CHANGE_ORGANIZATION": "Byt organisation",
+    "ORGANIZATION_CHANGED": "Organisation bytt"
 }
