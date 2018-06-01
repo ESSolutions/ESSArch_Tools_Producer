@@ -667,7 +667,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "params": {
                     "subject": email_subject,
                     "body": email_body,
-                    "sender": self.request.user.email,
                     "recipients": [recipient],
                     "attachments": [
                         "{{_PACKAGE_METS_PATH}}",
