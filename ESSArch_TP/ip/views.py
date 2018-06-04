@@ -59,7 +59,7 @@ from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import CanChangeSA, CanCreateSIP, CanDeleteIP, CanSetUploaded, CanSubmitSIP, \
     CanUnlockProfile, CanUpload, IsResponsible
 from ESSArch_Core.profiles.models import Profile, ProfileIP
-from ESSArch_Core.util import find_destination, in_directory, mkdir_p
+from ESSArch_Core.util import find_destination, in_directory, list_files, mkdir_p
 from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
 
 
@@ -346,7 +346,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
             return Response(path, status=status.HTTP_201_CREATED)
 
-        return ip.files(request.query_params.get('path', '').rstrip('/'), paginator=self.paginator, request=request)
+        return list_files(ip.files(request.query_params.get('path', '').rstrip('/')), paginator=self.paginator, request=request)
 
     @detail_route(methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
