@@ -237,7 +237,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         ip = self.get_object()
-        self.check_object_permissions(request, ip)
         path = ip.object_path
 
         if os.path.isdir(path):
