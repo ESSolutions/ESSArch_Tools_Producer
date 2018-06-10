@@ -778,7 +778,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         with open(path, 'wb') as f:
             for chunk_file in natsorted(glob.glob('%s_*' % re.sub(r'([\[\]])', '[\\1]', path))):
-                f.write(open(chunk_file).read())
+                with open(chunk_file, 'rb') as cf:
+                    f.write(cf.read())
+                cf.close()
                 os.remove(chunk_file)
 
         logger = logging.getLogger('essarch')
