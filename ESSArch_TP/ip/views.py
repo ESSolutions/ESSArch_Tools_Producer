@@ -59,7 +59,7 @@ from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import CanChangeSA, CanCreateSIP, CanDeleteIP, CanSetUploaded, CanSubmitSIP, \
     CanUnlockProfile, CanUpload, IsResponsible
 from ESSArch_Core.profiles.models import Profile, ProfileIP
-from ESSArch_Core.util import find_destination, in_directory, list_files, mkdir_p
+from ESSArch_Core.util import find_destination, in_directory, list_files, mkdir_p, normalize_path
 from ip.serializers import InformationPackageSerializer, InformationPackageReadSerializer
 
 
@@ -211,7 +211,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                     perm_name = get_permission_name(perm, ip)
                     assign_perm(perm_name, member.django_user, ip)
 
-                obj_path = os.path.join(prepare_path, ip.object_identifier_value)
+                obj_path = normalize_path(os.path.join(prepare_path, ip.object_identifier_value))
                 os.mkdir(obj_path)
                 ip.object_path = obj_path
                 ip.save()
@@ -722,7 +722,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         ip.unlock_profile(ptype)
         prepare_path = Path.objects.get(entity='path_preingest_prepare').value
-        ip.object_path = os.path.join(prepare_path, ip.object_identifier_value)
+        ip.object_path = normalize_path(os.path.join(prepare_path, ip.object_identifier_value))
         ip.save(update_fields=['object_path'])
 
         return Response({
