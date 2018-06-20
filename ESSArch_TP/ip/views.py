@@ -447,6 +447,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         return Response()
 
+    @transaction.atomic
     @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
         """
@@ -463,6 +464,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
 
         if ip.state != "Uploaded":
             raise exceptions.ParseError("The IP (%s) is in the state '%s' but should be 'Uploaded'" % (pk, ip.state))
+
+        ip.state = 'Creating'
+        ip.save()
+
         generate_premis = ip.profile_locked('preservation_metadata')
 
         convert_files = request.data.get('file_conversion', False)
@@ -476,11 +481,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
 
         workflow_spec = [
-            {
-                "name": "ESSArch_Core.tasks.UpdateIPStatus",
-                "label": "Set status to creating",
-                "args": ["Creating"],
-            },
             {
                 "name": "ESSArch_Core.tasks.ConvertFile",
                 "if": convert_files,
@@ -583,6 +583,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         workflow.run()
         return Response({'status': 'creating ip'})
 
+    @transaction.atomic
     @detail_route(methods=['post'], url_path='submit', permission_classes=[CanSubmitSIP])
     def submit(self, request, pk=None):
         """
@@ -602,6 +603,9 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
                 "The IP (%s) is in the state '%s' but should be 'Created'" % (pk, ip.state),
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        ip.state = 'Submitting'
+        ip.save()
 
         sd_profile = ip.get_profile('submit_description')
 
@@ -627,11 +631,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         validate_logical_physical_representation = validators.get('validate_logical_physical_representation', False)
 
         workflow_spec = [
-            {
-                "name": "ESSArch_Core.tasks.UpdateIPStatus",
-                "label": "Set status to submitting",
-                "args": ["Submitting"],
-            },
             {
                 "name": "ESSArch_Core.ip.tasks.GeneratePackageMets",
                 "label": "Generate package-mets",
