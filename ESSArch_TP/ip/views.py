@@ -386,6 +386,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
         filename_list = os.listdir(static_path)
         return Response(filename_list)
 
+    @transaction.atomic
     @detail_route(methods=['post'], url_path='prepare')
     def prepare(self, request, pk=None):
         ip = self.get_object()
@@ -429,7 +430,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet):
             processstep=step,
         )
 
-        step.run().get()
+        try:
+            step.run().get()
+        except Exception as e:
+            raise exceptions.APIException(e.message)
 
         submit_description_data = ip.get_profile_data('submit_description')
         ip.start_date = submit_description_data.get('start_date')
