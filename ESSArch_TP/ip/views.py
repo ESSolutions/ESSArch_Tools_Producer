@@ -134,6 +134,8 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
             Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile', 'agents',
             'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
         ).select_related('submission_agreement')
+        if self.request.method in permissions.SAFE_METHODS:
+            queryset = queryset.using('read_uncommitted')
         return queryset
 
     @detail_route(methods=['post'], url_path='change-organization')
@@ -426,8 +428,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
             information_package=ip
         )
         ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.CreatePhysicalModel",
-            args=[sa.profile_sip.structure],
+            name="ESSArch_Core.ip.tasks.CreatePhysicalModel",
             information_package=ip,
             responsible=self.request.user,
             processstep=step,
