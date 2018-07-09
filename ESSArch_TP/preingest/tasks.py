@@ -25,7 +25,7 @@
 from __future__ import absolute_import
 
 import os
-from urlparse import urljoin
+from six.moves.urllib.parse import urljoin
 
 import requests
 
