@@ -134,8 +134,6 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
             Prefetch('profileip_set', to_attr='profiles'), 'profiles__profile', 'agents',
             'responsible__user_permissions', 'responsible__groups__permissions', 'steps',
         ).select_related('submission_agreement')
-        if self.request.method in permissions.SAFE_METHODS:
-            queryset = queryset.using('read_uncommitted')
         return queryset
 
     @detail_route(methods=['post'], url_path='change-organization')
