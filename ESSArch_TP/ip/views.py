@@ -784,14 +784,13 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
         ip = self.get_object()
         if ip.state not in ['Prepared', 'Uploading']:
             raise exceptions.ParseError('IP must be in state "Prepared" or "Uploading"')
-        ip.state = "Uploaded"
-        ip.save()
 
-        t = ProcessTask.objects.create(
+        ProcessTask.objects.create(
             name="ESSArch_Core.tasks.UpdateIPSizeAndCount",
             eager=False,
             information_package=ip
-        )
+        ).run()
 
-        t.run()
+        ip.state = "Uploaded"
+        ip.save()
         return Response()
