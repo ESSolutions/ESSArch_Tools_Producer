@@ -54,6 +54,7 @@ from ESSArch_Core.auth.models import Group, Member
 from ESSArch_Core.auth.util import get_organization_groups
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
+from ESSArch_Core.filters import string_to_bool
 from ESSArch_Core.ip.filters import InformationPackageFilter
 from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import CanChangeSA, CanCreateSIP, CanDeleteIP, CanSetUploaded, CanSubmitSIP, \
@@ -271,9 +272,15 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
     @detail_route()
     def workflow(self, request, pk=None):
         ip = self.get_object()
+        hidden = request.query_params.get('hidden')
 
         steps = ip.steps.filter(parent_step__information_package__isnull=True)
         tasks = ip.processtask_set.filter(processstep__information_package__isnull=True)
+
+        if hidden is not None:
+            steps = steps.filter(hidden=string_to_bool(hidden))
+            tasks = tasks.filter(hidden=string_to_bool(hidden))
+
         flow = sorted(itertools.chain(steps, tasks), key=lambda x: (x.get_pos(), x.time_created))
 
         serializer = ProcessStepChildrenSerializer(data=flow, many=True, context={'request': request})

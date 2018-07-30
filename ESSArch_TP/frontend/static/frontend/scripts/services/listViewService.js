@@ -99,7 +99,8 @@ angular.module('myApp').factory('listViewService', function (IP, SA, Event, Even
     //Get data for status view. child steps and tasks
     function getStatusViewData(ip, expandedNodes){
         return IP.workflow({
-            id: ip.id
+            id: ip.id,
+            hidden: false,
         }).$promise.then(function(workflow){
             workflow.forEach(function(flow_node){
                 flow_node.time_started = $filter('date')(flow_node.time_started, "yyyy-MM-dd HH:mm:ss");
