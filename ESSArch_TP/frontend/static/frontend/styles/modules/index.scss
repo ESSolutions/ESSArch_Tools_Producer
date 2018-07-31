@@ -20,6 +20,9 @@ body.modal-open {
 body.modal-open[style] {
     padding-right: 0px !important;
 }
+main {
+  display: block;
+}
 .st-sort-ascent:before {
     content: '\25B2';
     position: relative;
