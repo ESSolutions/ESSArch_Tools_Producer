@@ -35,10 +35,13 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+PROJECT_SHORTNAME = 'ETP'
+PROJECT_NAME = 'ESSArch Tools Producer'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -65,6 +68,13 @@ REST_FRAMEWORK = {
       'rest_framework.permissions.IsAuthenticated',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+}
+
+CELERYBEAT_SCHEDULE = {
+    'RunWorkflowProfiles-every-10-seconds': {
+        'task': 'ESSArch_Core.tasks.RunWorkflowProfiles',
+        'schedule': timedelta(seconds=10),
+    },
 }
 
 PROXY_PAGINATION_PARAM = 'pager'
