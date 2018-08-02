@@ -177,7 +177,8 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             $ctrl.creating = false;
             $uibModalInstance.close();
         }).catch(function (response) {
-            if(response.status) {
+            if(response.status == 404) {
+                Notifications.add('IP could not be found', 'error');
                 Notifications.add('IP could not be found', 'error');
             } else {
                 Notifications.add(response.data.detail, 'error');
@@ -200,7 +201,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             $uibModalInstance.close();
         }).catch(function(response) {
             $ctrl.submitting = false;
-            if(response.status) {
+            if(response.status == 404) {
                 Notifications.add('IP could not be found', 'error');
             } else {
                 Notifications.add(response.data.detail, 'error');
@@ -217,7 +218,7 @@ angular.module('myApp').controller('ModalInstanceCtrl', function (IP, $scope, $u
             $ctrl.removing = false;
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
-            if(response.status) {
+            if(response.status == 404) {
                 Notifications.add('IP could not be found', 'error');
             } else {
                 Notifications.add(response.data.detail, 'error');
