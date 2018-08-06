@@ -658,10 +658,6 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         }
     };
 
-    //Redirect to admin page
-    $scope.redirectAdmin = function () {
-        $window.location.href="/admin/";
-    }
     $scope.extendedEqual = function(specification_data, model) {
         for(var prop in model) {
             if((model[prop] != "" || specification_data[prop]) && model[prop] != specification_data[prop]){
