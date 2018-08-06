@@ -326,5 +326,6 @@
     "STEP_STATE_DESC": "Step state, Success/Failure",
     "CHANGE_ORGANIZATION": "Change organization",
     "ORGANIZATION_CHANGED": "Organization changed",
-    "VERSIONS": "Versions"
+    "VERSIONS": "Versions",
+    "USERSETTINGS": "User settings"
 }
