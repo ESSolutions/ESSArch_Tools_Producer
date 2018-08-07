@@ -46,6 +46,18 @@ PROJECT_NAME = 'ESSArch Tools Producer'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
+ESSARCH_TRANSFORMERS = {
+    'content': 'fixity.transformation.backends.content.ContentTransformer'
+}
+
+ESSARCH_WORKFLOW_POLLERS = {
+    'dir': {
+        'class': 'workflow.polling.backends.directory.DirectoryWorkflowPoller',
+        'path': '/ESSArch/data/etp/prepare_reception',
+        'sa': 'SA National Archive and Government SE',
+    }
+}
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ze7xnd#&9_m)05j&j8wpu!=dp+jlj3olk&@k7amq9-s2x+b=$%'
 SESSION_COOKIE_NAME = 'etp'
