@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import errno
 import logging
 import os
+import shutil
 
 from ESSArch_Core.WorkflowEngine.polling.backends.base import BaseWorkflowPoller
 from ESSArch_Core.auth.models import Group, GroupMember
@@ -48,3 +50,11 @@ class DirectoryWorkflowPoller(BaseWorkflowPoller):
             ip.create_profile_rels(p_types, responsible)
             org.add_object(ip)
             yield ip
+
+    def delete_source(self, path, ip):
+        path = os.path.join(path, ip.object_identifier_value)
+        try:
+            shutil.rmtree(path)
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
