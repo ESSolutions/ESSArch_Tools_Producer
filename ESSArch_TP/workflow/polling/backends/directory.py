@@ -5,6 +5,8 @@ import logging
 import os
 import shutil
 
+from django.conf import settings
+
 from ESSArch_Core.WorkflowEngine.polling.backends.base import BaseWorkflowPoller
 from ESSArch_Core.auth.models import Group, GroupMember
 from ESSArch_Core.ip.models import InformationPackage
@@ -14,6 +16,7 @@ from ESSArch_Core.util import stable_path
 
 logger = logging.getLogger('essarch.eta.workflow.polling.DirectoryWorkflowPoller')
 p_types = [p_type.lower().replace(' ', '_') for p_type in profile_types]
+proj = settings.PROJECT_SHORTNAME
 
 
 class DirectoryWorkflowPoller(BaseWorkflowPoller):
@@ -33,6 +36,12 @@ class DirectoryWorkflowPoller(BaseWorkflowPoller):
                 continue
 
             sa = SubmissionAgreement.objects.get(name=sa)
+            if sa.profile_workflow is None:
+                logger.debug(u'No workflow profile in SA, skipping')
+                continue
+            if not proj in sa.profile_workflow.specification:
+                logger.debug(u'No workflow specified in {} for current project {}, skipping'.format(sa.profile_workflow, proj))
+                continue
 
             org = Group.objects.get(name='Default')
             role = 'admin'
