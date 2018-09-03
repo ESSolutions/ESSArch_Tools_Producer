@@ -927,8 +927,11 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             ariaDescribedBy: 'modal-body',
             templateUrl: 'modals/task_info_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'TaskInfoModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {}
+            }
         });
         modalInstance.result.then(function (data, $ctrl) {
         }, function () {
@@ -943,8 +946,11 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
             ariaDescribedBy: 'modal-body',
             templateUrl: 'modals/step_info_modal.html',
             scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
+            controller: 'StepInfoModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {}
+            }
         });
         modalInstance.result.then(function (data, $ctrl) {
         }, function () {
