@@ -624,9 +624,13 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
 
     $scope.getTask = function(branch) {
         return Task.get({ id: branch.id }).$promise.then(function (data) {
-            var started = moment(data.time_started);
-            var done = moment(data.time_done);
-            data.duration = done.diff(started);
+            if(data.time_started !== null && data.time_done !== null) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+            } else {
+                data.duration = null;
+            }
             $scope.currentStepTask = data;
             $scope.stepTaskLoading = false;
             return data;
@@ -635,9 +639,13 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
 
     $scope.getStep = function(branch) {
         return Step.get({ id: branch.id }).$promise.then(function (data) {
-            var started = moment(data.time_started);
-            var done = moment(data.time_done);
-            data.duration = done.diff(started);
+            if(data.time_started !== null && data.time_done !== null) {
+                var started = moment(data.time_started);
+                var done = moment(data.time_done);
+                data.duration = done.diff(started);
+            } else {
+                data.duration = null;
+            }
             $scope.currentStepTask = data;
             $scope.stepTaskLoading = false;
             return data;
