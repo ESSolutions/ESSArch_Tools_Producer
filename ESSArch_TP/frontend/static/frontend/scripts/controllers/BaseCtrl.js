@@ -623,6 +623,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     };
 
     $scope.getTask = function(branch) {
+        $scope.stepTaskLoading = true;
         return Task.get({ id: branch.id }).$promise.then(function (data) {
             if(data.time_started !== null && data.time_done !== null) {
                 var started = moment(data.time_started);
@@ -638,6 +639,7 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
     }
 
     $scope.getStep = function(branch) {
+        $scope.stepTaskLoading = true;
         return Step.get({ id: branch.id }).$promise.then(function (data) {
             if(data.time_started !== null && data.time_done !== null) {
                 var started = moment(data.time_started);
