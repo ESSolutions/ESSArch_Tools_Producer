@@ -45,6 +45,7 @@ from rest_framework_extensions.routers import ExtendedDefaultRouter
 from ESSArch_Core.WorkflowEngine.views import ProcessViewSet, ProcessStepViewSet, ProcessTaskViewSet
 from ESSArch_Core.auth.views import GroupViewSet, PermissionViewSet, MeView, UserViewSet, NotificationViewSet
 from ESSArch_Core.configuration.views import ParameterViewSet, PathViewSet, SysInfoView
+from ESSArch_Core.fixity.views import ValidationViewSet
 from ESSArch_Core.ip.views import AgentViewSet, EventIPViewSet
 from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet, ProfileIPDataTemplateViewSet, \
     InformationPackageProfileIPViewSet
@@ -88,6 +89,12 @@ router.register(r'steps', ProcessStepViewSet, base_name='steps').register(
     parents_query_lookups=['processstep']
 )
 router.register(r'tasks', ProcessTaskViewSet)
+router.register(r'tasks', ProcessTaskViewSet).register(
+    r'validations',
+    ValidationViewSet,
+    base_name='task-validations',
+    parents_query_lookups=['task']
+)
 router.register(r'events', EventIPViewSet)
 router.register(r'event-types', EventTypeViewSet)
 router.register(r'submission-agreements', SubmissionAgreementViewSet)
