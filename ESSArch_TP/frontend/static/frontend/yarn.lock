@@ -185,9 +185,9 @@ angular-relative-date@^2.1.1:
     angular "^1.5.6"
     angular-translate "^2.11.0"
 
-angular-resource@^1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/angular-resource/-/angular-resource-1.6.5.tgz#d1e712ab01afa5d2ec649f5e471673a704f2be40"
+angular-resource@~1.6:
+  version "1.6.10"
+  resolved "https://registry.yarnpkg.com/angular-resource/-/angular-resource-1.6.10.tgz#28c1834e9fa623467d2f9894716a4e6c7e077459"
 
 angular-route@~1.6:
   version "1.6.4"

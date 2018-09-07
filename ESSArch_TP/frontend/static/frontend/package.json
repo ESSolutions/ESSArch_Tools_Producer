@@ -68,7 +68,7 @@
   "dependencies": {
     "angular-clipboard": "^1.5.0",
     "angular-relative-date": "^2.1.1",
-    "angular-resource": "^1.6.5",
+    "angular-resource": "~1.6",
     "angular-websocket": "^2.0.1",
     "gulp-autoprefixer": "^5.0.0",
     "ie-array-find-polyfill": "^1.1.0",
