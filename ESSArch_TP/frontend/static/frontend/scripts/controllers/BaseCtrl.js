@@ -668,6 +668,17 @@ angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, 
         }
     };
 
+    // build comma separated args display string
+    vm.getArgsString = function(args) {
+        return args.map(function(x) {
+            if(x === null) {
+                return 'null';
+            } else {
+                return x;
+            }
+        }).join(', ');
+    }
+
     $scope.extendedEqual = function(specification_data, model) {
         for(var prop in model) {
             if((model[prop] != "" || specification_data[prop]) && model[prop] != specification_data[prop]){
