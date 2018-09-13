@@ -176,6 +176,16 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
         }
     };
 
+    vm.fieldsLoading = function() {
+        var val = false;
+        angular.forEach(vm.loadingProfileData, function(value, key) {
+            if(value === true) {
+                val = true;
+            }
+        })
+        return val;
+    }
+
     vm.profileIp = null;
     vm.selectedProfile = null;
     vm.loadingProfileData = {};
@@ -217,7 +227,12 @@ angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, 
                     $scope.edit = true;
                     $scope.eventlog = true;
                     vm.loadingProfileData[profile.profile_type] = false;
-                });
+                }).catch(function(response) {
+                    vm.profileFields=[];
+                    $scope.edit = true;
+                    $scope.eventlog = true;
+                    vm.loadingProfileData[profile.profile_type] = false;
+                })
         }).catch(function(response) {
             vm.loadingProfileData[profile.profile_type] = false;
             vm.cancel();
