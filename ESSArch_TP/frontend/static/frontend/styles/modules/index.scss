@@ -174,10 +174,6 @@ main {
 .fa.fa-question-circle {
     font-size: 21px;
 }
-.status-tree-grid {
-    padding: 5px;
-    margin: 5px;
-}
 .well-sm {
     padding: 0px;
 }
@@ -185,13 +181,6 @@ main {
     @include container(10px);
     width: 100%;
     margin-top: 10px;
-}
-.param-value {
-    word-break: break-word;
-    pre {
-        overflow-x: scroll;
-        white-space: pre-wrap;
-    }
 }
 .ui-select-placeholder {
     width: auto !important;
