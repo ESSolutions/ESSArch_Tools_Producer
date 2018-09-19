@@ -14,7 +14,7 @@ from ESSArch_Core.profiles.models import SubmissionAgreement
 from ESSArch_Core.profiles.utils import profile_types
 from ESSArch_Core.util import stable_path
 
-logger = logging.getLogger('essarch.eta.workflow.polling.DirectoryWorkflowPoller')
+logger = logging.getLogger('essarch.etp.workflow.polling.DirectoryWorkflowPoller')
 p_types = [p_type.lower().replace(' ', '_') for p_type in profile_types]
 proj = settings.PROJECT_SHORTNAME
 
