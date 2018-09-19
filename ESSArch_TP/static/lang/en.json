@@ -168,6 +168,7 @@
     "ITEMSPERPAGE": "IP's per page",
     "GLOBALSEARCHDESC_IP":"List all IP's associated to the search term",
     "GLOBALSEARCHDESC_EVENT":"List all events associated to the search term",
+    "GLOBALSEARCHDESC_VALIDATION":"List all validations associated to the search term",
     "PREPAREIPDESC": "Create a new IP",
     "REFRESHTABLEDESC": "Refresh table",
     "LABELDESC": "Work with IP",
@@ -327,5 +328,9 @@
     "CHANGE_ORGANIZATION": "Change organization",
     "ORGANIZATION_CHANGED": "Organization changed",
     "VERSIONS": "Versions",
-    "USERSETTINGS": "User settings"
+    "USERSETTINGS": "User settings",
+    "VALIDATOR": "Validator",
+    "VALIDATIONS": "Validations",
+    "RUNNING": "Running",
+    "MESSAGE": "Message"
 }

@@ -168,6 +168,7 @@
     "ITEMSPERPAGE": "IPn per sida",
     "GLOBALSEARCHDESC_IP":"Lista alla IPn som associeras med söktermen",
     "GLOBALSEARCHDESC_EVENT":"Lista alla event som associeras med söktermen",
+    "GLOBALSEARCHDESC_VALIDATION":"Lista alla valideringar som associeras med söktermen",
     "PREPAREIPDESC": "Gör ett nytt IP",
     "REFRESHTABLEDESC": "Uppdatera tabell",
     "LABELDESC": "Arbeta med IP",
@@ -327,5 +328,9 @@
     "CHANGE_ORGANIZATION": "Byt organisation",
     "ORGANIZATION_CHANGED": "Organisation bytt",
     "VERSIONS": "Versioner",
-    "USERSETTINGS": "Användarinställningar"
+    "USERSETTINGS": "Användarinställningar",
+    "VALIDATOR": "Validator",
+    "VALIDATIONS": "Valideringar",
+    "RUNNING": "Körs",
+    "MESSAGE": "Meddelande"
 }
