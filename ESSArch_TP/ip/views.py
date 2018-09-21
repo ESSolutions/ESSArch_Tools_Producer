@@ -51,6 +51,7 @@ from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 from ESSArch_Core.WorkflowEngine.serializers import ProcessStepChildrenSerializer
 from ESSArch_Core.WorkflowEngine.util import create_workflow
 from ESSArch_Core.auth.models import Group, Member
+from ESSArch_Core.auth.serializers import ChangeOrganizationSerializer
 from ESSArch_Core.auth.util import get_organization_groups
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict
@@ -140,15 +141,10 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
     @detail_route(methods=['post'], url_path='change-organization')
     def change_organization(self, request, pk=None):
         ip = self.get_object()
-        try:
-            org_id = request.data['organization']
-        except KeyError:
-            raise exceptions.ParseError(detail='Missing "organization" parameter')
 
-        try:
-            org = get_organization_groups(request.user).get(pk=org_id)
-        except Group.DoesNotExist:
-            raise exceptions.ParseError('Invalid organization')
+        serializer = ChangeOrganizationSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        org = serializer.validated_data['organization']
 
         ip.change_organization(org)
         return Response()
