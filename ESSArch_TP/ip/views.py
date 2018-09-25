@@ -36,15 +36,13 @@ from django.core.exceptions import ValidationError
 from django.db.models import Prefetch
 from django.db import IntegrityError, transaction
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from groups_manager.utils import get_permission_name
 from guardian.shortcuts import assign_perm
 from natsort import natsorted
-from rest_framework import exceptions, filters, permissions, status
-from rest_framework import viewsets
-from rest_framework.decorators import detail_route
-from rest_framework.decorators import list_route
+from rest_framework import exceptions, filters, permissions, status, viewsets
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
