@@ -22,10 +22,13 @@
     Email - essarch@essolutions.se
 """
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render, reverse
 from django.conf import settings
 
 # Create your views here.
 from django.shortcuts import render
 def home(req):
+    if req.GET.get('ref') != 'logout' and not req.user.is_authenticated and getattr(settings, 'ENABLE_ADFS_LOGIN', False):
+        return redirect(reverse('saml2:saml2_login'))
+
     return render(req, 'essarch_core_frontend/main.html')
