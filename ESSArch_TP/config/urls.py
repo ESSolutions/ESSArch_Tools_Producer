@@ -107,7 +107,7 @@ router.register(r'parameters', ParameterViewSet)
 router.register(r'paths', PathViewSet)
 
 urlpatterns = [
-    url(r'^', include('frontend.urls'), name='home'),
+    url(r'^', include('ESSArch_Core.frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/sysinfo/', SysInfoView.as_view()),
     url(r'^api/me/$', MeView.as_view(), name='me'),
