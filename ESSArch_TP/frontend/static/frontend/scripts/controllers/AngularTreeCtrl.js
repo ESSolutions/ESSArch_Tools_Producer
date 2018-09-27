@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl(Agent, $scope, $http, $rootScope, appConfig) {
+angular.module('essarch.controllers').controller('AngularTreeCtrl', function AngularTreeCtrl(Agent, $scope, $http, $rootScope, appConfig) {
     $scope.treeOptions = {
         nodeChildren: "children",
         dirSelectable: true,

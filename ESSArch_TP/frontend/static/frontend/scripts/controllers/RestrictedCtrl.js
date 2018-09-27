@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('RestrictedCtrl', function ($scope, $location, $state) {
+angular.module('essarch.controllers').controller('RestrictedCtrl', function ($scope, $location, $state) {
     $scope.$on('djangoAuth.logged_in', function() {
         $state.go('home');
     });

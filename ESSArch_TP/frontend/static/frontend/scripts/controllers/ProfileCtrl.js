@@ -1,4 +1,4 @@
-angular.module('myApp').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications) {
+angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications) {
     var vm = this;
     $scope.angular = angular;
     $scope.select = true;

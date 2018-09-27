@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('BaseCtrl', function (vm, IP, Profile, Step, Task, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q, ContextMenuBase){
+angular.module('essarch.controllers').controller('BaseCtrl', function (vm, IP, Profile, Step, Task, ipSortString, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q, ContextMenuBase){
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     $scope.updateIpsPerPage = function(items) {
         $cookies.put('etp-ips-per-page', items);

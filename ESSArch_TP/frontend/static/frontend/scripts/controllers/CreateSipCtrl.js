@@ -22,5 +22,5 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CreateSipCtrl', function CreateSipCtrl($scope, $location, $state, $stateParams){
+angular.module('essarch.controllers').controller('CreateSipCtrl', function CreateSipCtrl($scope, $location, $state, $stateParams){
 });

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('HeadCtrl', function($scope, $rootScope, $timeout, $translate, $state) {
+angular.module('essarch.controllers').controller('HeadCtrl', function($scope, $rootScope, $timeout, $translate, $state) {
     var vm = this;
     var appName = " | ESSArch Tools for Producer";
     vm.pageTitle = "ESSArch Tools for Producer";

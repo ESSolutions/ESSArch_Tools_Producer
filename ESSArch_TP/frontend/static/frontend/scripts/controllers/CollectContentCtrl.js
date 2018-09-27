@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CollectContentCtrl', function(IP, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
+angular.module('essarch.controllers').controller('CollectContentCtrl', function(IP, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
     var vm = this;
     var ipSortString = "Prepared,Uploading";
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
