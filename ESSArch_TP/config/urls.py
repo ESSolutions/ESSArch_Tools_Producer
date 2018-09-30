@@ -37,6 +37,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -118,6 +119,8 @@ urlpatterns = [
     url(r'^template/', include('ESSArch_Core.essxml.ProfileMaker.urls')),
     url(r'^accounts/login/$', auth_views.login),
     url(r'^rest-auth/', include('ESSArch_Core.auth.urls')),
-    url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
+
+if getattr(settings, 'ENABLE_ADFS_LOGIN', False):
+    urlpatterns.append(url(r'^saml2/', include('djangosaml2.urls', namespace='saml2')))
