@@ -26,5 +26,6 @@ angular.module('essarch.controllers', [
     'ngResource',
     'relativeDate',
     'permission.config',
-    'ngWebSocket'
+    'ngWebSocket',
+    'angularResizable'
 ]);
