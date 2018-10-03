@@ -37,11 +37,11 @@ User = get_user_model()
 
 
 def installDefaultConfiguration():
-    print "\nInstalling parameters..."
+    print("\nInstalling parameters...")
     installDefaultParameters()
-    print "Installing users, groups and permissions..."
+    print("Installing users, groups and permissions...")
     installDefaultUsers()
-    print "\nInstalling paths..."
+    print("\nInstalling paths...")
     installDefaultPaths()
 
     return 0
@@ -57,7 +57,7 @@ def installDefaultParameters():
     }
 
     for key in dct:
-        print '-> %s: %s' % (key, dct[key])
+        print('-> %s: %s' % (key, dct[key]))
         Parameter.objects.get_or_create(entity=key, value=dct[key])
 
     return 0
@@ -205,7 +205,7 @@ def installDefaultPaths():
     }
 
     for key in dct:
-        print '-> %s: %s' % (key, dct[key])
+        print('-> %s: %s' % (key, dct[key]))
         Path.objects.get_or_create(entity=key, value=dct[key])
 
     return 0

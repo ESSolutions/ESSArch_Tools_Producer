@@ -24,6 +24,7 @@
 
 import os
 
+import six
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from rest_framework import exceptions, status
@@ -96,7 +97,7 @@ class SubmissionAgreementViewSet(SAViewSetCore):
                         status=status.HTTP_400_BAD_REQUEST
                     )
 
-        for k, v in new_data.iteritems():
+        for k, v in six.iteritems(new_data):
             if v != getattr(sa, k):
                 changed_data = True
                 break

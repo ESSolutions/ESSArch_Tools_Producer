@@ -345,5 +345,5 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 try:
     from local_etp_settings import *
-except ImportError, exp:
+except ImportError:
     pass
