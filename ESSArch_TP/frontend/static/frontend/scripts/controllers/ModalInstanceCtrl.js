@@ -177,11 +177,13 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             $ctrl.creating = false;
             $uibModalInstance.close();
         }).catch(function (response) {
+            $ctrl.creating = false;
             if(response.status == 404) {
                 Notifications.add('IP could not be found', 'error');
-                Notifications.add('IP could not be found', 'error');
-            } else {
+            } else if(response.data && response.detail){
                 Notifications.add(response.data.detail, 'error');
+            } else if(response.status !== 500) {
+                Notifications.add('Unknown error!', 'error');
             }
         });
     }
