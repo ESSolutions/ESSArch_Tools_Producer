@@ -433,10 +433,7 @@ class InformationPackageViewSet(viewsets.ModelViewSet, GetObjectForUpdateViewMix
             processstep=step,
         )
 
-        try:
-            step.run().get()
-        except Exception as e:
-            raise exceptions.APIException(e.message)
+        step.run().get()
 
         submit_description_data = ip.get_profile_data('submit_description')
         ip.start_date = submit_description_data.get('start_date')
