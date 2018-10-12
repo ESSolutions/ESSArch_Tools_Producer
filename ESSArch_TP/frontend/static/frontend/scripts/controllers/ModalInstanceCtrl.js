@@ -22,9 +22,9 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate) {
+angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
     var $ctrl = this;
-
+    $ctrl.preparing = false;
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
@@ -58,19 +58,42 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
             label: $ctrl.label,
             objectIdentifierValue: $ctrl.objectIdentifierValue
         }
-        return $http({
-            method: 'POST',
-            url: appConfig.djangoUrl+"information-packages/",
-            data: {
+        $ctrl.preparing = true;
+        return IP.prepare({
                 label: $ctrl.data.label,
                 object_identifier_value: $ctrl.data.objectIdentifierValue
-            }
-        }).then(function (response){
+        }).$promise.then(function (resource){
+            $ctrl.preparing = false;
             return $uibModalInstance.close($ctrl.data);
-        }, function(response) {
-            alert(response.data.detail);
+        }).catch(function(response) {
+            if (response.status == 409) {
+                var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
+                Notifications.add(msg, "error", 5000);
+            } else if (response.status != 500) {
+                Notifications.add(response.data.detail, "error", 5000);
+            }
+            $ctrl.preparing = false;
         });
     };
+    $ctrl.prepareForUpload = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $ctrl.preparing = true;
+        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
+            $ctrl.preparing = false;
+            $uibModalInstance.close($ctrl.data);
+        }).catch(function(response) {
+            Notifications.add($translate.instant(response.data.detail), 'error');
+            $ctrl.preparing = false;
+        })
+    }
+    $ctrl.submitSip = function() {
+        $ctrl.data = {
+            ip: $scope.ip
+        }
+        $uibModalInstance.close($ctrl.data);
+    }
     $ctrl.lock = function () {
         $ctrl.data = {
             status: "locked"
@@ -80,19 +103,6 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
     $ctrl.lockSa = function() {
         $ctrl.data = {
             status: "locked"
-        }
-        $uibModalInstance.close($ctrl.data);
-    };
-    $ctrl.remove = function () {
-        $ctrl.data = {
-            status: "removed"
-        }
-        $uibModalInstance.close($ctrl.data);
-    };
-    $ctrl.submit = function () {
-        $ctrl.data = {
-            email: $ctrl.email,
-            status: "submitting"
         }
         $uibModalInstance.close($ctrl.data);
     };
@@ -109,10 +119,156 @@ angular.module('myApp').controller('ModalInstanceCtrl', function ($scope, $uibMo
         $uibModalInstance.dismiss('cancel');
     };
 })
-.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data) {
+.controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications, data) {
     var $ctrl = this;
-    $ctrl.file = data.file;
-    $ctrl.type = data.type;
+    if(data.vm) {
+        var vm = data.vm;
+    }
+    $ctrl.email = {
+        subject: "",
+        body: ""
+    };
+    $scope.prepareAlert = null;
+    $ctrl.data = data;
+
+    // Close prepare alert
+    $scope.closePrepareAlert = function() {
+        $scope.prepareAlert = null;
+    }
+
+    // Prepare IP for upload
+    $ctrl.prepareForUpload = function(ip) {
+        $ctrl.preparing = true;
+        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
+            $ctrl.preparing = false;
+            $uibModalInstance.close();
+        }).catch(function(response) {
+            $scope.prepareAlert = { msg: response.data.detail };
+            $ctrl.preparing = false;
+        })
+    }
+
+    // Set IP as uploaded
+    $ctrl.setUploaded = function (ip) {
+        $ctrl.settingUploaded = true;
+        IP.setUploaded({
+            id: ip.id
+        }).$promise.then(function (response) {
+            $ctrl.settingUploaded = false;
+            $uibModalInstance.close();
+        }).catch(function (response) {
+            $ctrl.settingUploaded = false;
+            if(response.status == 404) {
+                Notifications.add('IP could not be found', 'error');
+            } else if(response.data.detail) {
+                Notifications.add(response.data.detail, 'error');
+            }
+        });
+    }
+
+    // Create SIP from IP
+    $ctrl.createSip = function(ip) {
+        $ctrl.creating = true;
+        IP.create({
+            id: ip.id,
+            validators: vm.validatorModel,
+            file_conversion: vm.fileConversionModel.file_conversion,
+        }).$promise.then(function (response) {
+            $ctrl.creating = false;
+            $uibModalInstance.close();
+        }).catch(function (response) {
+            $ctrl.creating = false;
+            if(response.status == 404) {
+                Notifications.add('IP could not be found', 'error');
+            } else if(response.data && response.detail){
+                Notifications.add(response.data.detail, 'error');
+            } else if(response.status !== 500) {
+                Notifications.add('Unknown error!', 'error');
+            }
+        });
+    }
+
+    // Submit SIP
+    $ctrl.submit = function (ip, email) {
+        if(!email) {
+            var sendData = {validators: vm.validatorModel}
+        } else {
+            var sendData = {validators: vm.validatorModel, subject: email.subject, body: email.body}
+        }
+        $ctrl.submitting = true;
+        IP.submit(
+            angular.extend({ id: ip.id }, sendData)
+        ).$promise.then(function(response) {
+            $ctrl.submitting = false;
+            $uibModalInstance.close();
+        }).catch(function(response) {
+            $ctrl.submitting = false;
+            if(response.status == 404) {
+                Notifications.add('IP could not be found', 'error');
+            } else {
+                Notifications.add(response.data.detail, 'error');
+            }
+        });
+    };
+
+    // Remove IP
+    $ctrl.remove = function (ipObject) {
+        $ctrl.removing = true;
+        IP.delete({
+			id: ipObject.id
+		}).$promise.then(function() {
+            $ctrl.removing = false;
+            $uibModalInstance.close($ctrl.data);
+        }).catch(function(response) {
+            if(response.status == 404) {
+                Notifications.add('IP could not be found', 'error');
+            } else {
+                Notifications.add(response.data.detail, 'error');
+            }
+            $ctrl.removing = false;
+        });
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+})
+.controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, Notifications) {
+    var $ctrl = this;
+    if(data.file) {
+        $ctrl.file = data.file;
+    }
+    if(data.type) {
+        $ctrl.type = data.type;
+    }
+    if(data.profile) {
+        $ctrl.profile = data.profile;
+    }
+    $ctrl.overwriteProfile = function() {
+        return Profile.update($ctrl.profile).$promise.then(function(resource) {
+            Notifications.add("Profile: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            $ctrl.data = {
+                status: "overwritten"
+            }
+            $uibModalInstance.close($ctrl.data);
+            return resource;
+        }).catch(function(repsonse) {
+            Notifications.add(response.detail, "error");
+        })
+    }
+    $ctrl.overwriteSa = function() {
+        $ctrl.profile.published = false;
+        return SA.update($ctrl.profile).$promise.then(function(resource) {
+            Notifications.add("Submission agreement: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            $ctrl.data = {
+                status: "overwritten"
+            }
+            $uibModalInstance.close($ctrl.data);
+            return resource;
+        }).catch(function(response) {
+            Notifications.add("Submission Agreement " + $ctrl.profile.name + " is Published and can not be overwritten", "error");
+        })
+    }
     $ctrl.overwrite = function () {
         $ctrl.data = {
             status: "overwritten"

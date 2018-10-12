@@ -1,26 +1,62 @@
 # ESSArch Tools Producer Documentation
 
 ## Requirements
-Install requirements using `pip install -r requirements_docs.txt` in the parent folder or run the following commands
+Install requirements using `pip install -r /path/to/core/ESSArch_Core/requirements_docs.txt`
+
+## Generating documentation for core
+
+* Go to `docs` directory in core
 
 ```
-$ pip install sphinx==1.5.2
-$ pip install sphinxtogithub==1.1.0
-
+cd /path/to/core/ESSArch_Core/docs
 ```
 
-## Generating documentation
-
-Start by generating the source files
+* Create `.pot`-files
 
 ```
-$ sphinx-apidoc -f -o source ..
+make gettext
 ```
 
-Then create the documentation files
+* Create/Update `.po`-files
 
 ```
-$ make html
+sphinx-intl update -p _build/gettext -l {lang}
 ```
 
-The output will be available in `build/html`
+* Translate `.po`-files in `locale/{lang}/LC_MESSAGES/`
+
+## Generating documentation for ETP
+
+* Create a symlink named `core` pointing to the ESSArch Core docs
+
+```
+ln -s /path/to/core/ESSArch_Core/docs core
+```
+
+* Create `.pot`-files
+
+```
+make gettext
+```
+
+* Create/Update `.po`-files
+
+```
+sphinx-intl update -p _build/gettext -l {lang}
+```
+
+* Translate `.po`-files in `locale/{lang}/LC_MESSAGES/`
+
+* Create symlink to core for each language
+
+```
+cd `locale/{lang}/LC_MESSAGES/`
+rm -r core
+ln -s /path/to/core/ESSArch_Core/docs/locale/{lang}/LC_MESSAGES core
+```
+
+* Create documents in each language
+
+```
+make html LANGUAGE="{lang}"
+```

@@ -30,7 +30,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ESSArch_Core.ip.models import ArchivistOrganization, InformationPackage
+from ESSArch_Core.ip.models import InformationPackage
 
 from ESSArch_Core.profiles.models import Profile, SubmissionAgreement
 
@@ -49,36 +49,6 @@ class LockSubmissionAgreement(TestCase):
 
         res = self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_lock_to_ip_with_permission(self):
-        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
-
-        res = self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertFalse(ArchivistOrganization.objects.exists())
-
-    def test_new_archivist_organization(self):
-        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
-        self.sa.archivist_organization = 'ao'
-        self.sa.save()
-
-        self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
-
-        ip.refresh_from_db()
-        self.assertEqual(ip.archivist_organization.name, 'ao')
-
-    def test_existing_archivist_organization(self):
-        ip = InformationPackage.objects.create(responsible=self.user, submission_agreement=self.sa)
-        ArchivistOrganization.objects.create(name='ao')
-
-        self.sa.archivist_organization = 'ao'
-        self.sa.save()
-
-        self.client.post('/api/submission-agreements/%s/lock/' % str(self.sa.pk), {'ip': str(ip.pk)})
-
-        ip.refresh_from_db()
-        self.assertEqual(ip.archivist_organization.name, 'ao')
-        self.assertEqual(ArchivistOrganization.objects.count(), 1)
 
 
 class SaveSubmissionAgreement(TestCase):

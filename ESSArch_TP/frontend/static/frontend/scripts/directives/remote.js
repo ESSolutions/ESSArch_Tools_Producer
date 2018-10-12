@@ -1,4 +1,4 @@
-angular.module('myApp').directive('remote', function ($timeout, $parse) {
+angular.module('essarch.directives').directive('remote', function ($timeout, $parse) {
     var REMOTE_URL_REGEXP = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#,]+|\[[a-f\d:]+])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?,[^,]+,[^,]+$/;
 
     return {

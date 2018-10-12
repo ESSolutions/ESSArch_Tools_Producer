@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($scope, $http, $rootScope, appConfig) {
+angular.module('essarch.controllers').controller('AngularTreeCtrl', function AngularTreeCtrl(Agent, $scope, $http, $rootScope, appConfig) {
     $scope.treeOptions = {
         nodeChildren: "children",
         dirSelectable: true,
@@ -36,157 +36,55 @@ angular.module('myApp').controller('AngularTreeCtrl', function AngularTreeCtrl($
             label: "a6",
             labelSelected: "a8"
         }
-    }
-    $scope.ArchivalInstitution = [
-        {
-            "name": "ARCHIVAL_INSTITUTION",
-            "children": []
-        }
-    ];
-
-    $scope.ArchivistOrganization = [
-        {
-            "name": "ARCHIVIST_ORGANIZATION",
-            "children": []
-        }
-    ];
-
-    /*
-    $scope.ArchivalType = [
-        {
-            "name": "Archival type",
-            "children": []
-        }
-    ];
-
-    $scope.ArchivalLocation = [
-       {
-           "name": "Archival location",
-           "children": []
-        }
-    ];
-    */
-
-    $scope.other = [
-        {
-            "name": "OTHER",
-            "children": []
-        }
-    ];
-
-    $rootScope.loadNavigation = function(ipState) {
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archival-institutions/",
-            params: {ip_state: ipState}
-        }).then(function(response) {
-            $scope.ArchivalInstitution[0].children = response.data;
-        });
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archivist-organizations/",
-            params: {ip_state: ipState}
-        }).then(function(response) {
-            $scope.ArchivistOrganization[0].children = response.data;
-        });
-       /* $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archival-types/"
-        }).then(function(response) {
-            $scope.ArchivalType[0].children = response.data;
-        });
-        $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"archival-locations/"
-        }).then(function(response) {
-            $scope.ArchivalLocation[0].children = response.data;
-        });*/
-    }
-    $rootScope.navigationFilter = {
-        institution: null,
-        organization: null,
-        type: null,
-        location: null,
-        other: null
     };
 
-    $scope.showSelectedInstitution = function(node) {
+    $scope.Agent = [];
+    $rootScope.loadNavigation = function(ipState) {
+        Agent.query({
+            ip_state: ipState
+        }).$promise.then(function(data) {
+            $scope.Agent = [];
+            data.forEach(function(agent) {
+                var agentName = agent.role + " " + agent.type;
+                agentName = agentName.charAt(0).toUpperCase() + agentName.slice(1).toLowerCase();
+                var agent_role_type = $scope.Agent.find(function(element) {
+                    return element.name === agentName;
+                });
+
+                if (agent_role_type === undefined){
+                    agent_role_type = {
+                        "name": agentName,
+                        "children": []
+                    };
+                    $scope.Agent.push(agent_role_type);
+                }
+                var existing_agent = agent_role_type.children.find(function(element) {
+                    return element.id === agent.id;
+                });
+                if (existing_agent === undefined) {
+                    agent_role_type.children.push(agent);
+                }
+            });
+            $scope.Agent.sort(function(a,b){
+                return a.name > b.name;
+            });
+        });
+    }
+    $rootScope.navigationFilter = {
+        agents: null,
+    };
+
+    $scope.showSelectedAgent = function(node) {
         $scope.nodeOther = null;
         $rootScope.navigationFilter.other = null;
         if(angular.isUndefined(node.id)){
-            $rootScope.navigationFilter.institution = null;
+            $rootScope.navigationFilter.agents = null;
             return;
         }
-        if($rootScope.navigationFilter.institution == node.id){
-            $rootScope.navigationFilter.institution = null;
+        if($rootScope.navigationFilter.agents == node.id) {
+            $rootScope.navigationFilter.agents = null;
         } else {
-            $rootScope.navigationFilter.institution = node.id;
-        }
-    }
-
-    $scope.showSelectedOrganization = function(node) {
-        $scope.nodeOther = null;
-        $rootScope.navigationFilter.other = null;
-        if(angular.isUndefined(node.id)){
-            $rootScope.navigationFilter.organization = null;
-            return;
-        }
-        if($rootScope.navigationFilter.organization == node.id) {
-            $rootScope.navigationFilter.organization = null;
-        } else {
-            $rootScope.navigationFilter.organization = node.id;
-        }
-    }
-
-    $scope.showSelectedType = function(node) {
-        $scope.nodeOther = null;
-        $rootScope.navigationFilter.other = null;
-        if(angular.isUndefined(node.id)){
-            $rootScope.navigationFilter.type = null;
-            return;
-        }
-        if($rootScope.navigationFilter.type == node.id) {
-            $rootScope.navigationFilter.type = null;
-        } else {
-            $rootScope.navigationFilter.type = node.id;
-        }
-    }
-
-    $scope.showSelectedLocation = function(node) {
-        $scope.nodeOther = null;
-        $rootScope.navigationFilter.other = null;
-       if(angular.isUndefined(node.id)){
-            $rootScope.navigationFilter.location = null;
-            return;
-        }
-       if($rootScope.navigationFilter.location == node.id) {
-            $rootScope.navigationFilter.location = null;
-       } else {
-            $rootScope.navigationFilter.location = node.id;
-       }
-    }
-
-    $scope.showSelectedOther = function(node) {
-        $scope.nodeInst = null;
-        $scope.nodeOrg = null;
-        $scope.nodeType = null;
-        $scope.nodeLoc = null;
-        if($rootScope.navigationFilter.other) {
-            $rootScope.navigationFilter = {
-                institution: null,
-                organization: null,
-                type: null,
-                location: null,
-                other: null
-            };
-        } else {
-            $rootScope.navigationFilter = {
-                institution: null,
-                organization: null,
-                type: null,
-                location: null,
-                other: true
-            };
+            $rootScope.navigationFilter.agents = node.id;
         }
     }
 });

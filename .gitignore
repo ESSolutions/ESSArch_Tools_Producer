@@ -1,9 +1,12 @@
 *.py[co]
 *.pyo
 *~
+celerybeat.pid
+celerybeat-schedule.db
 /dist/
 /ESSArch_TP.egg-info/
 MANIFEST
+.idea/
 .settings/
 tools.db
 .DS_Store

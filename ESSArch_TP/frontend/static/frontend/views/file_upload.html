@@ -10,10 +10,10 @@
 		<!--
         <input class="form-control" style="margin-bottom: 5px;" ng-model="vm.flowDestination" placeholder="Destination "type="text"></input>
 		-->
-        <span class="btn btn-default" flow-btn><i class="fa fa-file-o"></i> {{'CHOOSEFILES' | translate}}</span>
-        <span class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory"><i class="fa fa-folder-o"></i>
+        <button class="btn btn-default" flow-btn><i class="fa fa-file-o"></i> {{'CHOOSEFILES' | translate}}</button>
+        <button class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory"><i class="fa fa-folder-o"></i>
             {{'CHOOSEFOLDER' | translate}}
-        </span>
+        </button>
         <br>
         <span class="label label-info">{{transfers.length}} {{'FILES' | translate}}</span>
         <span class="label label-info">{{$flow.getSize() | filesize}}</span>
@@ -35,7 +35,7 @@
 
             <h4>{{'TRANSFERS' | translate}}</h4>
             <p>
-            <uib-progressbar style="width: 100%;" class="progress" value="getUploadedPercentage($flow.getSize(),$flow.sizeUploaded(), transfers.length)" type="success"><b>{{getUploadedPercentage($flow.getSize(), $flow.sizeUploaded(), transfers.length) | number : 0}}%</b></uib-progressbar>
+            <uib-progressbar style="width: 100%;" class="progress" ng-attr-value="getUploadedPercentage($flow.getSize(),$flow.sizeUploaded(), transfers.length)" type="success"><b>{{getUploadedPercentage($flow.getSize(), $flow.sizeUploaded(), transfers.length) | number : 0}}%</b></uib-progressbar>
             {{'UPLOADED' | translate}}: {{$flow.sizeUploaded() | filesize}} / {{$flow.getSize() | filesize}}
             </p>
             <div style="height:359px">
@@ -52,7 +52,7 @@
                             <td style="width: 33%;">{{file.relativePath}}</td>
                             <td>{{file.size | filesize}}</td>
                             <td>
-                                <uib-progressbar class="progress" value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
+                                <uib-progressbar class="progress" ng-attr-value="file.progress()*100" type="success"><b>{{file.progress()*100 | number : 0}}%</b></uib-progressbar>
                             </td>
                         </tr>
                     </tbody>

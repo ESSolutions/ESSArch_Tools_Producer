@@ -22,17 +22,18 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window, $translate, $uibModal) {
+angular.module('essarch.controllers').controller('DropdownCtrl', function ($scope, $log, $rootScope, $state, $stateParams, djangoAuth, $window, $translate, $uibModal) {
     $scope.items = [
         'Shortcut 1',
         'Shortcut 2',
         'Shortcut 3'
     ];
     var options, optionsAuth;
-    $translate(['LOGIN', 'CHANGEPASSWORD', 'LOGOUT']).then(function(translations) {
+    $translate(['LOGIN', 'CHANGEPASSWORD', 'LOGOUT', 'USER_SETTINGS']).then(function(translations) {
         $scope.logIn = translations.LOGIN;
         $scope.changePassword = translations.CHANGEPASSWORD;
         $scope.logOut = translations.LOGOUT;
+        $scope.userSettings = translations.USER_SETTINGS;
         options = [
             {
                 label: $scope.logIn,
@@ -42,7 +43,7 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
         ];
         optionsAuth = [
             {
-                label: "User settings",
+                label: $scope.userSettings,
                 link: '',
                 click: function(){$state.go("home.userSettings");}
             },
@@ -54,10 +55,17 @@ angular.module('myApp').controller('DropdownCtrl', function ($scope, $log, $root
             {
                 label: $scope.logOut,
                 link: 'logout',
-                click: function(){$scope.gotoLink('logout');}
+                click: function () {
+                    $rootScope.auth = null;
+                    djangoAuth.logout();
+                }
             }
         ];
     });
+    $scope.$on("djangoAuth.logged_out", function(event) {
+        window.location.replace('/');
+    });
+
     $scope.$watch(function() {
         return djangoAuth.authenticated;
     }, function() {

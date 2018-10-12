@@ -22,50 +22,14 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $cookieStore, $filter, $anchorScroll, PermPermissionStore, $q, $controller){
-    $controller('BaseCtrl', { $scope: $scope });
+angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, SA, Profile, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $filter, $anchorScroll, PermPermissionStore, $q, $controller){
     var vm = this;
-    var ipSortString = "Preparing,Prepared";
-    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    //Cancel update intervals on state change
-    // If status view is visible, start update interval
-    $rootScope.$on('$stateChangeStart', function () {
-        $interval.cancel(listViewInterval);
-    });
-
-    /*******************************************/
-    /*Piping and Pagination for List-view table*/
-    /*******************************************/
+    var ipSortString = "Preparing";
+    $scope.angular = angular;
+    $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
     $scope.selectedProfileRow = {profile_type: "", class: ""};
-    this.displayedIps = [];
-    //Get data according to ip table settings and populates ip table
-    this.callServer = function callServer(tableState) {
-        $scope.ipLoading = true;
-        if(vm.displayedIps.length == 0) {
-            $scope.initLoad = true;
-        }
-        if(!angular.isUndefined(tableState)) {
-            $scope.tableState = tableState;
-            var search = "";
-            if(tableState.search.predicateObject) {
-                var search = tableState.search.predicateObject["$"];
-            }
-            var sorting = tableState.sort;
-            var pagination = tableState.pagination;
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
-            var pageNumber = start/number+1;
-
-            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
-                vm.displayedIps = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.ipLoading = false;
-                $scope.initLoad = false;
-            });
-        }
-    };
-
+    $scope.prepareAlert = null;
     $scope.setSelectedProfile = function(row) {
         $scope.selectRowCollection.forEach(function(profileRow) {
             if(profileRow.profile_type == $scope.selectedProfileRow.profile_type){
@@ -79,33 +43,33 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.selectedProfileRow = row;
         }
     };
+
+    $scope.$on("refresh_list_view", function() {
+        $timeout(function() {
+            $scope.getListViewData();
+            $scope.ip.submission_agreement_locked = true;
+        });
+    });
+
     //Click function for Ip table
     $scope.ipTableClick = function(row) {
         if($scope.select && $scope.ip.id== row.id){
             $scope.select = false;
+            $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = $scope.ip;
-            $scope.getSaProfiles($scope.ip);
+            $scope.eventlog = true;
             $scope.select = true;
         }
-        $scope.eventlog = false;
         $scope.edit = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
 
-    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-        $scope.getListViewData();
-    }, true);
-
-    //Get data for list view
-    $scope.getListViewData = function() {
-        vm.callServer($scope.tableState);
-        $rootScope.loadNavigation(ipSortString);
-    };
     // Progress bar max value
     //funcitons for select view
     vm.profileModel = {};
@@ -160,27 +124,25 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         } else {
             $scope.editSA = false;
             $scope.closeAlert();
-            if (row.active.name){
-                var profileUrl = row.active.url;
+            var profileId;
+            if (row.name){
+                profileId = row.id;
             } else {
-                var profileUrl = row.active.profile;
+                profileId = row.profile;
             }
-            getAndShowProfile(profileUrl, row);
+            getAndShowProfile(profileId, row);
         }
     };
 
-    function getAndShowProfile(profileUrl, row) {
-        $http({
-            method: 'GET',
-            url: profileUrl,
-            params: {
-                'sa': $scope.saProfile.profile.id,
-                'ip': $scope.ip.id
-            }
-        }).then(function (response) {
-            response.data.profile_name = response.data.name;
-            row.active = response.data;
-            row.profiles = [response.data];
+    function getAndShowProfile(profileId, row) {
+        Profile.get({
+            id: profileId,
+            sa: $scope.saProfile.profile.id,
+            ip: $scope.ip.id
+        }).$promise.then(function (resource) {
+            resource.profile_name = resource.name;
+            row.active = resource;
+            row.profiles = [resource];
             $scope.selectProfile = row;
             vm.profileOldModel = row.active.specification_data;
             vm.profileModel = angular.copy(row.active.specification_data);
@@ -208,33 +170,14 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         });
     }
 
-    //populating select view
-    $scope.selectRowCollection = [];
-    $scope.selectRowCollapse = [];
-    //Gets all submission agreement profiles
-    $scope.getSaProfiles = function(ip) {
-        listViewService.getSaProfiles(ip).then(function(value) {
-            $scope.saProfile = value;
-            $scope.getSelectCollection(value.profile, ip)
-            $scope.selectRowCollection = $scope.selectRowCollapse;
-        });
-    };
-    //Get All profiles and populates the select view table array
-    $scope.getSelectCollection = function (sa, ip) {
-        $scope.selectRowCollapse = listViewService.getProfilesFromIp(sa, ip)
-    };
-
     //Include the given profile type in the SA
     $scope.includeProfileType = function(type){
         var sendData = {
             "type": type
         };
-        var uri = $scope.saProfile.profile.url+"include-type/";
-        $http({
-            method: 'POST',
-            url: uri,
-            data: sendData
-        }).then(function success(response){
+        SA.includeType(
+            angular.extend({ id: $scope.saProfile.profile.id} , sendData)
+        ).$promise.then(function success(response){
         }, function error(response){
             alert(response.status);
         });
@@ -245,28 +188,20 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         var sendData = {
             "type": type
         };
-
-        var uri = $scope.saProfile.profile.url+"exclude-type/";
-        $http({
-            method: 'POST',
-            url: uri,
-            data: sendData
-        }).then(function success(response){
+        SA.excludeType(
+            angular.extend({ id: $scope.saProfile.profile.id }, sendData)
+        ).$promise.then(function success(response){
         }, function error(response){
             alert(response.status);
         });
     };
     //Make a profile "Checked"
     $scope.setCheckedProfile = function(type, checked){
-        var uri = $scope.ip.url+"check-profile/";
-        $http({
-            method: 'PUT',
-            url: uri,
-            data: {
-                type: type,
-                checked: checked
-            }
-        }).then(function success(response){
+        IP.checkProfile({
+            id: $scope.ip.id,
+            type: type,
+            checked: checked
+        }).$promise.then(function success(response){
         }, function error(response){
         });
     };
@@ -275,11 +210,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.changeProfile = function(profile, row){
         var sendData = {"new_profile": profile.id};
         var uri = $scope.ip.url+"change-profile/";
-        $http({
-            method: 'PUT',
-            url: uri,
-            data: sendData
-        }).then(function success(response){
+        IP.changeProfile(
+            angular.extend({id: $scope.ip.id}, sendData)
+        ).$promise.then(function success(response){
             row.active = profile;
             if($scope.edit && row == $scope.selectedProfileRow) {
                 $scope.edit = false;
@@ -291,15 +224,13 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     };
     //Changes SA profile for selected ip
     $scope.changeSaProfile = function (sa, ip, oldSa_idx) {
-        $http({
-            method: 'PATCH',
-            url: ip.url,
-            data: {
-                'submission_agreement': sa.url
-            }
-        }).then(function(response){
-            $scope.getSelectCollection(sa, ip);
-            $scope.selectRowCollection = $scope.selectRowCollapse;
+        IP.changeSa({
+            id: ip.id,
+            submission_agreement: sa.url
+        }).$promise.then(function(response){
+            //$scope.getSelectCollection(sa, ip);
+            //$scope.selectRowCollection = $scope.selectRowCollapse;
+            $scope.getSaProfiles($scope.ip);
             if($scope.editSA) {
                 $scope.saClick({profile: sa});
             }
@@ -308,65 +239,47 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             $scope.saProfile.profile = $scope.saProfile.profiles[oldSa_idx];
         });
     }
-    //Toggle visibility of profiles in select view
-    $scope.showHideAllProfiles = function() {
-        if($scope.selectRowCollection == {} || $scope.profilesCollapse){
-            $scope.profilesCollapse = false;
-            $scope.edit = false;
-            $scope.eventlog = false
-        } else{
-            $scope.profilesCollapse = true;
-        }
-    };
 
     //Saves edited SA and creates a new SA instance with given name
     vm.onSASubmit = function(new_name) {
-        var url = $scope.profileToSave.url;
-        var sendData = {
-            "data": vm.profileModel,
-            "information_package": $scope.ip.id,
-            "new_name": new_name,
-        };
-        $http({
-            method: 'POST',
-            url: url+"save/",
-            data: sendData
-        }).then(function(response) {
+        SA.save({
+            id: $scope.profileToSave.id,
+            data: vm.profileModel,
+            information_package: $scope.ip.id,
+            new_name: new_name,
+        }).$promise.then(function(resource) {
             $scope.editSA = false;
             var old = $scope.saProfile.profiles.indexOf($scope.saProfile.profile);
-            $scope.saProfile.profiles.push(response.data);
-            $scope.changeSaProfile(response.data, $scope.ip, old);
-        }, function(response) {
-            console.log(response.status);
+            $scope.saProfile.profiles.push(resource);
+            $scope.changeSaProfile(resource, $scope.ip, old);
+        }, function(resource) {
+            console.log(resource.status);
         });
     };
     //Saves edited profile and creates a new profile instance with given name
     vm.onSubmit = function(new_name) {
         profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url
         var sendData = {
-            "specification_data": vm.profileModel,
-            "new_name": new_name,
-            "structure": $scope.treeElements[0].children
+
         };
-        $http({
-            method: 'POST',
-            url: profileUrl+"save/",
-            data: sendData
-        })
-            .then(function(response) {
+        Profile.save({
+            id: $scope.profileToSave.profile || $scope.profileToSave.id,
+            specification_data: vm.profileModel,
+            new_name: new_name,
+            structure: $scope.treeElements[0].children
+        }).$promise.then(function(resource) {
                 var profileType = 'profile_' + $scope.profileToSave.profile_type;
-                var newProfile = response.data;
+                var newProfile = resource;
                 $scope.selectedProfileRow.profiles.push(newProfile);
                 newProfile.profile_name = newProfile.name;
                 $scope.changeProfile(newProfile, $scope.selectedProfileRow);
                 $scope.edit = false;
                 $scope.eventlog = false;
-            }, function(response) {
-                alert(response.status);
+            }, function(resource) {
+                alert(resource.status);
             });
     };
     $scope.optionalOptions = true;
-    $scope.colspan = 9;
 
     //Create and show modal when saving an SA
     vm.saveSAModal = function(){
@@ -418,26 +331,10 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         })
         modalInstance.closed.then(function (data) {
             $scope.getListViewData();
-            updateListViewConditional();
+            vm.updateListViewConditional();
         });
     }
-    //Remove ip
-    $scope.removeIp = function (ipObject) {
-        $http({
-            method: 'DELETE',
-            url: ipObject.url
-        }).then(function() {
-            vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
-            $scope.edit = false;
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.eventShow = false;
-            $scope.statusShow = false;
-            $scope.filebrowser = false;
-            $rootScope.loadNavigation(ipSortString);
-            $scope.getListViewData();
-        });
-    }
+
     $scope.profileToLock = null;
     //Creates and shows modal for profile lock.
     $scope.lockProfileModal = function (profiles) {
@@ -460,24 +357,21 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     //Lock a profile
     $scope.lockProfile = function (profiles) {
         $scope.closeAlert();
-        var profileUrl;
+        var profileId;
         if(profiles.active.profile) {
-            profileUrl = profiles.active.profile;
+            profileId = profiles.active.profile;
         } else {
-            profileUrl = profiles.active.url;
+            profileId = profiles.active.id;
         }
-        return $http({
-            method: 'POST',
-            url: profileUrl+"lock/",
-            data: {
-                information_package: $scope.ip.id,
-            }
-        }).then(function (response) {
+        return Profile.lock({
+            id: profileId,
+            information_package: $scope.ip.id,
+        }).$promise.then(function (response) {
             profiles.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
-            updateListViewConditional();
+            vm.updateListViewConditional();
             return {status: response.status, profile: profiles};
         }, function(error) {
             if(error.status == 400) {
@@ -494,6 +388,9 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     $scope.closeAlert = function() {
         $scope.lockAlert = null;
     }
+    $scope.closePrepareAlert = function() {
+        $scope.prepareAlert = null;
+    }
     function showRequiredProfileFields(row) {
         if($scope.edit) {
             $scope.lockAlert = $scope.alerts.lockError;
@@ -503,21 +400,18 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             return;
         }
         if (row.active.name){
-            var profileUrl = row.active.url;
+            var profileId = row.active.id;
         } else {
-            var profileUrl = row.active.profile;
+            var profileId = row.active.profile;
         }
-        $http({
-            method: 'GET',
-            url: profileUrl,
-            params: {
-                'sa': $scope.saProfile.profile.id,
-                'ip': $scope.ip.id
-            }
-        }).then(function(response) {
-            response.data.profile_name = response.data.name;
-            row.active = response.data;
-            row.profiles = [response.data];
+        Profile.get({
+            id: profileId,
+            sa: $scope.saProfile.profile.id,
+            ip: $scope.ip.id
+        }).$promise.then(function(resource) {
+            resource.profile_name = resource.name;
+            row.active = resource;
+            row.profiles = [resource];
             $scope.selectProfile = row;
             vm.profileModel = angular.copy(row.active.specification_data);
             vm.profileFields = row.active.template;
@@ -565,59 +459,16 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Lock a SA
     $scope.lockSa = function(sa) {
-        ip = $scope.ip;
-
-        $http({
-            method: 'POST',
-            url: sa.profile.url+"lock/",
-            data: {
-                ip: ip.id
-            }
-        }).then(function (response) {
+        SA.lock({
+            id: sa.profile.id,
+            ip: $scope.ip.id
+        }).$promise.then(function (response) {
             sa.locked = true;
             $scope.edit = false;
             $scope.eventlog = false;
             $scope.getListViewData();
         });
     }
-    //Update ip list view with an interval
-    //Update only if status < 100 and no step has failed in any IP
-    var listViewInterval;
-    function updateListViewConditional() {
-        $interval.cancel(listViewInterval);
-        listViewInterval = $interval(function() {
-            var updateVar = false;
-            vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100) {
-                    if(ip.step_state != "FAILURE") {
-                        updateVar = true;
-                    }
-                }
-            });
-            if(updateVar) {
-                $scope.getListViewData();
-            } else {
-                $interval.cancel(listViewInterval);
-                listViewInterval = $interval(function() {
-                    var updateVar = false;
-                    vm.displayedIps.forEach(function(ip, idx) {
-                        if(ip.status < 100) {
-                            if(ip.step_state != "FAILURE") {
-                                updateVar = true;
-                            }
-                        }
-                    });
-                    if(!updateVar) {
-                        $scope.getListViewData();
-                    } else {
-                        updateListViewConditional();
-                    }
-
-                }, appConfig.ipIdleInterval);
-            }
-        }, appConfig.ipInterval);
-    };
-    updateListViewConditional();
 
     /*
      * Edit view map structure tree
@@ -718,8 +569,8 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         else return [];
     }
     //Populate map structure tree view given tree width and amount of levels
-    function getStructure(profileUrl) {
-        listViewService.getStructure(profileUrl).then(function(value) {
+    function getStructure(profileId) {
+        listViewService.getStructure(profileId).then(function(value) {
             $scope.treeElements =[{name: 'root', type: "folder", children: value}];
             $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
         });
@@ -873,21 +724,17 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
             }]
         ];
     };
-    $scope.getProfilesFromIp = function(ip, sa) {
-        listViewService.getProfilesFromIp(ip, sa).then(function(result) {
-            //$scope.selectCollapse = result;
-        });
-    }
+
     $scope.getProfiles = function(profile) {
         listViewService.getProfilesMin(profile.profile_type).then(function(result) {
             if(profile.active != null) {
                 result.forEach(function(prof) {
                     if(angular.isUndefined(profile.active.profile)) {
-                        if(prof.url == profile.active.url) {
+                        if(prof.id == profile.active.id) {
                             profile.active = prof;
                         }
                     }
-                    if(prof.url == profile.active.profile) {
+                    if(prof.id == profile.active.profile) {
                         profile.active = prof;
                     }
                 });
@@ -904,22 +751,19 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
     }
     //Unlock profile from current IP
     $scope.unlock = function(profile) {
-        $http({
-            method: 'POST',
-            url: $scope.ip.url + "unlock-profile/",
-            data: {
-                type: profile.active.profile_type
-            }
-        }).then(function(response){
+        IP.unlockProfile({
+            id: $scope.ip.id,
+            type: profile.active.profile_type
+        }).$promise.then(function(response){
             profile.locked = false;
             if($scope.edit && profile.active.id === $scope.selectedProfileRow.active.id) {
-                getAndShowProfile(profile.active.url, profile);
+                getAndShowProfile(profile.active.id, profile);
             }
         });
     }
     $scope.showLockAllButton = function(profiles){
         return profiles.some(function(elem){
-            return elem.checked && !elem.locked;
+            return !elem.locked;
         });
     };
     $scope.lockAllIncludedModal = function (profiles) {
@@ -979,6 +823,32 @@ angular.module('myApp').controller('PrepareIpCtrl', function ($log, $uibModal, $
         })
         modalInstance.result.then(function (data) {
             $scope.unlock($scope.profileToSave);
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
+    vm.prepareIpForUploadModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/prepare_ip_for_upload_modal.html',
+            scope: $scope,
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: function () {
+                    return {
+                        ip: ip,
+                    };
+                }
+            },
+        })
+        modalInstance.result.then(function (data) {
+            $scope.getListViewData();
+            $scope.select = false;
+            $scope.eventlog = false;
+            $scope.edit = false;
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
         });

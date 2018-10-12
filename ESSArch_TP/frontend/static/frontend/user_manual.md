@@ -1,4 +1,4 @@
-# **User guide** 
+# **User guide**
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@
 ESSArch is an open source archival solution compliant to the OAIS ISO-standard. ESSArch consist of software components that provide functionality for Pre-Ingest, Ingest, Preservation, Access, Data Management, Administration and Management. ESSArch has been developed together with the National Archives of Sweden and Norway. Every software component of ESSArch can be used individually and also be easily integrated together to provide overall functionality for producers, archivists and consumers. ESSArch consist of ETP, ETA and EPP, each individually created to provide tools for long-term digital preservation.
 
  * ESSArch Tools for Producer (ETP) is used to prepare IPs, to create SIPs and to submit SIPs to archival institution
- * ESSArch Tools for Archivists (ETA) is used to receive SIPs and to prepare SIPs for ingest into the preservation platform
+ * ESSArch Tools for Archive (ETA) is used to receive SIPs and to prepare SIPs for ingest into the preservation platform
  * ESSArch Preservation Platform (EPP) is used to ingest SIPs, perform SIP2AIP, store AIPs in different archival storage according to storage methods, provide search and access functionality for consumers
 
 
@@ -31,7 +31,6 @@ ETP is a SIP creator tool which provides functionality to facilitate the prepara
  * Translations, e.g. different languages
  * Submission Agreements (SA) are supported
  * SA related profiles like SIP profiles, Submit description profiles, Transfer project profiles etc.
- * Ability to create new generations of SA-profiles and the SA related profiles.
  * Different parallel tasks, steps and workflows can be managed, e.g. parallel work capabilities
  * Events are logged during every task and step and event types can easily be configured
  * Locking, unlocking and reuse/removal of IPs in conjunction with authority models
@@ -45,10 +44,9 @@ ETP is a SIP creator tool which provides functionality to facilitate the prepara
  * Submit SIP to archivist organization together with associated submit description
  * Different metadata standards are supported/used, like METS and PREMIS
  * An API (REST) can be used to easily interact with the tool
- * Quality control (automatic/manually), validators, different conformance checkers etc.
 
 ## The User interface
-The user interface is well known if you ever have used a web application. 
+The user interface is well known if you ever have used a web application.
 
  * **Menu** - provides functionality to prepare IP, collect content, create SIP and submit SIP
  * **Navigation view** - filter functionality for archival institutions, archivist organization and others
@@ -89,71 +87,53 @@ User settings can be found by clicking the user symbol in the top right corner a
 
 ![user settings2][user-settings2]
 
+### Notifications
+In ETP we have notifications that shows up at the top of the page when suitable. Notifications can be live or have an update interval.
+To be able to have live notifications the user needs to use a browser that supports WebSockets and have Channels activated in the backend(ETP configuration).
+So whenever a notification is created the user will be notified right away and if not using WebSocket they will appear in an interval. Whenever the page is refreshed the user will always be notified if there are any notifications that has not been seen. A user can manually open the notification bar by clicking the notification(Bell) icon.
+
+
+When a notification is visible, the user has 4 different options
+
+1. The plus("+") symbol expands the notification showing the five latest notifications. Becomes a minus("-") when expanded that can be used to collapse the list. This option is only available for the first notification.
+2. "Clear all" removes all notifications and they can not be seen again. This option is only available for the first notification.
+3. Removes notification. This option is  available for all notifications in the list and the next notification will pop up as the last one.
+4. The cross("X") symbol closes the notification bar without removing any notifications. This option is only available for the first notification.
+
 ## Prepare IP
-* The first in the process of SIP creation is Prepare IP, which is started by clicking the "Prepare IP" button. 
-The user is then asked to type a working name for the new IP.
+* The first step in the process of SIP creation is Prepare IP, which is started by clicking the "Prepare IP" button.
+The user is then asked to type a label for the new IP and can optionally enter a custom identifier value.
 
-* When clicking the label or ID column the user can chose which Submission Agreement(SA)-profile to use. When the user is satisfied, he/she locks it.
+* When clicking the IP row the user can chose which Submission Agreement(SA)-profile to use. The Submission Agreement fields can be viewed by clicking the "View" button next to the SA-select. When the user is satisfied, he/she locks it by clicking the lock button.
 
-![sa1][sa1]
+* After Submission agreement is locked, the profiles can be viewed and edited.
+* The user can edit profiles by clicking the "Edit" button in the profile table which will allow the user to edit the data of the profile fields for that specific profile. When done, click "save" and a new version of the profile data will be saved and made the current version. The user can use the "Versions"-dropdown list to choose earlier or later versions of the profile data.
 
-* With the right permissions, the user can click the text "Submission Agreement" next to te SA select field and edit sa fields. Saving the SA-profile creates a new generation of the previous SA.
 
-![sa2][sa2]
-
-![sa3][sa3]
-
-![sa4][sa4]
-
-![sa5][sa5]
-
-* After Submission agreement is locked, the profiles can be chosen, edited and locked.
-* The user can edit profiles by clicking the text in the "Entity" column of the profile table which will enable the "Edit view" for that specific profile. When done, click "save profile" and after entering a name, a new generation of the profile is created with given name.
-
-![profiles1][profiles1]
-
-![profiles2][profiles2]
-
-* When satisfied with a profile, the user can lock it, so it cannot be changed. The profile can be unlocked, but only with the right permissions.
-
-![profiles3][profiles3]
-
-* If the user is satisfied with all profiles, it can use the "Lock all"-button which is just a shortcut for clicking lock profile for every non-locked profile.
+* If the user is satisfied with all profiles, the IP can be prepared by clicking the "Prepare"-button in the bottom right corner.
 
 ## Collect content
-Once the Submission Agreement and all included profiles are locked the ip is visible in the Collect content view.
+Once the IP is prepared, the ip is visible in the Collect content view.
 
-![cc1][cc1]
 
-![cc4][cc4]
-
-* The user may upload single files or folders by navigated to prefered location in the file browser and clicking upload.
+* The user may upload single files or folders by navigating to prefered location in the file browser and clicking upload.
+* When done with uploading click "Done".
 * It is important to not close the application while uploading content.
 * The file browser also has functionality for deleting files/folders and adding new folders. These functions can be executed through buttons beneath the file browser window.
 
-![cc2][cc2]
-
-![cc3][cc3]
-
 * When upload is considered done, check "Completed uploading" and click "Done".
-
-![cc5][cc5]
+* Folder upload may not be supported by older browsers. If functionality is desired please update your browser.
 
 ## Create SIP
-When upload is set completed the ip becomes visible in the Create SIP view. 
-* The user can, by clicking the label or ID column inspect all included profiles, but not edit them. With the right permissions, the profiles can be unlocked and made available in prepare IP again. Unlocking the SIP-profile in this stage may have unwanted consequences so in that case, creating a new IP and create a new sip profile generation to use instead is probably a good idea. One reason for this is that we may have uploaded content that would be lost etc.
+When upload is set completed the ip becomes visible in the Create SIP view.
+* The user can, by clicking the IP row inspect all included profiles and edit them, with the right permissions.
 
-![create_sip][create_sip]
-
-* If satisfied with the profiles, choose what validators to use in the SIP creation step by checking or unchecking the different validators, check "Approved to create" and click Create SIP.
+* If satisfied with the profiles, choose what validators to use in the SIP creation step by checking or unchecking the different validators, click create SIP to create.
 
 ## Submit SIP
 Once the SIP is created it becomes visible in the Submit SIP view and is ready for submission.
-* By clicking the label column, the user can see information that is important for the SIP submission and then check "Approved to submit" and click Submit SIP.
+* By clicking the IP row, the user can see information that is important for the SIP submission. Click Submit SIP to submit.
 
-![submit_sip1][submit_sip1]
-
-![submit_sip2][submit_sip2]
 
 [user-settings1]: ./static/frontend/img/user_settings1.png "User settings"
 [user-settings2]: ./static/frontend/img/user_settings2.png "User settings"

@@ -27,55 +27,170 @@
 import django
 django.setup()
 
-from django.contrib.auth.models import User, Group, Permission
-from ESSArch_Core.configuration.models import EventType, Path
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from groups_manager.models import GroupType
+from ESSArch_Core.auth.models import Group, Member, GroupMemberRole
+from ESSArch_Core.configuration.models import Parameter, Path
+
+User = get_user_model()
 
 
 def installDefaultConfiguration():
-    print "Installing users, groups and permissions..."
+    print("\nInstalling parameters...")
+    installDefaultParameters()
+    print("Installing users, groups and permissions...")
     installDefaultUsers()
-    print "\nInstalling paths..."
+    print("\nInstalling paths...")
     installDefaultPaths()
-    print "\nInstalling event types..."
-    installDefaultEventTypes()
+
+    return 0
+
+
+def installDefaultParameters():
+    site_name = 'Site-X'
+
+    dct = {
+        'site_name': site_name,
+        'medium_location': 'Media_%s' % site_name,
+        'content_location_type': 'SIP',
+    }
+
+    for key in dct:
+        print('-> %s: %s' % (key, dct[key]))
+        Parameter.objects.get_or_create(entity=key, value=dct[key])
 
     return 0
 
 
 def installDefaultUsers():
-    user_user, _ = User.objects.get_or_create(
-        username='user', email='usr1@essolutions.se'
-    )
-    user_user.set_password('user')
-    user_user.save()
 
-    user_admin, _ = User.objects.get_or_create(
+    #####################################
+    # Groups and permissions
+    organization, _ = GroupType.objects.get_or_create(label="organization")
+    default_org, _ = Group.objects.get_or_create(name='Default', group_type=organization)
+
+    role_user, _ = GroupMemberRole.objects.get_or_create(codename='user')
+    permission_list_user = [
+        ## ---- app: ip ---- model: informationpackage
+        ['view_informationpackage','ip','informationpackage'],       # Can view information packages
+        ['delete_informationpackage','ip','informationpackage'], # Can delete Information Package (Ingest)
+        ['can_upload','ip','informationpackage'],                    # Can upload files to IP
+        ['set_uploaded','ip','informationpackage'],                    # Can set IP as uploaded
+        ['create_sip','ip','informationpackage'],                    # Can create SIP
+        ['submit_sip','ip','informationpackage'],                    # Can submit SIP
+        ['prepare_ip','ip','informationpackage'],                    # Can prepare IP
+        ## ---- app: WorkflowEngine ---- model: processtask
+        #['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
+        #['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
+    ]
+
+    for p in permission_list_user:
+        p_obj = Permission.objects.get(
+                                          codename=p[0], content_type__app_label=p[1],
+                                          content_type__model=p[2],
+                                          )
+        role_user.permissions.add(p_obj)
+
+    role_admin, _ = GroupMemberRole.objects.get_or_create(codename='admin')
+    permission_list_admin = [
+        ## ---- app: profiles ---- model: submissionagreement
+        ['add_submissionagreement','profiles','submissionagreement'], # Can add Submission Agreement (Import)
+        ## ---- app: WorkflowEngine ---- model: processtask
+        #['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
+        #['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
+    ]
+   
+    for p in permission_list_admin:
+        p_obj = Permission.objects.get(
+                                          codename=p[0], content_type__app_label=p[1],
+                                          content_type__model=p[2],
+                                          )        
+        role_admin.permissions.add(p_obj)
+
+    role_sysadmin, _ = GroupMemberRole.objects.get_or_create(codename='sysadmin')
+    permission_list_sysadmin = [
+        ## ---- app: auth ---- model: group
+        ['add_group','auth','group'],                    # Can add group
+        ['change_group','auth','group'],                    # Can change group
+        ['delete_group','auth','group'],                    # Can delete group
+        ## ---- app: auth ---- model: user
+        ['add_user','auth','user'],                    # Can add user
+        ['change_user','auth','user'],                    # Can change user
+        ['delete_user','auth','user'],                    # Can delete user
+        ## ---- app: configuration ---- model: parameter
+        ['add_parameter','configuration','parameter'],                    # Can add parameter
+        ['change_parameter','configuration','parameter'],                    # Can change parameter
+        ['delete_parameter','configuration','parameter'],                    # Can delete parameter
+        ## ---- app: configuration ---- model: path
+        ['add_path','configuration','path'],                    # Can add path
+        ['change_path','configuration','path'],                    # Can change path
+        ['delete_path','configuration','path'],                    # Can delete path
+        ## ---- app: configuration ---- model: eventtype
+        ['add_eventtype','configuration','eventtype'],                    # Can add eventtype
+        ['change_eventtype','configuration','eventtype'],                    # Can change eventtype
+        ['delete_eventtype','configuration','eventtype'],                    # Can delete eventtype        
+        ## ---- app: profiles ---- model: profile
+        ['add_profile','profiles','profile'],                    # Can add profile
+        ['change_profile','profiles','profile'],                    # Can change profile
+        ['delete_profile','profiles','profile'],                    # Can delete profile
+        ## ---- app: profiles ---- model: submissionagreement
+        ['add_submissionagreement','profiles','submissionagreement'],                    # Can add submissionagreement
+        ['change_submissionagreement','profiles','submissionagreement'],                    # Can change submissionagreement
+        ['delete_submissionagreement','profiles','submissionagreement'],                    # Can delete submissionagreement        
+        ## ---- app: groups_manager ---- model: grouptype
+        ['add_grouptype','groups_manager','grouptype'],                    # Can add grouptype
+        ['change_grouptype','groups_manager','grouptype'],                    # Can change grouptype
+        ['delete_grouptype','groups_manager','grouptype'],                    # Can delete grouptype
+    ]
+   
+    for p in permission_list_sysadmin:
+        p_obj = Permission.objects.get(
+                                          codename=p[0], content_type__app_label=p[1],
+                                          content_type__model=p[2],
+                                          )        
+        role_sysadmin.permissions.add(p_obj)
+
+    #####################################
+    # Users
+    user_superuser, created = User.objects.get_or_create(
+        first_name='superuser', last_name='Lastname',
+        username='superuser', email='superuser@essolutions.se',
+    )
+    if created:
+        user_superuser.set_password('superuser')
+        user_superuser.is_staff=True
+        user_superuser.is_superuser=True
+        user_superuser.save()
+
+    user_user, created = User.objects.get_or_create(
+        first_name='user', last_name='Lastname',
+        username='user', email='user@essolutions.se'
+    )
+    if created:
+        user_user.set_password('user')
+        user_user.save()
+        default_org.add_member(user_user.essauth_member, roles=[role_user])
+
+    user_admin, created = User.objects.get_or_create(
+        first_name='admin', last_name='Lastname',
         username='admin', email='admin@essolutions.se',
-        is_staff=True
     )
-    user_admin.set_password('admin')
-    user_admin.save()
+    if created:
+        user_admin.set_password('admin')
+        user_admin.is_staff=True
+        user_admin.save()
+        default_org.add_member(user_admin.essauth_member, roles=[role_user, role_admin])
 
-    user_sysadmin, _ = User.objects.get_or_create(
+    user_sysadmin, created = User.objects.get_or_create(
+        first_name='sysadmin', last_name='Lastname',
         username='sysadmin', email='sysadmin@essolutions.se',
-        is_staff=True, is_superuser=True
     )
-    user_sysadmin.set_password('sysadmin')
-    user_sysadmin.save()
-
-    group_user, _ = Group.objects.get_or_create(name='user')
-    group_admin, _ = Group.objects.get_or_create(name='admin')
-    group_sysadmin, _ = Group.objects.get_or_create(name='sysadmin')
-
-    can_add_ip_event = Permission.objects.get(codename='add_eventip')
-    can_change_ip_event = Permission.objects.get(codename='change_eventip')
-    can_delete_ip_event = Permission.objects.get(codename='delete_eventip')
-
-    group_user.permissions.add(can_add_ip_event, can_change_ip_event, can_delete_ip_event)
-
-    group_user.user_set.add(user_user)
-    group_admin.user_set.add(user_admin)
-    group_sysadmin.user_set.add(user_sysadmin)
+    if created:
+        user_sysadmin.set_password('sysadmin')
+        user_sysadmin.is_staff=True
+        user_sysadmin.save()
+        default_org.add_member(user_sysadmin.essauth_member, roles=[role_sysadmin])
 
     return 0
 
@@ -90,40 +205,8 @@ def installDefaultPaths():
     }
 
     for key in dct:
-        print '-> %s: %s' % (key, dct[key])
+        print('-> %s: %s' % (key, dct[key]))
         Path.objects.get_or_create(entity=key, value=dct[key])
-
-    return 0
-
-
-def installDefaultEventTypes():
-    dct = {
-        'Other': '10000',
-        'Prepare IP': '10100',
-        'Create IP root directory': '10110',
-        'Create physical model': '10115',
-        'Upload file': '10120',
-        'Create SIP': '10200',
-        'Calculate checksum ': '10210',
-        'Identify format': '10220',
-        'Generate XML files': '10230',
-        'Append events': '10240',
-        'Copy schemas': '10250',
-        'Validate file format': '10260',
-        'Validate XML file': '10261',
-        'Validate logical representation against physical representation': '10262',
-        'Validate checksum': '10263',
-        'Create TAR': '10270',
-        'Create ZIP': '10271',
-        'Delete files': '10275',
-        'Update IP status': '10280',
-        'Update IP path': '10285',
-        'Submit SIP': '10300',
-    }
-
-    for key in dct:
-        print '-> %s: %s' % (key, dct[key])
-        EventType.objects.get_or_create(eventType=dct[key], eventDetail=key)
 
     return 0
 

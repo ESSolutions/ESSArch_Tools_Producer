@@ -22,47 +22,10 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller){
-    $controller('BaseCtrl', { $scope: $scope });
+angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP, Profile, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
     var ipSortString = "Created,Submitting,Submitted";
-    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
-    // List view
-
-    $rootScope.$on('$stateChangeStart', function() {
-        $interval.cancel(listViewInterval);
-    });
-    /*******************************************/
-    /*Piping and Pagination for List-view table*/
-    /*******************************************/
-
-    this.displayedIps = [];
-    //Get data for ip table from rest api
-    this.callServer = function callServer(tableState) {
-        $scope.ipLoading = true;
-        if(vm.displayedIps.length == 0) {
-            $scope.initLoad = true;
-        }
-        if(!angular.isUndefined(tableState)) {
-            $scope.tableState = tableState;
-            var search = "";
-            if(tableState.search.predicateObject) {
-                var search = tableState.search.predicateObject["$"];
-            }
-            var sorting = tableState.sort;
-            var pagination = tableState.pagination;
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
-            var pageNumber = start/number+1;
-
-            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
-                vm.displayedIps = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.ipLoading = false;
-                $scope.initLoad = false;
-            });
-        }
-    };
+    $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
     //Click function for ip table
     $scope.ipTableClick = function(row) {
@@ -71,34 +34,31 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
             $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
             var ip = row;
             if (ip.profile_submit_description) {
-                $http({
-                    method: 'GET',
-                    url: ip.profile_submit_description.profile,
-                    params: {
-                        'ip': ip.id
-                    }
+                $http.get(
+                    appConfig.djangoUrl + "information-packages/" + ip.id + "/profiles/",{
+                    params: {profile__profile_type: 'submit_description'}
                 }).then(function(response) {
-                    vm.informationModel= response.data.specification_data;
-                    vm.informationFields = response.data.template;
+                    var sd_profile_ip = response.data[0];
+                    vm.informationModel= sd_profile_ip.data.data;
+                    vm.informationFields = sd_profile_ip.profile.template;
                     vm.informationFields.forEach(function(field) {
                         field.type = 'input';
                         field.templateOptions.disabled = true;
                     });
                     if(ip.profile_transfer_project) {
-                        $http({
-                            method: 'GET',
-                            url: ip.profile_transfer_project.profile,
-                            params: {
-                                'ip': ip.id
-                            }
+                        $http.get(
+                            appConfig.djangoUrl + "information-packages/" + ip.id + "/profiles/",{
+                            params: {profile__profile_type: 'transfer_project'}
                         }).then(function(response) {
-                            vm.dependencyModel= response.data.specification_data;
-                            vm.dependencyFields = response.data.template;
+                            var tp_profile_ip = response.data[0];
+                            vm.dependencyModel= tp_profile_ip.data.data;
+                            vm.dependencyFields = tp_profile_ip.profile.template;
                             vm.dependencyFields.forEach(function(field) {
                                 field.type = 'input';
                                 field.templateOptions.disabled = true;
@@ -111,8 +71,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                             });
                         });
                     }
-
-                }, function(response) {
+                }).catch(function(response) {
                     console.log(response.status);
                 });
             }
@@ -120,16 +79,6 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
         $scope.submitDisabled = false;
         $scope.eventShow = false;
         $scope.statusShow = false;
-    };
-
-    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-        $scope.getListViewData();
-    }, true);
-
-    //Get data for list view
-    $scope.getListViewData = function() {
-        vm.callServer($scope.tableState);
-        $rootScope.loadNavigation(ipSortString);
     };
 
     // Populate file list view
@@ -146,15 +95,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get package dependencies for ip(transfer_project profile)
     $scope.getPackageDependencies = function(ip) {
         if(ip.profile_transfer_project) {
-            $http({
-                method: 'GET',
-                url: ip.profile_transfer_project.profile,
-                params: {
-                    'ip': ip.id
-                }
-            }).then(function(response) {
-                vm.dependencyModel= response.data.specification_data;
-                vm.dependencyFields = response.data.template;
+            Profile.get({
+                id: ip.profile_transfer_project.profile,
+                ip: ip.id
+            }).$promise.then(function(resource) {
+                vm.dependencyModel= resource.specification_data;
+                vm.dependencyFields = resource.template;
                 vm.dependencyFields.forEach(function(field) {
                     field.templateOptions.disabled = true;
                 });
@@ -329,15 +275,12 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
     //Get package information(submit-description)
     $scope.getPackageInformation = function(ip) {
         if (ip.profile_submit_description) {
-            $http({
-                method: 'GET',
-                url: ip.profile_submit_description.profile,
-                params: {
-                    'ip': ip.id
-                }
-            }).then(function(response) {
-                vm.informationModel= response.data.specification_data;
-                vm.informationFields = response.data.template;
+            Profile.get({
+                id: ip.profile_submit_description.profile,
+                ip: ip.id
+            }).$promise.then(function(resource) {
+                vm.informationModel= resource.specification_data;
+                vm.informationFields = resource.template;
                 vm.informationFields.forEach(function(field) {
                     field.templateOptions.disabled = true;
                 });
@@ -351,125 +294,7 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
 
         return profiles.active;
     }
-    $scope.submitDisabled = false;
-    $scope.submitSip = function(ip, email) {
-        if(!email) {
-            var sendData = {validators: vm.validatorModel}
-        } else {
-            var sendData = {validators: vm.validatorModel, subject: email.subject, body: email.body}
-        }
-        $scope.submitDisabled = true;
-        $http({
-            method: 'POST',
-            url: ip.url+'submit/',
-            data: sendData
-        }).then(function(response) {
-            $scope.eventlog = false;
-            $scope.edit = false;
-            $timeout(function() {
-                $scope.getListViewData();
-                updateListViewConditional();
-            }, 1000);
-            $scope.submitDisabled = false;
-            $anchorScroll();
-        }, function(response) {
-            $scope.submitDisabled = false;
-        });
-    }
-    var listViewInterval;
-    function updateListViewConditional() {
-        $interval.cancel(listViewInterval);
-        listViewInterval = $interval(function() {
-            var updateVar = false;
-            vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100) {
-                    if(ip.step_state != "FAILURE") {
-                        updateVar = true;
-                    }
-                }
-            });
-            if(updateVar) {
-                $scope.getListViewData();
-            } else {
-                $interval.cancel(listViewInterval);
-                listViewInterval = $interval(function() {
-                    var updateVar = false;
-                    vm.displayedIps.forEach(function(ip, idx) {
-                        if(ip.status < 100) {
-                            if(ip.step_state != "FAILURE") {
-                                updateVar = true;
-                            }
-                        }
-                    });
-                    if(!updateVar) {
-                        $scope.getListViewData();
-                    } else {
-                        updateListViewConditional();
-                    }
 
-                }, appConfig.ipIdleInterval);
-            }
-        }, appConfig.ipInterval);
-    };
-    updateListViewConditional();
-
-    $scope.colspan = 9;
-    $scope.yes = $translate.instant('YES');
-    $scope.no = $translate.instant('NO');
-    vm.validatorModel = {
-
-    };
-    vm.validatorFields = [
-        {
-            "templateOptions": {
-                "label": $translate.instant('VALIDATEFILEFORMAT'),
-            },
-            "defaultValue": false,
-            "type": "checkbox",
-            "key": "validate_file_format",
-        },
-        {
-            "templateOptions": {
-                "label": $translate.instant('VALIDATEXMLFILE'),
-            },
-            "defaultValue": false,
-            "type": "checkbox",
-            "key": "validate_xml_file",
-        },
-        {
-            "templateOptions": {
-                "label": $translate.instant('VALIDATELOGICALPHYSICALREPRESENTATION'),
-            },
-            "defaultValue": false,
-            "type": "checkbox",
-            "key": "validate_logical_physical_representation",
-        },
-        {
-            "templateOptions": {
-                "label": $translate.instant('VALIDATEINTEGRITY'),
-            },
-            "defaultValue": false,
-            "type": "checkbox",
-            "key": "validate_integrity",
-        }
-    ];
-    //Remove and ip
-    $scope.removeIp = function (ipObject) {
-        $http({
-            method: 'DELETE',
-            url: ipObject.url
-        }).then(function() {
-            vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
-            $scope.edit = false;
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.eventShow = false;
-            $scope.statusShow = false;
-            $scope.filebrowser = false;
-            $rootScope.loadNavigation(ipSortString);
-            $scope.getListViewData();
-        });
-    }
     $scope.emailModal = function (profiles) {
         if(vm.dependencyModel.preservation_organization_receiver_email) {
             var modalInstance = $uibModal.open({
@@ -479,16 +304,54 @@ angular.module('myApp').controller('PrepareSipCtrl', function ($log, $uibModal, 
                 templateUrl: 'static/frontend/views/email_modal.html',
                 scope: $scope,
                 size: 'lg',
-                controller: 'ModalInstanceCtrl',
-                controllerAs: '$ctrl'
+                controller: 'DataModalInstanceCtrl',
+                controllerAs: '$ctrl',
+                resolve: {
+                    data: {
+                        ip: $scope.ip,
+                        vm: vm
+                    }
+                }
             })
             modalInstance.result.then(function (data) {
-                $scope.submitSip($scope.ip, data.email);
-            }, function () {
+                $scope.eventlog = false;
+                $scope.edit = false;
+                $scope.getListViewData();
+                vm.updateListViewConditional();
+                $scope.submitDisabled = false;
+                $anchorScroll();
+            }).catch(function () {
                 $log.info('modal-component dismissed at: ' + new Date());
             });
         } else {
-            $scope.submitSip($scope.ip);
+            vm.submitSipModal($scope.ip);
         }
+    }
+    vm.submitSipModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/submit_sip_modal.html',
+            scope: $scope,
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {
+                    ip: ip,
+                    vm: vm
+                }
+            }
+        })
+        modalInstance.result.then(function (data) {
+            $scope.eventlog = false;
+            $scope.edit = false;
+            $scope.getListViewData();
+            vm.updateListViewConditional();
+            $scope.submitDisabled = false;
+            $anchorScroll();
+        }).catch(function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
     }
 });

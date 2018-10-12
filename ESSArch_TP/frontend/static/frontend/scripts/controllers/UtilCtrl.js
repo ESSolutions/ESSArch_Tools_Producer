@@ -22,14 +22,64 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope, $timeout, $http, appConfig) {
+angular.module('essarch.controllers').controller('UtilCtrl', function($scope, $state, $location, $window, $rootScope, $timeout, $http, appConfig, Notifications, permissionConfig, myService, $anchorScroll) {
+    $scope.$state = $state;
     $scope.reloadPage = function (){
         $state.reload();
     }
-    $scope.redirectAdmin = function () {
-        $window.location.href="/admin/";
-    }
     $scope.infoPage = function() {
         $state.go('home.info');
+    }
+    $scope.checkPermissions = function(page) {
+        // Check if there is a sub state that does not require permissions
+        if(nestedEmptyPermissions(Object.resolve(page, permissionConfig))) {
+            return true;
+        }
+        var permissions = nestedPermissions(Object.resolve(page, permissionConfig));
+        return myService.checkPermissions(permissions);
+    }
+    $scope.showAlert = function() {
+        Notifications.toggle();
+    }
+
+    $scope.navigateToState = function(state) {
+        $state.go(state);
+    }
+
+    var enter = 13;
+    var space = 32;
+
+    var stateChangeListeners = [];
+    function resetStateListeners() {
+        stateChangeListeners.forEach(function(listener) {
+            listener();
+        });
+        stateChangeListeners = [];
+    }
+
+    /**
+     * Handle keydown events navigation
+     * @param {Event} e
+     */
+    $scope.navKeydownListener = function(e, state) {
+        switch(e.keyCode) {
+            case space:
+            case enter:
+                event.preventDefault();
+                stateChangeListeners.push($scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
+                    event.preventDefault();
+                    $scope.focusRouterView();
+                    resetStateListeners();
+                }));
+                $state.go(state);
+                break;
+        }
+    }
+    $scope.focusRouterView = function() {
+        $timeout(function() {
+            var elm = document.getElementsByClassName('dynamic-part')[0];
+            elm.focus();
+            $anchorScroll();
+        })
     }
 });

@@ -26,233 +26,54 @@ from __future__ import absolute_import
 
 import os
 import shutil
-import uuid
-from urlparse import urljoin
 
 import requests
+from django.db import transaction
+from six.moves.urllib.parse import urljoin
 
-from ESSArch_Core.configuration.models import Path
-from ESSArch_Core.WorkflowEngine.dbtask import DBTask
-from ESSArch_Core.ip.models import InformationPackage
-from ESSArch_Core.WorkflowEngine.models import ProcessTask, ProcessStep
-from ESSArch_Core.util import (
-    delete_content
-)
+# noinspection PyUnresolvedReferences
 from ESSArch_Core import tasks
-
-
-class PrepareIP(DBTask):
-    event_type = 10100
-
-    def run(self, label="", responsible={}, object_identifier_value=None, step=None):
-        """
-        Prepares a new information package
-
-        Args:
-            label: The label of the IP to prepare
-            responsible: The responsible user of the IP to prepare
-            step: The step to connect the IP to
-
-        Returns:
-            The id of the created information package
-        """
-
-        ip = InformationPackage.objects.create(
-            object_identifier_value=object_identifier_value,
-            label=label,
-            responsible_id=responsible,
-            state="Preparing",
-            package_type=InformationPackage.SIP,
-        )
-
-        self.ip = ip.pk
-
-        ProcessTask.objects.filter(pk=self.request.id).update(
-            information_package=ip
-        )
-
-        if step is not None:
-            s = ProcessStep.objects.get(pk=step)
-            ip.steps.add(s)
-
-        self.set_progress(100, total=100)
-
-        return ip.pk
-
-    def undo(self, label="", responsible={}, object_identifier_value=None, step=None):
-        ProcessTask.objects.get(pk=self.request.id).undone_task.information_package.delete()
-
-    def event_outcome_success(self, label="", responsible={}, object_identifier_value=None, step=None):
-        return "Prepared IP with label '%s'" % label
-
-
-class CreateIPRootDir(DBTask):
-    event_type = 10110
-
-    def create_path(self, information_package_id):
-        prepare_path = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-
-        dirname = InformationPackage.objects.values_list(
-            'object_identifier_value', flat=True
-        ).get(pk=information_package_id)
-
-        return os.path.join(prepare_path, dirname)
-
-    def run(self, information_package=None):
-        """
-        Creates the IP root directory
-
-        Args:
-            information_package_id: The id of the information package the
-            directory will be created for
-
-        Returns:
-            None
-        """
-
-        self.ip = information_package
-
-        ProcessTask.objects.filter(pk=self.request.id).update(
-            information_package_id=information_package
-        )
-
-        path = self.create_path(information_package)
-        os.makedirs(path)
-
-        InformationPackage.objects.filter(pk=information_package).update(
-            object_path=path
-        )
-
-        self.set_progress(100, total=100)
-        return information_package
-
-    def undo(self, information_package=None):
-        path = self.create_path(information_package)
-        shutil.rmtree(path)
-
-    def event_outcome_success(self, information_package=None):
-        return "Created root directory for IP '%s'" % information_package
-
-
-class CreatePhysicalModel(DBTask):
-    event_type = 10115
-
-    def get_root(self):
-        root = Path.objects.get(
-            entity="path_preingest_prepare"
-        ).value
-        return os.path.join(root, unicode(self.ip))
-
-    def run(self, structure={}, root=""):
-        """
-        Creates the IP physical model based on a logical model.
-
-        Args:
-            structure: A dict specifying the logical model.
-            root: The root directory to be used
-        """
-
-        if not root:
-            root = self.get_root()
-
-        try:
-            delete_content(root)
-        except OSError as e:
-            if e.errno != 2:
-                raise
-
-        for content in structure:
-            if content.get('type') == 'folder':
-                name = content.get('name')
-                dirname = os.path.join(root, name)
-                os.makedirs(dirname)
-
-                self.run(content.get('children', []), dirname)
-
-        self.set_progress(1, total=1)
-
-    def undo(self, structure={}, root=""):
-        if not root:
-            root = self.get_root()
-
-        for content in structure:
-            if content.get('type') == 'folder':
-                name = content.get('name')
-                dirname = os.path.join(root, name)
-                shutil.rmtree(dirname)
-
-    def event_outcome_success(self, structure={}, root=""):
-        return "Created physical model for IP '%s'" % self.ip
-
-
-class CalculateChecksum(tasks.CalculateChecksum):
-    event_type = 10210
-
-
-class IdentifyFileFormat(tasks.IdentifyFileFormat):
-    event_type = 10220
-
-
-class GenerateXML(tasks.GenerateXML):
-    event_type = 10230
-
-
-class AppendEvents(tasks.AppendEvents):
-    event_type = 10240
-
-
-class CopySchemas(tasks.CopySchemas):
-    event_type = 10250
-
-
-class ValidateFileFormat(tasks.ValidateFileFormat):
-    event_type = 10260
-
-
-class ValidateXMLFile(tasks.ValidateXMLFile):
-    event_type = 10261
-
-
-class ValidateLogicalPhysicalRepresentation(tasks.ValidateLogicalPhysicalRepresentation):
-    event_type = 10262
-
-
-class ValidateIntegrity(tasks.ValidateIntegrity):
-    event_type = 10263
-
-
-class ValidateFiles(tasks.ValidateFiles):
-    fileformat_task = "preingest.tasks.ValidateFileFormat"
-    checksum_task = "preingest.tasks.ValidateIntegrity"
-
-
-class CreateTAR(tasks.CreateTAR):
-    event_type = 10270
-
-
-class CreateZIP(tasks.CreateZIP):
-    event_type = 10271
-
-
-class DeleteFiles(tasks.DeleteFiles):
-    event_type = 10275
-
-
-class UpdateIPStatus(tasks.UpdateIPStatus):
-    event_type = 10280
-
-
-class UpdateIPPath(tasks.UpdateIPPath):
-    event_type = 10285
+from ESSArch_Core.WorkflowEngine.dbtask import DBTask
+from ESSArch_Core.configuration.models import Path
+from ESSArch_Core.ip.models import Agent, InformationPackage
+from ESSArch_Core.ip.utils import get_cached_objid
+from ESSArch_Core.storage.copy import copy_file
+
+
+class ReceiveSIP(DBTask):
+    event_type = 20100
+
+    @transaction.atomic
+    def run(self):
+        ip = InformationPackage.objects.get(pk=self.ip)
+        sa = ip.submission_agreement
+        prepare_path = Path.objects.get(entity="path_preingest_prepare").value
+        dst_dir = os.path.join(prepare_path, ip.object_identifier_value)
+        shutil.copytree(ip.object_path, dst_dir)
+
+        if sa.archivist_organization:
+            existing_agents_with_notes = Agent.objects.all().with_notes([])
+            ao_agent, _ = Agent.objects.get_or_create(role='ARCHIVIST', type='ORGANIZATION',
+                                                      name=sa.archivist_organization, pk__in=existing_agents_with_notes)
+            ip.agents.add(ao_agent)
+
+        submit_description_data = ip.get_profile_data('submit_description')
+        ip.label = ip.object_identifier_value
+        ip.entry_date = ip.create_date
+        ip.object_path = dst_dir
+        ip.start_date = submit_description_data.get('start_date')
+        ip.end_date = submit_description_data.get('end_date')
+        ip.save()
+
+    def event_outcome_success(self):
+        return "Received IP"
 
 
 class SubmitSIP(DBTask):
-    event_type = 10300
+    event_type = 10500
 
-    def run(self, ip=None):
-        ip = InformationPackage.objects.get(pk=ip)
+    def run(self):
+        ip = InformationPackage.objects.get(pk=self.ip)
 
         srcdir = Path.objects.get(entity="path_preingest_reception").value
         reception = Path.objects.get(entity="path_ingest_reception").value
@@ -280,38 +101,18 @@ class SubmitSIP(DBTask):
                 remote = None
         else:
             dst = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format)
-
-        ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.CopyFile",
-            params={
-                'src': src,
-                'dst': dst,
-                'requests_session': session,
-            },
-            processstep_id=self.step,
-            hidden=True
-        ).run().get()
+        block_size = 8 * 1000000 # 8MB
+        copy_file(src, dst, requests_session=session, block_size=block_size)
 
         src = os.path.join(srcdir, ip.object_identifier_value + ".xml")
-
         if not remote:
             dst = os.path.join(reception, ip.object_identifier_value + ".xml")
-
-        ProcessTask.objects.create(
-            name="ESSArch_Core.tasks.CopyFile",
-            params={
-                'src': src,
-                'dst': dst,
-                'requests_session': session,
-            },
-            processstep_id=self.step,
-            hidden=True
-        ).run().get()
+        copy_file(src, dst, requests_session=session, block_size=block_size)
 
         self.set_progress(100, total=100)
 
-    def undo(self, ip=None):
-        ip = InformationPackage.objects.get(pk=ip)
+    def undo(self):
+        ip = InformationPackage.objects.get(pk=self.ip)
 
         reception = Path.objects.get(entity="path_ingest_reception").value
         container_format = ip.get_container_format()
@@ -322,5 +123,5 @@ class SubmitSIP(DBTask):
         os.remove(tar)
         os.remove(xml)
 
-    def event_outcome_success(self, ip=None):
-        return "Submitted %s" % (ip)
+    def event_outcome_success(self):
+        return "Submitted %s" % get_cached_objid(self.ip)

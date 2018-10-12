@@ -114,7 +114,7 @@ def installSubmissionAgreement():
 
     sa, _ = SubmissionAgreement.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed submission agreement'
+    print('Installed submission agreement')
 
     return sa
 
@@ -228,7 +228,7 @@ def installProfileTransferProject(sa):
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
     ProfileSA.objects.get_or_create(profile=profile, submission_agreement=sa)
 
-    print 'Installed profile transfer project'
+    print('Installed profile transfer project')
 
     return 0
 
@@ -245,7 +245,7 @@ def installProfileContentType(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile content type'
+    print('Installed profile content type')
 
     return 0
 
@@ -262,7 +262,7 @@ def installProfileDataSelection(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile data selection'
+    print('Installed profile data selection')
 
     return 0
 
@@ -279,7 +279,7 @@ def installProfileAuthorityInformation(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile authority information'
+    print('Installed profile authority information')
 
     return 0
 
@@ -296,7 +296,7 @@ def installProfileArchivalDescription(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile archival description'
+    print('Installed profile archival description')
 
     return 0
 
@@ -313,7 +313,7 @@ def installProfileImport(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile import'
+    print('Installed profile import')
 
     return 0
 
@@ -454,7 +454,7 @@ def installProfileSubmitDescription(sa):
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
     ProfileSA.objects.get_or_create(profile=profile, submission_agreement=sa)
 
-    print 'Installed profile submit description'
+    print('Installed profile submit description')
 
     return 0
 
@@ -1005,7 +1005,7 @@ def installProfileSIP(sa):
     profile2, _ = Profile.objects.update_or_create(name=dct2['name'], defaults=dct2)
     ProfileSA.objects.get_or_create(profile=profile, submission_agreement=sa)
 
-    print 'Installed profile SIP'
+    print('Installed profile SIP')
 
     return 0
 
@@ -1031,7 +1031,7 @@ def installProfileAIP(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile AIP'
+    print('Installed profile AIP')
 
     return 0
 
@@ -1057,7 +1057,7 @@ def installProfileDIP(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile DIP'
+    print('Installed profile DIP')
 
     return 0
 
@@ -1074,7 +1074,7 @@ def installProfileWorkflow(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile workflow'
+    print('Installed profile workflow')
 
     return 0
 
@@ -1092,7 +1092,7 @@ def installProfilePreservationMetadata(sa):
 
     profile, _ = Profile.objects.update_or_create(name=dct['name'], defaults=dct)
 
-    print 'Installed profile preservation metadata'
+    print('Installed profile preservation metadata')
 
     return 0
 

@@ -22,15 +22,22 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, listViewService, $rootScope) {
+angular.module('essarch.services').factory('Resource', function ($q, $filter, $timeout, listViewService, $rootScope) {
 
     //Get data for Events table
-	function getEventPage(start, number, pageNumber, params, selected, sort) {
+	function getEventPage(start, number, pageNumber, params, selected, sort, columnFilters, search) {
         var sortString = sort.predicate;
+        if(sort.predicate == "eventDateTime") {
+            if(sort.reverse) {
+                sortString = sortString + ",-id";
+            } else {
+                sortString = sortString + ",id";
+            }
+        }
         if(sort.reverse) {
             sortString = "-"+sortString;
         }
-        return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString).then(function(value) {
+        return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString, columnFilters, search).then(function(value) {
             var eventCollection = value.data;
             eventCollection.forEach(function(event) {
                 selected.forEach(function(item) {
@@ -59,12 +66,12 @@ angular.module('myApp').factory('Resource', function ($q, $filter, $timeout, lis
         });
 	}
     //Get data for IP table
-    function getIpPage(start, number, pageNumber, params, sort, search, state) {
+    function getIpPage(start, number, pageNumber, params, sort, search, state, columnFilters) {
         var sortString = sort.predicate;
         if(sort.reverse) {
             sortString = "-"+sortString;
         }
-        return listViewService.getListViewData(pageNumber, number, $rootScope.navigationFilter, sortString, search, state).then(function(value) {
+        return listViewService.getListViewData(pageNumber, number, $rootScope.navigationFilter, sortString, search, state, columnFilters).then(function(value) {
             var ipCollection = value.data;
             /*
             console.log("ipCollection: ");

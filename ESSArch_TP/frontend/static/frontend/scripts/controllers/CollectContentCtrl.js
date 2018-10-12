@@ -22,60 +22,61 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
-    $controller('BaseCtrl', { $scope: $scope });
+angular.module('essarch.controllers').controller('CollectContentCtrl', function(IP, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile) {
     var vm = this;
     var ipSortString = "Prepared,Uploading";
-    vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
+    $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
     vm.flowDestination = null;
     $scope.showFileUpload = true;
     $scope.currentFlowObject = null;
-    // List view
+    vm.browserstate = {
+        path: ""
+    };
+    var watchers = [];
+    // File browser interval
     var fileBrowserInterval;
-    $scope.$watch(function () { return $scope.select; }, function (newValue, oldValue) {
+    watchers.push($scope.$watch(function () { return $scope.select; }, function (newValue, oldValue) {
         if (newValue) {
             $interval.cancel(fileBrowserInterval);
             fileBrowserInterval = $interval(function () { $scope.updateGridArray() }, appConfig.fileBrowserInterval);
         } else {
             $interval.cancel(fileBrowserInterval);
         }
-    });
-    $rootScope.$on('$stateChangeStart', function() {
-        $interval.cancel(listViewInterval);
+    }));
+    $scope.$on('$stateChangeStart', function() {
         $interval.cancel(fileBrowserInterval);
+        watchers.forEach(function(watcher) {
+            watcher();
+        });
     });
 
-    /*******************************************/
-    /*Piping and Pagination for List-view table*/
-    /*******************************************/
-
-    this.displayedIps = [];
-    //Get data for ip table from rest api
-    this.callServer = function callServer(tableState) {
-        $scope.ipLoading = true;
-        if(vm.displayedIps.length == 0) {
-            $scope.initLoad = true;
-        }
-        if(!angular.isUndefined(tableState)) {
-            $scope.tableState = tableState;
-            var search = "";
-            if(tableState.search.predicateObject) {
-                var search = tableState.search.predicateObject["$"];
+    vm.uploadCompletedModal = function (ip) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'static/frontend/views/upload_completed_modal.html',
+            scope: $scope,
+            controller: 'DataModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                data: {
+                    ip: ip
+                }
             }
-            var sorting = tableState.sort;
-            var pagination = tableState.pagination;
-            var start = pagination.start || 0;     // This is NOT the page number, but the index of item in the list that you want to use to display the table.
-            var number = pagination.number || vm.itemsPerPage;  // Number of entries showed per page.
-            var pageNumber = start/number+1;
-
-            Resource.getIpPage(start, number, pageNumber, tableState, sorting, search, ipSortString).then(function (result) {
-                vm.displayedIps = result.data;
-                tableState.pagination.numberOfPages = result.numberOfPages;//set the number of pages so the pagination can update
-                $scope.ipLoading = false;
-                $scope.initLoad = false;
-            });
-        }
-    };
+        })
+        modalInstance.result.then(function (data) {
+            $scope.eventlog = false;
+            $scope.select = false;
+            $scope.filebrowser = false;
+            $scope.getListViewData();
+            vm.updateListViewConditional();
+            $scope.uploadDisabled = false;
+            $anchorScroll();
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    }
 
     //Click function for ip table
     $scope.ipTableClick = function(row) {
@@ -84,14 +85,14 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.eventlog = false;
             $scope.ip = null;
             $rootScope.ip = null;
+            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
-            $scope.deckGridInit($scope.ip);
-            if(!$rootScope.flowObjects[row.object_identifier_value]) {
+            if(!$rootScope.flowObjects[row.id]) {
                 $scope.createNewFlow(row);
             }
-            $scope.currentFlowObject = $rootScope.flowObjects[row.object_identifier_value];
+            $scope.currentFlowObject = $rootScope.flowObjects[row.id];
             if($scope.select) {
                 $scope.showFileUpload = false;
                 $timeout(function() {
@@ -106,153 +107,17 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         $scope.eventShow = false;
         $scope.statusShow = false;
     };
-    $scope.$watch(function(){return $rootScope.navigationFilter;}, function(newValue, oldValue) {
-        $scope.getListViewData();
-    }, true);
-    
-    //Get data for list view
-    $scope.getListViewData = function() {
-        vm.callServer($scope.tableState);
-        $rootScope.loadNavigation(ipSortString);
-    };
 
-    var listViewInterval;
-    function updateListViewConditional() {
-        $interval.cancel(listViewInterval);
-        listViewInterval = $interval(function() {
-            var updateVar = false;
-            vm.displayedIps.forEach(function(ip, idx) {
-                if(ip.status < 100) {
-                    if(ip.step_state != "FAILURE") {
-                        updateVar = true;
-                    }
-                }
-            });
-            if(updateVar) {
-                $scope.getListViewData();
-            } else {
-                $interval.cancel(listViewInterval);
-                listViewInterval = $interval(function() {
-                    var updateVar = false;
-                    vm.displayedIps.forEach(function(ip, idx) {
-                        if(ip.status < 100) {
-                            if(ip.step_state != "FAILURE") {
-                                updateVar = true;
-                            }
-                        }
-                    });
-                    if(!updateVar) {
-                        $scope.getListViewData();
-                    } else {
-                        updateListViewConditional();
-                    }
-
-                }, appConfig.ipIdleInterval);
-            }
-        }, appConfig.ipInterval);
-    };
-    updateListViewConditional();
-
-    $scope.colspan = 9;
-    $scope.yes = $translate.instant('YES');
-    $scope.no = $translate.instant('NO');
-    //Remove and ip
-    $scope.removeIp = function (ipObject) {
-        $http({
-            method: 'DELETE',
-            url: ipObject.url
-        }).then(function() {
-            vm.displayedIps.splice(vm.displayedIps.indexOf(ipObject), 1);
-            $scope.edit = false;
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.eventShow = false;
-            $scope.statusShow = false;
-            $scope.filebrowser = false;
-            $rootScope.loadNavigation(ipSortString);
-            $scope.getListViewData();
-        });
-    }
     //UPLOAD
-    $scope.uploadDisabled = false;
-    $scope.setUploaded = function(ip) {
-        $scope.uploadDisabled = true;
-        $http({
-            method: 'POST',
-            url: ip.url + "set-uploaded/"
-        }).then(function(response){
-            $scope.eventlog = false;
-            $scope.select = false;
-            $scope.filebrowser = false;
-            $timeout(function() {
-                $scope.getListViewData();
-                updateListViewConditional();
-            }, 1000);
-            $scope.uploadDisabled = false;
-            $anchorScroll();
-        }, function(response) {
-            $scope.uploadDisabled = false;
-        });
-    }
     $scope.updateListViewTimeout = function(timeout) {
         $timeout(function(){
             $scope.getListViewData();
         }, timeout);
     };
     //Deckgrid test
-    $scope.previousGridArrays = [];
-    $scope.previousGridArraysString = function() {
-        var retString = "";
-        $scope.previousGridArrays.forEach(function(card) {
-            retString = retString.concat(card.name, "/");
-        });
-        return retString;
-    }
-    $scope.deckGridData = [];
-    $scope.deckGridInit = function(ip) {
-        listViewService.getDir(ip, null).then(function(dir) {
-            $scope.deckGridData = dir;
-        });
-    };
-    $scope.previousGridArray = function() {
-        $scope.previousGridArrays.pop();
-        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            $scope.deckGridData = dir;
-            $scope.selectedCards = [];
-        });
-    };
-    $scope.gridArrayLoading = false;
+
     $scope.updateGridArray = function(ip) {
-        $scope.gridArrayLoading = true;
-        listViewService.getDir($scope.ip, $scope.previousGridArraysString()).then(function(dir) {
-            $scope.deckGridData = dir;
-            $scope.gridArrayLoading = false;
-        });
-    };
-    $scope.expandFile = function(ip, card) {
-        if(card.type == "dir"){
-            $scope.previousGridArrays.push(card);
-            listViewService.getDir(ip,$scope.previousGridArraysString()).then(function(dir) {
-                $scope.deckGridData = dir;
-                $scope.selectedCards = [];
-            });
-        } else {
-            $scope.getFile(card);
-        }
-    };
-
-    $scope.getFile = function (file) {
-        file.content = $sce.trustAsResourceUrl($scope.ip.url + "files/?path=" + $scope.previousGridArraysString() + file.name);
-        $window.open(file.content, '_blank');
-    }
-    $scope.selectedCards = [];
-    $scope.cardSelect = function (card) {
-
-        if (includesWithProperty($scope.selectedCards, "name", card.name)) {
-            $scope.selectedCards.splice($scope.selectedCards.indexOf(card), 1);
-        } else {
-            $scope.selectedCards.push(card);
-        }
+        $scope.$broadcast("UPDATE_FILEBROWSER", {});
     };
 
     function includesWithProperty(array, property, value) {
@@ -273,14 +138,16 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         $scope.deckGridData.forEach(function(chosen, index) {
             if (chosen.name === folder.name) {
                 fileExists = true;
-                folderNameExistsModal(index, folder, chosen);                    
+                folderNameExistsModal(index, folder, chosen);
             }
         });
         if (!fileExists) {
-            listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
+            listViewService.addNewFolder($scope.ip, vm.browserstate.path, folder)
                 .then(function (response) {
                     $scope.updateGridArray();
-                });
+                }).catch(function(response) {
+                    Notifications.add(response.data.detail, 'error');
+                })
         }
     }
 
@@ -303,9 +170,9 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             },
         })
         modalInstance.result.then(function (data) {
-            listViewService.deleteFile($scope.ip, $scope.previousGridArraysString(), fileToOverwrite)
+            listViewService.deleteFile($scope.ip, vm.browserstate.path, fileToOverwrite)
                 .then(function() {
-                    listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
+                    listViewService.addNewFolder($scope.ip, vm.browserstate.path, folder)
                         .then(function () {
                             $scope.updateGridArray();
                         });
@@ -341,21 +208,19 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         $window.open('/static/edead/filledForm.html?id='+ip.id, 'Levente', 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
     }
-        $scope.getFlowTarget = function() {
-        return $scope.ip.url + 'upload/';
+    $scope.getFlowTarget = function() {
+        return appConfig.djangoUrl + "information-packages/" + $scope.ip.id + '/upload/';
     };
     $scope.getQuery = function(FlowFile, FlowChunk, isTest) {
-        return {destination: $scope.previousGridArraysString()};
+        return {destination: vm.browserstate.path};
     };
     $scope.fileUploadSuccess = function(ip, file, message, flow) {
         $scope.uploadedFiles ++;
-        var url = ip.url + 'merge-uploaded-chunks/';
         var path = flow.opts.query.destination + file.relativePath;
 
-        $http({
-            method: 'POST',
-            url: url,
-            data: {'path': path}
+        IP.mergeChunks({
+            id: ip.id,
+            path: path
         });
     };
     $scope.fileTransferFilter = function(file)
@@ -364,7 +229,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
     };
     $scope.removeFiles = function() {
         $scope.selectedCards.forEach(function(file) {
-            listViewService.deleteFile($scope.ip, $scope.previousGridArraysString(), file)
+            listViewService.deleteFile($scope.ip, vm.browserstate.path, file)
             .then(function () {
                 $scope.updateGridArray();
             });
@@ -395,7 +260,7 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
                 $scope.resetUploadedFiles();
             }
         }
-        
+
         $scope.updateGridArray();
     }
     $scope.hideFlowCompleted = function(flow) {
@@ -428,8 +293,8 @@ angular.module('myApp').controller('CollectContentCtrl', function($log, $uibModa
             $scope.fileUploadSuccess(ip, file, message, flowObj);
         });
         flowObj.on('uploadStart', function(){
-            flowObj.opts.query = {destination: $scope.previousGridArraysString()};
+            flowObj.opts.query = {destination: vm.browserstate.path};
         });
-        $rootScope.flowObjects[ip.object_identifier_value] = flowObj;
+        $rootScope.flowObjects[ip.id] = flowObj;
     }
 });

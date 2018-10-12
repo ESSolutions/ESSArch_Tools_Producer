@@ -24,62 +24,25 @@
 
 import os
 
+import six
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
-from django.db.models import Prefetch
-
+from django.db import IntegrityError, transaction
 from rest_framework import exceptions, status
+from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ESSArch_Core.configuration.models import (
-    Path,
-)
-
-from ESSArch_Core.ip.models import (
-    ArchivalInstitution,
-    ArchivistOrganization,
-    ArchivalLocation,
-    ArchivalType,
-    EventIP,
-    InformationPackage,
-)
-
-from ESSArch_Core.ip.permissions import (
-    CanLockSA,
-)
-
-from ESSArch_Core.WorkflowEngine.models import (
-    ProcessStep,
-    ProcessTask,
-)
-
-from ESSArch_Core.profiles.serializers import (
-    ProfileSerializer,
-    ProfileSASerializer,
-    ProfileIPSerializer,
-    SubmissionAgreementSerializer
-)
-
-from ESSArch_Core.profiles.models import (
-    SubmissionAgreement,
-    Profile,
-    ProfileSA,
-    ProfileIP,
-)
-
-from rest_framework import viewsets
+from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
+from ESSArch_Core.configuration.models import Path
+from ESSArch_Core.ip.models import Agent, EventIP, InformationPackage
+from ESSArch_Core.ip.permissions import CanLockSA
+from ESSArch_Core.profiles.models import SubmissionAgreement, Profile, ProfileSA, ProfileIP
+from ESSArch_Core.profiles.serializers import ProfileSerializer, ProfileDetailSerializer, ProfileWriteSerializer, \
+    ProfileSASerializer, SubmissionAgreementSerializer
+from ESSArch_Core.profiles.views import SubmissionAgreementViewSet as SAViewSetCore
 
 
-class SubmissionAgreementViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows submission agreements to be viewed or edited.
-    """
-    queryset = SubmissionAgreement.objects.all().prefetch_related(
-        Prefetch('profilesa_set', to_attr='profiles')
-    )
-    serializer_class = SubmissionAgreementSerializer
-
+class SubmissionAgreementViewSet(SAViewSetCore):
     @detail_route(methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
         sa = SubmissionAgreement.objects.get(pk=pk)
@@ -134,7 +97,7 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
                         status=status.HTTP_400_BAD_REQUEST
                     )
 
-        for k, v in new_data.iteritems():
+        for k, v in six.iteritems(new_data):
             if v != getattr(sa, k):
                 changed_data = True
                 break
@@ -148,61 +111,45 @@ class SubmissionAgreementViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    def get_profile_types(self):
+        return 'sip', 'transfer_project', 'submit_description', 'preservation_metadata'
+
+    @transaction.atomic
     @detail_route(methods=["post"])
     def lock(self, request, pk=None):
         sa = self.get_object()
         ip_id = request.data.get("ip")
+        permission = CanLockSA()
 
         try:
-            ip = InformationPackage.objects.get(
-                pk=ip_id
-            )
+            ip = InformationPackage.objects.get(pk=ip_id)
         except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Information Package with id %s does not exist' % ip_id},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        permission = CanLockSA()
-        if not permission.has_object_permission(request, self, ip):
-            self.permission_denied(
-                request, message=getattr(permission, 'message', None)
-            )
+            raise exceptions.ParseError('Information Package with id %s does not exist')
 
         if ip.submission_agreement_locked:
             raise exceptions.ParseError('IP already has a locked SA')
 
-        if ip.submission_agreement == sa:
-            ip.submission_agreement_locked = True
+        if not permission.has_object_permission(request, self, ip):
+            self.permission_denied(request, message=getattr(permission, 'message', None))
 
-            if sa.archivist_organization:
-                arch, _ = ArchivistOrganization.objects.get_or_create(
-                    name=sa.archivist_organization
-                )
-                ip.archivist_organization = arch
+        if ip.submission_agreement != sa:
+            raise exceptions.ParseError('This SA is not connected to the selected IP')
 
-            ip.save()
+        ip.submission_agreement_locked = True
+        if sa.archivist_organization:
+            existing_agents_with_notes = Agent.objects.all().with_notes([])
+            ao_agent, _ = Agent.objects.get_or_create(role='ARCHIVIST', type='ORGANIZATION',
+                                                      name=sa.archivist_organization, pk__in=existing_agents_with_notes)
+            ip.agents.add(ao_agent)
+        ip.save()
 
-            return Response({'status': 'locking submission_agreement'})
-        elif ip.submission_agreement is None:
-            return Response(
-                {'status': 'No SA connected to IP'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        else:
-            return Response(
-                {'status': 'This SA is not connected to the selected IP'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        ip.create_profile_rels(self.get_profile_types(), request.user)
+        return Response({'status': 'Locked submission agreement'})
+
 
 class ProfileSAViewSet(viewsets.ModelViewSet):
     queryset = ProfileSA.objects.all()
     serializer_class = ProfileSASerializer
-
-
-class ProfileIPViewSet(viewsets.ModelViewSet):
-    queryset = ProfileIP.objects.all()
-    serializer_class = ProfileIPSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -210,7 +157,15 @@ class ProfileViewSet(viewsets.ModelViewSet):
     API endpoint that allows profiles to be viewed or edited.
     """
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProfileSerializer
+
+        if self.action == 'retrieve':
+            return ProfileDetailSerializer
+
+        return ProfileWriteSerializer
 
     def get_queryset(self):
         queryset = Profile.objects.all()
@@ -248,120 +203,3 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
         return Response({'status': 'no changes, not saving'}, status=status.HTTP_400_BAD_REQUEST)
-
-    @detail_route(methods=["post"])
-    def lock(self, request, pk=None):
-        profile = self.get_object()
-
-        try:
-            profile.clean()
-        except ValidationError as e:
-            return Response({'status': repr(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            ip_id = request.data["information_package"]
-        except KeyError:
-            raise exceptions.ParseError(detail='information_package parameter missing')
-
-        try:
-            ip = InformationPackage.objects.get(
-                pk=ip_id
-            )
-        except InformationPackage.DoesNotExist:
-            return Response(
-                {'status': 'Information Package with id %s does not exist' % ip_id},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        if not (ip.submission_agreement and ip.submission_agreement_locked):
-            return Response(
-                {'status': 'IP needs a locked SA before locking profile'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        profile_ip, _ = ProfileIP.objects.get_or_create(profile=profile, ip=ip)
-
-        if profile_ip.LockedBy is not None:
-            raise exceptions.ParseError(detail='Profile "%s" already locked to "%s"' % (profile.name, ip.object_identifier_value))
-
-        profile_ip.lock(request.user)
-
-        if profile.profile_type == "sip":
-            root = os.path.join(
-                Path.objects.get(
-                    entity="path_preingest_prepare"
-                ).value,
-                ip.object_identifier_value
-            )
-
-            step = ProcessStep.objects.create(
-                name="Create Physical Model",
-                information_package=ip
-            )
-            task = ProcessTask.objects.create(
-                name="preingest.tasks.CreatePhysicalModel",
-                params={
-                    "structure": profile.structure,
-                    "root": root
-                },
-                log=EventIP,
-                information_package=ip,
-                responsible=self.request.user,
-                processstep=step,
-            )
-
-            step.run().get()
-
-        if profile.profile_type == "transfer_project":
-            archival_institution = profile.specification_data.get("archival_institution")
-            archival_type = profile.specification_data.get("archival_type")
-            archival_location = profile.specification_data.get("archival_location")
-
-            if archival_institution:
-                try:
-                    (arch, _) = ArchivalInstitution.objects.get_or_create(
-                        name=archival_institution
-                    )
-                except IntegrityError:
-                    arch = ArchivalInstitution.objects.get(
-                        name=archival_institution
-                    )
-                ip.archival_institution = arch
-
-            if archival_type:
-                try:
-                    (arch, _) = ArchivalType.objects.get_or_create(
-                        name=archival_type
-                    )
-                except IntegrityError:
-                    arch = ArchivalType.objects.get(
-                        name=archival_type
-                    )
-                ip.archival_type = arch
-
-            if archival_location:
-                try:
-                    (arch, _) = ArchivalLocation.objects.get_or_create(
-                        name=archival_location
-                    )
-                except IntegrityError:
-                    arch = ArchivalLocation.objects.get(
-                        name=archival_location
-                    )
-                ip.archival_location = arch
-
-            ip.save()
-
-        non_locked_sa_profiles = ProfileSA.objects.filter(
-            submission_agreement=ip.submission_agreement,
-        ).exclude(
-            profile__profile_type__in=ProfileIP.objects.filter(
-                ip=ip, LockedBy__isnull=False
-            ).values('profile__profile_type')
-        ).exists()
-
-        if not non_locked_sa_profiles:
-            ip.state = "Prepared"
-            ip.save(update_fields=['state'])
-
-        return Response({'status': 'locking profile'})

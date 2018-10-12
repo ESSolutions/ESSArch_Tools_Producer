@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('myApp')
-  .service('djangoAuth', function djangoAuth($q, $http, $cookies, $rootScope) {
+angular.module('essarch.services')
+  .service('djangoAuth', function djangoAuth($q, $http, $cookies, $rootScope, $window, PermPermissionStore, PermRoleStore) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var service = {
         /* START CUSTOMIZATION HERE */
@@ -15,10 +15,6 @@ angular.module('myApp')
         'authenticated': null,
         'authPromise': null,
         'request': function(args) {
-            // Let's retrieve the token from the cookie, if available
-            if($cookies.token){
-                $http.defaults.headers.common.Authorization = 'Token ' + $cookies.token;
-            }
             // Continue
             params = args.params || {}
             args = args || {};
@@ -32,7 +28,6 @@ angular.module('myApp')
                 url: url,
                 withCredentials: this.use_session,
                 method: method.toUpperCase(),
-                headers: {'X-CSRFToken': $cookies['csrftoken']},
                 params: params,
                 data: data
             })
@@ -87,26 +82,15 @@ angular.module('myApp')
                     'username':username,
                     'password':password
                 }
-            }).then(function(data){
-                if(!djangoAuth.use_session){
-                    $http.defaults.headers.common.Authorization = 'Token ' + data.key;
-                    $cookies.token = data.key;
-                }
+            }).then(function(response){
+                var data = response.data;
                 djangoAuth.authenticated = true;
                 $rootScope.$broadcast("djangoAuth.logged_in", data);
+                return data;
             });
         },
         'logout': function(){
-            var djangoAuth = this;
-            return this.request({
-                'method': "POST",
-                'url': "/logout/"
-            }).then(function(data){
-                delete $http.defaults.headers.common.Authorization;
-                delete $cookies.token;
-                djangoAuth.authenticated = false;
-                $rootScope.$broadcast("djangoAuth.logged_out");
-            });
+            return $window.location.href = '/rest-auth/logout/';
         },
         'changePassword': function(password1,password2,oldPassword){
             return this.request({
@@ -132,21 +116,21 @@ angular.module('myApp')
             return this.request({
                 'method': "GET",
                 'url': "/user/"
-            }); 
+            });
         },
         'updateProfile': function(data){
             return this.request({
                 'method': "PATCH",
                 'url': "/user/",
                 'data':data
-            }); 
+            });
         },
         'verify': function(key){
             return this.request({
                 'method': "POST",
                 'url': "/registration/verify-email/",
-                'data': {'key': key} 
-            });            
+                'data': {'key': key}
+            });
         },
         'confirmReset': function(uid,token,password1,password2){
             return this.request({
@@ -178,7 +162,7 @@ angular.module('myApp')
                 // We have a stored value which means we can pass it back right away.
                 if(this.authenticated == false && restrict){
                     getAuthStatus.reject("User is not logged in.");
-                }else{
+                } else {
                     getAuthStatus.resolve();
                 }
             }else{
@@ -200,7 +184,6 @@ angular.module('myApp')
         },
         'initialize': function(url, sessions){
             this.API_URL = url;
-            this.use_session = sessions;
             return this.authenticationStatus();
         }
 

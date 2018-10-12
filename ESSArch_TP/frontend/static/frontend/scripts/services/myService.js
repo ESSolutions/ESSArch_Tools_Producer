@@ -22,11 +22,12 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('myApp').factory('myService', function($location, PermPermissionStore, $anchorScroll, $http, appConfig, djangoAuth) {
+angular.module('essarch.services').factory('myService', function($location, PermPermissionStore, $anchorScroll, $http, appConfig, djangoAuth, Sysinfo) {
     function changePath(state) {
         $state.go(state);
     };
     function getPermissions(permissions){
+        PermPermissionStore.clearStore();
         PermPermissionStore.defineManyPermissions(permissions, /*@ngInject*/ function (permissionName) {
             return permissions.includes(permissionName);
         });
@@ -47,19 +48,30 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
         return temp1;
     }
     function getVersionInfo() {
-        return $http({
-            method: 'GET',
-            url: appConfig.djangoUrl+"sysinfo/"
-        }).then(function(response){
-            return response.data;
-        }, function() {
-            console.log('error');
-        })
+        return Sysinfo.get().$promise.then(function(data){
+            return data;
+        });
     }
     function getActiveColumns() {
         return djangoAuth.profile().then(function(response) {
             return generateColumns(response.data.ip_list_columns);
         });
+    }
+
+    function checkPermissions(permissions) {
+        if (permissions.length == 0) {return true;}
+
+        var hasPermissions = false;
+        permissions.forEach(function(permission) {
+            if(checkPermission(permission)) {
+                hasPermissions = true;
+            }
+        });
+        return hasPermissions;
+    }
+
+    function checkPermission(permission) {
+        return !angular.isUndefined(PermPermissionStore.getPermissionDefinition(permission));
     }
     function generateColumns(columns) {
         var allColumns = [
@@ -78,12 +90,13 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
             {label: "start_date", sortString: "start_date", template: "static/frontend/views/columns/column_start_date.html"},
             {label: "end_date", sortString: "end_date", template: "static/frontend/views/columns/column_end_date.html"},
             {label: "filebrowser", sortString: "", template: "static/frontend/views/columns/column_filebrowser.html"},
+            {label: "entry_date", sortString: "entry_date", template: "static/frontend/views/columns/column_entry_date.html"},
         ];
         var activeColumns = [];
-        var simpleColumns = allColumns.map(function(a){return a.label});
-        columns.forEach(function(column) {
-            for(i=0; i < simpleColumns.length; i++) {
-                if(column === simpleColumns[i]) {
+        var simpleColumns = allColumns.map(function (a) { return a.label });
+        columns.forEach(function (column) {
+            for (i = 0; i < simpleColumns.length; i++) {
+                if (column === simpleColumns[i]) {
                     activeColumns.push(allColumns[i]);
                 }
             }
@@ -96,6 +109,8 @@ angular.module('myApp').factory('myService', function($location, PermPermissionS
         hasChild: hasChild,
         getVersionInfo: getVersionInfo,
         getActiveColumns: getActiveColumns,
-        generateColumns: generateColumns
+        generateColumns: generateColumns,
+        checkPermission: checkPermission,
+        checkPermissions: checkPermissions
     }
 });

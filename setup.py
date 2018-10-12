@@ -55,8 +55,13 @@ if __name__ == '__main__':
         author_email='info@essolutions.se',
         url='http://www.essolutions.se',
         install_requires=[
-            "ESSArch-Core>=1.1.0,<=1.1.0",
+            "ESSArch-Core>=1.1.0.*,<=1.1.1.*",
         ],
+        extras_require={
+            "mssql": ["django-pyodbc-azure==1.11.15.0"],
+            "mysql": ["mysqlclient==1.3.13"],
+            "postgres": ["psycopg2==2.7.5"],
+        },
         packages=find_packages(),
         include_package_data=True,
         zip_safe=False,
