@@ -9,7 +9,7 @@ CELERY_BIN="/ESSArch/pd/python/bin/celery"
 CELERY_APP="config"
 
 # Where to chdir at start.
-CELERYD_CHDIR="/ESSArch/pd/python/lib/python2.7/site-packages/ESSArch_TP"
+CELERYD_CHDIR="/ESSArch/pd/python/lib/python3.6/site-packages/ESSArch_TP"
 #CELERYD_CHDIR="/ESSArch/alpha/ESSArch_Tools_Producer/ESSArch_TP"
 
 # Extra command-line arguments to the worker
