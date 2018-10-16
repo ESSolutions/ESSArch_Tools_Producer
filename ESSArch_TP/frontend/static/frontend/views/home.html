@@ -1,68 +1,71 @@
 <div class="body-wrapper">
     <header class="header">
       <div class="logo-search-user-admin-wrapper">
-          <div class="hamburger" ng-show="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)">
-              <i class="fa fa-2x fa-bars" aria-hidden="true" ng-click="hamburgerActive = !hamburgerActive"></i>
-          </div>
-          <div class="logo" ng-controller="UtilCtrl">
-              <h3 class="page-title" ng-click="infoPage()">ESSArch Tools for Producer</h3>
-              <h3 class="page-title-small" ng-click="infoPage()">ETP</h3>
-          </div>
-          <div class="user-admin">
-              <div ng-controller="UtilCtrl" class="mobile-notification">
-                  <div class="notification-icon position-relative show-sm">
-                      <i ng-click="showAlert()" class="fa fa-bell info-popover" uib-popover="{{'NOTIFICATIONS' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></i>
-                      <div ng-click="showAlert()" ng-if="unseenNotifications != 0 && unseenNotifications <= 999" class="unseen-text">{{unseenNotifications}}</div>
-                      <div ng-click="showAlert()" ng-if="unseenNotifications > 999" class="unseen-text">{{999}}+</div>
-                  </div>
-              </div>
-              <div class="edit-user" ng-controller="DropdownCtrl">
-                  <div class="btn-group" uib-dropdown is-open="status.isopen">
-                      <div class="user-dropdown" uib-dropdown-toggle ng-disabled="disabled" uib-popover="{{'USEROPTIONS' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true">
-                          <h4 class="username">{{auth.username}}</h4>
-                          <span class="fa fa-user-circle-o"></span>
-                      </div>
-                      <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
-                          <li ng-repeat="choice in editUserOptions">
-                              <a ng-click="choice.click()">{{choice.label}}</a>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
+            <div class="hamburger" ng-show="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)">
+                <i class="fas fa-2x fa-bars" aria-hidden="true" ng-click="hamburgerActive = !hamburgerActive"></i>
             </div>
-      </div>
-      <div class="menu-task-wrapper">
-          <nav class="nav menu" ng-controller="UtilCtrl">
-              <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.prepareIp')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.prepareIp')}" ui-sref="home.createSip.prepareIp" ng-if="checkPermissions('home.createSip.prepareIp')">{{('PREPAREIP' | translate)}}</a>
-              <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.collectContent')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.collectContent')}" ui-sref="home.createSip.collectContent" ng-if="checkPermissions('home.createSip.collectContent')">{{('COLLECTCONTENT' | translate)}}</a>
-              <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.ipApproval')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.ipApproval')}" ui-sref="home.createSip.ipApproval" ng-if="checkPermissions('home.createSip.ipApproval')">{{('CREATESIP' | translate)}}</a>
-              <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.submitSip.prepareSip')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.submitSip.prepareSip')}" ui-sref="home.submitSip.prepareSip" ng-if="checkPermissions('home.submitSip.prepareSip')">{{('SUBMITSIP' | translate)}}</a>
-              <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.administration.import')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.administration.import')}" ui-sref="home.administration.import" ng-if="checkPermissions('home.administration.import')">{{('Import' | translate)}}</a>
-          </nav>
-          <div ng-controller="UtilCtrl" class="tasks-icons">
-              <span ng-click="reloadPage()" class="fa fa-refresh fa-refresh-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
-              <a href="/admin/" class="fa fa-cog info-popover" uib-popover="{{'SETTINGS' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></a>
-              <a ui-sref="home.versionInfo" class="fa fa-question-circle info-popover" uib-popover="{{'HELP' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></a>
-              <div class="notification-icon">
-                  <i ng-click="showAlert()" class="fa fa-bell info-popover" uib-popover="{{'NOTIFICATIONS' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></i>
-                  <div ng-click="showAlert()" ng-if="unseenNotifications != 0 && unseenNotifications <= 999" class="unseen-text">{{unseenNotifications}}</div>
-                  <div ng-click="showAlert()" ng-if="unseenNotifications > 999" class="unseen-text">{{999}}+</div>
-                  <notifications></notifications>
-              </div>
-              <div class="organization-select" ng-controller="OrganizationCtrl">
-                  <select tabindex="-1" style="width: auto; margin-left: 10px;" class="form-control" ng-model="currentOrganization" ng-change="changeOrganization(); updateListView()" ng-options="x as x.name for x in availableOrganizations track by x.id"></select>
-              </div>
-              <div ng-controller="LanguageCtrl" class="language-select" style="width: 100px; margin-left: 10px;">
-                  <select tabindex="-1" class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" uib-popover="{{'CHOOSELANGUAGE' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></select>
-              </div>
-          </div>
-      </div>
+            <div class="logo" ng-controller="UtilCtrl">
+                <h3 class="page-title" ng-click="infoPage()">ESSArch Tools for Producer</h3>
+                <h3 class="page-title-small" ng-click="infoPage()">ETP</h3>
+            </div>
+            <div class="user-admin">
+                <div ng-controller="UtilCtrl" class="mobile-notification">
+                    <div class="notification-icon position-relative show-sm">
+                        <i ng-click="showAlert()" class="fas fa-lg fa-bell info-popover" uib-popover="{{'NOTIFICATIONS' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></i>
+                        <div ng-click="showAlert()" ng-if="unseenNotifications != 0 && unseenNotifications <= 999" class="unseen-text">{{unseenNotifications}}</div>
+                        <div ng-click="showAlert()" ng-if="unseenNotifications > 999" class="unseen-text">{{999}}+</div>
+                    </div>
+                </div>
+                <div class="edit-user" ng-controller="DropdownCtrl">
+                    <div class="btn-group" uib-dropdown is-open="status.isopen">
+                        <button class="btn btn-dark" uib-popover="{{'USERNAME' | translate}}: {{auth.username}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true">
+                            <i class="fas fa-user"></i>
+                            <span class="username">{{auth.username}}</span>
+                        </button>
+                        <button class="btn btn-dark" uib-dropdown-toggle ng-disabled="disabled" uib-popover="{{'USEROPTIONS' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true">
+                            <i class="fas fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="user-dropdown">
+                            <li ng-repeat="choice in editUserOptions">
+                                <a ng-click="choice.click()">{{choice.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-task-wrapper">
+            <nav class="nav menu" ng-controller="UtilCtrl">
+                <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.prepareIp')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.prepareIp')}" ui-sref="home.createSip.prepareIp" ng-if="checkPermissions('home.createSip.prepareIp')">{{('PREPAREIP' | translate)}}</a>
+                <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.collectContent')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.collectContent')}" ui-sref="home.createSip.collectContent" ng-if="checkPermissions('home.createSip.collectContent')">{{('COLLECTCONTENT' | translate)}}</a>
+                <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.createSip.ipApproval')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.createSip.ipApproval')}" ui-sref="home.createSip.ipApproval" ng-if="checkPermissions('home.createSip.ipApproval')">{{('CREATESIP' | translate)}}</a>
+                <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.submitSip.prepareSip')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.submitSip.prepareSip')}" ui-sref="home.submitSip.prepareSip" ng-if="checkPermissions('home.submitSip.prepareSip')">{{('SUBMITSIP' | translate)}}</a>
+                <a tabindex="0" ng-keydown="navKeydownListener($event, 'home.administration.import')" class="nav-item sliding-middle-out" ng-class="{'chosen': $state.includes('home.administration.import')}" ui-sref="home.administration.import" ng-if="checkPermissions('home.administration.import')">{{('Import' | translate)}}</a>
+            </nav>
+            <div ng-controller="UtilCtrl" class="tasks-icons">
+                <span ng-click="reloadPage()" class="fas fa-sync-alt fa-lg fa-sync-alt-animate-once info-popover" uib-popover="{{'REFRESHPAGE' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></span>
+                <a href="/admin/" class="fas fa-cog fa-lg info-popover" uib-popover="{{'SETTINGS' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></a>
+                <a ui-sref="home.versionInfo" class="fas fa-question-circle fa-lg info-popover" uib-popover="{{'HELP' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true"></a>
+                <div class="notification-icon">
+                    <i ng-click="showAlert()" class="fas fa-bell fa-lg info-popover" uib-popover="{{'NOTIFICATIONS' | translate}}"  popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></i>
+                    <div ng-click="showAlert()" ng-if="unseenNotifications != 0 && unseenNotifications <= 999" class="unseen-text">{{unseenNotifications}}</div>
+                    <div ng-click="showAlert()" ng-if="unseenNotifications > 999" class="unseen-text">{{999}}+</div>
+                    <notifications></notifications>
+                </div>
+                <div class="organization-select" ng-controller="OrganizationCtrl">
+                    <select tabindex="-1" style="width: auto; margin-left: 10px;" class="form-control" ng-model="currentOrganization" ng-change="changeOrganization(); updateListView()" ng-options="x as x.name for x in availableOrganizations track by x.id"></select>
+                </div>
+                <div ng-controller="LanguageCtrl" class="language-select" style="width: 100px; margin-left: 10px;">
+                    <select tabindex="-1" class="form-control" ng-model="currentLanguage" ng-change="changeLanguage(currentLanguage)" ng-options="x | translate for x in availableLanguages" uib-popover="{{'CHOOSELANGUAGE' | translate}}" popover-placement="left" popover-popup-delay="500" popover-append-to-body="true"></select>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="nav-dynamic-wrapper">
         <div ng-if="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)" class="shortcut-nav-calendar-wrapper" ng-class="{'active-hamburger': hamburgerActive}">
             <nav ng-controller="AngularTreeCtrl" class="navigation">
                 <br/>
-                <p style="padding: 0 0 0 20px">{{'AGENTS' | translate}}</p>
+                <p ng-if="Agent.length > 0" style="padding: 0 0 0 20px">{{'AGENTS' | translate}}</p>
                 <p>
                     <treecontrol class="tree-light"
                                  tree-model="Agent"
