@@ -8,7 +8,6 @@
                 <input type="checkbox" ng-model="filterOwnIps" ng-change="vm.toggleOwnIps(filterOwnIps)">
                 {{'SEE_MY_IPS' | translate}}
             </label>
-            <button class="btn btn-default float-right" type="button" ng-click="vm.setupForm(); getListViewData();">{{'CLEAR' | translate}}</button>
             <form name="form1" style="position: relative;" novalidate>
                 <div class="formly-buttons-wrapper">
                     <formly-form model="filterModel" fields="fields" options="options">
