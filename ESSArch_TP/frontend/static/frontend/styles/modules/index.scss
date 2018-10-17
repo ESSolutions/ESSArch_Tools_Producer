@@ -15,12 +15,6 @@ body {
     min-height: 100vh;
     height: 100%;
 }
-body.modal-open {
-    overflow: auto;
-}
-body.modal-open[style] {
-    padding-right: 0px !important;
-}
 main {
   display: block;
 }
@@ -89,9 +83,6 @@ main {
 }
 .ui-select-match-text {
     margin-top: 3px;
-}
-.modal::-webkit-scrollbar {
-    width: 0 !important;
 }
 .body-wrapper {
     flex: 1 0 auto;
@@ -171,13 +162,6 @@ main {
 }
 .pagination {
     margin: 5px 0;
-}
-.flex-row {
-    display: flex;
-    flex-direction: row;
-    * {
-        margin-right: 3px;
-    }
 }
 .input-group-addon {
 padding: 0 12px;
@@ -430,16 +414,6 @@ input[type="checkbox"] {
     @include container(10px);
     margin-top: 10px;
 }
-.enter-profile-name {
-    padding: 15px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    position: relative;
-    width: 100%;
-    justify-content: space-between;
-}
 
 .import {
     @include container(10px);
@@ -504,11 +478,6 @@ input[type="checkbox"] {
 }
 .no-select {
     user-select: none;
-}
-
-// Remove scroll on main page when modal is open
-body.modal-open {
-    overflow: hidden;
 }
 
 .keyboard-button {
