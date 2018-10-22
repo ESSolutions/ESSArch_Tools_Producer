@@ -96,9 +96,9 @@ main {
 .dynamic-part {
     @include medium-screen-down {
             width: 100%!important;
-        &:focus {
-            outline: 0;
-        }
+    }
+    &:focus {
+        outline: 0;
     }
 }
 
@@ -142,13 +142,7 @@ main {
     padding: 0 10px 0 10px;
     height: 100%;
 }
-.dynamic-part {
-    min-height: 100%;
-    overflow: hidden;
-    &:focus {
-        outline: 0;
-    }
-}
+
 .well-sm {
     padding: 0px;
 }
