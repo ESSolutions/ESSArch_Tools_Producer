@@ -95,11 +95,12 @@ main {
 
 .dynamic-part {
     @include medium-screen-down {
-            width: 100%!important;
+        width: 100%!important;
     }
     &:focus {
         outline: 0;
     }
+    display: flex;
 }
 
 .datepicker {
