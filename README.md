@@ -1,4 +1,4 @@
-# ETP (ESSArch Tools Producer) [![Build Status](https://travis-ci.org/ESSolutions/ESSArch_EPP.svg?branch=master)](https://travis-ci.org/ESSolutions/ESSArch_EPP)
+# ETP (ESSArch Tools Producer) [![Build Status](https://travis-ci.org/ESSolutions/ESSArch_Tools_Producer.svg?branch=master)](https://travis-ci.org/ESSolutions/ESSArch_Tools_Producer)
 
 SIP packaging and delivery tools for user producer.
 
