@@ -22,24 +22,18 @@
     Email - essarch@essolutions.se
 """
 
-import os
-
 import six
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError, transaction
-from rest_framework import exceptions, status
-from rest_framework import viewsets
+from django.db import transaction
+from rest_framework import exceptions, status, viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
-from ESSArch_Core.configuration.models import Path
-from ESSArch_Core.ip.models import Agent, EventIP, InformationPackage
+from ESSArch_Core.ip.models import Agent, InformationPackage
 from ESSArch_Core.ip.permissions import CanLockSA
-from ESSArch_Core.profiles.models import SubmissionAgreement, Profile, ProfileSA, ProfileIP
-from ESSArch_Core.profiles.serializers import ProfileSerializer, ProfileDetailSerializer, ProfileWriteSerializer, \
-    ProfileSASerializer, SubmissionAgreementSerializer
-from ESSArch_Core.profiles.views import SubmissionAgreementViewSet as SAViewSetCore
+from ESSArch_Core.profiles.models import SubmissionAgreement, Profile, ProfileSA
+from ESSArch_Core.profiles.serializers import ProfileSASerializer, SubmissionAgreementSerializer
+from ESSArch_Core.profiles.views import ProfileViewSet as ProfileViewSetCore, SubmissionAgreementViewSet as SAViewSetCore
 
 
 class SubmissionAgreementViewSet(SAViewSetCore):
@@ -152,30 +146,7 @@ class ProfileSAViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSASerializer
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows profiles to be viewed or edited.
-    """
-    queryset = Profile.objects.all()
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ProfileSerializer
-
-        if self.action == 'retrieve':
-            return ProfileDetailSerializer
-
-        return ProfileWriteSerializer
-
-    def get_queryset(self):
-        queryset = Profile.objects.all()
-        profile_type = self.request.query_params.get('type', None)
-
-        if profile_type is not None:
-            queryset = queryset.filter(profile_type=profile_type)
-
-        return queryset
-
+class ProfileViewSet(ProfileViewSetCore):
     @detail_route(methods=['post'])
     def save(self, request, pk=None):
         profile = Profile.objects.get(pk=pk)
