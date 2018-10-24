@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@flowjs/ng-flow": "~2.7.8",
+    "@fortawesome/fontawesome-free": "~5.4.1",
     "angular": "~1.7",
     "angular-animate": "~1.7",
     "angular-bootstrap-contextmenu": "~1.1.0",
@@ -60,7 +61,7 @@
     "api-check": "^7.5.5",
     "bootstrap-sass": "~3.3.7",
     "console-polyfill": "^0.3.0",
-    "@fortawesome/fontawesome-free": "~5.4.1",
+    "gulp-rev": "^9.0.0",
     "ie-array-find-polyfill": "^1.1.0",
     "jquery": "^3.3.1",
     "jquery-ui-dist": "~1.12.1",

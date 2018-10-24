@@ -23,6 +23,7 @@
 */
 
 var gulp = require('gulp')
+var rev = require('gulp-rev');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var ngConstant = require('gulp-ng-constant');
@@ -234,6 +235,17 @@ var compileSass = function() {
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('styles'));
 };
+
+var buildRevManifest = function() {
+    gulp.src(['styles/styles.css', 'scripts/scripts.min.js', 'scripts/polyfills.min.js', 'scripts/vendors.min.js'])
+		.pipe(gulp.dest('build'))  // copy original assets to build dir
+		.pipe(rev())
+		.pipe(gulp.dest('build'))  // write rev'd assets to build dir
+		.pipe(rev.manifest())
+		.pipe(gulp.dest('build'))  // write manifest to build dir
+}
+
+
 var copyIcons = function() {
     return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
         .pipe(gulp.dest('webfonts'));
@@ -277,7 +289,8 @@ gulp.task('default', ['config', 'permission_config', 'core_templates', 'core_scr
     copyImages();
     buildPolyfills();
     buildScripts();
-    return buildVendors();
+    buildVendors();
+    return buildRevManifest();
 });
 
 gulp.task('icons', copyIcons);
@@ -289,6 +302,7 @@ gulp.task('core_tests', buildCoreTests);
 gulp.task('scripts', buildScripts);
 gulp.task('vendors', buildVendors);
 gulp.task('sass', compileSass);
+gulp.task('rev', buildRevManifest);
 gulp.task('config', configConstants);
 gulp.task('permission_config', permissionConfig);
 
