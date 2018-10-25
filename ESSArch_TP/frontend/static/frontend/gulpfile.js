@@ -23,6 +23,7 @@
 */
 
 var gulp = require('gulp')
+var runSequence = require('run-sequence');
 var rev = require('gulp-rev');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
@@ -237,7 +238,7 @@ var compileSass = function() {
 };
 
 var buildRevManifest = function() {
-    gulp.src(['styles/styles.css', 'scripts/scripts.min.js', 'scripts/polyfills.min.js', 'scripts/vendors.min.js'])
+    gulp.src(['styles/styles.css', 'styles/styles.css.map', 'scripts/scripts.min.js', 'scripts/scripts.min.js.map', 'scripts/polyfills.min.js', 'scripts/polyfills.min.js.map', 'scripts/vendors.min.js', 'scripts/vendors.min.js.map'])
 		.pipe(gulp.dest('build'))  // copy original assets to build dir
 		.pipe(rev())
 		.pipe(gulp.dest('build'))  // write rev'd assets to build dir
@@ -283,15 +284,11 @@ var permissionConfig = function() {
     .pipe(gulp.dest('./scripts/configs'));
 };
 
-gulp.task('default', ['config', 'permission_config', 'core_templates', 'core_scripts', 'core_tests',], function() {
-    compileSass();
-    copyIcons();
-    copyImages();
-    buildPolyfills();
-    buildScripts();
-    buildVendors();
-    return buildRevManifest();
-});
+gulp.task('default', function(){runSequence(
+    'config', 'permission_config', 'core_templates', 'core_scripts',
+    'core_tests', 'sass', 'icons', 'images', 'polyfills', 'scripts', 'vendors',
+    'rev',
+)});
 
 gulp.task('icons', copyIcons);
 gulp.task('images', copyImages);
@@ -307,11 +304,11 @@ gulp.task('config', configConstants);
 gulp.task('permission_config', permissionConfig);
 
 gulp.task('watch', function(){
-    gulp.watch(coreHtmlFiles, ['core_templates']);
-    gulp.watch(coreJsFiles, ['core_scripts']);
-    gulp.watch(coreTestFiles, ['core_tests']);
-    gulp.watch(jsFiles, ['scripts']);
-    gulp.watch(jsPolyfillFiles, ['polyfills']);
-    gulp.watch(jsVendorFiles, ['vendors']);
-    gulp.watch(cssFiles, ['sass']);
+    gulp.watch(coreHtmlFiles, function(){runSequence('core_templates', 'rev')});
+    gulp.watch(coreJsFiles, function(){runSequence('core_scripts', 'rev')});
+    gulp.watch(coreTestFiles, function(){runSequence('core_tests', 'rev')});
+    gulp.watch(jsFiles, function(){runSequence('scripts', 'rev')});
+    gulp.watch(jsPolyfillFiles, function(){runSequence('polyfills', 'rev')});
+    gulp.watch(jsVendorFiles, function(){runSequence('vendors', 'rev')});
+    gulp.watch(cssFiles, function(){runSequence('sass', 'rev')});
 })
