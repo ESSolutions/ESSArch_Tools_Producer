@@ -239,11 +239,11 @@ var compileSass = function() {
 
 var buildRevManifest = function() {
     gulp.src(['styles/styles.css', 'styles/styles.css.map', 'scripts/scripts.min.js', 'scripts/scripts.min.js.map', 'scripts/polyfills.min.js', 'scripts/polyfills.min.js.map', 'scripts/vendors.min.js', 'scripts/vendors.min.js.map'])
-		.pipe(gulp.dest('build'))  // copy original assets to build dir
-		.pipe(rev())
-		.pipe(gulp.dest('build'))  // write rev'd assets to build dir
-		.pipe(rev.manifest())
-		.pipe(gulp.dest('build'))  // write manifest to build dir
+        .pipe(gulp.dest('build'))  // copy original assets to build dir
+        .pipe(rev())
+        .pipe(gulp.dest('build'))  // write rev'd assets to build dir
+        .pipe(rev.manifest())
+        .pipe(gulp.dest('build'))  // write manifest to build dir
 }
 
 
