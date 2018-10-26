@@ -25,6 +25,7 @@
 var gulp = require('gulp')
 var runSequence = require('run-sequence');
 var rev = require('gulp-rev');
+var revDel = require('rev-del');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var ngConstant = require('gulp-ng-constant');
@@ -243,6 +244,7 @@ var buildRevManifest = function() {
         .pipe(rev())
         .pipe(gulp.dest('build'))  // write rev'd assets to build dir
         .pipe(rev.manifest())
+        .pipe(revDel({dest: 'build'}))
         .pipe(gulp.dest('build'))  // write manifest to build dir
 }
 
