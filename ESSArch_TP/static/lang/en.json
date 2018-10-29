@@ -334,5 +334,6 @@
     "RUNNING": "Running",
     "MESSAGE": "Message",
     "OR": "Or",
-    "DATABASE": "Database"
+    "DATABASE": "Database",
+    "PLATFORM": "Platform"
 }

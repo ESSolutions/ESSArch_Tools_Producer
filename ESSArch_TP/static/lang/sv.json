@@ -334,5 +334,6 @@
     "RUNNING": "Körs",
     "MESSAGE": "Meddelande",
     "OR": "Eller",
-    "DATABASE": "Databas"
+    "DATABASE": "Databas",
+    "PLATFORM": "Plattform"
 }
