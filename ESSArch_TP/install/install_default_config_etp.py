@@ -96,6 +96,8 @@ def installDefaultUsers():
     permission_list_admin = [
         ## ---- app: profiles ---- model: submissionagreement
         ['add_submissionagreement','profiles','submissionagreement'], # Can add Submission Agreement (Import)
+        ## ---- app: profiles ---- model: profile
+        ['add_profile','profiles','profile'], # Can add Profile (Import)
         ## ---- app: WorkflowEngine ---- model: processtask
         #['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
         #['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
