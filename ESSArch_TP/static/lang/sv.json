@@ -137,7 +137,7 @@
     "COMPLETED": "färdig",
     "SETTINGS": "Inställningar",
     "RESUME": "Återuppta",
-    "RETRY": "försök igen",
+    "RETRY": "Försök igen",
     "TOTALSIZE": "Total storlek",
     "COMPLETEDUPLOADING": "Slutför uppladdning",
     "TRANSFERS": "Överföringar",
@@ -335,5 +335,11 @@
     "MESSAGE": "Meddelande",
     "OR": "Eller",
     "DATABASE": "Databas",
-    "PLATFORM": "Plattform"
+    "PLATFORM": "Plattform",
+    "UNKNOWN_ERROR": "Okänt fel",
+    "CONNECTION_RESTORED": "Anslutning återupprättad",
+    "ERROR_500": "Internt serverfel",
+    "ERROR_503": "Förfrågan misslyckades, försök igen",
+    "ERROR_403": "Du har inte rätt att utföra denna åtgärd",
+    "CONNECTION_LOST": "Anslutning förlorad"
 }

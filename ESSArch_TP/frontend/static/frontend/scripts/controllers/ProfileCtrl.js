@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications) {
+angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications, ErrorResponse) {
     var vm = this;
     $scope.angular = angular;
     $scope.select = true;
@@ -63,7 +63,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         SA.profiles({ id: sa.id }).$promise.then(function (resource) {
             $scope.selectRowCollection = resource;
         }).catch(function (response) {
-            Notifications.add(response.data.detail, "error");
+            ErrorResponse.default(response);
         });
     }
 
@@ -71,7 +71,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         ProfileIp.patch({ id: profileIp.id }, { data: data }).$promise.then(function(resource) {
             vm.getAndShowProfile(vm.selectedProfile, {});
         }).catch(function (response) {
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     }
 
@@ -95,11 +95,11 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
                 return response;
             }).catch(function (response) {
                 vm.savingProfileModel = false;
-                Notifications.add(response.data.detail, 'error');
+                ErrorResponse.default(response);
             })
         }).catch(function (response) {
             vm.savingProfileModel = false;
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     }
 
@@ -236,7 +236,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         }).catch(function(response) {
             vm.loadingProfileData[profile.profile_type] = false;
             vm.cancel();
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     };
 
@@ -244,7 +244,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         ProfileIpData.get({id: id}).$promise.then(function(resource) {
             vm.profileModel = angular.copy(resource.data);
         }).catch(function (response) {
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     }
 
@@ -261,7 +261,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
             vm.changingSa = false;
         }).catch(function (response) {
             vm.changingSa = false;
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     }
 
@@ -312,7 +312,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
             $scope.edit = true;
             $scope.eventlog = true;
         }).catch(function (response) {
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         })
     }
 

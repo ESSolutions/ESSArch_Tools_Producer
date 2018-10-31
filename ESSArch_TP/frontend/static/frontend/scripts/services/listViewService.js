@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser) {
+angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser, ErrorResponse) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
@@ -185,7 +185,7 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
             });
             return saProfile;
         }).catch(function(response){
-            Notifications.add(response.data.detail, 'error');
+            ErrorResponse.default(response);
         });
         return promise;
     }
@@ -389,7 +389,10 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
                 numberOfPages: Math.ceil(count/pageSize),
                 data: data
             };
-        });
+        }).catch(function (response) {
+            ErrorResponse.default(response);
+            return response;
+        })
     }
 
     function deleteFile(ip, path, file) {

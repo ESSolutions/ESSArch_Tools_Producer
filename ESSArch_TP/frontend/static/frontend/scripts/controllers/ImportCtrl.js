@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal) {
+angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal, ErrorResponse) {
     var vm = this;
     $scope.angular = angular;
     vm.saProfile = {
@@ -31,7 +31,9 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             vm.saProfile.profiles = response.data;
             vm.select = true;
         }).catch(function(response) {
-            $scope.error = response.data.detail;
+            if(response.data && response.data.detail) {
+                $scope.error = response.data.detail;
+            }
         })
     }
 
@@ -52,10 +54,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
                     }).catch(function(response) {
                         if(response.status == 409) {
                             profileExistsModal(data);
-                        } else if(response.status == 400) {
-                            Notifications.add("Invalid profile", "error");
-                        } else if(response.status >= 500) {
-                            Notifications.add("Server error", "error");
+                        } else {
+                            ErrorResponse.default(response);
                         }
                         return response;
                     });
@@ -76,10 +76,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             }).catch(function(response) {
                 if(response.status == 409) {
                     saProfileExistsModal(sa);
-                } else if(response.status == 400) {
-                    Notifications.add("Invalid submission agreement", "error");
-                } else if(response.status >= 500) {
-                    Notifications.add("Server error", "error");
+                } else {
+                    ErrorResponse.default(response);
                 }
             });
         })
@@ -102,10 +100,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
         }).catch(function(response) {
             if(response.status == 409) {
                 saProfileExistsModal(parsedSa);
-            } else if(response.status == 400) {
-                Notifications.add("Invalid submission agreement", "error");
-            } else if(response.status >= 500) {
-                Notifications.add("Server error", "error");
+            } else  {
+                ErrorResponse.default(response);
             }
         });
     }
@@ -123,10 +119,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
         }).catch(function(response) {
             if(response.status == 409) {
                 profileExistsModal(parsedProfile);
-            } else if(response.status == 400) {
-                Notifications.add("Invalid profile", "error");
-            } else if(response.status >= 500) {
-                Notifications.add("Server error", "error");
+            } else {
+                ErrorResponse.default(response);
             }
             return response;
         });

@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications, data) {
+angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, Notifications, data, ErrorResponse) {
     var $ctrl = this;
     if(data.vm) {
         var vm = data.vm;
@@ -22,7 +22,7 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $ctrl.preparing = false;
             $uibModalInstance.close();
         }).catch(function(response) {
-            $scope.prepareAlert = { msg: response.data.detail };
+            ErrorResponse.default(response);
             $ctrl.preparing = false;
         })
     }
@@ -37,10 +37,10 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function (response) {
             $ctrl.settingUploaded = false;
-            if(response.status == 404) {
+            if(response.status === 404) {
                 Notifications.add('IP could not be found', 'error');
-            } else if(response.data.detail) {
-                Notifications.add(response.data.detail, 'error');
+            } else {
+                ErrorResponse.default(response);
             }
         });
     }
@@ -57,12 +57,10 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function (response) {
             $ctrl.creating = false;
-            if(response.status == 404) {
+            if(response.status === 404) {
                 Notifications.add('IP could not be found', 'error');
-            } else if(response.data && response.detail){
-                Notifications.add(response.data.detail, 'error');
-            } else if(response.status !== 500) {
-                Notifications.add('Unknown error!', 'error');
+            } else {
+                ErrorResponse.default(response);
             }
         });
     }
@@ -82,10 +80,10 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function(response) {
             $ctrl.submitting = false;
-            if(response.status == 404) {
+            if(response.status === 404) {
                 Notifications.add('IP could not be found', 'error');
             } else {
-                Notifications.add(response.data.detail, 'error');
+                ErrorResponse.default(response);
             }
         });
     };
@@ -99,12 +97,12 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $ctrl.removing = false;
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
-            if(response.status == 404) {
+            $ctrl.removing = false;
+            if(response.status === 404) {
                 Notifications.add('IP could not be found', 'error');
             } else {
-                Notifications.add(response.data.detail, 'error');
+                ErrorResponse.default(response);
             }
-            $ctrl.removing = false;
         });
     };
 
