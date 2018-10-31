@@ -37,10 +37,12 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function (response) {
             $ctrl.settingUploaded = false;
-            if(response.status == 404) {
-                Notifications.add('IP could not be found', 'error');
-            } else if(response.data.detail) {
-                Notifications.add(response.data.detail, 'error');
+            if(![401, 403, 404, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
             }
         });
     }
@@ -57,12 +59,12 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function (response) {
             $ctrl.creating = false;
-            if(response.status == 404) {
-                Notifications.add('IP could not be found', 'error');
-            } else if(response.data && response.detail){
-                Notifications.add(response.data.detail, 'error');
-            } else if(response.status !== 500) {
-                Notifications.add('Unknown error!', 'error');
+            if(![401, 403, 404, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
             }
         });
     }
@@ -82,10 +84,12 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $uibModalInstance.close();
         }).catch(function(response) {
             $ctrl.submitting = false;
-            if(response.status == 404) {
-                Notifications.add('IP could not be found', 'error');
-            } else {
-                Notifications.add(response.data.detail, 'error');
+            if(![401, 403, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
             }
         });
     };
@@ -99,10 +103,12 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
             $ctrl.removing = false;
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
-            if(response.status == 404) {
-                Notifications.add('IP could not be found', 'error');
-            } else {
-                Notifications.add(response.data.detail, 'error');
+            if(![401, 403, 404, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
             }
             $ctrl.removing = false;
         });

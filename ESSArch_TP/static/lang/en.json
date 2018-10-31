@@ -335,5 +335,11 @@
     "MESSAGE": "Message",
     "OR": "Or",
     "DATABASE": "Database",
-    "PLATFORM": "Platform"
+    "PLATFORM": "Platform",
+    "UNKNOWN_ERROR": "Unknown error",
+    "CONNECTION_RESTORED": "Connection has been restored",
+    "ERROR_500": "Internal server error",
+    "ERROR_503": "Request failed, try again",
+    "ERROR_403": "You do not have permission to perform this action",
+    "CONNECTION_LOST": "Lost connection to server"
 }

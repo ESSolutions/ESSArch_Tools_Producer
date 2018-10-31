@@ -66,13 +66,17 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             $ctrl.preparing = false;
             return $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
+            $ctrl.preparing = false;
             if (response.status == 409) {
                 var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
                 Notifications.add(msg, "error", 5000);
-            } else if (response.status != 500) {
-                Notifications.add(response.data.detail, "error", 5000);
+            } else if(![401, 403, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
             }
-            $ctrl.preparing = false;
         });
     };
     $ctrl.prepareForUpload = function() {
@@ -84,8 +88,14 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             $ctrl.preparing = false;
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
-            Notifications.add($translate.instant(response.data.detail), 'error');
             $ctrl.preparing = false;
+            if(![401, 403, 500, 503].includes(response.status)) {
+                if(response.data && response.data.detail) {
+                    Notifications.add(response.data.detail, "error");
+                } else {
+                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                }
+            }
         })
     }
     $ctrl.submitSip = function() {

@@ -146,7 +146,13 @@ angular.module('essarch.controllers').controller('CollectContentCtrl', function(
                 .then(function (response) {
                     $scope.updateGridArray();
                 }).catch(function(response) {
-                    Notifications.add(response.data.detail, 'error');
+                    if(![401, 403, 500, 503].includes(response.status)) {
+                        if(response.data && response.data.detail) {
+                            Notifications.add(response.data.detail, "error");
+                        } else {
+                            Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                        }
+                    }
                 })
         }
     }

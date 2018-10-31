@@ -141,7 +141,15 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
             listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
                 .then(function (response) {
                     $scope.updateGridArray();
-                });
+                }).catch(function (response) {
+                    if(![401, 403, 500, 503].includes(response.status)) {
+                        if(response.data && response.data.detail) {
+                            Notifications.add(response.data.detail, "error");
+                        } else {
+                            Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                        }
+                    }
+                })
         }
     }
 
@@ -173,7 +181,15 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
                     listViewService.addNewFolder($scope.ip, $scope.previousGridArraysString(), folder)
                         .then(function () {
                             $scope.updateGridArray();
-                        });
+                        }).catch(function (response) {
+                            if(![401, 403, 500, 503].includes(response.status)) {
+                                if(response.data && response.data.detail) {
+                                    Notifications.add(response.data.detail, "error");
+                                } else {
+                                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                                }
+                            }
+                        })
                 })
         });
     }
@@ -196,7 +212,15 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
             listViewService.deleteFile($scope.ip, $scope.previousGridArraysString(), file)
                 .then(function () {
                     $scope.updateGridArray();
-                });
+                }).catch(function (response) {
+                    if(![401, 403, 500, 503].includes(response.status)) {
+                        if(response.data && response.data.detail) {
+                            Notifications.add(response.data.detail, "error");
+                        } else {
+                            Notifications.add($translate('UNKNOWN_ERROR'), 'error')
+                        }
+                    }
+                })
         });
         $scope.selectedCards = [];
     }
