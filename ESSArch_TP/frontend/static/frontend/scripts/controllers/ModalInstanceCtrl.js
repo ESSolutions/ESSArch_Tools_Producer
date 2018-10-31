@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
+angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications, ErrorResponse) {
     var $ctrl = this;
     $ctrl.preparing = false;
     $ctrl.error_messages_old = [];
@@ -70,12 +70,8 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             if (response.status == 409) {
                 var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
                 Notifications.add(msg, "error", 5000);
-            } else if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
+            } else {
+                ErrorResponse.default(response)
             }
         });
     };
@@ -89,13 +85,7 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             $ctrl.preparing = false;
-            if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
-            }
+            ErrorResponse.default(response);
         })
     }
     $ctrl.submitSip = function() {

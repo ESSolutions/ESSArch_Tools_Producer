@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal, $translate) {
+angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal, ErrorResponse) {
     var vm = this;
     $scope.angular = angular;
     vm.saProfile = {
@@ -31,7 +31,9 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             vm.saProfile.profiles = response.data;
             vm.select = true;
         }).catch(function(response) {
-            $scope.error = response.data.detail;
+            if(response.data && response.data.detail) {
+                $scope.error = response.data.detail;
+            }
         })
     }
 
@@ -52,12 +54,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
                     }).catch(function(response) {
                         if(response.status == 409) {
                             profileExistsModal(data);
-                        } else if(![401, 403, 500, 503].includes(response.status)) {
-                            if(response.data && response.data.detail) {
-                                Notifications.add(response.data.detail, "error");
-                            } else {
-                                Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                            }
+                        } else {
+                            ErrorResponse.default(response);
                         }
                         return response;
                     });
@@ -78,12 +76,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             }).catch(function(response) {
                 if(response.status == 409) {
                     saProfileExistsModal(sa);
-                } else if(![401, 403, 500, 503].includes(response.status)) {
-                    if(response.data && response.data.detail) {
-                        Notifications.add(response.data.detail, "error");
-                    } else {
-                        Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                    }
+                } else {
+                    ErrorResponse.default(response);
                 }
             });
         })
@@ -106,12 +100,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
         }).catch(function(response) {
             if(response.status == 409) {
                 saProfileExistsModal(parsedSa);
-            } else if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
+            } else  {
+                ErrorResponse.default(response);
             }
         });
     }
@@ -129,12 +119,8 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
         }).catch(function(response) {
             if(response.status == 409) {
                 profileExistsModal(parsedProfile);
-            } else if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
+            } else {
+                ErrorResponse.default(response);
             }
             return response;
         });

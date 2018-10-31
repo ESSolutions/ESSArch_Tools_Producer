@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser, $translate) {
+angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser, ErrorResponse) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
@@ -185,13 +185,7 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
             });
             return saProfile;
         }).catch(function(response){
-            if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
-            }
+            ErrorResponse.default(response);
         });
         return promise;
     }
@@ -396,13 +390,7 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
                 data: data
             };
         }).catch(function (response) {
-            if(![401, 403, 500, 503].includes(response.status)) {
-                if(response.data && response.data.detail) {
-                    Notifications.add(response.data.detail, "error");
-                } else {
-                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                }
-            }
+            ErrorResponse.default(response);
             return response;
         })
     }

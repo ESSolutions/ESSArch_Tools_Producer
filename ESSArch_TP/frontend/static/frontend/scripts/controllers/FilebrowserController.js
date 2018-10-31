@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('FilebrowserController', function ($scope, $rootScope, $sce, appConfig, listViewService, $uibModal, $window, $cookies) {
+angular.module('essarch.controllers').controller('FilebrowserController', function ($scope, $rootScope, $sce, appConfig, listViewService, $uibModal, $window, $cookies, ErrorResponse) {
     $scope.previousGridArrays = [];
     var vm = this;
     vm.$onInit = function() {
@@ -142,13 +142,7 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
                 .then(function (response) {
                     $scope.updateGridArray();
                 }).catch(function (response) {
-                    if(![401, 403, 500, 503].includes(response.status)) {
-                        if(response.data && response.data.detail) {
-                            Notifications.add(response.data.detail, "error");
-                        } else {
-                            Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                        }
-                    }
+                    ErrorResponse.default(response);
                 })
         }
     }
@@ -182,13 +176,7 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
                         .then(function () {
                             $scope.updateGridArray();
                         }).catch(function (response) {
-                            if(![401, 403, 500, 503].includes(response.status)) {
-                                if(response.data && response.data.detail) {
-                                    Notifications.add(response.data.detail, "error");
-                                } else {
-                                    Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                                }
-                            }
+                            ErrorResponse.default(response);
                         })
                 })
         });
@@ -213,13 +201,7 @@ angular.module('essarch.controllers').controller('FilebrowserController', functi
                 .then(function () {
                     $scope.updateGridArray();
                 }).catch(function (response) {
-                    if(![401, 403, 500, 503].includes(response.status)) {
-                        if(response.data && response.data.detail) {
-                            Notifications.add(response.data.detail, "error");
-                        } else {
-                            Notifications.add($translate('UNKNOWN_ERROR'), 'error')
-                        }
-                    }
+                    ErrorResponse.default(response);
                 })
         });
         $scope.selectedCards = [];
