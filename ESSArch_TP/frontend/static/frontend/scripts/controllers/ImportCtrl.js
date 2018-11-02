@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal, ErrorResponse) {
+angular.module('essarch.controllers').controller('ImportCtrl', function($q, $rootScope, $scope, $http, IP, Profile, SA, Notifications, $uibModal, ErrorResponse, $translate) {
     var vm = this;
     $scope.angular = angular;
     vm.saProfile = {
@@ -71,7 +71,7 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
                 }
             }
             SA.new(sa).$promise.then(function (resource) {
-                Notifications.add("Submission agreement: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+                Notifications.add($translate.instant('SA_IMPORTED', resource), "success", 5000, {isHtml: true});
                 vm.select = false;
             }).catch(function(response) {
                 if(response.status == 409) {
@@ -95,7 +95,7 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             return;
         }
         SA.new(parsedSa).$promise.then(function (resource) {
-            Notifications.add("Submission agreement: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            Notifications.add($translate.instant('SA_IMPORTED', resource), "success", 5000, {isHtml: true});
             vm.select = false;
         }).catch(function(response) {
             if(response.status == 409) {
@@ -114,7 +114,7 @@ angular.module('essarch.controllers').controller('ImportCtrl', function($q, $roo
             return;
         }
         Profile.new(parsedProfile).$promise.then(function(resource) {
-            Notifications.add("Profile: \"" + resource.name + "\" has been imported. <br/>ID: " + resource.id , "success", 5000, {isHtml: true});
+            Notifications.add($translate.instant('PROFILE_IMPORTED', resource), "success", 5000, {isHtml: true});
             return resource;
         }).catch(function(response) {
             if(response.status == 409) {

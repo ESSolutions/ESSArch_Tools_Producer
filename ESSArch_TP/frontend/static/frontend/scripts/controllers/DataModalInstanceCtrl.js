@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, Notifications, data, ErrorResponse) {
+angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, Notifications, data, ErrorResponse, $translate) {
     var $ctrl = this;
     if(data.vm) {
         var vm = data.vm;
@@ -95,10 +95,11 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
 			id: ipObject.id
 		}).$promise.then(function() {
             $ctrl.removing = false;
+            Notifications.add($translate.instant('IP_REMOVED', {label: ipObject.label}), 'success');
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             $ctrl.removing = false;
-            if(response.status === 404) {
+            if(response.status == 404) {
                 Notifications.add('IP could not be found', 'error');
             } else {
                 ErrorResponse.default(response);
