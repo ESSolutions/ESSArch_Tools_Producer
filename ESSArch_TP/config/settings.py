@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'mptt',
     'frontend',
     'ESSArch_Core.admin',
     'ESSArch_Core.auth',
