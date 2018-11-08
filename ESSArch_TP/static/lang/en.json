@@ -345,5 +345,6 @@
     "IP_REMOVED": "IP {{label}} removed!",
     "SA_IMPORTED": "Submission agreement \"{{name}}\" has been imported. \nID: {{id}}",
     "PROFILE_IMPORTED": "Profile: \"{{name}}\" has been imported. \nID: {{id}}",
-    "SA_IS_PUBLISHED_CANNOT_BE_OVERWRITTEN": "Submission Agreement {{name}} is Published and can not be overwritten"
+    "SA_IS_PUBLISHED_CANNOT_BE_OVERWRITTEN": "Submission Agreement {{name}} is Published and can not be overwritten",
+    "NO_ORGANIZATIONS": "No organizations"
 }
