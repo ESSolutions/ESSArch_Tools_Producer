@@ -45,14 +45,14 @@ from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 from ESSArch_Core.WorkflowEngine.util import create_workflow
 from ESSArch_Core.auth.models import Member
 from ESSArch_Core.configuration.models import Path
-from ESSArch_Core.exceptions import Conflict
+from ESSArch_Core.exceptions import Conflict, NoFileChunksFound
 from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import CanCreateSIP, CanSetUploaded, CanSubmitSIP, \
     CanUnlockProfile, CanUpload, IsResponsible
 from ESSArch_Core.ip.views import InformationPackageViewSet as InformationPackageViewSetCore
 from ESSArch_Core.mixins import GetObjectForUpdateViewMixin
 from ESSArch_Core.profiles.models import ProfileIP
-from ESSArch_Core.util import find_destination, in_directory, mkdir_p, normalize_path
+from ESSArch_Core.util import find_destination, in_directory, merge_file_chunks, mkdir_p, normalize_path
 
 from .serializers import InformationPackageSerializer, InformationPackageReadSerializer
 
@@ -640,12 +640,10 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         path = os.path.join(ip.object_path, request.data['path'])
 
-        with open(path, 'wb') as f:
-            for chunk_file in natsorted(glob.glob('%s_*' % re.sub(r'([\[\]])', '[\\1]', path))):
-                with open(chunk_file, 'rb') as cf:
-                    f.write(cf.read())
-                cf.close()
-                os.remove(chunk_file)
+        try:
+            merge_file_chunks(path)
+        except NoFileChunksFound:
+            raise exceptions.NotFound('No chunks found')
 
         logger = logging.getLogger('essarch')
         extra = {'event_type': 50700, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
