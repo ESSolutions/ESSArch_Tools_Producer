@@ -346,5 +346,9 @@
     "SA_IMPORTED": "Leveransöverenskommelse \"{{name}}\" har importerats. \nID: {{id}}",
     "PROFILE_IMPORTED": "Profil: \"{{name}}\" har importerats. \nID: {{id}}",
     "SA_IS_PUBLISHED_CANNOT_BE_OVERWRITTEN": "Leveransöverenskommelse {{name}} är publicerad och kan inte skrivas över",
-    "NO_ORGANIZATIONS": "Inga organisationer"
+    "NO_ORGANIZATIONS": "Inga organisationer",
+    "LANGUAGE": "Språk",
+    "ORGANIZATION": "Organisation",
+    "VISIBLE_COLUMNS": "Synliga kolumner",
+    "AVAILABLE_COLUMNS": "Tillgängliga kolumner"
 }

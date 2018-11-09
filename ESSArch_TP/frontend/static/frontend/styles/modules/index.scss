@@ -360,46 +360,6 @@ input[type="checkbox"] {
 .submit-button {
     margin-left: 5px;
 }
-.user-settings {
-    @include container(10px);
-    margin-top: 10px;
-    width: 100%;
-    .column-picker {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        .buttons {
-            display: flex;
-            flex-direction: column;
-        }
-        select {
-            width: 150px;
-        }
-    }
-    .main-page-selects {
-        display: none;
-        @include medium-screen {
-            display: flex;
-        }
-        @include small-screen {
-            display: flex;
-        }
-    }
-    .main-view-options {
-        display: none;
-        .fas {
-            cursor: pointer;
-            color: #000;
-            &:hover, &:focus {
-                text-decoration: none;
-            }
-        }
-        @include small-screen {
-            display: flex;
-            align-items: center;
-        }
-    }
-}
 .version-info-page {
     @include container(10px);
     margin-top: 10px;
