@@ -48,7 +48,7 @@ from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict, NoFileChunksFound
 from ESSArch_Core.ip.models import InformationPackage, EventIP
 from ESSArch_Core.ip.permissions import CanCreateSIP, CanSetUploaded, CanSubmitSIP, \
-    CanUnlockProfile, CanUpload, IsResponsible
+    CanUnlockProfile, CanUpload, IsResponsibleOrCanSeeAllFiles
 from ESSArch_Core.ip.views import InformationPackageViewSet as InformationPackageViewSetCore
 from ESSArch_Core.mixins import GetObjectForUpdateViewMixin
 from ESSArch_Core.profiles.models import ProfileIP
@@ -185,7 +185,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         return super(InformationPackageViewSet, self).destroy(request, *args, **kwargs)
 
-    @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsible])
+    @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
     def files(self, request, pk=None):
         ip = self.get_object()
 
