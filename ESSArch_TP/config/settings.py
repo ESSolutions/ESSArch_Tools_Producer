@@ -37,6 +37,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from datetime import timedelta
 
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -57,6 +59,8 @@ ESSARCH_WORKFLOW_POLLERS = {
         'sa': 'SA National Archive and Government SE',
     }
 }
+
+REDIS_URL = os.environ.get('REDIS_URL_ETP', 'redis://localhost/1')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ze7xnd#&9_m)05j&j8wpu!=dp+jlj3olk&@k7amq9-s2x+b=$%'
@@ -163,7 +167,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis://localhost/1"],
+            "hosts": [REDIS_URL],
         },
     },
 }
@@ -206,21 +210,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite',
-    }
-}
+DATABASES = {'default': dj_database_url.config(env='DATABASE_URL_ETP', default='sqlite://db.sqlite')}
 
 # Cache
 CACHES = {
     'default': {
         'TIMEOUT': None,
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': REDIS_URL,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -319,7 +316,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATIC_ROOT = os.environ.get('STATIC_ROOT_ETP', os.path.join(BASE_DIR, 'static_root'))
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -335,9 +332,9 @@ DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/{lang}/html')
 # rabbitmqctl set_permissions -p etp guest ".*" ".*" ".*"
 
 # Celery settings
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/etp'
+CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL_ETP', 'amqp://guest:guest@localhost:5672/etp')
 CELERY_IMPORTS = ("ESSArch_Core.ip.tasks", "preingest.tasks", "ESSArch_Core.WorkflowEngine.tests.tasks")
-CELERY_RESULT_BACKEND = 'redis://'
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_TASK_EAGER_PROPAGATES = True
 
 # Rest auth settings
