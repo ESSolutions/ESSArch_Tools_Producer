@@ -80,7 +80,6 @@ angular.module('essarch.services').factory('myService', function($location, Perm
             {label: "responsible", sortString: "responsible", template: "static/frontend/views/columns/column_responsible.html"},
             {label: "create_date", sortString: "create_date", template: "static/frontend/views/columns/column_create_date.html"},
             {label: "state", sortString: "state", template: "static/frontend/views/columns/column_state.html"},
-            {label: "step_state", sortString: "step_state", template: "static/frontend/views/columns/column_step_state.html"},
             {label: "events", sortString: "Events", template: "static/frontend/views/columns/column_events.html"},
             {label: "status", sortString: "Status", template: "static/frontend/views/columns/column_status.html"},
             {label: "delete", sortString: "", template: "static/frontend/views/columns/column_delete.html"},
