@@ -1,3 +1,13 @@
 <div context-menu="menuOptions('row', row)" class="clickable" ng-click="ipTableClick(row)">
-    <uib-progressbar class="progress" ng-attr-value="row.status" type="success"><b>{{row.status | number : 0}}%</b></uib-progressbar>
+    <uib-progressbar class="progress"
+                     ng-class="{'active progress-striped': row.step_state == 'STARTED'}"
+                     animate="true"
+                     ng-attr-value="row.status"
+                     type="{{mapStepStateProgress(row)}}"
+                     uib-popover="{{row.step_state | translate}}"
+                     popover-placement="top"
+                     popover-popup-delay="500"
+                     popover-append-to-body="true">
+        <b>{{row.status | number : 0}}%</b>
+    </uib-progressbar>
 </div>

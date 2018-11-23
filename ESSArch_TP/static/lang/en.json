@@ -216,7 +216,7 @@
     "REFRESH": "Refresh",
     "CHANGED": "Changed",
     "FILEBROWSER": "File browser",
-    "COPYID": "Copy ID",
+    "COPYID": "Copy",
     "IMPORT_URL": "Import URL",
     "GET_SAS": "Get submission agreements",
     "IMPORT_SA": "Import submission agreement",
@@ -348,5 +348,9 @@
     "LANGUAGE": "Language",
     "ORGANIZATION": "Organization",
     "VISIBLE_COLUMNS": "Visible columns",
-    "AVAILABLE_COLUMNS": "Available columns"
+    "AVAILABLE_COLUMNS": "Available columns",
+    "EVENT_SUCCESS": "Success",
+    "EVENT_FAILURE": "Failure",
+    "TASKS": "Tasks",
+    "IDENTIFICATION": "Identification"
 }

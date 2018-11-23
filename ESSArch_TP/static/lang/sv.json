@@ -216,7 +216,7 @@
     "REFRESH": "Uppdatera",
     "CHANGED": "Ändrad",
     "FILEBROWSER": "Filhanterare",
-    "COPYID": "Kopiera ID",
+    "COPYID": "Kopiera",
     "IMPORT_URL": "Import-URL",
     "GET_SAS": "Hämta Leveransöverenskommelser",
     "IMPORT_SA": "Importera Leveransöverenskommelse",
@@ -348,5 +348,9 @@
     "LANGUAGE": "Språk",
     "ORGANIZATION": "Organisation",
     "VISIBLE_COLUMNS": "Synliga kolumner",
-    "AVAILABLE_COLUMNS": "Tillgängliga kolumner"
+    "AVAILABLE_COLUMNS": "Tillgängliga kolumner",
+    "EVENT_SUCCESS": "Lyckad",
+    "EVENT_FAILURE": "Misslyckad",
+    "TASKS": "Jobb",
+    "IDENTIFICATION": "Identifikation"
 }
