@@ -299,7 +299,7 @@
     "SUBMIT_SIP_DESC": "Do you want to submit SIP {{label}}?",
     "FILES_PER_PAGE": "Files per page",
     "SUBMISSION_AGREEMENT": "Submission agreement",
-    "IMPORT_SA_FROM_FILE": "Import SA from file",
+    "IMPORT_SA_FROM_FILE": "Import submission agreement from file",
     "IMPORT_PROFILE_FROM_FILE": "Import profile from file",
     "IMPORT_PROFILE": "Import profile",
     "NO_RESULTS_FOUND": "No results found",
