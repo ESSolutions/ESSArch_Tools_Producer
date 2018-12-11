@@ -60,7 +60,10 @@ ESSARCH_WORKFLOW_POLLERS = {
     }
 }
 
-REDIS_URL = os.environ.get('REDIS_URL_ETP', 'redis://localhost/1')
+try:
+    from local_epp_settings import REDIS_URL
+except ImportError as exp:
+    REDIS_URL = os.environ.get('REDIS_URL_ETP','redis://localhost/1')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ze7xnd#&9_m)05j&j8wpu!=dp+jlj3olk&@k7amq9-s2x+b=$%'
@@ -332,7 +335,11 @@ DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/{lang}/html')
 # rabbitmqctl set_permissions -p etp guest ".*" ".*" ".*"
 
 # Celery settings
-CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL_ETP', 'amqp://guest:guest@localhost:5672/etp')
+try:
+    from local_epp_settings import RABBITMQ_URL
+except ImportError as exp:
+    RABBITMQ_URL = os.environ.get('RABBITMQ_URL_ETP', 'amqp://guest:guest@localhost:5672/etp')
+CELERY_BROKER_URL = RABBITMQ_URL
 CELERY_IMPORTS = ("ESSArch_Core.ip.tasks", "preingest.tasks", "ESSArch_Core.WorkflowEngine.tests.tasks")
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_TASK_EAGER_PROPAGATES = True
