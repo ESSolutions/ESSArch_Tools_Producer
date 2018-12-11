@@ -61,7 +61,7 @@ ESSARCH_WORKFLOW_POLLERS = {
 }
 
 try:
-    from local_epp_settings import REDIS_URL
+    from local_etp_settings import REDIS_URL
 except ImportError as exp:
     REDIS_URL = os.environ.get('REDIS_URL_ETP','redis://localhost/1')
 
@@ -213,7 +213,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
-DATABASES = {'default': dj_database_url.config(env='DATABASE_URL_ETP', default='sqlite:///db.sqlite')}
+try:
+    from local_etp_settings import DATABASE_URL
+except ImportError as exp:
+    DATABASE_URL = os.environ.get('DATABASE_URL_ETP','sqlite:///db.sqlite')
+DATABASES = {'default': dj_database_url.parse(url=DATABASE_URL)}
 
 # Cache
 CACHES = {
@@ -336,7 +340,7 @@ DOCS_ROOT = os.path.join(BASE_DIR, 'docs/_build/{lang}/html')
 
 # Celery settings
 try:
-    from local_epp_settings import RABBITMQ_URL
+    from local_etp_settings import RABBITMQ_URL
 except ImportError as exp:
     RABBITMQ_URL = os.environ.get('RABBITMQ_URL_ETP', 'amqp://guest:guest@localhost:5672/etp')
 CELERY_BROKER_URL = RABBITMQ_URL
