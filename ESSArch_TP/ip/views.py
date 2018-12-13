@@ -155,35 +155,16 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
     def destroy(self, request, *args, **kwargs):
         ip = self.get_object()
-        path = ip.object_path
 
-        if os.path.isdir(path):
-            t = ProcessTask.objects.create(
-                name='ESSArch_Core.tasks.DeleteFiles',
-                params={'path': path},
-                eager=False,
-                responsible=request.user,
-            )
-            t.run()
-        else:
-            no_ext = os.path.splitext(path)[0]
-            step = ProcessStep.objects.create(
-                name="Delete files",
-                eager=False,
-            )
-
-            for fl in [no_ext + '.' + ext for ext in ['xml', 'tar', 'zip']]:
-                t = ProcessTask.objects.create(
-                    name='ESSArch_Core.tasks.DeleteFiles',
-                    params={'path': fl},
-                    processstep=step,
-                    responsible=request.user,
-                )
-                t.run()
-
-            step.run()
-
-        return super(InformationPackageViewSet, self).destroy(request, *args, **kwargs)
+        t = ProcessTask.objects.create(
+            name='ESSArch_Core.ip.tasks.DeleteInformationPackage',
+            params={'from_db': True},
+            eager=False,
+            information_package=ip,
+            responsible=request.user,
+        )
+        t.run()
+        return Response('Deleting information package', status=status.HTTP_202_ACCEPTED)
 
     @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
     def files(self, request, pk=None):
