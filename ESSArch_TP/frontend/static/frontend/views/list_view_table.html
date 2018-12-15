@@ -14,7 +14,7 @@
                     popover-placement="left"
                     popover-popup-delay="500"
                     popover-append-to-body="true">
-            {{'PREPAREIP' | translate}}
+            {{'PREPARE_NEW_IP' | translate}}
         </button>
         </div>
     </div>
@@ -49,6 +49,8 @@
     </div>
     <div id="list-view" tabindex="0" ng-keydown="vm.ipListKeydownListener($event)" class="list-view-table">
         <table class="table table-striped" style="margin-bottom: 0px;">
+            <a ng-if="(ips.length || ip !== null)" ng-click="vm.deselectAll()" translate="CLEAR_ALL"></a>
+            <a ng-if="ips.length == 0 && ip === null && vm.displayedIps.length > 0" ng-click="vm.selectAll()" translate="SELECT_ALL"></a>
             <thead>
                 <tr>
                     <th ng-if="!(('home.createSip.collectContent' | isState) && col.label == 'filebrowser')"
@@ -62,7 +64,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="row in vm.displayedIps" ng-class="{'selected': ip.object_identifier_value == row.object_identifier_value}" class="table-item">
+                <tr ng-repeat="row in vm.displayedIps" ng-class="{'selected': ip.object_identifier_value == row.object_identifier_value || selectedAmongOthers(row.id)}" class="table-item">
                     <td ng-repeat="col in listViewColumns"  ng-if="!(('home.createSip.collectContent' | isState) && col.label == 'filebrowser')">
                         <div ng-include src="col.template"></div>
                     </td>

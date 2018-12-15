@@ -1,9 +1,6 @@
 <div class="body-wrapper">
     <header class="header">
       <div class="logo-search-user-admin-wrapper">
-            <div class="hamburger" ng-show="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)">
-                <i class="fas fa-2x fa-bars" aria-hidden="true" ng-click="hamburgerActive = !hamburgerActive"></i>
-            </div>
             <div class="logo" ng-controller="UtilCtrl">
                 <h3 class="page-title" ng-click="infoPage()">ESSArch Tools for Producer</h3>
                 <h3 class="page-title-small" ng-click="infoPage()">ETP</h3>
@@ -49,7 +46,7 @@
         </div>
     </header>
     <div class="nav-dynamic-wrapper">
-        <div ng-if="('home.createSip' | includedByState) || ('home.submitSip' | includedByState)" class="shortcut-nav-calendar-wrapper" ng-class="{'active-hamburger': hamburgerActive}">
+        <div ng-if="false && (('home.createSip' | includedByState) || ('home.submitSip' | includedByState))" class="shortcut-nav-calendar-wrapper" ng-class="{'active-hamburger': hamburgerActive}">
             <nav ng-controller="AngularTreeCtrl" class="navigation">
                 <br/>
                 <p ng-if="Agent.length > 0" style="padding: 0 0 0 20px">{{'AGENTS' | translate}}</p>

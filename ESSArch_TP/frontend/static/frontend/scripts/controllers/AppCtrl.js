@@ -2,8 +2,21 @@ angular.module('essarch.controllers').controller('AppCtrl', function($rootScope,
     var vm = this;
     var questionMark = 187;
     vm.questionMarkListener = function(e) {
-        if(e.keyCode == questionMark && e.shiftKey) {
-            $scope.keyboardShortcutModal();
+        if(e.shiftKey) {
+            $('#list-view *').attr('UNSELECTABLE', 'on');
+            $("#list-view").css(
+                {
+                    '-moz-user-select': 'none',
+                    '-o-user-select': 'none',
+                    '-khtml-user-select': 'none',
+                    '-webkit-user-select': 'none',
+                    '-ms-user-select': 'none',
+                    'user-select': 'none'
+                }
+            );
+            if(e.keyCode == questionMark) {
+                $scope.keyboardShortcutModal();
+            }
         }
     }
 

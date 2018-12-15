@@ -24,30 +24,9 @@
 
 angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP, Profile, $log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
-    var ipSortString = "Uploaded,Creating";
+    var ipSortString = ['Uploaded', 'Creating'];
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
     $scope.ipSelected = false;
-
-    //Click function for ip table objects
-    $scope.ipTableClick = function(row) {
-        if($scope.select && $scope.ip.id== row.id){
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.ip = null;
-            $rootScope.ip = null;
-            $scope.filebrowser = false;
-        } else {
-            $scope.getSaProfiles(row);
-            $scope.select = true;
-            $scope.eventlog = true;
-            $scope.ip = row;
-            $rootScope.ip = row;
-        }
-        $scope.edit = false;
-        $scope.eventShow = false;
-        $scope.statusShow = false;
-    };
-
 
     //funcitons for select view
     vm.profileModel = {};
@@ -58,7 +37,6 @@ angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP,
             $scope.edit = false;
         } else {
             if(row.active) {
-                console.log(row)
                 Profile.get({
                     id: row.active.profile,
                     ip: $scope.ip.id
@@ -145,6 +123,7 @@ angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP,
         });
     }
     vm.createSipModal = function (ip) {
+        var ips = $scope.ips.length > 0? $scope.ips:null;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -156,15 +135,15 @@ angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP,
             resolve: {
                 data: {
                     ip: ip,
+                    ips: ips,
                     vm: vm
                 }
             }
         })
         modalInstance.result.then(function (data) {
-            $scope.select = false;
-            $scope.edit = false;
-            $scope.eventlog = false;
-            $scope.filebrowser = false;
+            $scope.ips = [];
+            $scope.ip = null;
+            $rootScope.ip = null;
             $scope.getListViewData();
             vm.updateListViewConditional();
             $anchorScroll();

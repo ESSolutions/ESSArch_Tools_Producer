@@ -24,7 +24,7 @@
 
 angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, SA, Profile, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $filter, $anchorScroll, PermPermissionStore, $q, $controller){
     var vm = this;
-    var ipSortString = "Preparing";
+    var ipSortString = ['Preparing'];
     $scope.angular = angular;
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
@@ -50,25 +50,6 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
             $scope.ip.submission_agreement_locked = true;
         });
     });
-
-    //Click function for Ip table
-    $scope.ipTableClick = function(row) {
-        if($scope.select && $scope.ip.id== row.id){
-            $scope.select = false;
-            $scope.eventlog = false;
-            $scope.ip = null;
-            $rootScope.ip = null;
-            $scope.filebrowser = false;
-        } else {
-            $scope.ip = row;
-            $rootScope.ip = $scope.ip;
-            $scope.eventlog = true;
-            $scope.select = true;
-        }
-        $scope.edit = false;
-        $scope.eventShow = false;
-        $scope.statusShow = false;
-    };
 
     // Progress bar max value
     //funcitons for select view
@@ -116,6 +97,21 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
             $scope.editSA = true;
         }
     };
+
+    vm.sa_locked = function() {
+        if($scope.ip !== null && $scope.ips.length == 0) {
+            return $scope.ip.submission_agreement_locked;
+        } else {
+            var allLocked = true;
+            $scope.ips.forEach(function(ip) {
+                if(!ip.submission_agreement_locked) {
+                    allLocked = false;
+                }
+            })
+            return allLocked;
+        }
+    }
+
     //Click funciton for profile view
     $scope.profileClick = function(row){
         if ($scope.selectProfile == row && $scope.edit){
@@ -551,23 +547,7 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
             return !$scope.updateMode.active && !$scope.addMode.active;
         }
     };
-    //Generates test data for map structure tree
-    function createSubTreeExampleData(level, width, prefix) {
-        if (level > 0) {
-            var res = [];
-            // if (!parent) parent = res;
-            for (var i = 1; i <= width; i++) {
-                res.push({
-                    "name": "Node " + prefix + i,
-                    "type": "folder",
-                    "children": createSubTreeExampleData(level - 1, width, prefix + i + ".")
-                });
-            }
 
-            return res;
-        }
-        else return [];
-    }
     //Populate map structure tree view given tree width and amount of levels
     function getStructure(profileId) {
         listViewService.getStructure(profileId).then(function(value) {
@@ -828,6 +808,7 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
         });
     }
     vm.prepareIpForUploadModal = function (ip) {
+        var ips = $scope.ips.length > 0? $scope.ips:null;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -840,12 +821,16 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
                 data: function () {
                     return {
                         ip: ip,
+                        ips: ips
                     };
                 }
             },
         })
         modalInstance.result.then(function (data) {
             $scope.getListViewData();
+            $scope.ip = null;
+            $rootScope.ip = null;
+            $scope.ips = [];
             $scope.select = false;
             $scope.eventlog = false;
             $scope.edit = false;

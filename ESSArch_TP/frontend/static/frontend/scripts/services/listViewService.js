@@ -76,12 +76,10 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
         });
     }
     //Gets data for list view i.e information packages
-    function getListViewData(pageNumber, pageSize, filters, sortString, searchString, state, columnFilters) {
+    function getListViewData(pageNumber, pageSize, sortString, searchString, state, columnFilters) {
         return IP.query(angular.extend({
                 page: pageNumber,
                 page_size: pageSize,
-                agents: filters.agents,
-                other: filters.other,
                 ordering: sortString,
                 state: state,
                 search: searchString
