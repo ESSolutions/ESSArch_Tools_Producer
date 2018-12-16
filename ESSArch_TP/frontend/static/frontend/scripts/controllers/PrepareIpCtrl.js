@@ -24,7 +24,7 @@
 
 angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, SA, Profile, $log, $uibModal, $timeout, $scope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $translate, $cookies, $filter, $anchorScroll, PermPermissionStore, $q, $controller){
     var vm = this;
-    var ipSortString = "Preparing";
+    var ipSortString = ['Preparing'];
     $scope.angular = angular;
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
