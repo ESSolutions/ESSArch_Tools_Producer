@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" focused="true" ng-click="$ctrl.setUploaded($ctrl.data.ip)" ng-disabled="$ctrl.settingUploaded">{{'DONE' | translate}} <i ng-if="$ctrl.settingUploaded" class="fas fa-spinner fa-spin"/></button>
+        <button class="btn btn-primary" type="button" focused="true" ng-click="$ctrl.setUploaded()" ng-disabled="$ctrl.settingUploaded">{{'DONE' | translate}} <i ng-if="$ctrl.settingUploaded" class="fas fa-spinner fa-spin"/></button>
         <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()" ng-disabled="$ctrl.settingUploaded">{{'CANCEL' | translate}}</button>
     </div>
 </form>
