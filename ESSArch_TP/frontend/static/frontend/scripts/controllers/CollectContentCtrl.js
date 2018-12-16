@@ -24,7 +24,7 @@
 
 angular.module('essarch.controllers').controller('CollectContentCtrl', function(IP, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller, $compile, ErrorResponse) {
     var vm = this;
-    var ipSortString = "Prepared,Uploading";
+    var ipSortString = ['Prepared', 'Uploading'];
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
     vm.flowDestination = null;
     $scope.showFileUpload = true;
