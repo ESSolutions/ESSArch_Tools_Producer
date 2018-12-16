@@ -14,7 +14,7 @@ p{
 	display:none;
 }
 
-label{ 
+label{
 margin: 5px;
 }
 
@@ -25,13 +25,13 @@ label:before{
 .bordered {
  border-color:#eeede9;
   padding: 3px;
- 
+
 }
 
 .noborder {
    border-width: 0px;
    padding: 1px;
-   
+
 }
 
 legend {
@@ -97,7 +97,7 @@ input[type="text"]:disabled {
 
 
 input[type="text"] {
- 
+
     width: 50%;
     height: 18px;
     padding: 3px 3px;
@@ -123,7 +123,7 @@ hr {
 }
 
 .btn {
-    
+
     margin-bottom: 0;
     font-weight: 400;
     text-align: center;
@@ -172,7 +172,7 @@ hr {
 
 }
 
-.btn-info, .btn-info:focus {
+.btn-primary, .btn-primary:focus {
     border-color: #46b8da;
     border-bottom-color: #2caed5;
     background: #5bc0de;

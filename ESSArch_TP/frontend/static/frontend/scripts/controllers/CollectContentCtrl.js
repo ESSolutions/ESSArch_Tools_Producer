@@ -51,6 +51,7 @@ angular.module('essarch.controllers').controller('CollectContentCtrl', function(
     });
 
     vm.uploadCompletedModal = function (ip) {
+        var ips = $scope.ips.length > 0? $scope.ips:null;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -61,17 +62,17 @@ angular.module('essarch.controllers').controller('CollectContentCtrl', function(
             controllerAs: '$ctrl',
             resolve: {
                 data: {
-                    ip: ip
+                    ip: ip,
+                    ips: ips
                 }
             }
         })
         modalInstance.result.then(function (data) {
-            $scope.eventlog = false;
-            $scope.select = false;
-            $scope.filebrowser = false;
+            $scope.ips = [];
+            $scope.ip = null;
+            $rootScope.ip = null;
             $scope.getListViewData();
             vm.updateListViewConditional();
-            $scope.uploadDisabled = false;
             $anchorScroll();
         }, function () {
             $log.info('modal-component dismissed at: ' + new Date());
@@ -79,8 +80,9 @@ angular.module('essarch.controllers').controller('CollectContentCtrl', function(
     }
 
     //Click function for ip table
-    $scope.ipTableClick = function(row) {
-        if($scope.select && $scope.ip.id== row.id){
+    vm.selectSingleRow = function(row) {
+        $scope.ips = [];
+        if($scope.ip !== null && $scope.ip.id == row.id){
             $scope.select = false;
             $scope.eventlog = false;
             $scope.ip = null;

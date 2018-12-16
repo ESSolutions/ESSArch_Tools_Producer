@@ -46,19 +46,6 @@ angular.module('essarch.services').factory('Resource', function ($q, $filter, $t
                     }
                 });
             });
-            /*
-            console.log("eventCollection: ");
-            console.log(eventCollection);
-
-            var filtered = params.search.predicateObject ? $filter('filter')(eventCollection, params.search.predicateObject) : eventCollection;
-
-            if (params.sort.predicate) {
-                filtered = $filter('orderBy')(filtered, params.sort.predicate, params.sort.reverse);
-            }
-
-            var result = filtered.slice(start, start + number);
-            */
-
             return {
                 data: eventCollection,
                 numberOfPages: Math.ceil(value.count / number)
@@ -71,21 +58,8 @@ angular.module('essarch.services').factory('Resource', function ($q, $filter, $t
         if(sort.reverse) {
             sortString = "-"+sortString;
         }
-        return listViewService.getListViewData(pageNumber, number, $rootScope.navigationFilter, sortString, search, state, columnFilters).then(function(value) {
+        return listViewService.getListViewData(pageNumber, number, sortString, search, state, columnFilters).then(function(value) {
             var ipCollection = value.data;
-            /*
-            console.log("ipCollection: ");
-            console.log(ipCollection);
-
-            var filtered = params.search.predicateObject ? $filter('filter')(ipCollection, params.search.predicateObject) : ipCollection;
-
-            if (params.sort.predicate) {
-                filtered = $filter('orderBy')(filtered, params.sort.predicate, params.sort.reverse);
-            }
-
-            var result = filtered.slice(start, start + number);
-            */
-
             return {
                 data: ipCollection,
                 numberOfPages: Math.ceil(value.count / number)

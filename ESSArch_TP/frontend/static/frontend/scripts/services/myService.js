@@ -80,7 +80,6 @@ angular.module('essarch.services').factory('myService', function($location, Perm
             {label: "responsible", sortString: "responsible", template: "static/frontend/views/columns/column_responsible.html"},
             {label: "create_date", sortString: "create_date", template: "static/frontend/views/columns/column_create_date.html"},
             {label: "state", sortString: "state", template: "static/frontend/views/columns/column_state.html"},
-            {label: "events", sortString: "Events", template: "static/frontend/views/columns/column_events.html"},
             {label: "status", sortString: "Status", template: "static/frontend/views/columns/column_status.html"},
             {label: "delete", sortString: "", template: "static/frontend/views/columns/column_delete.html"},
             {label: "object_size", sortString: "object_size", template: "static/frontend/views/columns/column_object_size.html"},
@@ -88,7 +87,6 @@ angular.module('essarch.services').factory('myService', function($location, Perm
             {label: "archivist_organization", sortString: "archivist_organization", template: "static/frontend/views/columns/column_archivist_organization.html"},
             {label: "start_date", sortString: "start_date", template: "static/frontend/views/columns/column_start_date.html"},
             {label: "end_date", sortString: "end_date", template: "static/frontend/views/columns/column_end_date.html"},
-            {label: "filebrowser", sortString: "", template: "static/frontend/views/columns/column_filebrowser.html"},
             {label: "entry_date", sortString: "entry_date", template: "static/frontend/views/columns/column_entry_date.html"},
         ];
         var activeColumns = [];

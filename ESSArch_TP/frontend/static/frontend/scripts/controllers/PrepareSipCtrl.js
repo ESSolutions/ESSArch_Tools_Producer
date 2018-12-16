@@ -28,13 +28,11 @@ angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP,
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
     //Click function for ip table
-    $scope.ipTableClick = function(row) {
-        if($scope.edit && $scope.ip.id== row.id){
-            $scope.edit = false;
-            $scope.eventlog = false;
+    vm.selectSingleRow = function(row) {
+        $scope.ips = [];
+        if($scope.ip !== null && $scope.ip.id == row.id){
             $scope.ip = null;
             $rootScope.ip = null;
-            $scope.filebrowser = false;
         } else {
             $scope.ip = row;
             $rootScope.ip = row;
@@ -76,9 +74,6 @@ angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP,
                 });
             }
         }
-        $scope.submitDisabled = false;
-        $scope.eventShow = false;
-        $scope.statusShow = false;
     };
 
     // Populate file list view
@@ -318,7 +313,6 @@ angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP,
                 $scope.edit = false;
                 $scope.getListViewData();
                 vm.updateListViewConditional();
-                $scope.submitDisabled = false;
                 $anchorScroll();
             }).catch(function () {
                 $log.info('modal-component dismissed at: ' + new Date());
@@ -328,6 +322,7 @@ angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP,
         }
     }
     vm.submitSipModal = function (ip) {
+        var ips = $scope.ips.length > 0? $scope.ips:null;
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -339,16 +334,17 @@ angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP,
             resolve: {
                 data: {
                     ip: ip,
+                    ips: ips,
                     vm: vm
                 }
             }
         })
         modalInstance.result.then(function (data) {
-            $scope.eventlog = false;
-            $scope.edit = false;
+            $scope.ips = [];
+            $scope.ip = null;
+            $rootScope.ip = null;
             $scope.getListViewData();
             vm.updateListViewConditional();
-            $scope.submitDisabled = false;
             $anchorScroll();
         }).catch(function () {
             $log.info('modal-component dismissed at: ' + new Date());

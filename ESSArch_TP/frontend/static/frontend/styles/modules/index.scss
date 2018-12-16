@@ -182,7 +182,6 @@ padding: 0 12px;
 }
 .content-wrapper > div {
     margin-bottom: 10px;
-    margin-left: 5px;
 }
 @include medium-screen-down {
     .content-wrapper > div {
@@ -313,7 +312,6 @@ padding: 0 12px;
     border-color: $border-color;
     display: flex;
     flex-direction: row;
-    //height: 70px;
     margin: 5px;
     padding: 5px;
     justify-content: space-between;
