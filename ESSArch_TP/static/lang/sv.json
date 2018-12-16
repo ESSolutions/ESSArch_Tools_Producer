@@ -360,5 +360,9 @@
     "SELECT_ALL": "Markera alla",
     "NO_ACTIONS_FOR_SELECTED_IPS": "Det finns inga tillgängliga funktioner för valda objekt",
     "PREPARE_NEW_IP": "Förbered nytt IP",
-    "CLEAR_ALL": "Avmarkera alla"
+    "CLEAR_ALL": "Avmarkera alla",
+    "FILTERS": "Filter",
+    "CLEAR": "Rensa",
+    "START": "Start",
+    "END": "Slut"
 }

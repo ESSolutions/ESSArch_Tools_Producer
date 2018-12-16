@@ -24,7 +24,7 @@
 
 angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP, Profile, $log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
-    var ipSortString = 'Uploaded,Creating';
+    var ipSortString = ['Uploaded', 'Creating'];
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
     $scope.ipSelected = false;
 

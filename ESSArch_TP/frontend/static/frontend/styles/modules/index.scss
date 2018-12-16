@@ -322,7 +322,7 @@ padding: 0 12px;
     flex-direction: column;
     width: 33%;
 }
-.eventlog-view .btn-info {
+.eventlog-view .btn-primary {
     float: right;
     margin-top: 10px;
 
@@ -332,9 +332,6 @@ padding: 0 12px;
 }
 input[type="checkbox"] {
     transform:scale(1.2, 1.2);
-}
-.eventlog-view .submit-button {
-    height: 40px;
 }
 .eventlog-form {
     display: flex;
