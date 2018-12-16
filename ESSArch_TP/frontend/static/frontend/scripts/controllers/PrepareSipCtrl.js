@@ -24,7 +24,7 @@
 
 angular.module('essarch.controllers').controller('PrepareSipCtrl', function (IP, Profile, $log, $uibModal, $timeout, $scope, $rootScope, $window, $location, $sce, $http, myService, appConfig, $state, $stateParams, listViewService, $interval, Resource, $q, $translate, $anchorScroll, PermPermissionStore, $cookies, $controller){
     var vm = this;
-    var ipSortString = ['Created', 'Submitting', 'Submitted'];
+    var ipSortString = 'Created,Submitting,Submitted';
     $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
 
     //Click function for ip table
