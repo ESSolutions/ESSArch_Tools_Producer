@@ -357,12 +357,8 @@
     "IMPORT_SA_FROM_FILE_SHORT": "Import SA from file",
     "SEARCH": "Search",
     "INFORMATION_PACKAGES": "Information packages",
-    "FILTERS": "Filters",
-    "CLEAR": "Clear",
     "SELECT_ALL": "Select all",
     "NO_ACTIONS_FOR_SELECTED_IPS": "No actions available for selected object(s)",
     "PREPARE_NEW_IP": "Prepare new IP",
-    "CLEAR_ALL": "Clear all",
-    "START": "Start",
-    "END": "End"
+    "CLEAR_ALL": "Clear all"
 }

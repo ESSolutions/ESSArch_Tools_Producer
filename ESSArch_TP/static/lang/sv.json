@@ -357,12 +357,8 @@
     "IMPORT_SA_FROM_FILE_SHORT": "Importera SA från fil",
     "SEARCH": "Sök",
     "INFORMATION_PACKAGES": "Informationspaket",
-    "FILTERS": "Filter",
-    "CLEAR": "Rensa",
     "SELECT_ALL": "Markera alla",
     "NO_ACTIONS_FOR_SELECTED_IPS": "Det finns inga tillgängliga funktioner för valda objekt",
     "PREPARE_NEW_IP": "Förbered nytt IP",
-    "CLEAR_ALL": "Avmarkera alla",
-    "START": "Start",
-    "END": "Slut"
+    "CLEAR_ALL": "Avmarkera alla"
 }
