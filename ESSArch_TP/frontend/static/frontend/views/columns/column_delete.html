@@ -3,8 +3,7 @@
             ng-if="row.permissions.includes('delete_informationpackage')"
             ng-click="removeIpModal(row)"
             class="fas fa-trash-alt btn btn-default btn-sm"
-            uib-popover="{{'REMOVEIP' | translate}}: {{row.label}}"
-            popover-placement="top-left"
-            popover-popup-delay="500"
-            popover-append-to-body="true"></button>
+            uib-tooltip="{{'REMOVEIP' | translate}}: {{row.label}}"
+            tooltip-placement="auto top"
+            tooltip-append-to-body="true"></button>
 </div>
