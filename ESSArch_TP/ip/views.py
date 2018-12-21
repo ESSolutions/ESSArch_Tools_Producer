@@ -153,6 +153,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
 
+    @transaction.atomic
     def destroy(self, request, *args, **kwargs):
         ip = self.get_object()
 
@@ -553,6 +554,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         workflow.run()
         return Response({'status': 'submitting ip'})
 
+    @transaction.atomic
     @detail_route(methods=['post'], url_path='unlock-profile', permission_classes=[CanUnlockProfile])
     def unlock_profile(self, request, pk=None):
         ip = self.get_object()
@@ -632,6 +634,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         return Response("Merged chunks")
 
+    @transaction.atomic
     @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):
         ip = self.get_object()
