@@ -4,8 +4,8 @@
             <table ng-if="!saAlert" style="margin-top: 20px;" class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="info-popover column-entity" uib-popover="{{'ENTITYDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'TYPE' | translate}}</th>
-                        <th class="info-popover column-profile" uib-popover="{{'PROFILEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'SUBMISSIONAGREEMENT' | translate}}</th>
+                        <th class="column-entity" uib-tooltip="{{'ENTITYDESC' | translate}}" tooltip-placement="auto top" tooltip-append-to-body="true">{{'TYPE' | translate}}</th>
+                        <th class="column-profile" uib-tooltip="{{'PROFILEDESC' | translate}}" tooltip-placement="auto top" tooltip-append-to-body="true">{{'SUBMISSIONAGREEMENT' | translate}}</th>
                         <th class="column-view"></th>
                     </tr>
                 </thead>
@@ -22,7 +22,7 @@
                             </select>
                         </td>
                         <td class="flex-row">
-                            <button ng-if="saProfile.profile"class="btn btn-default btn-small btn-sm" ng-click="saClick(saProfile)" uib-popover="{{saProfile.profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" ng-disabled="vm.loadingSa || vm.changingSa"><i class="far fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i> <i ng-if="vm.loadingSa" class="fas fa-spinner fa-spin"/></button>
+                            <button ng-if="saProfile.profile"class="btn btn-default btn-small btn-sm" ng-click="saClick(saProfile)" uib-tooltip="{{saProfile.profile.name}}" tooltip-placement="auto top" tooltip-append-to-body="true" ng-disabled="vm.loadingSa || vm.changingSa"><i class="far fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i> <i ng-if="vm.loadingSa" class="fas fa-spinner fa-spin"/></button>
                             <button ng-if="!saProfile.locked" ng-disabled="vm.changingSa || !saProfile.profile || (ip.responsible.id != $root.auth.id && !checkPermission('ip.lock_sa'))"
                                 class="btn btn-success btn-sm btn-small" ng-click="lockSaModal(saProfile)"><i class="fas fa-lock"></i>&nbsp;{{'LOCK' | translate}}</button>
                             <button ng-if="saProfile.locked" class="btn btn-danger btn-sm btn-small"><i class="fas fa-lock"></i>&nbsp;{{'LOCKED' | translate}}</button>
@@ -46,8 +46,8 @@
                     <table ng-if="saProfile.locked" style="margin-top: 10px; margin-bottom: 0px;" st-table="selectCollection" st-skip-natural="true" st-safe-src="selectRowCollection" class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="info-popover column-entity" uib-popover="{{'ENTITYDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'TYPE' | translate}}</th>
-                                <th class="info-popover column-profile" uib-popover="{{'PROFILEDESC' | translate}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true">{{'PROFILE' | translate}}</th>
+                                <th class="column-entity" uib-tooltip="{{'ENTITYDESC' | translate}}" tooltip-placement="auto top" tooltip-append-to-body="true">{{'TYPE' | translate}}</th>
+                                <th class="column-profile" uib-tooltip="{{'PROFILEDESC' | translate}}" tooltip-placement="auto top" tooltip-append-to-body="true">{{'PROFILE' | translate}}</th>
                                 <th class="column-view"></th>
                             </tr>
                         </thead>
@@ -59,8 +59,8 @@
                                         {{profile.name}}
                                     </td>
                                     <td>
-                                        <button ng-if="!vm.disabled" type="button" class="btn btn-default btn-small btn-sm" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" ng-disabled="vm.loadingProfileData[profile.profile_type]"><i class="fas fa-sm fa-pencil"></i>&nbsp;{{'EDIT' | translate}}</i> <i ng-if="vm.loadingProfileData[profile.profile_type]" class="fas fa-spinner fa-spin"/></button>
-                                        <button ng-if="vm.disabled" type="button" class="btn btn-default btn-small btn-sm" ng-click="profileClick(profile, {})" uib-popover="{{profile.name}}" popover-placement="top-left" popover-popup-delay="500" popover-append-to-body="true" ng-disabled="vm.loadingProfileData[profile.profile_type]"><i class="far fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i> <i ng-if="vm.loadingProfileData[profile.profile_type]" class="fas fa-spinner fa-spin"/></button>
+                                        <button ng-if="!vm.disabled" type="button" class="btn btn-default btn-small btn-sm" ng-click="profileClick(profile, {})" uib-tooltip="{{profile.name}}" tooltip-placement="auto top" tooltip-append-to-body="true" ng-disabled="vm.loadingProfileData[profile.profile_type]"><i class="fas fa-sm fa-pencil"></i>&nbsp;{{'EDIT' | translate}}</i> <i ng-if="vm.loadingProfileData[profile.profile_type]" class="fas fa-spinner fa-spin"/></button>
+                                        <button ng-if="vm.disabled" type="button" class="btn btn-default btn-small btn-sm" ng-click="profileClick(profile, {})" uib-tooltip="{{profile.name}}" tooltip-placement="auto top" tooltip-append-to-body="true" ng-disabled="vm.loadingProfileData[profile.profile_type]"><i class="far fa-eye"></i>&nbsp;{{'VIEW' | translate}}</i> <i ng-if="vm.loadingProfileData[profile.profile_type]" class="fas fa-spinner fa-spin"/></button>
                                     </td>
                                 </div>
                             </tr>

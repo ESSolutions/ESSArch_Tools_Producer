@@ -364,7 +364,7 @@ angular.module('essarch', [
     if ( touch ){
         $uibTooltipProvider.options({trigger: 'dontTrigger'});
     } else {
-        $uibTooltipProvider.options({trigger: 'mouseenter'});
+        $uibTooltipProvider.options({trigger: 'mouseenter', popupDelay: 1600});
     }
 }])
 .config(['$compileProvider', 'appConfig', '$logProvider', function ($compileProvider, appConfig, $logProvider) {
