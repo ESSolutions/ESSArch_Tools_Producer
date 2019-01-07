@@ -164,7 +164,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
             responsible=request.user,
         )
         t.run()
-        return Response('Deleting information package', status=status.HTTP_202_ACCEPTED)
+        return Response({"detail": "Deleting information package", "task": t.pk}, status=status.HTTP_202_ACCEPTED)
 
     @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
     def files(self, request, pk=None):
