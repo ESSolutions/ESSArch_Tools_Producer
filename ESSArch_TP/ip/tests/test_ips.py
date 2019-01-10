@@ -33,7 +33,7 @@ from django.db.models import F
 from django.test import TestCase
 from django.urls import reverse
 
-import unittest.mock
+from unittest import mock
 
 from rest_framework import status
 from rest_framework.test import APIClient
