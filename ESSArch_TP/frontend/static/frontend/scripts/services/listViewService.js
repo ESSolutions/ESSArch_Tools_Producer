@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser, ErrorResponse) {
+angular.module('essarch.services').factory('listViewService', function (IP, SA, Event, EventType, Profile, Step, $q, $http, $state, $log, appConfig, $rootScope, $filter, linkHeaderParser) {
     //Go to Given state
     function changePath(state) {
         $state.go(state);
@@ -182,8 +182,6 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
                 }
             });
             return saProfile;
-        }).catch(function(response){
-            ErrorResponse.default(response);
         });
         return promise;
     }
@@ -388,7 +386,6 @@ angular.module('essarch.services').factory('listViewService', function (IP, SA, 
                 data: data
             };
         }).catch(function (response) {
-            ErrorResponse.default(response);
             return response;
         })
     }
