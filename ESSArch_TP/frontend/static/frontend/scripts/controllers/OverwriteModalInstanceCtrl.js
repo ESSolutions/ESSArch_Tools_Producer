@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, Notifications, $translate, ErrorResponse) {
+angular.module('essarch.controllers').controller('OverwriteModalInstanceCtrl', function ($uibModalInstance, djangoAuth, data, SA, Profile, Notifications, $translate) {
     var $ctrl = this;
     if(data.file) {
         $ctrl.file = data.file;
@@ -17,9 +17,7 @@ angular.module('essarch.controllers').controller('OverwriteModalInstanceCtrl', f
             }
             $uibModalInstance.close($ctrl.data);
             return resource;
-        }).catch(function(response) {
-            ErrorResponse.default(response);
-        })
+        });
     }
     $ctrl.overwriteSa = function() {
         $ctrl.profile.published = false;
@@ -30,13 +28,7 @@ angular.module('essarch.controllers').controller('OverwriteModalInstanceCtrl', f
             }
             $uibModalInstance.close($ctrl.data);
             return resource;
-        }).catch(function(response) {
-            if(response.status === 405) {
-                Notifications.add($translate.instant('SA_IS_PUBLISHED_CANNOT_BE_OVERWRITTEN', $ctrl.profile), "error");
-            } else {
-                ErrorResponse.default(response);
-            }
-        })
+        });
     }
     $ctrl.overwrite = function () {
         $ctrl.data = {

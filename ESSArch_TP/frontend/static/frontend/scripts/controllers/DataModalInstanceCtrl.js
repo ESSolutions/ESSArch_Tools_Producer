@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, Notifications, data, ErrorResponse, $translate, $q) {
+angular.module('essarch.controllers').controller('DataModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, Notifications, data, $translate, $q) {
     var $ctrl = this;
     if(data.vm) {
         var vm = data.vm;
@@ -30,7 +30,6 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
                 $ctrl.preparing = false;
                 $uibModalInstance.close();
             }).catch(function(response) {
-                ErrorResponse.default(response);
                 return response;
             }));
         })
@@ -51,10 +50,7 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
                 $ctrl.settingUploaded = false;
                 $uibModalInstance.close();
             }).catch(function (response) {
-                if(response.status == 404) {
-                    Notifications.add('IP could not be found', 'error');
-                } else {
-                    ErrorResponse.default(response);
+                if(response.status !== 404) {
                     return response;
                 }
             }));
@@ -81,7 +77,6 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
                     if(response.status == 404) {
                         Notifications.add('IP could not be found', 'error');
                 } else {
-                    ErrorResponse.default(response);
                     return response;
                 }
             }));
@@ -108,11 +103,6 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
                 $ctrl.submitting = false;
                 $uibModalInstance.close();
             }).catch(function(response) {
-                if(response.status == 404) {
-                    Notifications.add('IP could not be found', 'error');
-                } else {
-                    ErrorResponse.default(response);
-                }
                 return response;
             }));
         });
@@ -129,15 +119,9 @@ angular.module('essarch.controllers').controller('DataModalInstanceCtrl', functi
 			id: ipObject.id
 		}).$promise.then(function() {
             $ctrl.removing = false;
-            Notifications.add($translate.instant('IP_REMOVED', {label: ipObject.label}), 'success');
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             $ctrl.removing = false;
-            if(response.status == 404) {
-                Notifications.add('IP could not be found', 'error');
-            } else {
-                ErrorResponse.default(response);
-            }
         });
     };
 

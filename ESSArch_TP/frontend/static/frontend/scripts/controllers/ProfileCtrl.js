@@ -1,4 +1,4 @@
-angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications, ErrorResponse) {
+angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA, IP, Profile, PermPermissionStore, ProfileIp, ProfileIpData, $scope, $http, $rootScope, appConfig, listViewService, $log, $uibModal, $translate, $filter, Notifications) {
     var vm = this;
     $scope.angular = angular;
     $scope.select = true;
@@ -62,17 +62,13 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         $scope.selectRowCollection = [];
         SA.profiles({ id: sa.id }).$promise.then(function (resource) {
             $scope.selectRowCollection = resource;
-        }).catch(function (response) {
-            ErrorResponse.default(response);
         });
     }
 
     vm.changeDataVersion = function(profileIp, data) {
         ProfileIp.patch({ id: profileIp.id }, { data: data }).$promise.then(function(resource) {
             vm.getAndShowProfile(vm.selectedProfile, {});
-        }).catch(function (response) {
-            ErrorResponse.default(response);
-        })
+        });
     }
 
     $scope.pushData = function() {
@@ -95,11 +91,9 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
                 return response;
             }).catch(function (response) {
                 vm.savingProfileModel = false;
-                ErrorResponse.default(response);
             })
         }).catch(function (response) {
             vm.savingProfileModel = false;
-            ErrorResponse.default(response);
         })
     }
 
@@ -236,16 +230,13 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
         }).catch(function(response) {
             vm.loadingProfileData[profile.profile_type] = false;
             vm.cancel();
-            ErrorResponse.default(response);
         })
     };
 
     vm.getProfileData = function(id) {
         ProfileIpData.get({id: id}).$promise.then(function(resource) {
             vm.profileModel = angular.copy(resource.data);
-        }).catch(function (response) {
-            ErrorResponse.default(response);
-        })
+        });
     }
 
     //Changes SA profile for selected ip
@@ -261,7 +252,6 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
             vm.changingSa = false;
         }).catch(function (response) {
             vm.changingSa = false;
-            ErrorResponse.default(response);
         })
     }
 
@@ -311,9 +301,7 @@ angular.module('essarch.controllers').controller('ProfileCtrl', function($q, SA,
             }
             $scope.edit = true;
             $scope.eventlog = true;
-        }).catch(function (response) {
-            ErrorResponse.default(response);
-        })
+        });
     }
 
     $scope.checkPermission = function(permissionName) {

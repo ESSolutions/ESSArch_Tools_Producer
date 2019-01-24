@@ -22,7 +22,7 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications, ErrorResponse) {
+angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
     var $ctrl = this;
     $ctrl.preparing = false;
     $ctrl.error_messages_old = [];
@@ -67,12 +67,6 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             return $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             $ctrl.preparing = false;
-            if (response.status == 409) {
-                var msg = $translate.instant("IP_EXISTS", {'ip': $ctrl.data.objectIdentifierValue});
-                Notifications.add(msg, "error", 5000);
-            } else {
-                ErrorResponse.default(response)
-            }
         });
     };
     $ctrl.prepareForUpload = function() {
@@ -85,7 +79,6 @@ angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (
             $uibModalInstance.close($ctrl.data);
         }).catch(function(response) {
             $ctrl.preparing = false;
-            ErrorResponse.default(response);
         })
     }
     $ctrl.submitSip = function() {
