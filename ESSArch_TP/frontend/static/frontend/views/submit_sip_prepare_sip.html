@@ -63,7 +63,7 @@
                 </div>
             </uib-tab>
             <uib-tab ng-if="ip !== null && ips.length == 0 && (row.responsible.id == auth.id || !row.responsible || row.permissions.includes('see_other_user_ip_files'))" index="'filebrowser'" heading="{{'FILEBROWSER' | translate}}">
-                <div class="file-browser" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
+                <div ng-if="vm.activeTab === 'filebrowser'" class="file-browser" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                     <filebrowser ip="ip"></filebrowser>
                 </div>
             </uib-tab>
