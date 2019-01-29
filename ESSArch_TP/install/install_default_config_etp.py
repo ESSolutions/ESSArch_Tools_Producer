@@ -58,7 +58,7 @@ def installDefaultParameters():
 
     for key in dct:
         print('-> %s: %s' % (key, dct[key]))
-        Parameter.objects.get_or_create(entity=key, value=dct[key])
+        Parameter.objects.get_or_create(entity=key, defaults={'value': dct[key]})
 
     return 0
 
@@ -210,7 +210,7 @@ def installDefaultPaths():
 
     for key in dct:
         print('-> %s: %s' % (key, dct[key]))
-        Path.objects.get_or_create(entity=key, value=dct[key])
+        Path.objects.get_or_create(entity=key, defaults={'value': dct[key]})
 
     return 0
 
