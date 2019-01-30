@@ -22,15 +22,15 @@
     Email - essarch@essolutions.se
 """
 
-"""
-ASGI config for etp project.
-
-"""
-
 import os
 
 import django
 from channels.routing import get_default_application
+
+"""
+ASGI config for etp project.
+
+"""
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()

@@ -37,13 +37,15 @@ if __name__ == '__main__':
         version=versioneer.get_version(),
         description='ESSArch Tools Producer',
         long_description=open("README.md").read(),
-        long_description_content_type='text/markdown',        
+        long_description_content_type='text/markdown',
         author='Henrik Ek',
         author_email='henrik@essolutions.se',
         url='http://www.essolutions.se',
         project_urls={
             'Documentation': 'http://docs.essarch.org/',
-            'Source Code': 'https://github.com/ESSolutions/ESSArch_Tools_Producer/tree/%s' % versioneer.get_versions()['full'],
+            'Source Code': 'https://github.com/ESSolutions/ESSArch_Tools_Producer/tree/%s' % (
+                versioneer.get_versions()['full']
+            ),
             'Travis CI': 'https://travis-ci.org/ESSolutions/ESSArch_Tools_Producer',
         },
         classifiers=[

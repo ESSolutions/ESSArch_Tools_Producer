@@ -32,8 +32,11 @@ from rest_framework.response import Response
 from ESSArch_Core.ip.models import Agent, InformationPackage
 from ESSArch_Core.ip.permissions import CanLockSA
 from ESSArch_Core.profiles.models import SubmissionAgreement, Profile, ProfileSA
-from ESSArch_Core.profiles.serializers import ProfileSASerializer, SubmissionAgreementSerializer
-from ESSArch_Core.profiles.views import ProfileViewSet as ProfileViewSetCore, SubmissionAgreementViewSet as SAViewSetCore
+from ESSArch_Core.profiles.serializers import ProfileSerializer, ProfileSASerializer, SubmissionAgreementSerializer
+from ESSArch_Core.profiles.views import (
+    ProfileViewSet as ProfileViewSetCore,
+    SubmissionAgreementViewSet as SAViewSetCore,
+)
 
 
 class SubmissionAgreementViewSet(SAViewSetCore):
@@ -132,8 +135,10 @@ class SubmissionAgreementViewSet(SAViewSetCore):
         ip.submission_agreement_locked = True
         if sa.archivist_organization:
             existing_agents_with_notes = Agent.objects.all().with_notes([])
-            ao_agent, _ = Agent.objects.get_or_create(role='ARCHIVIST', type='ORGANIZATION',
-                                                      name=sa.archivist_organization, pk__in=existing_agents_with_notes)
+            ao_agent, _ = Agent.objects.get_or_create(
+                role='ARCHIVIST', type='ORGANIZATION',
+                name=sa.archivist_organization, pk__in=existing_agents_with_notes
+            )
             ip.agents.add(ao_agent)
         ip.save()
 
