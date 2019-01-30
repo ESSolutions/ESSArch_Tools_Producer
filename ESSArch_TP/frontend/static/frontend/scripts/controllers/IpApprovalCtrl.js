@@ -66,62 +66,6 @@ angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP,
         }
     };
 
-    $scope.unlockConditional = function(profile) {
-        if(profile.profile_type == "sip") {
-            $scope.unlockSipModal(profile);
-        } else {
-            $scope.unlockProfileModal(profile);
-        }
-    }
-
-    //Unlock profile from current IP
-    $scope.unlock = function(profile) {
-        IP.unlockProfile({
-                id: $scope.ip.id,
-                type: profile.active.profile_type
-        }).$promise.then(function(response){
-            profile.locked = false;
-            $scope.getListViewData();
-            $scope.edit = false;
-            $scope.select = false;
-            $scope.eventlog = false;
-        });
-    }
-
-    $scope.unlockSipModal = function (profile) {
-        $scope.profileToSave = profile;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/unlock_sip_modal.html',
-            scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
-        })
-        modalInstance.result.then(function (data) {
-            $scope.unlock($scope.profileToSave);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    }
-        $scope.unlockProfileModal = function (profile) {
-        $scope.profileToSave = profile;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/unlock_profile_modal.html',
-            scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
-        })
-        modalInstance.result.then(function (data) {
-            $scope.unlock($scope.profileToSave);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    }
     vm.createSipModal = function (ip) {
         var ips = $scope.ips.length > 0? $scope.ips:null;
         var modalInstance = $uibModal.open({
