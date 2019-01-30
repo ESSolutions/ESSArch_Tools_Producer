@@ -57,12 +57,12 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab ng-if="ip !== null && ips.length == 0" index="'events'" heading="{{'EVENTS' | translate}}">
+            <uib-tab ng-if="ip !== null && ips.length == 0" index="'events'" heading="{{'EVENT.EVENTS' | translate}}">
                 <div ng-if="vm.activeTab === 'events'" class="events-status-wrapper" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                     <event-table ip="ip"></event-table>
                 </div>
             </uib-tab>
-            <uib-tab ng-if="ip !== null && ips.length == 0 && (row.responsible.id == auth.id || !row.responsible || row.permissions.includes('see_other_user_ip_files'))" index="'filebrowser'" heading="{{'FILEBROWSER' | translate}}">
+            <uib-tab ng-if="ip !== null && ips.length == 0 && (row.responsible.id == auth.id || !row.responsible || row.permissions.includes('see_other_user_ip_files'))" index="'filebrowser'" heading="{{'FILEBROWSER.FILEBROWSER' | translate}}">
                 <div ng-if="vm.activeTab === 'filebrowser'" class="file-browser" tabindex="-1" ng-keydown="vm.contentViewsKeydownListener($event)">
                     <filebrowser ip="ip"></filebrowser>
                 </div>

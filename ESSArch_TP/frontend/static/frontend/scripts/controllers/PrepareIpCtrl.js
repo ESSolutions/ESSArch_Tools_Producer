@@ -332,24 +332,7 @@ angular.module('essarch.controllers').controller('PrepareIpCtrl', function (IP, 
     }
 
     $scope.profileToLock = null;
-    //Creates and shows modal for profile lock.
-    $scope.lockProfileModal = function (profiles) {
-        $scope.profileToLock = profiles;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/lock-profile-modal.html',
-            scope: $scope,
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl'
-        })
-        modalInstance.result.then(function (data) {
-            $scope.lockProfile($scope.profileToLock);
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    }
+
     //Lock a profile
     $scope.lockProfile = function (profiles) {
         $scope.closeAlert();
