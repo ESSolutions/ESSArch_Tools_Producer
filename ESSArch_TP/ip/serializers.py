@@ -59,4 +59,3 @@ class InformationPackageReadSerializer(InformationPackageSerializer):
     class Meta:
         model = InformationPackageSerializer.Meta.model
         fields = InformationPackageSerializer.Meta.fields
-

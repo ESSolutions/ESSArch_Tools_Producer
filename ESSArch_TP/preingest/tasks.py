@@ -32,7 +32,7 @@ from django.db import transaction
 from six.moves.urllib.parse import urljoin
 
 # noinspection PyUnresolvedReferences
-from ESSArch_Core import tasks
+from ESSArch_Core import tasks  # noqa
 from ESSArch_Core.WorkflowEngine.dbtask import DBTask
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.ip.models import Agent, InformationPackage
@@ -53,8 +53,10 @@ class ReceiveSIP(DBTask):
 
         if sa.archivist_organization:
             existing_agents_with_notes = Agent.objects.all().with_notes([])
-            ao_agent, _ = Agent.objects.get_or_create(role='ARCHIVIST', type='ORGANIZATION',
-                                                      name=sa.archivist_organization, pk__in=existing_agents_with_notes)
+            ao_agent, _ = Agent.objects.get_or_create(
+                role='ARCHIVIST', type='ORGANIZATION',
+                name=sa.archivist_organization, pk__in=existing_agents_with_notes
+            )
             ip.agents.add(ao_agent)
 
         submit_description_data = ip.get_profile_data('submit_description')
@@ -101,7 +103,7 @@ class SubmitSIP(DBTask):
                 remote = None
         else:
             dst = os.path.join(reception, ip.object_identifier_value + ".%s" % container_format)
-        block_size = 8 * 1000000 # 8MB
+        block_size = 8 * 1000000  # 8MB
         copy_file(src, dst, requests_session=session, block_size=block_size)
 
         src = os.path.join(srcdir, ip.object_identifier_value + ".xml")

@@ -24,10 +24,8 @@
 
 import copy
 import errno
-import glob
 import logging
 import os
-import re
 import shutil
 
 from django.conf import settings
@@ -36,7 +34,6 @@ from django.db import IntegrityError, transaction
 from django.http import HttpResponse
 from groups_manager.utils import get_permission_name
 from guardian.shortcuts import assign_perm
-from natsort import natsorted
 from rest_framework import exceptions, permissions, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
@@ -116,7 +113,12 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
                                                        responsible=responsible, state="Preparing",
                                                        package_type=InformationPackage.SIP)
                 ip.entry_date = ip.create_date
-                extra = {'event_type': 10100, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
+                extra = {
+                    'event_type': 10100,
+                    'object': str(ip.pk),
+                    'agent': request.user.username,
+                    'outcome': EventIP.SUCCESS
+                }
                 self.logger.info("Prepared {obj}".format(obj=ip.object_identifier_value), extra=extra)
 
                 member = Member.objects.get(django_user=responsible)
@@ -133,12 +135,17 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
                 os.mkdir(obj_path)
                 ip.object_path = obj_path
                 ip.save()
-                extra = {'event_type': 10200, 'object': str(ip.pk), 'agent': request.user.username, 'outcome': EventIP.SUCCESS}
+                extra = {
+                    'event_type': 10200,
+                    'object': str(ip.pk),
+                    'agent': request.user.username,
+                    'outcome': EventIP.SUCCESS
+                }
                 self.logger.info("Created IP root directory", extra=extra)
         except IntegrityError:
             try:
                 shutil.rmtree(obj_path)
-            except OSError as e:
+            except OSError:
                 pass
             raise
 
@@ -173,7 +180,9 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         if request.method not in permissions.SAFE_METHODS:
             if ip.state not in ['Prepared', 'Uploading']:
-                raise exceptions.ParseError("Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state")
+                raise exceptions.ParseError(
+                    "Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state"
+                )
 
         if request.method == 'DELETE':
             try:

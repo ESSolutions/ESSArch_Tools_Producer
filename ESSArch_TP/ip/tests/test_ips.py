@@ -22,6 +22,8 @@
     Email - essarch@essolutions.se
 """
 
+from unittest import mock
+
 import filecmp
 import glob
 import os
@@ -32,8 +34,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models import F
 from django.test import TestCase
 from django.urls import reverse
-
-from unittest import mock
 
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -67,7 +67,7 @@ class test_create_ip(TestCase):
     def tearDown(self):
         try:
             shutil.rmtree(self.datadir)
-        except:
+        except BaseException:
             pass
 
     def test_create_ip(self):
@@ -155,7 +155,7 @@ class test_delete_ip(TestCase):
     def tearDown(self):
         try:
             shutil.rmtree(self.datadir)
-        except:
+        except BaseException:
             pass
 
     def test_delete_ip_without_permission(self):
@@ -199,7 +199,7 @@ class test_submit_ip(TestCase):
     def tearDown(self):
         try:
             shutil.rmtree(self.datadir)
-        except:
+        except BaseException:
             pass
 
     def test_not_responsible(self):
@@ -341,7 +341,7 @@ class test_upload(TestCase):
     def tearDown(self):
         try:
             shutil.rmtree(self.datadir)
-        except:
+        except BaseException:
             pass
 
     def test_upload_file(self):

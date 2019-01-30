@@ -27,11 +27,11 @@
 import django
 django.setup()
 
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission
-from groups_manager.models import GroupType
-from ESSArch_Core.auth.models import Group, Member, GroupMemberRole
-from ESSArch_Core.configuration.models import Parameter, Path
+from django.contrib.auth import get_user_model  # noqa
+from django.contrib.auth.models import Permission  # noqa
+from groups_manager.models import GroupType  # noqa
+from ESSArch_Core.auth.models import Group, GroupMemberRole  # noqa
+from ESSArch_Core.configuration.models import Parameter, Path  # noqa
 
 User = get_user_model()
 
@@ -72,87 +72,87 @@ def installDefaultUsers():
 
     role_user, _ = GroupMemberRole.objects.get_or_create(codename='user')
     permission_list_user = [
-        ## ---- app: ip ---- model: informationpackage
-        ['view_informationpackage','ip','informationpackage'],       # Can view information packages
-        ['delete_informationpackage','ip','informationpackage'], # Can delete Information Package (Ingest)
-        ['can_upload','ip','informationpackage'],                    # Can upload files to IP
-        ['set_uploaded','ip','informationpackage'],                    # Can set IP as uploaded
-        ['create_sip','ip','informationpackage'],                    # Can create SIP
-        ['submit_sip','ip','informationpackage'],                    # Can submit SIP
-        ['prepare_ip','ip','informationpackage'],                    # Can prepare IP
-        ## ---- app: WorkflowEngine ---- model: processtask
-        #['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
-        #['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
+        # ---- app: ip ---- model: informationpackage
+        ['view_informationpackage', 'ip', 'informationpackage'],       # Can view information packages
+        ['delete_informationpackage', 'ip', 'informationpackage'],     # Can delete Information Package (Ingest)
+        ['can_upload', 'ip', 'informationpackage'],                    # Can upload files to IP
+        ['set_uploaded', 'ip', 'informationpackage'],                  # Can set IP as uploaded
+        ['create_sip', 'ip', 'informationpackage'],                    # Can create SIP
+        ['submit_sip', 'ip', 'informationpackage'],                    # Can submit SIP
+        ['prepare_ip', 'ip', 'informationpackage'],                    # Can prepare IP
+        # ---- app: WorkflowEngine ---- model: processtask
+        # ['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
+        # ['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
     ]
 
     for p in permission_list_user:
         p_obj = Permission.objects.get(
-                                          codename=p[0], content_type__app_label=p[1],
-                                          content_type__model=p[2],
-                                          )
+            codename=p[0], content_type__app_label=p[1],
+            content_type__model=p[2],
+        )
         role_user.permissions.add(p_obj)
 
     role_admin, _ = GroupMemberRole.objects.get_or_create(codename='admin')
     permission_list_admin = [
-        ## ---- app: profiles ---- model: submissionagreement
-        ['add_submissionagreement','profiles','submissionagreement'], # Can add Submission Agreement (Import)
-        ['change_submissionagreement','profiles','submissionagreement'], # Can change Submission Agreement
-        ## ---- app: profiles ---- model: profile
-        ['add_profile','profiles','profile'], # Can add Profile (Import)
-        ['change_profile','profiles','profile'], # Can change Profile
-        ## ---- app: WorkflowEngine ---- model: processtask
-        #['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
-        #['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
+        # ---- app: profiles ---- model: submissionagreement
+        ['add_submissionagreement', 'profiles', 'submissionagreement'],  # Can add Submission Agreement (Import)
+        ['change_submissionagreement', 'profiles', 'submissionagreement'],  # Can change Submission Agreement
+        # ---- app: profiles ---- model: profile
+        ['add_profile', 'profiles', 'profile'],  # Can add Profile (Import)
+        ['change_profile', 'profiles', 'profile'],  # Can change Profile
+        # ---- app: WorkflowEngine ---- model: processtask
+        # ['can_undo','WorkflowEngine','processtask'],             # Can undo tasks (other)
+        # ['can_retry','WorkflowEngine','processtask'],             # Can retry tasks (other)
     ]
-   
+
     for p in permission_list_admin:
         p_obj = Permission.objects.get(
-                                          codename=p[0], content_type__app_label=p[1],
-                                          content_type__model=p[2],
-                                          )        
+            codename=p[0], content_type__app_label=p[1],
+            content_type__model=p[2],
+        )
         role_admin.permissions.add(p_obj)
 
     role_sysadmin, _ = GroupMemberRole.objects.get_or_create(codename='sysadmin')
     permission_list_sysadmin = [
-        ## ---- app: auth ---- model: group
-        ['add_group','auth','group'],                    # Can add group
-        ['change_group','auth','group'],                    # Can change group
-        ['delete_group','auth','group'],                    # Can delete group
-        ## ---- app: auth ---- model: user
-        ['add_user','auth','user'],                    # Can add user
-        ['change_user','auth','user'],                    # Can change user
-        ['delete_user','auth','user'],                    # Can delete user
-        ## ---- app: configuration ---- model: parameter
-        ['add_parameter','configuration','parameter'],                    # Can add parameter
-        ['change_parameter','configuration','parameter'],                    # Can change parameter
-        ['delete_parameter','configuration','parameter'],                    # Can delete parameter
-        ## ---- app: configuration ---- model: path
-        ['add_path','configuration','path'],                    # Can add path
-        ['change_path','configuration','path'],                    # Can change path
-        ['delete_path','configuration','path'],                    # Can delete path
-        ## ---- app: configuration ---- model: eventtype
-        ['add_eventtype','configuration','eventtype'],                    # Can add eventtype
-        ['change_eventtype','configuration','eventtype'],                    # Can change eventtype
-        ['delete_eventtype','configuration','eventtype'],                    # Can delete eventtype        
-        ## ---- app: profiles ---- model: profile
-        ['add_profile','profiles','profile'],                    # Can add profile
-        ['change_profile','profiles','profile'],                    # Can change profile
-        ['delete_profile','profiles','profile'],                    # Can delete profile
-        ## ---- app: profiles ---- model: submissionagreement
-        ['add_submissionagreement','profiles','submissionagreement'],                    # Can add submissionagreement
-        ['change_submissionagreement','profiles','submissionagreement'],                    # Can change submissionagreement
-        ['delete_submissionagreement','profiles','submissionagreement'],                    # Can delete submissionagreement        
-        ## ---- app: groups_manager ---- model: grouptype
-        ['add_grouptype','groups_manager','grouptype'],                    # Can add grouptype
-        ['change_grouptype','groups_manager','grouptype'],                    # Can change grouptype
-        ['delete_grouptype','groups_manager','grouptype'],                    # Can delete grouptype
+        # ---- app: auth ---- model: group
+        ['add_group', 'auth', 'group'],                    # Can add group
+        ['change_group', 'auth', 'group'],                    # Can change group
+        ['delete_group', 'auth', 'group'],                    # Can delete group
+        # ---- app: auth ---- model: user
+        ['add_user', 'auth', 'user'],                    # Can add user
+        ['change_user', 'auth', 'user'],                    # Can change user
+        ['delete_user', 'auth', 'user'],                    # Can delete user
+        # ---- app: configuration ---- model: parameter
+        ['add_parameter', 'configuration', 'parameter'],                    # Can add parameter
+        ['change_parameter', 'configuration', 'parameter'],                    # Can change parameter
+        ['delete_parameter', 'configuration', 'parameter'],                    # Can delete parameter
+        # ---- app: configuration ---- model: path
+        ['add_path', 'configuration', 'path'],                    # Can add path
+        ['change_path', 'configuration', 'path'],                    # Can change path
+        ['delete_path', 'configuration', 'path'],                    # Can delete path
+        # ---- app: configuration ---- model: eventtype
+        ['add_eventtype', 'configuration', 'eventtype'],                    # Can add eventtype
+        ['change_eventtype', 'configuration', 'eventtype'],                    # Can change eventtype
+        ['delete_eventtype', 'configuration', 'eventtype'],                    # Can delete eventtype
+        # ---- app: profiles ---- model: profile
+        ['add_profile', 'profiles', 'profile'],                    # Can add profile
+        ['change_profile', 'profiles', 'profile'],                    # Can change profile
+        ['delete_profile', 'profiles', 'profile'],                    # Can delete profile
+        # ---- app: profiles ---- model: submissionagreement
+        ['add_submissionagreement', 'profiles', 'submissionagreement'],     # Can add submissionagreement
+        ['change_submissionagreement', 'profiles', 'submissionagreement'],  # Can change submissionagreement
+        ['delete_submissionagreement', 'profiles', 'submissionagreement'],  # Can delete submissionagreement
+        # ---- app: groups_manager ---- model: grouptype
+        ['add_grouptype', 'groups_manager', 'grouptype'],                    # Can add grouptype
+        ['change_grouptype', 'groups_manager', 'grouptype'],                    # Can change grouptype
+        ['delete_grouptype', 'groups_manager', 'grouptype'],                    # Can delete grouptype
     ]
-   
+
     for p in permission_list_sysadmin:
         p_obj = Permission.objects.get(
-                                          codename=p[0], content_type__app_label=p[1],
-                                          content_type__model=p[2],
-                                          )        
+            codename=p[0], content_type__app_label=p[1],
+            content_type__model=p[2],
+        )
         role_sysadmin.permissions.add(p_obj)
 
     #####################################
@@ -163,8 +163,8 @@ def installDefaultUsers():
     )
     if created:
         user_superuser.set_password('superuser')
-        user_superuser.is_staff=True
-        user_superuser.is_superuser=True
+        user_superuser.is_staff = True
+        user_superuser.is_superuser = True
         user_superuser.save()
 
     user_user, created = User.objects.get_or_create(
@@ -182,7 +182,7 @@ def installDefaultUsers():
     )
     if created:
         user_admin.set_password('admin')
-        user_admin.is_staff=True
+        user_admin.is_staff = True
         user_admin.save()
         default_org.add_member(user_admin.essauth_member, roles=[role_user, role_admin])
 
@@ -192,7 +192,7 @@ def installDefaultUsers():
     )
     if created:
         user_sysadmin.set_password('sysadmin')
-        user_sysadmin.is_staff=True
+        user_sysadmin.is_staff = True
         user_sysadmin.save()
         default_org.add_member(user_sysadmin.essauth_member, roles=[role_sysadmin])
 

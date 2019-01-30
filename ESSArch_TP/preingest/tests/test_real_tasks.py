@@ -76,7 +76,7 @@ class test_tasks(TransactionTestCase):
         for path in [self.prepare_path, self.preingest_reception, self.ingest_reception]:
             try:
                 shutil.rmtree(path)
-            except:
+            except BaseException:
                 pass
 
     def test_prepare_ip(self):
@@ -117,7 +117,7 @@ class test_tasks(TransactionTestCase):
         ip = InformationPackage.objects.create(label="ip1")
         user = User.objects.create(username="user1")
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
-        prepare_path = os.path.join(prepare_path, unicode(ip.pk))
+        prepare_path = os.path.join(prepare_path, str(ip.pk))
         event_type = EventType.objects.create(eventType=10110)
 
         task = ProcessTask.objects.create(
@@ -151,7 +151,7 @@ class test_tasks(TransactionTestCase):
     def test_create_physical_model(self):
         ip = InformationPackage.objects.create(label="ip1")
         prepare_path = Path.objects.get(entity="path_preingest_prepare").value
-        path = os.path.join(prepare_path, unicode(ip.pk))
+        path = os.path.join(prepare_path, str(ip.pk))
 
         task = ProcessTask.objects.create(
             name="preingest.tasks.CreatePhysicalModel",
