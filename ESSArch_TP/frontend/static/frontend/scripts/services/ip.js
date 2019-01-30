@@ -64,10 +64,6 @@ angular.module('essarch.services').factory('IP', function ($resource, appConfig,
                 }
             }
         },
-        unlockProfile: {
-            method: "POST",
-            params: { action: "unlock-profile", id: "@id" }
-        },
         checkProfile: {
             method: "PUT",
             params: { method: "check-profile", id: "@id"}
