@@ -22,7 +22,6 @@
     Email - essarch@essolutions.se
 """
 
-import six
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from rest_framework import exceptions, status, viewsets
@@ -94,7 +93,7 @@ class SubmissionAgreementViewSet(SAViewSetCore):
                         status=status.HTTP_400_BAD_REQUEST
                     )
 
-        for k, v in six.iteritems(new_data):
+        for k, v in new_data.items():
             if v != getattr(sa, k):
                 changed_data = True
                 break

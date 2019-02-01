@@ -26,10 +26,10 @@ from __future__ import absolute_import
 
 import os
 import shutil
+from urllib.parse import urljoin
 
 import requests
 from django.db import transaction
-from six.moves.urllib.parse import urljoin
 
 # noinspection PyUnresolvedReferences
 from ESSArch_Core import tasks  # noqa
