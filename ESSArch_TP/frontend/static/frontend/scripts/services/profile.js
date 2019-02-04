@@ -1,52 +1,66 @@
-angular.module('essarch.services').factory('Profile', function ($resource, appConfig) {
-    return $resource(appConfig.djangoUrl + 'profiles/:id/:action/?pager=none', {}, {
+angular
+  .module('essarch.services')
+  .factory('Profile', function($resource, appConfig) {
+    return $resource(
+      appConfig.djangoUrl + 'profiles/:id/:action/?pager=none',
+      {},
+      {
         get: {
-            method: "GET",
-            params: { id: "@id" }
+          method: 'GET',
+          params: {id: '@id'},
         },
         save: {
-            method: "POST",
-            params: { action: "save", id: "@id" }
+          method: 'POST',
+          params: {action: 'save', id: '@id'},
         },
         update: {
-            method: "PUT",
-            params: { id: "@id" }
+          method: 'PUT',
+          params: {id: '@id'},
         },
         new: {
-            method: "POST",
+          method: 'POST',
         },
         lock: {
-            method: "POST",
-            params: { action: "lock", id: "@id" }
-        }
-    });
-})
-.factory('ProfileIp', function ($resource, appConfig) {
-    return $resource(appConfig.djangoUrl + 'profile-ip/:id/', {}, {
-    query: {
-        method: "GET",
-        isArray: true,
-    },
-    get: {
-        method: "GET",
-    },
-    post: {
-        method: "POST",
-    },
-    patch: {
-        method: "PATCH",
-        params: { id: "@id" }
-    }
-    });
-})
-.factory('ProfileIpData', function ($resource, appConfig) {
-    return $resource(appConfig.djangoUrl + 'profile-ip-data/:id/:action/', {}, {
-    get: {
-        method: "GET",
-        params: { id: "@id" }
-    },
-    post: {
-        method: "POST",
-    },
-    });
-});
+          method: 'POST',
+          params: {action: 'lock', id: '@id'},
+        },
+      }
+    );
+  })
+  .factory('ProfileIp', function($resource, appConfig) {
+    return $resource(
+      appConfig.djangoUrl + 'profile-ip/:id/',
+      {},
+      {
+        query: {
+          method: 'GET',
+          isArray: true,
+        },
+        get: {
+          method: 'GET',
+        },
+        post: {
+          method: 'POST',
+        },
+        patch: {
+          method: 'PATCH',
+          params: {id: '@id'},
+        },
+      }
+    );
+  })
+  .factory('ProfileIpData', function($resource, appConfig) {
+    return $resource(
+      appConfig.djangoUrl + 'profile-ip-data/:id/:action/',
+      {},
+      {
+        get: {
+          method: 'GET',
+          params: {id: '@id'},
+        },
+        post: {
+          method: 'POST',
+        },
+      }
+    );
+  });

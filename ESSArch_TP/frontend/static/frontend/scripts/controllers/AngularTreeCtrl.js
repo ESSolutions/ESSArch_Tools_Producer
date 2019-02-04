@@ -22,69 +22,71 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.controllers').controller('AngularTreeCtrl', function AngularTreeCtrl(Agent, $scope, $http, $rootScope, appConfig) {
+angular
+  .module('essarch.controllers')
+  .controller('AngularTreeCtrl', function AngularTreeCtrl(Agent, $scope, $http, $rootScope, appConfig) {
     $scope.treeOptions = {
-        nodeChildren: "children",
-        dirSelectable: true,
-        injectClasses: {
-            ul: "a1",
-            li: "a2",
-            liSelected: "a7",
-            iExpanded: "a3",
-            iCollapsed: "a4",
-            iLeaf: "a5",
-            label: "a6",
-            labelSelected: "a8"
-        }
+      nodeChildren: 'children',
+      dirSelectable: true,
+      injectClasses: {
+        ul: 'a1',
+        li: 'a2',
+        liSelected: 'a7',
+        iExpanded: 'a3',
+        iCollapsed: 'a4',
+        iLeaf: 'a5',
+        label: 'a6',
+        labelSelected: 'a8',
+      },
     };
 
     $scope.Agent = [];
     $rootScope.loadNavigation = function(ipState) {
-        Agent.query({
-            ip_state: ipState
-        }).$promise.then(function(data) {
-            $scope.Agent = [];
-            data.forEach(function(agent) {
-                var agentName = agent.role + " " + agent.type;
-                agentName = agentName.charAt(0).toUpperCase() + agentName.slice(1).toLowerCase();
-                var agent_role_type = $scope.Agent.find(function(element) {
-                    return element.name === agentName;
-                });
+      Agent.query({
+        ip_state: ipState,
+      }).$promise.then(function(data) {
+        $scope.Agent = [];
+        data.forEach(function(agent) {
+          var agentName = agent.role + ' ' + agent.type;
+          agentName = agentName.charAt(0).toUpperCase() + agentName.slice(1).toLowerCase();
+          var agent_role_type = $scope.Agent.find(function(element) {
+            return element.name === agentName;
+          });
 
-                if (agent_role_type === undefined){
-                    agent_role_type = {
-                        "name": agentName,
-                        "children": []
-                    };
-                    $scope.Agent.push(agent_role_type);
-                }
-                var existing_agent = agent_role_type.children.find(function(element) {
-                    return element.id === agent.id;
-                });
-                if (existing_agent === undefined) {
-                    agent_role_type.children.push(agent);
-                }
-            });
-            $scope.Agent.sort(function(a,b){
-                return a.name > b.name;
-            });
+          if (agent_role_type === undefined) {
+            agent_role_type = {
+              name: agentName,
+              children: [],
+            };
+            $scope.Agent.push(agent_role_type);
+          }
+          var existing_agent = agent_role_type.children.find(function(element) {
+            return element.id === agent.id;
+          });
+          if (existing_agent === undefined) {
+            agent_role_type.children.push(agent);
+          }
         });
-    }
+        $scope.Agent.sort(function(a, b) {
+          return a.name > b.name;
+        });
+      });
+    };
     $rootScope.navigationFilter = {
-        agents: null,
+      agents: null,
     };
 
     $scope.showSelectedAgent = function(node) {
-        $scope.nodeOther = null;
-        $rootScope.navigationFilter.other = null;
-        if(angular.isUndefined(node.id)){
-            $rootScope.navigationFilter.agents = null;
-            return;
-        }
-        if($rootScope.navigationFilter.agents == node.id) {
-            $rootScope.navigationFilter.agents = null;
-        } else {
-            $rootScope.navigationFilter.agents = node.id;
-        }
-    }
-});
+      $scope.nodeOther = null;
+      $rootScope.navigationFilter.other = null;
+      if (angular.isUndefined(node.id)) {
+        $rootScope.navigationFilter.agents = null;
+        return;
+      }
+      if ($rootScope.navigationFilter.agents == node.id) {
+        $rootScope.navigationFilter.agents = null;
+      } else {
+        $rootScope.navigationFilter.agents = node.id;
+      }
+    };
+  });

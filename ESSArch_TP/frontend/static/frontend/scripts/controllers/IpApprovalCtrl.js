@@ -22,77 +22,104 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.controllers').controller('IpApprovalCtrl', function (IP, Profile, $log, $scope, myService, appConfig, $http, $timeout, $state, $stateParams, $rootScope, listViewService, $interval, Resource, $uibModal, $translate, $filter, $anchorScroll, PermPermissionStore, $cookies, $controller){
+angular
+  .module('essarch.controllers')
+  .controller('IpApprovalCtrl', function(
+    IP,
+    Profile,
+    $log,
+    $scope,
+    myService,
+    appConfig,
+    $http,
+    $timeout,
+    $state,
+    $stateParams,
+    $rootScope,
+    listViewService,
+    $interval,
+    Resource,
+    $uibModal,
+    $translate,
+    $filter,
+    $anchorScroll,
+    PermPermissionStore,
+    $cookies,
+    $controller
+  ) {
     var vm = this;
     var ipSortString = ['Uploaded', 'Creating'];
-    $controller('BaseCtrl', { $scope: $scope, vm: vm, ipSortString: ipSortString });
+    $controller('BaseCtrl', {$scope: $scope, vm: vm, ipSortString: ipSortString});
     $scope.ipSelected = false;
 
     //funcitons for select view
     vm.profileModel = {};
-    vm.profileFields=[];
+    vm.profileFields = [];
     //Click function for profile pbject
-    $scope.profileClick = function(row){
-        if ($scope.selectProfile == row && $scope.edit){
-            $scope.edit = false;
-        } else {
-            if(row.active) {
-                Profile.get({
-                    id: row.active.profile,
-                    ip: $scope.ip.id
-                }).$promise.then(function(resource) {
-                    $scope.profileToSave = row.active;
-                    $scope.selectProfile = row;
-                    vm.profileModel = resource.specification_data;
-                    vm.profileFields = resource.template;
-                    vm.profileFields.forEach(function(field) {
-                        if(field.fieldGroup != null){
-                            field.fieldGroup.forEach(function(subGroup) {
-                                subGroup.fieldGroup.forEach(function(item) {
-                                    item.type = 'input';
-                                    item.templateOptions.disabled = true;
-                                });
-                            });
-                        } else {
-                            field.type = 'input';
-                            field.templateOptions.disabled = true;
-                        }
-                    });
-                    $scope.edit = true;
-                    $scope.eventlog = true;
-                    vm.getEventlogData();
+    $scope.profileClick = function(row) {
+      if ($scope.selectProfile == row && $scope.edit) {
+        $scope.edit = false;
+      } else {
+        if (row.active) {
+          Profile.get({
+            id: row.active.profile,
+            ip: $scope.ip.id,
+          }).$promise.then(function(resource) {
+            $scope.profileToSave = row.active;
+            $scope.selectProfile = row;
+            vm.profileModel = resource.specification_data;
+            vm.profileFields = resource.template;
+            vm.profileFields.forEach(function(field) {
+              if (field.fieldGroup != null) {
+                field.fieldGroup.forEach(function(subGroup) {
+                  subGroup.fieldGroup.forEach(function(item) {
+                    item.type = 'input';
+                    item.templateOptions.disabled = true;
+                  });
                 });
-            }
+              } else {
+                field.type = 'input';
+                field.templateOptions.disabled = true;
+              }
+            });
+            $scope.edit = true;
+            $scope.eventlog = true;
+            vm.getEventlogData();
+          });
         }
+      }
     };
 
-    vm.createSipModal = function (ip) {
-        var ips = $scope.ips.length > 0? $scope.ips:null;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'static/frontend/views/create_sip_modal.html',
-            scope: $scope,
-            controller: 'DataModalInstanceCtrl',
-            controllerAs: '$ctrl',
-            resolve: {
-                data: {
-                    ip: ip,
-                    ips: ips,
-                    vm: vm
-                }
-            }
-        })
-        modalInstance.result.then(function (data) {
-            $scope.ips = [];
-            $scope.ip = null;
-            $rootScope.ip = null;
-            $scope.getListViewData();
-            vm.updateListViewConditional();
-            $anchorScroll();
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    }
-});
+    vm.createSipModal = function(ip) {
+      var ips = $scope.ips.length > 0 ? $scope.ips : null;
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'static/frontend/views/create_sip_modal.html',
+        scope: $scope,
+        controller: 'DataModalInstanceCtrl',
+        controllerAs: '$ctrl',
+        resolve: {
+          data: {
+            ip: ip,
+            ips: ips,
+            vm: vm,
+          },
+        },
+      });
+      modalInstance.result.then(
+        function(data) {
+          $scope.ips = [];
+          $scope.ip = null;
+          $rootScope.ip = null;
+          $scope.getListViewData();
+          vm.updateListViewConditional();
+          $anchorScroll();
+        },
+        function() {
+          $log.info('modal-component dismissed at: ' + new Date());
+        }
+      );
+    };
+  });

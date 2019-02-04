@@ -22,54 +22,56 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.services').factory('Resource', function ($q, $filter, $timeout, listViewService, $rootScope) {
-
-    //Get data for Events table
-	function getEventPage(start, number, pageNumber, params, selected, sort, columnFilters, search) {
-        var sortString = sort.predicate;
-        if(sort.predicate == "eventDateTime") {
-            if(sort.reverse) {
-                sortString = sortString + ",-id";
-            } else {
-                sortString = sortString + ",id";
+angular.module('essarch.services').factory('Resource', function($q, $filter, $timeout, listViewService, $rootScope) {
+  //Get data for Events table
+  function getEventPage(start, number, pageNumber, params, selected, sort, columnFilters, search) {
+    var sortString = sort.predicate;
+    if (sort.predicate == 'eventDateTime') {
+      if (sort.reverse) {
+        sortString = sortString + ',-id';
+      } else {
+        sortString = sortString + ',id';
+      }
+    }
+    if (sort.reverse) {
+      sortString = '-' + sortString;
+    }
+    return listViewService
+      .getEvents($rootScope.ip, pageNumber, number, sortString, columnFilters, search)
+      .then(function(value) {
+        var eventCollection = value.data;
+        eventCollection.forEach(function(event) {
+          selected.forEach(function(item) {
+            if (item.id == event.id) {
+              event.class = 'selected';
             }
-        }
-        if(sort.reverse) {
-            sortString = "-"+sortString;
-        }
-        return listViewService.getEvents($rootScope.ip, pageNumber, number, sortString, columnFilters, search).then(function(value) {
-            var eventCollection = value.data;
-            eventCollection.forEach(function(event) {
-                selected.forEach(function(item) {
-                    if(item.id == event.id) {
-                        event.class = "selected";
-                    }
-                });
-            });
-            return {
-                data: eventCollection,
-                numberOfPages: Math.ceil(value.count / number)
-            };
+          });
         });
-	}
-    //Get data for IP table
-    function getIpPage(start, number, pageNumber, params, sort, search, state, columnFilters) {
-        var sortString = sort.predicate;
-        if(sort.reverse) {
-            sortString = "-"+sortString;
-        }
-        return listViewService.getListViewData(pageNumber, number, sortString, search, state, columnFilters).then(function(value) {
-            var ipCollection = value.data;
-            return {
-                data: ipCollection,
-                numberOfPages: Math.ceil(value.count / number)
-            };
-        });
-	}
+        return {
+          data: eventCollection,
+          numberOfPages: Math.ceil(value.count / number),
+        };
+      });
+  }
+  //Get data for IP table
+  function getIpPage(start, number, pageNumber, params, sort, search, state, columnFilters) {
+    var sortString = sort.predicate;
+    if (sort.reverse) {
+      sortString = '-' + sortString;
+    }
+    return listViewService
+      .getListViewData(pageNumber, number, sortString, search, state, columnFilters)
+      .then(function(value) {
+        var ipCollection = value.data;
+        return {
+          data: ipCollection,
+          numberOfPages: Math.ceil(value.count / number),
+        };
+      });
+  }
 
-	return {
-		getEventPage: getEventPage,
-        getIpPage: getIpPage,
-	};
-
+  return {
+    getEventPage: getEventPage,
+    getIpPage: getIpPage,
+  };
 });
