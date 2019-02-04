@@ -64,3 +64,11 @@
 @import 'modules/positions';
 @import 'core/modules/utils';
 @import 'core/modules/tabs';
+.progress-bar {
+  //transition: initial !important;
+  width: auto;
+}
+.progress-bar.active,
+.progress.active .progress-bar {
+  //animation: initial !important;
+}

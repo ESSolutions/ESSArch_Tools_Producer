@@ -22,93 +22,111 @@
     Email - essarch@essolutions.se
 */
 
-angular.module('essarch.controllers').controller('ModalInstanceCtrl', function (IP, $scope, $uibModalInstance, $http, appConfig, djangoAuth, $translate, Notifications) {
+angular
+  .module('essarch.controllers')
+  .controller('ModalInstanceCtrl', function(
+    IP,
+    $scope,
+    $uibModalInstance,
+    $http,
+    appConfig,
+    djangoAuth,
+    $translate,
+    Notifications
+  ) {
     var $ctrl = this;
     $ctrl.preparing = false;
     $ctrl.error_messages_old = [];
     $ctrl.error_messages_pw1 = [];
     $ctrl.error_messages_pw2 = [];
-    $ctrl.dir_name = "";
+    $ctrl.dir_name = '';
     $ctrl.email = {
-        subject: "",
-        body: ""
+      subject: '',
+      body: '',
     };
     $ctrl.tracebackCopied = false;
     $ctrl.copied = function() {
-        $ctrl.tracebackCopied = true;
-    }
+      $ctrl.tracebackCopied = true;
+    };
     $ctrl.idCopied = false;
     $ctrl.idCopyDone = function() {
-        $ctrl.idCopied = true;
-    }
-    $ctrl.save = function () {
-        $ctrl.data = {
-            name: $ctrl.profileName
-        };
-        $uibModalInstance.close($ctrl.data);
+      $ctrl.idCopied = true;
     };
-    $ctrl.saveDir = function () {
-        $ctrl.data = {
-            dir_name: $ctrl.dir_name
-        };
-        $uibModalInstance.close($ctrl.data);
+    $ctrl.save = function() {
+      $ctrl.data = {
+        name: $ctrl.profileName,
+      };
+      $uibModalInstance.close($ctrl.data);
     };
-    $ctrl.prepare = function () {
-        $ctrl.data = {
-            label: $ctrl.label,
-            objectIdentifierValue: $ctrl.objectIdentifierValue
-        }
-        $ctrl.preparing = true;
-        return IP.prepare({
-                label: $ctrl.data.label,
-                object_identifier_value: $ctrl.data.objectIdentifierValue
-        }).$promise.then(function (resource){
-            $ctrl.preparing = false;
-            return $uibModalInstance.close($ctrl.data);
-        }).catch(function(response) {
-            $ctrl.preparing = false;
+    $ctrl.saveDir = function() {
+      $ctrl.data = {
+        dir_name: $ctrl.dir_name,
+      };
+      $uibModalInstance.close($ctrl.data);
+    };
+    $ctrl.prepare = function() {
+      $ctrl.data = {
+        label: $ctrl.label,
+        objectIdentifierValue: $ctrl.objectIdentifierValue,
+      };
+      $ctrl.preparing = true;
+      return IP.prepare({
+        label: $ctrl.data.label,
+        object_identifier_value: $ctrl.data.objectIdentifierValue,
+      })
+        .$promise.then(function(resource) {
+          $ctrl.preparing = false;
+          return $uibModalInstance.close($ctrl.data);
+        })
+        .catch(function(response) {
+          $ctrl.preparing = false;
         });
     };
     $ctrl.prepareForUpload = function() {
-        $ctrl.data = {
-            ip: $scope.ip
-        }
-        $ctrl.preparing = true;
-        IP.prepareForUpload({ id: ip.id }).$promise.then(function(resource) {
-            $ctrl.preparing = false;
-            $uibModalInstance.close($ctrl.data);
-        }).catch(function(response) {
-            $ctrl.preparing = false;
+      $ctrl.data = {
+        ip: $scope.ip,
+      };
+      $ctrl.preparing = true;
+      IP.prepareForUpload({id: ip.id})
+        .$promise.then(function(resource) {
+          $ctrl.preparing = false;
+          $uibModalInstance.close($ctrl.data);
         })
-    }
-    $ctrl.submitSip = function() {
-        $ctrl.data = {
-            ip: $scope.ip
-        }
-        $uibModalInstance.close($ctrl.data);
-    }
-    $ctrl.lock = function () {
-        $ctrl.data = {
-            status: "locked"
-        }
-        $uibModalInstance.close($ctrl.data);
-    };
-    $ctrl.lockSa = function() {
-        $ctrl.data = {
-            status: "locked"
-        }
-        $uibModalInstance.close($ctrl.data);
-    };
-    $ctrl.changePassword = function () {
-        djangoAuth.changePassword($ctrl.pw1, $ctrl.pw2, $ctrl.oldPw).then(function(response) {
-            $uibModalInstance.close($ctrl.data);
-        }, function(error) {
-            $ctrl.error_messages_old = error.old_password || [];
-            $ctrl.error_messages_pw1 = error.new_password1 || [];
-            $ctrl.error_messages_pw2 = error.new_password2 || [];
+        .catch(function(response) {
+          $ctrl.preparing = false;
         });
     };
-    $ctrl.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
+    $ctrl.submitSip = function() {
+      $ctrl.data = {
+        ip: $scope.ip,
+      };
+      $uibModalInstance.close($ctrl.data);
     };
-});
+    $ctrl.lock = function() {
+      $ctrl.data = {
+        status: 'locked',
+      };
+      $uibModalInstance.close($ctrl.data);
+    };
+    $ctrl.lockSa = function() {
+      $ctrl.data = {
+        status: 'locked',
+      };
+      $uibModalInstance.close($ctrl.data);
+    };
+    $ctrl.changePassword = function() {
+      djangoAuth.changePassword($ctrl.pw1, $ctrl.pw2, $ctrl.oldPw).then(
+        function(response) {
+          $uibModalInstance.close($ctrl.data);
+        },
+        function(error) {
+          $ctrl.error_messages_old = error.old_password || [];
+          $ctrl.error_messages_pw1 = error.new_password1 || [];
+          $ctrl.error_messages_pw2 = error.new_password2 || [];
+        }
+      );
+    };
+    $ctrl.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
+  });

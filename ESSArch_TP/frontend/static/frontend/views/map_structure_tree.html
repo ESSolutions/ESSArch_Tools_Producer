@@ -1,15 +1,17 @@
 <h4>{{'MAPSTRUCTURE' | translate}}</h4>
 <div id="edit-tree" class="edit-view-tree">
-    <br />
-    <div class="tree">
-        <treecontrol class="tree-classic"
-                     tree-model="treeElements"
-                     options="treeOptions"
-                     on-selection="showSelected(node, $parentNode)"
-                     selected-node="selectedNode"
-                     expanded-nodes="expandedNodes"
-                     style="float:left;">
-        <span class="tree-edit-item">{{node.name}}</span>
-        </treecontrol>
-    </div>
+  <br />
+  <div class="tree">
+    <treecontrol
+      class="tree-classic"
+      tree-model="treeElements"
+      options="treeOptions"
+      on-selection="showSelected(node, $parentNode)"
+      selected-node="selectedNode"
+      expanded-nodes="expandedNodes"
+      style="float:left;"
+    >
+      <span class="tree-edit-item">{{node.name}}</span>
+    </treecontrol>
+  </div>
 </div>

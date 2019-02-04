@@ -1,9 +1,9 @@
-<label class="control-label" for="{{::id}}"
-       uib-tooltip="{{options.templateOptions.desc}}"
-       tooltip-placement="auto top"
-       tooltip-append-to-body="true">{{to.label}} {{to.required ? '*' : ''}}</label>
-<input class="form-control"
-       id="{{::id}}"
-       name="{{::id}}"
-       class="form-control"
-       ng-model="model[options.key]" />
+<label
+  class="control-label"
+  for="{{::id}}"
+  uib-tooltip="{{options.templateOptions.desc}}"
+  tooltip-placement="auto top"
+  tooltip-append-to-body="true"
+  >{{to.label}} {{to.required ? '*' : ''}}</label
+>
+<input class="form-control" id="{{::id}}" name="{{::id}}" class="form-control" ng-model="model[options.key]" />
