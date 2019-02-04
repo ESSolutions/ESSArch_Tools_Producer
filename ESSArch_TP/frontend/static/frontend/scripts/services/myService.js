@@ -30,8 +30,7 @@ angular
     $anchorScroll,
     $http,
     appConfig,
-    djangoAuth,
-    Sysinfo
+    djangoAuth
   ) {
     function changePath(state) {
       $state.go(state);
