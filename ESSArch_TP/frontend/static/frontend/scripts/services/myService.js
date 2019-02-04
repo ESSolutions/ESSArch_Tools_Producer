@@ -60,11 +60,6 @@ angular
       }
       return temp1;
     }
-    function getVersionInfo() {
-      return Sysinfo.get().$promise.then(function(data) {
-        return data;
-      });
-    }
     function getActiveColumns() {
       return djangoAuth.profile().then(function(response) {
         return generateColumns(response.data.ip_list_columns);
@@ -153,7 +148,6 @@ angular
       changePath: changePath,
       getPermissions: getPermissions,
       hasChild: hasChild,
-      getVersionInfo: getVersionInfo,
       getActiveColumns: getActiveColumns,
       generateColumns: generateColumns,
       checkPermission: checkPermission,
