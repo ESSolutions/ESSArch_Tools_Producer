@@ -30,8 +30,7 @@ angular
     $anchorScroll,
     $http,
     appConfig,
-    djangoAuth,
-    Sysinfo
+    djangoAuth
   ) {
     function changePath(state) {
       $state.go(state);
@@ -59,11 +58,6 @@ angular
         });
       }
       return temp1;
-    }
-    function getVersionInfo() {
-      return Sysinfo.get().$promise.then(function(data) {
-        return data;
-      });
     }
     function getActiveColumns() {
       return djangoAuth.profile().then(function(response) {
@@ -153,7 +147,6 @@ angular
       changePath: changePath,
       getPermissions: getPermissions,
       hasChild: hasChild,
-      getVersionInfo: getVersionInfo,
       getActiveColumns: getActiveColumns,
       generateColumns: generateColumns,
       checkPermission: checkPermission,
