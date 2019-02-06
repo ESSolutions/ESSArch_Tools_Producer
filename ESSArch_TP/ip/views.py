@@ -49,7 +49,7 @@ from ESSArch_Core.ip.permissions import CanCreateSIP, CanSetUploaded, CanSubmitS
 from ESSArch_Core.ip.views import InformationPackageViewSet as InformationPackageViewSetCore
 from ESSArch_Core.mixins import GetObjectForUpdateViewMixin
 from ESSArch_Core.profiles.models import ProfileIP
-from ESSArch_Core.util import find_destination, in_directory, merge_file_chunks, mkdir_p, normalize_path
+from ESSArch_Core.util import find_destination, in_directory, merge_file_chunks, normalize_path
 
 from .serializers import InformationPackageSerializer, InformationPackageReadSerializer
 
@@ -616,7 +616,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
             chunk = request.FILES['file']
 
             if not os.path.exists(os.path.dirname(chunk_path)):
-                mkdir_p(os.path.dirname(chunk_path))
+                os.makedirs(os.path.dirname(chunk_path), exist_ok=True)
 
             with open(chunk_path, 'wb+') as dst:
                 for c in chunk.chunks():
