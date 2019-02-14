@@ -29,15 +29,15 @@ import glob
 import os
 import shutil
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models import F
 from django.test import TestCase
 from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from ESSArch_Core.auth.models import Group, GroupMember, GroupMemberRole, GroupType
 from ESSArch_Core.configuration.models import EventType, Path
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
@@ -46,17 +46,23 @@ from ESSArch_Core.WorkflowEngine.models import ProcessTask
 
 class test_create_ip(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="admin")
-
         self.client = APIClient()
+        self.url = reverse('informationpackage-list')
+
+        self.user = User.objects.create(username='user')
+        self.member = self.user.essauth_member
+
+
         self.client.force_authenticate(user=self.user)
 
         self.root = os.path.dirname(os.path.realpath(__file__))
         self.datadir = os.path.join(self.root, 'datadir')
-
         Path.objects.create(entity='path_preingest_prepare', value=self.datadir)
 
-        self.url = reverse('informationpackage-list')
+        EventType.objects.create(eventType=10100)
+        EventType.objects.create(eventType=10200)
+
+        self.addCleanup(shutil.rmtree, self.datadir)
 
         try:
             os.mkdir(self.datadir)
@@ -64,18 +70,43 @@ class test_create_ip(TestCase):
             if e.errno != 17:
                 raise
 
-    def tearDown(self):
-        try:
-            shutil.rmtree(self.datadir)
-        except BaseException:
-            pass
+    def get_add_permission(self):
+        return Permission.objects.get(codename='add_informationpackage')
 
-    def test_create_ip(self):
+    def add_to_organization(self):
+        self.org_group_type = GroupType.objects.create(label='organization')
+        self.org = Group.objects.create(name='organization', group_type=self.org_group_type)
+
+        self.user_role = GroupMemberRole.objects.create(codename='user_role')
+
+        membership = GroupMember.objects.create(member=self.member, group=self.org)
+        membership.roles.add(self.user_role)
+
+    def test_without_permission(self):
         data = {'label': 'my label', 'object_identifier_value': 'my objid'}
 
         res = self.client.post(self.url, data)
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertFalse(InformationPackage.objects.exists())
 
+    def test_without_organization(self):
+        perm = self.get_add_permission()
+        self.user.user_permissions.add(perm)
+
+        data = {'label': 'my label', 'object_identifier_value': 'my objid'}
+        res = self.client.post(self.url, data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(InformationPackage.objects.exists())
+
+    def test_create_ip(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
+        data = {'label': 'my label', 'object_identifier_value': 'my objid'}
+        res = self.client.post(self.url, data)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(
             InformationPackage.objects.filter(
                 responsible=self.user,
@@ -85,50 +116,64 @@ class test_create_ip(TestCase):
         )
 
     def test_create_ip_without_objid(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
         data = {'label': 'my label'}
 
         res = self.client.post(self.url, data)
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        ip = InformationPackage.objects.get()
 
-        InformationPackage.objects.filter(
-            responsible=self.user,
-            label=data['label'],
-            object_identifier_value=F('pk')
-        ).exists()
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(str(ip.pk), ip.object_identifier_value)
 
     def test_create_ip_without_label(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
         data = {'object_identifier_value': 'my objid'}
-
         res = self.client.post(self.url, data)
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(InformationPackage.objects.exists())
 
     def test_create_ip_with_same_objid_as_existing(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
         existing = InformationPackage.objects.create(object_identifier_value='objid')
 
         data = {'label': 'my label', 'object_identifier_value': 'objid'}
-
         res = self.client.post(self.url, data)
-        self.assertEqual(res.status_code, status.HTTP_409_CONFLICT)
 
+        self.assertEqual(res.status_code, status.HTTP_409_CONFLICT)
         self.assertEqual(InformationPackage.objects.count(), 1)
         self.assertEqual(InformationPackage.objects.first().pk, existing.pk)
 
     def test_create_ip_with_same_objid_as_existing_on_disk_but_not_db(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
         os.mkdir(os.path.join(self.datadir, 'objid'))
         data = {'label': 'my label', 'object_identifier_value': 'objid'}
-
         res = self.client.post(self.url, data)
+
         self.assertEqual(res.status_code, status.HTTP_409_CONFLICT)
         self.assertFalse(InformationPackage.objects.exists())
 
     def test_create_ip_with_same_label_as_existing(self):
+        self.add_to_organization()
+        perm = self.get_add_permission()
+        self.user_role.permissions.add(perm)
+
         InformationPackage.objects.create(label='label')
-
         data = {'label': 'label'}
-
         res = self.client.post(self.url, data)
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(InformationPackage.objects.filter(label='label').count(), 2)
 

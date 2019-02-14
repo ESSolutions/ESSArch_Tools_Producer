@@ -40,6 +40,7 @@ from rest_framework.response import Response
 
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
 from ESSArch_Core.WorkflowEngine.util import create_workflow
+from ESSArch_Core.auth.decorators import permission_required_or_403
 from ESSArch_Core.auth.models import Member
 from ESSArch_Core.configuration.models import Path
 from ESSArch_Core.exceptions import Conflict, NoFileChunksFound
@@ -66,6 +67,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
         return InformationPackageSerializer
 
+    @permission_required_or_403('ip.add_informationpackage')
     def create(self, request, *args, **kwargs):
         """
         Prepares a new information package (IP) using the following tasks:
@@ -284,6 +286,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         return Response(filename_list)
 
     @transaction.atomic
+    @permission_required_or_403('ip.prepare_ip')
     @detail_route(methods=['post'], url_path='prepare')
     def prepare(self, request, pk=None):
         ip = self.get_object_for_update()
