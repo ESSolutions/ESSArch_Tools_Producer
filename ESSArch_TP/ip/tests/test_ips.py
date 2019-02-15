@@ -52,7 +52,6 @@ class CreateIPTestCase(TestCase):
         self.user = User.objects.create(username='user')
         self.member = self.user.essauth_member
 
-
         self.client.force_authenticate(user=self.user)
 
         self.root = os.path.dirname(os.path.realpath(__file__))
