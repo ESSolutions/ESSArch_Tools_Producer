@@ -74,6 +74,7 @@ def installDefaultUsers():
     permission_list_user = [
         # ---- app: ip ---- model: informationpackage
         ['view_informationpackage', 'ip', 'informationpackage'],       # Can view information packages
+        ['add_informationpackage', 'ip', 'informationpackage'],        # Can add Information Package
         ['delete_informationpackage', 'ip', 'informationpackage'],     # Can delete Information Package (Ingest)
         ['can_upload', 'ip', 'informationpackage'],                    # Can upload files to IP
         ['set_uploaded', 'ip', 'informationpackage'],                  # Can set IP as uploaded
