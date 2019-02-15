@@ -44,7 +44,7 @@ from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
 from ESSArch_Core.WorkflowEngine.models import ProcessTask
 
 
-class test_create_ip(TestCase):
+class CreateIPTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.url = reverse('informationpackage-list')
