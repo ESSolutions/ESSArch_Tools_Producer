@@ -519,41 +519,6 @@ angular
       }
     };
 
-    // Functions associated with profiles
-
-    //populating select view
-    $scope.selectRowCollection = [];
-    $scope.selectRowCollapse = [];
-
-    //Gets all submission agreement profiles
-    $scope.getSaProfiles = function(ip) {
-      $scope.selectRowCollapse = [];
-      listViewService.getSaProfiles(ip).then(function(value) {
-        $scope.saProfile = value;
-        var promises = [];
-        for (var key in $scope.saProfile.profile) {
-          if (/^profile/.test(key) && $scope.saProfile.profile[key] != null) {
-            promises.push(
-              Profile.get({id: $scope.saProfile.profile[key]}).$promise.then(function(resource) {
-                $scope.selectRowCollapse.push(resource);
-                return resource;
-              })
-            );
-          }
-        }
-        $q.all(promises).then(function() {
-          $scope.selectRowCollection = $scope.selectRowCollapse;
-          return $scope.saProfile;
-        });
-        //$scope.getSelectCollection(value.profile, ip)
-      });
-    };
-
-    //Get All profiles and populates the select view table array
-    $scope.getSelectCollection = function(sa, ip) {
-      $scope.selectRowCollapse = listViewService.getProfilesFromIp(sa, ip);
-    };
-
     // Initialize validator fields
 
     vm.validatorModel = {};

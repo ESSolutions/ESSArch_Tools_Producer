@@ -228,133 +228,9 @@ angular
       }).$promise.then(function success(response) {}, function error(response) {});
     };
 
-    //Change the standard profile of the same type as given profile for an sa
-    $scope.changeProfile = function(profile, row) {
-      var sendData = {new_profile: profile.id};
-      var uri = $scope.ip.url + 'change-profile/';
-      IP.changeProfile(angular.extend({id: $scope.ip.id}, sendData)).$promise.then(
-        function success(response) {
-          row.active = profile;
-          if ($scope.edit && row == $scope.selectedProfileRow) {
-            $scope.edit = false;
-            $scope.profileClick(row);
-          }
-        },
-        function error(response) {
-          alert(response.status);
-        }
-      );
-    };
-    //Changes SA profile for selected ip
-    $scope.changeSaProfile = function(sa, ip, oldSa_idx) {
-      IP.changeSa({
-        id: ip.id,
-        submission_agreement: sa.url,
-      }).$promise.then(
-        function(response) {
-          //$scope.getSelectCollection(sa, ip);
-          //$scope.selectRowCollection = $scope.selectRowCollapse;
-          $scope.getSaProfiles($scope.ip);
-          if ($scope.editSA) {
-            $scope.saClick({profile: sa});
-          }
-          $scope.saProfile.profile = sa;
-        },
-        function(response) {
-          $scope.saProfile.profile = $scope.saProfile.profiles[oldSa_idx];
-        }
-      );
-    };
 
-    //Saves edited SA and creates a new SA instance with given name
-    vm.onSASubmit = function(new_name) {
-      SA.save({
-        id: $scope.profileToSave.id,
-        data: vm.profileModel,
-        information_package: $scope.ip.id,
-        new_name: new_name,
-      }).$promise.then(
-        function(resource) {
-          $scope.editSA = false;
-          var old = $scope.saProfile.profiles.indexOf($scope.saProfile.profile);
-          $scope.saProfile.profiles.push(resource);
-          $scope.changeSaProfile(resource, $scope.ip, old);
-        },
-        function(resource) {
-          console.log(resource.status);
-        }
-      );
-    };
-    //Saves edited profile and creates a new profile instance with given name
-    vm.onSubmit = function(new_name) {
-      profileUrl = $scope.profileToSave.profile || $scope.profileToSave.url;
-      var sendData = {};
-      Profile.save({
-        id: $scope.profileToSave.profile || $scope.profileToSave.id,
-        specification_data: vm.profileModel,
-        new_name: new_name,
-        structure: $scope.treeElements[0].children,
-      }).$promise.then(
-        function(resource) {
-          var profileType = 'profile_' + $scope.profileToSave.profile_type;
-          var newProfile = resource;
-          $scope.selectedProfileRow.profiles.push(newProfile);
-          newProfile.profile_name = newProfile.name;
-          $scope.changeProfile(newProfile, $scope.selectedProfileRow);
-          $scope.edit = false;
-          $scope.eventlog = false;
-        },
-        function(resource) {
-          alert(resource.status);
-        }
-      );
-    };
     $scope.optionalOptions = true;
 
-    //Create and show modal when saving an SA
-    vm.saveSAModal = function() {
-      if (vm.editForm.$valid) {
-        vm.options.updateInitialValue();
-        var modalInstance = $uibModal.open({
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          templateUrl: 'static/frontend/views/save_sa_modal.html',
-          controller: 'ModalInstanceCtrl',
-          controllerAs: '$ctrl',
-        });
-        modalInstance.result.then(
-          function(data) {
-            vm.onSASubmit(data.name);
-          },
-          function() {
-            $log.info('modal-component dismissed at: ' + new Date());
-          }
-        );
-      }
-    };
-    //Create and show modal when saving a profile
-    vm.saveModal = function() {
-      if (vm.editForm.$valid) {
-        vm.options.updateInitialValue();
-        var modalInstance = $uibModal.open({
-          animation: true,
-          ariaLabelledBy: 'modal-title',
-          ariaDescribedBy: 'modal-body',
-          templateUrl: 'static/frontend/views/enter-profile-name-modal.html',
-          controller: 'ModalInstanceCtrl',
-          controllerAs: '$ctrl',
-        });
-        modalInstance.result.then(
-          function(data) {
-            vm.onSubmit(data.name);
-          },
-          function() {
-            $log.info('modal-component dismissed at: ' + new Date());
-          }
-        );
-      }
-    };
     //Create and show modal for creating new ip
     $scope.newIpModal = function() {
       var modalInstance = $uibModal.open({
@@ -371,132 +247,13 @@ angular
       });
     };
 
-    $scope.profileToLock = null;
 
-    //Lock a profile
-    $scope.lockProfile = function(profiles) {
-      $scope.closeAlert();
-      var profileId;
-      if (profiles.active.profile) {
-        profileId = profiles.active.profile;
-      } else {
-        profileId = profiles.active.id;
-      }
-      return Profile.lock({
-        id: profileId,
-        information_package: $scope.ip.id,
-      }).$promise.then(
-        function(response) {
-          profiles.locked = true;
-          $scope.edit = false;
-          $scope.eventlog = false;
-          $scope.getListViewData();
-          vm.updateListViewConditional();
-          return {status: response.status, profile: profiles};
-        },
-        function(error) {
-          if (error.status == 400) {
-            showRequiredProfileFields(profiles);
-          }
-          return {status: error.status, profile: profiles};
-        }
-      );
-    };
-
-    $scope.lockAlert = null;
-    $scope.alerts = {
-      lockError: {type: 'danger', msg: 'LOCK_ERROR', name: '', profile_type: ''},
-    };
     $scope.closeAlert = function() {
       $scope.lockAlert = null;
     };
     $scope.closePrepareAlert = function() {
       $scope.prepareAlert = null;
     };
-    function showRequiredProfileFields(row) {
-      if ($scope.edit) {
-        $scope.lockAlert = $scope.alerts.lockError;
-        $scope.lockAlert.name = row.active.profile_name;
-        $scope.lockAlert.profile_type = row.active.profile_type;
-        vm.editForm.$setSubmitted();
-        return;
-      }
-      if (row.active.name) {
-        var profileId = row.active.id;
-      } else {
-        var profileId = row.active.profile;
-      }
-      Profile.get({
-        id: profileId,
-        sa: $scope.saProfile.profile.id,
-        ip: $scope.ip.id,
-      }).$promise.then(function(resource) {
-        resource.profile_name = resource.name;
-        row.active = resource;
-        row.profiles = [resource];
-        $scope.selectProfile = row;
-        vm.profileModel = angular.copy(row.active.specification_data);
-        vm.profileFields = row.active.template;
-        $scope.treeElements = [{name: 'root', type: 'folder', children: angular.copy(row.active.structure)}];
-        $scope.expandedNodes = [$scope.treeElements[0]].concat($scope.treeElements[0].children);
-        $scope.profileToSave = row.active;
-        $scope.subSelectProfile = 'profile';
-        if (row.locked) {
-          vm.profileFields.forEach(function(field) {
-            if (field.fieldGroup != null) {
-              field.fieldGroup.forEach(function(subGroup) {
-                subGroup.fieldGroup.forEach(function(item) {
-                  item.type = 'input';
-                  item.templateOptions.disabled = true;
-                });
-              });
-            } else {
-              field.type = 'input';
-              field.templateOptions.disabled = true;
-            }
-          });
-        }
-        $scope.edit = true;
-        $scope.eventlog = true;
-      });
-    }
-    //Creates modal for lock SA
-    $scope.lockSaModal = function(sa) {
-      $scope.saProfile = sa;
-      var modalInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        templateUrl: 'static/frontend/views/lock-sa-profile-modal.html',
-        scope: $scope,
-        controller: 'ModalInstanceCtrl',
-        controllerAs: '$ctrl',
-      });
-      modalInstance.result.then(
-        function(data) {
-          $scope.lockSa($scope.saProfile);
-        },
-        function() {
-          $log.info('modal-component dismissed at: ' + new Date());
-        }
-      );
-    };
-    //Lock a SA
-    $scope.lockSa = function(sa) {
-      SA.lock({
-        id: sa.profile.id,
-        ip: $scope.ip.id,
-      }).$promise.then(function(response) {
-        sa.locked = true;
-        $scope.edit = false;
-        $scope.eventlog = false;
-        $scope.getListViewData();
-      });
-    };
-
-    /*
-     * Edit view map structure tree
-     */
 
     /*
      * Formly form  structure
@@ -737,24 +494,6 @@ angular
           },
         ],
       ];
-    };
-
-    $scope.getProfiles = function(profile) {
-      listViewService.getProfilesMin(profile.profile_type).then(function(result) {
-        if (profile.active != null) {
-          result.forEach(function(prof) {
-            if (angular.isUndefined(profile.active.profile)) {
-              if (prof.id == profile.active.id) {
-                profile.active = prof;
-              }
-            }
-            if (prof.id == profile.active.profile) {
-              profile.active = prof;
-            }
-          });
-        }
-        profile.profiles = result;
-      });
     };
 
     vm.prepareIpForUploadModal = function(ip) {
