@@ -54,7 +54,8 @@ angular
     PermPermissionStore,
     $q,
     ContextMenuBase,
-    ContentTabs
+    ContentTabs,
+    SelectedIPUpdater
   ) {
     vm.itemsPerPage = $cookies.get('etp-ips-per-page') || 10;
     $scope.updateIpsPerPage = function(items) {
@@ -369,6 +370,7 @@ angular
             $scope.ipLoading = false;
             $scope.initLoad = false;
             ipExists();
+            SelectedIPUpdater.update(vm.displayedIps, $scope.ips, $scope.ip);
           })
           .catch(function(response) {
             if (response.status == 404) {
