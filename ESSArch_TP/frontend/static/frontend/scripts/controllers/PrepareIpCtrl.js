@@ -228,7 +228,6 @@ angular
       }).$promise.then(function success(response) {}, function error(response) {});
     };
 
-
     $scope.optionalOptions = true;
 
     //Create and show modal for creating new ip
@@ -246,7 +245,6 @@ angular
         vm.updateListViewConditional();
       });
     };
-
 
     $scope.closeAlert = function() {
       $scope.lockAlert = null;

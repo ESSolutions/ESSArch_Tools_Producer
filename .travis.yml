@@ -21,7 +21,7 @@ matrix:
       before_install: cd ESSArch_TP/frontend/static/frontend
       install: yarn
       before_script:
-      script: yarn prettier --check **/*.js **/*.scss **/*.html
+      script: yarn prettier --check "**/*.{js,scss,html}"
 
 node_js:
   - 8
