@@ -24,15 +24,7 @@
 
 angular
   .module('essarch.services')
-  .factory('listViewService', function(
-    IP,
-    SA,
-    Event,
-    EventType,
-    Profile,
-    $http,
-    appConfig
-  ) {
+  .factory('listViewService', function(IP, SA, Event, EventType, Profile, $http, appConfig) {
     /**
      * Map given table type with an url
      * @param {String} table - Type of table, example: "ip", "events", "workspace"
