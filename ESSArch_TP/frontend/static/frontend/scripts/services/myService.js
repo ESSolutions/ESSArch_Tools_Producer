@@ -24,17 +24,7 @@
 
 angular
   .module('essarch.services')
-  .factory('myService', function(
-    $location,
-    PermPermissionStore,
-    $anchorScroll,
-    $http,
-    appConfig,
-    djangoAuth
-  ) {
-    function changePath(state) {
-      $state.go(state);
-    }
+  .factory('myService', function($location, PermPermissionStore, $anchorScroll, $http, appConfig, djangoAuth) {
     function getPermissions(permissions) {
       PermPermissionStore.clearStore();
       PermPermissionStore.defineManyPermissions(
@@ -144,7 +134,6 @@ angular
       return {activeColumns: activeColumns, allColumns: allColumns};
     }
     return {
-      changePath: changePath,
       getPermissions: getPermissions,
       hasChild: hasChild,
       getActiveColumns: getActiveColumns,
