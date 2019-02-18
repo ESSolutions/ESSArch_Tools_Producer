@@ -42,7 +42,7 @@ class InformationPackageSerializer(CoreInformationPackageSerializer):
 
 class InformationPackageReadSerializer(InformationPackageSerializer):
     def to_representation(self, obj):
-        data = super(InformationPackageReadSerializer, self).to_representation(obj)
+        data = super().to_representation(obj)
         profiles = data['profiles']
         data['profiles'] = {}
 

@@ -160,7 +160,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
             if ip.submission_agreement_locked:
                 return Response("SA connected to IP is locked", status=status.HTTP_400_BAD_REQUEST)
 
-        return super(InformationPackageViewSet, self).update(request, *args, **kwargs)
+        return super().update(request, *args, **kwargs)
 
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):
