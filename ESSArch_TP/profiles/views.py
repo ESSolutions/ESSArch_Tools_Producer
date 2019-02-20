@@ -25,7 +25,7 @@
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from rest_framework import exceptions, status, viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ESSArch_Core.ip.models import Agent, InformationPackage
@@ -39,7 +39,7 @@ from ESSArch_Core.profiles.views import (
 
 
 class SubmissionAgreementViewSet(SAViewSetCore):
-    @detail_route(methods=['post'], url_path='include-type')
+    @action(detail=True, methods=['post'], url_path='include-type')
     def include_type(self, request, pk=None):
         sa = SubmissionAgreement.objects.get(pk=pk)
         ptype = request.data["type"]
@@ -51,7 +51,7 @@ class SubmissionAgreementViewSet(SAViewSetCore):
             'status': 'Including profile type %s in SA %s' % (ptype, sa)
         })
 
-    @detail_route(methods=['post'], url_path='exclude-type')
+    @action(detail=True, methods=['post'], url_path='exclude-type')
     def exclude_type(self, request, pk=None):
         sa = SubmissionAgreement.objects.get(pk=pk)
         ptype = request.data["type"]
@@ -63,7 +63,7 @@ class SubmissionAgreementViewSet(SAViewSetCore):
             'status': 'Excluding profile type %s in SA %s' % (ptype, sa)
         })
 
-    @detail_route(methods=['post'])
+    @action(detail=True, methods=['post'])
     def save(self, request, pk=None):
         if not request.user.has_perm('profiles.create_new_sa_generation'):
             raise exceptions.PermissionDenied
@@ -111,7 +111,7 @@ class SubmissionAgreementViewSet(SAViewSetCore):
         return 'sip', 'transfer_project', 'submit_description', 'preservation_metadata'
 
     @transaction.atomic
-    @detail_route(methods=["post"])
+    @action(detail=True, methods=["post"])
     def lock(self, request, pk=None):
         sa = self.get_object()
         ip_id = request.data.get("ip")
@@ -151,7 +151,7 @@ class ProfileSAViewSet(viewsets.ModelViewSet):
 
 
 class ProfileViewSet(ProfileViewSetCore):
-    @detail_route(methods=['post'])
+    @action(detail=True, methods=['post'])
     def save(self, request, pk=None):
         profile = Profile.objects.get(pk=pk)
         new_data = request.data.get("specification_data", {})
