@@ -359,21 +359,28 @@ class test_set_uploaded(TestCase):
         self.assertEqual(self.ip.state, 'Uploaded')
 
 
-class test_upload(TestCase):
+class UploadTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user', password='pass')
+        self.user = User.objects.create_user('user')
+        self.member = self.user.essauth_member
         self.client = APIClient()
-        self.client.login(username='user', password='pass')
+        self.client.force_authenticate(user=self.user)
 
-        EventType.objects.create(eventType=10120)
+        EventType.objects.create(eventType=50700)
 
         self.root = os.path.dirname(os.path.realpath(__file__))
         self.datadir = os.path.join(self.root, 'datadir')
         self.src = os.path.join(self.datadir, 'src')
         self.dst = os.path.join(self.datadir, 'dst')
 
-        self.ip = InformationPackage.objects.create(object_path=self.dst)
+        self.ip = InformationPackage.objects.create(object_path=self.dst, state='Prepared')
         self.baseurl = reverse('informationpackage-detail', args=(self.ip.pk,))
+
+        self.org_group_type = GroupType.objects.create(label='organization')
+        self.group = Group.objects.create(name='organization', group_type=self.org_group_type)
+        self.group.add_member(self.member)
+
+        self.addCleanup(shutil.rmtree, self.datadir)
 
         for path in [self.src, self.dst]:
             try:
@@ -382,16 +389,10 @@ class test_upload(TestCase):
                 if e.errno != 17:
                     raise
 
-    def tearDown(self):
-        try:
-            shutil.rmtree(self.datadir)
-        except BaseException:
-            pass
-
     def test_upload_file(self):
-        InformationPackage.objects.filter(pk=self.ip.pk).update(
-            responsible=self.user
-        )
+        perms = {'group': ['view_informationpackage', 'ip.can_upload']}
+        self.member.assign_object(self.group, self.ip, custom_permissions=perms)
+        InformationPackage.objects.filter(pk=self.ip.pk).update(responsible=self.user)
 
         srcfile = os.path.join(self.src, 'foo.txt')
         srcfile_chunk = os.path.join(self.src, 'foo.txt_chunk')
@@ -407,7 +408,7 @@ class test_upload(TestCase):
         i = 0
         total = 0
 
-        with open(srcfile) as fp, open(srcfile_chunk, 'r+') as chunk:
+        with open(srcfile, 'rb') as fp:
             while total < fsize:
                 chunk = SimpleUploadedFile(srcfile_chunk, fp.read(block_size), content_type='multipart/form-data')
                 data = {
@@ -430,12 +431,15 @@ class test_upload(TestCase):
         self.assertEqual(uploaded_chunks, [])
 
     def test_upload_without_permission(self):
+        perms = {'group': ['view_informationpackage']}
+        self.member.assign_object(self.group, self.ip, custom_permissions=perms)
+
         srcfile = os.path.join(self.src, 'foo.txt')
 
         with open(srcfile, 'w') as fp:
             fp.write('bar')
 
-        with open(srcfile) as fp:
+        with open(srcfile, 'rb') as fp:
             chunk = SimpleUploadedFile(srcfile, fp.read(), content_type='multipart/form-data')
             data = {
                 'flowChunkNumber': 0,
@@ -446,9 +450,9 @@ class test_upload(TestCase):
             self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_upload_file_with_square_brackets_in_name(self):
-        InformationPackage.objects.filter(pk=self.ip.pk).update(
-            responsible=self.user
-        )
+        perms = {'group': ['view_informationpackage', 'ip.can_upload']}
+        self.member.assign_object(self.group, self.ip, custom_permissions=perms)
+        InformationPackage.objects.filter(pk=self.ip.pk).update(responsible=self.user)
 
         srcfile = os.path.join(self.src, 'foo[asd].txt')
         dstfile = os.path.join(self.dst, 'foo[asd].txt')
@@ -456,7 +460,7 @@ class test_upload(TestCase):
         with open(srcfile, 'w') as fp:
             fp.write('bar')
 
-        with open(srcfile) as fp:
+        with open(srcfile, 'rb') as fp:
             chunk = SimpleUploadedFile(srcfile, fp.read(), content_type='multipart/form-data')
             data = {
                 'flowChunkNumber': 0,
