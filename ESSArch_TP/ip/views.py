@@ -35,7 +35,7 @@ from django.http import HttpResponse
 from groups_manager.utils import get_permission_name
 from guardian.shortcuts import assign_perm
 from rest_framework import exceptions, permissions, status
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ESSArch_Core.WorkflowEngine.models import ProcessStep, ProcessTask
@@ -176,7 +176,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         t.run()
         return Response({"detail": "Deleting information package", "task": t.pk}, status=status.HTTP_202_ACCEPTED)
 
-    @detail_route(methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
+    @action(detail=True, methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
     def files(self, request, pk=None):
         ip = self.get_object()
 
@@ -248,7 +248,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         download = request.query_params.get('download', False)
         return ip.get_path_response(path, request, force_download=download, paginator=self.paginator)
 
-    @detail_route(methods=['get', 'post'], url_path='ead-editor')
+    @action(detail=True, methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
         ip = self.get_object()
         try:
@@ -279,7 +279,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
             f.write(str(content))
             return Response("Content written to %s" % xmlfile)
 
-    @list_route(methods=['get'], url_path='get-xsds')
+    @action(detail=False, methods=['get'], url_path='get-xsds')
     def get_xsds(self, request, pk=None):
         static_path = os.path.join(settings.BASE_DIR, 'static/edead/xsds')
         filename_list = os.listdir(static_path)
@@ -287,7 +287,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
     @transaction.atomic
     @permission_required_or_403('ip.prepare_ip')
-    @detail_route(methods=['post'], url_path='prepare')
+    @action(detail=True, methods=['post'], url_path='prepare')
     def prepare(self, request, pk=None):
         ip = self.get_object_for_update()
         if ip.is_locked():
@@ -343,7 +343,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         return Response()
 
     @transaction.atomic
-    @detail_route(methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
+    @action(detail=True, methods=['post'], url_path='create', permission_classes=[CanCreateSIP])
     def create_ip(self, request, pk=None):
         """
         Creates the specified information package
@@ -469,7 +469,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         return Response({'status': 'creating ip'})
 
     @transaction.atomic
-    @detail_route(methods=['post'], url_path='submit', permission_classes=[CanSubmitSIP])
+    @action(detail=True, methods=['post'], url_path='submit', permission_classes=[CanSubmitSIP])
     def submit(self, request, pk=None):
         """
         Submits the specified information package
@@ -567,7 +567,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         return Response({'status': 'submitting ip'})
 
     @transaction.atomic
-    @detail_route(methods=['post'], url_path='unlock-profile', permission_classes=[CanUnlockProfile])
+    @action(detail=True, methods=['post'], url_path='unlock-profile', permission_classes=[CanUnlockProfile])
     def unlock_profile(self, request, pk=None):
         ip = self.get_object()
 
@@ -590,7 +590,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
             )
         })
 
-    @detail_route(methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
+    @action(detail=True, methods=['get', 'post'], url_path='upload', permission_classes=[CanUpload])
     def upload(self, request, pk=None):
         ip = self.get_object()
         if ip.state not in ['Prepared', 'Uploading']:
@@ -627,7 +627,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
 
             return Response("Uploaded chunk")
 
-    @detail_route(methods=['post'], url_path='merge-uploaded-chunks', permission_classes=[CanUpload])
+    @action(detail=True, methods=['post'], url_path='merge-uploaded-chunks', permission_classes=[CanUpload])
     def merge_uploaded_chunks(self, request, pk=None):
         ip = self.get_object()
         if ip.state != 'Uploading':
@@ -647,7 +647,7 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         return Response("Merged chunks")
 
     @transaction.atomic
-    @detail_route(methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
+    @action(detail=True, methods=['post'], url_path='set-uploaded', permission_classes=[CanSetUploaded])
     def set_uploaded(self, request, pk=None):
         ip = self.get_object()
         if ip.state not in ['Prepared', 'Uploading']:
