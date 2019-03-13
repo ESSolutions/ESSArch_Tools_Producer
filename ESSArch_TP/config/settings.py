@@ -277,19 +277,6 @@ LOGGING = {
     },
 }
 
-try:
-    # Updating logging settings with configs defined in local_etp_setting.
-    from local_etp_settings import EXTRA_LOGGING
-
-    LOGGING['handlers'].update(EXTRA_LOGGING['handlers'])
-
-    for key, val in EXTRA_LOGGING['loggers'].items():
-        if key in LOGGING.get('loggers').keys():
-            print(f"WARNING replacing '{key}' logger with one defined in local_etp_settings.")
-        LOGGING['loggers'][key] = val
-except ImportError:
-    pass
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
