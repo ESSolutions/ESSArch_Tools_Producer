@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: "mariadb:10.2.16"
+    ports:
+      - 3001:3306
+    environment:
+      MYSQL_DATABASE: etp
+      MYSQL_USER: arkiv
+      MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  rabbitmq:
+    image: "rabbitmq:latest"
+    ports:
+      - 15001:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+  redis:
+    image: "redis:latest"
+    ports:
+      - 6001:6379
