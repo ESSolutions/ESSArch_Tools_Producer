@@ -18,6 +18,8 @@ To start all services run:
 
     docker-compose up -d
 
+Then navigate to http://localhost:5601 to open up Kibana.
+
 # Documentation 
 
 Source for the documentation can be found in the `docs` folder
