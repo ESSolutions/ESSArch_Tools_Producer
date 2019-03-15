@@ -35,6 +35,7 @@ from ESSArch_Core.ip.views import AgentViewSet, EventIPViewSet
 from ESSArch_Core.profiles.views import ProfileIPViewSet, ProfileIPDataViewSet, ProfileIPDataTemplateViewSet, \
     InformationPackageProfileIPViewSet
 from ESSArch_Core.routers import ESSArchRouter
+from ESSArch_Core.stats.views import StatsView
 from configuration.views import EventTypeViewSet
 from ip.views import InformationPackageViewSet
 from profiles.views import ProfileViewSet, ProfileSAViewSet, SubmissionAgreementViewSet
@@ -95,6 +96,7 @@ router.register(r'paths', PathViewSet)
 urlpatterns = [
     url(r'^', include('ESSArch_Core.frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/stats/', StatsView.as_view()),
     url(r'^api/sysinfo/', SysInfoView.as_view()),
     url(r'^api/me/$', MeView.as_view(), name='me'),
     url(r'^api/', include(router.urls)),
