@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     'ESSArch_Core.essxml.ProfileMaker',
     'ESSArch_Core.fixity',
     'ESSArch_Core.maintenance',
+    'ESSArch_Core.stats',
     'ESSArch_Core.storage',
     'ESSArch_Core.tags',
     'ESSArch_Core.WorkflowEngine',
