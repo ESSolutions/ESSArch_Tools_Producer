@@ -21,6 +21,9 @@
                 "import": {
                     "_permissions": ["profiles.add_submissionagreement"]
                 }
+            },
+            "dashboard": {
+                "_permissions": []
             }
         }
     }
