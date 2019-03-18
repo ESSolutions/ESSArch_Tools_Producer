@@ -613,7 +613,8 @@ angular
     formlyConfig,
     formlyValidationMessages,
     $urlRouter,
-    permissionConfig
+    permissionConfig,
+    appConfig
   ) {
     formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted || fc.$dirty || fc[0].$dirty';
     formlyValidationMessages.addStringMessage('required', 'This field is required');
@@ -636,6 +637,9 @@ angular
         // Also enable router to listen to url changes
         $urlRouter.listen();
         $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
+        $http.get(appConfig.djangoUrl + 'site/').then(function(response) {
+          $rootScope.site = response.data;
+        });
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
           if (toState.name === 'login') {
             return;
