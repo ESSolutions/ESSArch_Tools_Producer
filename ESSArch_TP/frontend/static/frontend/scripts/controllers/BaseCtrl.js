@@ -77,6 +77,8 @@ angular
     $scope.ips = [];
     vm.specificTabs = [];
 
+    $scope.$translate = $translate;
+
     // Tree control for state tree
 
     var watchers = [];
@@ -141,6 +143,17 @@ angular
         $rootScope.ip = response.data;
       });
     });
+
+    var docStateMap = {
+      prepareIp: 'prepare-ip.html',
+      collectContent: 'collect-content.html',
+      ipApproval: 'create-sip.html',
+      prepareSip: 'submit-sip.html',
+    };
+    vm.getStateDocPage = function() {
+      var page = $state.current.name.split('.').pop();
+      return docStateMap[page];
+    };
 
     // Context menu
 
