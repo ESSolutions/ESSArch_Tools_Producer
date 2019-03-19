@@ -639,6 +639,8 @@ angular
         $rootScope.listViewColumns = myService.generateColumns(response.data.ip_list_columns).activeColumns;
         $http.get(appConfig.djangoUrl + 'site/').then(function(response) {
           $rootScope.site = response.data;
+        }).catch(function() {
+          $rootScope.site = null;
         });
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
           if (toState.name === 'login') {
