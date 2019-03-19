@@ -148,12 +148,12 @@ angular
       prepareIp: 'prepare-ip.html',
       collectContent: 'collect-content.html',
       ipApproval: 'create-sip.html',
-      prepareSip: 'submit-sip.html'
-    }
+      prepareSip: 'submit-sip.html',
+    };
     vm.getStateDocPage = function() {
       var page = $state.current.name.split('.').pop();
       return docStateMap[page];
-    }
+    };
 
     // Context menu
 
