@@ -2,14 +2,14 @@ version: '3'
 
 services:
     db:
-        image: "mariadb:$MARIADB_VERSION"
+        image: "postgres:$POSTGRES_VERSION"
         ports:
-            - 3001:3306
+            - 3001:5432
         environment:
-            MYSQL_DATABASE: etp
-            MYSQL_USER: arkiv
-            MYSQL_PASSWORD: password
-            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            POSTGRES_DB: etp
+            POSTGRES_USER: arkiv
+            POSTGRES_PASSWORD: password
+
     rabbitmq:
         image: "rabbitmq:$RABBITMQ_VERSION"
         ports:
@@ -17,6 +17,7 @@ services:
         environment:
             - RABBITMQ_DEFAULT_USER=rabbitmq
             - RABBITMQ_DEFAULT_PASS=rabbitmq
+
     redis:
         image: "redis:$REDIS_VERSION"
         ports:
