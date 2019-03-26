@@ -103,11 +103,11 @@ urlpatterns = [
     url(r'^api/sysinfo/', SysInfoView.as_view()),
     url(r'^api/me/$', MeView.as_view(), name='me'),
     url(r'^api/', include(router.urls)),
-    url(r'^accounts/changepassword', auth_views.password_change, {'post_change_redirect': '/'}),
+    url(r'^accounts/changepassword', auth_views.PasswordChangeView.as_view(), {'post_change_redirect': '/'}),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^docs/', include('ESSArch_Core.docs.urls')),
     url(r'^template/', include('ESSArch_Core.essxml.ProfileMaker.urls')),
-    url(r'^accounts/login/$', auth_views.login),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view()),
     url(r'^rest-auth/', include('ESSArch_Core.auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
