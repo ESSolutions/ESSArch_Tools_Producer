@@ -30,9 +30,6 @@ main {
   content: '\25BC';
   position: relative;
 }
-.formly-field label {
-  font-size: 10px;
-}
 .error-messages {
   position: relative;
 }
@@ -340,9 +337,6 @@ input[type='checkbox'] {
   margin-left: 10px;
 }
 
-.control-label {
-  font-size: 10px;
-}
 .formly-field {
   width: 24%;
   margin: 5px;
