@@ -58,5 +58,20 @@ module.exports = function(config) {
       outputFile: 'test_out/unit.xml',
       suite: 'unit',
     },
+
+    plugins: [
+      'karma-coverage',
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+      'karma-spec-reporter',
+    ],
+
+    preprocessors: {
+      'scripts/**/*.js': ['coverage']
+    },
+    coverageReporter: {
+      type : 'lcov',
+      dir : 'coverage/'
+    },
   });
 };
