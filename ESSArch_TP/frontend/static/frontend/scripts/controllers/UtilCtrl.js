@@ -38,6 +38,7 @@ angular
     myService,
     $anchorScroll
   ) {
+    $scope.angular = angular;
     $scope.$state = $state;
     $scope.reloadPage = function() {
       $state.reload();
