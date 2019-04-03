@@ -10,3 +10,10 @@ MANIFEST
 .settings/
 tools.db
 .DS_Store
+
+# Python virtual environment
+/venv/
+
+# Coverage default folders
+.coverage
+htmlcov/
