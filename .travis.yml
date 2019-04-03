@@ -72,7 +72,7 @@ matrix:
         - cd ESSArch_TP/frontend/static/frontend
         - yarn
       script: yarn test
-      after_script: bash <(curl -s https://codecov.io/bash) -c -F frontend
+      after_script: skip
 
     - node_js: "10"
       language: node_js
@@ -82,7 +82,7 @@ matrix:
         - cd ESSArch_TP/frontend/static/frontend
         - yarn
       script: yarn test
-      after_script: bash <(curl -s https://codecov.io/bash) -c -F frontend
+      after_script: skip
 
     - env: PRETTIER
       language: node_js
