@@ -21,7 +21,7 @@
     Web - http://www.essolutions.se
     Email - essarch@essolutions.se
 """
-
+import tempfile
 from unittest import mock
 
 import filecmp
@@ -34,14 +34,18 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework import status, exceptions
+from rest_framework.response import Response
+from rest_framework.test import APIClient, force_authenticate
 
 from ESSArch_Core.auth.models import Group, GroupMember, GroupMemberRole, GroupType
 from ESSArch_Core.configuration.models import EventType, Path
 from ESSArch_Core.ip.models import InformationPackage
 from ESSArch_Core.profiles.models import Profile, ProfileIP, SubmissionAgreement
 from ESSArch_Core.WorkflowEngine.models import ProcessTask
+from rest_framework_extensions.test import APIRequestFactory
+
+from ESSArch_TP.ip.views import InformationPackageViewSet
 
 
 class CreateIPTestCase(TestCase):
@@ -562,3 +566,348 @@ class test_change_profile(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(ProfileIP.objects.filter(profile=self.profile, ip=self.ip).exists())
+
+
+class DeletePathTests(TestCase):
+
+    def setUp(self):
+        self.datadir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.datadir)
+        self.view = InformationPackageViewSet()
+
+    def test_when_path_does_not_exist(self):
+        none_existing_path = os.path.join(self.datadir, "some_other_dir")
+        ip = InformationPackage.objects.create(object_path=none_existing_path)
+        data = {'path': 'some_path'}
+
+        with self.assertRaisesRegex(exceptions.NotFound, "Path does not exist"):
+            self.view.delete_path(data, ip)
+
+    def test_when_path_parameter_does_not_exist(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {}
+
+        resp = self.view.delete_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_when_passed_path_is_not_subdir_of_object_path(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {'path': tempfile.mkdtemp()}
+
+        with self.assertRaisesRegex(exceptions.ParseError, f"Illegal path {data['path']}"):
+            self.view.delete_path(data, ip)
+
+    def test_when_passed_path_is_a_dir(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+
+        tmp_dir_path = os.path.join(self.datadir, 'some_dir')
+        os.makedirs(tmp_dir_path)
+
+        data = {'path': tmp_dir_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isdir(tmp_dir_path))
+        self.view.delete_path(data, ip)
+        self.assertFalse(os.path.exists(tmp_dir_path))
+
+    def test_when_passed_path_is_a_file(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {'path': tmp_file_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        self.view.delete_path(data, ip)
+        self.assertFalse(os.path.isfile(tmp_file_path))
+
+
+class CreatePathTests(TestCase):
+
+    def setUp(self):
+        self.datadir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.datadir)
+        self.view = InformationPackageViewSet()
+
+    def test_when_path_parameter_does_not_exist(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {}
+
+        resp = self.view.create_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_when_type_parameter_does_not_exist(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {'path': 'dummy'}
+
+        resp = self.view.create_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Type parameter missing")
+
+    def test_when_passed_path_is_not_subdir_of_object_path(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {
+            'path': tempfile.mkdtemp(),
+            'type': 'dummy'
+        }
+
+        with self.assertRaisesRegex(exceptions.ParseError, f"Illegal path {data['path']}"):
+            self.view.create_path(data, ip)
+
+    def test_when_path_type_is_not_dir_or_file(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dummy'
+        }
+
+        resp = self.view.create_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, 'Type must be either "file" or "dir"')
+
+    def test_when_path_type_is_dir_and_already_exists(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dir'
+        }
+
+        with self.assertRaisesRegex(exceptions.ParseError, f"Directory {data['path']} already exists"):
+            self.view.create_path(data, ip)
+
+    def test_when_path_type_is_dir(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+        data = {
+            'path': os.path.join(self.datadir, 'some_dir_to_create'),
+            'type': 'dir'
+        }
+
+        resp = self.view.create_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_when_path_type_is_file_and_already_exists(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file exists
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        resp = self.view.create_path(data, ip)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_when_path_type_is_file_and_it_doesnt_exist(self):
+        ip = InformationPackage.objects.create(object_path=self.datadir)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file does not exist
+        self.assertFalse(os.path.isfile(tmp_file_path))
+        resp = self.view.create_path(data, ip)
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+
+class GetPathTests(TestCase):
+    factory = APIRequestFactory()
+
+    def setUp(self):
+        self.datadir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.datadir)
+        self.user = User.objects.create()
+        self.ip = InformationPackage.objects.create(object_path=self.datadir)
+        self.ip.get_path_response = mock.MagicMock(return_value=Response("dummy message", status=status.HTTP_200_OK))
+        self.view = InformationPackageViewSet
+        self.view.get_object = mock.MagicMock(return_value=self.ip)
+
+    def get_response(self, params, authenticate=True):
+        request = self.factory.get('/', params)
+        if authenticate:
+            force_authenticate(request, user=self.user)
+
+        return self.view.as_view({'get': 'files'})(request, pk=self.ip.pk)
+
+    def test_path_with_no_params(self):
+        params = {}
+        self.get_response(params)
+
+        self.ip.get_path_response.assert_called_once_with(
+            '',
+            mock.ANY,
+            force_download=False,
+            paginator=mock.ANY
+        )
+
+    def test_path_download_True(self):
+        params = {'download': True}
+        self.get_response(params)
+
+        self.ip.get_path_response.assert_called_once_with(
+            '',
+            mock.ANY,
+            force_download='True',
+            paginator=mock.ANY
+        )
+
+    def test_path_download_False(self):
+        params = {'download': False}
+        self.get_response(params)
+
+        self.ip.get_path_response.assert_called_once_with(
+            '',
+            mock.ANY,
+            force_download='False',
+            paginator=mock.ANY
+        )
+
+    def test_path_with_path_set(self):
+        params = {'path': 'here_is_some/other_path'}
+        self.get_response(params)
+
+        self.ip.get_path_response.assert_called_once_with(
+            'here_is_some/other_path',
+            mock.ANY,
+            force_download=False,
+            paginator=mock.ANY
+        )
+
+    def test_path_with_path_set_with_extra_trailing_slash(self):
+        params = {'path': 'here_is_some/other_path/'}
+        self.get_response(params)
+
+        self.ip.get_path_response.assert_called_once_with(
+            'here_is_some/other_path',
+            mock.ANY,
+            force_download=False,
+            paginator=mock.ANY
+        )
+
+
+class FilesActionTests(TestCase):
+    factory = APIRequestFactory()
+
+    def setUp(self):
+        self.datadir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.datadir)
+        self.ip = InformationPackage.objects.create(object_path=self.datadir)
+        self.user = User.objects.create()
+
+        # Mocks
+        # We don't want to mock the methods of the real class, since it might/will collide with other test cases
+        class MyIPViewSet(InformationPackageViewSet):
+            pass
+        self.mocked_view = MyIPViewSet
+        self.mocked_view.delete_path = mock.MagicMock()
+        self.mocked_view.create_path = mock.MagicMock()
+        self.mocked_view.get_path = mock.MagicMock()
+        self.mocked_view.get_object = mock.MagicMock(return_value=self.ip)
+
+    def get_response(self, method_name, action_name, user, authenticate=True):
+        request = getattr(self.factory, method_name)('/')
+
+        if authenticate:
+            force_authenticate(request, user=user)
+
+        return self.mocked_view.as_view({method_name: action_name})(request, pk=self.ip.pk)
+
+    def test_get_method(self):
+        self.mocked_view.get_path.return_value = Response("some message", status=status.HTTP_200_OK)
+
+        resp = self.get_response('get', 'files', self.user)
+        self.assertEqual(resp.data, "some message")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        self.mocked_view.delete_path.assert_not_called()
+        self.mocked_view.create_path.assert_not_called()
+        self.mocked_view.get_path.assert_called_once()
+
+    def test_post_method_when_ip_state_is_Prepared(self):
+        self.ip.state = 'Prepared'
+        self.mocked_view.create_path.return_value = Response("some message", status=status.HTTP_201_CREATED)
+
+        resp = self.get_response('post', 'files', self.user)
+        self.assertEqual(resp.data, "some message")
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        self.mocked_view.delete_path.assert_not_called()
+        self.mocked_view.create_path.assert_called_once()
+        self.mocked_view.get_path.assert_not_called()
+
+    def test_post_method_when_ip_state_is_Uploading(self):
+        self.ip.state = 'Uploading'
+        self.mocked_view.create_path.return_value = Response("some message", status=status.HTTP_201_CREATED)
+
+        resp = self.get_response('post', 'files', self.user)
+        self.assertEqual(resp.data, "some message")
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        self.mocked_view.delete_path.assert_not_called()
+        self.mocked_view.create_path.assert_called_once()
+        self.mocked_view.get_path.assert_not_called()
+
+    def test_post_method_when_ip_state_not_Prepared_nor_Uploading(self):
+        self.ip.state = 'some other state'
+        expected_error_message = "Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state"
+
+        resp = self.get_response('post', 'files', self.user)
+
+        self.assertEqual(resp.data['detail'], expected_error_message)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.mocked_view.delete_path.assert_not_called()
+        self.mocked_view.create_path.assert_not_called()
+        self.mocked_view.get_path.assert_not_called()
+
+    def test_delete_method_when_ip_state_is_Prepared(self):
+        self.ip.state = 'Prepared'
+        self.mocked_view.delete_path.return_value = Response("some message", status=status.HTTP_201_CREATED)
+
+        resp = self.get_response('delete', 'files', self.user)
+        self.assertEqual(resp.data, "some message")
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        self.mocked_view.delete_path.assert_called_once()
+        self.mocked_view.create_path.assert_not_called()
+        self.mocked_view.get_path.assert_not_called()
+
+    def test_delete_method_when_ip_state_is_Uploading(self):
+        self.ip.state = 'Uploading'
+        self.mocked_view.delete_path.return_value = Response("some message", status=status.HTTP_201_CREATED)
+
+        resp = self.get_response('delete', 'files', self.user)
+        self.assertEqual(resp.data, "some message")
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        self.mocked_view.delete_path.assert_called_once()
+        self.mocked_view.create_path.assert_not_called()
+        self.mocked_view.get_path.assert_not_called()
+
+    def test_delete_method_when_ip_state_not_Prepared_nor_Uploading(self):
+        self.ip.state = 'some other state'
+        expected_error_message = "Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state"
+
+        resp = self.get_response('delete', 'files', self.user)
+
+        self.assertEqual(resp.data['detail'], expected_error_message)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.mocked_view.delete_path.assert_not_called()
+        self.mocked_view.create_path.assert_not_called()
+        self.mocked_view.get_path.assert_not_called()
