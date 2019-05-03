@@ -176,71 +176,6 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
         t.run()
         return Response({"detail": "Deleting information package", "task": t.pk}, status=status.HTTP_202_ACCEPTED)
 
-    def create_path(self, data, ip):
-        try:
-            path = data['path']
-        except KeyError:
-            return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            pathtype = data['type']
-        except KeyError:
-            return Response('Type parameter missing', status=status.HTTP_400_BAD_REQUEST)
-
-        root = ip.object_path
-
-        fullpath = os.path.join(root, path)
-
-        if not in_directory(fullpath, root):
-            raise exceptions.ParseError('Illegal path %s' % path)
-
-        if pathtype == 'dir':
-            try:
-                os.makedirs(fullpath)
-            except OSError as e:
-                if e.errno == errno.EEXIST:
-                    raise exceptions.ParseError('Directory %s already exists' % path)
-
-                raise
-
-        elif pathtype == 'file':
-            open(fullpath, 'a').close()
-        else:
-            return Response('Type must be either "file" or "dir"', status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(path, status=status.HTTP_201_CREATED)
-
-    def delete_path(self, data, ip):
-        try:
-            path = data['path']
-        except KeyError:
-            return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
-
-        root = ip.object_path
-
-        fullpath = os.path.join(root, path)
-
-        if not in_directory(fullpath, root):
-            raise exceptions.ParseError('Illegal path %s' % path)
-
-        try:
-            shutil.rmtree(fullpath)
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                raise exceptions.NotFound('Path does not exist')
-
-            if e.errno != errno.ENOTDIR:
-                raise
-
-            os.remove(fullpath)
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def get_path(self, request, ip, paginator):
-        path = request.query_params.get('path', '').rstrip('/')
-        download = request.query_params.get('download', False)
-        return ip.get_path_response(path, request, force_download=download, paginator=paginator)
-
     @action(detail=True, methods=['delete', 'get', 'post'], permission_classes=[IsResponsibleOrCanSeeAllFiles])
     def files(self, request, pk=None):
         ip = self.get_object()
@@ -252,12 +187,66 @@ class InformationPackageViewSet(InformationPackageViewSetCore, GetObjectForUpdat
                 )
 
         if request.method == 'DELETE':
-            return self.delete_path(request.data, ip)
+            try:
+                path = request.data['path']
+            except KeyError:
+                return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
+
+            root = ip.object_path
+            fullpath = os.path.join(root, path)
+
+            if not in_directory(fullpath, root):
+                raise exceptions.ParseError('Illegal path %s' % path)
+
+            try:
+                shutil.rmtree(fullpath)
+            except OSError as e:
+                if e.errno == errno.ENOENT:
+                    raise exceptions.NotFound('Path does not exist')
+
+                if e.errno != errno.ENOTDIR:
+                    raise
+
+                os.remove(fullpath)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
         if request.method == 'POST':
-            return self.create_path(request.data, ip)
+            try:
+                path = request.data['path']
+            except KeyError:
+                return Response('Path parameter missing', status=status.HTTP_400_BAD_REQUEST)
 
-        return self.get_path(request, ip, self.paginator)
+            try:
+                pathtype = request.data['type']
+            except KeyError:
+                return Response('Type parameter missing', status=status.HTTP_400_BAD_REQUEST)
+
+            root = ip.object_path
+            fullpath = os.path.join(root, path)
+
+            if not in_directory(fullpath, root):
+                raise exceptions.ParseError('Illegal path %s' % path)
+
+            if pathtype == 'dir':
+                try:
+                    os.makedirs(fullpath)
+                except OSError as e:
+                    if e.errno == errno.EEXIST:
+                        raise exceptions.ParseError('Directory %s already exists' % path)
+
+                    raise
+
+            elif pathtype == 'file':
+                open(fullpath, 'a').close()
+            else:
+                return Response('Type must be either "file" or "dir"', status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(path, status=status.HTTP_201_CREATED)
+
+        path = request.query_params.get('path', '').rstrip('/')
+        download = request.query_params.get('download', False)
+        return ip.get_path_response(path, request, force_download=download, paginator=self.paginator)
 
     @action(detail=True, methods=['get', 'post'], url_path='ead-editor')
     def ead_editor(self, request, pk=None):
