@@ -21,7 +21,7 @@
     Web - http://www.essolutions.se
     Email - essarch@essolutions.se
 """
-
+import tempfile
 from unittest import mock
 
 import filecmp
@@ -35,6 +35,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from ESSArch_Core.auth.models import Group, GroupMember, GroupMemberRole, GroupType
@@ -562,3 +563,475 @@ class test_change_profile(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(ProfileIP.objects.filter(profile=self.profile, ip=self.ip).exists())
+
+
+class FilesActionTests(TestCase):
+
+    def setUp(self):
+        self.root = self.datadir = tempfile.mkdtemp()
+        self.datadir = os.path.join(self.root, 'datadir')
+        self.addCleanup(shutil.rmtree, self.datadir)
+
+        self.client = APIClient()
+        self.user = User.objects.create(username="admin")
+        self.ip = InformationPackage.objects.create(object_path=self.datadir, responsible=self.user)
+        self.url = reverse('informationpackage-files', args=(self.ip.pk,))
+
+        self.member = self.user.essauth_member
+
+        self.org_group_type = GroupType.objects.create(label='organization')
+        self.org = Group.objects.create(name='organization', group_type=self.org_group_type)
+
+        perms = Permission.objects.filter(codename='view_informationpackage')
+        self.user_role = GroupMemberRole.objects.create(codename='user_role')
+        self.user_role.permissions.set(perms)
+
+        membership = GroupMember.objects.create(member=self.member, group=self.org)
+        membership.roles.add(self.user_role)
+
+        self.org.add_object(self.ip)
+
+        try:
+            os.makedirs(self.datadir)
+        except OSError as e:
+            if e.errno != 17:
+                raise
+
+    def test_get_method_with_no_params(self):
+        self.client.force_authenticate(user=self.user)
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+    @mock.patch('ESSArch_Core.ip.models.InformationPackage.get_path_response')
+    def test_get_method_with_download_params_True(self, mock_ip_get_path_response):
+        mock_ip_get_path_response.return_value = Response("dummy message")
+
+        params = {'download': True}
+        self.client.force_authenticate(user=self.user)
+        self.client.get(self.url, params)
+
+        mock_ip_get_path_response.assert_called_once_with(
+            '',
+            mock.ANY,
+            force_download='True',
+            paginator=mock.ANY
+        )
+
+    @mock.patch('ESSArch_Core.ip.models.InformationPackage.get_path_response')
+    def test_get_method_with_download_params_False(self, mock_ip_get_path_response):
+        mock_ip_get_path_response.return_value = Response("dummy message")
+
+        params = {'download': False}
+        self.client.force_authenticate(user=self.user)
+        self.client.get(self.url, params)
+
+        mock_ip_get_path_response.assert_called_once_with(
+            '',
+            mock.ANY,
+            force_download='False',
+            paginator=mock.ANY
+        )
+
+    @mock.patch('ESSArch_Core.ip.models.InformationPackage.get_path_response')
+    def test_get_method_with_path_set(self, mock_ip_get_path_response):
+        mock_ip_get_path_response.return_value = Response("dummy message")
+
+        params = {'path': 'here_is_some/other_path'}
+        self.client.force_authenticate(user=self.user)
+        self.client.get(self.url, params)
+
+        mock_ip_get_path_response.assert_called_once_with(
+            'here_is_some/other_path',
+            mock.ANY,
+            force_download=False,
+            paginator=mock.ANY
+        )
+
+    @mock.patch('ESSArch_Core.ip.models.InformationPackage.get_path_response')
+    def test_get_method_with_path_set_with_extra_trailing_slash(self, mock_ip_get_path_response):
+        mock_ip_get_path_response.return_value = Response("dummy message")
+
+        params = {'path': 'here_is_some/other_path/'}
+        self.client.force_authenticate(user=self.user)
+        self.client.get(self.url, params)
+
+        mock_ip_get_path_response.assert_called_once_with(
+            'here_is_some/other_path',
+            mock.ANY,
+            force_download=False,
+            paginator=mock.ANY
+        )
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_parameter_not_set(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_post_method_when_ip_state_is_Prepared_and_type_parameter_not_set(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': 'dummy'}
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Type parameter missing")
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_is_not_subdir_of_object_path(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(),
+            'type': 'dummy'
+        }
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Illegal path {data['path']}")
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_type_is_not_dir_nor_file(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dummy'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, 'Type must be either "file" or "dir"')
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_type_is_dir_and_already_exists(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dir'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Directory {data['path']} already exists")
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_type_is_dir(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': os.path.join(self.datadir, 'some_dir_to_create'),
+            'type': 'dir'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_type_is_file_and_already_exists(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file exists
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_Prepared_and_path_type_is_file_and_it_doesnt_exist(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file does not exist
+        self.assertFalse(os.path.isfile(tmp_file_path))
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_parameter_not_set(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_post_method_when_ip_state_is_Uploading_and_type_parameter_not_set(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': 'dummy'}
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Type parameter missing")
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_is_not_subdir_of_object_path(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(),
+            'type': 'dummy'
+        }
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Illegal path {data['path']}")
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_type_is_not_dir_nor_file(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dummy'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, 'Type must be either "file" or "dir"')
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_type_is_dir_and_already_exists(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': tempfile.mkdtemp(dir=self.datadir),
+            'type': 'dir'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Directory {data['path']} already exists")
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_type_is_dir(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'path': os.path.join(self.datadir, 'some_dir_to_create'),
+            'type': 'dir'
+        }
+
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_type_is_file_and_already_exists(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file exists
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_Uploading_and_path_type_is_file_and_it_doesnt_exist(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+
+        data = {
+            'path': tmp_file_path,
+            'type': 'file'
+        }
+
+        # Make sure file does not exist
+        self.assertFalse(os.path.isfile(tmp_file_path))
+        resp = self.client.post(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.data, data['path'])
+
+    def test_post_method_when_ip_state_is_not_Prepared_nor_Uploading(self):
+        self.ip.state = 'some other state'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.post(self.url, data=data)
+
+        expected_error_message = "Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state"
+        self.assertEqual(resp.data['detail'], expected_error_message)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_delete_method_when_ip_state_is_Prepared_and_path_does_not_exist(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': 'some_path'}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(resp.data['detail'], "Path does not exist")
+
+    def test_delete_method_when_ip_state_is_Prepared_and_path_parameter_does_not_exist(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_delete_method_when_ip_state_is_Prepared_and_passed_path_is_not_subdir_of_object_path(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': tempfile.mkdtemp()}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Illegal path {data['path']}")
+
+    def test_delete_method_when_ip_state_is_Prepared_and_passed_path_is_a_dir(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_dir_path = os.path.join(self.datadir, 'some_dir')
+        os.makedirs(tmp_dir_path)
+        data = {'path': tmp_dir_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isdir(tmp_dir_path))
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(os.path.exists(tmp_dir_path))
+
+    def test_delete_method_when_ip_state_is_Prepared_and_passed_path_is_a_file(self):
+        self.ip.state = 'Prepared'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {'path': tmp_file_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(os.path.isfile(tmp_file_path))
+
+    def test_delete_method_when_ip_state_is_Uploading_and_path_does_not_exist(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': 'some_path'}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(resp.data['detail'], "Path does not exist")
+
+    def test_delete_method_when_ip_state_is_Uploading_and_path_parameter_does_not_exist(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data, "Path parameter missing")
+
+    def test_delete_method_when_ip_state_is_Uploading_and_passed_path_is_not_subdir_of_object_path(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {'path': tempfile.mkdtemp()}
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['detail'], f"Illegal path {data['path']}")
+
+    def test_delete_method_when_ip_state_is_Uploading_and_passed_path_is_a_dir(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_dir_path = os.path.join(self.datadir, 'some_dir')
+        os.makedirs(tmp_dir_path)
+        data = {'path': tmp_dir_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isdir(tmp_dir_path))
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(os.path.exists(tmp_dir_path))
+
+    def test_delete_method_when_ip_state_is_Uploading_and_passed_path_is_a_file(self):
+        self.ip.state = 'Uploading'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        tmp_file_path = os.path.join(self.datadir, 'some_file')
+        with open(tmp_file_path, 'a') as tmp_file:
+            tmp_file.write("dummy")
+
+        data = {'path': tmp_file_path}
+
+        # Make sure file exists before deletion
+        self.assertTrue(os.path.isfile(tmp_file_path))
+        resp = self.client.delete(self.url, data=data)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(os.path.isfile(tmp_file_path))
+
+    def test_delete_method_when_ip_state_is_not_Prepared_nor_Uploading(self):
+        self.ip.state = 'some other state'
+        self.ip.save()
+        self.client.force_authenticate(user=self.user)
+
+        data = {}
+        resp = self.client.delete(self.url, data=data)
+
+        expected_error_message = "Cannot delete or add content of an IP that is not in 'Prepared' or 'Uploading' state"
+        self.assertEqual(resp.data['detail'], expected_error_message)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
