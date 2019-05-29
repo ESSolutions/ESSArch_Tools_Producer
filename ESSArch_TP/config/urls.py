@@ -94,6 +94,8 @@ router.register(r'profile-ip-data-templates', ProfileIPDataTemplateViewSet)
 router.register(r'parameters', ParameterViewSet)
 router.register(r'paths', PathViewSet)
 
+from .twoFactorViews import OTPLogin, TOTPVerifyView, TOTPDeleteView, TOTPCreateView, TOTPFreeDeleteView
+
 urlpatterns = [
     url(r'^', include('ESSArch_Core.frontend.urls'), name='home'),
     url(r'^admin/', admin.site.urls),
@@ -110,6 +112,11 @@ urlpatterns = [
     url(r'^accounts/login/$', auth_views.LoginView.as_view()),
     url(r'^rest-auth/', include('ESSArch_Core.auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^otp/login/$', OTPLogin.as_view(), name='otp_login'),
+    url(r'^otp/create/$', TOTPCreateView.as_view(), name='otp_create'),
+    url(r'^otp/verify/$', TOTPVerifyView.as_view(), name='otp_verify'),
+    url(r'^otp/disable/$', TOTPDeleteView.as_view(), name='otp_disable'),
+    url(r'^otp/delete/$', TOTPFreeDeleteView.as_view(), name='otp_detele'), #TODO: delete this line, its only for development purpose
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
