@@ -68,7 +68,7 @@
     "jquery-ui-dist": "~1.12.1",
     "lodash": "4.17.11",
     "messenger-hubspot": "^1.5.0-b2",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "normalize-scss": "^7.0.1",
     "select2": "~4.0.5",
     "string.prototype.endswith": "^0.2.0",
